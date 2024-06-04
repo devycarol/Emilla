@@ -1,0 +1,221 @@
+<resources>
+    <!-- Background service preference -->
+    <string-array name="run_in_background_entries">
+        <item>@string/always</item>
+        <item>Respect Battery Saver</item>
+        <item>@string/never</item>
+    </string-array>
+    <string-array name="run_in_background_values" translatable="false">
+        <item>always</item>
+        <item>follow_system</item>
+        <item>never</item>
+    </string-array>
+    <!-- Sound set preference -->
+    <string-array name="sound_set_entries">
+        <item>@string/none</item>
+        <item>@string/sound_set_nebula</item>
+        <item>@string/sound_set_voice_dialer</item>
+        <item>@string/sound_set_custom</item>
+    </string-array>
+    <string-array name="sound_set_values" translatable="false">
+        <item>none</item>
+        <item>nebula</item>
+        <item>voice_dialer</item>
+        <item>custom</item>
+    </string-array>
+    <!-- Double action preference -->
+    <string-array name="action_entries" translatable="false">
+        <!--Todo: replace with a wider *command* selection-->
+        <item>None</item>
+        <item>Toggle flashlight</item>
+        <item>These settings</item>
+        <item>Select whole command</item>
+    </string-array>
+    <string-array name="action_values" translatable="false">
+        <item>none</item>
+        <item>torch</item>
+        <item>config</item>
+        <item>select_all</item>
+    </string-array>
+    <string-array name="no_command_action_entries" translatable="false">
+        <!--Todo: replace with a wider *command* selection-->
+        <item>None</item>
+        <item>Toggle flashlight</item>
+        <item>These settings</item>
+    </string-array>
+    <string-array name="no_command_action_values" translatable="false">
+        <item>none</item>
+        <item>torch</item>
+        <item>config</item>
+    </string-array>
+
+    <!-- Command aliases -->
+    <!-- These should all match your locale's String.toLowerCase() for any casing -->
+    <string-array name="aliases_call" />
+    <string-array name="aliases_dial">
+        <item>phone</item>
+    </string-array>
+    <string-array name="aliases_sms">
+        <item>text</item>
+        <item>txt</item>
+        <item>message</item>
+        <item>msg</item>
+    </string-array>
+    <string-array name="aliases_email">
+        <item>mail</item>
+    </string-array>
+    <string-array name="aliases_share">
+        <item>send</item>
+    </string-array>
+    <string-array name="aliases_launch">
+        <item>open</item>
+        <item>app</item>
+    </string-array>
+    <string-array name="aliases_settings">
+        <item>setting</item>
+        <item>set</item>
+    </string-array>
+    <string-array name="aliases_note" />
+    <string-array name="aliases_todo">
+        <item>todo</item>
+        <item>tasks</item>
+        <item>task</item>
+    </string-array>
+    <string-array name="aliases_web">
+        <item>websearch</item>
+        <item>web-search</item>
+        <item>search</item>
+        <item>srch</item>
+    </string-array>
+    <string-array name="aliases_find" />
+    <string-array name="aliases_clock">
+        <item>time</item>
+    </string-array>
+    <string-array name="aliases_alarm" />
+    <string-array name="aliases_timer" />
+    <string-array name="aliases_pomodoro">
+        <item>pomo</item>
+    </string-array>
+    <string-array name="aliases_calendar">
+        <item>cal</item>
+        <item>plan</item>
+    </string-array>
+    <string-array name="aliases_contact">
+        <item>contacts</item>
+        <item>people</item>
+        <item>person</item>
+    </string-array>
+    <string-array name="aliases_notify">
+        <item>notif</item>
+        <item>reminder</item>
+        <item>remind</item>
+        <item>rem</item>
+        <item>memo</item>
+        <item>ping</item>
+    </string-array>
+    <string-array name="aliases_calculate">
+        <item>calc</item>
+        <item>math</item>
+    </string-array>
+    <string-array name="aliases_view">
+        <item>look</item>
+        <item>see</item>
+        <item>bookmark</item>
+        <item>mrk</item>
+    </string-array>
+    <string-array name="aliases_toast" />
+
+    <!-- App aliases -->
+    <string-array name="aliases_markor">
+        <item>mark</item>
+        <item>mkr</item>
+    </string-array>
+    <string-array name="aliases_firefox">
+        <item>ff</item>
+    </string-array>
+    <string-array name="aliases_signal">
+        <item>sig</item>
+        <item>sgnl</item>
+    </string-array>
+    <string-array name="aliases_newpipe">
+        <item>np</item>
+    </string-array>
+    <string-array name="aliases_tubular">
+        <item>tub</item>
+    </string-array>
+    <string-array name="aliases_discord">
+        <item>dsc</item>
+    </string-array>
+
+    <!-- More detailed instructions for commands. Details get more granular from bottom to top -->
+    <string-array name="details_duplicate">
+        <item>Provide instructions normally, then select command.</item>
+    </string-array>
+    <string-array name="details_sms">
+        <item>Tags: /sub|ject, /b|ody or /m|essage or /msg or /t|(e)xt.</item>
+        <item>This will overwrite any existing SMS draft to the recipient(s)!</item><!--todo-->
+        <item translatable="false">@string/detail_multiple_recipients</item>
+    </string-array>
+    <string-array name="details_email">
+        <item translatable="false">@string/detail_attachments_unsupported</item>
+        <item translatable="false">@string/detail_multiple_recipients</item>
+        <item translatable="false">@string/detail_recipients_unsupported</item>
+    </string-array>
+    <string-array name="details_share">
+        <item translatable="false">@string/detail_attachments_unsupported</item>
+        <item>Not all apps support multiple lines of text.</item>
+    </string-array>
+    <string-array name="details_settings">
+        <item>Directly changing settings isn\'t supported yet :(.</item><!--todo-->
+    </string-array>
+    <string-array name="details_note" translatable="false">
+        <item>@string/detail_fields_line_separated</item><!--todo-->
+    </string-array>
+    <string-array name="details_alarm" translatable="false">
+        <item translatable="false">@string/format_weekdays</item><!--todo-->
+        <item translatable="false">@string/format_time_clock</item>
+    </string-array>
+    <string-array name="details_timer" translatable="false">
+        <item translatable="false">@string/format_time_until</item>
+        <item translatable="false">@string/format_time_units</item>
+        <item translatable="false">@string/format_time_duration</item>
+        <item translatable="false">@string/format_time_minutes</item>
+    </string-array>
+    <string-array name="details_pomodoro">
+        <item>"A break timer is set by including 'break' or 'b'."</item>
+        <item>Default work: 25m. Default break: 5m.</item>
+    </string-array>
+    <!--todo: make this more concise and have a proper manual-->
+    <string-array name="details_calendar">
+        <item>"Tags: /loc|ation, /with or /guests, /d|esc|ription or /det|ails or /deets, /url or /link, /avail|ability or /stat|us busy/free or avail|able/tent|ative, /vis|ibility or /acc|ess pub|lic/con|f|id|ential/pri|v|ate."</item>
+        <item>/allday makes the event span the whole day(s)—any time information is ignored.</item><!--todo: have better flow for that sort of thing-->
+        <item translatable="false">@string/format_time_clock_seconds</item>
+        <item translatable="false">@string/format_date_year</item>
+        <item translatable="false">@string/format_date_calendar</item>
+        <item>DATETIME: DATE @/at/from TIME (-/to/until/til(l) (DATE @/at/from) TIME). Sorry so verbose.</item>
+    </string-array>
+    <string-array name="details_contact">
+        <item>"Sub-commands are 'edit' and 'create/new'."</item>
+        <item>Pulls up a contact card.</item>
+    </string-array>
+    <string-array name="details_toast">
+        <item>More than 2 lines of text will be ellipsized.</item>
+        <item>Shows a little message :)</item>
+    </string-array>
+    <string-array name="details_app_send" translatable="false">
+        <item>@string/detail_attachments_unsupported</item>
+        <item>@string/detail_recipients_unsupported</item>
+        <item>@string/detail_app_send_warning</item>
+        <item>@string/detail_app_send_launch</item>
+    </string-array>
+    <string-array name="details_app_send_data" translatable="false">
+        <item>@string/detail_attachments_unsupported</item>
+        <item>@string/detail_recipients_unsupported</item>
+        <item>@string/detail_fields_line_separated</item>
+        <item>@string/detail_app_send_launch</item>
+    </string-array>
+    <!-- Generic details for phone-call commands -->
+    <string-array name="details_call_phone">
+        <item>"End with 'now' to call immediately (requires permission)."</item>
+    </string-array>
+</resources>

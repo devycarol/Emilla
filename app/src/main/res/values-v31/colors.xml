@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="main_200">@android:color/system_accent1_200</color>
+    <color name="main_500">@android:color/system_accent1_500</color>
+    <color name="main_700">@android:color/system_accent1_700</color>
+    <color name="secn_200">@android:color/system_accent2_200</color>
+    <color name="secn_700">@android:color/system_accent2_700</color>
+    <color name="main_background_dark">@android:color/system_neutral1_900</color>
+    <color name="secn_background_dark">@android:color/system_neutral1_800</color>
+    <color name="main_background_light">@android:color/system_neutral1_10</color>
+    <color name="secn_background_light">@android:color/system_neutral1_50</color>
+</resources>

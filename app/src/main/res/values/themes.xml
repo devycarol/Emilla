@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Emilla" parent="Theme.MaterialComponents.DayNight">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/main_500</item>
+        <item name="colorPrimaryVariant">@color/main_200</item>
+        <item name="colorOnPrimary">#FFF</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/secn_200</item>
+        <item name="colorSecondaryVariant">@color/secn_700</item>
+        <item name="colorOnSecondary">#FFF</item>
+        <item name="colorSecondaryContainer">@color/secn_background_light</item>
+        <item name="actionBarStyle">@style/ActionBarStyle</item>
+        <item name="android:textColor">#000</item>
+        <item name="android:windowBackground">@color/main_background_light</item>
+        <item name="android:statusBarColor" tools:targetApi="lollipop">#000</item>
+        <item name="android:navigationBarColor" tools:targetApi="lollipop">#000</item>
+        <!-- Settings screen style -->
+        <item name="preferenceTheme">@style/SettingsThemeOverlay</item>
+    </style>
+
+    <style name="ActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="background">@color/secn_background_light</item>
+    </style>
+
+    <!-- Assistant theme. -->
+    <style name="Theme.Assistant" parent="Theme.Emilla">
+        <item name="colorSecondaryContainer">@color/main_background_light</item>
+        <item name="actionBarStyle">@style/AssistantActionBarStyle</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/trans_background_light</item>
+    </style>
+
+    <style name="AssistantActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="background">@color/main_background_light</item>
+    </style>
+</resources>

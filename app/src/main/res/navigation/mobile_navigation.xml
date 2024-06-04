@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_assistant">
+
+    <fragment
+        android:id="@+id/navigation_commands"
+        android:name="net.emilla.config.CommandsFragment"
+        android:label="@string/title_commands"
+        tools:layout="@layout/fragment_commands" />
+
+    <fragment
+        android:id="@+id/navigation_assistant"
+        android:name="net.emilla.config.AssistantFragment"
+        android:label="@string/title_assistant"
+        tools:layout="@layout/fragment_assistant" />
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="net.emilla.config.SettingsFragment"
+        android:label="@string/settings"
+        tools:layout="@layout/fragment_settings" />
+</navigation>

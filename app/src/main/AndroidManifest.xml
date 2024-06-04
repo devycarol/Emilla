@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" /> <!-- TODO just use file selection -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+
+    <queries>
+        <package android:name="org.polymorphicshade.tubular" />
+        <package android:name="org.schabi.newpipe" />
+        <package android:name="net.gsantner.markor" />
+        <package android:name="com.discord" />
+
+        <intent> <!-- Phone dialing -->
+            <action android:name="android.intent.action.DIAL" />
+        </intent>
+        <intent> <!-- Text messaging -->
+            <action android:name="android.intent.action.SENDTO" />
+
+            <data android:scheme="sms" />
+        </intent>
+        <intent> <!-- Opening other apps -->
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+        <intent> <!-- Searching system settings -->
+            <action android:name="android.settings.APP_SEARCH_SETTINGS" />
+        </intent>
+        <intent> <!-- Searching the internet -->
+            <action android:name="android.intent.action.WEB_SEARCH" />
+        </intent>
+        <intent> <!-- Creating calendar events -->
+            <action android:name="android.intent.action.INSERT" />
+
+            <data android:mimeType="vnd.android.cursor.item/event" />
+        </intent>
+        <intent> <!-- Creating contacts -->
+            <action android:name="android.intent.action.INSERT" />
+
+            <data android:mimeType="vnd.android.cursor.dir/contact" />
+        </intent>
+        <intent> <!-- TODO remove -->
+            <action android:name="android.intent.action.SEARCH" />
+
+            <data android:mimeType="vnd.android.cursor.dir/contact" />
+        </intent>
+        <intent> <!-- Setting alarms -->
+            <action android:name="android.intent.action.SET_ALARM" />
+        </intent>
+        <intent> <!-- Setting timers -->
+            <action android:name="android.intent.action.SET_TIMER" />
+        </intent>
+        <intent> <!-- Opening calculator apps -->
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.APP_CALCULATOR" />
+        </intent>
+    </queries>
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        tools:targetApi="34">
+        <activity
+            android:name="net.emilla.config.ConfigActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Emilla">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+        </activity>
+        <activity
+            android:name="net.emilla.AssistActivity"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_assistant"
+            android:label="@string/app_name_assistant"
+            android:launchMode="singleTask"
+            android:roundIcon="@mipmap/ic_launcher_assistant_round"
+            android:taskAffinity=".assistant"
+            android:theme="@style/Theme.Assistant"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.ASSIST" />
+                <action android:name="android.intent.action.VOICE_COMMAND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name="net.emilla.system.EmillaForegroundService"
+            android:foregroundServiceType="dataSync"
+            tools:node="merge" />
+        <service
+            android:name="net.emilla.system.EmillaAccessibilityService"
+            android:exported="true"
+            android:minSdkVersion="26"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service_config" />
+        </service>
+
+        <provider
+            android:name="net.emilla.system.EmillaFileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/paths" />
+        </provider>
+    </application>
+
+</manifest>
