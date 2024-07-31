@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory app:title="@string/general_header">
+        <EditTextPreference
+            app:defaultValue="Cameron, (208) 555-1234\nJohn, Johnny, (208) 555-6789\nSusan mobile, (970) 123-4567\nSusan cell, (970) 345-6789"
+            app:key="phones"
+            app:summary="For now, you can provide contacts by comma-separation"
+            app:title="Contact phones" />
+        <EditTextPreference
+            app:defaultValue="Devy, devydev@example.com\nBugs, bugs@emilla.net"
+            app:key="emails"
+            app:summary="Contact names are always case-insensitive"
+            app:title="Contact emails" />
+        <EditTextPreference
+            app:defaultValue="Emilla GitHub, emla, https://github.com/devycarol/Emilla\nOpen-source software, OSS, https://en.wikipedia.org/wiki/Open_source_software\nRick, dQw, https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+            app:key="medias"
+            app:summary="Used in the 'view' command; only supports web URLs for now"
+            app:title="Bookmarks" />
+        <ListPreference
+            app:defaultValue="follow_system"
+            app:entries="@array/run_in_background_entries"
+            app:entryValues="@array/run_in_background_values"
+            app:key="run_in_background"
+            app:title="@string/pref_run_in_background"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/customization_header">
+        <ListPreference
+            app:defaultValue="nebula"
+            app:entries="@array/sound_set_entries"
+            app:entryValues="@array/sound_set_values"
+            app:key="sound_set"
+            app:title="@string/pref_sounds"
+            app:useSimpleSummaryProvider="true" />
+        <Preference
+            app:key="chime_start"
+            app:title="@string/chime_start" />
+        <Preference
+            app:key="chime_act"
+            app:title="@string/chime_act" />
+        <Preference
+            app:key="chime_pend"
+            app:title="@string/chime_pend" />
+        <Preference
+            app:key="chime_resume"
+            app:title="@string/chime_resume" />
+        <Preference
+            app:key="chime_exit"
+            app:title="@string/chime_exit" />
+        <Preference
+            app:key="chime_succeed"
+            app:title="@string/chime_succeed" />
+        <Preference
+            app:key="chime_fail"
+            app:title="@string/chime_fail" />
+        <EditTextPreference
+            app:defaultValue="@string/app_name_assistant"
+            app:key="motd"
+            app:title="@string/pref_motd"
+            app:useSimpleSummaryProvider="true" />
+        <!--todo: add a reset button-->
+        <!--todo: only allow one line-->
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/actions_header">
+        <Preference
+            app:key="favorite_commands"
+            app:summary="@string/favorites_summary"
+            app:title="@string/favorites" />
+        <ListPreference
+            app:defaultValue="config"
+            app:entries="@array/no_command_action_entries"
+            app:entryValues="@array/no_command_action_values"
+            app:key="action_no_command"
+            app:title="@string/pref_action_no_command"
+            app:useSimpleSummaryProvider="true" />
+        <ListPreference
+            app:defaultValue="torch"
+            app:entries="@array/action_entries"
+            app:entryValues="@array/action_values"
+            app:key="action_double_assist"
+            app:title="@string/pref_action_double_assist"
+            app:useSimpleSummaryProvider="true" />
+        <ListPreference
+            app:defaultValue="select_all"
+            app:entries="@array/action_entries"
+            app:entryValues="@array/action_values"
+            app:key="action_long_press_submit"
+            app:title="@string/pref_action_long_press_submit"
+            app:useSimpleSummaryProvider="true" />
+        <ListPreference
+            app:defaultValue="config"
+            app:entries="@array/action_entries"
+            app:entryValues="@array/action_values"
+            app:key="action_menu"
+            app:summary="In case you have one of these.."
+            app:title="@string/pref_action_menu" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/system_header"><!--TODO: when settings are hidden, the divider can get misplaced.-->
+        <Preference
+            app:key="default_assistant"
+            app:title="@string/pref_default_assistant" />
+        <Preference
+            app:key="notifications"
+            app:title="@string/pref_notifications" />
+        <Preference
+            app:key="accessibility_button"
+            app:summary="@string/accessibility_service_description"
+            app:title="@string/pref_accessibility_button" />
+        <Preference
+            app:key="app_info"
+            app:summary="@string/summary_app_info"
+            app:title="@string/app_info" />
+    </PreferenceCategory>
+</PreferenceScreen>

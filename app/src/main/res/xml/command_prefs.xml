@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/category_core">
+        <EditTextPreference
+            android:icon="@drawable/ic_web"
+            android:key="aliases_web_text"
+            android:summary="@string/summary_web"
+            android:title="@string/command_web" />
+        <EditTextPreference
+            android:icon="@drawable/ic_launch"
+            android:key="aliases_launch_text"
+            android:summary="@string/summary_launch"
+            android:title="@string/command_launch" />
+        <EditTextPreference
+            android:icon="@drawable/ic_view"
+            android:key="aliases_view_text"
+            android:summary="@string/summary_view"
+            android:title="@string/command_view" />
+        <Preference
+            android:icon="@drawable/ic_find"
+            android:key="aliases_find_text"
+            android:summary="@string/summary_find"
+            android:title="@string/command_find" />
+        <EditTextPreference
+            android:icon="@drawable/ic_call"
+            android:key="aliases_call_text"
+            android:summary="@string/summary_call"
+            android:title="@string/command_call" />
+        <EditTextPreference
+            android:icon="@drawable/ic_dial"
+            android:key="aliases_dial_text"
+            android:summary="@string/summary_dial"
+            android:title="@string/command_dial" />
+        <EditTextPreference
+            android:icon="@drawable/ic_sms"
+            android:key="aliases_sms_text"
+            android:summary="@string/summary_sms"
+            android:title="@string/command_sms" />
+        <EditTextPreference
+            android:icon="@drawable/ic_contact"
+            android:key="aliases_contact_text"
+            android:summary="@string/summary_contact"
+            android:title="@string/command_contact" />
+        <EditTextPreference
+            android:icon="@drawable/ic_email"
+            android:key="aliases_email_text"
+            android:summary="@string/summary_email"
+            android:title="@string/command_email" />
+        <EditTextPreference
+            android:icon="@drawable/ic_calculate"
+            android:key="aliases_calculate_text"
+            android:summary="@string/summary_calculate"
+            android:title="@string/command_calculate" />
+        <EditTextPreference
+            android:icon="@drawable/ic_clock"
+            android:key="aliases_clock_text"
+            android:summary="@string/summary_clock"
+            android:title="@string/command_clock" />
+        <EditTextPreference
+            android:icon="@drawable/ic_alarm"
+            android:key="aliases_alarm_text"
+            android:summary="@string/summary_alarm"
+            android:title="@string/command_alarm" />
+        <EditTextPreference
+            android:icon="@drawable/ic_timer"
+            android:key="aliases_timer_text"
+            android:summary="@string/summary_timer"
+            android:title="@string/command_timer" />
+        <Preference
+            android:icon="@drawable/ic_note"
+            android:key="aliases_note_text"
+            android:summary="@string/summary_note"
+            android:title="@string/command_note" />
+        <EditTextPreference
+            android:icon="@drawable/ic_calendar"
+            android:key="aliases_calendar_text"
+            android:summary="@string/summary_calendar"
+            android:title="@string/command_calendar" />
+        <Preference
+            android:icon="@drawable/ic_notify"
+            android:key="aliases_notify_text"
+            android:summary="@string/summary_notify"
+            android:title="@string/command_notify" />
+        <EditTextPreference
+            android:icon="@drawable/ic_settings"
+            android:key="aliases_settings_text"
+            android:summary="@string/summary_settings"
+            android:title="@string/command_settings" />
+        <EditTextPreference
+            android:icon="@drawable/ic_share"
+            android:key="aliases_share_text"
+            android:summary="@string/summary_share"
+            android:title="@string/command_share" />
+        <EditTextPreference
+            android:icon="@drawable/ic_toast"
+            android:key="aliases_toast_text"
+            android:summary="@string/summary_toast"
+            android:title="@string/command_toast" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/category_custom">
+        <Preference
+            android:icon="@drawable/ic_todo"
+            android:key="aliases_todo_text"
+            android:summary="@string/summary_todo"
+            android:title="@string/command_todo" />
+        <EditTextPreference
+            android:icon="@drawable/ic_pomodoro"
+            android:key="aliases_pomodoro_text"
+            android:summary="@string/summary_pomodoro"
+            android:title="@string/command_pomodoro" />
+        <Preference
+            android:icon="@drawable/ic_command"
+            android:key="aliases_custom_text"
+            android:summary="@string/summary_custom"
+            android:title="@string/command_custom" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/category_apps">
+        <EditTextPreference
+            android:key="aliases_net.gsantner.markor_text"
+            android:summary="@string/summary_note" />
+        <EditTextPreference
+            android:key="aliases_org.mozilla.firefox_text"
+            android:summary="@string/summary_web" />
+        <EditTextPreference
+            android:key="aliases_org.thoughtcrime.securesms_text"
+            android:summary="@string/summary_messaging" />
+        <EditTextPreference
+            android:key="aliases_org.schabi.newpipe_text"
+            android:summary="@string/summary_video" />
+        <EditTextPreference
+            android:key="aliases_org.polymorphicshade.tubular_text"
+            android:summary="@string/summary_video" />
+        <EditTextPreference
+            android:key="aliases_com.discord_text"
+            android:summary="@string/summary_messaging" />
+    </PreferenceCategory>
+</PreferenceScreen>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_commands"
+        android:icon="@drawable/ic_command"
+        android:title="@string/title_commands" />
+
+    <item
+        android:id="@+id/navigation_assistant"
+        android:icon="@drawable/ic_assistant"
+        android:title="@string/title_assistant" />
+
+    <item
+        android:id="@+id/navigation_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/settings" />
+
+</menu>
