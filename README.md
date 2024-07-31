@@ -1,2 +1,2 @@
 # Emilla
-An awesome digital assistant for Android
+An awesome digital assistant for Android :)
