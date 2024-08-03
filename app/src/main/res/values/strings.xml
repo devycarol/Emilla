@@ -100,6 +100,7 @@
     <string name="command_contact">Contact</string>
     <string name="command_notify">Notify</string>
     <string name="command_calculate">Calculate</string>
+    <string name="command_weather">Weather</string>
     <string name="command_view">View</string>
     <string name="command_toast">Toast</string>
     <string name="command_custom">Custom</string>
@@ -126,6 +127,7 @@
     <string name="summary_contact">View, create, and edit contacts</string>
     <string name="summary_notify">Set notification reminders</string>
     <string name="summary_calculate">Compute math equations</string>
+    <string name="summary_weather">Open a weather app</string>
     <string name="summary_view">Open bookmarked URLs</string><!--todo: other url types. also "play"—music, audiobooks, and podcasts-->
     <string name="summary_toast">Show a little message!</string>
     <string name="summary_custom">Create your own commands!</string>

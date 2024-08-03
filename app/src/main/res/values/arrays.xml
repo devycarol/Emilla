@@ -117,6 +117,9 @@
         <item>calc</item>
         <item>math</item>
     </string-array>
+    <string-array name="aliases_weather">
+        <item>wea</item>
+    </string-array>
     <string-array name="aliases_view">
         <item>look</item>
         <item>see</item>

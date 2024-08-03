@@ -31,14 +31,19 @@ public static List<ResolveInfo> resolveList(final PackageManager pm) {
     return pm.queryIntentActivities(new Intent(ACTION_MAIN).addCategory(CATEGORY_LAUNCHER), 0);
 }
 
-public static Intent launcherIntent(final String pkg, final String cls) {
+@NonNull
+public static List<ResolveInfo> resolveList(final PackageManager pm, final String category) {
+    return pm.queryIntentActivities(categoryIntent(category), 0);
+}
+
+public static Intent launchIntent(final String pkg, final String cls) {
     final ComponentName cn = new ComponentName(pkg, cls);
     return new Intent(ACTION_MAIN).addCategory(CATEGORY_LAUNCHER).setPackage(pkg).setComponent(cn)
             .addFlags(FLAG_ACTIVITY_NEW_TASK);
 }
 
-public static Intent launcherIntent(final ActivityInfo info) {
-    return launcherIntent(info.packageName, info.name);
+public static Intent launchIntent(final ActivityInfo info) {
+    return launchIntent(info.packageName, info.name);
 }
 
 public static Intent newTask(final String action) {
@@ -55,6 +60,10 @@ public static Intent newTask(final String action, final String type) {
 
 public static Intent newTask(final String action, final Uri data, final String type) {
     return new Intent(action).setDataAndType(data, type).addFlags(FLAG_ACTIVITY_NEW_TASK);
+}
+
+public static Intent categoryIntent(final String category) {
+    return new Intent(ACTION_MAIN).addCategory(CATEGORY_LAUNCHER).addCategory(category);
 }
 
 public static Intent sendTask(final String pkg) {
@@ -82,10 +91,10 @@ public static CharSequence[] labels(final List<ResolveInfo> appList, final Packa
 
 public static Intent[] intents(final List<ResolveInfo> appList) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) return appList.parallelStream()
-            .map(ri -> launcherIntent(ri.activityInfo)).toArray(Intent[]::new);
+            .map(ri -> launchIntent(ri.activityInfo)).toArray(Intent[]::new);
     final Intent[] intents = new Intent[appList.size()];
     int i = -1;
-    for (final ResolveInfo ri : appList) intents[++i] = launcherIntent(ri.activityInfo);
+    for (final ResolveInfo ri : appList) intents[++i] = launchIntent(ri.activityInfo);
     return intents;
 }
 }

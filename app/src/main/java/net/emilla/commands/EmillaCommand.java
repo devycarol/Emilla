@@ -44,6 +44,7 @@ public enum Command {
     CONTACT,
     NOTIFY,
     CALCULATE,
+    WEATHER,
     VIEW,
     TOAST,
     APP,
@@ -72,6 +73,7 @@ public static final int[] NAMES = {
     R.string.command_contact,
     R.string.command_notify,
     R.string.command_calculate,
+    R.string.command_weather,
     R.string.command_view,
     R.string.command_toast
 };
@@ -133,7 +135,7 @@ public static CommandTree tree(final AssistActivity act, final SharedPreferences
         final ActivityInfo info = ri.activityInfo;
         final CharSequence label = info.loadLabel(pm);
         final String pkg = info.packageName;
-        final Intent launch = Apps.launcherIntent(pkg, info.name);
+        final Intent launch = Apps.launchIntent(pkg, info.name);
         final AppCommand appCmd = getAppCmd(act, pm, res, pkg, cmdTree, label, launch);
         final String lcLabel = label.toString().toLowerCase();
         cmdTree.put(lcLabel, appCmd, act);
@@ -163,9 +165,10 @@ public static Command command(
 public static boolean usesData(final Command cmd) {
     return switch (cmd) {
     case DEFAULT -> usesData(DEFAULT_CMD);
-    case CALL, DIAL, LAUNCH, SETTINGS, WEB, FIND, CLOCK, CALCULATE, VIEW, APP_SEND, APP -> false;
+    case CALL, DIAL, LAUNCH, SETTINGS, WEB, FIND, CLOCK, CALCULATE, WEATHER, VIEW, APP_SEND, APP
+            -> false;
     case SMS, EMAIL, SHARE, NOTE, TODO, ALARM, TIMER, POMODORO, CALENDAR, CONTACT, NOTIFY, TOAST,
-         DUPLICATE, APP_SEND_DATA -> true;
+            DUPLICATE, APP_SEND_DATA -> true;
     };
 }
 
@@ -175,12 +178,12 @@ public static int imeAction(final Command cmd) {
     // requires changing the input method code directly
     if (usesData(cmd)) return IME_ACTION_NEXT;
     return switch (cmd) {
-    case CALL, DIAL, LAUNCH, VIEW, APP -> IME_ACTION_GO;
+    case CALL, DIAL, LAUNCH, WEATHER, VIEW, APP -> IME_ACTION_GO;
     case WEB, FIND -> IME_ACTION_SEARCH;
     case APP_SEND -> IME_ACTION_SEND; // todo: this shouldn't apply when just launching and also not to the newpipes
     case SETTINGS, CLOCK, CALCULATE -> IME_ACTION_DONE;
     case DEFAULT, SMS, EMAIL, SHARE, NOTE, TODO, ALARM, TIMER, POMODORO, CALENDAR, CONTACT, NOTIFY,
-         TOAST, DUPLICATE, APP_SEND_DATA -> -1;
+            TOAST, DUPLICATE, APP_SEND_DATA -> -1;
     };
 }
 
@@ -189,7 +192,8 @@ private static boolean shouldLowercase(final Command cmd) {
     // Please let me know if this should vary for your locale.
     return switch (cmd) {
     case DEFAULT, CALL, DIAL, EMAIL, SHARE, LAUNCH, SETTINGS, NOTE, TODO, WEB, FIND, CLOCK, ALARM,
-         TIMER, POMODORO, CALENDAR, CONTACT, NOTIFY, CALCULATE, VIEW, TOAST, DUPLICATE -> true;
+            TIMER, POMODORO, CALENDAR, CONTACT, NOTIFY, CALCULATE, WEATHER, VIEW, TOAST, DUPLICATE
+            -> true;
     case SMS, APP, APP_SEND, APP_SEND_DATA -> false;
     };
 }
@@ -212,7 +216,7 @@ private static int detailsId(final Command cmd) {
     case DUPLICATE -> R.array.details_duplicate;
     case APP_SEND -> R.array.details_app_send; // todo: shouldn't apply to newpipes
     case APP_SEND_DATA -> R.array.details_app_send_data;
-    case LAUNCH, TODO, WEB, FIND, CLOCK, NOTIFY, CALCULATE, VIEW, APP -> -1;
+    case LAUNCH, TODO, WEB, FIND, CLOCK, NOTIFY, CALCULATE, WEATHER, VIEW, APP -> -1;
     };
 }
 
@@ -236,8 +240,8 @@ public static CharSequence dataHint(final Resources res, final Command cmd) {
     case NOTIFY -> R.string.data_hint_notify;
     case TOAST -> R.string.data_hint_toast;
     case APP_SEND_DATA -> R.string.data_hint_app_send_data;
-    case DEFAULT, CALL, DIAL, LAUNCH, SETTINGS, WEB, FIND, CLOCK, CALCULATE, VIEW, DUPLICATE,
-         APP_SEND, APP -> R.string.data_hint_default;
+    case DEFAULT, CALL, DIAL, LAUNCH, SETTINGS, WEB, FIND, CLOCK, CALCULATE, WEATHER, VIEW,
+            DUPLICATE, APP_SEND, APP -> R.string.data_hint_default;
     };
     return res.getString(hintId);
 }
@@ -264,6 +268,7 @@ public static int icon(Command cmd) {
     case CONTACT -> R.drawable.ic_contact;
     case NOTIFY -> R.drawable.ic_notify;
     case CALCULATE -> R.drawable.ic_calculate;
+    case WEATHER -> R.drawable.ic_weather;
     case VIEW -> R.drawable.ic_view;
     case TOAST -> R.drawable.ic_toast;
     case DUPLICATE -> R.drawable.ic_command;
@@ -292,7 +297,8 @@ private static EmillaCommand instance(final Command cmd, final AssistActivity ac
     case CALENDAR -> new CommandCalendar(act);
     case CONTACT -> new CommandContact(act);
     case NOTIFY -> new CommandNotify(act);
-    case CALCULATE -> new CommandCalculate(act);
+    case CALCULATE -> new CatCommandCalculate(act);
+    case WEATHER -> new CatCommandWeather(act);
     case VIEW -> new CommandView(act);
     case TOAST -> new CommandToast(act);
     case APP, APP_SEND, APP_SEND_DATA, DUPLICATE -> null; // uuuhhhhhhh
@@ -321,7 +327,8 @@ public static EmillaCommand instance(final AssistActivity act, final Command cmd
     case CALENDAR -> new CommandCalendar(act);
     case CONTACT -> new CommandContact(act);
     case NOTIFY -> new CommandNotify(act);
-    case CALCULATE -> new CommandCalculate(act);
+    case CALCULATE -> new CatCommandCalculate(act);
+    case WEATHER -> new CatCommandWeather(act);
     case VIEW -> new CommandView(act);
     case TOAST -> new CommandToast(act);
     case DUPLICATE, APP_SEND, APP_SEND_DATA -> appMap.get(name.toString().toLowerCase());

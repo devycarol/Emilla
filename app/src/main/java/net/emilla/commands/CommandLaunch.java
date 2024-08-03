@@ -67,7 +67,7 @@ public void run(final String app) {
             otherIntents = null;
 
             prefLabels[0] = label;
-            prefIntents[0] = Apps.launcherIntent(packageName, info.name);
+            prefIntents[0] = Apps.launchIntent(packageName, info.name);
             prefCount = 1;
 
             for (++i; i < appCount; ++i) { // continue searching for duplicates only
@@ -77,7 +77,7 @@ public void run(final String app) {
 
                 if (lcLabel.equals(lcQuery)) {
                     prefLabels[prefCount] = label;
-                    prefIntents[prefCount] = Apps.launcherIntent(info.packageName, info.name);
+                    prefIntents[prefCount] = Apps.launchIntent(info.packageName, info.name);
                     ++prefCount;
                 }
             }
@@ -86,7 +86,7 @@ public void run(final String app) {
             break; // search is finished
         }
         if (lcLabel.contains(lcQuery)) {
-            final Intent in = Apps.launcherIntent(packageName, info.name);
+            final Intent in = Apps.launchIntent(packageName, info.name);
             if (lcLabel.startsWith(lcQuery)) {
                 prefLabels[prefCount] = label;
                 prefIntents[prefCount] = in;
