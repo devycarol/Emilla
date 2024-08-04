@@ -17,11 +17,6 @@ import net.emilla.utils.Apps;
 public class CommandDial extends CoreCommand {
 private final Intent mIntent = Apps.newTask(ACTION_DIAL);
 
-@Override
-public Command cmd() {
-    return Command.DIAL;
-}
-
 @Override @ArrayRes
 public int detailsId() {
     return R.array.details_call_phone;

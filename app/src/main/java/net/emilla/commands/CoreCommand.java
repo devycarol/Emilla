@@ -36,6 +36,6 @@ public CharSequence lcName() {
 
 @Override
 public CharSequence title() {
-        return Lang.colonConcat(resources(), mNameId, mInstructionId);
-    }
+    return Lang.colonConcat(resources(), mNameId, mInstructionId);
+}
 }

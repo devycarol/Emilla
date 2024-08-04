@@ -44,11 +44,6 @@ public AppCommand(final AssistActivity act, final CharSequence appLabel, final I
 }
 
 @Override
-public Command cmd() {
-    return Command.APP;
-}
-
-@Override
 protected CharSequence name() {
     return mLabel;
 }

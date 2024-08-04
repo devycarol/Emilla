@@ -22,11 +22,6 @@ protected void noSuchApp() {
     throw new EmlaAppsException("No weather app found for your device.");
 }
 
-@Override
-public Command cmd() {
-    return Command.WEATHER;
-}
-
 @Override @DrawableRes
 public int icon() {
     return R.drawable.ic_weather;

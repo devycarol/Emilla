@@ -45,9 +45,9 @@ import androidx.preference.PreferenceManager;
 
 import net.emilla.commands.CommandTree;
 import net.emilla.commands.CommandView;
+import net.emilla.commands.CommandWrapDefault;
 import net.emilla.commands.DataCommand;
 import net.emilla.commands.EmillaCommand;
-import net.emilla.commands.EmillaCommand.Command;
 import net.emilla.config.ConfigActivity;
 import net.emilla.exceptions.EmillaException;
 import net.emilla.exceptions.EmlaAppsException;
@@ -59,7 +59,6 @@ import net.emilla.utils.Chime;
 import net.emilla.utils.Contacts;
 import net.emilla.utils.Dialogs;
 import net.emilla.utils.Features;
-import net.emilla.utils.Lang;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -90,8 +89,7 @@ private ImageButton mSubmitButton;
 private AlertDialog mCancelDialog;
 
 public ArrayList<Uri> mAttachments; // TODO: make private
-private Command mComposingCommand;
-private EmillaCommand mCmdInst;
+private EmillaCommand mCommand;
 private boolean mDataFieldEnabled = true;
 private int mImeAction = IME_ACTION_NEXT;
 private boolean mLaunched = false;
@@ -184,7 +182,7 @@ private void setupCommandField() {
         yield false;
     });
 
-    mCmdInst = mCommandTree.get("");
+    mCommand = mCommandTree.get("");
 
     mCommandField.setHorizontallyScrolling(false);
     mCommandField.setMaxLines(8);
@@ -350,20 +348,18 @@ private void setTextsIfCommandChanged(/*mutable*/ String command) {
         command = command.substring(nonSpace, len);
     }
 
-    mCmdInst = mCommandTree.get(command.toLowerCase());
-    final Command enumCmd = mCmdInst.cmd();
+    final EmillaCommand cmd = mCommandTree.get(command.toLowerCase());
     final boolean noCommand = command.isEmpty();
-    if (enumCmd != mComposingCommand || noCommand) {
-        mComposingCommand = noCommand ? null : enumCmd;
+    if (cmd != mCommand || noCommand) {
+        mCommand = cmd;
         final Resources res = getResources();
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             final CharSequence title = noCommand ? prefs.getString("motd", res.getString(R.string.app_name_assistant))
-                    : enumCmd == Command.DEFAULT ? Lang.colonConcat(res, R.string.command_default, mCmdInst.lcName())
-                    : mCmdInst.title();
+                    : mCommand.title();
             actionBar.setTitle(title);
         }
-        final int detailsId = mCmdInst.detailsId();
+        final int detailsId = mCommand.detailsId();
         final CharSequence details = detailsId == -1 ? null : String.join("\n\n", res.getStringArray(detailsId));
         if (details == null) mHelpBox.setVisibility(TextView.GONE);
         else {
@@ -374,31 +370,29 @@ private void setTextsIfCommandChanged(/*mutable*/ String command) {
         if (noCommand) {
             mDataField.setContentDescription(null);
             mDataField.setHint(R.string.data_hint_default);
-        } else if (mCmdInst instanceof DataCommand) {
+        } else if (mCommand instanceof DataCommand) {
             mDataField.setContentDescription(null);
-            mDataField.setHint(((DataCommand) mCmdInst).dataHint());
+            mDataField.setHint(((DataCommand) mCommand).dataHint());
         } else if (mDataField.getHint() != null) {
             mDataField.setHint(null);
             mDataField.setContentDescription(res.getString(R.string.data_hint_default));
         }
 
-        final int iconId = noCommand ? R.drawable.ic_assistant : mCmdInst.icon();
+        final int iconId = noCommand ? R.drawable.ic_assistant : mCommand.icon();
         mSubmitButton.setImageResource(iconId); // todo: relocate
         mCommandIcon = iconId;
 
-        boolean usesData = noCommand || mCmdInst instanceof DataCommand;
+        boolean usesData = noCommand || mCommand instanceof DataCommand;
         if (usesData != mDataFieldEnabled) {
             mDataField.setEnabled(usesData);
             mDataFieldEnabled = usesData;
         }
 
-        int imeAction = noCommand ? IME_ACTION_NEXT : mCmdInst.imeAction();
+        int imeAction = noCommand ? IME_ACTION_NEXT : mCommand.imeAction();
         if (imeAction != mImeAction) {
             mCommandField.setImeOptions(imeAction);
             mImeAction = imeAction;
         }
-
-        mComposingCommand = noCommand ? null : enumCmd;
     }
 }
 
@@ -624,7 +618,7 @@ private void submitCommand() {
         return;
     }
     final String instruction;
-    if (mCmdInst.cmd() == Command.DEFAULT) instruction = fullCommand;
+    if (mCommand instanceof CommandWrapDefault) instruction = fullCommand;
     else {
         final int spaceIdx = fullCommand.indexOf(' '); // TODO: this mode of space-separation won't work for all languages
         instruction = spaceIdx > 0 ? fullCommand.substring(spaceIdx).trim()
@@ -632,10 +626,10 @@ private void submitCommand() {
     }
 try {
     if (mDataFieldEnabled && mDataField.length() > 0) {
-        if (instruction == null) ((DataCommand) mCmdInst).runWithData(data);
-        else ((DataCommand) mCmdInst).runWithData(instruction, data);
-    } else if (instruction == null) mCmdInst.run();
-    else mCmdInst.run(instruction);
+        if (instruction == null) ((DataCommand) mCommand).runWithData(data);
+        else ((DataCommand) mCommand).runWithData(instruction, data);
+    } else if (instruction == null) mCommand.run();
+    else mCommand.run(instruction);
 } catch (EmillaException e) {
     fail(e.getMessage());
 } catch (Exception e) { // TODO: there are *plenty* of cases where this isn't safe, especially when files are involved

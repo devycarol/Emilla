@@ -27,11 +27,6 @@ private final Intent mIntent = Apps.newTask(ACTION_SENDTO, Uri.parse("mailto:"))
 private final Intent mSendMultipleIntent = Apps.newTask(ACTION_SEND_MULTIPLE); // todo: should this have "mailto:"?
 private final HashMap<String, String> mEmailMap;
 
-@Override
-public Command cmd() {
-    return Command.EMAIL;
-}
-
 @Override @ArrayRes
 public int detailsId() {
     return R.array.details_email;

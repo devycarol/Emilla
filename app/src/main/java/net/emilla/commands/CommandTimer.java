@@ -42,11 +42,6 @@ private final Intent mIntent = Apps.newTask(ACTION_SET_TIMER)
         .putExtra(EXTRA_SKIP_UI, true);
 private final Intent mUiIntent = Apps.newTask(ACTION_SET_TIMER);
 
-@Override
-public Command cmd() {
-    return Command.TIMER;
-}
-
 @Override @ArrayRes
 public int detailsId() {
     return R.array.details_timer;

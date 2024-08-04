@@ -30,11 +30,6 @@ public CommandLaunch(final AssistActivity act) {
     mAppChooser = Dialogs.appChooser(act, act.getPackageManager(), mAppList);
 }
 
-@Override
-public Command cmd() {
-    return Command.LAUNCH;
-}
-
 @Override @DrawableRes
 public int icon() {
     return R.drawable.ic_launch;

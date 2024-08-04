@@ -12,11 +12,6 @@ public CommandNotify(final AssistActivity act) {
     super(act, R.string.command_notify, R.string.instruction_notify);
 }
 
-@Override
-public Command cmd() {
-    return Command.NOTIFY;
-}
-
 @Override @StringRes
 public int dataHint() {
     return R.string.data_hint_notify;

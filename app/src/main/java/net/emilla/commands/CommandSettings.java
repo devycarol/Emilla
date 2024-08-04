@@ -16,11 +16,6 @@ import net.emilla.utils.Apps;
 public class CommandSettings extends CoreCommand {
 private final Intent mIntent = Apps.newTask(ACTION_SETTINGS);
 
-@Override
-public Command cmd() {
-    return Command.SETTINGS;
-}
-
 @Override @ArrayRes
 public int detailsId() {
     return R.array.details_settings;

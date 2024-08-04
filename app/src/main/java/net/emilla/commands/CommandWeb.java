@@ -16,18 +16,10 @@ import net.emilla.utils.Apps;
 public class CommandWeb extends CoreCommand {
 private final Intent mIntent = Apps.newTask(ACTION_WEB_SEARCH);
 private final boolean mUnsafe; // todo: handle at mapping and remove
-private final Command mCmd; // Todo: configurable default command
 
-public CommandWeb(final AssistActivity act, final Command cmd) {
+public CommandWeb(final AssistActivity act) {
     super(act, R.string.command_web, R.string.instruction_web);
-
     mUnsafe = mIntent.resolveActivity(packageManager()) == null;
-    mCmd = cmd;
-}
-
-@Override
-public Command cmd() {
-    return mCmd;
 }
 
 @Override @DrawableRes

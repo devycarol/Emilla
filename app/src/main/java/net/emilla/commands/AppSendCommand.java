@@ -20,11 +20,6 @@ private static CharSequence genericTitle(final Context ctxt, final CharSequence 
     return Lang.colonConcat(ctxt.getResources(), R.string.command_app_send, appLabel);
 }
 
-@Override
-public Command cmd() {
-    return Command.APP_SEND;
-}
-
 @Override @ArrayRes
 public int detailsId() {
     // Todo: this shouldn't apply to newpipes

@@ -10,11 +10,6 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 
 public class CommandToast extends CoreDataCommand {
-@Override
-public Command cmd() {
-    return Command.TOAST;
-}
-
 @Override @ArrayRes
 public int detailsId() {
     return R.array.details_toast;

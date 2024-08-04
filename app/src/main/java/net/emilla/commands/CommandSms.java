@@ -30,11 +30,6 @@ private final Intent mIntent = Apps.newTask(ACTION_SENDTO, Uri.parse("sms:"));
 private final HashMap<String, String> mPhoneMap;
 
 @Override
-public Command cmd() {
-    return Command.SMS;
-}
-
-@Override
 public CharSequence lcName() { // The initialism "SMS" shouldn't be lowercased.
     return resources().getString(R.string.command_sms);
 }

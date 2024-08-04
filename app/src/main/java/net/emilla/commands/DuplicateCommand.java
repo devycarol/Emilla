@@ -23,11 +23,6 @@ public static DuplicateCommand instance(final AssistActivity act, final EmillaCo
 }
 
 @Override
-public Command cmd() {
-    return Command.DUPLICATE;
-}
-
-@Override
 protected CharSequence name() {
     return resources().getString(R.string.command_duplicate);
 }

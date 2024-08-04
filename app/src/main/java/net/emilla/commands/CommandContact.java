@@ -38,11 +38,6 @@ private static String stripContactAction(final String person) { // TODO: lang
     return Pattern.compile("(create|new|edit) *").matcher(person).replaceFirst("");
 }
 
-@Override
-public Command cmd() {
-    return Command.CONTACT;
-}
-
 @Override @ArrayRes
 public int detailsId() {
     return R.array.details_contact;

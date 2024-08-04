@@ -24,11 +24,6 @@ private final Intent mIntent = new Intent(ACTION_SET_TIMER)
         .putExtra(EXTRA_SKIP_UI, true)
         .putExtra(EXTRA_LENGTH, 1500 /*25m*/); // todo: make configurable
 
-@Override
-public Command cmd() {
-    return Command.POMODORO;
-}
-
 @Override @ArrayRes
 public int detailsId() {
     return R.array.details_pomodoro;

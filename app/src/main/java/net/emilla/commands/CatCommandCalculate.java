@@ -22,11 +22,6 @@ protected void noSuchApp() {
 }
 
 @Override
-public Command cmd() {
-    return Command.CALCULATE;
-}
-
-@Override
 public int imeAction() {
     return EditorInfo.IME_ACTION_DONE;
 }

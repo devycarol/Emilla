@@ -23,11 +23,6 @@ private final Intent mViewIntent = Apps.newTask(ACTION_SHOW_ALARMS);
 private final Intent mSetIntent = Apps.newTask(ACTION_SET_ALARM);
 private final TimePickerDialog mTimePicker;
 
-@Override
-public Command cmd() {
-    return Command.ALARM;
-}
-
 @Override @ArrayRes
 public int detailsId() {
     return R.array.details_alarm;

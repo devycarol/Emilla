@@ -10,11 +10,6 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 
 public class AppSendDataCommand extends AppSendCommand implements DataCommand {
-@Override
-public Command cmd() {
-    return Command.APP_SEND_DATA;
-}
-
 @Override @ArrayRes
 public int detailsId() {
     return R.array.details_app_send_data;

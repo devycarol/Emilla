@@ -13,11 +13,6 @@ public CommandFind(final AssistActivity act) {
     super(act, R.string.command_find, R.string.instruction_find);
 }
 
-@Override
-public Command cmd() {
-    return Command.FIND;
-}
-
 @Override @DrawableRes
 public int icon() {
     return R.drawable.ic_find;

@@ -26,11 +26,6 @@ public class CommandCall extends CoreCommand {
 private final Intent mIntent = Apps.newTask(ACTION_CALL);
 private final HashMap<String, String> mPhoneMap;
 
-@Override
-public Command cmd() {
-    return Command.CALL;
-}
-
 @Override @ArrayRes
 public int detailsId() {
     return R.array.details_call_phone;

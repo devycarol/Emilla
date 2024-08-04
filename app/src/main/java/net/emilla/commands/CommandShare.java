@@ -17,11 +17,6 @@ private final Intent mIntent = Apps.newTask(ACTION_SEND, "text/plain")
         .putExtra(EXTRA_TEXT, ""); // TODO: attachments
 private final Intent mChooserIntent;
 
-@Override
-public Command cmd() {
-    return Command.SHARE;
-}
-
 @Override @ArrayRes
 public int detailsId() {
     return R.array.details_share;

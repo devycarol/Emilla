@@ -1,6 +1,6 @@
 package net.emilla.commands;
 
-import static net.emilla.commands.EmillaCommand.Command.*;
+import static net.emilla.commands.EmillaCommand.Commands.WEB;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -23,8 +23,7 @@ import java.util.List;
 import java.util.Set;
 
 public abstract class EmillaCommand {
-public enum Command {
-    DEFAULT,
+public enum Commands {
     CALL,
     DIAL,
     SMS,
@@ -32,26 +31,21 @@ public enum Command {
     LAUNCH,
     SHARE,
     SETTINGS,
-    NOTE,
-    TODO,
+//    NOTE,
+//    TODO,
     WEB,
-    FIND,
+//    FIND,
     CLOCK,
     ALARM,
     TIMER,
     POMODORO,
     CALENDAR,
     CONTACT,
-    NOTIFY,
+//    NOTIFY,
     CALCULATE,
     WEATHER,
     VIEW,
-    TOAST,
-    APP,
-    APP_SEND,
-    APP_SEND_DATA,
-    APP_SEARCH,
-    DUPLICATE
+    TOAST
 }
 
 private static final int[] NAMES = {
@@ -62,22 +56,24 @@ private static final int[] NAMES = {
     R.string.command_launch,
     R.string.command_share,
     R.string.command_settings,
-    R.string.command_note,
-    R.string.command_todo,
+//    R.string.command_note,
+//    R.string.command_todo,
     R.string.command_web,
-    R.string.command_find,
+//    R.string.command_find,
     R.string.command_clock,
     R.string.command_alarm,
     R.string.command_timer,
     R.string.command_pomodoro,
     R.string.command_calendar,
     R.string.command_contact,
-    R.string.command_notify,
+//    R.string.command_notify,
     R.string.command_calculate,
     R.string.command_weather,
     R.string.command_view,
     R.string.command_toast
 };
+
+private static final Commands DFLT_CMD = WEB; // Todo: make configurable
 
 private static AppCommand aliasMapped(final AssistActivity act, final CommandTree cmdTree,
         final Resources res, final String pkg, final int setId, final AppCommand appCmd) {
@@ -119,17 +115,13 @@ private static AppCommand getAppCmd(final AssistActivity act, final PackageManag
 
 public static CommandTree tree(final AssistActivity act, final SharedPreferences prefs,
         final Resources res, final PackageManager pm, final List<ResolveInfo> appList) {
-    final Set<Command> deactivated = Set.of(NOTE, TODO, FIND, NOTIFY); // Todo
     // todo: configurable aliasing
     // todo: edge case where a mapped app is uninstalled during the activity lifecycle
     final CommandTree cmdTree = new CommandTree();
-    final Command[] commands = values();
-    int i = 0;
-    while (i < NAMES.length) {
-        final String lcName = res.getString(NAMES[i]).toLowerCase();
+    int i = -1;
+    for (final Commands enumCmd : Commands.values()) {
+        final String lcName = res.getString(NAMES[++i]).toLowerCase();
         final Set<String> aliases = Aliases.set(prefs, res, i);
-        final Command enumCmd = commands[++i];
-        if (deactivated.contains(enumCmd)) continue;
         final EmillaCommand cmd = instance(enumCmd, act);
         // Todo: return to the enumeration approach
         cmdTree.putSingle(lcName, cmd, act);
@@ -145,13 +137,12 @@ public static CommandTree tree(final AssistActivity act, final SharedPreferences
         final String lcLabel = label.toString().toLowerCase();
         cmdTree.put(lcLabel, appCmd, act);
     }
-    cmdTree.putDefault(instance(DEFAULT, act));
+    cmdTree.putDefault(new CommandWrapDefault(act, (CoreCommand) instance(DFLT_CMD, act)));
     return cmdTree;
 }
 
-private static EmillaCommand instance(final Command cmd, final AssistActivity act) {
+private static EmillaCommand instance(final Commands cmd, final AssistActivity act) {
     return switch (cmd) {
-    case DEFAULT -> new CommandWeb(act, DEFAULT); // TODO: make configurable
     case CALL -> new CommandCall(act);
     case DIAL -> new CommandDial(act);
     case SMS -> new CommandSms(act);
@@ -159,22 +150,21 @@ private static EmillaCommand instance(final Command cmd, final AssistActivity ac
     case LAUNCH -> new CommandLaunch(act);
     case SHARE -> new CommandShare(act);
     case SETTINGS -> new CommandSettings(act);
-    case NOTE -> new CommandNote(act);
-    case TODO -> new CommandTodo(act);
-    case WEB -> new CommandWeb(act, WEB);
-    case FIND -> new CommandFind(act);
+//    case NOTE -> new CommandNote(act);
+//    case TODO -> new CommandTodo(act);
+    case WEB -> new CommandWeb(act);
+//    case FIND -> new CommandFind(act);
     case CLOCK -> new CommandClock(act);
     case ALARM -> new CommandAlarm(act);
     case TIMER -> new CommandTimer(act);
     case POMODORO -> new CommandPomodoro(act);
     case CALENDAR -> new CommandCalendar(act);
     case CONTACT -> new CommandContact(act);
-    case NOTIFY -> new CommandNotify(act);
+//    case NOTIFY -> new CommandNotify(act);
     case CALCULATE -> new CatCommandCalculate(act);
     case WEATHER -> new CatCommandWeather(act);
     case VIEW -> new CommandView(act);
     case TOAST -> new CommandToast(act);
-    case APP, APP_SEND, APP_SEND_DATA, APP_SEARCH, DUPLICATE -> null; // uuuhhhhhhh
     };
 }
 
@@ -285,10 +275,9 @@ public int detailsId() {
     return -1;
 }
 
-public abstract Command cmd();
 protected abstract CharSequence name();
 protected abstract CharSequence dupeLabel(); // Todo: replace with icons
-public abstract CharSequence lcName();
+protected abstract CharSequence lcName();
 public abstract CharSequence title();
 @DrawableRes public abstract int icon();
 public abstract int imeAction();

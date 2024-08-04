@@ -29,11 +29,6 @@ import net.emilla.utils.Tags;
 import java.util.regex.Matcher;
 
 public class CommandCalendar extends CoreDataCommand {
-@Override
-public Command cmd() {
-    return Command.CALENDAR;
-}
-
 @Override @ArrayRes
 public int detailsId() {
     return R.array.details_calendar;

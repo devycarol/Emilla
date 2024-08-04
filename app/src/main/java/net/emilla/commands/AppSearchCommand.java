@@ -19,11 +19,6 @@ public AppSearchCommand(final AssistActivity act, final CharSequence appLabel, f
 }
 
 @Override
-public Command cmd() {
-    return Command.APP_SEARCH;
-}
-
-@Override
 public int imeAction() {
     return EditorInfo.IME_ACTION_SEARCH;
 }

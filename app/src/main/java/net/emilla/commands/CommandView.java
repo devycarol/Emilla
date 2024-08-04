@@ -48,11 +48,6 @@ public CommandView(final AssistActivity act) {
             (dialog, id) -> act.succeed(Apps.meTask(act, ConfigActivity.class))).create();
 }
 
-@Override
-public Command cmd() {
-    return Command.VIEW;
-}
-
 @Override @DrawableRes
 public int icon() {
     return R.drawable.ic_view;

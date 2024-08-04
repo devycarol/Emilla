@@ -9,11 +9,6 @@ import net.emilla.R;
 import net.emilla.exceptions.EmlaAppsException;
 
 public class CommandNote extends CoreDataCommand {
-@Override
-public Command cmd() {
-    return Command.NOTE;
-}
-
 @Override @ArrayRes
 public int detailsId() {
     return R.array.details_note;

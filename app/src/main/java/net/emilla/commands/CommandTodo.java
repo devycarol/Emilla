@@ -40,11 +40,6 @@ public CommandTodo(final AssistActivity act) {
     super(act, R.string.command_todo, R.string.instruction_todo);
 }
 
-@Override
-public Command cmd() {
-    return Command.TODO;
-}
-
 @Override @StringRes
 public int dataHint() {
     return R.string.data_hint_todo;

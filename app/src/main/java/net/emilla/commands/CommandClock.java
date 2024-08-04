@@ -18,11 +18,6 @@ public CommandClock(final AssistActivity act) {
     super(act, R.string.command_clock, R.string.instruction_clock);
 }
 
-@Override
-public Command cmd() {
-    return Command.CLOCK;
-}
-
 @Override @DrawableRes
 public int icon() {
     return R.drawable.ic_clock;
