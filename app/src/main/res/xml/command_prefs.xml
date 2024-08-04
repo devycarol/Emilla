@@ -124,10 +124,16 @@
 
     <PreferenceCategory android:title="@string/category_apps">
         <EditTextPreference
+            android:key="aliases_com.android.contacts_text"
+            android:summary="@string/app_summary_aosp_contacts" />
+        <EditTextPreference
             android:key="aliases_net.gsantner.markor_text"
             android:summary="@string/summary_note" />
         <EditTextPreference
             android:key="aliases_org.mozilla.firefox_text"
+            android:summary="@string/summary_web" />
+        <EditTextPreference
+            android:key="aliases_org.torproject.torbrowser_text"
             android:summary="@string/summary_web" />
         <EditTextPreference
             android:key="aliases_org.thoughtcrime.securesms_text"
@@ -137,6 +143,9 @@
             android:summary="@string/summary_video" />
         <EditTextPreference
             android:key="aliases_org.polymorphicshade.tubular_text"
+            android:summary="@string/summary_video" />
+        <EditTextPreference
+            android:key="aliases_com.google.android.youtube_text"
             android:summary="@string/summary_video" />
         <EditTextPreference
             android:key="aliases_com.discord_text"

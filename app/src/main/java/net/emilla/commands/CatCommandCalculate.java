@@ -9,7 +9,7 @@ import net.emilla.parsing.Calculator;
 
 public class CatCommandCalculate extends CatCommand {
 public CatCommandCalculate(final AssistActivity act) {
-    super(act, R.string.command_calculate, R.string.instruction_calculate, CATEGORY_APP_CALCULATOR);
+    super(act, CATEGORY_APP_CALCULATOR, R.string.command_calculate, R.string.instruction_calculate);
 }
 
 @Override

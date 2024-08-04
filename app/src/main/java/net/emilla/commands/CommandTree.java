@@ -138,7 +138,9 @@ private EmillaCommand restrain(final EmillaCommand cmd, final EmillaCommand dflt
     //  good chance you just want to traverse up the tree one step. I.e. a one-word subcommand that
     //  yields to the parent command if more instruction is provided.
     //  Would entail parent pointers for the nodes, and `cmd` of the root being set to the dfltCmd
-    return cmd instanceof AppCommand && !(cmd instanceof AppSendCommand) ? dfltCmd : cmd;
+    return cmd instanceof AppCommand && !(cmd instanceof AppSendCommand
+            || cmd instanceof AppSearchCommand) ? dfltCmd
+        : cmd;
 }
 
 /**

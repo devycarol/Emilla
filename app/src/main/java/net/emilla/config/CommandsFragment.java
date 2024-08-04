@@ -48,11 +48,14 @@ private void setupAppPref(final String pkg, @ArrayRes final int setId, final Sha
 private void setupApps(final EmillaActivity act, final SharedPreferences prefs, final Resources res,
         final OnPreferenceChangeListener listener) {
     final PackageManager pm = act.getPackageManager();
+    setupAppPref(Apps.PKG_AOSP_CONTACTS, R.array.aliases_aosp_contacts, prefs, res, pm, listener);
     setupAppPref(Apps.PKG_MARKOR, R.array.aliases_markor, prefs, res, pm, listener);
     setupAppPref(Apps.PKG_FIREFOX, R.array.aliases_firefox, prefs, res, pm, listener);
+    setupAppPref(Apps.PKG_TOR, R.array.aliases_tor, prefs, res, pm, listener);
     setupAppPref(Apps.PKG_SIGNAL, R.array.aliases_signal, prefs, res, pm, listener);
     setupAppPref(Apps.PKG_NEWPIPE, R.array.aliases_newpipe, prefs, res, pm, listener);
     setupAppPref(Apps.PKG_TUBULAR, R.array.aliases_tubular, prefs, res, pm, listener);
+    setupAppPref(Apps.PKG_YOUTUBE, R.array.aliases_youtube, prefs, res, pm, listener);
     setupAppPref(Apps.PKG_DISCORD, R.array.aliases_discord, prefs, res, pm, listener);
     // Todo: procedurally generate these
 }

@@ -18,8 +18,8 @@ private final int mAppCount;
 private Intent mLaunchIntent;
 private AlertDialog mAppChooser;
 
-public CatCommand(final AssistActivity act, @StringRes final int nameId,
-        @StringRes final int instructionId, final String category) {
+public CatCommand(final AssistActivity act, final String category, @StringRes final int nameId,
+        @StringRes final int instructionId) {
     super(act, nameId, instructionId);
 
     final PackageManager pm = act.getPackageManager();

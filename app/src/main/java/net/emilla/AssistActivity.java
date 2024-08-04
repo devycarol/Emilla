@@ -199,7 +199,7 @@ private void setupSubmitButton() {
         }
         return false;
     });
-    mSubmitButton.setOnTouchListener((v, event) -> { // TODO: it's critical to ensure this works with accessibility frameworks
+    mSubmitButton.setOnTouchListener((v, event) -> { // TODO ACC: it's critical to ensure this works with accessibility frameworks
         switch (event.getAction()) {
         case MotionEvent.ACTION_DOWN: // TODO: you shouldn't be able to submit twice
             mSubmitButton.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP);

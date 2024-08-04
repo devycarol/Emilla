@@ -29,8 +29,8 @@ public enum Command {
     DIAL,
     SMS,
     EMAIL,
-    SHARE,
     LAUNCH,
+    SHARE,
     SETTINGS,
     NOTE,
     TODO,
@@ -50,16 +50,17 @@ public enum Command {
     APP,
     APP_SEND,
     APP_SEND_DATA,
+    APP_SEARCH,
     DUPLICATE
 }
 
-public static final int[] NAMES = {
+private static final int[] NAMES = {
     R.string.command_call,
     R.string.command_dial,
     R.string.command_sms,
     R.string.command_email,
-    R.string.command_share,
     R.string.command_launch,
+    R.string.command_share,
     R.string.command_settings,
     R.string.command_note,
     R.string.command_todo,
@@ -95,20 +96,27 @@ private static AppCommand getAppCmd(final AssistActivity act, final PackageManag
         final Intent launch) {
     final Intent send = Apps.sendTask(pkg);
     return switch (pkg) {
+        case Apps.PKG_AOSP_CONTACTS -> aliasMapped(act, cmdTree, act.prefs, res, pkg, R.array.aliases_aosp_contacts,
+                new AppSearchCommand(act, label, launch, Apps.searchTask(pkg), R.string.instruction_contact));
         case Apps.PKG_MARKOR -> aliasMapped(act, cmdTree, act.prefs, res, pkg, R.array.aliases_markor,
                 new AppSendDataCommand(act, label, launch, send, R.string.instruction_text));
         case Apps.PKG_FIREFOX -> aliasMapped(act, cmdTree, act.prefs, res, pkg, R.array.aliases_firefox,
-                new AppSendCommand(act, label, launch, send, R.string.instruction_web)); // Todo: more varieties of generics :)
+                new AppSearchCommand(act, label, launch, Apps.webSearchTask(pkg), R.string.instruction_web));
+        case Apps.PKG_TOR -> aliasMapped(act, cmdTree, act.prefs, res, pkg, R.array.aliases_tor,
+                new AppCommand(act, label, launch)); // Search/send intents are broken
         case Apps.PKG_SIGNAL -> aliasMapped(act, cmdTree, act.prefs, res, pkg, R.array.aliases_signal,
                 new AppSendDataCommand(act, label, launch, send, R.string.instruction_message));
         case Apps.PKG_NEWPIPE -> aliasMapped(act, cmdTree, act.prefs, res, pkg, R.array.aliases_newpipe,
                 new AppSendCommand(act, label, launch, send, R.string.instruction_video));
         case Apps.PKG_TUBULAR -> aliasMapped(act, cmdTree, act.prefs, res, pkg, R.array.aliases_tubular,
                 new AppSendCommand(act, label, launch, send, R.string.instruction_video));
+        case Apps.PKG_YOUTUBE -> aliasMapped(act, cmdTree, act.prefs, res, pkg, R.array.aliases_youtube,
+                new AppSearchCommand(act, label, launch, Apps.searchTask(pkg), R.string.instruction_video));
         case Apps.PKG_DISCORD -> aliasMapped(act, cmdTree, act.prefs, res, pkg, R.array.aliases_discord,
                 new AppSendCommand(act, label, launch, send, R.string.instruction_message));
         default -> send.resolveActivity(pm) == null ? new AppCommand(act, label, launch)
                 : new AppSendCommand(act, label, launch, send);
+        // Todo: generic AppSearchCommand in a way that handles conflicts with AppSendCommand
     };
 }
 
@@ -155,7 +163,7 @@ public static Command command(
     if (coreCmd == null) {
         final EmillaCommand cmdInst = appMap.get(lcName);
         if (cmdInst == null) return DEFAULT;
-        if (cmdInst instanceof AppSendCommand) return cmdInst.cmd();
+        if (cmdInst instanceof AppSendCommand || cmdInst instanceof AppSearchCommand) return cmdInst.cmd();
         if (cmdInst instanceof AppCommand) return noSpace ? APP : DEFAULT; // todo: space separation no good
         return DUPLICATE;
     }
@@ -165,25 +173,25 @@ public static Command command(
 public static boolean usesData(final Command cmd) {
     return switch (cmd) {
     case DEFAULT -> usesData(DEFAULT_CMD);
-    case CALL, DIAL, LAUNCH, SETTINGS, WEB, FIND, CLOCK, CALCULATE, WEATHER, VIEW, APP_SEND, APP
-            -> false;
+    case CALL, DIAL, LAUNCH, SETTINGS, WEB, FIND, CLOCK, CALCULATE, WEATHER, VIEW, APP_SEND, APP,
+            APP_SEARCH -> false;
     case SMS, EMAIL, SHARE, NOTE, TODO, ALARM, TIMER, POMODORO, CALENDAR, CONTACT, NOTIFY, TOAST,
             DUPLICATE, APP_SEND_DATA -> true;
     };
 }
 
 public static int imeAction(final Command cmd) {
-    if (cmd == DEFAULT) return imeAction(DEFAULT_CMD);
     // todo: you should be able to long-click the enter key in the command or data field to submit the command, using the action icon of one of the below.
     // requires changing the input method code directly
-    if (usesData(cmd)) return IME_ACTION_NEXT;
     return switch (cmd) {
+    case DEFAULT -> imeAction(DEFAULT_CMD);
     case CALL, DIAL, LAUNCH, WEATHER, VIEW, APP -> IME_ACTION_GO;
-    case WEB, FIND -> IME_ACTION_SEARCH;
+    case WEB, FIND, APP_SEARCH -> IME_ACTION_SEARCH;
     case APP_SEND -> IME_ACTION_SEND; // todo: this shouldn't apply when just launching and also not to the newpipes
     case SETTINGS, CLOCK, CALCULATE -> IME_ACTION_DONE;
-    case DEFAULT, SMS, EMAIL, SHARE, NOTE, TODO, ALARM, TIMER, POMODORO, CALENDAR, CONTACT, NOTIFY,
-            TOAST, DUPLICATE, APP_SEND_DATA -> -1;
+    case SMS, EMAIL, SHARE, NOTE, TODO, ALARM, TIMER, POMODORO, CALENDAR, CONTACT, NOTIFY, TOAST,
+            DUPLICATE, APP_SEND_DATA -> IME_ACTION_NEXT;
+    // This is used for ANY DATA COMMAND
     };
 }
 
@@ -191,10 +199,10 @@ private static boolean shouldLowercase(final Command cmd) {
     // Proper names and initialisms need not be lowercased mid-sentence.
     // Please let me know if this should vary for your locale.
     return switch (cmd) {
-    case DEFAULT, CALL, DIAL, EMAIL, SHARE, LAUNCH, SETTINGS, NOTE, TODO, WEB, FIND, CLOCK, ALARM,
-            TIMER, POMODORO, CALENDAR, CONTACT, NOTIFY, CALCULATE, WEATHER, VIEW, TOAST, DUPLICATE
-            -> true;
-    case SMS, APP, APP_SEND, APP_SEND_DATA -> false;
+    case DEFAULT, CALL, DIAL, EMAIL, LAUNCH, SHARE, SETTINGS, NOTE, TODO, WEB, FIND, CLOCK,
+            ALARM, TIMER, POMODORO, CALENDAR, CONTACT, NOTIFY, CALCULATE, WEATHER, VIEW, TOAST,
+            DUPLICATE -> true;
+    case SMS, APP, APP_SEND, APP_SEND_DATA, APP_SEARCH -> false;
     };
 }
 
@@ -216,7 +224,7 @@ private static int detailsId(final Command cmd) {
     case DUPLICATE -> R.array.details_duplicate;
     case APP_SEND -> R.array.details_app_send; // todo: shouldn't apply to newpipes
     case APP_SEND_DATA -> R.array.details_app_send_data;
-    case LAUNCH, TODO, WEB, FIND, CLOCK, NOTIFY, CALCULATE, WEATHER, VIEW, APP -> -1;
+    case LAUNCH, TODO, WEB, FIND, CLOCK, NOTIFY, CALCULATE, WEATHER, VIEW, APP, APP_SEARCH -> -1;
     };
 }
 
@@ -241,7 +249,7 @@ public static CharSequence dataHint(final Resources res, final Command cmd) {
     case TOAST -> R.string.data_hint_toast;
     case APP_SEND_DATA -> R.string.data_hint_app_send_data;
     case DEFAULT, CALL, DIAL, LAUNCH, SETTINGS, WEB, FIND, CLOCK, CALCULATE, WEATHER, VIEW,
-            DUPLICATE, APP_SEND, APP -> R.string.data_hint_default;
+            DUPLICATE, APP, APP_SEND, APP_SEARCH -> R.string.data_hint_default;
     };
     return res.getString(hintId);
 }
@@ -253,8 +261,8 @@ public static int icon(Command cmd) {
     case DIAL -> R.drawable.ic_dial;
     case SMS -> R.drawable.ic_sms;
     case EMAIL -> R.drawable.ic_email;
-    case SHARE -> R.drawable.ic_share;
     case LAUNCH -> R.drawable.ic_launch;
+    case SHARE -> R.drawable.ic_share;
     case SETTINGS -> R.drawable.ic_settings;
     case NOTE -> R.drawable.ic_note;
     case TODO -> R.drawable.ic_todo;
@@ -272,7 +280,7 @@ public static int icon(Command cmd) {
     case VIEW -> R.drawable.ic_view;
     case TOAST -> R.drawable.ic_toast;
     case DUPLICATE -> R.drawable.ic_command;
-    case APP, APP_SEND, APP_SEND_DATA -> R.drawable.ic_app; // TODO: use launcher icons
+    case APP, APP_SEND, APP_SEND_DATA, APP_SEARCH -> R.drawable.ic_app; // TODO: use launcher icons
     };
 }
 
@@ -283,8 +291,8 @@ private static EmillaCommand instance(final Command cmd, final AssistActivity ac
     case DIAL -> new CommandDial(act);
     case SMS -> new CommandSms(act);
     case EMAIL -> new CommandEmail(act);
-    case SHARE -> new CommandShare(act);
     case LAUNCH -> new CommandLaunch(act);
+    case SHARE -> new CommandShare(act);
     case SETTINGS -> new CommandSettings(act);
     case NOTE -> new CommandNote(act);
     case TODO -> new CommandTodo(act);
@@ -301,7 +309,7 @@ private static EmillaCommand instance(final Command cmd, final AssistActivity ac
     case WEATHER -> new CatCommandWeather(act);
     case VIEW -> new CommandView(act);
     case TOAST -> new CommandToast(act);
-    case APP, APP_SEND, APP_SEND_DATA, DUPLICATE -> null; // uuuhhhhhhh
+    case APP, APP_SEND, APP_SEND_DATA, APP_SEARCH, DUPLICATE -> null; // uuuhhhhhhh
     };
 }
 
@@ -313,8 +321,8 @@ public static EmillaCommand instance(final AssistActivity act, final Command cmd
     case DIAL -> new CommandDial(act);
     case SMS -> new CommandSms(act);
     case EMAIL -> new CommandEmail(act);
-    case SHARE -> new CommandShare(act);
     case LAUNCH -> new CommandLaunch(act);
+    case SHARE -> new CommandShare(act);
     case SETTINGS -> new CommandSettings(act);
     case NOTE -> new CommandNote(act);
     case TODO -> new CommandTodo(act);
@@ -331,7 +339,7 @@ public static EmillaCommand instance(final AssistActivity act, final Command cmd
     case WEATHER -> new CatCommandWeather(act);
     case VIEW -> new CommandView(act);
     case TOAST -> new CommandToast(act);
-    case DUPLICATE, APP_SEND, APP_SEND_DATA -> appMap.get(name.toString().toLowerCase());
+    case DUPLICATE, APP_SEND, APP_SEND_DATA, APP_SEARCH -> appMap.get(name.toString().toLowerCase());
     case APP -> {
         final EmillaCommand appCmd = appMap.get(fullCommand.toString().toLowerCase());
         yield appCmd == null ? instance(act, DEFAULT_CMD, fullCommand, name, appMap)

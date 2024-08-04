@@ -13,11 +13,21 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
 
     <queries>
-        <package android:name="org.polymorphicshade.tubular" />
-        <package android:name="org.schabi.newpipe" />
+        <package android:name="com.android.contacts" />
         <package android:name="net.gsantner.markor" />
+        <package android:name="org.mozilla.firefox" />
+        <package android:name="org.torproject.torbrowser" />
+        <package android:name="org.thoughtcrime.securesms" />
+        <package android:name="org.schabi.newpipe" />
+        <package android:name="org.polymorphicshade.tubular" />
+        <package android:name="com.google.android.youtube" />
         <package android:name="com.discord" />
 
+        <intent> <!-- Opening other apps -->
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
         <intent> <!-- Phone dialing -->
             <action android:name="android.intent.action.DIAL" />
         </intent>
@@ -25,17 +35,6 @@
             <action android:name="android.intent.action.SENDTO" />
 
             <data android:scheme="sms" />
-        </intent>
-        <intent> <!-- Opening other apps -->
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent>
-        <intent> <!-- Searching system settings -->
-            <action android:name="android.settings.APP_SEARCH_SETTINGS" />
-        </intent>
-        <intent> <!-- Searching the internet -->
-            <action android:name="android.intent.action.WEB_SEARCH" />
         </intent>
         <intent> <!-- Creating calendar events -->
             <action android:name="android.intent.action.INSERT" />
@@ -47,7 +46,7 @@
 
             <data android:mimeType="vnd.android.cursor.dir/contact" />
         </intent>
-        <intent> <!-- TODO remove -->
+        <intent> <!-- Searching contacts -->
             <action android:name="android.intent.action.SEARCH" />
 
             <data android:mimeType="vnd.android.cursor.dir/contact" />
@@ -57,16 +56,6 @@
         </intent>
         <intent> <!-- Setting timers -->
             <action android:name="android.intent.action.SET_TIMER" />
-        </intent>
-        <intent> <!-- Opening calculator apps -->
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.APP_CALCULATOR" />
-        </intent>
-        <intent> <!-- Opening calculator apps -->
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.APP_WEATHER" />
         </intent>
     </queries>
 

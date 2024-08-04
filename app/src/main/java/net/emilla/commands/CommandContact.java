@@ -1,11 +1,11 @@
 package net.emilla.commands;
 
-import static android.app.SearchManager.QUERY;
 import static android.content.Intent.ACTION_INSERT;
 import static android.content.Intent.ACTION_PICK;
 import static android.content.Intent.ACTION_SEARCH;
 import static android.provider.ContactsContract.Intents.Insert.NAME;
 
+import android.app.SearchManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.provider.ContactsContract.Contacts;
@@ -57,7 +57,8 @@ public void run(final String person) {
     byte action = getContactAction(person); // todo: standardize subcommand handling
     switch (action) {
     case CONTACT_VIEW -> {
-        final Intent in = Apps.newTask(ACTION_SEARCH, Contacts.CONTENT_TYPE).putExtra(QUERY, person);
+        final Intent in = Apps.newTask(ACTION_SEARCH, Contacts.CONTENT_TYPE)
+                .putExtra(SearchManager.QUERY, person);
         if (in.resolveActivity(pm) == null) {
             // TODO: handle at mapping and fall back to the below search interface if there's no
             //  resolution for the ACTION_SEARCH intent.

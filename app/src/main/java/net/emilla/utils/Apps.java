@@ -19,11 +19,14 @@ import java.util.List;
 
 public class Apps {
 public static final String
+    PKG_AOSP_CONTACTS = "com.android.contacts",
     PKG_MARKOR = "net.gsantner.markor",
     PKG_FIREFOX = "org.mozilla.firefox",
+    PKG_TOR = "org.torproject.torbrowser",
     PKG_SIGNAL = "org.thoughtcrime.securesms",
     PKG_NEWPIPE = "org.schabi.newpipe",
     PKG_TUBULAR = "org.polymorphicshade.tubular",
+    PKG_YOUTUBE = "com.google.android.youtube",
     PKG_DISCORD = "com.discord";
 
 @NonNull
@@ -70,6 +73,14 @@ public static Intent sendTask(final String pkg) {
     // Todo: attachments
     return new Intent(ACTION_SEND).setType("text/plain").setPackage(pkg)
             .addFlags(FLAG_ACTIVITY_NEW_TASK);
+}
+
+public static Intent searchTask(final String pkg) {
+    return new Intent(ACTION_SEARCH).setPackage(pkg).addFlags(FLAG_ACTIVITY_NEW_TASK);
+}
+
+public static Intent webSearchTask(final String pkg) {
+    return new Intent(ACTION_WEB_SEARCH).setPackage(pkg).addFlags(FLAG_ACTIVITY_NEW_TASK);
 }
 
 public static Intent viewTask(final String uriStr) {

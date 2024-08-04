@@ -11,7 +11,7 @@ import net.emilla.exceptions.EmlaBadCommandException;
 
 public class CatCommandWeather extends CatCommand {
 public CatCommandWeather(final AssistActivity act) {
-    super(act, R.string.command_weather, R.string.instruction_app, CATEGORY_APP_WEATHER);
+    super(act, CATEGORY_APP_WEATHER, R.string.command_weather, R.string.instruction_app);
 }
 
 @Override
