@@ -3,6 +3,9 @@ package net.emilla.commands;
 import static android.content.Intent.CATEGORY_APP_WEATHER;
 
 import android.os.Build;
+import android.view.inputmethod.EditorInfo;
+
+import androidx.annotation.DrawableRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -22,6 +25,16 @@ protected void noSuchApp() {
 @Override
 public Command cmd() {
     return Command.WEATHER;
+}
+
+@Override @DrawableRes
+public int icon() {
+    return R.drawable.ic_weather;
+}
+
+@Override
+public int imeAction() {
+    return EditorInfo.IME_ACTION_GO;
 }
 
 @Override

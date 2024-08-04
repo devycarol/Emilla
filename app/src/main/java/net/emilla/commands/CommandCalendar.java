@@ -13,6 +13,10 @@ import static java.util.regex.Pattern.compile;
 import android.content.Intent;
 import android.provider.CalendarContract.Events;
 
+import androidx.annotation.ArrayRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
+
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exceptions.EmlaAppsException;
@@ -24,7 +28,27 @@ import net.emilla.utils.Tags;
 
 import java.util.regex.Matcher;
 
-public class CommandCalendar extends CoreCommand implements DataCommand {
+public class CommandCalendar extends CoreDataCommand {
+@Override
+public Command cmd() {
+    return Command.CALENDAR;
+}
+
+@Override @ArrayRes
+public int detailsId() {
+    return R.array.details_calendar;
+}
+
+@Override @StringRes
+public int dataHint() {
+    return R.string.data_hint_calendar;
+}
+
+@Override @DrawableRes
+public int icon() {
+    return R.drawable.ic_calendar;
+}
+
 private final Intent mIntent = Apps.newTask(ACTION_INSERT, Events.CONTENT_URI, "vnd.android.cursor.dir/event");
 private String mDetails;
 
@@ -93,11 +117,6 @@ private void putDetails(final String details) {
         else mDetails = mDetails + ' ' + description;
         mIntent.putExtra(DESCRIPTION, mDetails.trim());
     } else if (!mDetails.isEmpty()) mIntent.putExtra(DESCRIPTION, mDetails.trim());
-}
-
-@Override
-public Command cmd() {
-    return Command.CALENDAR;
 }
 
 @Override

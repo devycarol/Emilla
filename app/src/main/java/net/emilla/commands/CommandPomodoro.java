@@ -7,6 +7,10 @@ import static java.util.regex.Pattern.compile;
 import android.content.Intent;
 import android.content.res.Resources;
 
+import androidx.annotation.ArrayRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
+
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exceptions.EmlaAppsException;
@@ -15,10 +19,30 @@ import net.emilla.exceptions.EmlaBadCommandException;
 import java.util.regex.Matcher;
 
 public
-class CommandPomodoro extends CoreCommand implements DataCommand {
+class CommandPomodoro extends CoreDataCommand {
 private final Intent mIntent = new Intent(ACTION_SET_TIMER)
         .putExtra(EXTRA_SKIP_UI, true)
         .putExtra(EXTRA_LENGTH, 1500 /*25m*/); // todo: make configurable
+
+@Override
+public Command cmd() {
+    return Command.POMODORO;
+}
+
+@Override @ArrayRes
+public int detailsId() {
+    return R.array.details_pomodoro;
+}
+
+@Override @StringRes
+public int dataHint() {
+    return R.string.data_hint_pomodoro;
+}
+
+@Override @DrawableRes
+public int icon() {
+    return R.drawable.ic_pomodoro;
+}
 
 public CommandPomodoro(final AssistActivity act) {
     super(act, R.string.command_pomodoro, R.string.instruction_pomodoro);
@@ -47,11 +71,6 @@ private boolean putDuration(final Resources res, /*mutable*/ String duration) th
         throw new EmlaBadCommandException(res.getString(R.string.error_bad_minutes, duration));
     }
     return isBreak;
-}
-
-@Override
-public Command cmd() {
-    return Command.POMODORO;
 }
 
 @Override

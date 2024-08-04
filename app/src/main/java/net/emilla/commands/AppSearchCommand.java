@@ -2,6 +2,7 @@ package net.emilla.commands;
 
 import android.app.SearchManager;
 import android.content.Intent;
+import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.StringRes;
 
@@ -20,6 +21,11 @@ public AppSearchCommand(final AssistActivity act, final CharSequence appLabel, f
 @Override
 public Command cmd() {
     return Command.APP_SEARCH;
+}
+
+@Override
+public int imeAction() {
+    return EditorInfo.IME_ACTION_SEARCH;
 }
 
 @Override

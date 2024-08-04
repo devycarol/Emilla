@@ -6,6 +6,10 @@ import static java.util.Locale.ROOT;
 
 import android.content.Intent;
 
+import androidx.annotation.ArrayRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
+
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exceptions.EmlaAppsException;
@@ -13,7 +17,7 @@ import net.emilla.exceptions.EmlaBadCommandException;
 import net.emilla.parsing.TimeParsing;
 import net.emilla.utils.Apps;
 
-public class CommandTimer extends CoreCommand implements DataCommand {
+public class CommandTimer extends CoreDataCommand {
 private static int seconds(final CommandTimer cmd, final String duration) {
     // todo: cleanup this logic
     final int[] timeUnits = TimeParsing.parseDuration(duration);
@@ -38,13 +42,28 @@ private final Intent mIntent = Apps.newTask(ACTION_SET_TIMER)
         .putExtra(EXTRA_SKIP_UI, true);
 private final Intent mUiIntent = Apps.newTask(ACTION_SET_TIMER);
 
-public CommandTimer(final AssistActivity act) {
-    super(act, R.string.command_timer, R.string.instruction_timer);
-}
-
 @Override
 public Command cmd() {
     return Command.TIMER;
+}
+
+@Override @ArrayRes
+public int detailsId() {
+    return R.array.details_timer;
+}
+
+@Override @StringRes
+public int dataHint() {
+    return R.string.data_hint_timer;
+}
+
+@Override @DrawableRes
+public int icon() {
+    return R.drawable.ic_timer;
+}
+
+public CommandTimer(final AssistActivity act) {
+    super(act, R.string.command_timer, R.string.instruction_timer);
 }
 
 @Override

@@ -4,6 +4,9 @@ import static android.app.SearchManager.QUERY;
 import static android.content.Intent.ACTION_WEB_SEARCH;
 
 import android.content.Intent;
+import android.view.inputmethod.EditorInfo;
+
+import androidx.annotation.DrawableRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -25,6 +28,16 @@ public CommandWeb(final AssistActivity act, final Command cmd) {
 @Override
 public Command cmd() {
     return mCmd;
+}
+
+@Override @DrawableRes
+public int icon() {
+    return R.drawable.ic_web;
+}
+
+@Override
+public int imeAction() {
+    return EditorInfo.IME_ACTION_SEARCH;
 }
 
 @Override

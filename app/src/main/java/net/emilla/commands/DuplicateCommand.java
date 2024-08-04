@@ -1,6 +1,11 @@
 package net.emilla.commands;
 
 import android.app.AlertDialog;
+import android.view.inputmethod.EditorInfo;
+
+import androidx.annotation.ArrayRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -15,6 +20,51 @@ public static DuplicateCommand instance(final AssistActivity act, final EmillaCo
     if (dupe1 && !dupe2) return new DuplicateCommand(act, (DuplicateCommand) cmd1, cmd2);
     if (!dupe1) return new DuplicateCommand(act, cmd1, (DuplicateCommand) cmd2);
     return new DuplicateCommand(act, (DuplicateCommand) cmd1, (DuplicateCommand) cmd2);
+}
+
+@Override
+public Command cmd() {
+    return Command.DUPLICATE;
+}
+
+@Override
+protected CharSequence name() {
+    return resources().getString(R.string.command_duplicate);
+}
+
+@Override
+protected CharSequence dupeLabel() {
+    return "You shouldn't see this \uD83D\uDE43";
+}
+
+@Override
+public CharSequence lcName() {
+    return resources().getString(R.string.command_duplicate).toLowerCase();
+}
+
+@Override
+public CharSequence title() {
+    return resources().getString(R.string.command_duplicate);
+}
+
+@Override @ArrayRes
+public int detailsId() {
+    return R.array.details_duplicate;
+}
+
+@Override @StringRes
+public int dataHint() {
+    return R.string.data_hint_default;
+}
+
+@Override @DrawableRes
+public int icon() {
+    return R.drawable.ic_command;
+}
+
+@Override
+public int imeAction() {
+    return EditorInfo.IME_ACTION_NEXT;
 }
 
 private final CharSequence[] mLabels;
@@ -82,31 +132,6 @@ private DuplicateCommand(final AssistActivity act, final DuplicateCommand cmd1,
 
 private void chooseCommand(final AlertDialog.Builder builder) {
     offer(builder.create());
-}
-
-@Override
-public Command cmd() {
-    return Command.DUPLICATE;
-}
-
-@Override
-protected CharSequence name() {
-    return resources().getString(R.string.command_duplicate);
-}
-
-@Override
-protected CharSequence dupeLabel() {
-    return "You shouldn't see this \uD83D\uDE43";
-}
-
-@Override
-public CharSequence lcName() {
-    return resources().getString(R.string.command_duplicate).toLowerCase();
-}
-
-@Override
-public CharSequence title() {
-    return resources().getString(R.string.command_duplicate);
 }
 
 @Override

@@ -1,5 +1,9 @@
 package net.emilla.commands;
 
+import android.view.inputmethod.EditorInfo;
+
+import androidx.annotation.DrawableRes;
+
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exceptions.EmlaBadCommandException;
@@ -12,6 +16,16 @@ public CommandFind(final AssistActivity act) {
 @Override
 public Command cmd() {
     return Command.FIND;
+}
+
+@Override @DrawableRes
+public int icon() {
+    return R.drawable.ic_find;
+}
+
+@Override
+public int imeAction() {
+    return EditorInfo.IME_ACTION_SEARCH;
 }
 
 @Override

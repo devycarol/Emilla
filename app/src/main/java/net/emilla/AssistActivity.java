@@ -13,6 +13,7 @@ import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
@@ -46,6 +47,7 @@ import net.emilla.commands.CommandTree;
 import net.emilla.commands.CommandView;
 import net.emilla.commands.DataCommand;
 import net.emilla.commands.EmillaCommand;
+import net.emilla.commands.EmillaCommand.Command;
 import net.emilla.config.ConfigActivity;
 import net.emilla.exceptions.EmillaException;
 import net.emilla.exceptions.EmlaAppsException;
@@ -64,8 +66,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AssistActivity extends EmillaActivity
-        implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class AssistActivity extends EmillaActivity implements OnSharedPreferenceChangeListener {
 public static final int // intent codes
     GET_FILE = 1,
     GET_PICTURE = 2,
@@ -89,7 +90,7 @@ private ImageButton mSubmitButton;
 private AlertDialog mCancelDialog;
 
 public ArrayList<Uri> mAttachments; // TODO: make private
-private EmillaCommand.Command mComposingCommand;
+private Command mComposingCommand;
 private EmillaCommand mCmdInst;
 private boolean mDataFieldEnabled = true;
 private int mImeAction = IME_ACTION_NEXT;
@@ -350,7 +351,7 @@ private void setTextsIfCommandChanged(/*mutable*/ String command) {
     }
 
     mCmdInst = mCommandTree.get(command.toLowerCase());
-    final EmillaCommand.Command enumCmd = mCmdInst.cmd();
+    final Command enumCmd = mCmdInst.cmd();
     final boolean noCommand = command.isEmpty();
     if (enumCmd != mComposingCommand || noCommand) {
         mComposingCommand = noCommand ? null : enumCmd;
@@ -358,30 +359,40 @@ private void setTextsIfCommandChanged(/*mutable*/ String command) {
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             final CharSequence title = noCommand ? prefs.getString("motd", res.getString(R.string.app_name_assistant))
-                    : enumCmd == EmillaCommand.Command.DEFAULT ? Lang.colonConcat(res, R.string.command_default, mCmdInst.lcName())
+                    : enumCmd == Command.DEFAULT ? Lang.colonConcat(res, R.string.command_default, mCmdInst.lcName())
                     : mCmdInst.title();
             actionBar.setTitle(title);
         }
-        final CharSequence description = EmillaCommand.details(res, enumCmd);
-        if (description == null) mHelpBox.setVisibility(TextView.GONE);
+        final int detailsId = mCmdInst.detailsId();
+        final CharSequence details = detailsId == -1 ? null : String.join("\n\n", res.getStringArray(detailsId));
+        if (details == null) mHelpBox.setVisibility(TextView.GONE);
         else {
             mHelpBox.setVisibility(TextView.VISIBLE);
-            mHelpBox.setText(description);
+            mHelpBox.setText(details);
         }
-        final CharSequence hint = noCommand ? res.getString(R.string.data_hint_default)
-                : EmillaCommand.dataHint(res, enumCmd);
-        mDataField.setHint(hint);
-        final int iconId = noCommand ? R.drawable.ic_assistant : EmillaCommand.icon(enumCmd);
+
+        if (noCommand) {
+            mDataField.setContentDescription(null);
+            mDataField.setHint(R.string.data_hint_default);
+        } else if (mCmdInst instanceof DataCommand) {
+            mDataField.setContentDescription(null);
+            mDataField.setHint(((DataCommand) mCmdInst).dataHint());
+        } else if (mDataField.getHint() != null) {
+            mDataField.setHint(null);
+            mDataField.setContentDescription(res.getString(R.string.data_hint_default));
+        }
+
+        final int iconId = noCommand ? R.drawable.ic_assistant : mCmdInst.icon();
         mSubmitButton.setImageResource(iconId); // todo: relocate
         mCommandIcon = iconId;
 
-        boolean usesData = noCommand || EmillaCommand.usesData(enumCmd);
+        boolean usesData = noCommand || mCmdInst instanceof DataCommand;
         if (usesData != mDataFieldEnabled) {
             mDataField.setEnabled(usesData);
             mDataFieldEnabled = usesData;
         }
 
-        int imeAction = noCommand ? IME_ACTION_NEXT : EmillaCommand.imeAction(enumCmd);
+        int imeAction = noCommand ? IME_ACTION_NEXT : mCmdInst.imeAction();
         if (imeAction != mImeAction) {
             mCommandField.setImeOptions(imeAction);
             mImeAction = imeAction;
@@ -613,7 +624,7 @@ private void submitCommand() {
         return;
     }
     final String instruction;
-    if (mCmdInst.cmd() == EmillaCommand.Command.DEFAULT) instruction = fullCommand;
+    if (mCmdInst.cmd() == Command.DEFAULT) instruction = fullCommand;
     else {
         final int spaceIdx = fullCommand.indexOf(' '); // TODO: this mode of space-separation won't work for all languages
         instruction = spaceIdx > 0 ? fullCommand.substring(spaceIdx).trim()

@@ -4,25 +4,44 @@ import static android.content.Intent.*;
 
 import android.content.Intent;
 
+import androidx.annotation.ArrayRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
+
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.utils.Apps;
 
-public class CommandShare extends CoreCommand implements DataCommand {
+public class CommandShare extends CoreDataCommand {
 private final Intent mIntent = Apps.newTask(ACTION_SEND, "text/plain")
         .putExtra(EXTRA_TEXT, ""); // TODO: attachments
 private final Intent mChooserIntent;
+
+@Override
+public Command cmd() {
+    return Command.SHARE;
+}
+
+@Override @ArrayRes
+public int detailsId() {
+    return R.array.details_share;
+}
+
+@Override @StringRes
+public int dataHint() {
+    return R.string.data_hint_share;
+}
+
+@Override @DrawableRes
+public int icon() {
+    return R.drawable.ic_share;
+}
 
 public CommandShare(final AssistActivity act) {
     super(act, R.string.command_share, R.string.instruction_app);
     mChooserIntent = createChooser(mIntent, resources().getString(R.string.dialog_app))
             .addFlags(FLAG_ACTIVITY_NEW_TASK);
     // This task appears to have special properties that are worth looking into...
-}
-
-@Override
-public Command cmd() {
-    return Command.SHARE;
 }
 
 @Override

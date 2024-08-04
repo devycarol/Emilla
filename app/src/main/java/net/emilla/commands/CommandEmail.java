@@ -6,6 +6,10 @@ import static java.util.regex.Pattern.compile;
 import android.content.Intent;
 import android.net.Uri;
 
+import androidx.annotation.ArrayRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
+
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exceptions.EmlaAppsException;
@@ -16,12 +20,32 @@ import net.emilla.utils.Tags;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 
-public class CommandEmail extends CoreCommand implements DataCommand {
+public class CommandEmail extends CoreDataCommand {
 private static final String FLAG_ATTACH = " */a(t(ta)?ch)?"; // TODO: lang
 
 private final Intent mIntent = Apps.newTask(ACTION_SENDTO, Uri.parse("mailto:"));
 private final Intent mSendMultipleIntent = Apps.newTask(ACTION_SEND_MULTIPLE); // todo: should this have "mailto:"?
 private final HashMap<String, String> mEmailMap;
+
+@Override
+public Command cmd() {
+    return Command.EMAIL;
+}
+
+@Override @ArrayRes
+public int detailsId() {
+    return R.array.details_email;
+}
+
+@Override @StringRes
+public int dataHint() {
+    return R.string.data_hint_email;
+}
+
+@Override @DrawableRes
+public int icon() {
+    return R.drawable.ic_email;
+}
 
 public CommandEmail(final AssistActivity act) {
     super(act, R.string.command_email, R.string.instruction_email);
@@ -71,11 +95,6 @@ private Intent putAttachmentsAndRecipients(final String recipients) {
     }
     putRecipients(mIntent, recipients);
     return mIntent;
-}
-
-@Override
-public Command cmd() {
-    return Command.EMAIL;
 }
 
 @Override

@@ -2,7 +2,9 @@ package net.emilla.commands;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.inputmethod.EditorInfo;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
@@ -64,6 +66,16 @@ public CharSequence lcName() {
 @Override
 public CharSequence title() {
     return mTitle;
+}
+
+@Override @DrawableRes
+public int icon() {
+    return R.drawable.ic_app;
+}
+
+@Override
+public int imeAction() {
+    return EditorInfo.IME_ACTION_GO;
 }
 
 @Override

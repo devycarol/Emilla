@@ -2,17 +2,36 @@ package net.emilla.commands;
 
 import android.content.res.Resources;
 
+import androidx.annotation.ArrayRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
+
 import net.emilla.AssistActivity;
 import net.emilla.R;
 
-public class CommandToast extends CoreCommand implements DataCommand {
-public CommandToast(final AssistActivity act) {
-    super(act, R.string.command_toast, R.string.instruction_text);
-}
-
+public class CommandToast extends CoreDataCommand {
 @Override
 public Command cmd() {
     return Command.TOAST;
+}
+
+@Override @ArrayRes
+public int detailsId() {
+    return R.array.details_toast;
+}
+
+@Override @StringRes
+public int dataHint() {
+    return R.string.data_hint_toast;
+}
+
+@Override @DrawableRes
+public int icon() {
+    return R.drawable.ic_toast;
+}
+
+public CommandToast(final AssistActivity act) {
+    super(act, R.string.command_toast, R.string.instruction_text);
 }
 
 @Override

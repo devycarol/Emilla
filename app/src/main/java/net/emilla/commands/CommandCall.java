@@ -6,6 +6,10 @@ import static android.net.Uri.parse;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.view.inputmethod.EditorInfo;
+
+import androidx.annotation.ArrayRes;
+import androidx.annotation.DrawableRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -22,14 +26,29 @@ public class CommandCall extends CoreCommand {
 private final Intent mIntent = Apps.newTask(ACTION_CALL);
 private final HashMap<String, String> mPhoneMap;
 
-public CommandCall(final AssistActivity act) {
-    super(act, R.string.command_call, R.string.instruction_phone);
-    mPhoneMap = act.phoneMap();
-}
-
 @Override
 public Command cmd() {
     return Command.CALL;
+}
+
+@Override @ArrayRes
+public int detailsId() {
+    return R.array.details_call_phone;
+}
+
+@Override @DrawableRes
+public int icon() {
+    return R.drawable.ic_call;
+}
+
+@Override
+public int imeAction() {
+    return EditorInfo.IME_ACTION_GO;
+}
+
+public CommandCall(final AssistActivity act) {
+    super(act, R.string.command_call, R.string.instruction_phone);
+    mPhoneMap = act.phoneMap();
 }
 
 @Override

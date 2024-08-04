@@ -7,6 +7,9 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.view.inputmethod.EditorInfo;
+
+import androidx.annotation.DrawableRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -30,6 +33,16 @@ public CommandLaunch(final AssistActivity act) {
 @Override
 public Command cmd() {
     return Command.LAUNCH;
+}
+
+@Override @DrawableRes
+public int icon() {
+    return R.drawable.ic_launch;
+}
+
+@Override
+public int imeAction() {
+    return EditorInfo.IME_ACTION_GO;
 }
 
 @Override

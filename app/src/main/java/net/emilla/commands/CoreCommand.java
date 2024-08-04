@@ -11,31 +11,31 @@ private final int
     mNameId,
     mInstructionId;
 
-    public CoreCommand(final AssistActivity act, @StringRes final int nameId,
-            @StringRes final int instructionId) {
-        super(act);
+public CoreCommand(final AssistActivity act, @StringRes final int nameId,
+        @StringRes final int instructionId) {
+    super(act);
 
-        mNameId = nameId;
-        mInstructionId = instructionId;
-    }
+    mNameId = nameId;
+    mInstructionId = instructionId;
+}
 
-    @Override
-    protected CharSequence name() {
-        return resources().getString(mNameId);
-    }
+@Override
+protected CharSequence name() {
+    return resources().getString(mNameId);
+}
 
-    @Override
-    protected CharSequence dupeLabel() {
-        return resources().getString(mNameId) + " (Emilla command)";
-    }
+@Override
+protected CharSequence dupeLabel() {
+    return resources().getString(mNameId) + " (Emilla command)";
+}
 
-    @Override
-    public CharSequence lcName() {
-        return resources().getString(mNameId).toLowerCase();
-    }
+@Override
+public CharSequence lcName() {
+    return resources().getString(mNameId).toLowerCase();
+}
 
-    @Override
-    public CharSequence title() {
+@Override
+public CharSequence title() {
         return Lang.colonConcat(resources(), mNameId, mInstructionId);
     }
 }

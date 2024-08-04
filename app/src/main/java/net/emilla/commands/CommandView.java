@@ -2,6 +2,9 @@ package net.emilla.commands;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.view.inputmethod.EditorInfo;
+
+import androidx.annotation.DrawableRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -48,6 +51,16 @@ public CommandView(final AssistActivity act) {
 @Override
 public Command cmd() {
     return Command.VIEW;
+}
+
+@Override @DrawableRes
+public int icon() {
+    return R.drawable.ic_view;
+}
+
+@Override
+public int imeAction() {
+    return EditorInfo.IME_ACTION_GO;
 }
 
 @Override

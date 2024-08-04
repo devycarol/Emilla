@@ -12,6 +12,9 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
+
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exceptions.EmlaAppsException;
@@ -25,7 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class CommandTodo extends CoreCommand implements DataCommand {
+public class CommandTodo extends CoreDataCommand {
 private final File mFile = new File(getExternalStoragePublicDirectory(DIRECTORY_DOCUMENTS), "todo.txt"); // TODO: allow configurable path and don't require all files permission
 private final Uri mUri = getUriForFile(activity(), packageName() + ".fileprovider", mFile);
 private final Intent mViewIntent = Apps.newTask(ACTION_VIEW, mUri, "text/plain")
@@ -35,6 +38,21 @@ private final Intent mViewIntent = Apps.newTask(ACTION_VIEW, mUri, "text/plain")
 
 public CommandTodo(final AssistActivity act) {
     super(act, R.string.command_todo, R.string.instruction_todo);
+}
+
+@Override
+public Command cmd() {
+    return Command.TODO;
+}
+
+@Override @StringRes
+public int dataHint() {
+    return R.string.data_hint_todo;
+}
+
+@Override @DrawableRes
+public int icon() {
+    return R.drawable.ic_todo;
 }
 
 private void todo(final String task) /* todo FRICK + filenotfound */ {
@@ -56,11 +74,6 @@ try {
 } catch (IOException e) {
     throw new EmlaBadCommandException("This is really really bad!"); // TODO LMAO
 }}
-
-@Override
-public Command cmd() {
-    return Command.TODO;
-}
 
 @Override
 public void run() {

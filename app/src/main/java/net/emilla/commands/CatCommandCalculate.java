@@ -2,6 +2,10 @@ package net.emilla.commands;
 
 import static android.content.Intent.CATEGORY_APP_CALCULATOR;
 
+import android.view.inputmethod.EditorInfo;
+
+import androidx.annotation.DrawableRes;
+
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exceptions.EmlaAppsException;
@@ -20,6 +24,16 @@ protected void noSuchApp() {
 @Override
 public Command cmd() {
     return Command.CALCULATE;
+}
+
+@Override
+public int imeAction() {
+    return EditorInfo.IME_ACTION_DONE;
+}
+
+@Override @DrawableRes
+public int icon() {
+    return R.drawable.ic_calculate;
 }
 
 @Override

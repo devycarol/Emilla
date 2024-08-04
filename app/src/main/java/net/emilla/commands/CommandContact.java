@@ -10,6 +10,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.provider.ContactsContract.Contacts;
 
+import androidx.annotation.ArrayRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
+
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exceptions.EmlaAppsException;
@@ -18,7 +22,7 @@ import net.emilla.utils.Apps;
 
 import java.util.regex.Pattern;
 
-public class CommandContact extends CoreCommand implements DataCommand {
+public class CommandContact extends CoreDataCommand {
 private static final byte
     CONTACT_VIEW = 0,
     CONTACT_CREATE = 1,
@@ -34,21 +38,36 @@ private static String stripContactAction(final String person) { // TODO: lang
     return Pattern.compile("(create|new|edit) *").matcher(person).replaceFirst("");
 }
 
-private final Intent mChooserIntent = new Intent(ACTION_PICK).setType(Contacts.CONTENT_TYPE);
-
-public CommandContact(final AssistActivity act) {
-    super(act, R.string.command_contact, R.string.instruction_contact);
-}
-
 @Override
 public Command cmd() {
     return Command.CONTACT;
+}
+
+@Override @ArrayRes
+public int detailsId() {
+    return R.array.details_contact;
+}
+
+@Override @StringRes
+public int dataHint() {
+    return R.string.data_hint_contact;
+}
+
+@Override @DrawableRes
+public int icon() {
+    return R.drawable.ic_contact;
 }
 
 @Override
 public void run() {
     if (mChooserIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No contacts app found on your device."); // todo handle at mapping
     offer(mChooserIntent, AssistActivity.PICK_VIEW_CONTACT);
+}
+
+private final Intent mChooserIntent = new Intent(ACTION_PICK).setType(Contacts.CONTENT_TYPE);
+
+public CommandContact(final AssistActivity act) {
+    super(act, R.string.command_contact, R.string.instruction_contact);
 }
 
 @Override

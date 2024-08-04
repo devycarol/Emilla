@@ -10,6 +10,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 
+import androidx.annotation.ArrayRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
+
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exceptions.EmlaAppsException;
@@ -21,18 +25,38 @@ import net.emilla.utils.Tags;
 
 import java.util.HashMap;
 
-public class CommandSms extends CoreCommand implements DataCommand {
+public class CommandSms extends CoreDataCommand {
 private final Intent mIntent = Apps.newTask(ACTION_SENDTO, Uri.parse("sms:"));
 private final HashMap<String, String> mPhoneMap;
-
-public CommandSms(final AssistActivity act) {
-    super(act, R.string.command_sms, R.string.instruction_phone);
-    mPhoneMap = act.phoneMap();
-}
 
 @Override
 public Command cmd() {
     return Command.SMS;
+}
+
+@Override
+public CharSequence lcName() { // The initialism "SMS" shouldn't be lowercased.
+    return resources().getString(R.string.command_sms);
+}
+
+@Override @ArrayRes
+public int detailsId() {
+    return R.array.details_sms;
+}
+
+@Override @StringRes
+public int dataHint() {
+    return R.string.data_hint_sms;
+}
+
+@Override @DrawableRes
+public int icon() {
+    return R.drawable.ic_sms;
+}
+
+public CommandSms(final AssistActivity act) {
+    super(act, R.string.command_sms, R.string.instruction_phone);
+    mPhoneMap = act.phoneMap();
 }
 
 private Intent putText(/*mutable*/ String message) {
@@ -54,11 +78,6 @@ private Intent putText(/*mutable*/ String message) {
     }
     // will overwrite any existing draft to the recipient - TODO: detect, warn, confirm.
     return mIntent.putExtra("sms_body", message);
-}
-
-@Override
-public CharSequence lcName() { // The initialism "SMS" shouldn't be lowercased.
-    return resources().getString(R.string.command_sms);
 }
 
 @Override

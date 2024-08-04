@@ -3,6 +3,9 @@ package net.emilla.commands;
 import android.icu.text.DateFormat;
 import android.icu.util.Calendar;
 import android.os.Build;
+import android.view.inputmethod.EditorInfo;
+
+import androidx.annotation.DrawableRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -18,6 +21,16 @@ public CommandClock(final AssistActivity act) {
 @Override
 public Command cmd() {
     return Command.CLOCK;
+}
+
+@Override @DrawableRes
+public int icon() {
+    return R.drawable.ic_clock;
+}
+
+@Override
+public int imeAction() {
+    return EditorInfo.IME_ACTION_DONE;
 }
 
 @Override

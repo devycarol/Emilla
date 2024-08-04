@@ -5,6 +5,10 @@ import static android.provider.AlarmClock.*;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 
+import androidx.annotation.ArrayRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
+
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exceptions.EmlaAppsException;
@@ -14,10 +18,30 @@ import net.emilla.utils.Dialogs;
 
 import java.util.ArrayList;
 
-public class CommandAlarm extends CoreCommand implements DataCommand {
+public class CommandAlarm extends CoreDataCommand {
 private final Intent mViewIntent = Apps.newTask(ACTION_SHOW_ALARMS);
 private final Intent mSetIntent = Apps.newTask(ACTION_SET_ALARM);
 private final TimePickerDialog mTimePicker;
+
+@Override
+public Command cmd() {
+    return Command.ALARM;
+}
+
+@Override @ArrayRes
+public int detailsId() {
+    return R.array.details_alarm;
+}
+
+@Override @StringRes
+public int dataHint() {
+    return R.string.data_hint_alarm;
+}
+
+@Override @DrawableRes
+public int icon() {
+    return R.drawable.ic_alarm;
+}
 
 public CommandAlarm(final AssistActivity act) {
     super(act, R.string.command_alarm, R.string.instruction_alarm);
@@ -54,11 +78,6 @@ private void putLabel(final String label) {
 private void execute(final Intent intent) {
     if (intent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No alarm clock app found on your device."); // TODO: handle at mapping - both intents will probably need to be checked
     succeed(intent);
-}
-
-@Override
-public Command cmd() {
-    return Command.ALARM;
 }
 
 @Override
