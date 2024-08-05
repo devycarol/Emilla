@@ -48,6 +48,7 @@ import net.emilla.commands.CommandView;
 import net.emilla.commands.CommandWrapDefault;
 import net.emilla.commands.DataCommand;
 import net.emilla.commands.EmillaCommand;
+import net.emilla.commands.EmillaCommand.Commands;
 import net.emilla.config.ConfigActivity;
 import net.emilla.exceptions.EmillaException;
 import net.emilla.exceptions.EmlaAppsException;
@@ -90,7 +91,8 @@ private AlertDialog mCancelDialog;
 
 public ArrayList<Uri> mAttachments; // TODO: make private
 private EmillaCommand mCommand;
-private boolean mDataFieldEnabled = true;
+private boolean mNoCommand = true;
+private boolean mUsingData = true;
 private int mImeAction = IME_ACTION_NEXT;
 private boolean mLaunched = false;
 private boolean mFocused = false;
@@ -100,6 +102,16 @@ private boolean mDialogOpen = false;
 private boolean mTouchingSubmit = false;
 private boolean mLongPressingSubmit = false;
 private int mCommandIcon = R.drawable.ic_assistant;
+
+//public static long nanosPlease(final long prevTime, final String label) {
+//    final long curTime = System.nanoTime();
+//    final String s = String.valueOf(curTime - prevTime);
+//    final StringBuilder sb = new StringBuilder(label).append(": ");
+//    final int start = sb.length();
+//    for (int i = sb.append(s).length() - 3; i > start; i -= 3) sb.insert(i, ',');
+//    Log.d("nanosPlease", sb.append(" nanoseconds").toString());
+//    return System.nanoTime();
+//}
 
 @Override
 protected void onCreate(final Bundle savedInstanceState) {
@@ -138,7 +150,7 @@ protected void onCreate(final Bundle savedInstanceState) {
     mAppList = Apps.resolveList(pm);
     mPhoneMap = Contacts.mapPhones(prefs);
     mEmailMap = Contacts.mapEmails(prefs);
-    mCommandTree = EmillaCommand.tree(this, prefs, res, pm, mAppList);
+    mCommandTree = EmillaCommand.tree(prefs, res, pm, mAppList);
 
     mEmptySpace = findViewById(R.id.empty_space);
     mHelpBox = findViewById(R.id.help_text_box);
@@ -173,7 +185,7 @@ private void setupCommandField() {
 
     mCommandField.setOnEditorActionListener((v, actionId, event) -> switch (actionId) {
     case IME_ACTION_NEXT:
-        if (mDataFieldEnabled) yield false;
+        if (mUsingData) yield false;
         // fall
     case IME_ACTION_GO, IME_ACTION_SEARCH, IME_ACTION_SEND, IME_ACTION_DONE:
         submitCommand();
@@ -182,7 +194,7 @@ private void setupCommandField() {
         yield false;
     });
 
-    mCommand = mCommandTree.get("");
+    mCommand = mCommandTree.newCore(this, Commands.DEFAULT);
 
     mCommandField.setHorizontallyScrolling(false);
     mCommandField.setMaxLines(8);
@@ -348,10 +360,11 @@ private void setTextsIfCommandChanged(/*mutable*/ String command) {
         command = command.substring(nonSpace, len);
     }
 
-    final EmillaCommand cmd = mCommandTree.get(command.toLowerCase());
+    final EmillaCommand cmd = mCommandTree.get(this, command.toLowerCase());
     final boolean noCommand = command.isEmpty();
-    if (cmd != mCommand || noCommand) {
+    if (cmd != mCommand || noCommand != mNoCommand) {
         mCommand = cmd;
+        mNoCommand = noCommand;
         final Resources res = getResources();
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -370,7 +383,7 @@ private void setTextsIfCommandChanged(/*mutable*/ String command) {
         if (noCommand) {
             mDataField.setContentDescription(null);
             mDataField.setHint(R.string.data_hint_default);
-        } else if (mCommand instanceof DataCommand) {
+        } else if (mCommand.usesData()) {
             mDataField.setContentDescription(null);
             mDataField.setHint(((DataCommand) mCommand).dataHint());
         } else if (mDataField.getHint() != null) {
@@ -382,11 +395,7 @@ private void setTextsIfCommandChanged(/*mutable*/ String command) {
         mSubmitButton.setImageResource(iconId); // todo: relocate
         mCommandIcon = iconId;
 
-        boolean usesData = noCommand || mCommand instanceof DataCommand;
-        if (usesData != mDataFieldEnabled) {
-            mDataField.setEnabled(usesData);
-            mDataFieldEnabled = usesData;
-        }
+        mDataField.setEnabled(mUsingData = noCommand || mCommand.usesData());
 
         int imeAction = noCommand ? IME_ACTION_NEXT : mCommand.imeAction();
         if (imeAction != mImeAction) {
@@ -539,7 +548,7 @@ public void onCloseDialog(final boolean chime) {
     mEmptySpace.setEnabled(true);
     mSubmitButton.setEnabled(true);
     mCommandField.setEnabled(true);
-    mDataField.setEnabled(mDataFieldEnabled);
+    mDataField.setEnabled(mUsingData);
     mDialogOpen = false;
 
     resume(chime);
@@ -620,12 +629,14 @@ private void submitCommand() {
     final String instruction;
     if (mCommand instanceof CommandWrapDefault) instruction = fullCommand;
     else {
-        final int spaceIdx = fullCommand.indexOf(' '); // TODO: this mode of space-separation won't work for all languages
+        final int spaceIdx = fullCommand.indexOf(' ');
+        // TODO: this mode of space-separation won't work for all languages, and is broken for
+        //  multi-word app labels
         instruction = spaceIdx > 0 ? fullCommand.substring(spaceIdx).trim()
                 : null;
     }
 try {
-    if (mDataFieldEnabled && mDataField.length() > 0) {
+    if (mUsingData && mDataField.length() > 0) {
         if (instruction == null) ((DataCommand) mCommand).runWithData(data);
         else ((DataCommand) mCommand).runWithData(instruction, data);
     } else if (instruction == null) mCommand.run();

@@ -10,6 +10,7 @@ import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.utils.Apps;
 import net.emilla.utils.Lang;
 
 public class AppCommand extends EmillaCommand {
@@ -25,37 +26,34 @@ protected static String specificTitle(final Context ctxt, final CharSequence app
 }
 
 protected final Intent mLaunchIntent;
-protected final CharSequence mLabel;
 private final CharSequence mTitle;
-private final String mPackage; // TODO: replace with icons
+protected final AppCmdInfo mInfo; // TODO: replace with icons
 
-protected AppCommand(final AssistActivity act, final CharSequence appLabel,
-        final CharSequence cmdTitle, final Intent launch) {
+protected AppCommand(final AssistActivity act, final AppCmdInfo info, final CharSequence cmdTitle) {
     super(act);
 
-    mLaunchIntent = launch;
-    mLabel = appLabel;
+    mLaunchIntent = Apps.launchIntent(info.pkg, info.cls);
     mTitle = cmdTitle;
-    mPackage = launch.getPackage();
+    mInfo = info;
 }
 
-public AppCommand(final AssistActivity act, final CharSequence appLabel, final Intent launch) {
-    this(act, appLabel, genericTitle(act, appLabel), launch);
+public AppCommand(final AssistActivity act, final AppCmdInfo info) {
+    this(act, info, genericTitle(act, info.label));
 }
 
 @Override
 protected CharSequence name() {
-    return mLabel;
+    return mInfo.label;
 }
 
 @Override
 protected CharSequence dupeLabel() {
-    return mLabel + " (" + mPackage + ")";
+    return mInfo.label + " (" + mInfo.pkg + ")";
 }
 
 @Override
 public CharSequence lcName() {
-    return mLabel; // Apps are proper names and shouldn't be lowercased
+    return mInfo.label; // Apps are proper names and shouldn't be lowercased
 }
 
 @Override

@@ -1,6 +1,7 @@
 package net.emilla.commands;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
@@ -12,16 +13,6 @@ import net.emilla.R;
 import net.emilla.utils.Dialogs;
 
 public class DuplicateCommand extends EmillaCommand implements DataCommand {
-public static DuplicateCommand instance(final AssistActivity act, final EmillaCommand cmd1,
-        final EmillaCommand cmd2) {
-    final boolean dupe1 = cmd1 instanceof DuplicateCommand;
-    final boolean dupe2 = cmd2 instanceof DuplicateCommand;
-    if (!(dupe1 || dupe2)) return new DuplicateCommand(act, cmd1, cmd2);
-    if (dupe1 && !dupe2) return new DuplicateCommand(act, (DuplicateCommand) cmd1, cmd2);
-    if (!dupe1) return new DuplicateCommand(act, cmd1, (DuplicateCommand) cmd2);
-    return new DuplicateCommand(act, (DuplicateCommand) cmd1, (DuplicateCommand) cmd2);
-}
-
 @Override
 protected CharSequence name() {
     return resources().getString(R.string.command_duplicate);
@@ -52,6 +43,11 @@ public int dataHint() {
     return R.string.data_hint_default;
 }
 
+@Override
+public boolean usesData() {
+    return mUsesData;
+}
+
 @Override @DrawableRes
 public int icon() {
     return R.drawable.ic_command;
@@ -65,100 +61,54 @@ public int imeAction() {
 private final CharSequence[] mLabels;
 private final EmillaCommand[] mCommands;
 private final AlertDialog.Builder mBuilder;
+private final boolean mUsesData;
 
-private DuplicateCommand(final AssistActivity act, final int cmdCount) {
+public DuplicateCommand(final AssistActivity act, final EmillaCommand[] cmds) {
     super(act);
 
-    mCommands = new EmillaCommand[cmdCount];
-    mLabels = new CharSequence[cmdCount];
+    mCommands = cmds;
+    mLabels = new CharSequence[cmds.length];
+    boolean usesData = false;
+    int i = -1;
+    for (final EmillaCommand cmd : cmds) {
+        if (!usesData && cmd.usesData()) usesData = true;
+        mLabels[++i] = cmd.dupeLabel();
+        // Todo: whittle down when data is entered and some of the commands don't use data
+    }
+    mUsesData = usesData;
     mBuilder = Dialogs.base(act, R.string.dialog_command);
 }
 
-private DuplicateCommand(final AssistActivity act, final EmillaCommand cmd1,
-        final EmillaCommand cmd2) {
-    this(act, 2);
-
-    mCommands[0] = cmd1;
-    mLabels[0] = cmd1.dupeLabel();
-    mCommands[1] = cmd2;
-    mLabels[1] = cmd2.dupeLabel();
-}
-
-private DuplicateCommand(final AssistActivity act, final DuplicateCommand cmd1,
-        final EmillaCommand cmd2) {
-    this(act, cmd1.mCommands.length + 1);
-
-    int idx = -1;
-    for (final EmillaCommand dup : cmd1.mCommands) {
-        mCommands[++idx] = dup;
-        mLabels[idx] = dup.dupeLabel();
-    }
-    mCommands[++idx] = cmd2;
-    mLabels[idx] = cmd2.dupeLabel();
-}
-
-private DuplicateCommand(final AssistActivity act, final EmillaCommand cmd1,
-        final DuplicateCommand cmd2) {
-    this(act, 1 + cmd2.mCommands.length);
-
-    mCommands[0] = cmd1;
-    mLabels[0] = cmd1.dupeLabel();
-    int idx = 0;
-    for (final EmillaCommand dup : cmd2.mCommands) {
-        mCommands[++idx] = dup;
-        mLabels[idx] = dup.dupeLabel();
-    }
-}
-
-private DuplicateCommand(final AssistActivity act, final DuplicateCommand cmd1,
-        final DuplicateCommand cmd2) {
-    this(act, cmd1.mCommands.length + cmd2.mCommands.length);
-
-    int idx = -1;
-    for (final EmillaCommand dup : cmd1.mCommands) {
-        mCommands[++idx] = dup;
-        mLabels[idx] = dup.dupeLabel();
-    }
-    for (final EmillaCommand dup : cmd2.mCommands) {
-        mCommands[++idx] = dup;
-        mLabels[idx] = dup.dupeLabel();
-    }
-}
-
-private void chooseCommand(final AlertDialog.Builder builder) {
-    offer(builder.create());
+private void chooseCommand(final DialogInterface.OnClickListener listener) {
+    offer(mBuilder.setItems(mLabels, listener).create());
 }
 
 @Override
 public void run() {
     // TODO: don't do base app commands past their initial name
-    mBuilder.setItems(mLabels, (dialog, which) -> mCommands[which].run());
-    chooseCommand(mBuilder);
+    chooseCommand((dialog, which) -> mCommands[which].run());
 }
 
 @Override
 public void run(final String instruction) {
-    mBuilder.setItems(mLabels, (dialog, which) -> mCommands[which].run(instruction));
-    chooseCommand(mBuilder);
+    chooseCommand((dialog, which) -> mCommands[which].run(instruction));
 }
 
 @Override
 public void runWithData(final String data) {
-    mBuilder.setItems(mLabels, (dialog, which) -> {
+    chooseCommand((dialog, which) -> {
         final EmillaCommand cmd = mCommands[which];
-        if (cmd instanceof DataCommand) ((DataCommand) cmd).runWithData(data);
+        if (cmd.usesData()) ((DataCommand) cmd).runWithData(data);
         else cmd.run(data); // TODO: handle this more gracefully
     });
-    chooseCommand(mBuilder);
 }
 
 @Override
 public void runWithData(final String instruction, final String data) {
-    mBuilder.setItems(mLabels, (dialog, which) -> {
+    chooseCommand((dialog, which) -> {
         final EmillaCommand cmd = mCommands[which];
-        if (cmd instanceof DataCommand) ((DataCommand) cmd).runWithData(instruction, data);
+        if (cmd.usesData()) ((DataCommand) cmd).runWithData(instruction, data);
         else cmd.run(instruction + '\n' + data); // TODO: handle this more gracefully
     });
-    chooseCommand(mBuilder);
 }
 }

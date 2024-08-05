@@ -1,5 +1,6 @@
 package net.emilla.commands;
 
+import static net.emilla.commands.EmillaCommand.Commands.CORE_COUNT;
 import static net.emilla.commands.EmillaCommand.Commands.WEB;
 
 import android.app.AlertDialog;
@@ -12,40 +13,42 @@ import android.content.res.Resources;
 
 import androidx.annotation.ArrayRes;
 import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.settings.Aliases;
-import net.emilla.utils.Apps;
 
 import java.util.List;
 import java.util.Set;
 
 public abstract class EmillaCommand {
-public enum Commands {
-    CALL,
-    DIAL,
-    SMS,
-    EMAIL,
-    LAUNCH,
-    SHARE,
-    SETTINGS,
-//    NOTE,
-//    TODO,
-    WEB,
-//    FIND,
-    CLOCK,
-    ALARM,
-    TIMER,
-    POMODORO,
-    CALENDAR,
-    CONTACT,
-//    NOTIFY,
-    CALCULATE,
-    WEATHER,
-    VIEW,
-    TOAST
+public static class Commands {
+    public static final short
+        DEFAULT = 0,
+        CALL = 1,
+        DIAL = 2,
+        SMS = 3,
+        EMAIL = 4,
+        LAUNCH = 5,
+        SHARE = 6,
+        SETTINGS = 7,
+//        NOTE = ,
+//        TODO = ,
+        WEB = 8,
+//        FIND = ,
+        CLOCK = 9,
+        ALARM = 10,
+        TIMER = 11,
+        POMODORO = 12,
+        CALENDAR = 13,
+        CONTACT = 14,
+//        NOTIFY = ,
+        CALCULATE = 15,
+        WEATHER = 16,
+        VIEW = 17,
+        TOAST = 18,
+        DUPLICATE = 19,
+        CORE_COUNT = 19;
 }
 
 private static final int[] NAMES = {
@@ -73,99 +76,37 @@ private static final int[] NAMES = {
     R.string.command_toast
 };
 
-private static final Commands DFLT_CMD = WEB; // Todo: make configurable
+static final short DFLT_CMD = WEB; // Todo: make configurable
 
-private static AppCommand aliasMapped(final AssistActivity act, final CommandTree cmdTree,
-        final Resources res, final String pkg, final int setId, final AppCommand appCmd) {
-    final Set<String> aliases = act.prefs.getStringSet("aliases_" + pkg,
-            Set.of(res.getStringArray(setId)));
-    for (final String alias : aliases) cmdTree.putSingle(alias, appCmd, act);
-    return appCmd;
-}
-
-@NonNull
-private static AppCommand getAppCmd(final AssistActivity act, final PackageManager pm,
-        final Resources res, final String pkg, final CommandTree cmdTree, final CharSequence label,
-        final Intent launch) {
-    final Intent send = Apps.sendTask(pkg);
-    return switch (pkg) {
-    case Apps.PKG_AOSP_CONTACTS -> aliasMapped(act, cmdTree, res, pkg, R.array.aliases_aosp_contacts,
-            new AppSearchCommand(act, label, launch, Apps.searchTask(pkg), R.string.instruction_contact));
-    case Apps.PKG_MARKOR -> aliasMapped(act, cmdTree, res, pkg, R.array.aliases_markor,
-            new AppSendDataCommand(act, label, launch, send, R.string.instruction_text));
-    case Apps.PKG_FIREFOX -> aliasMapped(act, cmdTree, res, pkg, R.array.aliases_firefox,
-            new AppSearchCommand(act, label, launch, Apps.webSearchTask(pkg), R.string.instruction_web));
-    case Apps.PKG_TOR -> aliasMapped(act, cmdTree, res, pkg, R.array.aliases_tor,
-            new AppCommand(act, label, launch)); // Search/send intents are broken
-    case Apps.PKG_SIGNAL -> aliasMapped(act, cmdTree, res, pkg, R.array.aliases_signal,
-            new AppSendDataCommand(act, label, launch, send, R.string.instruction_message));
-    case Apps.PKG_NEWPIPE -> aliasMapped(act, cmdTree, res, pkg, R.array.aliases_newpipe,
-            new AppSendCommand(act, label, launch, send, R.string.instruction_video));
-    case Apps.PKG_TUBULAR -> aliasMapped(act, cmdTree, res, pkg, R.array.aliases_tubular,
-            new AppSendCommand(act, label, launch, send, R.string.instruction_video));
-    case Apps.PKG_YOUTUBE -> aliasMapped(act, cmdTree, res, pkg, R.array.aliases_youtube,
-            new AppSearchCommand(act, label, launch, Apps.searchTask(pkg), R.string.instruction_video));
-    case Apps.PKG_DISCORD -> aliasMapped(act, cmdTree, res, pkg, R.array.aliases_discord,
-            new AppSendCommand(act, label, launch, send, R.string.instruction_message));
-    default -> send.resolveActivity(pm) == null ? new AppCommand(act, label, launch)
-            : new AppSendCommand(act, label, launch, send);
-    // Todo: generic AppSearchCommand in a way that handles conflicts with AppSendCommand
-    };
-}
-
-public static CommandTree tree(final AssistActivity act, final SharedPreferences prefs,
-        final Resources res, final PackageManager pm, final List<ResolveInfo> appList) {
+public static CommandTree tree(final SharedPreferences prefs, final Resources res,
+        final PackageManager pm, final List<ResolveInfo> appList) {
     // todo: configurable aliasing
     // todo: edge case where a mapped app is uninstalled during the activity lifecycle
-    final CommandTree cmdTree = new CommandTree();
-    int i = -1;
-    for (final Commands enumCmd : Commands.values()) {
-        final String lcName = res.getString(NAMES[++i]).toLowerCase();
+    final CommandTree cmdTree = new CommandTree(appList.size());
+    short i = 0;
+    while (i < CORE_COUNT - 1) {
+        final String lcName = res.getString(NAMES[i]).toLowerCase();
         final Set<String> aliases = Aliases.set(prefs, res, i);
-        final EmillaCommand cmd = instance(enumCmd, act);
-        // Todo: return to the enumeration approach
-        cmdTree.putSingle(lcName, cmd, act);
-        for (final String alias : aliases) cmdTree.put(alias, cmd, act);
+        cmdTree.putSingle(lcName, ++i);
+        for (final String alias : aliases) cmdTree.put(alias, i);
         // Todo: have separate set for multi-word aliases and use putSingle for the rest
     }
+    i = 0;
     for (final ResolveInfo ri : appList) {
-        final ActivityInfo info = ri.activityInfo;
-        final CharSequence label = info.loadLabel(pm);
-        final String pkg = info.packageName;
-        final Intent launch = Apps.launchIntent(pkg, info.name);
-        final AppCommand appCmd = getAppCmd(act, pm, res, pkg, cmdTree, label, launch);
-        final String lcLabel = label.toString().toLowerCase();
-        cmdTree.put(lcLabel, appCmd, act);
+        final ActivityInfo actInfo = ri.activityInfo;
+        final CharSequence label = actInfo.loadLabel(pm);
+        // TODO: there's the biggest performance bottleneck I've found thus far. Look into how the
+        //  launcher caches labels for ideas on how to improve the performance of this critical
+        //  onCreate task. That is, if they do to begin with (I can only assume..)
+        final AppCmdInfo cmdInfo = new AppCmdInfo(actInfo, pm, label);
+        cmdTree.putApp(label, --i, cmdInfo, ~i);
+        final Set<String> aliases = Aliases.appSet(prefs, res, cmdInfo.pkg, cmdInfo.cls);
+        if (aliases == null) continue;
+        for (final String alias : aliases) cmdTree.put(alias, i);
+        // No need to pass app info again for aliases
+        // Todo: have separate set for multi-word aliases and use putSingle for the rest
     }
-    cmdTree.putDefault(new CommandWrapDefault(act, (CoreCommand) instance(DFLT_CMD, act)));
     return cmdTree;
-}
-
-private static EmillaCommand instance(final Commands cmd, final AssistActivity act) {
-    return switch (cmd) {
-    case CALL -> new CommandCall(act);
-    case DIAL -> new CommandDial(act);
-    case SMS -> new CommandSms(act);
-    case EMAIL -> new CommandEmail(act);
-    case LAUNCH -> new CommandLaunch(act);
-    case SHARE -> new CommandShare(act);
-    case SETTINGS -> new CommandSettings(act);
-//    case NOTE -> new CommandNote(act);
-//    case TODO -> new CommandTodo(act);
-    case WEB -> new CommandWeb(act);
-//    case FIND -> new CommandFind(act);
-    case CLOCK -> new CommandClock(act);
-    case ALARM -> new CommandAlarm(act);
-    case TIMER -> new CommandTimer(act);
-    case POMODORO -> new CommandPomodoro(act);
-    case CALENDAR -> new CommandCalendar(act);
-    case CONTACT -> new CommandContact(act);
-//    case NOTIFY -> new CommandNotify(act);
-    case CALCULATE -> new CatCommandCalculate(act);
-    case WEATHER -> new CatCommandWeather(act);
-    case VIEW -> new CommandView(act);
-    case TOAST -> new CommandToast(act);
-    };
 }
 
 private final AssistActivity mActivity;
@@ -273,6 +214,10 @@ protected void offer(final Intent intent, final int requestCode) {
 @ArrayRes
 public int detailsId() {
     return -1;
+}
+
+public boolean usesData() {
+    return false;
 }
 
 protected abstract CharSequence name();

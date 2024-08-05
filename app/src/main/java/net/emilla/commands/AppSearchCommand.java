@@ -8,14 +8,15 @@ import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.utils.Apps;
 
 public class AppSearchCommand extends AppCommand {
 private final Intent mSearchIntent;
 
-public AppSearchCommand(final AssistActivity act, final CharSequence appLabel, final Intent launch,
-        final Intent search, @StringRes final int instructionId) {
-    super(act, appLabel, specificTitle(act, appLabel, instructionId), launch);
-    mSearchIntent = search;
+public AppSearchCommand(final AssistActivity act, final AppCmdInfo info,
+        @StringRes final int instructionId) {
+    super(act, info, specificTitle(act, info.label, instructionId));
+    mSearchIntent = Apps.searchTask(info.pkg);
 }
 
 @Override

@@ -1,6 +1,5 @@
 package net.emilla.commands;
 
-import android.content.Intent;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
@@ -15,6 +14,11 @@ public int detailsId() {
     return R.array.details_app_send_data;
 }
 
+@Override
+public boolean usesData() {
+    return true;
+}
+
 @Override @StringRes
 public int dataHint() {
     return R.string.data_hint_app_send_data;
@@ -25,9 +29,9 @@ public int imeAction() {
     return EditorInfo.IME_ACTION_NEXT;
 }
 
-public AppSendDataCommand(final AssistActivity act, final CharSequence label, final Intent launch,
-        final Intent send, @StringRes final int instructionId) {
-    super(act, label, launch, send, instructionId);
+public AppSendDataCommand(final AssistActivity act, final AppCmdInfo info,
+        @StringRes final int instructionId) {
+    super(act, info, instructionId);
 }
 
 @Override

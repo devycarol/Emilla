@@ -3,7 +3,12 @@ package net.emilla.settings;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 
+import androidx.annotation.ArrayRes;
+import androidx.annotation.Nullable;
+
 import net.emilla.R;
+import net.emilla.commands.AppCmdInfo;
+import net.emilla.utils.Apps;
 
 import java.util.Set;
 
@@ -60,5 +65,29 @@ public static final String[] PREFS = {
 
 public static Set<String> set(final SharedPreferences prefs, final Resources res, final int idx) {
     return prefs.getStringSet(PREFS[idx], Set.of(res.getStringArray(SETS[idx])));
+}
+
+@ArrayRes
+private static int appSetId(final String pkg, final String cls) {
+    return switch (pkg) {
+    case Apps.PKG_AOSP_CONTACTS -> R.array.aliases_aosp_contacts;
+    case Apps.PKG_MARKOR -> cls.equals(AppCmdInfo.CLS_MARKOR_MAIN) ? R.array.aliases_markor : -1;
+    // Markor can have multiple launchers. Only the main one should have the aliases.
+    case Apps.PKG_FIREFOX -> R.array.aliases_firefox;
+    case Apps.PKG_TOR -> R.array.aliases_tor;
+    case Apps.PKG_SIGNAL -> R.array.aliases_signal;
+    case Apps.PKG_NEWPIPE -> R.array.aliases_newpipe;
+    case Apps.PKG_TUBULAR -> R.array.aliases_tubular;
+    case Apps.PKG_YOUTUBE -> R.array.aliases_youtube;
+    case Apps.PKG_DISCORD -> R.array.aliases_discord;
+    default -> -1;
+    };
+}
+
+@Nullable
+public static Set<String> appSet(final SharedPreferences prefs, final Resources res,
+        final String pkg, final String cls) {
+    @ArrayRes final int setId = appSetId(pkg, cls);
+    return setId == -1 ? null : prefs.getStringSet("aliases_" + pkg, Set.of(res.getStringArray(setId)));
 }
 }

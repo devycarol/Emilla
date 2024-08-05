@@ -12,6 +12,7 @@ import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.utils.Apps;
 import net.emilla.utils.Lang;
 
 public class AppSendCommand extends AppCommand {
@@ -34,20 +35,18 @@ public int imeAction() {
 
 private final Intent mSendIntent;
 
-private AppSendCommand(final AssistActivity act, final CharSequence appLabel,
-        final CharSequence cmdTitle, final Intent launch, final Intent send) {
-    super(act, appLabel, cmdTitle, launch);
-    mSendIntent = send;
+private AppSendCommand(final AssistActivity act, final AppCmdInfo info, final CharSequence cmdTitle) {
+    super(act, info, cmdTitle);
+    mSendIntent = Apps.sendTask(info.pkg);
 }
 
-public AppSendCommand(final AssistActivity act, final CharSequence appLabel, final Intent launch,
-        final Intent send) {
-    this(act, appLabel, genericTitle(act, appLabel), launch, send);
+public AppSendCommand(final AssistActivity act, final AppCmdInfo info) {
+    this(act, info, genericTitle(act, info.label));
 }
 
-public AppSendCommand(final AssistActivity act, final CharSequence appLabel, final Intent launch,
-        final Intent send, @StringRes final int instructionId) {
-    this(act, appLabel, specificTitle(act, appLabel, instructionId), launch, send);
+public AppSendCommand(final AssistActivity act, final AppCmdInfo info,
+        @StringRes final int instructionId) {
+    this(act, info, specificTitle(act, info.label, instructionId));
 }
 
 @Override

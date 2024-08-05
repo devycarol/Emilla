@@ -1,5 +1,7 @@
 package net.emilla.commands;
 
+import static net.emilla.commands.EmillaCommand.Commands.*;
+import static net.emilla.commands.EmillaCommand.DFLT_CMD;
 import static java.lang.Character.charCount;
 import static java.lang.Character.toChars;
 import static java.lang.Math.max;
@@ -7,7 +9,12 @@ import static java.lang.Math.min;
 import static java.util.Arrays.copyOfRange;
 import static java.util.regex.Pattern.compile;
 
+import androidx.annotation.NonNull;
+
 import net.emilla.AssistActivity;
+import net.emilla.R;
+import net.emilla.commands.EmillaCommand.Commands;
+import net.emilla.utils.Apps;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -15,35 +22,32 @@ import java.util.regex.Matcher;
 
 /**
  * ideally (later probably), we'd preserve the state of traversal and do more limited computation
- * based on the indices at which text was edited (the contents should be considered immutable).
+ * based on the indices at which text was edited (the tree contents should be considered immutable).
  * todo: upward & stateful traversals ^ some sort of mechanism for detecting token depth of the
  *  beginning char span
  */
 public class CommandTree {
 private static class CmdNode {
     private HashMap<String, CmdNode> map;
-    private EmillaCommand cmd;
-    // Todo: I'd prefer this to be an enumeration rather than an object. Instantiating command
-    //  objects en masse takes time, which is precious when mapping at every app start. This'd
-    //  require using something like a short-int to map to commands in the original 'Enum' style,
-    //  with something like negative values being used for custom/app commands.
+    private short cmd = DEFAULT;
+    private short[] dupes;
     // Should also research database maintenence, and how to do so in a way that respects device
     //  storage and doesn't break in all number of risk cases (config change, device transfer, app
     //  uninstalls, etc.) If mapping can be sufficiently optimized, this won't even be necessary.
     //  But definitely look into how launcher apps keep track of all the installed apps without
     //  having to PM-query alllll that information on each boot (assuming that's not what it does..)
-    // Could store an array of app command infos and retrieve from the bit-NOT of a negative num.
 }
 
 private final CmdNode root = new CmdNode();
 private int depth = 0;
+private final EmillaCommand[] mCoreCmds = new EmillaCommand[Commands.CORE_COUNT];
+private final AppCmdInfo[] mAppCmdInfos;
+private final AppCommand[] mAppCmds;
 
-public CommandTree() {
+public CommandTree(final int appCount) {
     root.map = new HashMap<>();
-}
-
-public void putDefault(final EmillaCommand dfltCmd) {
-    root.cmd = dfltCmd;
+    mAppCmdInfos = new AppCmdInfo[appCount];
+    mAppCmds = new AppCommand[appCount];
 }
 
 /**
@@ -79,14 +83,24 @@ private String[] characterTokens(final String command) { // TODO LANG: use the m
     return tokens;
 }
 
+private static void putDuplicate(final CmdNode node, final short id) {
+    // Todo: handle case where command "A: B foo bar" conflicts with "A B: foo bar"
+    if (node.cmd == DUPLICATE) {
+        final short[] dupes = new short[node.dupes.length + 1];
+        System.arraycopy(node.dupes, 0, dupes, 0, node.dupes.length);
+        dupes[node.dupes.length] = id;
+        node.dupes = dupes;
+    } else {
+        node.dupes = new short[]{node.cmd, id};
+        node.cmd = DUPLICATE;
+    }
+}
+
 /**
  * Inserts a command into the tree, which will load once all the given tokens have been typed into
  * the command field.
- *
- * @param act {@link AssistActivity} instance for instantiating duplicate commands Todo: remove?
  */
-public void put(final String command, final EmillaCommand cmd, final AssistActivity act) {
-    // TODO: why does this map the first word of multi-word apps to their command??
+public void put(final String command, final short id) {
     CmdNode cur = root;
     int dep = 0;
     for (final String token : latinTokens(command, true)) {
@@ -99,9 +113,39 @@ public void put(final String command, final EmillaCommand cmd, final AssistActiv
         } else cur = get;
         ++dep;
     }
-    if (cur.cmd == null) cur.cmd = cmd;
-    else cur.cmd = DuplicateCommand.instance(act, cur.cmd, cmd);
+    if (cur.cmd == DEFAULT) cur.cmd = id;
+    else putDuplicate(cur, id);
     depth = max(depth, dep);
+}
+
+/**
+ * Inserts an app command into the tree, which will load when the app's launcher label is typed into
+ * the command field.
+ *
+ * @param label is the launcher shortcut title for the app command
+ * @param id is a negative integer uniquely identifying this app command
+ * @param info is used to generate an AppCommand instance in
+ *             {@link this#singInstance(AssistActivity, short)}
+ * @param idx must be the bitwise NOT of `id`, used to store `info` in the {@link this#mAppCmdInfos}
+ *            array.
+ */
+public void putApp(final CharSequence label, final short id, final AppCmdInfo info, final int idx) {
+    CmdNode cur = root;
+    int dep = 0;
+    for (final String token : latinTokens(label.toString().toLowerCase(), true)) {
+        if (cur.map == null) cur.map = new HashMap<>();
+        final CmdNode get = cur.map.get(token);
+        if (get == null) {
+            final CmdNode next = new CmdNode();
+            cur.map.put(token, next);
+            cur = next;
+        } else cur = get;
+        ++dep;
+    }
+    if (cur.cmd == DEFAULT) cur.cmd = id;
+    else putDuplicate(cur, id);
+    depth = max(depth, dep);
+    mAppCmdInfos[idx] = info;
 }
 
 /**
@@ -109,54 +153,133 @@ public void put(final String command, final EmillaCommand cmd, final AssistActiv
  *
  * @param command the command name. Must not contain whitespace for latin langs. Must not span more
  *                than one codepoint for character langs.
- *                Todo: could use int as token for codepoints. Probably useless without
- *                 de-objectifying "HashMap" though. Maybe in the C++ rewrite :P
- * @param cmd the command to map the token to
- * @param act {@link AssistActivity} instance for instantiating duplicate commands Todo: remove?
+ *                Todo: could use int as token for codepoints, probably useless without a custom
+ *                 hash-map though. Maybe in a C++ rewrite :P
+ * @param id the command to map the token to
  */
-public void putSingle(final String command, final EmillaCommand cmd, final AssistActivity act) {
+public void putSingle(final String command, final short id) {
     final CmdNode get = root.map.get(command);
     if (get == null) {
         final CmdNode next = new CmdNode();
-        next.cmd = cmd;
+        next.cmd = id;
         root.map.put(command, next);
-    } else if (get.cmd == null) get.cmd = cmd;
-    else get.cmd = DuplicateCommand.instance(act, get.cmd, cmd);
+    } else if (get.cmd == DEFAULT) get.cmd = id;
+    else putDuplicate(get, id);
     depth = max(depth, 1);
+}
+
+public EmillaCommand newCore(final AssistActivity act, final short id) {
+    final EmillaCommand cmd = switch (id) {
+        case DEFAULT -> new CommandWrapDefault(act, singInstance(act, DFLT_CMD));
+        case CALL -> new CommandCall(act);
+        case DIAL -> new CommandDial(act);
+        case SMS -> new CommandSms(act);
+        case EMAIL -> new CommandEmail(act);
+        case LAUNCH -> new CommandLaunch(act);
+        case SHARE -> new CommandShare(act);
+        case SETTINGS -> new CommandSettings(act);
+//        case NOTE -> new CommandNote(act);
+//        case TODO -> new CommandTodo(act);
+        case WEB -> new CommandWeb(act);
+//        case FIND -> new CommandFind(act);
+        case CLOCK -> new CommandClock(act);
+        case ALARM -> new CommandAlarm(act);
+        case TIMER -> new CommandTimer(act);
+        case POMODORO -> new CommandPomodoro(act);
+        case CALENDAR -> new CommandCalendar(act);
+        case CONTACT -> new CommandContact(act);
+//        case NOTIFY -> new CommandNotify(act);
+        case CALCULATE -> new CatCommandCalculate(act);
+        case WEATHER -> new CatCommandWeather(act);
+        case VIEW -> new CommandView(act);
+        case TOAST -> new CommandToast(act);
+        default -> null;
+    };
+    mCoreCmds[id] = cmd;
+    return cmd;
+}
+
+@NonNull
+private static AppCommand newApp(final AssistActivity act, final AppCmdInfo info) {
+    return switch (info.pkg) {
+    case Apps.PKG_AOSP_CONTACTS -> new AppSearchCommand(act, info, R.string.instruction_contact);
+    case Apps.PKG_MARKOR -> info.cls.equals(AppCmdInfo.CLS_MARKOR_MAIN)
+            ? new AppSendDataCommand(act, info, R.string.instruction_text)
+        : new AppCommand(act, info);
+    // Markor can have multiple launchers. Only the main one should have the 'send' property.
+    case Apps.PKG_FIREFOX -> new AppSearchCommand(act, info, R.string.instruction_web);
+    case Apps.PKG_TOR -> new AppCommand(act, info);
+    // Search/send intents are broken
+    case Apps.PKG_SIGNAL -> new AppSendDataCommand(act, info, R.string.instruction_message);
+    case Apps.PKG_NEWPIPE,
+         Apps.PKG_TUBULAR -> new AppSendCommand(act, info, R.string.instruction_video);
+    case Apps.PKG_YOUTUBE -> new AppSearchCommand(act, info, R.string.instruction_video);
+    case Apps.PKG_DISCORD -> new AppSendCommand(act, info, R.string.instruction_message);
+    default -> info.has_send ? new AppSendCommand(act, info) : new AppCommand(act, info);
+    // Todo: generic AppSearchCommand in a way that handles conflicts with AppSendCommand
+    };
+}
+
+private EmillaCommand singInstance(final AssistActivity act, final short id) {
+    if (id >= DEFAULT) {
+        return mCoreCmds[id] == null ? newCore(act, id) : mCoreCmds[id];
+    }
+    final int appId = ~id;
+    final AppCommand cmd = mAppCmds[appId];
+    return cmd == null ? newApp(act, mAppCmdInfos[appId]) : cmd;
+}
+
+private EmillaCommand instance(final AssistActivity act, final CmdNode node, final short id) {
+    if (id == DUPLICATE) {
+        final EmillaCommand[] cmds = new EmillaCommand[node.dupes.length];
+        int i = -1;
+        for (final short dupeId : node.dupes) cmds[++i] = singInstance(act, dupeId);
+        return new DuplicateCommand(act, cmds);
+        // Todo: maybe store these in a List if we don't want to call that constructor more than once
+    }
+    return singInstance(act, id);
+}
+
+private EmillaCommand restrainInstance(final AssistActivity act, final short id, final CmdNode node) {
+    return id < 0 && mAppCmdInfos[~id].basic ? instance(act, node, DEFAULT) : instance(act, node, id);
 }
 
 /**
  * If a command starts with something like an app name but is followed by more text, we want to
  * revert to the default command since the the instructions would be useless.
  *
- * @param cmd is queried on whether it's a non-instruction command.
- * @param dfltCmd is returned if `cmd` doesn't take instructions.
- * @return `cmd` if it's an instruction command, `dfltCmd` otherwise.
+ * @param id is queried on whether it's a non-instruction command.
+ * @return `id` if it's an instruction command, {@link Commands#DEFAULT} otherwise.
  */
-private EmillaCommand restrain(final EmillaCommand cmd, final EmillaCommand dfltCmd) {
+private short restrain(final short id) {
     // Todo: we may not want to fall entirely back to the default command in some cases. There's a
     //  good chance you just want to traverse up the tree one step. I.e. a one-word subcommand that
     //  yields to the parent command if more instruction is provided.
     //  Would entail parent pointers for the nodes, and `cmd` of the root being set to the dfltCmd
-    return cmd instanceof AppCommand && !(cmd instanceof AppSendCommand
-            || cmd instanceof AppSearchCommand) ? dfltCmd
-        : cmd;
+    return id < 0 && mAppCmdInfos[~id].basic ? DEFAULT : id;
 }
 
 /**
- * @param command must be lowercase!
+ * Searches the tree for a mapping of `lcCommand`. If one is found, a new instance is created using
+ * `act`, stored in {@link this#mCoreCmds}, and returned. Otherwise, the default command instance is
+ * returned.
+ *
+ * @param act is used to generate new command instances when necessary
+ * @param lcCommand must be lowercase!
  */
-public EmillaCommand get(final String command) { // TODO: why is this called twice?
-    if (command.isBlank()) return root.cmd;
+public EmillaCommand get(final AssistActivity act, final String lcCommand) {
+    // TODO: why is this called twice?
+    if (lcCommand.isBlank()) return singInstance(act, DEFAULT);
+
     CmdNode cur = root;
-    EmillaCommand curCmd = root.cmd;
-    for (final String token : latinTokens(command, false)) {
-        if (cur.map == null) return restrain(curCmd, root.cmd);
+    short curCmd = DEFAULT;
+    for (final String token : latinTokens(lcCommand, false)) {
+        if (cur.map == null) return restrainInstance(act, curCmd, cur);
         final CmdNode get = cur.map.get(token);
-        if (get == null) return restrain(curCmd, root.cmd);
+        if (get == null) return restrainInstance(act, curCmd, cur);
         cur = get;
-        curCmd = get.cmd == null ? restrain(curCmd, root.cmd) : get.cmd;
+        curCmd = get.cmd == DEFAULT ? restrain(curCmd) : get.cmd;
     }
-    return curCmd;
+    return instance(act, cur, curCmd);
 }
 }

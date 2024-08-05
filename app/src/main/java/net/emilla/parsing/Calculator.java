@@ -140,12 +140,9 @@ public class Calculator { // i should definitely be using an expression tree LOL
         return expr;
     }
 
-    // todo ans
-    // todo the text input for the phone keypad doesn't doubletap select correctly
-    // todo putting a space at the end of 'calc' in 'calc23' does not change the keypad
-    public static long compute(CharSequence expression) { // todo floating point math
-        String s = expression.toString();
-        if (s.matches("[+-]?\\d+")) return parseLong(s);
+    public static long compute(final String expression) {
+        // Todo: ans, floating point math, many more math functions...
+        if (expression.matches("[+-]?\\d+")) return parseLong(expression);
         try {
             return evaluate(cleanup(expression));
         }

@@ -79,10 +79,6 @@ public static Intent searchTask(final String pkg) {
     return new Intent(ACTION_SEARCH).setPackage(pkg).addFlags(FLAG_ACTIVITY_NEW_TASK);
 }
 
-public static Intent webSearchTask(final String pkg) {
-    return new Intent(ACTION_WEB_SEARCH).setPackage(pkg).addFlags(FLAG_ACTIVITY_NEW_TASK);
-}
-
 public static Intent viewTask(final String uriStr) {
     return new Intent(ACTION_VIEW, Uri.parse(uriStr)).addFlags(FLAG_ACTIVITY_NEW_TASK);
 }

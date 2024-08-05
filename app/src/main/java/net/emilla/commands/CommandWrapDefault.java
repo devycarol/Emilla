@@ -6,8 +6,8 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.utils.Lang;
 
-public class CommandWrapDefault extends CmdWrapper {
-private final CoreCommand mCmd; // Todo: allow app commands
+public class CommandWrapDefault extends EmillaCommand {
+private final EmillaCommand mCmd; // Todo: allow app commands
 
 @Override
 protected CharSequence name() {
@@ -41,7 +41,7 @@ public int imeAction() {
     return mCmd.imeAction();
 }
 
-protected CommandWrapDefault(final AssistActivity act, final CoreCommand cmd) {
+protected CommandWrapDefault(final AssistActivity act, final EmillaCommand cmd) {
     super(act);
     mCmd = cmd;
 }
