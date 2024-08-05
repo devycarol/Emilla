@@ -1,7 +1,6 @@
 package net.emilla.commands;
 
 import static net.emilla.commands.EmillaCommand.Commands.CORE_COUNT;
-import static net.emilla.commands.EmillaCommand.Commands.WEB;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -75,8 +74,6 @@ private static final int[] NAMES = {
     R.string.command_view,
     R.string.command_toast
 };
-
-static final short DFLT_CMD = WEB; // Todo: make configurable
 
 public static CommandTree tree(final SharedPreferences prefs, final Resources res,
         final PackageManager pm, final List<ResolveInfo> appList) {

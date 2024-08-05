@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory app:title="@string/general_header">
+        <ListPreference
+            app:defaultValue="web"
+            app:entries="@array/command_entries"
+            app:entryValues="@array/command_values"
+            app:key="default_command"
+            app:title="@string/command_default"
+            app:useSimpleSummaryProvider="true" />
         <EditTextPreference
             app:defaultValue="Cameron, (208) 555-1234\nJohn, Johnny, (208) 555-6789\nSusan mobile, (970) 123-4567\nSusan cell, (970) 345-6789"
             app:key="phones"

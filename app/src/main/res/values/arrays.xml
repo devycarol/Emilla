@@ -49,6 +49,57 @@
         <item>config</item>
     </string-array>
 
+    <string-array name="command_entries">
+        <item>@string/command_web</item>
+        <item>@string/command_launch</item>
+        <item>@string/command_view</item>
+<!--        <item>@string/command_find</item>-->
+        <item>@string/command_call</item>
+        <item>@string/command_dial</item>
+        <item>@string/command_sms</item>
+        <item>@string/command_contact</item>
+        <item>@string/command_email</item>
+        <item>@string/command_calculate</item>
+        <item>@string/command_weather</item>
+        <item>@string/command_clock</item>
+        <item>@string/command_alarm</item>
+        <item>@string/command_timer</item>
+<!--        <item>@string/command_note</item>-->
+        <item>@string/command_calendar</item>
+<!--        <item>@string/command_notify</item>-->
+        <item>@string/command_settings</item>
+        <item>@string/command_share</item>
+        <item>@string/command_toast</item>
+<!--        <item>@string/command_todo</item>-->
+        <item>@string/command_pomodoro</item>
+    </string-array>
+    <!--Todo: allow app commands-->
+
+    <string-array name="command_values">
+        <item>web</item>
+        <item>launch</item>
+        <item>view</item>
+<!--        <item>find</item>-->
+        <item>call</item>
+        <item>dial</item>
+        <item>sms</item>
+        <item>contact</item>
+        <item>email</item>
+        <item>calculate</item>
+        <item>weather</item>
+        <item>clock</item>
+        <item>alarm</item>
+        <item>timer</item>
+<!--        <item>note</item>-->
+        <item>calendar</item>
+<!--        <item>notify</item>-->
+        <item>settings</item>
+        <item>share</item>
+        <item>toast</item>
+<!--        <item>todo</item>-->
+        <item>pomodoro</item>
+    </string-array>
+
     <!-- Command aliases -->
     <!-- These should all match your locale's String.toLowerCase() for any casing -->
     <string-array name="aliases_call" />

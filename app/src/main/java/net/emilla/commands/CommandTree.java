@@ -1,7 +1,6 @@
 package net.emilla.commands;
 
 import static net.emilla.commands.EmillaCommand.Commands.*;
-import static net.emilla.commands.EmillaCommand.DFLT_CMD;
 import static java.lang.Character.charCount;
 import static java.lang.Character.toChars;
 import static java.lang.Math.max;
@@ -14,6 +13,7 @@ import androidx.annotation.NonNull;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.commands.EmillaCommand.Commands;
+import net.emilla.settings.SettingVals;
 import net.emilla.utils.Apps;
 
 import java.util.Arrays;
@@ -170,7 +170,7 @@ public void putSingle(final String command, final short id) {
 
 public EmillaCommand newCore(final AssistActivity act, final short id) {
     final EmillaCommand cmd = switch (id) {
-        case DEFAULT -> new CommandWrapDefault(act, singInstance(act, DFLT_CMD));
+        case DEFAULT -> new CommandWrapDefault(act, singInstance(act, SettingVals.defaultCommand(act.prefs)));
         case CALL -> new CommandCall(act);
         case DIAL -> new CommandDial(act);
         case SMS -> new CommandSms(act);
