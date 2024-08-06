@@ -170,7 +170,7 @@ public void putSingle(final String command, final short id) {
 
 public EmillaCommand newCore(final AssistActivity act, final short id) {
     final EmillaCommand cmd = switch (id) {
-        case DEFAULT -> new CommandWrapDefault(act, singInstance(act, SettingVals.defaultCommand(act.prefs)));
+        case DEFAULT -> new CommandWrapDefault(act, singInstance(act, SettingVals.defaultCommand(act.prefs())));
         case CALL -> new CommandCall(act);
         case DIAL -> new CommandDial(act);
         case SMS -> new CommandSms(act);

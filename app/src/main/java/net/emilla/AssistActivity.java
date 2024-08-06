@@ -73,7 +73,7 @@ public static final int // intent codes
     PICK_VIEW_CONTACT = 3,
     PICK_EDIT_CONTACT = 4;
 
-public SharedPreferences prefs;
+private SharedPreferences mPrefs;
 
 private CommandTree mCommandTree;
 private List<ResolveInfo> mAppList;
@@ -115,11 +115,14 @@ private int mCommandIcon = R.drawable.ic_assistant;
 
 @Override
 protected void onCreate(final Bundle savedInstanceState) {
-    prefs = PreferenceManager.getDefaultSharedPreferences(this);
-    mSounds = SettingVals.soundSet(prefs);
-    if (mSounds.equals("voice_dialer")) mToneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC,
-            ToneGenerator.MAX_VOLUME);
-    if (savedInstanceState == null) chime(START);
+    if (savedInstanceState == null) {
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        mSounds = SettingVals.soundSet(mPrefs);
+        if (mSounds.equals("voice_dialer")) {
+            mToneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
+        }
+        chime(START);
+    }
     super.onCreate(savedInstanceState);
 
     setContentView(R.layout.activity_assist);
@@ -128,29 +131,32 @@ protected void onCreate(final Bundle savedInstanceState) {
     final ActionBar actionBar = getSupportActionBar();
     if (actionBar != null) {
         final String defaultTitle = res.getString(R.string.app_name_assistant);
-        final String title = prefs.getString("motd", defaultTitle);
+        final String title = mPrefs.getString("motd", defaultTitle);
         if (!title.equals(defaultTitle)) actionBar.setTitle(title);
         // todo: actionbar that doesn't suck in landscape
     }
 
-    final boolean lollipop = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
-    switch (prefs.getString("run_in_background", lollipop ? "follow_system" : "never")) {
-    case "follow_system":
-        // TODO: have listener to turn off the service when power save mode is activated
-        // also ensure that "always on" works as intended
-        final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        if (pm.isPowerSaveMode()) break;
-        // fall
-    case "always":
-        final Intent serviceIntent = new Intent(this, EmillaForegroundService.class);
-        startService(serviceIntent);
+    if (savedInstanceState == null) switch (mPrefs.getString("run_in_background",
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? "follow_system" : "never")) {
+        case "follow_system":
+            // TODO: have listener to turn off the service when power save mode or the accessibility
+            //  service is activated
+            // also ensure that "always on" works as intended
+            final PowerManager pwrMgr = (PowerManager) getSystemService(Context.POWER_SERVICE);
+            if (pwrMgr.isPowerSaveMode()) break;
+            // fall
+        case "always":
+            final Intent serviceIntent = new Intent(this, EmillaForegroundService.class);
+            startService(serviceIntent);
     }
 
     final PackageManager pm = getPackageManager();
     mAppList = Apps.resolveList(pm);
-    mPhoneMap = Contacts.mapPhones(prefs);
-    mEmailMap = Contacts.mapEmails(prefs);
-    mCommandTree = EmillaCommand.tree(prefs, res, pm, mAppList);
+    mCommandTree = EmillaCommand.tree(mPrefs, res, pm, mAppList);
+    if (savedInstanceState == null) {
+        mPhoneMap = Contacts.mapPhones(mPrefs);
+        mEmailMap = Contacts.mapEmails(mPrefs);
+    }
 
     mEmptySpace = findViewById(R.id.empty_space);
     mHelpBox = findViewById(R.id.help_text_box);
@@ -172,15 +178,17 @@ protected void onCreate(final Bundle savedInstanceState) {
 private void setupCommandField() {
     mCommandField.addTextChangedListener(new TextWatcher() {
         @Override
-        public void beforeTextChanged(CharSequence text, int start, int count, int after) {}
+        public void beforeTextChanged(final CharSequence text, final int start, final int count,
+                final int after) {}
 
         @Override
-        public void onTextChanged(CharSequence text, int start, int before, int count) {
+        public void onTextChanged(final CharSequence text, final int start, final int before,
+                final int count) {
             setTextsIfCommandChanged(text.toString());
         }
 
         @Override
-        public void afterTextChanged(Editable s) {}
+        public void afterTextChanged(final Editable s) {}
     });
 
     mCommandField.setOnEditorActionListener((v, actionId, event) -> switch (actionId) {
@@ -236,7 +244,7 @@ private void setupSubmitButton() {
             mTouchingSubmit = false;
             if (mLongPressingSubmit) {
                 mLongPressingSubmit = false;
-                quickAct(prefs.getString("action_long_press_submit", "select_all"));
+                quickAct(mPrefs.getString("action_long_press_submit", "select_all"));
                 mSubmitButton.setImageResource(mCommandIcon);
             } else submitCommand();
             mSubmitButton.setImageResource(mCommandIcon);
@@ -303,7 +311,7 @@ protected void onResume() {
     super.onResume();
     // TODO: doesn't properly trigger for the accessibility menu "Assistant" item
     if (mFocused && !mDialogOpen /*Todo: this is weird..*/) {
-        final String doubleAssistAction = prefs.getString("action_double_assist",
+        final String doubleAssistAction = mPrefs.getString("action_double_assist",
                 Features.torch(getPackageManager()) ? "torch" : "config");
         // TODO: must revise trigger. Double-acts for the corner gesture in no-buttons mode.
         quickAct(doubleAssistAction);
@@ -345,7 +353,7 @@ public boolean onKeyUp(final int keyCode, final KeyEvent event) {
         if (mPendingCancel) cancel(); // todo: is this necessary, or is it already handled by the dialog's key event listener?
         else cancelIfWarranted();
     }
-    case KEYCODE_MENU -> quickAct(prefs.getString("action_menu", "config"));
+    case KEYCODE_MENU -> quickAct(mPrefs.getString("action_menu", "config"));
     case KEYCODE_SEARCH -> refreshInput(); // todo: make configurable
     default -> { return false; }
     }
@@ -368,7 +376,7 @@ private void setTextsIfCommandChanged(/*mutable*/ String command) {
         final Resources res = getResources();
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            final CharSequence title = noCommand ? prefs.getString("motd", res.getString(R.string.app_name_assistant))
+            final CharSequence title = noCommand ? mPrefs.getString("motd", res.getString(R.string.app_name_assistant))
                     : mCommand.title();
             actionBar.setTitle(title);
         }
@@ -444,6 +452,10 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
  * Getter methods *
  *================*/
 
+public SharedPreferences prefs() {
+    return mPrefs;
+}
+
 public List<ResolveInfo> appList() {
     return mAppList;
 }
@@ -457,7 +469,7 @@ public HashMap<String, String> emailMap() {
 }
 
 public String mediaCsv() {
-    return prefs.getString("medias", CommandView.DFLT_MEDIA);
+    return mPrefs.getString("medias", CommandView.DFLT_MEDIA);
 }
 
 /*================*
@@ -507,7 +519,7 @@ private void chime(final byte id) {
     }
     case Chime.VOICE_DIALER -> mToneGenerator.startTone(Chime.dialerTone(id));
     case Chime.CUSTOM -> {
-        final String uriStr = prefs.getString(Chime.preferenceOf(id), null);
+        final String uriStr = mPrefs.getString(Chime.preferenceOf(id), null);
         final MediaPlayer player;
         if (uriStr == null) player = MediaPlayer.create(this, Chime.nebula(id));
         else {
@@ -536,7 +548,7 @@ public void refreshInput() {
 }
 
 private boolean shouldCancel() {
-    return mCommandField.getText().length() + mDataField.getText().length() == 0;
+    return mCommandField.length() + mDataField.length() == 0;
 }
 
 private void cancel() {
@@ -623,7 +635,7 @@ public void succeed(final Intent intent) {
 private void submitCommand() {
     final String fullCommand = mCommandField.getText().toString().trim(), data = mDataField.getText().toString();
     if (fullCommand.isEmpty()) {
-        quickAct(prefs.getString("action_no_command", "config"));
+        quickAct(mPrefs.getString("action_no_command", "config"));
         return;
     }
     final String instruction;

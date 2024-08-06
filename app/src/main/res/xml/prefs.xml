@@ -30,6 +30,8 @@
             app:key="run_in_background"
             app:title="@string/pref_run_in_background"
             app:useSimpleSummaryProvider="true" />
+        <!--Todo: this seems to be irrelavant when the accessibility service is running. This should
+             be communicated, and the dummy service should be stopped & disabled.-->
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/customization_header">

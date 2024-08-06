@@ -27,7 +27,7 @@ private static AlertDialog courtesyDialog(final AssistActivity act, final String
     final Resources res = act.getResources();
     final CharSequence msg = res.getString(R.string.dlg_msg_perm_consent, res.getString(permDescId));
     return Dialogs.yesNoMsg(act, R.string.dialog_permissions, msg, (dialog, which) -> {
-        act.prefs.edit().putBoolean(permission, true).apply();
+        act.prefs().edit().putBoolean(permission, true).apply();
         act.onCloseDialog(true);
     }).create();
     // Should there be a settings page to revoke these? It's just courtesy, but it could be
@@ -60,7 +60,7 @@ public static boolean phone(final AssistActivity act, final PackageManager pm) {
         else act.fail(permissionDialog(act, pm, R.string.perm_calling));
         return false;
     }
-    if (act.prefs.getBoolean(PERM_PHONE, false)) return true;
+    if (act.prefs().getBoolean(PERM_PHONE, false)) return true;
     // A courtesy dialog is offered for pre-Marshmallow users, even if permissions are granted at
     // install.
     act.offer(courtesyDialog(act, PERM_PHONE, R.string.perm_desc_calling));

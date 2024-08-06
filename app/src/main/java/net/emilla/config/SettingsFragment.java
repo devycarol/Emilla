@@ -87,7 +87,7 @@ public void onCreatePreferences(final Bundle savedInstanceState, final String ro
     setupDefaultAssistantPref(pm);
     final String pkg = act.getPackageName();
     setupNotificationsPref(pm, pkg);
-    setupAccessibilityButtonPref(act, pm, pkg);
+    setupAccessibilityButtonPref(pm, pkg);
     setupAppInfoPref(pm, pkg);
 }
 
@@ -238,8 +238,7 @@ private void setupNotificationsPref(final PackageManager pm, final String pkg) {
     appNotifications.setVisible(false);
 }
 
-private void setupAccessibilityButtonPref(final EmillaActivity act, final PackageManager pm,
-        final String pkg) {
+private void setupAccessibilityButtonPref(final PackageManager pm, final String pkg) {
     final Preference accessibilityButton = requireNonNull(findPreference("accessibility_button"));
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         final String showArgs = pkg + '/' + EmillaAccessibilityService.class.getName();
@@ -251,7 +250,6 @@ private void setupAccessibilityButtonPref(final EmillaActivity act, final Packag
                 .putExtra(EXTRA_SHOW_FRAGMENT_ARGUMENTS, bundle);
         if (in.resolveActivity(pm) != null) {
             accessibilityButton.setIntent(in);
-            accessibilityButton.setOnPreferenceClickListener(pref -> caveat(act, "You may occasionally have to turn this off and on again—working on it.", true)); // TODO
             return;
         }
     }
