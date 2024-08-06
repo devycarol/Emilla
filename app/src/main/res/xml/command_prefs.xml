@@ -145,6 +145,9 @@
             android:key="aliases_org.polymorphicshade.tubular_text"
             android:summary="@string/summary_video" />
         <EditTextPreference
+            android:key="aliases_com.github.android_text"
+            android:summary="@string/summary_issues" />
+        <EditTextPreference
             android:key="aliases_com.google.android.youtube_text"
             android:summary="@string/summary_video" />
         <EditTextPreference

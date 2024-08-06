@@ -213,6 +213,7 @@ private static AppCommand newApp(final AssistActivity act, final AppCmdInfo info
     case Apps.PKG_SIGNAL -> new AppSendDataCommand(act, info, R.string.instruction_message);
     case Apps.PKG_NEWPIPE,
          Apps.PKG_TUBULAR -> new AppSendCommand(act, info, R.string.instruction_video);
+    case Apps.PKG_GITHUB -> new AppSendDataCommand(act, info, R.string.instruction_issues);
     case Apps.PKG_YOUTUBE -> new AppSearchCommand(act, info, R.string.instruction_video);
     case Apps.PKG_DISCORD -> new AppSendCommand(act, info, R.string.instruction_message);
     default -> info.has_send ? new AppSendCommand(act, info) : new AppCommand(act, info);

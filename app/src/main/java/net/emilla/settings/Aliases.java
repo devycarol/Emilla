@@ -68,7 +68,7 @@ public static Set<String> set(final SharedPreferences prefs, final Resources res
 }
 
 @ArrayRes
-private static int appSetId(final String pkg, final String cls) {
+public static int appSetId(final String pkg, final String cls) {
     return switch (pkg) {
     case Apps.PKG_AOSP_CONTACTS -> R.array.aliases_aosp_contacts;
     case Apps.PKG_MARKOR -> cls.equals(AppCmdInfo.CLS_MARKOR_MAIN) ? R.array.aliases_markor : -1;
@@ -78,6 +78,7 @@ private static int appSetId(final String pkg, final String cls) {
     case Apps.PKG_SIGNAL -> R.array.aliases_signal;
     case Apps.PKG_NEWPIPE -> R.array.aliases_newpipe;
     case Apps.PKG_TUBULAR -> R.array.aliases_tubular;
+    case Apps.PKG_GITHUB -> R.array.aliases_github;
     case Apps.PKG_YOUTUBE -> R.array.aliases_youtube;
     case Apps.PKG_DISCORD -> R.array.aliases_discord;
     default -> -1;

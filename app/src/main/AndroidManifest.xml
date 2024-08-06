@@ -20,6 +20,7 @@
         <package android:name="org.thoughtcrime.securesms" />
         <package android:name="org.schabi.newpipe" />
         <package android:name="org.polymorphicshade.tubular" />
+        <package android:name="com.github.android" />
         <package android:name="com.google.android.youtube" />
         <package android:name="com.discord" />
 

@@ -134,6 +134,8 @@
     <string name="summary_messaging">Send messages</string>
     <!-- Generic summary for video app commands -->
     <string name="summary_video">Find and play videos</string>
+    <!-- Generic summary for issues -->
+    <string name="summary_issues">Write code issues</string>
     <string name="app_summary_aosp_contacts">Search contacts</string>
 
     <!-- Locale-sensitive grammars. For instance, English words are space-separated but Chinese characters aren't. -->
@@ -173,6 +175,8 @@
     <string name="instruction_text">text</string>
     <!-- Generic instruction for message text -->
     <string name="instruction_message">message</string>
+    <!-- Generic instruction for code issues -->
+    <string name="instruction_issues">issue body</string>
 
     <!-- Description for the ability to provide multiple recipients via delimiter separation -->
     <string name="detail_multiple_recipients">Multiple recipients can be separated by commas or ampersands.</string>

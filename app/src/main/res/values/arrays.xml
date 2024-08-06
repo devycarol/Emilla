@@ -198,6 +198,9 @@
     <string-array name="aliases_tubular">
         <item>tub</item>
     </string-array>
+    <string-array name="aliases_github">
+        <item>git</item>
+    </string-array>
     <string-array name="aliases_youtube">
         <item>yt</item>
     </string-array>
