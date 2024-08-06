@@ -8,31 +8,24 @@
         <item name="colorOnPrimary">#000</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/secn_200</item>
-        <item name="colorSecondaryVariant">@color/secn_200</item>
+        <item name="colorSecondaryVariant">@color/secn_700</item>
         <item name="colorOnSecondary">#000</item>
         <item name="colorSecondaryContainer">@color/secn_background_dark</item>
+        <item name="colorBackgroundFloating">@color/secn_background_dark</item>
         <item name="actionBarStyle">@style/ActionBarStyle</item>
         <item name="android:textColor">#FFF</item>
         <item name="android:windowBackground">@color/main_background_dark</item>
         <item name="android:statusBarColor" tools:targetApi="lollipop">#000</item>
         <item name="android:navigationBarColor" tools:targetApi="lollipop">#000</item>
         <!-- Settings screen style -->
-        <item name="preferenceTheme">@style/SettingsThemeOverlay</item>
-    </style>
-
-    <style name="ActionBarStyle" parent="Widget.AppCompat.ActionBar">
-        <item name="background">@color/secn_background_dark</item>
+        <item name="preferenceTheme">@style/SettingsTheme</item>
     </style>
 
     <!-- Assistant theme. -->
     <style name="Theme.Assistant" parent="Theme.Emilla">
-        <item name="colorSecondaryContainer">@color/main_background_dark</item>
-        <item name="actionBarStyle">@style/AssistantActionBarStyle</item>
+        <item name="colorBackgroundFloating">@color/main_background_dark</item>
+        <item name="colorSucceed">@color/main_400</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@color/trans_background_dark</item>
-    </style>
-
-    <style name="AssistantActionBarStyle" parent="Widget.AppCompat.ActionBar">
-        <item name="background">@color/main_background_dark</item>
     </style>
 </resources>

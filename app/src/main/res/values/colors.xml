@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="main_200">#FFBB86FC</color>
-    <color name="main_500">#FF6200EE</color>
-    <color name="main_700">#FF3700B3</color>
-    <color name="secn_200">#FF03DAC5</color>
-    <color name="secn_700">#FF018786</color>
+    <color name="main_200">#FC8BFF</color>
+    <color name="main_400">#BD50FF</color>
+    <color name="main_500">#9D30FF</color>
+    <color name="main_700">#5A00DF</color>
+    <color name="secn_200">#03DAC5</color>
+    <color name="secn_500">#008B79</color>
+    <color name="secn_700">#018786</color>
     <color name="main_background_dark">#191C1E</color>
     <color name="secn_background_dark">#2E3133</color>
-    <color name="main_background_light">#FCFCFF</color>
-    <color name="secn_background_light">#F0F0F3</color>
+    <color name="main_background_light">#F0F0F3</color>
+    <color name="secn_background_light">#E1E3E5</color>
 
     <!-- Local colors -->
     <color name="trans_background_dark">#2FFF</color>
     <color name="trans_background_light">#2000</color>
+    <color name="icons">?attr/colorOnSurface</color><!--Todo KitKat-->
 </resources>
