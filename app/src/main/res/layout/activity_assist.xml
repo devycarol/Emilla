@@ -21,7 +21,7 @@
         android:id="@+id/empty_space"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:contentDescription="@string/empty_space_description"
+        android:contentDescription="@string/spoken_description_empty_space"
         app:layout_constraintBottom_toTopOf="@+id/container_assistant"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,12 +30,38 @@
     </FrameLayout>
 
     <LinearLayout
+        android:id="@+id/container_more_actions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/empty_space">
+
+        <ImageButton
+            android:id="@+id/button_cursor_start"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:background="@drawable/background_action_button"
+            android:contentDescription="@string/spoken_description_cursor_start"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_cursor_start"
+            app:elevation="0dp" />
+    </LinearLayout>
+    <!--Todo: time for landscape accomodations-->
+
+    <LinearLayout
         android:id="@+id/container_assistant"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:background="?attr/colorBackgroundFloating"
         android:orientation="vertical"
-        android:padding="16dp"
+        android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
@@ -56,7 +82,7 @@
             android:id="@+id/container_data_submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:orientation="horizontal">
 
             <EditText
@@ -77,10 +103,10 @@
                 android:id="@+id/button_submit"
                 android:layout_width="56dp"
                 android:layout_height="match_parent"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:layout_weight="0"
                 android:background="@drawable/background_action_button"
-                android:contentDescription="@string/submit_command_description"
+                android:contentDescription="@string/spoken_description_submit_command"
                 android:padding="8dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_assistant"

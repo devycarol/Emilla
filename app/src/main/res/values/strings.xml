@@ -25,8 +25,9 @@
 
     <!-- UI Components -->
     <string name="field_command_hint">Command</string>
-    <string name="submit_command_description">Submit command</string>
-    <string name="empty_space_description">Empty space</string>
+    <string name="spoken_description_submit_command">Submit command</string>
+    <string name="spoken_description_empty_space">Empty space</string>
+    <string name="spoken_description_cursor_start">Cursor start</string>
     <string name="welcome_message">Hello there!</string>
     <string name="welcome_instruction">To open the assistant, re-press the button below.</string>
 

@@ -7,6 +7,7 @@ import static android.view.KeyEvent.*;
 import static android.view.inputmethod.EditorInfo.*;
 import static androidx.core.content.FileProvider.getUriForFile;
 import static net.emilla.utils.Chime.*;
+import static java.lang.Math.max;
 
 import android.app.AlertDialog;
 import android.content.ClipData;
@@ -85,7 +86,7 @@ private ToneGenerator mToneGenerator;
 private FrameLayout mEmptySpace;
 private TextView mHelpBox;
 private EditText mCommandField, mDataField;
-private ImageButton mSubmitButton;
+private ImageButton mSubmitButton, mCursorStartButton;
 
 private AlertDialog mCancelDialog;
 
@@ -173,6 +174,7 @@ protected void onCreate(final Bundle savedInstanceState) {
     mHelpBox.setOnClickListener(v -> cancelIfWarranted());
 
     setupSubmitButton();
+    setupCursorStartButton();
 }
 
 private void setupCommandField() {
@@ -252,6 +254,32 @@ private void setupSubmitButton() {
         default:
             return super.onTouchEvent(event);
         }
+    });
+}
+
+private void cursorStart(final EditText field) {
+    if (field.length() == 0) {
+        chime(PEND);
+        return;
+    }
+    final boolean atStart = max(field.getSelectionStart(), field.getSelectionEnd()) == 0;
+    if (atStart) {
+        field.setSelection(field.length());
+        chime(RESUME);
+    } else {
+        field.setSelection(0);
+        chime(ACT);
+    }
+}
+
+private void setupCursorStartButton() {
+    mCursorStartButton = findViewById(R.id.button_cursor_start);
+    mCursorStartButton.setOnClickListener(v -> {
+        if (mDataField.hasFocus()) {
+            cursorStart(mDataField);
+            return;
+        } else if (!mCommandField.hasFocus()) mCommandField.requestFocus();
+        cursorStart(mCommandField);
     });
 }
 
