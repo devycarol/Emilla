@@ -7,7 +7,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 
@@ -37,7 +36,7 @@ private static AlertDialog courtesyDialog(final AssistActivity act, final String
 private static AlertDialog permissionDialog(final AssistActivity act, final PackageManager pm,
         @StringRes final int permId) {
     final Intent settings = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-            Uri.parse("package:" + act.getPackageName()));
+            Apps.pkgUri(act.getPackageName()));
     final boolean noAppInfo = settings.resolveActivity(pm) == null;
     if (noAppInfo) settings.setAction(Settings.ACTION_SETTINGS).setData(null)
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

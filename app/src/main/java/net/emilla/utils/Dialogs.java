@@ -82,15 +82,28 @@ public static TimePickerDialog timePicker(final Context ctxt, @StringRes final i
     return timePicker;
 }
 
-public static AlertDialog.Builder withIntents(final AlertDialog.Builder builder, final AssistActivity act, final CharSequence[] labels, final Intent[] intents) {
+public static AlertDialog.Builder withIntents(final AlertDialog.Builder builder,
+        final AssistActivity act, final CharSequence[] labels, final Intent[] intents) {
     return builder.setItems(labels, (dialog, which) -> act.succeed(intents[which]));
 }
 
-private static AlertDialog.Builder withApps(final AlertDialog.Builder builder, final AssistActivity act, final PackageManager pm, final List<ResolveInfo> appList) {
+public static AlertDialog.Builder withNullableIntents(final AlertDialog.Builder builder,
+        final AssistActivity act, final CharSequence[] labels, final Intent[] intents,
+        final CharSequence failMsg) {
+    return builder.setItems(labels, (dialog, which) -> {
+        final Intent in = intents[which];
+        if (in == null) act.fail(failMsg);
+        else act.succeed(in);
+    });
+}
+
+private static AlertDialog.Builder withApps(final AlertDialog.Builder builder,
+        final AssistActivity act, final PackageManager pm, final List<ResolveInfo> appList) {
     return withIntents(builder, act, Apps.labels(appList, pm), Apps.intents(appList));
 }
 
-public static AlertDialog.Builder appChooser(final AssistActivity act, final PackageManager pm, final List<ResolveInfo> appList) {
+public static AlertDialog.Builder appChooser(final AssistActivity act, final PackageManager pm,
+        final List<ResolveInfo> appList) {
     // TODO: due to duplicate app labels, it's important to eventually include app icons in this dialog
     // TODO: allow for alpha sort. important for screen readers (it should be on by default in that case)
     //  only reason not to is i kind of like the random order. makes my phone feel less cramped.
@@ -99,5 +112,17 @@ public static AlertDialog.Builder appChooser(final AssistActivity act, final Pac
     // a choice between list and grid layout would be cool
     final AlertDialog.Builder base = base(act, R.string.dialog_app);
     return withApps(base, act, pm, appList);
+}
+
+private static AlertDialog.Builder withUninstalls(final AlertDialog.Builder builder,
+        final AssistActivity act, final PackageManager pm, final List<ResolveInfo> appList) {
+    return withNullableIntents(builder, act, Apps.labels(appList, pm), Apps.uninstalls(appList, pm),
+            "No settings app found for your device"); // Todo: instead handle at mapping somehow
+}
+
+public static AlertDialog.Builder appUninstaller(final AssistActivity act,
+        final List<ResolveInfo> appList) {
+    final AlertDialog.Builder base = base(act, R.string.dialog_app);
+    return withUninstalls(base, act, act.getPackageManager(), appList);
 }
 }

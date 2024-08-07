@@ -6,10 +6,12 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.Settings;
 
 import androidx.annotation.NonNull;
 
@@ -104,6 +106,34 @@ public static Intent[] intents(final List<ResolveInfo> appList) {
     final Intent[] intents = new Intent[appList.size()];
     int i = -1;
     for (final ResolveInfo ri : appList) intents[++i] = launchIntent(ri.activityInfo);
+    return intents;
+}
+
+public static Uri pkgUri(final String pkg) {
+    return Uri.parse("package:" + pkg);
+}
+
+public static Intent uninstallIntent(final String pkg, final PackageManager pm) {
+    final ApplicationInfo info;
+try {
+    info = pm.getApplicationInfo(pkg, 0);
+    final boolean uninstallable = (info.flags & ApplicationInfo.FLAG_SYSTEM) == 0;
+    if (uninstallable) return newTask(ACTION_UNINSTALL_PACKAGE, pkgUri(pkg));
+    // Todo: ACTION_UNINSTALL_PACKAGE is deprecated.
+    final Intent appInfo = newTask(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, pkgUri(pkg));
+    if (appInfo.resolveActivity(pm) != null) return appInfo;
+    final Intent settings = newTask(Settings.ACTION_SETTINGS);
+    if (appInfo.resolveActivity(pm) != null) return settings;
+} catch (PackageManager.NameNotFoundException ignored) {}
+    return null;
+}
+
+public static Intent[] uninstalls(final List<ResolveInfo> appList, final PackageManager pm) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) return appList.parallelStream()
+            .map(ri -> uninstallIntent(ri.activityInfo.packageName, pm)).toArray(Intent[]::new);
+    final Intent[] intents = new Intent[appList.size()];
+    int i = -1;
+    for (final ResolveInfo ri : appList) intents[++i] = uninstallIntent(ri.activityInfo.packageName, pm);
     return intents;
 }
 }

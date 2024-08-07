@@ -44,8 +44,9 @@ public static class Commands {
         WEATHER = 16,
         VIEW = 17,
         INFO = 18,
-        TOAST = 19,
-        DUPLICATE = 20;
+        UNINSTALL = 19,
+        TOAST = 20,
+        DUPLICATE = 21;
 }
 
 private static final int[] NAMES = {
@@ -71,6 +72,7 @@ private static final int[] NAMES = {
     R.string.command_weather,
     R.string.command_view,
     R.string.command_info,
+    R.string.command_uninstall,
     R.string.command_toast
 };
 

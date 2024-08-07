@@ -175,7 +175,7 @@ public EmillaCommand newCore(final AssistActivity act, final short id) {
         case DIAL -> new CommandDial(act);
         case SMS -> new CommandSms(act);
         case EMAIL -> new CommandEmail(act);
-        case LAUNCH -> new CommandOpenApp(act);
+        case LAUNCH -> new CommandOpenLaunch(act);
         case SHARE -> new CommandShare(act);
         case SETTINGS -> new CommandSettings(act);
 //        case NOTE -> new CommandNote(act);
@@ -193,6 +193,7 @@ public EmillaCommand newCore(final AssistActivity act, final short id) {
         case WEATHER -> new CatCommandWeather(act);
         case VIEW -> new CommandView(act);
         case INFO -> new CommandOpenInfo(act);
+        case UNINSTALL -> new CommandOpenUninstall(act);
         case TOAST -> new CommandToast(act);
         default -> null;
     };

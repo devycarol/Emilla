@@ -9,7 +9,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -22,6 +21,7 @@ import java.util.List;
 public abstract class OpenCommand extends CoreCommand {
 protected final List<ResolveInfo> mAppList;
 protected final AlertDialog.Builder mAppChooser;
+protected final PackageManager mPm;
 
 public OpenCommand(final AssistActivity act, @StringRes final int nameId,
         @StringRes final int instructionId) {
@@ -29,6 +29,7 @@ public OpenCommand(final AssistActivity act, @StringRes final int nameId,
 
     mAppList = act.appList();
     mAppChooser = getAppChooser(act);
+    mPm = act.getPackageManager();
 }
 
 protected abstract AlertDialog.Builder getAppChooser(final AssistActivity act);
@@ -55,14 +56,13 @@ public void run(final String app) {
     int prefCount = 0;
     int otherCount = 0;
 
-    final PackageManager pm = packageManager();
     final String lcQuery = app.toLowerCase();
     boolean exactMatch = false;
 
     for (int i = 0; i < appCount; ++i) {
         ActivityInfo info = mAppList.get(i).activityInfo;
 
-        CharSequence label = info.loadLabel(pm);
+        CharSequence label = info.loadLabel(mPm);
         String lcLabel = label.toString().toLowerCase();
 
         if (lcLabel.equals(lcQuery)) { // an exact match will drop all other results
@@ -77,7 +77,7 @@ public void run(final String app) {
 
             for (++i; i < appCount; ++i) { // continue searching for duplicates only
                 info = mAppList.get(i).activityInfo;
-                label = info.loadLabel(pm);
+                label = info.loadLabel(mPm);
                 lcLabel = label.toString().toLowerCase();
 
                 if (lcLabel.equals(lcQuery)) {
@@ -121,5 +121,5 @@ public void run(final String app) {
     default -> offer(getDialog(prefLabels, prefCount, prefIntents));
 }}
 
-protected abstract @NonNull Intent getIntent(final String pkg, final String cls);
+protected abstract Intent getIntent(final String pkg, final String cls);
 }

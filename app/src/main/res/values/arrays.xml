@@ -70,6 +70,7 @@
         <item>@string/command_settings</item>
         <item>@string/command_share</item>
         <item>@string/command_info</item>
+        <item>@string/command_uninstall</item>
         <item>@string/command_toast</item>
 <!--        <item>@string/command_todo</item>-->
         <item>@string/command_pomodoro</item>
@@ -97,6 +98,7 @@
         <item>settings</item>
         <item>share</item>
         <item>info</item>
+        <item>uninstall</item>
         <item>toast</item>
 <!--        <item>todo</item>-->
         <item>pomodoro</item>
@@ -176,6 +178,10 @@
         <item>mrk</item>
     </string-array>
     <string-array name="aliases_info" />
+    <string-array name="aliases_uninstall">
+        <item>remove</item>
+        <item>delete</item>
+    </string-array>
     <string-array name="aliases_toast" />
 
     <!-- App aliases -->

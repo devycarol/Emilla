@@ -2,11 +2,9 @@ package net.emilla.commands;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.provider.Settings;
 
 import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -26,7 +24,7 @@ protected AlertDialog.Builder getAppChooser(final AssistActivity act) {
 }
 
 private final Intent mInfoIntent = Apps.newTask(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-        Uri.parse("package:" + Apps.PKG));
+        Apps.pkgUri(Apps.PKG));
 private final boolean mUnsafe;
 
 public CommandOpenInfo(final AssistActivity act) {
@@ -42,8 +40,8 @@ public void run() {
     succeed(mInfoIntent);
 }
 
-@Override @NonNull
+@Override
 protected Intent getIntent(final String pkg, final String cls) {
-    return Apps.newTask(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + pkg));
+    return Apps.newTask(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Apps.pkgUri(pkg));
 }
 }

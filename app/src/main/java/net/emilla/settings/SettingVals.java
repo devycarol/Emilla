@@ -48,6 +48,7 @@ private static short commandId(final String s) {
     case "weather" -> WEATHER;
     case "view" -> VIEW;
     case "info" -> INFO;
+    case "uninstall" -> UNINSTALL;
     case "toast" -> TOAST;
     default -> 0;
     };

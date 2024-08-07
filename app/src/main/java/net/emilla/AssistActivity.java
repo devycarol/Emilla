@@ -603,7 +603,7 @@ private void showDialog(final AlertDialog dialog, final byte chime) {
     chime(chime);
 }
 
-private void fail(final String message) {
+public void fail(final CharSequence message) {
     chime(FAIL);
     toast(message, true);
 }
