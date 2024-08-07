@@ -19,6 +19,7 @@ import java.util.List;
 
 public class Apps {
 public static final String
+    PKG = "net.emilla.nebula",
     PKG_AOSP_CONTACTS = "com.android.contacts",
     PKG_MARKOR = "net.gsantner.markor",
     PKG_FIREFOX = "org.mozilla.firefox",

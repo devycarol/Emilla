@@ -24,6 +24,7 @@ import net.emilla.EmillaActivity;
 import net.emilla.R;
 import net.emilla.settings.SettingVals;
 import net.emilla.system.EmillaAccessibilityService;
+import net.emilla.utils.Apps;
 import net.emilla.utils.Chime;
 import net.emilla.utils.Features;
 
@@ -85,10 +86,9 @@ public void onCreatePreferences(final Bundle savedInstanceState, final String ro
     setupActionPref(findPreference("action_long_press_submit"), act, noTorch, false);
     setupActionPref(findPreference("action_menu"), act, noTorch, false);
     setupDefaultAssistantPref(pm);
-    final String pkg = act.getPackageName();
-    setupNotificationsPref(pm, pkg);
-    setupAccessibilityButtonPref(pm, pkg);
-    setupAppInfoPref(pm, pkg);
+    setupNotificationsPref(pm);
+    setupAccessibilityButtonPref(pm);
+    setupAppInfoPref(pm);
 }
 
 private void setupSoundSetPref(/*final Context ctxt, final SharedPreferences prefs, final Resources res*/) {
@@ -225,11 +225,11 @@ private void setupDefaultAssistantPref(final PackageManager pm) {
     systemDefaultAssistant.setVisible(false);
 }
 
-private void setupNotificationsPref(final PackageManager pm, final String pkg) {
+private void setupNotificationsPref(final PackageManager pm) {
     final Preference appNotifications = requireNonNull(findPreference("notifications"));
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         final Intent notifSettings = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
-                .putExtra(Settings.EXTRA_APP_PACKAGE, pkg);
+                .putExtra(Settings.EXTRA_APP_PACKAGE, Apps.PKG);
         if (notifSettings.resolveActivity(pm) != null) {
             appNotifications.setIntent(notifSettings);
             return;
@@ -238,14 +238,14 @@ private void setupNotificationsPref(final PackageManager pm, final String pkg) {
     appNotifications.setVisible(false);
 }
 
-private void setupAccessibilityButtonPref(final PackageManager pm, final String pkg) {
+private void setupAccessibilityButtonPref(final PackageManager pm) {
     final Preference accessibilityButton = requireNonNull(findPreference("accessibility_button"));
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        final String showArgs = pkg + '/' + EmillaAccessibilityService.class.getName();
+        final String showArgs = Apps.PKG + '/' + EmillaAccessibilityService.class.getName();
         final Bundle bundle = new Bundle();
         bundle.putString(EXTRA_FRAGMENT_ARG_KEY, showArgs);
         final Intent in = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
-                .putExtra(Settings.EXTRA_APP_PACKAGE, pkg)
+                .putExtra(Settings.EXTRA_APP_PACKAGE, Apps.PKG)
                 .putExtra(EXTRA_FRAGMENT_ARG_KEY, showArgs)
                 .putExtra(EXTRA_SHOW_FRAGMENT_ARGUMENTS, bundle);
         if (in.resolveActivity(pm) != null) {
@@ -256,10 +256,10 @@ private void setupAccessibilityButtonPref(final PackageManager pm, final String 
     accessibilityButton.setVisible(false);
 }
 
-private void setupAppInfoPref(final PackageManager pm, final String pkg) {
+private void setupAppInfoPref(final PackageManager pm) {
     final Preference systemAppInfo = requireNonNull(findPreference("app_info"));
     final Intent in = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-            Uri.parse("package:" + pkg));
+            Uri.parse("package:" + Apps.PKG));
     if (in.resolveActivity(pm) != null) systemAppInfo.setIntent(in);
     else systemAppInfo.setVisible(false);
 }

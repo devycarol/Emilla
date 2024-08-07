@@ -23,6 +23,6 @@ public class ExampleInstrumentedTest
     {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("net.emilla", appContext.getPackageName());
+        assertEquals("net.emilla.nebula", appContext.getPackageName());
     }
 }

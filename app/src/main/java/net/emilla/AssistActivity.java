@@ -490,7 +490,7 @@ public void getFiles() { // todo: make private?
 
 public void help() { // TODO: remove
     final File helpFile = new File(getExternalStoragePublicDirectory(DIRECTORY_DOCUMENTS), "Help!.md");
-    final Uri helpUri = getUriForFile(this, getPackageName() + ".fileprovider", helpFile);
+    final Uri helpUri = getUriForFile(this, Apps.PKG + ".fileprovider", helpFile);
     final Intent in = new Intent(ACTION_VIEW)
             .setDataAndType(helpUri, "text/plain")
             .putExtra(EXTRA_STREAM, helpUri)

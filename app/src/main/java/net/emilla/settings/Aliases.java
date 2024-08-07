@@ -35,6 +35,7 @@ private static final int[] SETS = {
     R.array.aliases_calculate,
     R.array.aliases_weather,
     R.array.aliases_view,
+    R.array.aliases_info,
     R.array.aliases_toast
 };
 
@@ -60,6 +61,7 @@ public static final String[] PREFS = {
     "aliases_calculate",
     "aliases_weather",
     "aliases_view",
+    "aliases_info",
     "aliases_toast"
 };
 

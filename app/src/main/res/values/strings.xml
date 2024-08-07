@@ -101,6 +101,7 @@
     <string name="command_calculate">Calculate</string>
     <string name="command_weather">Weather</string>
     <string name="command_view">View</string>
+    <string name="command_info">Info</string>
     <string name="command_toast">Toast</string>
     <string name="command_custom">Custom</string>
     <string name="command_app">App</string>
@@ -128,6 +129,7 @@
     <string name="summary_calculate">Compute math equations</string>
     <string name="summary_weather">Open a weather app</string>
     <string name="summary_view">Open bookmarked URLs</string><!--todo: other url types. also "play"—music, audiobooks, and podcasts-->
+    <string name="summary_info">View application details</string>
     <string name="summary_toast">Show a little message!</string>
     <string name="summary_custom">Create your own commands!</string>
     <!-- Generic summary for messenger app commands -->

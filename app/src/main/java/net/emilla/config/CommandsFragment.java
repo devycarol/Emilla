@@ -104,6 +104,7 @@ private void setupCores(final EmillaActivity act, final SharedPreferences prefs,
     setupCorePref("aliases_calculate_text", listener, prefs, res, R.array.aliases_calculate);
     setupCorePref("aliases_weather_text", listener, prefs, res, R.array.aliases_weather);
     setupCorePref("aliases_view_text", listener, prefs, res, R.array.aliases_view);
+    setupCorePref("aliases_info_text", listener, prefs, res, R.array.aliases_info);
     setupCorePref("aliases_toast_text", listener, prefs, res, R.array.aliases_toast);
     deactivate("aliases_custom_text", dListener);
 }

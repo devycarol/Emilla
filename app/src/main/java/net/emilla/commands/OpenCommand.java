@@ -9,40 +9,38 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exceptions.EmlaAppsException;
-import net.emilla.utils.Apps;
 import net.emilla.utils.Dialogs;
 
 import java.util.List;
 
-public class CommandLaunch extends CoreCommand {
-private final List<ResolveInfo> mAppList;
-private final AlertDialog.Builder mAppChooser;
+public abstract class OpenCommand extends CoreCommand {
+protected final List<ResolveInfo> mAppList;
+protected final AlertDialog.Builder mAppChooser;
 
-public CommandLaunch(final AssistActivity act) {
-    super(act, R.string.command_launch, R.string.instruction_app);
+public OpenCommand(final AssistActivity act, @StringRes final int nameId,
+        @StringRes final int instructionId) {
+    super(act, nameId, instructionId);
 
     mAppList = act.appList();
-    mAppChooser = Dialogs.appChooser(act, act.getPackageManager(), mAppList);
+    mAppChooser = getAppChooser(act);
 }
 
-@Override @DrawableRes
-public int icon() {
-    return R.drawable.ic_launch;
-}
+protected abstract AlertDialog.Builder getAppChooser(final AssistActivity act);
 
 @Override
 public int imeAction() {
     return EditorInfo.IME_ACTION_GO;
 }
 
-@Override
-public void run() {
-    offer(mAppChooser.create());
+private AlertDialog getDialog(final CharSequence[] prefLabels, final int prefCount,
+        final Intent[] prefIntents) {
+    return Dialogs.withIntents(mAppChooser, activity(), copyOfRange(prefLabels, 0, prefCount), prefIntents).create();
 }
 
 @Override
@@ -66,7 +64,6 @@ public void run(final String app) {
 
         CharSequence label = info.loadLabel(pm);
         String lcLabel = label.toString().toLowerCase();
-        final String packageName = info.packageName;
 
         if (lcLabel.equals(lcQuery)) { // an exact match will drop all other results
             prefLabels = new CharSequence[appCount];
@@ -75,7 +72,7 @@ public void run(final String app) {
             otherIntents = null;
 
             prefLabels[0] = label;
-            prefIntents[0] = Apps.launchIntent(packageName, info.name);
+            prefIntents[0] = getIntent(info.packageName, info.name);
             prefCount = 1;
 
             for (++i; i < appCount; ++i) { // continue searching for duplicates only
@@ -85,7 +82,7 @@ public void run(final String app) {
 
                 if (lcLabel.equals(lcQuery)) {
                     prefLabels[prefCount] = label;
-                    prefIntents[prefCount] = Apps.launchIntent(info.packageName, info.name);
+                    prefIntents[prefCount] = getIntent(info.packageName, info.name);
                     ++prefCount;
                 }
             }
@@ -94,7 +91,7 @@ public void run(final String app) {
             break; // search is finished
         }
         if (lcLabel.contains(lcQuery)) {
-            final Intent in = Apps.launchIntent(packageName, info.name);
+            final Intent in = getIntent(info.packageName, info.name);
             if (lcLabel.startsWith(lcQuery)) {
                 prefLabels[prefCount] = label;
                 prefIntents[prefCount] = in;
@@ -121,6 +118,8 @@ public void run(final String app) {
     switch (prefCount) {
     case 0 -> throw new EmlaAppsException(resources().getString(R.string.error_no_apps));
     case 1 -> succeed(prefIntents[0]);
-    default -> offer(Dialogs.withIntents(mAppChooser, activity(), copyOfRange(prefLabels, 0, prefCount), prefIntents).create());
+    default -> offer(getDialog(prefLabels, prefCount, prefIntents));
 }}
+
+protected abstract @NonNull Intent getIntent(final String pkg, final String cls);
 }

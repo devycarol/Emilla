@@ -47,6 +47,7 @@ private static short commandId(final String s) {
     case "calculate" -> CALCULATE;
     case "weather" -> WEATHER;
     case "view" -> VIEW;
+    case "info" -> INFO;
     case "toast" -> TOAST;
     default -> 0;
     };

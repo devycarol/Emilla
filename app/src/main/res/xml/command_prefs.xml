@@ -98,6 +98,11 @@
             android:summary="@string/summary_share"
             android:title="@string/command_share" />
         <EditTextPreference
+            android:icon="@drawable/ic_info"
+            android:key="aliases_info_text"
+            android:summary="@string/summary_info"
+            android:title="@string/command_info" />
+        <EditTextPreference
             android:icon="@drawable/ic_toast"
             android:key="aliases_toast_text"
             android:summary="@string/summary_toast"

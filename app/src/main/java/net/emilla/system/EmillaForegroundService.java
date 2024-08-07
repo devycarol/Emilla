@@ -46,7 +46,7 @@ public class EmillaForegroundService extends Service {
             }
             builder.setContentText(getString(R.string.notif_foreground_text)); // "tap to disable" text
             final Intent notifIntent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS)
-                    .putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName())
+                    .putExtra(Settings.EXTRA_APP_PACKAGE, Apps.PKG)
                     .putExtra(Settings.EXTRA_CHANNEL_ID, CHANNEL_ID);
             notifIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             final PendingIntent notifPend = PendingIntent.getActivity(this, 0, notifIntent, PendingIntent.FLAG_IMMUTABLE);

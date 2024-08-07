@@ -1,7 +1,5 @@
 package net.emilla.commands;
 
-import static net.emilla.commands.EmillaCommand.Commands.CORE_COUNT;
-
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -45,9 +43,9 @@ public static class Commands {
         CALCULATE = 15,
         WEATHER = 16,
         VIEW = 17,
-        TOAST = 18,
-        DUPLICATE = 19,
-        CORE_COUNT = 19;
+        INFO = 18,
+        TOAST = 19,
+        DUPLICATE = 20;
 }
 
 private static final int[] NAMES = {
@@ -72,6 +70,7 @@ private static final int[] NAMES = {
     R.string.command_calculate,
     R.string.command_weather,
     R.string.command_view,
+    R.string.command_info,
     R.string.command_toast
 };
 
@@ -81,7 +80,7 @@ public static CommandTree tree(final SharedPreferences prefs, final Resources re
     // todo: edge case where a mapped app is uninstalled during the activity lifecycle
     final CommandTree cmdTree = new CommandTree(appList.size());
     short i = 0;
-    while (i < CORE_COUNT - 1) {
+    while (i < Commands.DUPLICATE - 1) {
         final String lcName = res.getString(NAMES[i]).toLowerCase();
         final Set<String> aliases = Aliases.set(prefs, res, i);
         cmdTree.putSingle(lcName, ++i);

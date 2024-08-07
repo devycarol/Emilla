@@ -40,7 +40,7 @@ private static class CmdNode {
 
 private final CmdNode root = new CmdNode();
 private int depth = 0;
-private final EmillaCommand[] mCoreCmds = new EmillaCommand[Commands.CORE_COUNT];
+private final EmillaCommand[] mCoreCmds = new EmillaCommand[DUPLICATE];
 private final AppCmdInfo[] mAppCmdInfos;
 private final AppCommand[] mAppCmds;
 
@@ -175,7 +175,7 @@ public EmillaCommand newCore(final AssistActivity act, final short id) {
         case DIAL -> new CommandDial(act);
         case SMS -> new CommandSms(act);
         case EMAIL -> new CommandEmail(act);
-        case LAUNCH -> new CommandLaunch(act);
+        case LAUNCH -> new CommandOpenApp(act);
         case SHARE -> new CommandShare(act);
         case SETTINGS -> new CommandSettings(act);
 //        case NOTE -> new CommandNote(act);
@@ -192,6 +192,7 @@ public EmillaCommand newCore(final AssistActivity act, final short id) {
         case CALCULATE -> new CatCommandCalculate(act);
         case WEATHER -> new CatCommandWeather(act);
         case VIEW -> new CommandView(act);
+        case INFO -> new CommandOpenInfo(act);
         case TOAST -> new CommandToast(act);
         default -> null;
     };
