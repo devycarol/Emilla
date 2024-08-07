@@ -74,13 +74,15 @@
                 tools:ignore="VisualLintTextFieldSize" />
 
             <ImageButton
-                android:id="@+id/submit_button"
+                android:id="@+id/button_submit"
                 android:layout_width="56dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="16dp"
                 android:layout_weight="0"
                 android:background="@drawable/background_action_button"
                 android:contentDescription="@string/submit_command_description"
+                android:padding="8dp"
+                android:scaleType="fitCenter"
                 android:src="@drawable/ic_assistant"
                 app:elevation="0dp" />
         </LinearLayout>

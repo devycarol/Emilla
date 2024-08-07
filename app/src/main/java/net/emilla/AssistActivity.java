@@ -163,7 +163,7 @@ protected void onCreate(final Bundle savedInstanceState) {
     mHelpBox.setVisibility(TextView.GONE);
     mCommandField = findViewById(R.id.field_command);
     mDataField = findViewById(R.id.field_data);
-    mSubmitButton = findViewById(R.id.submit_button);
+    mSubmitButton = findViewById(R.id.button_submit);
 
     setupCommandField();
 
