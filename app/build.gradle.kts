@@ -10,8 +10,8 @@ android {
         applicationId = "net.emilla.nebula"
         minSdk = 19
         targetSdk = 34
-        versionCode = 3
-        versionName = "Alpha 1.2"
+        versionCode = 4
+        versionName = "Alpha 1.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
