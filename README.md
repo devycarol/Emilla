@@ -1,4 +1,6 @@
-# Emilla Android assistant
+# Emilla
+A powerful, user-respecting assistant application for Android.
+
 ### [Releases](https://github.com/devycarol/Emilla/releases)
 
 An awesome digital assistant for Android!
