@@ -3,8 +3,6 @@ A powerful, user-respecting assistant application for Android.
 
 ### [Releases](https://github.com/devycarol/Emilla/releases)
 
-An awesome digital assistant for Android!
-
 What's awesome about Emilla:
 - It doesn't require you to use a microphone, so you can use it wherever you want.
 - It never interrupts you when you're giving a command—Emilla will never assume that it knows better than you.
