@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId = "net.emilla.nebula"
-        minSdk = 19
+        minSdk = 21
         targetSdk = 34
         versionCode = 4
         versionName = "Alpha 1.4"

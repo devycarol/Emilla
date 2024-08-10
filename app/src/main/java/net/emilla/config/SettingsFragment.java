@@ -74,7 +74,6 @@ public void onCreatePreferences(final Bundle savedInstanceState, final String ro
         }
     });
 
-    setupRunInBackgroundPref(res);
     setupSoundSetPref(/*act, prefs, res*/);
     mCustomSounds = SettingVals.soundSet(prefs).equals(Chime.CUSTOM);
     setupCustomSoundPrefs(/*act,*/ prefs, /*res,*/ mCustomSounds);
@@ -168,17 +167,6 @@ private void updateCustomSoundPrefs(/*final Context ctxt, final SharedPreference
     updateCustomSoundPref(/*ctxt, prefs, res,*/ SettingVals.CHIME_FAIL, enabled/*, R.string.chime_fail*/);
 }
 
-private void setupRunInBackgroundPref(final Resources res) {
-    final ListPreference runInBackground = findPreference("run_in_background");
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP && runInBackground != null) {
-        final CharSequence[] entries = {res.getString(R.string.always), res.getString(R.string.never)};
-        runInBackground.setEntries(entries);
-        final CharSequence[] values = {"always", "never"};
-        runInBackground.setEntryValues(values);
-        runInBackground.setDefaultValue("never");
-    }
-}
-
 private void setupFavoriteCommandsPref(final EmillaActivity act) {
     final Preference favoriteCommmands = findPreference("favorite_commands");
     if (favoriteCommmands == null) return;
@@ -215,12 +203,10 @@ private void setupDefaultAssistantPref(final PackageManager pm) {
     // todo: whatever sneaky nonsense the g assistant uses to highlight system settings should also be used here
     final Preference systemDefaultAssistant = findPreference("default_assistant");
     if (systemDefaultAssistant == null) return;
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        final Intent assistantSettings = new Intent(Settings.ACTION_VOICE_INPUT_SETTINGS);
-        if (assistantSettings.resolveActivity(pm) != null) {
-            systemDefaultAssistant.setIntent(assistantSettings);
-            return;
-        }
+    final Intent assistantSettings = new Intent(Settings.ACTION_VOICE_INPUT_SETTINGS);
+    if (assistantSettings.resolveActivity(pm) != null) {
+        systemDefaultAssistant.setIntent(assistantSettings);
+        return;
     }
     systemDefaultAssistant.setVisible(false);
 }

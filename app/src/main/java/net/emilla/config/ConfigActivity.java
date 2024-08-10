@@ -1,6 +1,5 @@
 package net.emilla.config;
 
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.navigation.NavController;
@@ -37,11 +36,5 @@ protected void onCreate(Bundle savedInstanceState) {
             .build();
     NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
     NavigationUI.setupWithNavController(binding.navView, navController);
-}
-
-@Override
-public void onBackPressed() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && getSupportFragmentManager().getBackStackEntryCount() == 0) finishAndRemoveTask();
-    else super.onBackPressed();
 }
 }

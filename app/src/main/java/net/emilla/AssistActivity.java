@@ -132,20 +132,19 @@ protected void onCreate(final Bundle savedInstanceState) {
     final Resources res = getResources();
 
     final ActionBar actionBar = getSupportActionBar();
-    if (actionBar != null) {
-        if (mHasTitlebar = SettingVals.showTitleBar(mPrefs, res)) {
-            final String dfltTitle = res.getString(R.string.activity_assistant);
-            final String title = mPrefs.getString("motd", dfltTitle);
-            if (!title.equals(dfltTitle)) actionBar.setTitle(title);
-        } else actionBar.hide();
-    }
+    if (actionBar == null) throw new NullPointerException();
+    mHasTitlebar = SettingVals.showTitleBar(mPrefs, res);
+    if (mHasTitlebar) {
+        final String dfltTitle = res.getString(R.string.activity_assistant);
+        final String title = mPrefs.getString("motd", dfltTitle);
+        if (!title.equals(dfltTitle)) actionBar.setTitle(title);
+    } else actionBar.hide();
 
-    if (savedInstanceState == null) switch (mPrefs.getString("run_in_background",
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? "follow_system" : "never")) {
+    if (savedInstanceState == null) switch (mPrefs.getString("run_in_background", "follow_system")) {
         case "follow_system":
             // TODO: have listener to turn off the service when power save mode or the accessibility
             //  service is activated
-            // also ensure that "always on" works as intended
+            // also ensure "always on" works as intended
             final PowerManager pwrMgr = (PowerManager) getSystemService(Context.POWER_SERVICE);
             if (pwrMgr.isPowerSaveMode()) break;
             // fall
@@ -441,12 +440,6 @@ protected void onStop() {
         if (shouldCancel()) cancel();
         else if (!mDialogOpen) chime(PEND);
     }
-}
-
-@Override
-public void finishAndRemoveTask() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) super.finishAndRemoveTask();
-    else finish();
 }
 
 @Override
