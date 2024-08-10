@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
-    <PreferenceCategory app:title="@string/general_header">
+    <PreferenceCategory app:title="@string/header_general">
         <ListPreference
             app:defaultValue="web"
             app:entries="@array/command_entries"
@@ -30,11 +30,23 @@
             app:key="run_in_background"
             app:title="@string/pref_run_in_background"
             app:useSimpleSummaryProvider="true" />
-        <!--Todo: this seems to be irrelavant when the accessibility service is running. This should
-             be communicated, and the dummy service should be stopped & disabled.-->
+        <!--Todo: this seems irrelavant when the accessibility service is running. This should be
+             communicated, and the dummy service should be stopped & disabled.-->
+        <SwitchPreference
+            app:defaultValue="false"
+            app:key="always_show_data"
+            app:title="@string/pref_always_show_data"/>
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/customization_header">
+    <PreferenceCategory app:title="@string/header_customization">
+        <ListPreference
+            app:defaultValue="@string/conf_show_titlebar"
+            app:entries="@array/show_titlebar_entries"
+            app:entryValues="@array/show_titlebar_values"
+            app:key="show_titlebar"
+            app:title="@string/pref_show_titlebar"
+            app:useSimpleSummaryProvider="true" />
+        <!--Todo: see SettingVals#showTitleBar()-->
         <ListPreference
             app:defaultValue="nebula"
             app:entries="@array/sound_set_entries"
@@ -64,19 +76,18 @@
             app:key="chime_fail"
             app:title="@string/chime_fail" />
         <EditTextPreference
-            app:defaultValue="@string/app_name_assistant"
+            app:defaultValue="@string/activity_assistant"
             app:key="motd"
             app:title="@string/pref_motd"
             app:useSimpleSummaryProvider="true" />
-        <!--todo: add a reset button-->
-        <!--todo: only allow one line-->
+        <!--Todo: add a reset button, only allow one line, hide when no titlebar-->
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/actions_header">
+    <PreferenceCategory app:title="@string/header_actions">
         <Preference
             app:key="favorite_commands"
-            app:summary="@string/favorites_summary"
-            app:title="@string/favorites" />
+            app:summary="@string/smry_favorites"
+            app:title="@string/pref_favorites" />
         <ListPreference
             app:defaultValue="config"
             app:entries="@array/no_command_action_entries"
@@ -107,7 +118,7 @@
             app:title="@string/pref_action_menu" />
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/system_header"><!--TODO: when settings are hidden, the divider can get misplaced.-->
+    <PreferenceCategory app:title="@string/header_system">
         <Preference
             app:key="default_assistant"
             app:title="@string/pref_default_assistant" />

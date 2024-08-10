@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:contentDescription="@string/spoken_description_empty_space"
-        app:layout_constraintBottom_toTopOf="@+id/container_assistant"
+        app:layout_constraintBottom_toTopOf="@id/container_more_actions"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/help_text_box">
@@ -33,13 +33,11 @@
         android:id="@+id/container_more_actions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
         android:gravity="end"
         android:orientation="horizontal"
-        android:paddingStart="16dp"
-        android:paddingTop="16dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/empty_space">
+        android:padding="8dp"
+        app:layout_constraintBottom_toTopOf="@id/container_assistant">
 
         <ImageButton
             android:id="@+id/button_cursor_start"
@@ -52,13 +50,13 @@
             android:src="@drawable/ic_cursor_start"
             app:elevation="0dp" />
     </LinearLayout>
-    <!--Todo: time for landscape accomodations-->
 
     <LinearLayout
         android:id="@+id/container_assistant"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginBottom="8dp"
         android:background="?attr/colorBackgroundFloating"
         android:orientation="vertical"
         android:padding="8dp"
@@ -67,34 +65,47 @@
         app:layout_constraintRight_toRightOf="parent">
 
         <EditText
-            android:id="@+id/field_command"
+            android:id="@+id/field_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/text_box"
-            android:hint="@string/field_command_hint"
+            android:hint="@string/data_hint_default"
+            android:imeOptions="actionPrevious"
             android:importantForAutofill="no"
-            android:inputType="text"
+            android:inputType="textMultiLine|textCapSentences"
             android:minHeight="48dp"
             android:textColorHint="?attr/colorControlNormal"
+            android:visibility="gone"
             tools:ignore="VisualLintTextFieldSize" />
 
         <LinearLayout
-            android:id="@+id/container_data_submit"
+            android:id="@+id/container_command"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:orientation="horizontal">
 
+            <ImageButton
+                android:id="@+id/button_show_data"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/background_action_button"
+                android:contentDescription="@string/spoken_description_show_data"
+                android:padding="8dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_show_data"
+                app:elevation="0dp" />
+
             <EditText
-                android:id="@+id/field_data"
-                android:layout_width="0dp"
+                android:id="@+id/field_command"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/text_box"
-                android:hint="@string/data_hint_default"
-                android:imeOptions="actionPrevious"
+                android:hint="@string/field_command_hint"
                 android:importantForAutofill="no"
-                android:inputType="textMultiLine|textCapSentences"
+                android:inputType="text|textCapSentences"
                 android:minHeight="56dp"
                 android:textColorHint="?attr/colorControlNormal"
                 tools:ignore="VisualLintTextFieldSize" />

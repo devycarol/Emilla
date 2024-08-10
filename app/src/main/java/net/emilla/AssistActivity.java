@@ -1,12 +1,10 @@
 package net.emilla;
 
 import static android.content.Intent.*;
-import static android.os.Environment.DIRECTORY_DOCUMENTS;
-import static android.os.Environment.getExternalStoragePublicDirectory;
 import static android.view.KeyEvent.*;
 import static android.view.inputmethod.EditorInfo.*;
-import static androidx.core.content.FileProvider.getUriForFile;
 import static net.emilla.utils.Chime.*;
+import static java.lang.Character.isWhitespace;
 import static java.lang.Math.max;
 
 import android.app.AlertDialog;
@@ -37,8 +35,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
@@ -61,8 +61,8 @@ import net.emilla.utils.Chime;
 import net.emilla.utils.Contacts;
 import net.emilla.utils.Dialogs;
 import net.emilla.utils.Features;
+import net.emilla.utils.Lang;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -86,14 +86,18 @@ private ToneGenerator mToneGenerator;
 private FrameLayout mEmptySpace;
 private TextView mHelpBox;
 private EditText mCommandField, mDataField;
-private ImageButton mSubmitButton, mCursorStartButton;
+private ImageButton mSubmitButton, mShowDataButton, mCursorStartButton;
 
 private AlertDialog mCancelDialog;
 
-public ArrayList<Uri> mAttachments; // TODO: make private
+public ArrayList<Uri> mAttachments; // Todo priv
 private EmillaCommand mCommand;
 private boolean mNoCommand = true;
-private boolean mUsingData = true;
+private boolean
+    mDataAvailable = true,
+    mDataEnabled = true,
+    mDataVisible = false,
+    mDataFocused = false;
 private int mImeAction = IME_ACTION_NEXT;
 private boolean mLaunched = false;
 private boolean mFocused = false;
@@ -103,6 +107,7 @@ private boolean mDialogOpen = false;
 private boolean mTouchingSubmit = false;
 private boolean mLongPressingSubmit = false;
 private int mCommandIcon = R.drawable.ic_assistant;
+private boolean mHasTitlebar;
 
 //public static long nanosPlease(final long prevTime, final String label) {
 //    final long curTime = System.nanoTime();
@@ -116,14 +121,11 @@ private int mCommandIcon = R.drawable.ic_assistant;
 
 @Override
 protected void onCreate(final Bundle savedInstanceState) {
-    if (savedInstanceState == null) {
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        mSounds = SettingVals.soundSet(mPrefs);
-        if (mSounds.equals("voice_dialer")) {
-            mToneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
-        }
-        chime(START);
-    }
+    mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+    mSounds = SettingVals.soundSet(mPrefs);
+    if (mSounds.equals("voice_dialer")) mToneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC,
+            ToneGenerator.MAX_VOLUME);
+    if (savedInstanceState == null) chime(START);
     super.onCreate(savedInstanceState);
 
     setContentView(R.layout.activity_assist);
@@ -131,10 +133,11 @@ protected void onCreate(final Bundle savedInstanceState) {
 
     final ActionBar actionBar = getSupportActionBar();
     if (actionBar != null) {
-        final String defaultTitle = res.getString(R.string.app_name_assistant);
-        final String title = mPrefs.getString("motd", defaultTitle);
-        if (!title.equals(defaultTitle)) actionBar.setTitle(title);
-        // todo: actionbar that doesn't suck in landscape
+        if (mHasTitlebar = SettingVals.showTitleBar(mPrefs, res)) {
+            final String dfltTitle = res.getString(R.string.activity_assistant);
+            final String title = mPrefs.getString("motd", dfltTitle);
+            if (!title.equals(dfltTitle)) actionBar.setTitle(title);
+        } else actionBar.hide();
     }
 
     if (savedInstanceState == null) switch (mPrefs.getString("run_in_background",
@@ -147,17 +150,14 @@ protected void onCreate(final Bundle savedInstanceState) {
             if (pwrMgr.isPowerSaveMode()) break;
             // fall
         case "always":
-            final Intent serviceIntent = new Intent(this, EmillaForegroundService.class);
-            startService(serviceIntent);
+            startService(new Intent(this, EmillaForegroundService.class));
     }
 
     final PackageManager pm = getPackageManager();
     mAppList = Apps.resolveList(pm);
     mCommandTree = EmillaCommand.tree(mPrefs, res, pm, mAppList);
-    if (savedInstanceState == null) {
-        mPhoneMap = Contacts.mapPhones(mPrefs);
-        mEmailMap = Contacts.mapEmails(mPrefs);
-    }
+    mPhoneMap = Contacts.mapPhones(mPrefs);
+    mEmailMap = Contacts.mapEmails(mPrefs);
 
     mEmptySpace = findViewById(R.id.empty_space);
     mHelpBox = findViewById(R.id.help_text_box);
@@ -165,16 +165,26 @@ protected void onCreate(final Bundle savedInstanceState) {
     mCommandField = findViewById(R.id.field_command);
     mDataField = findViewById(R.id.field_data);
     mSubmitButton = findViewById(R.id.button_submit);
+    mShowDataButton = findViewById(R.id.button_show_data);
 
     setupCommandField();
-
-    mDataField.setMinLines(2);
+    final boolean alwaysShowData = SettingVals.alwaysShowData(mPrefs);
+    mDataVisible = alwaysShowData
+            || savedInstanceState != null && savedInstanceState.getBoolean("dataFieldVisible");
+    setupDataField();
 
     mEmptySpace.setOnClickListener(v -> cancelIfWarranted());
     mHelpBox.setOnClickListener(v -> cancelIfWarranted());
 
     setupSubmitButton();
+    setupShowDataButton(alwaysShowData);
     setupCursorStartButton();
+}
+
+@Override // Todo: replace with view-model
+protected void onSaveInstanceState(@NonNull final Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putBoolean("dataFieldVisible", mDataVisible);
 }
 
 private void setupCommandField() {
@@ -194,14 +204,22 @@ private void setupCommandField() {
     });
 
     mCommandField.setOnEditorActionListener((v, actionId, event) -> switch (actionId) {
-    case IME_ACTION_NEXT:
-        if (mUsingData) yield false;
-        // fall
-    case IME_ACTION_GO, IME_ACTION_SEARCH, IME_ACTION_SEND, IME_ACTION_DONE:
-        submitCommand();
-        yield true;
-    default:
-        yield false;
+        case IME_ACTION_UNSPECIFIED, IME_ACTION_NONE, IME_ACTION_PREVIOUS -> false;
+        default -> switch (mImeAction) {
+            // TODO ACC: There must be clarity on what the enter key will do if you can't see the
+            //  screen.
+            case IME_ACTION_NEXT:
+                if (mDataAvailable) {
+                    showDataField(true);
+                    yield true;
+                }
+                // fall
+            case IME_ACTION_GO, IME_ACTION_SEARCH, IME_ACTION_SEND, IME_ACTION_DONE:
+                submitCommand();
+                yield true;
+            default:
+                yield false;
+        };
     });
 
     mCommand = mCommandTree.newCore(this, Commands.DEFAULT);
@@ -211,18 +229,27 @@ private void setupCommandField() {
     mCommandField.requestFocus();
 }
 
+private void setupDataField() {
+    mDataField.setOnFocusChangeListener((v, hasFocus) -> {
+        if (!mDialogOpen) mDataFocused = hasFocus;
+    });
+    if (mDataVisible) showDataField(false);
+}
+
 private void setupSubmitButton() {
     mSubmitButton.setOnLongClickListener(v -> {
-        if (mTouchingSubmit) { // TODO: verify accessibility function
+        if (mTouchingSubmit) {
+            // TODO ACC: verify accessibility function
             mSubmitButton.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
             mLongPressingSubmit = true;
             mSubmitButton.setImageResource(R.drawable.ic_assistant);
         }
         return false;
     });
-    mSubmitButton.setOnTouchListener((v, event) -> { // TODO ACC: it's critical to ensure this works with accessibility frameworks
+    mSubmitButton.setOnTouchListener((v, event) -> {
+        // TODO ACC: it's critical to ensure this works with accessibility services
         switch (event.getAction()) {
-        case MotionEvent.ACTION_DOWN: // TODO: you shouldn't be able to submit twice
+        case MotionEvent.ACTION_DOWN: // Todo: you shouldn't be able to submit twice
             mSubmitButton.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP);
             mTouchingSubmit = true;
             return false;
@@ -257,30 +284,81 @@ private void setupSubmitButton() {
     });
 }
 
-private void cursorStart(final EditText field) {
-    if (field.length() == 0) {
+private void cursorStart() {
+    if (mCommandField.length() == 0) {
         chime(PEND);
         return;
     }
-    final boolean atStart = max(field.getSelectionStart(), field.getSelectionEnd()) == 0;
-    if (atStart) {
-        field.setSelection(field.length());
+    if (!mCommandField.hasFocus()) mCommandField.requestFocus();
+    final int start = mCommandField.getSelectionStart(), end = mCommandField.getSelectionEnd();
+    if (max(start, end) == 0) {
+        mCommandField.setSelection(mCommandField.length());
         chime(RESUME);
     } else {
-        field.setSelection(0);
+        mCommandField.setSelection(0);
         chime(ACT);
     }
 }
 
-private void setupCursorStartButton() {
-    mCursorStartButton = findViewById(R.id.button_cursor_start);
-    mCursorStartButton.setOnClickListener(v -> {
-        if (mDataField.hasFocus()) {
-            cursorStart(mDataField);
-            return;
-        } else if (!mCommandField.hasFocus()) mCommandField.requestFocus();
-        cursorStart(mCommandField);
+private void showDataField(final boolean focus) {
+    mDataField.setVisibility(EditText.VISIBLE);
+    if (focus) mDataField.requestFocus();
+    mShowDataButton.setImageResource(R.drawable.ic_hide_data);
+    mShowDataButton.setContentDescription(getString(R.string.spoken_description_hide_data));
+    mDataVisible = true;
+}
+
+private void disableDataButton() {
+    mShowDataButton.setEnabled(false);
+    mShowDataButton.setAlpha(0.5f);
+}
+
+private void hideDataField() {
+    final int start, end;
+    final boolean dataFocused = mDataField.hasFocus();
+    if (dataFocused) {
+        final int dataLen = mDataField.length();
+        start = mDataField.getSelectionStart() - dataLen;
+        end = mDataField.getSelectionEnd() - dataLen;
+    } else {
+        start = mCommandField.getSelectionStart();
+        end = mCommandField.getSelectionEnd();
+    }
+    mCommandField.requestFocus();
+    if (mDataField.length() > 0) {
+        final Editable commandText = mCommandField.getText();
+        final Editable dataText = mDataField.getText();
+        final int len = commandText.length();
+        if (len == 0 || isWhitespace(commandText.charAt(len - 1))) mCommandField.append(dataText);
+        else mCommandField.append(Lang.wordConcat(getResources(), "", dataText));
+        mDataField.setText(null);
+    }
+    final int newLen = mCommandField.length();
+    if (dataFocused) mCommandField.setSelection(newLen + start, newLen + end);
+    else mCommandField.setSelection(start, end);
+    mDataField.setVisibility(EditText.GONE);
+    if (!mDataAvailable) disableDataButton();
+    mShowDataButton.setImageResource(R.drawable.ic_show_data);
+    mShowDataButton.setContentDescription(getString(R.string.spoken_description_show_data));
+    mDataVisible = false;
+}
+
+private void setupShowDataButton(final boolean disable) {
+    if (disable) mShowDataButton.setVisibility(ImageButton.GONE);
+    else mShowDataButton.setOnClickListener(v -> {
+        if (mDataVisible) hideDataField();
+        else showDataField(true);
     });
+}
+
+private void setupCursorStartButton() {
+    if (true) {
+        // Todo: instant-command buttons of all sorts
+        findViewById(R.id.container_more_actions).setVisibility(LinearLayout.GONE);
+        return;
+    }
+    mCursorStartButton = findViewById(R.id.button_cursor_start);
+    mCursorStartButton.setOnClickListener(v -> cursorStart());
 }
 
 private void torch() { // todo: migrate out as a command
@@ -337,11 +415,11 @@ private void quickAct(final String action) {
 
 protected void onResume() {
     super.onResume();
-    // TODO: doesn't properly trigger for the accessibility menu "Assistant" item
+    // TODO: Must revise trigger. Double-acts for the corner gesture in no-buttons mode. Doesn't
+    //  act for the access menu "Assistant" item
     if (mFocused && !mDialogOpen /*Todo: this is weird..*/) {
         final String doubleAssistAction = mPrefs.getString("action_double_assist",
                 Features.torch(getPackageManager()) ? "torch" : "config");
-        // TODO: must revise trigger. Double-acts for the corner gesture in no-buttons mode.
         quickAct(doubleAssistAction);
     } else {
         if (mLaunched) resume(true);
@@ -377,15 +455,29 @@ public boolean onKeyUp(final int keyCode, final KeyEvent event) {
     // u could have the command chain into a second literal "cancel" command to just have a double-click action :)
     // could have it open a new window or tab. tabs would be cool. anyways, assist key can't be captured here.
     switch (keyCode) {
-    case KEYCODE_BACK -> { // TODO configure? command history?
+    case KEYCODE_BACK -> { // Todo config? command history?
         if (mPendingCancel) cancel(); // todo: is this necessary, or is it already handled by the dialog's key event listener?
         else cancelIfWarranted();
     }
     case KEYCODE_MENU -> quickAct(mPrefs.getString("action_menu", "config"));
-    case KEYCODE_SEARCH -> refreshInput(); // todo: make configurable
+    case KEYCODE_SEARCH -> refreshInput(); // Todo config
     default -> { return false; }
     }
     return true;
+}
+
+private void enableDataButton() {
+    mShowDataButton.setEnabled(true);
+    mShowDataButton.setAlpha(1.0f);
+}
+
+private void updateDataAvailability(final boolean available) {
+    if (available) {
+        enableDataButton();
+        mDataField.setEnabled(mDataEnabled = true);
+    } else if (!mDataVisible) disableDataButton();
+    else mDataField.setEnabled(mDataEnabled = false);
+    mDataAvailable = available;
 }
 
 private void setTextsIfCommandChanged(/*mutable*/ String command) {
@@ -402,11 +494,14 @@ private void setTextsIfCommandChanged(/*mutable*/ String command) {
         mCommand = cmd;
         mNoCommand = noCommand;
         final Resources res = getResources();
-        final ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            final CharSequence title = noCommand ? mPrefs.getString("motd", res.getString(R.string.app_name_assistant))
+        if (mHasTitlebar) {
+            final ActionBar actionBar = getSupportActionBar();
+            if (actionBar != null) {
+                final CharSequence title = noCommand ? mPrefs.getString("motd",
+                        res.getString(R.string.activity_assistant))
                     : mCommand.title();
-            actionBar.setTitle(title);
+                actionBar.setTitle(title);
+            }
         }
         final int detailsId = mCommand.detailsId();
         final CharSequence details = detailsId == -1 ? null : String.join("\n\n", res.getStringArray(detailsId));
@@ -430,8 +525,8 @@ private void setTextsIfCommandChanged(/*mutable*/ String command) {
         final int iconId = noCommand ? R.drawable.ic_assistant : mCommand.icon();
         mSubmitButton.setImageResource(iconId); // todo: relocate
         mCommandIcon = iconId;
-
-        mDataField.setEnabled(mUsingData = noCommand || mCommand.usesData());
+        final boolean dataAvailable = noCommand || mCommand.usesData();
+        if (dataAvailable != mDataAvailable) updateDataAvailability(dataAvailable);
 
         int imeAction = noCommand ? IME_ACTION_NEXT : mCommand.imeAction();
         if (imeAction != mImeAction) {
@@ -448,8 +543,7 @@ private void setTextsIfCommandChanged(/*mutable*/ String command) {
 @Override
 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
-    // TODO: re-work this entirely
-    //  would like to pass ready-to-go intents whenever possible
+    // Todo: re-work this entirely. Would like to pass ready-to-go intents whenever possible
 
     toast("I'm here now!", false);
     switch (requestCode) {
@@ -512,23 +606,6 @@ public void getFiles() { // todo: make private?
     startActivityForResult(in, GET_FILE);
 }
 
-/*==========*
- * Commands *
- *==========*/
-
-public void help() { // TODO: remove
-    final File helpFile = new File(getExternalStoragePublicDirectory(DIRECTORY_DOCUMENTS), "Help!.md");
-    final Uri helpUri = getUriForFile(this, Apps.PKG + ".fileprovider", helpFile);
-    final Intent in = new Intent(ACTION_VIEW)
-            .setDataAndType(helpUri, "text/plain")
-            .putExtra(EXTRA_STREAM, helpUri)
-            .setFlags(FLAG_GRANT_READ_URI_PERMISSION | FLAG_GRANT_WRITE_URI_PERMISSION | FLAG_ACTIVITY_NEW_TASK)
-            .putExtra("EXTRA_FILEPATH", helpFile.getAbsolutePath());
-
-    if (in.resolveActivity(getPackageManager()) == null) throw new EmlaAppsException("No app found to view text files.");
-    succeed(in);
-}
-
 /*====================*
  * Command Processing *
  *====================*/
@@ -548,12 +625,12 @@ private void chime(final byte id) {
     case Chime.VOICE_DIALER -> mToneGenerator.startTone(Chime.dialerTone(id));
     case Chime.CUSTOM -> {
         final String uriStr = mPrefs.getString(Chime.preferenceOf(id), null);
-        final MediaPlayer player;
+        MediaPlayer player;
         if (uriStr == null) player = MediaPlayer.create(this, Chime.nebula(id));
         else {
-            final MediaPlayer custom = MediaPlayer.create(this, Uri.parse(uriStr));
-            // In case the URI's sound goes missing..
-            player = custom == null ? MediaPlayer.create(this, Chime.nebula(id)) : custom;
+            player = MediaPlayer.create(this, Uri.parse(uriStr));
+            if (player == null) player = MediaPlayer.create(this, Chime.nebula(id));
+            // In case the URI breaks
         }
         player.setOnCompletionListener(MediaPlayer::release);
         player.start();
@@ -562,10 +639,10 @@ private void chime(final byte id) {
 
 private void resume(final boolean chime) {
     if (!mDialogOpen) {
-        final boolean dataFieldFocused = mDataField.hasFocus();
-        if (!dataFieldFocused) mCommandField.requestFocus();
+        final EditText field = mDataFocused ? mDataField : mCommandField;
+        field.requestFocus();
         ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
-                .showSoftInput(dataFieldFocused ? mDataField : mCommandField, InputMethodManager.SHOW_IMPLICIT);
+                .showSoftInput(field, InputMethodManager.SHOW_IMPLICIT);
         if (chime) chime(RESUME);
     }
 }
@@ -588,7 +665,7 @@ public void onCloseDialog(final boolean chime) {
     mEmptySpace.setEnabled(true);
     mSubmitButton.setEnabled(true);
     mCommandField.setEnabled(true);
-    mDataField.setEnabled(mUsingData);
+    mDataField.setEnabled(mDataEnabled);
     mDialogOpen = false;
 
     resume(chime);
@@ -622,11 +699,11 @@ private void cancelIfWarranted() {
 }
 
 private void showDialog(final AlertDialog dialog, final byte chime) {
+    mDialogOpen = true;
     mEmptySpace.setEnabled(false);
     mSubmitButton.setEnabled(false);
     mCommandField.setEnabled(false);
     mDataField.setEnabled(false);
-    mDialogOpen = true;
     dialog.show();
     chime(chime);
 }
@@ -645,7 +722,7 @@ public void offer(final AlertDialog dialog) {
 }
 
 public void offer(final Intent intent, final int requestCode) {
-    startActivityForResult(intent, requestCode); // TODO: rework handling, resolve deprecation
+    startActivityForResult(intent, requestCode); // Todo: rework handling, resolve deprecation
 }
 
 @RequiresApi(api = Build.VERSION_CODES.M)
@@ -670,23 +747,22 @@ private void submitCommand() {
     if (mCommand instanceof CommandWrapDefault) instruction = fullCommand;
     else {
         final int spaceIdx = fullCommand.indexOf(' ');
-        // TODO: this mode of space-separation won't work for all languages, and is broken for
-        //  multi-word app labels
+        // TODO LANG: space-separation no good
         instruction = spaceIdx > 0 ? fullCommand.substring(spaceIdx).trim()
                 : null;
     }
 try {
-    if (mUsingData && mDataField.length() > 0) {
+    if (mDataEnabled && mDataField.length() > 0) {
         if (instruction == null) ((DataCommand) mCommand).runWithData(data);
         else ((DataCommand) mCommand).runWithData(instruction, data);
     } else if (instruction == null) mCommand.run();
     else mCommand.run(instruction);
 } catch (EmillaException e) {
     fail(e.getMessage());
-} catch (Exception e) { // TODO: there are *plenty* of cases where this isn't safe, especially when files are involved
-    fail("Unknown error. Please submit a bug report!"); // TODO: lang
+} catch (Exception e) {
+    fail("Unknown error. Please submit a bug report!"); // TODO LANG
     Log.e("UNKNOWN COMMAND ERROR", "", e);
-    // TODO: add *easy* bug reporting. like, so easy ;)
+    // Todo: easy bug reporting ;)
 }}
 
 @Override

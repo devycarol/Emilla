@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Emilla.DayNight" parent="Theme.MaterialComponents.Light" />
+
+    <style name="Theme.Emilla" parent="Theme.Emilla.Base">
+        <item name="colorPrimary">@color/main_500</item>
+        <item name="colorPrimaryVariant">@color/main_700</item>
+        <item name="colorOnPrimary">#FFF</item>
+        <item name="colorSecondary">@color/secn_500</item>
+        <item name="colorSecondaryVariant">@color/secn_700</item>
+        <item name="colorOnSecondary">#000</item>
+        <item name="colorSecondaryContainer">@color/secn_background_light</item>
+        <item name="colorBackgroundFloating">@color/secn_background_light</item>
+        <item name="android:textColor">#000</item>
+        <item name="android:windowBackground">@color/main_background_light</item>
+    </style>
+
+    <style name="Theme.Assistant" parent="Theme.Assistant.Base">
+        <item name="colorBackgroundFloating">@color/main_background_light</item>
+        <item name="colorSucceed">@color/main_200</item>
+        <item name="android:windowBackground">@color/trans_background_light</item>
+        <item name="android:navigationBarColor">@color/trans_background_light</item>
+    </style>
+</resources>

@@ -27,7 +27,7 @@ protected static String specificTitle(final Context ctxt, final CharSequence app
 
 protected final Intent mLaunchIntent;
 private final CharSequence mTitle;
-protected final AppCmdInfo mInfo; // TODO: replace with icons
+protected final AppCmdInfo mInfo;
 
 protected AppCommand(final AssistActivity act, final AppCmdInfo info, final CharSequence cmdTitle) {
     super(act);

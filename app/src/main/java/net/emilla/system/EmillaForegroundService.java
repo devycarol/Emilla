@@ -41,7 +41,7 @@ public class EmillaForegroundService extends Service {
                         CHANNEL_ID,
                         getString(R.string.channel_foreground),
                         NotificationManager.IMPORTANCE_DEFAULT);
-                channel.setDescription(getString(R.string.channel_foreground_desc));
+                channel.setDescription(getString(R.string.dscript_foreground));
                 nm.createNotificationChannel(channel);
             }
             builder.setContentText(getString(R.string.notif_foreground_text)); // "tap to disable" text

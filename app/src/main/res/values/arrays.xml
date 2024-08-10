@@ -10,6 +10,17 @@
         <item>follow_system</item>
         <item>never</item>
     </string-array>
+    <!-- Title bar preference -->
+    <string-array name="show_titlebar_entries" translatable="false">
+        <item>@string/always</item>
+        <item>@string/optn_show_titlebar_portrait</item>
+        <item>@string/never</item>
+    </string-array>
+    <string-array name="show_titlebar_values" translatable="false">
+        <item>always</item>
+        <item>portrait</item>
+        <item>never</item>
+    </string-array>
     <!-- Sound set preference -->
     <string-array name="sound_set_entries">
         <item>@string/none</item>

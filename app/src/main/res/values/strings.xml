@@ -6,21 +6,20 @@
     <string name="settings">Settings</string>
     <!-- Android system "App info" link. Should match @android:string/app_info -->
     <string name="app_info">App info</string>
-    <!-- These two are options for the "Run in background" permission -->
     <string name="always">Always</string>
     <string name="never">Never</string>
     <string name="none">None</string>
 
     <string name="app_name">Emilla</string>
-    <string name="app_name_assistant">Emilla Assistant</string>
-    <string name="title_commands">Commands</string>
+    <string name="activity_assistant">Emilla Assistant</string>
     <string name="title_assistant">Assistant</string>
+    <string name="title_commands">Commands</string>
 
     <string name="channel_foreground">Background service</string>
-    <string name="channel_foreground_desc">Running in the background helps the assistant launch faster</string>
+    <string name="dscript_foreground">Running in the background helps the assistant launch faster</string>
 
     <string name="notif_foreground_title">Running in background</string>
-    <string name="notif_foreground_text">Disable notification</string>
+    <string name="notif_foreground_text">Press to disable notification</string>
     <string name="notif_action_foreground_config">Change background behavior</string>
 
     <!-- UI Components -->
@@ -28,20 +27,26 @@
     <string name="spoken_description_submit_command">Submit command</string>
     <string name="spoken_description_empty_space">Empty space</string>
     <string name="spoken_description_cursor_start">Cursor start</string>
+    <string name="spoken_description_show_data">Show data field</string>
+    <string name="spoken_description_hide_data">Hide data field</string>
     <string name="welcome_message">Hello there!</string>
     <string name="welcome_instruction">To open the assistant, re-press the button below.</string>
 
-    <!-- Preference Titles -->
-    <string name="general_header">General</string>
-    <string name="customization_header">Customization</string>
-    <string name="actions_header">Actions</string>
-    <string name="system_header">System</string>
+    <!-- Setting category Titles -->
+    <string name="header_general">General</string>
+    <string name="header_customization">Customization</string>
+    <string name="header_actions">Actions</string>
+    <string name="header_system">System</string>
 
     <!-- General settings -->
-    <string name="favorites">Favorite commands</string>
-    <string name="favorites_summary">Shortcuts for your favorite actions</string>
+    <string name="pref_favorites">Favorite commands</string>
+    <string name="smry_favorites">Shortcuts for your favorite actions</string>
+    <string name="pref_run_in_background">Run in background</string>
+    <string name="pref_always_show_data">Always show data field</string>
 
     <!-- Customization settings -->
+    <string name="pref_show_titlebar">Titlebar</string>
+    <string name="optn_show_titlebar_portrait">Portrait</string>
     <string name="pref_sounds">Sounds</string>
     <string name="sound_set_nebula">Nebula</string>
     <string name="sound_set_voice_dialer">Redial</string>
@@ -53,7 +58,6 @@
     <string name="chime_exit">Exit</string>
     <string name="chime_succeed">Succeed</string>
     <string name="chime_fail">Fail</string>
-    <string name="pref_run_in_background">Run in background</string>
 
     <!-- Action settings -->
     <string name="pref_action_no_command">No command</string>

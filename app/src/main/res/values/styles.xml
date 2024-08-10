@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="ActionBarStyle" parent="Widget.AppCompat.ActionBar">
-        <item name="background">?attr/colorBackgroundFloating</item>
-    </style>
-
     <style name="Preference.Category.Emilla" parent="Preference.Category.Material">
         <item name="android:layout">@layout/preference_category_emilla</item>
         <item name="iconSpaceReserved">false</item>

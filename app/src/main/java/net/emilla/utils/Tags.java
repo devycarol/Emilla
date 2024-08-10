@@ -10,7 +10,7 @@ import net.emilla.exceptions.EmlaBadCommandException;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 
-public class Tags { // TODO: localization
+public class Tags { // TODO LANG
     // SMS tags
     public static final String SUBJECT = "/sub(ject)?";
     public static final String BODY = "/(b(ody?)?|m(essage|sg)?|t(e?xt)?)";
