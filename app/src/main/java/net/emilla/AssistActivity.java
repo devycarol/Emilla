@@ -90,7 +90,7 @@ private ImageButton mSubmitButton, mShowDataButton, mCursorStartButton;
 
 private AlertDialog mCancelDialog;
 
-public ArrayList<Uri> mAttachments; // Todo priv
+private ArrayList<Uri> mAttachments;
 private EmillaCommand mCommand;
 private boolean mNoCommand = true;
 private boolean
@@ -585,6 +585,18 @@ public HashMap<String, String> emailMap() {
 
 public String mediaCsv() {
     return mPrefs.getString("medias", CommandView.DFLT_MEDIA);
+}
+
+public ArrayList<Uri> attachments() {
+    return mAttachments;
+}
+
+/*================*
+ * Setter methods *
+ *================*/
+
+public void nullifyAttachments() {
+    mAttachments = null;
 }
 
 /*================*

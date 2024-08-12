@@ -77,13 +77,13 @@ private Intent putAttachmentsAndRecipients(final String recipients) {
     final Matcher m = compile(FLAG_ATTACH).matcher(recipients);
     if (m.find()) {
         final AssistActivity act = activity();
-        if (act.mAttachments == null) {
+        if (act.attachments() == null) {
             act.getFiles();
             return null;
         }
-        mSendMultipleIntent.putExtra(EXTRA_STREAM, act.mAttachments);
+        mSendMultipleIntent.putExtra(EXTRA_STREAM, act.attachments());
         mSendMultipleIntent.setSelector(mIntent);
-        act.mAttachments = null; // this will overwrite attachments if /pic is added
+        act.nullifyAttachments(); // this will overwrite attachments if /pic is added
         final String actualRecipients = m.replaceFirst("");
         if (!actualRecipients.isEmpty()) putRecipients(mSendMultipleIntent, actualRecipients);
         return mSendMultipleIntent;
