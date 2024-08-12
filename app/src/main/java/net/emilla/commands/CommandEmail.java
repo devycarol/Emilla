@@ -60,9 +60,9 @@ private void putRecipients(final Intent intent, final String recipients) {
     // todo: validate the emails
     people = Tags.putEmailsIfPresent(people, Tags.CC, intent, EXTRA_CC, Tags.EMAIL_TAGS, mEmailMap);
     people = Tags.putEmailsIfPresent(people, Tags.BCC, intent, EXTRA_BCC, Tags.EMAIL_TAGS, mEmailMap);
-    if (Tags.itHas(people, Tags.tTO)) {
-        final String to = Tags.getFrom(people, Tags.tTO, Tags.EMAIL_TAGS);
-        people = Tags.strip(people, Tags.tTO, to);
+    if (Tags.itHas(people, Tags.TO)) {
+        final String to = Tags.getFrom(people, Tags.TO, Tags.EMAIL_TAGS);
+        people = Tags.strip(people, Tags.TO, to);
         if (people.isEmpty()) people = to;
         else people = people + ',' + to;
         intent.putExtra(EXTRA_EMAIL, Contacts.namesToEmails(people, mEmailMap));

@@ -19,8 +19,8 @@ public class Tags { // TODO LANG
     // Email tags
     public static final String CC = "(^| )cc";
     public static final String BCC = "(^| )bcc";
-    public static final String tTO = "(^| )to";
-    public static final String EMAIL_TAGS = makeTags(CC, new String[]{BCC, tTO});
+    public static final String TO = "(^| )to";
+    public static final String EMAIL_TAGS = makeTags(CC, new String[]{BCC, TO});
 
     // Calendar tags
     public static final String LOCATION = "/loc(ation)?";

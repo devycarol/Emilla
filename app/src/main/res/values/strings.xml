@@ -260,6 +260,7 @@
     <string name="toast_pomodoro">You got it!</string>
     <string name="toast_task_created">Task created.</string>
     <string name="toast_tasks_created">%d tasks created.</string>
+    <string name="toast_error_unknown">Unknown error. Please submit a bug report!</string>
 
     <string name="tag_toast_long">/long</string>
 </resources>

@@ -753,8 +753,7 @@ private void submitCommand() {
     else {
         final int spaceIdx = fullCommand.indexOf(' ');
         // TODO LANG: space-separation no good
-        instruction = spaceIdx > 0 ? fullCommand.substring(spaceIdx).trim()
-                : null;
+        instruction = spaceIdx > 0 ? fullCommand.substring(spaceIdx).trim() : null;
     }
 try {
     if (mDataEnabled && mDataField.length() > 0) {
@@ -765,7 +764,7 @@ try {
 } catch (EmillaException e) {
     fail(e.getMessage());
 } catch (Exception e) {
-    fail("Unknown error. Please submit a bug report!"); // TODO LANG
+    fail(getString(R.string.toast_error_unknown));
     Log.e("UNKNOWN COMMAND ERROR", "", e);
     // Todo: easy bug reporting ;)
 }}

@@ -11,8 +11,7 @@ import net.emilla.utils.Apps;
 import net.emilla.utils.Dialogs;
 
 public class CommandOpenUninstall extends OpenCommand {
-@Override
-@DrawableRes
+@Override @DrawableRes
 public int icon() {
     return R.drawable.ic_uninstall;
 }
