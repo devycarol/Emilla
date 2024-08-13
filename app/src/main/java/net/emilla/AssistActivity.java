@@ -44,10 +44,9 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.preference.PreferenceManager;
 
-import net.emilla.commands.CommandTree;
+import net.emilla.commands.CmdTree;
 import net.emilla.commands.CommandView;
-import net.emilla.commands.CommandWrapDefault;
-import net.emilla.commands.DataCommand;
+import net.emilla.commands.DataCmd;
 import net.emilla.commands.EmillaCommand;
 import net.emilla.commands.EmillaCommand.Commands;
 import net.emilla.config.ConfigActivity;
@@ -76,7 +75,7 @@ public static final int // intent codes
 
 private SharedPreferences mPrefs;
 
-private CommandTree mCommandTree;
+private CmdTree mCmdTree;
 private List<ResolveInfo> mAppList;
 private HashMap<String, String> mPhoneMap;
 private HashMap<String, String> mEmailMap;
@@ -121,12 +120,13 @@ private boolean mHasTitlebar;
 
 @Override
 protected void onCreate(final Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
     mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
     mSounds = SettingVals.soundSet(mPrefs);
     if (mSounds.equals("voice_dialer")) mToneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC,
             ToneGenerator.MAX_VOLUME);
     if (savedInstanceState == null) chime(START);
-    super.onCreate(savedInstanceState);
 
     setContentView(R.layout.activity_assist);
     final Resources res = getResources();
@@ -154,7 +154,7 @@ protected void onCreate(final Bundle savedInstanceState) {
 
     final PackageManager pm = getPackageManager();
     mAppList = Apps.resolveList(pm);
-    mCommandTree = EmillaCommand.tree(mPrefs, res, pm, mAppList);
+    mCmdTree = EmillaCommand.tree(mPrefs, res, pm, mAppList);
     mPhoneMap = Contacts.mapPhones(mPrefs);
     mEmailMap = Contacts.mapEmails(mPrefs);
 
@@ -221,7 +221,7 @@ private void setupCommandField() {
         };
     });
 
-    mCommand = mCommandTree.newCore(this, Commands.DEFAULT);
+    mCommand = mCmdTree.newCore(this, Commands.DEFAULT, null);
 
     mCommandField.setHorizontallyScrolling(false);
     mCommandField.setMaxLines(8);
@@ -481,7 +481,7 @@ private void setTextsIfCommandChanged(/*mutable*/ String command) {
         command = command.substring(nonSpace, len);
     }
 
-    final EmillaCommand cmd = mCommandTree.get(this, command.toLowerCase());
+    final EmillaCommand cmd = mCmdTree.get(this, command);
     final boolean noCommand = command.isEmpty();
     if (cmd != mCommand || noCommand != mNoCommand) {
         mCommand = cmd;
@@ -509,7 +509,7 @@ private void setTextsIfCommandChanged(/*mutable*/ String command) {
             mDataField.setHint(R.string.data_hint_default);
         } else if (mCommand.usesData()) {
             mDataField.setContentDescription(null);
-            mDataField.setHint(((DataCommand) mCommand).dataHint());
+            mDataField.setHint(((DataCmd) mCommand).dataHint());
         } else if (mDataField.getHint() != null) {
             mDataField.setHint(null);
             mDataField.setContentDescription(res.getString(R.string.data_hint_default));
@@ -743,24 +743,15 @@ public void succeed(final Intent intent) {
 }
 
 private void submitCommand() {
-    final String fullCommand = mCommandField.getText().toString().trim(), data = mDataField.getText().toString();
+    final String fullCommand = mCommandField.getText().toString().trim();
     if (fullCommand.isEmpty()) {
         quickAct(mPrefs.getString("action_no_command", "config"));
         return;
     }
-    final String instruction;
-    if (mCommand instanceof CommandWrapDefault) instruction = fullCommand;
-    else {
-        final int spaceIdx = fullCommand.indexOf(' ');
-        // TODO LANG: space-separation no good
-        instruction = spaceIdx > 0 ? fullCommand.substring(spaceIdx).trim() : null;
-    }
 try {
-    if (mDataEnabled && mDataField.length() > 0) {
-        if (instruction == null) ((DataCommand) mCommand).runWithData(data);
-        else ((DataCommand) mCommand).runWithData(instruction, data);
-    } else if (instruction == null) mCommand.run();
-    else mCommand.run(instruction);
+    if (mCommand.usesData() && mDataField.length() > 0) {
+        ((DataCmd) mCommand).execute(mDataField.getText().toString());
+    } else mCommand.execute();
 } catch (EmillaException e) {
     fail(e.getMessage());
 } catch (Exception e) {

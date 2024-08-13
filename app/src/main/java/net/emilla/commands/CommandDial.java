@@ -32,18 +32,18 @@ public int imeAction() {
     return EditorInfo.IME_ACTION_GO;
 }
 
-public CommandDial(final AssistActivity act) {
-    super(act, R.string.command_dial, R.string.instruction_dial);
+public CommandDial(final AssistActivity act, final String instruct) {
+    super(act, instruct, R.string.command_dial, R.string.instruction_dial);
 }
 
 @Override
-public void run() {
+protected void run() {
     if (packageManager().resolveActivity(mIntent, 0) == null) throw new EmlaAppsException("No dialer app found on your device."); // todo handle at mapping
     succeed(mIntent);
 }
 
 @Override
-public void run(final String nameOrNumber) {
+protected void run(final String nameOrNumber) {
     if (packageManager().resolveActivity(mIntent, 0) == null) throw new EmlaAppsException("No dialer app found on your device."); // todo handle at mapping
     succeed(mIntent.setData(parse("tel:" + nameOrNumber)));
 }

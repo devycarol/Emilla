@@ -38,8 +38,8 @@ public int icon() {
     return R.drawable.ic_alarm;
 }
 
-public CommandAlarm(final AssistActivity act) {
-    super(act, R.string.command_alarm, R.string.instruction_alarm);
+public CommandAlarm(final AssistActivity act, final String instruct) {
+    super(act, instruct, R.string.command_alarm, R.string.instruction_alarm);
 
     mTimePicker = Dialogs.timePicker(act, R.string.dialog_alarm, (v, hourOfDay, minute) -> {
         putTime(hourOfDay, minute);
@@ -76,19 +76,19 @@ private void execute(final Intent intent) {
 }
 
 @Override
-public void run() {
+protected void run() {
     execute(mViewIntent); // todo: put time picker on this one, separate one-word (new interface) command for "alarms"
 //    mTimePicker.setOnCancelListener(dialog -> mActivity.onCloseDialog());
 }
 
 @Override
-public void run(final String time) {
+protected void run(final String time) {
     putTime(time);
     execute(mSetIntent);
 }
 
 @Override
-public void runWithData(final String label) {
+protected void runWithData(final String label) {
     putLabel(label);
     mTimePicker.setOnCancelListener(dialog -> {
         mSetIntent.removeExtra(EXTRA_MESSAGE);
@@ -98,7 +98,7 @@ public void runWithData(final String label) {
 }
 
 @Override
-public void runWithData(final String time, final String label) {
+protected void runWithData(final String time, final String label) {
     putTime(time);
     putLabel(label);
     run();

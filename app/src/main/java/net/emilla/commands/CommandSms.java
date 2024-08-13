@@ -49,8 +49,8 @@ public int icon() {
     return R.drawable.ic_sms;
 }
 
-public CommandSms(final AssistActivity act) {
-    super(act, R.string.command_sms, R.string.instruction_phone);
+public CommandSms(final AssistActivity act, final String instruct) {
+    super(act, instruct, R.string.command_sms, R.string.instruction_phone);
     mPhoneMap = act.phoneMap();
 }
 
@@ -76,7 +76,7 @@ private Intent putText(/*mutable*/ String message) {
 }
 
 @Override
-public void run() {
+protected void run() {
     // todo: immediate texting
     final PackageManager pm = packageManager();
     if (!pm.hasSystemFeature(FEATURE_TELEPHONY_MESSAGING)) throw new EmlaFeatureException("Your device doesn't support SMS messaging."); // TODO: handle at install—don't store in sharedprefs in case of settings sync/transfer
@@ -85,7 +85,7 @@ public void run() {
 }
 
 @Override
-public void run(final String recipients) {
+protected void run(final String recipients) {
     // todo: attachments
     final PackageManager pm = packageManager();
     if (!pm.hasSystemFeature(FEATURE_TELEPHONY_MESSAGING)) throw new EmlaFeatureException("Your device doesn't support SMS messaging."); // TODO: handle at install—don't store in sharedprefs in case of settings sync/transfer
@@ -94,7 +94,7 @@ public void run(final String recipients) {
 }
 
 @Override
-public void runWithData(final String message) {
+protected void runWithData(final String message) {
     final PackageManager pm = packageManager();
     if (!pm.hasSystemFeature(FEATURE_TELEPHONY_MESSAGING)) throw new EmlaFeatureException("Your device doesn't support SMS messaging."); // TODO: handle at install—don't store in sharedprefs in case of settings sync/transfer
     if (pm.resolveActivity(mIntent, 0) == null) throw new EmlaAppsException("No SMS app found on your device."); // todo handle at mapping
@@ -102,7 +102,7 @@ public void runWithData(final String message) {
 }
 
 @Override
-public void runWithData(final String recipients, final String message) {
+protected void runWithData(final String recipients, final String message) {
     final PackageManager pm = packageManager();
     if (!pm.hasSystemFeature(FEATURE_TELEPHONY_MESSAGING)) throw new EmlaFeatureException("Your device doesn't support SMS messaging."); // TODO: handle at install—don't store in sharedprefs in case of settings sync/transfer
     if (pm.resolveActivity(mIntent, 0) == null) throw new EmlaAppsException("No SMS app found on your device."); // todo handle at mapping

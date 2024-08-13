@@ -13,9 +13,9 @@ import net.emilla.utils.Apps;
 public class AppSearchCommand extends AppCommand {
 private final Intent mSearchIntent;
 
-public AppSearchCommand(final AssistActivity act, final AppCmdInfo info,
+public AppSearchCommand(final AssistActivity act, final String instruct, final AppCmdInfo info,
         @StringRes final int instructionId) {
-    super(act, info, specificTitle(act, info.label, instructionId));
+    super(act, instruct, info, specificTitle(act, info.label, instructionId));
     mSearchIntent = Apps.searchTask(info.pkg);
 }
 
@@ -25,7 +25,7 @@ public int imeAction() {
 }
 
 @Override
-public void run(final String query) {
+protected void run(final String query) {
     // Todo YouTube: instantly pull up bookmarked videos, specialized search for channels, playlists,
     //  etc. I assume the G assistant has similar functionality. If requires internet, could use
     //  bookmarks at the very least. Also, this command is broken for YouTube when a video is playing.

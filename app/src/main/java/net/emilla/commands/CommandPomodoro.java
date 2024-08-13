@@ -39,8 +39,8 @@ public int icon() {
     return R.drawable.ic_pomodoro;
 }
 
-public CommandPomodoro(final AssistActivity act) {
-    super(act, R.string.command_pomodoro, R.string.instruction_pomodoro);
+public CommandPomodoro(final AssistActivity act, final String instruct) {
+    super(act, instruct, R.string.command_pomodoro, R.string.instruction_pomodoro);
     mIntent.putExtra(EXTRA_MESSAGE, resources().getString(R.string.command_pomodoro));
 }
 
@@ -69,13 +69,13 @@ private boolean putDuration(final Resources res, /*mutable*/ String duration) th
 }
 
 @Override
-public void run() {
+protected void run() {
     if (mIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
     succeed(mIntent);
 }
 
 @Override
-public void run(final String duration) throws EmlaBadCommandException {
+protected void run(final String duration) throws EmlaBadCommandException {
     if (mIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
     final Resources res = resources();
     final boolean isBreak = putDuration(res, duration);
@@ -86,13 +86,13 @@ public void run(final String duration) throws EmlaBadCommandException {
 }
 
 @Override
-public void runWithData(final String memo) {
+protected void runWithData(final String memo) {
     if (mIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
     succeed(mIntent.putExtra(EXTRA_MESSAGE, memo));
 }
 
 @Override
-public void runWithData(final String duration, final String memo) throws EmlaBadCommandException {
+protected void runWithData(final String duration, final String memo) throws EmlaBadCommandException {
     if (mIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
     final Resources res = resources();
     final boolean isBreak = putDuration(res, duration);

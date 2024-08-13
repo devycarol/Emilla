@@ -17,8 +17,8 @@ public class CommandWeb extends CoreCommand {
 private final Intent mIntent = Apps.newTask(ACTION_WEB_SEARCH);
 private final boolean mUnsafe; // todo: handle at mapping and remove
 
-public CommandWeb(final AssistActivity act) {
-    super(act, R.string.command_web, R.string.instruction_web);
+public CommandWeb(final AssistActivity act, final String instruct) {
+    super(act, instruct, R.string.command_web, R.string.instruction_web);
     mUnsafe = mIntent.resolveActivity(packageManager()) == null;
 }
 
@@ -33,13 +33,13 @@ public int imeAction() {
 }
 
 @Override
-public void run() {
+protected void run() {
     if (mUnsafe) throw new EmlaAppsException("No app found for web search.");
     succeed(mIntent);
 }
 
 @Override
-public void run(final String searchOrUrl) {
+protected void run(final String searchOrUrl) {
     if (mUnsafe) throw new EmlaAppsException("No app found for web search.");
     succeed(mIntent.putExtra(QUERY, searchOrUrl));
 }

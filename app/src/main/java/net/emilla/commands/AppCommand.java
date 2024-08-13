@@ -29,16 +29,17 @@ protected final Intent mLaunchIntent;
 private final CharSequence mTitle;
 protected final AppCmdInfo mInfo;
 
-protected AppCommand(final AssistActivity act, final AppCmdInfo info, final CharSequence cmdTitle) {
-    super(act);
+protected AppCommand(final AssistActivity act, final String instruct, final AppCmdInfo info,
+        final CharSequence cmdTitle) {
+    super(act, instruct);
 
     mLaunchIntent = Apps.launchIntent(info.pkg, info.cls);
     mTitle = cmdTitle;
     mInfo = info;
 }
 
-public AppCommand(final AssistActivity act, final AppCmdInfo info) {
-    this(act, info, genericTitle(act, info.label));
+public AppCommand(final AssistActivity act, final String instruct, final AppCmdInfo info) {
+    this(act, instruct, info, genericTitle(act, info.label));
 }
 
 @Override
@@ -72,12 +73,12 @@ public int imeAction() {
 }
 
 @Override
-public void run() {
+protected void run() {
     succeed(mLaunchIntent);
 }
 
 @Override
-public void run(final String ignored) {
+protected void run(final String ignored) {
     run(); // TODO: instead, this should revert to the default command
 }
 }

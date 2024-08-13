@@ -76,11 +76,11 @@ private static final int[] NAMES = {
     R.string.command_toast
 };
 
-public static CommandTree tree(final SharedPreferences prefs, final Resources res,
+public static CmdTree tree(final SharedPreferences prefs, final Resources res,
         final PackageManager pm, final List<ResolveInfo> appList) {
     // todo: configurable aliasing
     // todo: edge case where a mapped app is uninstalled during the activity lifecycle
-    final CommandTree cmdTree = new CommandTree(appList.size());
+    final CmdTree cmdTree = new CmdTree(appList.size());
     short i = 0;
     while (i < Commands.DUPLICATE - 1) {
         final String lcName = res.getString(NAMES[i]).toLowerCase();
@@ -108,9 +108,20 @@ public static CommandTree tree(final SharedPreferences prefs, final Resources re
 }
 
 private final AssistActivity mActivity;
+protected String mInstruction;
 
-protected EmillaCommand(final AssistActivity act) {
+protected EmillaCommand(final AssistActivity act, final String instruct) {
     mActivity = act;
+    mInstruction = instruct;
+}
+
+void instruct(final String instruction) {
+    mInstruction = instruction;
+}
+
+void instructAppend(final String data) {
+    if (mInstruction == null) mInstruction = data;
+    else mInstruction += '\n' + data;
 }
 
 protected AssistActivity activity() {
@@ -127,6 +138,11 @@ protected PackageManager packageManager() {
 
 protected String packageName() {
     return mActivity.getPackageName();
+}
+
+public void execute() {
+    if (mInstruction == null) run();
+    else run(mInstruction);
 }
 
 /**
@@ -228,10 +244,10 @@ public abstract int imeAction();
 //  the command, using the action icon of one of the below.
 // requires changing the input method code directly
 
-public abstract void run();
+protected abstract void run();
 /**
  * @param instruction is provided after in the command field after the command's name. It's always
  *                    space-trimmed should remain as such.
  */
-public abstract void run(final String instruction);
+protected abstract void run(final String instruction);
 }

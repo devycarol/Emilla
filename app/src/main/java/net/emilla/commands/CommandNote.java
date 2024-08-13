@@ -19,8 +19,8 @@ public int icon() {
     return R.drawable.ic_note;
 }
 
-public CommandNote(final AssistActivity act) {
-    super(act, R.string.command_note, R.string.instruction_file);
+public CommandNote(final AssistActivity act, final String instruct) {
+    super(act, instruct, R.string.command_note, R.string.instruction_file);
 }
 
 @Override @StringRes
@@ -29,22 +29,22 @@ public int dataHint() {
 }
 
 @Override
-public void run() {
+protected void run() {
     throw new EmlaAppsException("Sorry! I don't know how to write notes yet.");
 }
 
 @Override
-public void run(final String title) {
+protected void run(final String title) {
     throw new EmlaAppsException("Sorry! I don't know how to write notes yet.");
 }
 
 @Override
-public void runWithData(final String text) {
+protected void runWithData(final String text) {
     throw new EmlaAppsException("Sorry! I don't know how to write notes yet.");
 }
 
 @Override
-public void runWithData(final String title, final String text) {
+protected void runWithData(final String title, final String text) {
     throw new EmlaAppsException("Sorry! I don't know how to write notes yet.");
 }
 }

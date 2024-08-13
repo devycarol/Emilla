@@ -35,22 +35,23 @@ public int imeAction() {
 
 private final Intent mSendIntent;
 
-private AppSendCommand(final AssistActivity act, final AppCmdInfo info, final CharSequence cmdTitle) {
-    super(act, info, cmdTitle);
+private AppSendCommand(final AssistActivity act, final String instruct, final AppCmdInfo info,
+        final CharSequence cmdTitle) {
+    super(act, instruct, info, cmdTitle);
     mSendIntent = Apps.sendTask(info.pkg);
 }
 
-public AppSendCommand(final AssistActivity act, final AppCmdInfo info) {
-    this(act, info, genericTitle(act, info.label));
+public AppSendCommand(final AssistActivity act, final String instruct, final AppCmdInfo info) {
+    this(act, instruct, info, genericTitle(act, info.label));
 }
 
-public AppSendCommand(final AssistActivity act, final AppCmdInfo info,
+public AppSendCommand(final AssistActivity act, final String instruct, final AppCmdInfo info,
         @StringRes final int instructionId) {
-    this(act, info, specificTitle(act, info.label, instructionId));
+    this(act, instruct, info, specificTitle(act, info.label, instructionId));
 }
 
 @Override
-public void run(final String message) {
+protected void run(final String message) {
     // todo: instantly pull up bookmarked videos for newpipe
     succeed(mSendIntent.putExtra(EXTRA_TEXT, message));
 }

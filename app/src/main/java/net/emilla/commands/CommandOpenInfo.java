@@ -27,13 +27,13 @@ private final Intent mInfoIntent = Apps.newTask(Settings.ACTION_APPLICATION_DETA
         Apps.pkgUri(Apps.PKG));
 private final boolean mUnsafe;
 
-public CommandOpenInfo(final AssistActivity act) {
-    super(act, R.string.command_info, R.string.instruction_app);
+public CommandOpenInfo(final AssistActivity act, final String instruct) {
+    super(act, instruct, R.string.command_info, R.string.instruction_app);
     mUnsafe = mInfoIntent.resolveActivity(packageManager()) == null;
 }
 
 @Override
-public void run() {
+protected void run() {
     // Todo: it may be useful to include listings beyond those in the launcher icons, or be able to
     //  search by package name.
     if (mUnsafe) throw new EmlaAppsException("No settings app found for your device."); // Todo: handle at mapping

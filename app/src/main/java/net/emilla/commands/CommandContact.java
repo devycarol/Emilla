@@ -54,19 +54,19 @@ public int icon() {
 }
 
 @Override
-public void run() {
+protected void run() {
     if (mChooserIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No contacts app found on your device."); // todo handle at mapping
     offer(mChooserIntent, AssistActivity.PICK_VIEW_CONTACT);
 }
 
 private final Intent mChooserIntent = new Intent(ACTION_PICK).setType(Contacts.CONTENT_TYPE);
 
-public CommandContact(final AssistActivity act) {
-    super(act, R.string.command_contact, R.string.instruction_contact);
+public CommandContact(final AssistActivity act, final String instruct) {
+    super(act, instruct, R.string.command_contact, R.string.instruction_contact);
 }
 
 @Override
-public void run(final String person) {
+protected void run(final String person) {
     final PackageManager pm = packageManager();
     byte action = getContactAction(person); // todo: standardize subcommand handling
     switch (action) {
@@ -116,12 +116,12 @@ public void run(final String person) {
 }
 
 @Override
-public void runWithData(final String details) {
+protected void runWithData(final String details) {
     throw new EmlaBadCommandException("Sorry! I can't parse contact info yet."); // TODO
 }
 
 @Override
-public void runWithData(final String person, final String details) {
+protected void runWithData(final String person, final String details) {
     throw new EmlaBadCommandException("Sorry! I can't parse contact info yet."); // TODO
 }
 }

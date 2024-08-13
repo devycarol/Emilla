@@ -31,18 +31,18 @@ public int imeAction() {
     return EditorInfo.IME_ACTION_DONE;
 }
 
-public CommandSettings(final AssistActivity act) {
-    super(act, R.string.command_settings, R.string.instruction_settings);
+public CommandSettings(final AssistActivity act, final String instruct) {
+    super(act, instruct, R.string.command_settings, R.string.instruction_settings);
 }
 
 @Override
-public void run() {
+protected void run() {
     if (mIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No app found for system settings."); // todo handle at mapping
     succeed(mIntent);
 }
 
 @Override
-public void run(final String query) {
+protected void run(final String query) {
     // TODO: settings search and value-changing
     run();
 }

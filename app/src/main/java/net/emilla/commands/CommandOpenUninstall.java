@@ -21,12 +21,12 @@ protected AlertDialog.Builder getAppChooser(final AssistActivity act) {
     return Dialogs.appUninstaller(act, mAppList);
 }
 
-public CommandOpenUninstall(final AssistActivity act) {
-    super(act, R.string.command_uninstall, R.string.instruction_app);
+public CommandOpenUninstall(final AssistActivity act, final String instruct) {
+    super(act, instruct, R.string.command_uninstall, R.string.instruction_app);
 }
 
 @Override
-public void run() {
+protected void run() {
     offer(mAppChooser.create());
 }
 

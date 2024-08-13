@@ -13,8 +13,8 @@ import net.emilla.exceptions.EmlaAppsException;
 import net.emilla.exceptions.EmlaBadCommandException;
 
 public class CatCommandWeather extends CatCommand {
-public CatCommandWeather(final AssistActivity act) {
-    super(act, CATEGORY_APP_WEATHER, R.string.command_weather, R.string.instruction_app);
+public CatCommandWeather(final AssistActivity act, final String instruct) {
+    super(act, instruct, CATEGORY_APP_WEATHER, R.string.command_weather, R.string.instruction_app);
 }
 
 @Override
@@ -33,13 +33,13 @@ public int imeAction() {
 }
 
 @Override
-public void run() {
+protected void run() {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) throw new EmlaBadCommandException("Sorry! This command doesn't support your Android version yet."); // Todo
     super.run();
 }
 
 @Override
-public void run(final String expression) {
+protected void run(final String expression) {
     throw new EmlaBadCommandException("Sorry! I don't have categorical app search yet."); // Todo
 }
 }

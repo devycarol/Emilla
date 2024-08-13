@@ -20,12 +20,12 @@ protected AlertDialog.Builder getAppChooser(final AssistActivity act) {
     return Dialogs.appChooser(act, act.getPackageManager(), mAppList);
 }
 
-public CommandOpenLaunch(final AssistActivity act) {
-    super(act, R.string.command_launch, R.string.instruction_app);
+public CommandOpenLaunch(final AssistActivity act, final String instruct) {
+    super(act, instruct, R.string.command_launch, R.string.instruction_app);
 }
 
 @Override
-public void run() {
+protected void run() {
     offer(mAppChooser.create());
 }
 

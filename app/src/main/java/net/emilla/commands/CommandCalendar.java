@@ -47,8 +47,8 @@ public int icon() {
 private final Intent mIntent = Apps.newTask(ACTION_INSERT, Events.CONTENT_URI, "vnd.android.cursor.dir/event");
 private String mDetails;
 
-public CommandCalendar(final AssistActivity act) {
-    super(act, R.string.command_calendar, R.string.instruction_calendar);
+public CommandCalendar(final AssistActivity act, final String instruct) {
+    super(act, instruct, R.string.command_calendar, R.string.instruction_calendar);
 }
 
 private void putTitleAndDate(/*mutable*/ String title) throws EmlaBadCommandException {
@@ -115,7 +115,7 @@ private void putDetails(final String details) {
 }
 
 @Override
-public void run() {
+protected void run() {
     if (mIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No calendar app found on your device."); // todo: handle at mapping
     succeed(mIntent);
     // todo: etar calendar acts really janky in the recents which causes unwanted event-saving
@@ -123,19 +123,19 @@ public void run() {
 }
 
 @Override
-public void run(final String titleAndDate) {
+protected void run(final String titleAndDate) {
     putTitleAndDate(titleAndDate);
     run();
 }
 
 @Override
-public void runWithData(final String details) {
+protected void runWithData(final String details) {
     putDetails(details);
     run();
 }
 
 @Override
-public void runWithData(final String titleAndDate, final String details) {
+protected void runWithData(final String titleAndDate, final String details) {
     putTitleAndDate(titleAndDate);
     putDetails(details);
     run();

@@ -12,7 +12,7 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.utils.Dialogs;
 
-public class DuplicateCommand extends EmillaCommand implements DataCommand {
+public class DuplicateCommand extends EmillaCommand implements DataCmd {
 @Override
 protected CharSequence name() {
     return resources().getString(R.string.command_duplicate);
@@ -63,8 +63,8 @@ private final EmillaCommand[] mCommands;
 private final AlertDialog.Builder mBuilder;
 private final boolean mUsesData;
 
-public DuplicateCommand(final AssistActivity act, final EmillaCommand[] cmds) {
-    super(act);
+public DuplicateCommand(final AssistActivity act, final String instruct, final EmillaCommand[] cmds) {
+    super(act, instruct);
 
     mCommands = cmds;
     mLabels = new CharSequence[cmds.length];
@@ -83,32 +83,21 @@ private void chooseCommand(final DialogInterface.OnClickListener listener) {
     offer(mBuilder.setItems(mLabels, listener).create());
 }
 
+// Todo: restructure inherits to remove these stubs
 @Override
-public void run() {
-    // TODO: don't do base app commands past their initial name
-    chooseCommand((dialog, which) -> mCommands[which].run());
-}
+protected void run() {}
+@Override
+protected void run(final String instruction) {}
 
 @Override
-public void run(final String instruction) {
-    chooseCommand((dialog, which) -> mCommands[which].run(instruction));
-}
-
-@Override
-public void runWithData(final String data) {
+public void execute(final String data) {
     chooseCommand((dialog, which) -> {
         final EmillaCommand cmd = mCommands[which];
-        if (cmd.usesData()) ((DataCommand) cmd).runWithData(data);
-        else cmd.run(data); // TODO: handle this more gracefully
-    });
-}
-
-@Override
-public void runWithData(final String instruction, final String data) {
-    chooseCommand((dialog, which) -> {
-        final EmillaCommand cmd = mCommands[which];
-        if (cmd.usesData()) ((DataCommand) cmd).runWithData(instruction, data);
-        else cmd.run(instruction + '\n' + data); // TODO: handle this more gracefully
+        if (cmd.usesData()) ((DataCmd) cmd).execute(data);
+        else { // TODO: handle this more gracefully
+            cmd.instructAppend(data);
+            cmd.execute();
+        }
     });
 }
 }

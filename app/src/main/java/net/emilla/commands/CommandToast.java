@@ -25,17 +25,17 @@ public int icon() {
     return R.drawable.ic_toast;
 }
 
-public CommandToast(final AssistActivity act) {
-    super(act, R.string.command_toast, R.string.instruction_text);
+public CommandToast(final AssistActivity act, final String instruct) {
+    super(act, instruct, R.string.command_toast, R.string.instruction_text);
 }
 
 @Override
-public void run() { // todo: configurable default message
+protected void run() { // todo: configurable default message
     give(resources().getString(R.string.toast_hello), false);
 }
 
 @Override
-public void run(final String message) {
+protected void run(final String message) {
     final Resources res = resources();
     final String longTag = res.getString(R.string.tag_toast_long); // todo way later make configurable
     if (message.toLowerCase().endsWith(longTag)) {
@@ -45,7 +45,7 @@ public void run(final String message) {
 }
 
 @Override
-public void runWithData(final String message) {
+protected void runWithData(final String message) {
     final Resources res = resources();
     final String longTag = res.getString(R.string.tag_toast_long); // todo way later make configurable
     if (message.toLowerCase().endsWith(longTag)) {
@@ -55,7 +55,7 @@ public void runWithData(final String message) {
 }
 
 @Override
-public void runWithData(final String message, final String cont) {
+protected void runWithData(final String message, final String cont) {
     final String longTag = resources().getString(R.string.tag_toast_long); // todo way later make configurable
     if (message.toLowerCase().endsWith(longTag)) {
         final String actualMessage = message.substring(0, message.length() - longTag.length()).trim() + '\n' + cont;

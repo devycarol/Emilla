@@ -23,9 +23,9 @@ protected final List<ResolveInfo> mAppList;
 protected final AlertDialog.Builder mAppChooser;
 protected final PackageManager mPm;
 
-public OpenCommand(final AssistActivity act, @StringRes final int nameId,
+public OpenCommand(final AssistActivity act, final String instruct, @StringRes final int nameId,
         @StringRes final int instructionId) {
-    super(act, nameId, instructionId);
+    super(act, instruct, nameId, instructionId);
 
     mAppList = act.appList();
     mAppChooser = getAppChooser(act);
@@ -45,7 +45,7 @@ private AlertDialog getDialog(final CharSequence[] prefLabels, final int prefCou
 }
 
 @Override
-public void run(final String app) {
+protected void run(final String app) {
     // todo: optimized pre-processed search
     final int appCount = mAppList.size();
 

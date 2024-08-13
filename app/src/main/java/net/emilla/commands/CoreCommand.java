@@ -11,9 +11,9 @@ private final int
     mNameId,
     mInstructionId;
 
-public CoreCommand(final AssistActivity act, @StringRes final int nameId,
+public CoreCommand(final AssistActivity act, final String instruct, @StringRes final int nameId,
         @StringRes final int instructionId) {
-    super(act);
+    super(act, instruct);
 
     mNameId = nameId;
     mInstructionId = instructionId;

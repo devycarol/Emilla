@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 
 public class CommandEmail extends CoreDataCommand {
-private static final String FLAG_ATTACH = " */a(t(ta)?ch)?"; // TODO: lang
+private static final String FLAG_ATTACH = " */a(t(ta)?ch)?"; // Todo lang
 
 private final Intent mIntent = Apps.newTask(ACTION_SENDTO, Uri.parse("mailto:"));
 private final Intent mSendMultipleIntent = Apps.newTask(ACTION_SEND_MULTIPLE); // todo: should this have "mailto:"?
@@ -42,8 +42,8 @@ public int icon() {
     return R.drawable.ic_email;
 }
 
-public CommandEmail(final AssistActivity act) {
-    super(act, R.string.command_email, R.string.instruction_email);
+public CommandEmail(final AssistActivity act, final String instruct) {
+    super(act, instruct, R.string.command_email, R.string.instruction_email);
     mEmailMap = act.emailMap();
 }
 
@@ -93,7 +93,7 @@ private Intent putAttachmentsAndRecipients(final String recipients) {
 }
 
 @Override
-public void run() {
+protected void run() {
     if (mIntent.resolveActivity(packageManager()) == null) {
         clearDetails();
         throw new EmlaAppsException("No email app found on your device."); // todo handle at mapping
@@ -102,7 +102,7 @@ public void run() {
 }
 
 @Override
-public void run(final String recipients) {
+protected void run(final String recipients) {
     final Intent in = putAttachmentsAndRecipients(recipients);
     if (in != null) {
         if (in.resolveActivity(packageManager()) == null) {
@@ -114,7 +114,7 @@ public void run(final String recipients) {
 }
 
 @Override
-public void runWithData(final String body) {
+protected void runWithData(final String body) {
     if (mIntent.resolveActivity(packageManager()) == null) {
         clearDetails();
         throw new EmlaAppsException("No email app found on your device."); // todo handle at mapping
@@ -123,7 +123,7 @@ public void runWithData(final String body) {
 }
 
 @Override
-public void runWithData(final String recipients, final String body) {
+protected void runWithData(final String recipients, final String body) {
     final Intent in = putAttachmentsAndRecipients(recipients);
     if (in != null) {
         if (in.resolveActivity(packageManager()) == null) { // todo handle at mapping

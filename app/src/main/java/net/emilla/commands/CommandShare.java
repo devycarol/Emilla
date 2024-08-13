@@ -32,25 +32,25 @@ public int icon() {
     return R.drawable.ic_share;
 }
 
-public CommandShare(final AssistActivity act) {
-    super(act, R.string.command_share, R.string.instruction_app);
+public CommandShare(final AssistActivity act, final String instruct) {
+    super(act, instruct, R.string.command_share, R.string.instruction_app);
     mChooserIntent = createChooser(mIntent, resources().getString(R.string.dialog_app))
             .addFlags(FLAG_ACTIVITY_NEW_TASK);
     // This task appears to have special properties that are worth looking into...
 }
 
 @Override
-public void run() {
+protected void run() {
     succeed(mChooserIntent);
 }
 
 @Override
-public void run(final String app) {
+protected void run(final String app) {
     runWithData(app); // TODO: allow to specify apps, conversation, and (ideally) people
 }
 
 @Override
-public void runWithData(final String text) {
+protected void runWithData(final String text) {
     // todo: ideally, query whether a given app supports newlines in advance and provide warning
     // TODO: this should be a pend rather than succeed, to allow the user to go back and
     //  reconsider
@@ -60,7 +60,7 @@ public void runWithData(final String text) {
 }
 
 @Override
-public void runWithData(final String app, final String text) {
+protected void runWithData(final String app, final String text) {
         runWithData(app + '\n' + text);
     }
 }

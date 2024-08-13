@@ -18,9 +18,9 @@ private final int mAppCount;
 private Intent mLaunchIntent;
 private AlertDialog mAppChooser;
 
-public CatCommand(final AssistActivity act, final String category, @StringRes final int nameId,
-        @StringRes final int instructionId) {
-    super(act, nameId, instructionId);
+public CatCommand(final AssistActivity act, final String instruct, final String category,
+        @StringRes final int nameId, @StringRes final int instructionId) {
+    super(act, instruct, nameId, instructionId);
 
     final PackageManager pm = act.getPackageManager();
     final List<ResolveInfo> appList = Apps.resolveList(pm, category);
@@ -32,7 +32,7 @@ public CatCommand(final AssistActivity act, final String category, @StringRes fi
 protected abstract void noSuchApp(); // TODO: handle at mapping
 
 @Override
-public void run() {
+protected void run() {
     switch (mAppCount) {
     case 0 -> noSuchApp();
     case 1 -> succeed(mLaunchIntent);

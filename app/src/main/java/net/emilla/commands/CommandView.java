@@ -24,8 +24,8 @@ private final HashMap<String, Intent> mBookmarkMap = new HashMap<>();
 private final AlertDialog mBookmarkChooser;
 private final boolean mHasBookmarks; // Todo: remove once search is implemented
 
-public CommandView(final AssistActivity act) {
-    super(act, R.string.command_view, R.string.instruction_view);
+public CommandView(final AssistActivity act, final String instruct) {
+    super(act, instruct, R.string.command_view, R.string.instruction_view);
 
     final String[] lines = act.mediaCsv().split("\\s*\n\\s*");
     final CharSequence[] labels = new String[lines.length];
@@ -59,12 +59,12 @@ public int imeAction() {
 }
 
 @Override
-public void run() {
+protected void run() {
     offer(mBookmarkChooser);
 }
 
 @Override
-public void run(final String media) {
+protected void run(final String media) {
     final Intent get = mBookmarkMap.get(media.toLowerCase());
     if (get == null) {
         offer(mBookmarkChooser); // TODO: rare as it may be, this is not yet resolve-safe as is below

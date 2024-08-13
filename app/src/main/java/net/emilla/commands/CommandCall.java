@@ -41,18 +41,18 @@ public int imeAction() {
     return EditorInfo.IME_ACTION_GO;
 }
 
-public CommandCall(final AssistActivity act) {
-    super(act, R.string.command_call, R.string.instruction_phone);
+public CommandCall(final AssistActivity act, final String instruct) {
+    super(act, instruct, R.string.command_call, R.string.instruction_phone);
     mPhoneMap = act.phoneMap();
 }
 
 @Override
-public void run() {
+protected void run() {
     throw new EmlaBadCommandException("Sorry! I don't have contact selection yet."); // TODO
 }
 
 @Override
-public void run(final String nameOrNumber) {
+protected void run(final String nameOrNumber) {
     // todo: conference calls?
     // todo: immediate calls to phonewords
     final PackageManager pm = packageManager();

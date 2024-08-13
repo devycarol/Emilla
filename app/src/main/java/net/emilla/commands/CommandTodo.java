@@ -36,8 +36,8 @@ private final Intent mViewIntent = Apps.newTask(ACTION_VIEW, mUri, "text/plain")
         .putExtra(EXTRA_STREAM, mUri)
         .putExtra("EXTRA_FILEPATH", mFile.getAbsolutePath());
 
-public CommandTodo(final AssistActivity act) {
-    super(act, R.string.command_todo, R.string.instruction_todo);
+public CommandTodo(final AssistActivity act, final String instruct) {
+    super(act, instruct, R.string.command_todo, R.string.instruction_todo);
 }
 
 @Override @StringRes
@@ -71,20 +71,20 @@ try {
 }}
 
 @Override
-public void run() {
+protected void run() {
     if (mViewIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No app found to view text files.");
     succeed(mViewIntent);
 }
 
 @Override
-public void run(final String task) {
+protected void run(final String task) {
     // todo: newline handling unnecessary in this case
     todo(task); // TODO
     give(resources().getString(R.string.toast_task_created), false); // TODO: lang
 }
 
 @Override
-public void runWithData(final String tasks) {
+protected void runWithData(final String tasks) {
     todo(tasks); // TODO
 
     int taskCount = 0;
@@ -97,7 +97,7 @@ public void runWithData(final String tasks) {
 }
 
 @Override
-public void runWithData(final String task, final String moreTasks) {
+protected void runWithData(final String task, final String moreTasks) {
     todo(task + '\n' + moreTasks); // TODO
 
     int taskCount = 0;

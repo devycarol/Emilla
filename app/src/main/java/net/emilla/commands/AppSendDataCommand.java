@@ -8,7 +8,7 @@ import androidx.annotation.StringRes;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 
-public class AppSendDataCommand extends AppSendCommand implements DataCommand {
+public class AppSendDataCommand extends AppSendCommand implements DataCmd {
 @Override @ArrayRes
 public int detailsId() {
     return R.array.details_app_send_data;
@@ -29,18 +29,22 @@ public int imeAction() {
     return EditorInfo.IME_ACTION_NEXT;
 }
 
-public AppSendDataCommand(final AssistActivity act, final AppCmdInfo info,
+public AppSendDataCommand(final AssistActivity act, final String instruct, final AppCmdInfo info,
         @StringRes final int instructionId) {
-    super(act, info, instructionId);
+    super(act, instruct, info, instructionId);
 }
 
-@Override
-public void runWithData(final String message) {
+protected void runWithData(final String message) {
     run(message);
 }
 
-@Override
-public void runWithData(final String message, final String cont) {
+protected void runWithData(final String message, final String cont) {
     run(message + '\n' + cont);
+}
+
+@Override
+public void execute(final String data) {
+    if (mInstruction == null) runWithData(data);
+    else runWithData(mInstruction, data);
 }
 }

@@ -9,8 +9,8 @@ import net.emilla.R;
 import net.emilla.exceptions.EmlaBadCommandException;
 
 public class CommandFind extends CoreCommand {
-public CommandFind(final AssistActivity act) {
-    super(act, R.string.command_find, R.string.instruction_find);
+public CommandFind(final AssistActivity act, final String instruct) {
+    super(act, instruct, R.string.command_find, R.string.instruction_find);
 }
 
 @Override @DrawableRes
@@ -24,13 +24,13 @@ public int imeAction() {
 }
 
 @Override
-public void run() {
+protected void run() {
     // todo: select file manager?
     throw new EmlaBadCommandException("Sorry! I don't know how to search for files yet.");
 }
 
 @Override
-public void run(final String fileOrFolder) {
+protected void run(final String fileOrFolder) {
     throw new EmlaBadCommandException("Sorry! I don't know how to search for files yet.");
     // where all should I be searching for files? shared storage? external drives?
 }

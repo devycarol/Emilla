@@ -57,24 +57,24 @@ public int icon() {
     return R.drawable.ic_timer;
 }
 
-public CommandTimer(final AssistActivity act) {
-    super(act, R.string.command_timer, R.string.instruction_timer);
+public CommandTimer(final AssistActivity act, final String instruct) {
+    super(act, instruct, R.string.command_timer, R.string.instruction_timer);
 }
 
 @Override
-public void run() {
+protected void run() {
     if (mUiIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
     succeed(mUiIntent);
 }
 
 @Override
-public void run(final String duration) {
+protected void run(final String duration) {
     if (mIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
     succeed(mIntent.putExtra(EXTRA_LENGTH, seconds(this, duration)));
 }
 
 @Override
-public void runWithData(final String title) {
+protected void runWithData(final String title) {
     throw new EmlaBadCommandException("Sorry! I can't label the timer without a duration.");
     // TODO: is this always the case? I'd strongly prefer to defer to the user's app's UI. At
     //  the least, this failure should be replaced with an input dialog for com.android.deskclock
@@ -83,7 +83,7 @@ public void runWithData(final String title) {
 }
 
 @Override
-public void runWithData(final String duration, final String title) {
+protected void runWithData(final String duration, final String title) {
     if (mIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
     succeed(mIntent.putExtra(EXTRA_LENGTH, seconds(this, duration)).putExtra(EXTRA_MESSAGE, title));
 }
