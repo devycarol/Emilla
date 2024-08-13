@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorBackgroundFloating"
         android:fontFamily="sans-serif-condensed"
-        android:padding="16dp"
+        android:padding="@dimen/margin_wide"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,18 +25,16 @@
         app:layout_constraintBottom_toTopOf="@id/container_more_actions"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/help_text_box">
-
-    </FrameLayout>
+        app:layout_constraintTop_toBottomOf="@id/help_text_box" />
 
     <LinearLayout
         android:id="@+id/container_more_actions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
+        android:layout_marginHorizontal="@dimen/margin_narrow"
         android:gravity="end"
         android:orientation="horizontal"
-        android:padding="8dp"
+        android:padding="@dimen/margin_narrow"
         app:layout_constraintBottom_toTopOf="@id/container_assistant">
 
         <ImageButton
@@ -45,7 +43,7 @@
             android:layout_height="56dp"
             android:background="@drawable/background_action_button"
             android:contentDescription="@string/spoken_description_cursor_start"
-            android:padding="8dp"
+            android:padding="@dimen/margin_narrow"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_cursor_start"
             app:elevation="0dp" />
@@ -55,11 +53,11 @@
         android:id="@+id/container_assistant"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginHorizontal="@dimen/margin_narrow"
+        android:layout_marginBottom="@dimen/margin_narrow"
         android:background="?attr/colorBackgroundFloating"
         android:orientation="vertical"
-        android:padding="8dp"
+        android:padding="@dimen/margin_narrow"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
@@ -68,7 +66,7 @@
             android:id="@+id/field_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="@dimen/margin_narrow"
             android:background="@drawable/text_box"
             android:hint="@string/data_hint_default"
             android:imeOptions="actionPrevious"
@@ -87,12 +85,12 @@
 
             <ImageButton
                 android:id="@+id/button_show_data"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_marginEnd="8dp"
+                android:layout_width="@dimen/width_action"
+                android:layout_height="@dimen/width_action"
+                android:layout_marginEnd="@dimen/margin_narrow"
                 android:background="@drawable/background_action_button"
                 android:contentDescription="@string/spoken_description_show_data"
-                android:padding="8dp"
+                android:padding="@dimen/margin_narrow"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_show_data"
                 app:elevation="0dp" />
@@ -106,19 +104,19 @@
                 android:hint="@string/field_command_hint"
                 android:importantForAutofill="no"
                 android:inputType="text|textCapSentences"
-                android:minHeight="56dp"
+                android:minHeight="@dimen/width_action"
                 android:textColorHint="?attr/colorControlNormal"
                 tools:ignore="VisualLintTextFieldSize" />
 
             <ImageButton
                 android:id="@+id/button_submit"
-                android:layout_width="56dp"
+                android:layout_width="@dimen/width_action"
                 android:layout_height="match_parent"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/margin_narrow"
                 android:layout_weight="0"
                 android:background="@drawable/background_action_button"
                 android:contentDescription="@string/spoken_description_submit_command"
-                android:padding="8dp"
+                android:padding="@dimen/margin_narrow"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_assistant"
                 app:elevation="0dp" />

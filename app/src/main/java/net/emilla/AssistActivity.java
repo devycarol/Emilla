@@ -168,6 +168,7 @@ protected void onCreate(final Bundle savedInstanceState) {
 
     setupCommandField();
     final boolean alwaysShowData = SettingVals.alwaysShowData(mPrefs);
+    // TODO ACC: There's little to no reason for a hidden data field if a screen reader is in use.
     mDataVisible = alwaysShowData
             || savedInstanceState != null && savedInstanceState.getBoolean("dataFieldVisible");
     setupDataField();

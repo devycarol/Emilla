@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed"
-            android:padding="16dp"
+            android:padding="@dimen/margin_wide"
             android:text="@string/welcome_message"
             android:textSize="56sp"
             android:textStyle="italic" />
@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed"
-            android:padding="16dp"
+            android:padding="@dimen/margin_wide"
             android:text="@string/welcome_instruction"
             android:textAlignment="center"
             android:textSize="24sp" />
