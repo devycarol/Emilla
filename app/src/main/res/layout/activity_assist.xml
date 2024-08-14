@@ -37,7 +37,7 @@
         android:padding="@dimen/margin_narrow"
         app:layout_constraintBottom_toTopOf="@id/container_assistant">
 
-        <ImageButton
+        <net.emilla.views.ActionButton
             android:id="@+id/button_cursor_start"
             android:layout_width="56dp"
             android:layout_height="56dp"
@@ -83,7 +83,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageButton
+            <net.emilla.views.ActionButton
                 android:id="@+id/button_show_data"
                 android:layout_width="@dimen/width_action"
                 android:layout_height="@dimen/width_action"
@@ -108,7 +108,7 @@
                 android:textColorHint="?attr/colorControlNormal"
                 tools:ignore="VisualLintTextFieldSize" />
 
-            <ImageButton
+            <net.emilla.views.ActionButton
                 android:id="@+id/button_submit"
                 android:layout_width="@dimen/width_action"
                 android:layout_height="match_parent"

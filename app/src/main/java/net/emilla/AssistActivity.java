@@ -28,13 +28,10 @@ import android.os.PowerManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -61,6 +58,7 @@ import net.emilla.utils.Contacts;
 import net.emilla.utils.Dialogs;
 import net.emilla.utils.Features;
 import net.emilla.utils.Lang;
+import net.emilla.views.ActionButton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -85,7 +83,7 @@ private ToneGenerator mToneGenerator;
 private FrameLayout mEmptySpace;
 private TextView mHelpBox;
 private EditText mCommandField, mDataField;
-private ImageButton mSubmitButton, mShowDataButton, mCursorStartButton;
+private ActionButton mSubmitButton, mShowDataButton, mCursorStartButton;
 
 private AlertDialog mCancelDialog;
 
@@ -237,51 +235,11 @@ private void setupDataField() {
 }
 
 private void setupSubmitButton() {
-    mSubmitButton.setOnLongClickListener(v -> {
-        if (mTouchingSubmit) {
-            // TODO ACC: verify accessibility function
-            mSubmitButton.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
-            mLongPressingSubmit = true;
-            mSubmitButton.setImageResource(R.drawable.ic_assistant);
-        }
-        return false;
-    });
-    mSubmitButton.setOnTouchListener((v, event) -> {
-        // TODO ACC: it's critical to ensure this works with accessibility services
-        switch (event.getAction()) {
-        case MotionEvent.ACTION_DOWN: // Todo: you shouldn't be able to submit twice
-            mSubmitButton.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP);
-            mTouchingSubmit = true;
-            return false;
-        case MotionEvent.ACTION_MOVE:
-            if (mTouchingSubmit
-                    && (0.0f > event.getX() || (int) event.getX() > v.getWidth()
-                        || 0.0f > event.getY() || (int) event.getY() > v.getHeight())) {
-                mTouchingSubmit = false;
-                if (mLongPressingSubmit) {
-                    final int hapticType = Build.VERSION.SDK_INT >= Build.VERSION_CODES.R ? HapticFeedbackConstants.GESTURE_END
-                            : HapticFeedbackConstants.KEYBOARD_TAP;
-                    mSubmitButton.performHapticFeedback(hapticType);
-                    mSubmitButton.setImageResource(mCommandIcon);
-                    mLongPressingSubmit = false;
-                }
-                return true;
-            }
-            return super.onTouchEvent(event);
-        case MotionEvent.ACTION_UP:
-            if (!mTouchingSubmit) return super.onTouchEvent(event);
-            mTouchingSubmit = false;
-            if (mLongPressingSubmit) {
-                mLongPressingSubmit = false;
-                quickAct(mPrefs.getString("action_long_press_submit", "select_all"));
-                mSubmitButton.setImageResource(mCommandIcon);
-            } else submitCommand();
-            mSubmitButton.setImageResource(mCommandIcon);
-            // fallthrough
-        default:
-            return super.onTouchEvent(event);
-        }
-    });
+    mSubmitButton.setOnClickListener(v -> submitCommand());
+    mSubmitButton.setLongPress(v -> {
+        quickAct(mPrefs.getString("action_long_press_submit", "select_all"));
+        return true;
+    }, R.drawable.ic_select_all); // Todo: icon should be in tandem with the action setting
 }
 
 private void cursorStart() {
@@ -303,7 +261,7 @@ private void cursorStart() {
 private void showDataField(final boolean focus) {
     mDataField.setVisibility(EditText.VISIBLE);
     if (focus) mDataField.requestFocus();
-    mShowDataButton.setImageResource(R.drawable.ic_hide_data);
+    mShowDataButton.setIcon(R.drawable.ic_hide_data);
     mShowDataButton.setContentDescription(getString(R.string.spoken_description_hide_data));
     mDataVisible = true;
 }
@@ -338,13 +296,13 @@ private void hideDataField() {
     else mCommandField.setSelection(start, end);
     mDataField.setVisibility(EditText.GONE);
     if (!mDataAvailable) disableDataButton();
-    mShowDataButton.setImageResource(R.drawable.ic_show_data);
+    mShowDataButton.setIcon(R.drawable.ic_show_data);
     mShowDataButton.setContentDescription(getString(R.string.spoken_description_show_data));
     mDataVisible = false;
 }
 
 private void setupShowDataButton(final boolean disable) {
-    if (disable) mShowDataButton.setVisibility(ImageButton.GONE);
+    if (disable) mShowDataButton.setVisibility(ActionButton.GONE);
     else mShowDataButton.setOnClickListener(v -> {
         if (mDataVisible) hideDataField();
         else showDataField(true);
@@ -517,7 +475,7 @@ private void setTextsIfCommandChanged(/*mutable*/ String command) {
         }
 
         final int iconId = noCommand ? R.drawable.ic_assistant : mCommand.icon();
-        mSubmitButton.setImageResource(iconId); // todo: relocate
+        mSubmitButton.setIcon(iconId);
         mCommandIcon = iconId;
         final boolean dataAvailable = noCommand || mCommand.usesData();
         if (dataAvailable != mDataAvailable) updateDataAvailability(dataAvailable);
