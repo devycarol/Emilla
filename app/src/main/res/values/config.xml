@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="conf_show_titlebar">portrait</string>
+    <!-- Lang attribute for whether the current languages separates words with space characters -->
+    <bool name="conf_lang_spaces">true</bool>
 </resources>

@@ -7,36 +7,34 @@ import androidx.annotation.Nullable;
 
 import java.util.Iterator;
 
-public class CmdTokens implements Iterable<String>, Iterator<String> {
+/**
+ * This class tokenizes command strings, making them iterable. The `Latin` version is for languages
+ * with space-separated words, and the `Glyph` version is used for character languages that don't
+ * regularly use space characters.
+ */
+public abstract class CmdTokens implements Iterable<String>, Iterator<String> {
 private final String mCommand;
-private final String mLcCommand;
-private int mIdx = 0;
-private boolean mHasNext;
+protected final String mLcCommand;
+protected int mIdx = 0;
+protected boolean mHasNext;
 private String mInstruction;
 
-/**
- * @param command is assumed not to have leading spaces!
- */
-CmdTokens(final String command) {
-    // Todo lang: non-latin version
+private CmdTokens(final String command) {
     mCommand = command;
     mLcCommand = command.toLowerCase();
     mHasNext = !command.isEmpty();
     mInstruction = mHasNext ? command : null;
 }
 
-void nextInstruct() {
-    if (mInstruction != null) mInstruction = mHasNext ? mCommand.substring(mIdx) : null;
-}
-
-@Nullable
-String instruct() {
-    return mInstruction;
-}
-
-@Override
-public boolean hasNext() {
-    return mHasNext;
+/**
+ * "Latin" implementation should be used for any language that separates words with space characters.
+ */
+public static class Latin extends CmdTokens {
+/**
+ * @param command is assumed not to have leading spaces!
+ */
+public Latin(final String command) {
+    super(command);
 }
 
 @Override @NonNull
@@ -55,6 +53,37 @@ public String next() {
     } while (isWhitespace(mLcCommand.charAt(idx)));
     mIdx = idx;
     return token;
+}
+}
+
+/**
+ * "Glyph" implementation should be used for character languages where words aren't space-separated.
+ */
+public static class Glyph extends CmdTokens {
+public Glyph(final String command) {
+    super(command);
+}
+
+@Override @NonNull
+public String next() {
+    final int codePoint = mLcCommand.codePointAt(mIdx);
+    if ((mIdx += Character.charCount(codePoint)) >= mLcCommand.length()) mHasNext = false;
+    return new String(Character.toChars(codePoint));
+}
+}
+
+void nextInstruct() {
+    mInstruction = mHasNext ? mCommand.substring(mIdx) : null;
+}
+
+@Nullable
+String instruct() {
+    return mInstruction;
+}
+
+@Override
+public boolean hasNext() {
+    return mHasNext;
 }
 
 @Override @NonNull

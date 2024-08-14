@@ -80,7 +80,7 @@ public static CmdTree tree(final SharedPreferences prefs, final Resources res,
         final PackageManager pm, final List<ResolveInfo> appList) {
     // todo: configurable aliasing
     // todo: edge case where a mapped app is uninstalled during the activity lifecycle
-    final CmdTree cmdTree = new CmdTree(appList.size());
+    final CmdTree cmdTree = new CmdTree(res, appList.size());
     short i = 0;
     while (i < Commands.DUPLICATE - 1) {
         final String lcName = res.getString(NAMES[i]).toLowerCase();

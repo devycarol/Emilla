@@ -1,10 +1,8 @@
 package net.emilla.commands;
 
 import static net.emilla.commands.EmillaCommand.Commands.*;
-import static java.lang.Character.charCount;
-import static java.lang.Character.toChars;
-import static java.lang.Math.max;
-import static java.lang.Math.min;
+
+import android.content.res.Resources;
 
 import androidx.annotation.NonNull;
 
@@ -13,6 +11,7 @@ import net.emilla.R;
 import net.emilla.commands.EmillaCommand.Commands;
 import net.emilla.settings.SettingVals;
 import net.emilla.utils.Apps;
+import net.emilla.utils.Lang;
 
 import java.util.HashMap;
 
@@ -27,37 +26,19 @@ private static class CmdNode {
     private HashMap<String, CmdNode> map;
     private short cmd = DEFAULT;
     private short[] dupes;
-    // Should also research database maintenence, and how to do so in a way that respects device
-    //  storage and doesn't break in all number of risk cases (config change, device transfer, app
-    //  uninstalls, etc.) If mapping can be sufficiently optimized, this won't even be necessary.
-    //  But definitely look into how launcher apps keep track of all the installed apps without
-    //  having to PM-query alllll that information on each boot (assuming that's not what it does..)
 }
 
+private final Resources mRes;
 private final CmdNode root = new CmdNode();
-private int depth = 0;
 private final EmillaCommand[] mCoreCmds = new EmillaCommand[DUPLICATE];
 private final AppCmdInfo[] mAppCmdInfos;
 private final AppCommand[] mAppCmds;
 
-public CmdTree(final int appCount) {
+public CmdTree(final Resources res, final int appCount) {
+    mRes = res;
     root.map = new HashMap<>();
     mAppCmdInfos = new AppCmdInfo[appCount];
     mAppCmds = new AppCommand[appCount];
-}
-
-/**
- * @param command is assumed not to have any leading spaces!
- * @return at most, the first three codepoints in the string as a string-array
- */
-private String[] characterTokens(final String command) { // TODO LANG: use the method
-    final String[] tokens = new String[min(depth, command.codePointCount(0, command.length()))];
-    for (int i = 0, offset = 0; i < tokens.length; ++i) {
-        final int codePoint = command.codePointAt(offset);
-        tokens[i] = String.valueOf(toChars(codePoint));
-        offset += charCount(codePoint);
-    }
-    return tokens;
 }
 
 private static void putDuplicate(final CmdNode node, final short id) {
@@ -79,8 +60,7 @@ private static void putDuplicate(final CmdNode node, final short id) {
  */
 public void put(final String command, final short id) {
     CmdNode cur = root;
-    int dep = 0;
-    for (final String token : new CmdTokens(command)) {
+    for (final String token : Lang.cmdTokens(mRes, command)) {
         if (cur.map == null) cur.map = new HashMap<>();
         final CmdNode get = cur.map.get(token);
         if (get == null) {
@@ -88,11 +68,9 @@ public void put(final String command, final short id) {
             cur.map.put(token, next);
             cur = next;
         } else cur = get;
-        ++dep;
     }
     if (cur.cmd == DEFAULT) cur.cmd = id;
     else putDuplicate(cur, id);
-    depth = max(depth, dep);
 }
 
 /**
@@ -108,8 +86,7 @@ public void put(final String command, final short id) {
  */
 public void putApp(final CharSequence label, final short id, final AppCmdInfo info, final int idx) {
     CmdNode cur = root;
-    int dep = 0;
-    for (final String token : new CmdTokens(label.toString())) {
+    for (final String token : Lang.cmdTokens(mRes, label.toString())) {
         if (cur.map == null) cur.map = new HashMap<>();
         final CmdNode get = cur.map.get(token);
         if (get == null) {
@@ -117,11 +94,9 @@ public void putApp(final CharSequence label, final short id, final AppCmdInfo in
             cur.map.put(token, next);
             cur = next;
         } else cur = get;
-        ++dep;
     }
     if (cur.cmd == DEFAULT) cur.cmd = id;
     else putDuplicate(cur, id);
-    depth = max(depth, dep);
     mAppCmdInfos[idx] = info;
 }
 
@@ -142,7 +117,6 @@ public void putSingle(final String lcName, final short id) {
         root.map.put(lcName, next);
     } else if (get.cmd == DEFAULT) get.cmd = id;
     else putDuplicate(get, id);
-    depth = max(depth, 1);
 }
 
 public EmillaCommand newCore(final AssistActivity act, final short id, final String instruct) {
@@ -192,7 +166,7 @@ private static AppCommand newApp(final AssistActivity act, final AppCmdInfo info
     // Markor can have multiple launchers. Only the main one should have the 'send' property.
     case Apps.PKG_FIREFOX -> new AppSearchCommand(act, instruct, info, R.string.instruction_web);
     case Apps.PKG_TOR -> new AppCommand(act, instruct, info);
-    // Search/send intents are broken
+    // Tor search/send intents are broken.
     case Apps.PKG_SIGNAL -> new AppSendDataCommand(act, instruct, info, R.string.instruction_message);
     case Apps.PKG_NEWPIPE,
          Apps.PKG_TUBULAR -> new AppSendCommand(act, instruct, info, R.string.instruction_video);
@@ -262,7 +236,7 @@ public EmillaCommand get(final AssistActivity act, final String command) {
 
     CmdNode cur = root;
     short curCmd = DEFAULT;
-    final CmdTokens tokens = new CmdTokens(command);
+    final CmdTokens tokens = Lang.cmdTokens(mRes, command);
     for (final String token : tokens) {
         if (cur.map == null) return restrainInstance(act, curCmd, cur, tokens.instruct());
         final CmdNode get = cur.map.get(token);
