@@ -13,7 +13,7 @@ import net.emilla.exceptions.EmlaBadCommandException;
 import java.util.Calendar;
 import java.util.regex.Matcher;
 
-public class TimeParsing {
+public class Time {
     private static final String JAN = "jan(uary)?", FEB = "feb(ruary)?", MAR = "mar(ch)?";
     private static final String APR = "apr(il)?", MAY = "may", JUN = "june?";
     private static final String JUL = "july?", AUG = "aug(ust)?", SEP = "sep(t(ember)?)?";

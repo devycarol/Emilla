@@ -22,7 +22,7 @@ import net.emilla.R;
 import net.emilla.exceptions.EmlaAppsException;
 import net.emilla.exceptions.EmlaBadCommandException;
 import net.emilla.parsing.CalendarDetailParsing;
-import net.emilla.parsing.TimeParsing;
+import net.emilla.parsing.Time;
 import net.emilla.utils.Apps;
 import net.emilla.utils.Tags;
 
@@ -63,7 +63,7 @@ private void putTitleAndDate(/*mutable*/ String title) throws EmlaBadCommandExce
     case 1 -> {}
     case 2 -> {
         title = nameAndTime[0];
-        long[] times = TimeParsing.parseDateAndTimes(nameAndTime[1]);
+        long[] times = Time.parseDateAndTimes(nameAndTime[1]);
         mIntent.putExtra(EXTRA_EVENT_BEGIN_TIME, times[0]);
         if (times[1] != 0) mIntent.putExtra(EXTRA_EVENT_END_TIME, times[1]);
     }

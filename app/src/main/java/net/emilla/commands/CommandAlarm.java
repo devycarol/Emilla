@@ -12,7 +12,7 @@ import androidx.annotation.StringRes;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exceptions.EmlaAppsException;
-import net.emilla.parsing.TimeParsing;
+import net.emilla.parsing.Time;
 import net.emilla.utils.Apps;
 import net.emilla.utils.Dialogs;
 
@@ -53,8 +53,8 @@ private void putTime(final int hourOfDay, final int minute) {
 }
 
 private void putTime(final String time) {
-    final int[] timeUnits = TimeParsing.parseTime(time);
-    final int[] weekdays = TimeParsing.parseWeekdays(time);
+    final int[] timeUnits = Time.parseTime(time);
+    final int[] weekdays = Time.parseWeekdays(time);
     switch (timeUnits[3]) { // TODO: change how this is handled - toasts conflict with the AOSP clock
     case 1 -> toast("Warning! Alarm has been set for AM by default.", true);
     case 2 -> toast("Warning! Alarm has been set for PM by default.", true);
@@ -101,6 +101,6 @@ protected void runWithData(final String label) {
 protected void runWithData(final String time, final String label) {
     putTime(time);
     putLabel(label);
-    run();
+    execute(mSetIntent);
 }
 }

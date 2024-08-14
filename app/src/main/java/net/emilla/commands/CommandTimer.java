@@ -14,13 +14,13 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exceptions.EmlaAppsException;
 import net.emilla.exceptions.EmlaBadCommandException;
-import net.emilla.parsing.TimeParsing;
+import net.emilla.parsing.Time;
 import net.emilla.utils.Apps;
 
 public class CommandTimer extends CoreDataCommand {
 private static int seconds(final CommandTimer cmd, final String duration) {
     // todo: cleanup this logic
-    final int[] timeUnits = TimeParsing.parseDuration(duration);
+    final int[] timeUnits = Time.parseDuration(duration);
     final int warn = timeUnits[3];
     if (warn > 0) { // todo: replace with a confirm/set-default dialog - reduces localization woes
         final String curPeriod, nextPeriod;

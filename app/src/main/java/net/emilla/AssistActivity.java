@@ -100,10 +100,6 @@ private boolean mLaunched = false;
 private boolean mFocused = false;
 private boolean mPendingCancel = false;
 private boolean mDialogOpen = false;
-
-private boolean mTouchingSubmit = false;
-private boolean mLongPressingSubmit = false;
-private int mCommandIcon = R.drawable.ic_assistant;
 private boolean mHasTitlebar;
 
 //public static long nanosPlease(final long prevTime, final String label) {
@@ -476,7 +472,6 @@ private void setTextsIfCommandChanged(/*mutable*/ String command) {
 
         final int iconId = noCommand ? R.drawable.ic_assistant : mCommand.icon();
         mSubmitButton.setIcon(iconId);
-        mCommandIcon = iconId;
         final boolean dataAvailable = noCommand || mCommand.usesData();
         if (dataAvailable != mDataAvailable) updateDataAvailability(dataAvailable);
 
