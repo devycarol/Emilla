@@ -14,8 +14,8 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exceptions.EmlaAppsException;
 import net.emilla.exceptions.EmlaBadCommandException;
-import net.emilla.parsing.Time;
 import net.emilla.utils.Apps;
+import net.emilla.utils.Time;
 
 public class CommandTimer extends CoreDataCommand {
 private static int seconds(final CommandTimer cmd, final String duration) {

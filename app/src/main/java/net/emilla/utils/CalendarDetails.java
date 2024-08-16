@@ -1,10 +1,10 @@
-package net.emilla.parsing;
+package net.emilla.utils;
 
 import static android.provider.CalendarContract.Events.*;
 
 import net.emilla.exceptions.EmlaBadCommandException;
 
-public class CalendarDetailParsing {
+public class CalendarDetails {
     public static int parseAvailability(String s) {
         return switch (s.trim().toLowerCase()) {
             case "busy" -> AVAILABILITY_BUSY;

@@ -9,7 +9,7 @@ import androidx.annotation.DrawableRes;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exceptions.EmlaAppsException;
-import net.emilla.parsing.Calculator;
+import net.emilla.utils.Calculator;
 
 public class CatCommandCalculate extends CatCommand {
 public CatCommandCalculate(final AssistActivity act, final String instruct) {

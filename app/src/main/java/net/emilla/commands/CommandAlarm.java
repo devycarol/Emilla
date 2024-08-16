@@ -12,9 +12,9 @@ import androidx.annotation.StringRes;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exceptions.EmlaAppsException;
-import net.emilla.parsing.Time;
 import net.emilla.utils.Apps;
 import net.emilla.utils.Dialogs;
+import net.emilla.utils.Time;
 
 import java.util.ArrayList;
 

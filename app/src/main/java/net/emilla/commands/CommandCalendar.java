@@ -21,10 +21,10 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exceptions.EmlaAppsException;
 import net.emilla.exceptions.EmlaBadCommandException;
-import net.emilla.parsing.CalendarDetailParsing;
-import net.emilla.parsing.Time;
 import net.emilla.utils.Apps;
+import net.emilla.utils.CalendarDetails;
 import net.emilla.utils.Tags;
+import net.emilla.utils.Time;
 
 import java.util.regex.Matcher;
 
@@ -97,12 +97,12 @@ private void putDetails(final String details) {
     if (Tags.itHas(mDetails, Tags.AVAIL)) {
         final String availability = Tags.getFrom(mDetails, Tags.AVAIL, Tags.CALENDAR_TAGS);
         mDetails = Tags.strip(mDetails, Tags.AVAIL, availability);
-        mIntent.putExtra(AVAILABILITY, CalendarDetailParsing.parseAvailability(availability));
+        mIntent.putExtra(AVAILABILITY, CalendarDetails.parseAvailability(availability));
     }
     if (Tags.itHas(mDetails, Tags.ACCESS)) {
         final String visibility = Tags.getFrom(mDetails, Tags.ACCESS, Tags.CALENDAR_TAGS);
         mDetails = Tags.strip(mDetails, Tags.ACCESS, visibility);
-        mIntent.putExtra(ACCESS_LEVEL, CalendarDetailParsing.parseVisibility(visibility));
+        mIntent.putExtra(ACCESS_LEVEL, CalendarDetails.parseVisibility(visibility));
     }
     if (Tags.itHas(mDetails, Tags.DETAILS)) {
         final String description = Tags.getFrom(mDetails, Tags.DETAILS, Tags.CALENDAR_TAGS);
