@@ -91,7 +91,7 @@ public class Tags { // TODO LANG
         // or it could be an above-button. either way some way to decline the slashtag will be required. might not need slashes in that case.
         if (Tags.itHas(text, tagKey)) {
             final String tagVal = Tags.getFrom(text, tagKey, tagSet);
-            intent.putExtra(extra, Contacts.namesToEmails(tagVal, emailMap));
+            intent.putExtra(extra, Contact.namesToEmails(tagVal, emailMap));
             return Tags.strip(text, tagKey, tagVal);
         }
         return text;

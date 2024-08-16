@@ -5,7 +5,7 @@ import android.util.Log;
 
 import java.util.HashMap;
 
-public class Contacts {
+public class Contact {
 private static final String
     DFLT_PHONES = "Cameron, (208) 555-1234\n" +
         "John, Johnny, (208) 555-6789\n" +
@@ -13,6 +13,9 @@ private static final String
         "Susan home, (970) 345-6789",
     DFLT_EMAILS = "Devy, devydev@example.com\n" +
         "Bugs, bugs@emilla.net";
+
+private static HashMap<String, String> sPhones;
+private static HashMap<String, String> sEmails;
 
 private static HashMap<String, String> mapContacts(final String csv) {
     final HashMap<String, String> contactMap = new HashMap<>();
@@ -26,11 +29,18 @@ private static HashMap<String, String> mapContacts(final String csv) {
 }
 
 public static HashMap<String, String> mapPhones(final SharedPreferences prefs) {
-    return mapContacts(prefs.getString("phones", DFLT_PHONES).trim());
+    return sPhones == null ? sPhones = mapContacts(prefs.getString("phones", DFLT_PHONES).trim())
+            : sPhones;
 }
 
 public static HashMap<String, String> mapEmails(final SharedPreferences prefs) {
-    return mapContacts(prefs.getString("emails", DFLT_EMAILS).trim());
+    return sEmails == null ? sEmails = mapContacts(prefs.getString("emails", DFLT_EMAILS).trim())
+            : sEmails;
+}
+
+public static void clean() {
+    sPhones = null;
+    sEmails = null;
 }
 
 public static String fromName(final String name, final HashMap<String, String> contactMap) {

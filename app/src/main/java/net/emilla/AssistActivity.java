@@ -12,7 +12,6 @@ import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
@@ -36,7 +35,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.preference.PreferenceManager;
@@ -54,17 +52,16 @@ import net.emilla.system.AppEmilla;
 import net.emilla.system.EmillaForegroundService;
 import net.emilla.utils.Apps;
 import net.emilla.utils.Chime;
-import net.emilla.utils.Contacts;
+import net.emilla.utils.Contact;
 import net.emilla.utils.Dialogs;
 import net.emilla.utils.Features;
 import net.emilla.utils.Lang;
 import net.emilla.views.ActionButton;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-public class AssistActivity extends EmillaActivity implements OnSharedPreferenceChangeListener {
+public class AssistActivity extends EmillaActivity {
 public static final int // intent codes
     GET_FILE = 1,
     GET_PICTURE = 2,
@@ -75,8 +72,6 @@ private SharedPreferences mPrefs;
 
 private CmdTree mCmdTree;
 private List<ResolveInfo> mAppList;
-private HashMap<String, String> mPhoneMap;
-private HashMap<String, String> mEmailMap;
 private String mSounds;
 private ToneGenerator mToneGenerator;
 
@@ -149,8 +144,6 @@ protected void onCreate(final Bundle savedInstanceState) {
     final PackageManager pm = getPackageManager();
     mAppList = Apps.resolveList(pm);
     mCmdTree = EmillaCommand.tree(mPrefs, res, pm, mAppList);
-    mPhoneMap = Contacts.mapPhones(mPrefs);
-    mEmailMap = Contacts.mapEmails(mPrefs);
 
     mEmptySpace = findViewById(R.id.empty_space);
     mHelpBox = findViewById(R.id.help_text_box);
@@ -398,6 +391,12 @@ protected void onStop() {
 }
 
 @Override
+protected void onDestroy() {
+    super.onDestroy();
+    Contact.clean();
+}
+
+@Override
 public boolean onKeyUp(final int keyCode, final KeyEvent event) {
     // todo: configurable action for second tap of the 'assist' key, could type/run a favorite command (like torch :), pull up a gadget of favorites, lots of possibilities.
     // u could have the command chain into a second literal "cancel" command to just have a double-click action :)
@@ -527,14 +526,6 @@ public SharedPreferences prefs() {
 
 public List<ResolveInfo> appList() {
     return mAppList;
-}
-
-public HashMap<String, String> phoneMap() {
-    return mPhoneMap;
-}
-
-public HashMap<String, String> emailMap() {
-    return mEmailMap;
 }
 
 public String mediaCsv() {
@@ -713,12 +704,4 @@ try {
     Log.e("UNKNOWN COMMAND ERROR", "", e);
     // Todo: easy bug reporting ;)
 }}
-
-@Override
-public void onSharedPreferenceChanged(final SharedPreferences prefs, @Nullable final String key) {
-    if (key != null) switch (key) {
-        case "phones" -> mPhoneMap = Contacts.mapPhones(prefs);
-        case "emails" -> mEmailMap = Contacts.mapEmails(prefs);
-    }
-}
 }

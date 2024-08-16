@@ -14,7 +14,7 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exceptions.EmlaAppsException;
 import net.emilla.utils.Apps;
-import net.emilla.utils.Contacts;
+import net.emilla.utils.Contact;
 import net.emilla.utils.Tags;
 
 import java.util.HashMap;
@@ -44,7 +44,7 @@ public int icon() {
 
 public CommandEmail(final AssistActivity act, final String instruct) {
     super(act, instruct, R.string.command_email, R.string.instruction_email);
-    mEmailMap = act.emailMap();
+    mEmailMap = Contact.mapEmails(act.prefs());
 }
 
 private void clearDetails() {
@@ -65,8 +65,8 @@ private void putRecipients(final Intent intent, final String recipients) {
         people = Tags.strip(people, Tags.TO, to);
         if (people.isEmpty()) people = to;
         else people = people + ',' + to;
-        intent.putExtra(EXTRA_EMAIL, Contacts.namesToEmails(people, mEmailMap));
-    } else if (!people.isEmpty()) intent.putExtra(EXTRA_EMAIL, Contacts.namesToEmails(people, mEmailMap));
+        intent.putExtra(EXTRA_EMAIL, Contact.namesToEmails(people, mEmailMap));
+    } else if (!people.isEmpty()) intent.putExtra(EXTRA_EMAIL, Contact.namesToEmails(people, mEmailMap));
     if (peopleAndSubject.length > 1) {
         final String subject = peopleAndSubject[1];
         if (!subject.isEmpty()) intent.putExtra(EXTRA_SUBJECT, subject);

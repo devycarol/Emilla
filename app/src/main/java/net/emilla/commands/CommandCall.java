@@ -17,7 +17,7 @@ import net.emilla.exceptions.EmlaAppsException;
 import net.emilla.exceptions.EmlaBadCommandException;
 import net.emilla.exceptions.EmlaFeatureException;
 import net.emilla.utils.Apps;
-import net.emilla.utils.Contacts;
+import net.emilla.utils.Contact;
 import net.emilla.utils.Permissions;
 
 import java.util.HashMap;
@@ -43,7 +43,7 @@ public int imeAction() {
 
 public CommandCall(final AssistActivity act, final String instruct) {
     super(act, instruct, R.string.command_call, R.string.instruction_phone);
-    mPhoneMap = act.phoneMap();
+    mPhoneMap = Contact.mapPhones(act.prefs());
 }
 
 @Override
@@ -58,7 +58,7 @@ protected void run(final String nameOrNumber) {
     final PackageManager pm = packageManager();
     if (!pm.hasSystemFeature(FEATURE_TELEPHONY)) throw new EmlaFeatureException("Your device doesn't support phone calls.");
     if (!Permissions.phone(activity(), pm)) return;
-    mIntent.setData(parse("tel:" + Contacts.fromName(nameOrNumber, mPhoneMap)));
+    mIntent.setData(parse("tel:" + Contact.fromName(nameOrNumber, mPhoneMap)));
     // TODO: handle at mapping/install - make sure it's not 'sticky' in sharedprefs in case of data transfer. it shouldn't disable the "command enabled" pref,
     //  it should just be its own element of an "is the command enabled" check similar to HeliBoard's handling in its "SettingsValues" class.
     if (pm.resolveActivity(mIntent, 0) == null) throw new EmlaAppsException("No phone app found on your device.");

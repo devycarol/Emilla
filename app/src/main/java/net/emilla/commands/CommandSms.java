@@ -19,7 +19,7 @@ import net.emilla.R;
 import net.emilla.exceptions.EmlaAppsException;
 import net.emilla.exceptions.EmlaFeatureException;
 import net.emilla.utils.Apps;
-import net.emilla.utils.Contacts;
+import net.emilla.utils.Contact;
 import net.emilla.utils.Lang;
 import net.emilla.utils.Tags;
 
@@ -51,7 +51,7 @@ public int icon() {
 
 public CommandSms(final AssistActivity act, final String instruct) {
     super(act, instruct, R.string.command_sms, R.string.instruction_phone);
-    mPhoneMap = act.phoneMap();
+    mPhoneMap = Contact.mapPhones(act.prefs());
 }
 
 private Intent putText(/*mutable*/ String message) {
@@ -90,7 +90,7 @@ protected void run(final String recipients) {
     final PackageManager pm = packageManager();
     if (!pm.hasSystemFeature(FEATURE_TELEPHONY_MESSAGING)) throw new EmlaFeatureException("Your device doesn't support SMS messaging."); // TODO: handle at install—don't store in sharedprefs in case of settings sync/transfer
     if (pm.resolveActivity(mIntent, 0) == null) throw new EmlaAppsException("No SMS app found on your device."); // todo handle at mapping
-    succeed(mIntent.setData(Uri.parse("sms:" + Contacts.namesToPhones(recipients, mPhoneMap))));
+    succeed(mIntent.setData(Uri.parse("sms:" + Contact.namesToPhones(recipients, mPhoneMap))));
 }
 
 @Override
@@ -106,7 +106,7 @@ protected void runWithData(final String recipients, final String message) {
     final PackageManager pm = packageManager();
     if (!pm.hasSystemFeature(FEATURE_TELEPHONY_MESSAGING)) throw new EmlaFeatureException("Your device doesn't support SMS messaging."); // TODO: handle at install—don't store in sharedprefs in case of settings sync/transfer
     if (pm.resolveActivity(mIntent, 0) == null) throw new EmlaAppsException("No SMS app found on your device."); // todo handle at mapping
-    mIntent.setData(Uri.parse("sms:" + Contacts.namesToPhones(recipients, mPhoneMap)));
+    mIntent.setData(Uri.parse("sms:" + Contact.namesToPhones(recipients, mPhoneMap)));
     succeed(putText(message));
 }
 }
