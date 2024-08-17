@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EditText xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/margin_narrow"
+    android:background="@drawable/text_box"
+    android:imeOptions="flagNavigatePrevious"
+    android:importantForAutofill="no"
+    android:inputType="textMultiLine|textCapSentences"
+    android:minHeight="48dp"
+    android:textColorHint="?attr/colorControlNormal"
+    tools:ignore="LabelFor" />
+<!-- A hint is required to spawn an extra field, satisfying the accessibility requirement. -->

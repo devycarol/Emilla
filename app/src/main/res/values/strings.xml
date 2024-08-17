@@ -23,10 +23,15 @@
     <string name="notif_action_foreground_config">Change background behavior</string>
 
     <!-- UI Components -->
-    <string name="field_command_hint">Command</string>
+    <string name="field_command">Command</string>
+    <string name="field_subject">Subject</string>
+    <string name="field_location">Location</string>
+    <string name="field_url">URL</string>
+    <string name="action_field">Toggle %s field</string>
+    <string name="action_select_all">Select all</string>
     <string name="spoken_description_submit_command">Submit command</string>
     <string name="spoken_description_empty_space">Empty space</string>
-    <string name="spoken_description_cursor_start">Cursor start</string>
+    <string name="action_cursor_start">Cursor start</string>
     <string name="spoken_description_show_data">Show data field</string>
     <string name="spoken_description_hide_data">Hide data field</string>
     <string name="welcome_message">Hello there!</string>

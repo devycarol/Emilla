@@ -1,12 +1,12 @@
 package net.emilla.commands;
 
 import static android.content.Intent.ACTION_INSERT;
-import static android.content.Intent.EXTRA_EMAIL;
 import static android.provider.CalendarContract.EXTRA_EVENT_ALL_DAY;
 import static android.provider.CalendarContract.EXTRA_EVENT_BEGIN_TIME;
 import static android.provider.CalendarContract.EXTRA_EVENT_END_TIME;
-import static android.provider.CalendarContract.Events.*;
-import static java.lang.Character.isWhitespace;
+import static android.provider.CalendarContract.Events.DESCRIPTION;
+import static android.provider.CalendarContract.Events.EVENT_LOCATION;
+import static android.provider.CalendarContract.Events.TITLE;
 import static java.util.regex.Pattern.CASE_INSENSITIVE;
 import static java.util.regex.Pattern.compile;
 
@@ -22,8 +22,6 @@ import net.emilla.R;
 import net.emilla.exceptions.EmlaAppsException;
 import net.emilla.exceptions.EmlaBadCommandException;
 import net.emilla.utils.Apps;
-import net.emilla.utils.CalendarDetails;
-import net.emilla.utils.Tags;
 import net.emilla.utils.Time;
 
 import java.util.regex.Matcher;
@@ -45,10 +43,32 @@ public int icon() {
 }
 
 private final Intent mIntent = Apps.newTask(ACTION_INSERT, Events.CONTENT_URI, "vnd.android.cursor.dir/event");
-private String mDetails;
+private boolean mShowLocationField = false, mShowUrlField = false;
 
 public CommandCalendar(final AssistActivity act, final String instruct) {
     super(act, instruct, R.string.command_calendar, R.string.instruction_calendar);
+}
+
+@Override
+public void init() {
+    super.init();
+
+    if (mShowLocationField) toggleField(R.id.field_location, R.string.field_location, false);
+    giveFieldToggle(R.id.action_field_location, R.string.field_location, R.drawable.ic_location,
+            v -> mShowLocationField = toggleField(R.id.field_location, R.string.field_location, true));
+    if (mShowUrlField) toggleField(R.id.field_url, R.string.field_url, false);
+    giveFieldToggle(R.id.action_field_url, R.string.field_url, R.drawable.ic_web,
+            v -> mShowUrlField = toggleField(R.id.field_url, R.string.field_url, true));
+}
+
+@Override
+public void clean() {
+    super.clean();
+
+    removeAction(R.id.action_field_location);
+    hideField(R.id.field_location);
+    removeAction(R.id.action_field_url);
+    hideField(R.id.field_url);
 }
 
 private void putTitleAndDate(/*mutable*/ String title) throws EmlaBadCommandException {
@@ -72,51 +92,15 @@ private void putTitleAndDate(/*mutable*/ String title) throws EmlaBadCommandExce
     if (!title.isEmpty()) mIntent.putExtra(TITLE, title);
 }
 
-private void clearDetails() {
-    mIntent.removeExtra(EVENT_LOCATION);
-    mIntent.removeExtra(EXTRA_EMAIL);
-    mIntent.removeExtra("url");
-    mIntent.removeExtra(AVAILABILITY);
-    mIntent.removeExtra(ACCESS_LEVEL);
-    mIntent.removeExtra(DESCRIPTION);
-}
-
-private void putDetails(final String details) {
-    mDetails = details;
-    mDetails = Tags.putIfPresent(mDetails, Tags.LOCATION, mIntent, EVENT_LOCATION, Tags.LOCATION);
-    if (Tags.itHas(mDetails, Tags.GUESTS)) {
-        final String guests = Tags.getFrom(mDetails, Tags.GUESTS, Tags.CALENDAR_TAGS);
-        if (guests.matches("(\\S+@\\S+\\.\\S+,)*\\S+@\\S+\\.\\S+")) mDetails = Tags.strip(mDetails, Tags.GUESTS, guests);
-        else {
-            clearDetails();
-            throw new EmlaBadCommandException("Sorry! 'Guests' only supports email contact(s)."); // TODO: have the ui assist with this instead
-        }
-        mIntent.putExtra(EXTRA_EMAIL, guests); // TODO: contact-parse the CSV-email string. also huh that regex?
-    }
-    mDetails = Tags.putIfPresent(mDetails, Tags.URL, mIntent, "url", Tags.CALENDAR_TAGS); // todo: is there a way to query supported extras?
-    if (Tags.itHas(mDetails, Tags.AVAIL)) {
-        final String availability = Tags.getFrom(mDetails, Tags.AVAIL, Tags.CALENDAR_TAGS);
-        mDetails = Tags.strip(mDetails, Tags.AVAIL, availability);
-        mIntent.putExtra(AVAILABILITY, CalendarDetails.parseAvailability(availability));
-    }
-    if (Tags.itHas(mDetails, Tags.ACCESS)) {
-        final String visibility = Tags.getFrom(mDetails, Tags.ACCESS, Tags.CALENDAR_TAGS);
-        mDetails = Tags.strip(mDetails, Tags.ACCESS, visibility);
-        mIntent.putExtra(ACCESS_LEVEL, CalendarDetails.parseVisibility(visibility));
-    }
-    if (Tags.itHas(mDetails, Tags.DETAILS)) {
-        final String description = Tags.getFrom(mDetails, Tags.DETAILS, Tags.CALENDAR_TAGS);
-        mDetails = Tags.strip(mDetails, Tags.DETAILS, description);
-        if (mDetails.isEmpty()) mDetails = description;
-        else if (isWhitespace(mDetails.charAt(mDetails.length() - 1))) mDetails += description;
-        else mDetails = mDetails + ' ' + description;
-        mIntent.putExtra(DESCRIPTION, mDetails.trim());
-    } else if (!mDetails.isEmpty()) mIntent.putExtra(DESCRIPTION, mDetails.trim());
-}
-
 @Override
 protected void run() {
     if (mIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No calendar app found on your device."); // todo: handle at mapping
+    final String location = fieldText(R.id.field_location);
+    if (location != null) mIntent.putExtra(EVENT_LOCATION, location);
+    final String url = fieldText(R.id.field_url);
+    if (url != null) mIntent.putExtra("url", url); // todo: is there a way to query supported extras?
+    // Todo: action buttons to select availability, access level, and guests—last requires contacts
+    //  stuff. If possible also: reminders, repeats, timezone, event color, and calendar selection.
     succeed(mIntent);
     // todo: etar calendar acts really janky in the recents which causes unwanted event-saving
     // it also flashes white on start even in the dark (black, LineageOS) theme
@@ -130,14 +114,14 @@ protected void run(final String titleAndDate) {
 
 @Override
 protected void runWithData(final String details) {
-    putDetails(details);
+    mIntent.putExtra(DESCRIPTION, details);
     run();
 }
 
 @Override
 protected void runWithData(final String titleAndDate, final String details) {
     putTitleAndDate(titleAndDate);
-    putDetails(details);
+    mIntent.putExtra(DESCRIPTION, details);
     run();
 }
 }

@@ -22,32 +22,21 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:contentDescription="@string/spoken_description_empty_space"
-        app:layout_constraintBottom_toTopOf="@id/container_more_actions"
+        app:layout_constraintBottom_toTopOf="@id/container_assistant"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/help_text_box" />
 
     <LinearLayout
         android:id="@+id/container_more_actions"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_narrow"
         android:gravity="end"
         android:orientation="horizontal"
-        android:padding="@dimen/margin_narrow"
-        app:layout_constraintBottom_toTopOf="@id/container_assistant">
-
-        <net.emilla.views.ActionButton
-            android:id="@+id/button_cursor_start"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:background="@drawable/background_action_button"
-            android:contentDescription="@string/spoken_description_cursor_start"
-            android:padding="@dimen/margin_narrow"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_cursor_start"
-            app:elevation="0dp" />
-    </LinearLayout>
+        android:paddingBottom="@dimen/margin_narrow"
+        app:layout_constraintBottom_toTopOf="@id/container_assistant"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <LinearLayout
         android:id="@+id/container_assistant"
@@ -62,6 +51,12 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
+        <LinearLayout
+            android:id="@+id/container_more_fields"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
         <EditText
             android:id="@+id/field_data"
             android:layout_width="match_parent"
@@ -69,7 +64,7 @@
             android:layout_marginBottom="@dimen/margin_narrow"
             android:background="@drawable/text_box"
             android:hint="@string/data_hint_default"
-            android:imeOptions="actionPrevious"
+            android:imeOptions="flagNavigatePrevious"
             android:importantForAutofill="no"
             android:inputType="textMultiLine|textCapSentences"
             android:minHeight="48dp"
@@ -101,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/text_box"
-                android:hint="@string/field_command_hint"
+                android:hint="@string/field_command"
                 android:importantForAutofill="no"
                 android:inputType="text|textCapSentences"
                 android:minHeight="@dimen/width_action"

@@ -40,7 +40,7 @@
         <item>None</item>
         <item>Toggle flashlight</item>
         <item>These settings</item>
-        <item>Select whole command</item>
+        <item>@string/action_select_all</item>
     </string-array>
     <string-array name="action_values" translatable="false">
         <item>none</item>
@@ -233,8 +233,7 @@
         <item>Provide instructions normally, then select command.</item>
     </string-array>
     <string-array name="details_sms">
-        <item>Tags: /sub|ject, /b|ody or /m|essage or /msg or /t|(e)xt.</item>
-        <item>This will overwrite any existing SMS draft to the recipient(s)!</item><!--todo-->
+        <item>This will overwrite any existing SMS draft to the recipient(s)!</item><!--Todo-->
         <item translatable="false">@string/detail_multiple_recipients</item>
     </string-array>
     <string-array name="details_email">
@@ -268,7 +267,6 @@
     </string-array>
     <!--todo: make this more concise and have a proper manual-->
     <string-array name="details_calendar">
-        <item>"Tags: /loc|ation, /with or /guests, /d|esc|ription or /det|ails or /deets, /url or /link, /avail|ability or /stat|us busy/free or avail|able/tent|ative, /vis|ibility or /acc|ess pub|lic/con|f|id|ential/pri|v|ate."</item>
         <item>/allday makes the event span the whole day(s)—any time information is ignored.</item><!--todo: have better flow for that sort of thing-->
         <item translatable="false">@string/format_time_clock_seconds</item>
         <item translatable="false">@string/format_date_year</item>

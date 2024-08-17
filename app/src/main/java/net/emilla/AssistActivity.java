@@ -28,14 +28,19 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.preference.PreferenceManager;
 
@@ -69,21 +74,24 @@ public static final int // intent codes
     PICK_EDIT_CONTACT = 4;
 
 private SharedPreferences mPrefs;
-
 private CmdTree mCmdTree;
 private List<ResolveInfo> mAppList;
 private String mSounds;
 private ToneGenerator mToneGenerator;
 
+private LayoutInflater mInflater;
 private FrameLayout mEmptySpace;
 private TextView mHelpBox;
 private EditText mCommandField, mDataField;
-private ActionButton mSubmitButton, mShowDataButton, mCursorStartButton;
-
+private ActionButton mSubmitButton;
+private ActionButton mShowDataButton;
+private LinearLayout mActionsContainer;
+private LinearLayout mFieldsContainer;
 private AlertDialog mCancelDialog;
 
 private ArrayList<Uri> mAttachments;
 private EmillaCommand mCommand;
+
 private boolean mNoCommand = true;
 private boolean
     mDataAvailable = true,
@@ -165,7 +173,20 @@ protected void onCreate(final Bundle savedInstanceState) {
 
     setupSubmitButton();
     setupShowDataButton(alwaysShowData);
-    setupCursorStartButton();
+    setupMoreActions();
+}
+
+@Override
+protected void onNewIntent(final Intent intent) {
+    super.onNewIntent(intent);
+
+    final String action = intent.getAction();
+    if (mFocused && action != null) switch (action) {
+        case ACTION_ASSIST, ACTION_VOICE_COMMAND -> quickAct(mPrefs.getString("action_double_assist",
+                Features.torch(getPackageManager()) ? "torch" : "config"));
+        // Todo: this is broken for the corner gesture. Seems to be an Android bug (LineageOS 21,
+        //  no animations, navbar hell).
+    }
 }
 
 @Override // Todo: replace with view-model
@@ -183,7 +204,7 @@ private void setupCommandField() {
         @Override
         public void onTextChanged(final CharSequence text, final int start, final int before,
                 final int count) {
-            setTextsIfCommandChanged(text.toString());
+            onCommandChanged(text.toString());
         }
 
         @Override
@@ -298,14 +319,65 @@ private void setupShowDataButton(final boolean disable) {
     });
 }
 
-private void setupCursorStartButton() {
-    if (true) {
-        // Todo: instant-command buttons of all sorts
-        findViewById(R.id.container_more_actions).setVisibility(LinearLayout.GONE);
-        return;
+public void addAction(@IdRes final int actionId, final CharSequence description,
+        @DrawableRes final int iconId, final View.OnClickListener click) {
+    final ActionButton actionButton = (ActionButton) mInflater.inflate(R.layout.btn_action,
+            mActionsContainer, false);
+    actionButton.setId(actionId);
+    actionButton.setIcon(iconId);
+    actionButton.setContentDescription(description);
+    actionButton.setOnClickListener(click);
+    mActionsContainer.addView(actionButton);
+}
+
+private void setupMoreActions() {
+    // TODO: save state hell
+    mInflater = LayoutInflater.from(this);
+    mActionsContainer = findViewById(R.id.container_more_actions);
+    addAction(R.id.action_cursor_start, getString(R.string.action_cursor_start),
+            R.drawable.ic_cursor_start, v -> cursorStart());
+    mFieldsContainer = findViewById(R.id.container_more_fields);
+}
+
+public void removeAction(@IdRes final int actionId) {
+    mActionsContainer.removeView(findViewById(actionId));
+}
+
+public boolean toggleField(@IdRes final int fieldId, @StringRes final int hintId,
+        final boolean focus) {
+    // Todo: it's vague which field is which. First step: make them be ordered consistently.
+    EditText field = findViewById(fieldId);
+    if (field == null) {
+        field = (EditText) mInflater.inflate(R.layout.field_extra, mFieldsContainer, false);
+        field.setId(fieldId);
+        field.setHint(hintId);
+        mFieldsContainer.addView(field);
+        if (focus) field.requestFocus();
+        return true;
+    } else if (field.getVisibility() == EditText.VISIBLE) {
+        if (field.hasFocus()) mCommandField.requestFocus();
+        // Todo: instead track the previously focused field(s)?
+        field.setVisibility(EditText.GONE);
+        return false;
+    } else {
+        field.setVisibility(EditText.VISIBLE);
+        if (focus) field.requestFocus();
+        return true;
     }
-    mCursorStartButton = findViewById(R.id.button_cursor_start);
-    mCursorStartButton.setOnClickListener(v -> cursorStart());
+}
+
+public void hideField(@IdRes final int fieldId) {
+    final EditText field = findViewById(fieldId);
+    if (field != null) {
+        if (field.hasFocus()) mCommandField.requestFocus();
+        // Todo: instead track the previously focused field(s)?
+        field.setVisibility(EditText.GONE);
+    }
+}
+
+public String getFieldText(@IdRes final int fieldId) {
+    final EditText field = findViewById(fieldId);
+    return field == null || field.getVisibility() == EditText.GONE ? null : field.getText().toString();
 }
 
 private void torch() { // todo: migrate out as a command
@@ -362,13 +434,7 @@ private void quickAct(final String action) {
 
 protected void onResume() {
     super.onResume();
-    // TODO: Must revise trigger. Double-acts for the corner gesture in no-buttons mode. Doesn't
-    //  act for the access menu "Assistant" item
-    if (mFocused && !mDialogOpen /*Todo: this is weird..*/) {
-        final String doubleAssistAction = mPrefs.getString("action_double_assist",
-                Features.torch(getPackageManager()) ? "torch" : "config");
-        quickAct(doubleAssistAction);
-    } else {
+    if (!mFocused) {
         if (mLaunched) resume(true);
         else mLaunched = true;
         mFocused = true;
@@ -376,14 +442,10 @@ protected void onResume() {
 }
 
 @Override
-public void onWindowFocusChanged(final boolean hasFocus) {
-    if (!hasFocus) mFocused = false;
-}
-
-@Override
 protected void onStop() {
     super.onStop();
 
+    mFocused = false;
     if (!(isChangingConfigurations() || isFinishing())) {
         if (shouldCancel()) cancel();
         else if (!mDialogOpen) chime(PEND);
@@ -427,7 +489,44 @@ private void updateDataAvailability(final boolean available) {
     mDataAvailable = available;
 }
 
-private void setTextsIfCommandChanged(/*mutable*/ String command) {
+
+public void updateLabel(final CharSequence title) {
+    if (mHasTitlebar) {
+        final ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) actionBar.setTitle(mNoCommand ? mPrefs.getString("motd",
+                getString(R.string.activity_assistant))
+            : title);
+    }
+}
+
+public void updateDetails(final int detailsId) {
+    final CharSequence details = detailsId == -1 ? null : String.join("\n\n", getResources().getStringArray(detailsId));
+    if (details == null) mHelpBox.setVisibility(TextView.GONE);
+    else {
+        mHelpBox.setVisibility(TextView.VISIBLE);
+        mHelpBox.setText(details);
+    }
+}
+
+public void updateDataHint() {
+    if (mNoCommand) {
+        mDataField.setContentDescription(null);
+        mDataField.setHint(R.string.data_hint_default);
+    } else if (mCommand.usesData()) {
+        mDataField.setContentDescription(null);
+        mDataField.setHint(((DataCmd) mCommand).dataHint());
+    } else if (mDataField.getHint() != null) {
+        mDataField.setHint(null);
+        mDataField.setContentDescription(getString(R.string.data_hint_default));
+    }
+}
+
+public void setImeAction(/*mutable*/ int action) {
+    if (mNoCommand) action = IME_ACTION_NEXT;
+    if (action != mImeAction) mCommandField.setImeOptions(mImeAction = action);
+}
+
+private void onCommandChanged(/*mutable*/ String command) {
     final int len = command.length();
     if (len > 0 && command.charAt(0) == ' ') {
         int nonSpace = 0;
@@ -438,47 +537,15 @@ private void setTextsIfCommandChanged(/*mutable*/ String command) {
     final EmillaCommand cmd = mCmdTree.get(this, command);
     final boolean noCommand = command.isEmpty();
     if (cmd != mCommand || noCommand != mNoCommand) {
+        mCommand.clean();
         mCommand = cmd;
         mNoCommand = noCommand;
-        final Resources res = getResources();
-        if (mHasTitlebar) {
-            final ActionBar actionBar = getSupportActionBar();
-            if (actionBar != null) {
-                final CharSequence title = noCommand ? mPrefs.getString("motd",
-                        res.getString(R.string.activity_assistant))
-                    : mCommand.title();
-                actionBar.setTitle(title);
-            }
-        }
-        final int detailsId = mCommand.detailsId();
-        final CharSequence details = detailsId == -1 ? null : String.join("\n\n", res.getStringArray(detailsId));
-        if (details == null) mHelpBox.setVisibility(TextView.GONE);
-        else {
-            mHelpBox.setVisibility(TextView.VISIBLE);
-            mHelpBox.setText(details);
-        }
-
-        if (noCommand) {
-            mDataField.setContentDescription(null);
-            mDataField.setHint(R.string.data_hint_default);
-        } else if (mCommand.usesData()) {
-            mDataField.setContentDescription(null);
-            mDataField.setHint(((DataCmd) mCommand).dataHint());
-        } else if (mDataField.getHint() != null) {
-            mDataField.setHint(null);
-            mDataField.setContentDescription(res.getString(R.string.data_hint_default));
-        }
+        cmd.init();
 
         final int iconId = noCommand ? R.drawable.ic_assistant : mCommand.icon();
         mSubmitButton.setIcon(iconId);
         final boolean dataAvailable = noCommand || mCommand.usesData();
         if (dataAvailable != mDataAvailable) updateDataAvailability(dataAvailable);
-
-        int imeAction = noCommand ? IME_ACTION_NEXT : mCommand.imeAction();
-        if (imeAction != mImeAction) {
-            mCommandField.setImeOptions(imeAction);
-            mImeAction = imeAction;
-        }
     }
 }
 
@@ -568,7 +635,7 @@ private void chime(final byte id) {
     case Chime.NEBULA -> {
         // Todo: still encountering occasional sound cracking issues
         final MediaPlayer player = MediaPlayer.create(this, Chime.nebula(id));
-        player.setVolume(0.5f, 0.5f); // todo: adjust the sound resources directly and remove this but maybe make volume configurable
+        player.setVolume(0.25f, 0.25f); // todo: adjust the sound resources directly and remove this but maybe make volume configurable
         player.setOnCompletionListener(MediaPlayer::release);
         player.start();
     }

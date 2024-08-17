@@ -15,7 +15,7 @@ import net.emilla.R;
 import net.emilla.exceptions.EmlaAppsException;
 import net.emilla.utils.Apps;
 import net.emilla.utils.Contact;
-import net.emilla.utils.Tags;
+import net.emilla.utils.EmailTags;
 
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -24,7 +24,7 @@ public class CommandEmail extends CoreDataCommand {
 private static final String FLAG_ATTACH = " */a(t(ta)?ch)?"; // Todo lang
 
 private final Intent mIntent = Apps.newTask(ACTION_SENDTO, Uri.parse("mailto:"));
-private final Intent mSendMultipleIntent = Apps.newTask(ACTION_SEND_MULTIPLE); // todo: should this have "mailto:"?
+private final Intent mSendMultipleIntent = Apps.newTask(ACTION_SEND_MULTIPLE); // Todo: should this have "mailto:"?
 private final HashMap<String, String> mEmailMap;
 
 @Override @ArrayRes
@@ -54,15 +54,15 @@ private void clearDetails() {
     mIntent.removeExtra(EXTRA_SUBJECT);
 }
 
-private void putRecipients(final Intent intent, final String recipients) {
+private Intent putRecipients(final Intent intent, final String recipients) {
     final String[] peopleAndSubject = recipients.split(" *\\| *", 2);
     String people = peopleAndSubject[0];
     // todo: validate the emails
-    people = Tags.putEmailsIfPresent(people, Tags.CC, intent, EXTRA_CC, Tags.EMAIL_TAGS, mEmailMap);
-    people = Tags.putEmailsIfPresent(people, Tags.BCC, intent, EXTRA_BCC, Tags.EMAIL_TAGS, mEmailMap);
-    if (Tags.itHas(people, Tags.TO)) {
-        final String to = Tags.getFrom(people, Tags.TO, Tags.EMAIL_TAGS);
-        people = Tags.strip(people, Tags.TO, to);
+    people = EmailTags.putEmailsIfPresent(people, EmailTags.CC, intent, EXTRA_CC, EmailTags.EMAIL_TAGS, mEmailMap);
+    people = EmailTags.putEmailsIfPresent(people, EmailTags.BCC, intent, EXTRA_BCC, EmailTags.EMAIL_TAGS, mEmailMap);
+    if (EmailTags.itHas(people, EmailTags.TO)) {
+        final String to = EmailTags.getFrom(people, EmailTags.TO, EmailTags.EMAIL_TAGS);
+        people = EmailTags.strip(people, EmailTags.TO, to);
         if (people.isEmpty()) people = to;
         else people = people + ',' + to;
         intent.putExtra(EXTRA_EMAIL, Contact.namesToEmails(people, mEmailMap));
@@ -71,6 +71,7 @@ private void putRecipients(final Intent intent, final String recipients) {
         final String subject = peopleAndSubject[1];
         if (!subject.isEmpty()) intent.putExtra(EXTRA_SUBJECT, subject);
     }
+    return intent;
 }
 
 private Intent putAttachmentsAndRecipients(final String recipients) {
@@ -85,11 +86,10 @@ private Intent putAttachmentsAndRecipients(final String recipients) {
         mSendMultipleIntent.setSelector(mIntent);
         act.nullifyAttachments(); // this will overwrite attachments if /pic is added
         final String actualRecipients = m.replaceFirst("");
-        if (!actualRecipients.isEmpty()) putRecipients(mSendMultipleIntent, actualRecipients);
-        return mSendMultipleIntent;
+        return actualRecipients.isEmpty() ? mSendMultipleIntent : putRecipients(mSendMultipleIntent,
+                actualRecipients);
     }
-    putRecipients(mIntent, recipients);
-    return mIntent;
+    return putRecipients(mIntent, recipients);
 }
 
 @Override
@@ -104,13 +104,12 @@ protected void run() {
 @Override
 protected void run(final String recipients) {
     final Intent in = putAttachmentsAndRecipients(recipients);
-    if (in != null) {
-        if (in.resolveActivity(packageManager()) == null) {
-            clearDetails();
-            throw new EmlaAppsException("No email app found on your device."); // todo handle at mapping
-        }
-        succeed(in);
+    if (in == null) return;
+    if (in.resolveActivity(packageManager()) == null) {
+        clearDetails();
+        throw new EmlaAppsException("No email app found on your device."); // todo handle at mapping
     }
+    succeed(in);
 }
 
 @Override
@@ -125,12 +124,11 @@ protected void runWithData(final String body) {
 @Override
 protected void runWithData(final String recipients, final String body) {
     final Intent in = putAttachmentsAndRecipients(recipients);
-    if (in != null) {
-        if (in.resolveActivity(packageManager()) == null) { // todo handle at mapping
-            clearDetails();
-            throw new EmlaAppsException("No email app found on your device.");
-        }
-        succeed(in.putExtra(EXTRA_TEXT, body));
+    if (in == null) return;
+    if (in.resolveActivity(packageManager()) == null) { // todo handle at mapping
+        clearDetails();
+        throw new EmlaAppsException("No email app found on your device.");
     }
+    succeed(in.putExtra(EXTRA_TEXT, body));
 }
 }

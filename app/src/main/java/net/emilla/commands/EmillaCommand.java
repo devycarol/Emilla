@@ -7,9 +7,13 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
+import android.view.View;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.CallSuper;
 import androidx.annotation.DrawableRes;
+import androidx.annotation.IdRes;
+import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -115,6 +119,17 @@ protected EmillaCommand(final AssistActivity act, final String instruct) {
     mInstruction = instruct;
 }
 
+@CallSuper
+public void init() {
+    mActivity.updateLabel(title());
+    mActivity.updateDetails(detailsId());
+    mActivity.updateDataHint();
+    mActivity.setImeAction(imeAction());
+}
+
+@CallSuper
+public void clean() {}
+
 void instruct(final String instruction) {
     mInstruction = instruction;
 }
@@ -156,6 +171,36 @@ public void execute() {
  */
 protected void toast(final CharSequence text, final boolean longToast) {
     mActivity.toast(text, longToast);
+}
+
+protected void giveAction(@IdRes final int actionId, @StringRes final int descriptionId,
+        @DrawableRes final int iconId, final View.OnClickListener click) {
+    mActivity.addAction(actionId, resources().getString(descriptionId), iconId, click);
+}
+
+protected void giveFieldToggle(@IdRes final int actionId, @StringRes final int fieldNameId,
+        @DrawableRes final int iconId, final View.OnClickListener click) {
+    // Todo acc: the spoken description should update on toggle
+    final Resources res = resources();
+    mActivity.addAction(actionId, res.getString(R.string.action_field, res.getString(fieldNameId)),
+            iconId, click);
+}
+
+protected boolean toggleField(@IdRes final int fieldId, @StringRes final int hintId,
+        final boolean focus) {
+    return mActivity.toggleField(fieldId, hintId, focus);
+}
+
+protected String fieldText(@IdRes final int fieldId) {
+    return mActivity.getFieldText(fieldId);
+}
+
+protected void hideField(@IdRes final int fieldId) {
+    mActivity.hideField(fieldId);
+}
+
+protected void removeAction(@IdRes final int actionId) {
+    mActivity.removeAction(actionId);
 }
 
 /**
@@ -237,7 +282,7 @@ public boolean usesData() {
 protected abstract CharSequence name();
 protected abstract CharSequence dupeLabel(); // Todo: replace with icons
 protected abstract CharSequence lcName();
-public abstract CharSequence title();
+protected abstract CharSequence title();
 @DrawableRes public abstract int icon();
 public abstract int imeAction();
 // todo: you should be able to long-click the enter key in the command or data field to submit
