@@ -42,6 +42,7 @@ public int icon() {
     return R.drawable.ic_calendar;
 }
 
+// Todo: Etar is broken if already open. May be a flags issue?
 private final Intent mIntent = Apps.newTask(ACTION_INSERT, Events.CONTENT_URI, "vnd.android.cursor.dir/event");
 private boolean mShowLocationField = false, mShowUrlField = false;
 

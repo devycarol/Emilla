@@ -41,7 +41,7 @@ public int icon() {
 
 public CommandPomodoro(final AssistActivity act, final String instruct) {
     super(act, instruct, R.string.command_pomodoro, R.string.instruction_pomodoro);
-    mIntent.putExtra(EXTRA_MESSAGE, resources().getString(R.string.command_pomodoro));
+    mIntent.putExtra(EXTRA_MESSAGE, string(R.string.command_pomodoro));
 }
 
 /**
@@ -77,12 +77,11 @@ protected void run() {
 @Override
 protected void run(final String duration) throws EmlaBadCommandException {
     if (mIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
-    final Resources res = resources();
-    final boolean isBreak = putDuration(res, duration);
-    if (isBreak) mIntent.putExtra(EXTRA_MESSAGE, res.getString(R.string.memo_pomodoro_break));
+    final boolean isBreak = putDuration(resources(), duration);
+    if (isBreak) mIntent.putExtra(EXTRA_MESSAGE, string(R.string.memo_pomodoro_break));
     succeed(mIntent);
-    toast(isBreak ? res.getString(R.string.toast_pomodoro_break)
-            : res.getString(R.string.toast_pomodoro), false);
+    toast(isBreak ? string(R.string.toast_pomodoro_break)
+            : string(R.string.toast_pomodoro), false);
 }
 
 @Override
@@ -94,11 +93,10 @@ protected void runWithData(final String memo) {
 @Override
 protected void runWithData(final String duration, final String memo) throws EmlaBadCommandException {
     if (mIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
-    final Resources res = resources();
-    final boolean isBreak = putDuration(res, duration);
+    final boolean isBreak = putDuration(resources(), duration);
     mIntent.putExtra(EXTRA_MESSAGE, memo);
     succeed(mIntent);
-    toast(isBreak ? res.getString(R.string.toast_pomodoro_break)
-            : res.getString(R.string.toast_pomodoro), false);
+    toast(isBreak ? string(R.string.toast_pomodoro_break)
+            : string(R.string.toast_pomodoro), false);
 }
 }

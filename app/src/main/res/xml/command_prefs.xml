@@ -48,6 +48,11 @@
             android:summary="@string/summary_email"
             android:title="@string/command_email" />
         <EditTextPreference
+            android:icon="@drawable/ic_navigate"
+            android:key="aliases_navigate_text"
+            android:summary="@string/summary_navigate"
+            android:title="@string/command_navigate" />
+        <EditTextPreference
             android:icon="@drawable/ic_calculate"
             android:key="aliases_calculate_text"
             android:summary="@string/summary_calculate"
@@ -135,7 +140,7 @@
     <PreferenceCategory android:title="@string/category_apps">
         <EditTextPreference
             android:key="aliases_com.android.contacts_text"
-            android:summary="@string/app_summary_aosp_contacts" />
+            android:summary="@string/summary_app_aosp_contacts" />
         <EditTextPreference
             android:key="aliases_net.gsantner.markor_text"
             android:summary="@string/summary_note" />

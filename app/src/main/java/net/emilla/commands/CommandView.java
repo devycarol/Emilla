@@ -68,7 +68,7 @@ protected void run(final String media) {
     final Intent get = mBookmarkMap.get(media.toLowerCase());
     if (get == null) {
         offer(mBookmarkChooser); // TODO: rare as it may be, this is not yet resolve-safe as is below
-        if (mHasBookmarks) toast(resources().getString(R.string.dlg_msg_choose_media), false);
+        if (mHasBookmarks) toast(string(R.string.dlg_msg_choose_media), false);
         return;
     }
     if (get.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No app found to view media."); // todo handle at mapping

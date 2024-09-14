@@ -15,7 +15,7 @@ import java.text.Format;
 
 public class CommandClock extends CoreCommand {
 public CommandClock(final AssistActivity act, final String instruct) {
-    super(act, instruct, R.string.command_clock, R.string.instruction_clock);
+    super(act, instruct, R.string.command_clock, R.string.instruction_location);
 }
 
 @Override @DrawableRes
@@ -37,11 +37,11 @@ protected void run() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
         final Calendar cal = Calendar.getInstance();
         time = DateFormat.getTimeInstance();
-        localTime = resources().getString(R.string.toast_local_time, time.format(cal.getTime()));
+        localTime = string(R.string.toast_local_time, time.format(cal.getTime()));
     } else {
         final java.util.Calendar cal = java.util.Calendar.getInstance();
         time = java.text.DateFormat.getTimeInstance();
-        localTime = resources().getString(R.string.toast_local_time, time.format(cal.getTime()));
+        localTime = string(R.string.toast_local_time, time.format(cal.getTime()));
     }
     // todo: configurable format &/ allow adjustment via the command instruction
     give(localTime, false);

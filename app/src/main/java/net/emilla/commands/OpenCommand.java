@@ -116,7 +116,7 @@ protected void run(final String app) {
     } // else `other` arrays are null
 
     switch (prefCount) {
-    case 0 -> throw new EmlaAppsException(resources().getString(R.string.error_no_apps));
+    case 0 -> throw new EmlaAppsException(string(R.string.error_no_apps));
     case 1 -> succeed(prefIntents[0]);
     default -> offer(getDialog(prefLabels, prefCount, prefIntents));
 }}

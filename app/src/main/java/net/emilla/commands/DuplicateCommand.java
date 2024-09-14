@@ -15,7 +15,7 @@ import net.emilla.utils.Dialogs;
 public class DuplicateCommand extends EmillaCommand implements DataCmd {
 @Override
 protected CharSequence name() {
-    return resources().getString(R.string.command_duplicate);
+    return string(R.string.command_duplicate);
 }
 
 @Override
@@ -25,12 +25,12 @@ protected CharSequence dupeLabel() {
 
 @Override
 public CharSequence lcName() {
-    return resources().getString(R.string.command_duplicate).toLowerCase();
+    return string(R.string.command_duplicate).toLowerCase();
 }
 
 @Override
 public CharSequence title() {
-    return resources().getString(R.string.command_duplicate);
+    return string(R.string.command_duplicate);
 }
 
 @Override @ArrayRes

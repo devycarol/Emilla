@@ -716,6 +716,9 @@ private void cancelIfWarranted() {
 }
 
 private void showDialog(final AlertDialog dialog, final byte chime) {
+    // TODO: view enablement shouldn't be handled on a view-by-view basis. Perhaps target the mother
+    //  of all views (whatever that is) or get to the bottom of why views can be clicked in the
+    //  split-second after dialog invocation in the first place
     mDialogOpen = true;
     mEmptySpace.setEnabled(false);
     mSubmitButton.setEnabled(false);

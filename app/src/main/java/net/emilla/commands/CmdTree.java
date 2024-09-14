@@ -129,6 +129,7 @@ public EmillaCommand newCore(final AssistActivity act, final short id, final Str
         case DIAL -> new CommandDial(act, instruct);
         case SMS -> new CommandSms(act, instruct);
         case EMAIL -> new CommandEmail(act, instruct);
+        case NAVIGATE -> new CatCommandNavigate(act, instruct);
         case LAUNCH -> new CommandOpenLaunch(act, instruct);
         case SHARE -> new CommandShare(act, instruct);
         case SETTINGS -> new CommandSettings(act, instruct);

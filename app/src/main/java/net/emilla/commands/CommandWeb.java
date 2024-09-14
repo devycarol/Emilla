@@ -17,11 +17,6 @@ public class CommandWeb extends CoreCommand {
 private final Intent mIntent = Apps.newTask(ACTION_WEB_SEARCH);
 private final boolean mUnsafe; // todo: handle at mapping and remove
 
-public CommandWeb(final AssistActivity act, final String instruct) {
-    super(act, instruct, R.string.command_web, R.string.instruction_web);
-    mUnsafe = mIntent.resolveActivity(packageManager()) == null;
-}
-
 @Override @DrawableRes
 public int icon() {
     return R.drawable.ic_web;
@@ -30,6 +25,11 @@ public int icon() {
 @Override
 public int imeAction() {
     return EditorInfo.IME_ACTION_SEARCH;
+}
+
+public CommandWeb(final AssistActivity act, final String instruct) {
+    super(act, instruct, R.string.command_web, R.string.instruction_web);
+    mUnsafe = mIntent.resolveActivity(packageManager()) == null;
 }
 
 @Override

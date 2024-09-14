@@ -1,7 +1,5 @@
 package net.emilla.commands;
 
-import android.content.res.Resources;
-
 import androidx.annotation.ArrayRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
@@ -31,32 +29,30 @@ public CommandToast(final AssistActivity act, final String instruct) {
 
 @Override
 protected void run() { // todo: configurable default message
-    give(resources().getString(R.string.toast_hello), false);
+    give(string(R.string.toast_hello), false);
 }
 
 @Override
 protected void run(final String message) {
-    final Resources res = resources();
-    final String longTag = res.getString(R.string.tag_toast_long); // todo way later make configurable
+    final String longTag = string(R.string.tag_toast_long); // todo way later make configurable
     if (message.toLowerCase().endsWith(longTag)) {
         final String actualMessage = message.substring(0, message.length() - longTag.length()).trim();
-        give(actualMessage.isEmpty() ? res.getString(R.string.toast_hello) : actualMessage, true); // todo: configurable default message
+        give(actualMessage.isEmpty() ? string(R.string.toast_hello) : actualMessage, true); // todo: configurable default message
     } else give(message, false);
 }
 
 @Override
 protected void runWithData(final String message) {
-    final Resources res = resources();
-    final String longTag = res.getString(R.string.tag_toast_long); // todo way later make configurable
+    final String longTag = string(R.string.tag_toast_long); // todo way later make configurable
     if (message.toLowerCase().endsWith(longTag)) {
         final String actualMessage = message.substring(0, message.length() - longTag.length()).trim();
-        give(actualMessage.isEmpty() ? res.getString(R.string.toast_hello) : actualMessage, true); // todo: configurable default message
+        give(actualMessage.isEmpty() ? string(R.string.toast_hello) : actualMessage, true); // todo: configurable default message
     } else give(message, false);
 }
 
 @Override
 protected void runWithData(final String message, final String cont) {
-    final String longTag = resources().getString(R.string.tag_toast_long); // todo way later make configurable
+    final String longTag = string(R.string.tag_toast_long); // todo way later make configurable
     if (message.toLowerCase().endsWith(longTag)) {
         final String actualMessage = message.substring(0, message.length() - longTag.length()).trim() + '\n' + cont;
         give(actualMessage, true);

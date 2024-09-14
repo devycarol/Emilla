@@ -130,6 +130,12 @@
     <string-array name="aliases_email">
         <item>mail</item>
     </string-array>
+    <string-array name="aliases_navigate">
+        <item>nav</item>
+        <item>maps</item>
+        <item>map</item>
+        <item>take me</item>
+    </string-array>
     <string-array name="aliases_launch">
         <item>open</item>
         <item>app</item>
@@ -201,6 +207,7 @@
     <string-array name="aliases_markor">
         <item>mark</item>
         <item>mkr</item>
+        <item>note</item><!--Todo: generic 'note' command-->
     </string-array>
     <string-array name="aliases_firefox">
         <item>ff</item>

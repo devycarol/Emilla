@@ -8,7 +8,6 @@ import static java.util.Objects.requireNonNull;
 
 import android.content.ContentResolver;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 
@@ -80,7 +79,7 @@ protected void run() {
 protected void run(final String task) {
     // todo: newline handling unnecessary in this case
     todo(task); // TODO
-    give(resources().getString(R.string.toast_task_created), false); // TODO: lang
+    give(string(R.string.toast_task_created), false); // TODO: lang
 }
 
 @Override
@@ -90,9 +89,8 @@ protected void runWithData(final String tasks) {
     int taskCount = 0;
     for (final String t : tasks.split("\n"))
     if (!t.isBlank()) ++taskCount;
-    final Resources res = resources();
-    final String msg = taskCount == 1 ? res.getString(R.string.toast_task_created)
-            : res.getString(R.string.toast_tasks_created, taskCount); // TODO: look into getQuantityString
+    final String msg = taskCount == 1 ? string(R.string.toast_task_created)
+            : string(R.string.toast_tasks_created, taskCount); // TODO: look into getQuantityString
     give(msg, false);
 }
 
@@ -103,9 +101,8 @@ protected void runWithData(final String task, final String moreTasks) {
     int taskCount = 0;
     for (final String t : task.split("\n"))
     if (!t.isBlank()) ++taskCount;
-    final Resources res = resources();
-    final String msg = taskCount == 1 ? res.getString(R.string.toast_task_created)
-            : res.getString(R.string.toast_tasks_created, taskCount); // TODO: look into getQuantityString
+    final String msg = taskCount == 1 ? string(R.string.toast_task_created)
+            : string(R.string.toast_tasks_created, taskCount); // TODO: look into getQuantityString
     give(msg, false);
 }
 }

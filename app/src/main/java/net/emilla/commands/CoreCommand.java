@@ -21,17 +21,17 @@ public CoreCommand(final AssistActivity act, final String instruct, @StringRes f
 
 @Override
 protected CharSequence name() {
-    return resources().getString(mNameId);
+    return string(mNameId);
 }
 
 @Override
 protected CharSequence dupeLabel() {
-    return resources().getString(mNameId) + " (Emilla command)";
+    return string(mNameId) + " (Emilla command)";
 }
 
 @Override
 public CharSequence lcName() {
-    return resources().getString(mNameId).toLowerCase();
+    return string(mNameId).toLowerCase();
 }
 
 @Override

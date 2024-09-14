@@ -34,7 +34,7 @@ public int icon() {
 
 public CommandShare(final AssistActivity act, final String instruct) {
     super(act, instruct, R.string.command_share, R.string.instruction_app);
-    mChooserIntent = createChooser(mIntent, resources().getString(R.string.dialog_app))
+    mChooserIntent = createChooser(mIntent, string(R.string.dialog_app))
             .addFlags(FLAG_ACTIVITY_NEW_TASK);
     // This task appears to have special properties that are worth looking into...
 }
@@ -54,7 +54,7 @@ protected void runWithData(final String text) {
     // todo: ideally, query whether a given app supports newlines in advance and provide warning
     // TODO: this should be a pend rather than succeed, to allow the user to go back and
     //  reconsider
-    final String title = resources().getString(R.string.dialog_app);
+    final String title = string(R.string.dialog_app);
     succeed(createChooser(mIntent.putExtra(EXTRA_TEXT, text), title)
             .addFlags(FLAG_ACTIVITY_NEW_TASK));
 }

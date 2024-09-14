@@ -30,27 +30,28 @@ public static class Commands {
         DIAL = 2,
         SMS = 3,
         EMAIL = 4,
-        LAUNCH = 5,
-        SHARE = 6,
-        SETTINGS = 7,
+        NAVIGATE = 5,
+        LAUNCH = 6,
+        SHARE = 7,
+        SETTINGS = 8,
 //        NOTE = ,
 //        TODO = ,
-        WEB = 8,
+        WEB = 9,
 //        FIND = ,
-        CLOCK = 9,
-        ALARM = 10,
-        TIMER = 11,
-        POMODORO = 12,
-        CALENDAR = 13,
-        CONTACT = 14,
+        CLOCK = 10,
+        ALARM = 11,
+        TIMER = 12,
+        POMODORO = 13,
+        CALENDAR = 14,
+        CONTACT = 15,
 //        NOTIFY = ,
-        CALCULATE = 15,
-        WEATHER = 16,
-        VIEW = 17,
-        INFO = 18,
-        UNINSTALL = 19,
-        TOAST = 20,
-        DUPLICATE = 21;
+        CALCULATE = 16,
+        WEATHER = 17,
+        VIEW = 18,
+        INFO = 19,
+        UNINSTALL = 20,
+        TOAST = 21,
+        DUPLICATE = 22;
 }
 
 private static final int[] NAMES = {
@@ -58,6 +59,7 @@ private static final int[] NAMES = {
     R.string.command_dial,
     R.string.command_sms,
     R.string.command_email,
+    R.string.command_navigate,
     R.string.command_launch,
     R.string.command_share,
     R.string.command_settings,
@@ -112,10 +114,12 @@ public static CmdTree tree(final SharedPreferences prefs, final Resources res,
 }
 
 private final AssistActivity mActivity;
+private final Resources mResources;
 protected String mInstruction;
 
 protected EmillaCommand(final AssistActivity act, final String instruct) {
     mActivity = act;
+    mResources = act.getResources();
     mInstruction = instruct;
 }
 
@@ -144,7 +148,19 @@ protected AssistActivity activity() {
 }
 
 protected Resources resources() {
-    return mActivity.getResources();
+    return mResources;
+}
+
+protected String string(@StringRes final int id) {
+    return mResources.getString(id);
+}
+
+protected String string(@StringRes final int id, final Object ... formatArgs) {
+    return mResources.getString(id, formatArgs);
+}
+
+protected String[] stringArray(@ArrayRes final int id) {
+    return mResources.getStringArray(id);
 }
 
 protected PackageManager packageManager() {
@@ -175,14 +191,13 @@ protected void toast(final CharSequence text, final boolean longToast) {
 
 protected void giveAction(@IdRes final int actionId, @StringRes final int descriptionId,
         @DrawableRes final int iconId, final View.OnClickListener click) {
-    mActivity.addAction(actionId, resources().getString(descriptionId), iconId, click);
+    mActivity.addAction(actionId, string(descriptionId), iconId, click);
 }
 
 protected void giveFieldToggle(@IdRes final int actionId, @StringRes final int fieldNameId,
         @DrawableRes final int iconId, final View.OnClickListener click) {
     // Todo acc: the spoken description should update on toggle
-    final Resources res = resources();
-    mActivity.addAction(actionId, res.getString(R.string.action_field, res.getString(fieldNameId)),
+    mActivity.addAction(actionId, string(R.string.action_field, string(fieldNameId)),
             iconId, click);
 }
 

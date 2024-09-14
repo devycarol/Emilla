@@ -29,7 +29,7 @@ private boolean mShowSubjectField;
 
 @Override
 public CharSequence lcName() { // The initialism "SMS" shouldn't be lowercased.
-    return resources().getString(R.string.command_sms);
+    return string(R.string.command_sms);
 }
 
 @Override @ArrayRes
