@@ -46,4 +46,6 @@ public static String putEmailsIfPresent(final String text, final String tagKey, 
     }
     return text;
 }
+
+private EmailTags() {}
 }

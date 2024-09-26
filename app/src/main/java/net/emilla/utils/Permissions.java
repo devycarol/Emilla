@@ -65,4 +65,6 @@ public static boolean phone(final AssistActivity act, final PackageManager pm) {
     act.offer(courtesyDialog(act, PERM_PHONE, R.string.perm_desc_calling));
     return false;
 }
+
+private Permissions() {}
 }

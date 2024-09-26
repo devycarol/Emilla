@@ -44,4 +44,6 @@ public static String colonConcat(final Resources res, final CharSequence a, @Str
 public static String colonConcat(final Resources res, @StringRes final int a, @StringRes final int b) {
     return res.getString(R.string.colon_concatenation, res.getString(a), res.getString(b));
 }
+
+private Lang() {}
 }

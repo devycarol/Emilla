@@ -75,4 +75,6 @@ public static String[] namesToEmails(final String names, final HashMap<String, S
     for (final String name : emails) emails[++i] = fromName(name, emailMap);
     return emails;
 }
+
+private Contact () {}
 }

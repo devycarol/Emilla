@@ -7,4 +7,6 @@ public static boolean torch(final PackageManager pm) {
     // It'd be a good idea to test this on a minSdk device.
     return pm.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
 }
+
+private Features() {}
 }

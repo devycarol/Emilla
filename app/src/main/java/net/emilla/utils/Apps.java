@@ -1,6 +1,12 @@
 package net.emilla.utils;
 
-import static android.content.Intent.*;
+import static android.content.Intent.ACTION_MAIN;
+import static android.content.Intent.ACTION_SEARCH;
+import static android.content.Intent.ACTION_SEND;
+import static android.content.Intent.ACTION_UNINSTALL_PACKAGE;
+import static android.content.Intent.ACTION_VIEW;
+import static android.content.Intent.CATEGORY_LAUNCHER;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -136,4 +142,6 @@ public static Intent[] uninstalls(final List<ResolveInfo> appList, final Package
     for (final ResolveInfo ri : appList) intents[++i] = uninstallIntent(ri.activityInfo.packageName, pm);
     return intents;
 }
+
+private Apps() {}
 }

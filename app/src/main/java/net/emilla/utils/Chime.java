@@ -59,4 +59,6 @@ public static String preferenceOf(final byte chime) {
     default -> null;
     };
 }
+
+private Chime() {}
 }

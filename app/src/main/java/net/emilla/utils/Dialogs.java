@@ -125,4 +125,6 @@ public static AlertDialog.Builder appUninstaller(final AssistActivity act,
     final AlertDialog.Builder base = base(act, R.string.dialog_app);
     return withUninstalls(base, act, act.getPackageManager(), appList);
 }
+
+private Dialogs() {}
 }
