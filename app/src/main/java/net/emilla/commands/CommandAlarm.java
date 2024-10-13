@@ -38,7 +38,7 @@ public int icon() {
     return R.drawable.ic_alarm;
 }
 
-public CommandAlarm(final AssistActivity act, final String instruct) {
+public CommandAlarm(AssistActivity act, String instruct) {
     super(act, instruct, R.string.command_alarm, R.string.instruction_alarm);
 
     mTimePicker = Dialogs.timePicker(act, R.string.dialog_alarm, (v, hourOfDay, minute) -> {
@@ -47,14 +47,14 @@ public CommandAlarm(final AssistActivity act, final String instruct) {
     });
 }
 
-private void putTime(final int hourOfDay, final int minute) {
+private void putTime(int hourOfDay, int minute) {
     mSetIntent.putExtra(EXTRA_HOUR, hourOfDay);
     mSetIntent.putExtra(EXTRA_MINUTES, minute);
 }
 
-private void putTime(final String time) {
-    final int[] timeUnits = Time.parseTime(time);
-    final int[] weekdays = Time.parseWeekdays(time);
+private void putTime(String time) {
+    int[] timeUnits = Time.parseTime(time);
+    int[] weekdays = Time.parseWeekdays(time);
     switch (timeUnits[3]) { // TODO: change how this is handled - toasts conflict with the AOSP clock
     case 1 -> toast("Warning! Alarm has been set for AM by default.", true);
     case 2 -> toast("Warning! Alarm has been set for PM by default.", true);
@@ -66,11 +66,11 @@ private void putTime(final String time) {
     if (i > 0) mSetIntent.putExtra(EXTRA_DAYS, weekdayList);
 }
 
-private void putLabel(final String label) {
+private void putLabel(String label) {
     mSetIntent.putExtra(EXTRA_MESSAGE, label);
 }
 
-private void execute(final Intent intent) {
+private void execute(Intent intent) {
     if (intent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No alarm clock app found on your device."); // TODO: handle at mapping - both intents will probably need to be checked
     succeed(intent);
 }
@@ -82,13 +82,13 @@ protected void run() {
 }
 
 @Override
-protected void run(final String time) {
+protected void run(String time) {
     putTime(time);
     execute(mSetIntent);
 }
 
 @Override
-protected void runWithData(final String label) {
+protected void runWithData(String label) {
     putLabel(label);
     mTimePicker.setOnCancelListener(dialog -> {
         mSetIntent.removeExtra(EXTRA_MESSAGE);
@@ -98,7 +98,7 @@ protected void runWithData(final String label) {
 }
 
 @Override
-protected void runWithData(final String time, final String label) {
+protected void runWithData(String time, String label) {
     putTime(time);
     putLabel(label);
     execute(mSetIntent);

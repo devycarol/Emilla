@@ -24,18 +24,18 @@ private final HashMap<String, Intent> mBookmarkMap = new HashMap<>();
 private final AlertDialog mBookmarkChooser;
 private final boolean mHasBookmarks; // Todo: remove once search is implemented
 
-public CommandView(final AssistActivity act, final String instruct) {
+public CommandView(AssistActivity act, String instruct) {
     super(act, instruct, R.string.command_view, R.string.instruction_view);
 
-    final String[] lines = act.mediaCsv().split("\\s*\n\\s*");
-    final CharSequence[] labels = new String[lines.length];
-    final Intent[] intents = new Intent[lines.length];
+    String[] lines = act.mediaCsv().split("\\s*\n\\s*");
+    CharSequence[] labels = new String[lines.length];
+    Intent[] intents = new Intent[lines.length];
     int idx = -1;
-    for (final String line : lines) {
-        final String[] vals = line.split("\\s*,\\s*");
+    for (String line : lines) {
+        String[] vals = line.split("\\s*,\\s*");
         if (vals.length > 1) {
-            final int lastIdx = vals.length - 1;
-            final Intent view = Apps.viewTask(vals[lastIdx]);
+            int lastIdx = vals.length - 1;
+            Intent view = Apps.viewTask(vals[lastIdx]);
             for (int i = 0; i < lastIdx; ++i) mBookmarkMap.put(vals[i].toLowerCase(), view);
             labels[++idx] = vals[0];
             intents[idx] = view;
@@ -64,8 +64,8 @@ protected void run() {
 }
 
 @Override
-protected void run(final String media) {
-    final Intent get = mBookmarkMap.get(media.toLowerCase());
+protected void run(String media) {
+    Intent get = mBookmarkMap.get(media.toLowerCase());
     if (get == null) {
         offer(mBookmarkChooser); // TODO: rare as it may be, this is not yet resolve-safe as is below
         if (mHasBookmarks) toast(string(R.string.dlg_msg_choose_media), false);

@@ -15,17 +15,17 @@ public int imeAction() {
     return EditorInfo.IME_ACTION_NEXT;
 }
 
-protected CoreDataCommand(final AssistActivity act, final String instruct, final int nameId,
-        final int instructionId) {
+protected CoreDataCommand(AssistActivity act, String instruct, int nameId,
+        int instructionId) {
     super(act, instruct, nameId, instructionId);
 }
 
 @Override
-public void execute(final String data) {
+public void execute(String data) {
     if (mInstruction == null) runWithData(data);
     else runWithData(mInstruction, data);
 }
 
-protected abstract void runWithData(final String data);
-protected abstract void runWithData(final String instruction, final String data);
+protected abstract void runWithData(String data);
+protected abstract void runWithData(String instruction, String data);
 }

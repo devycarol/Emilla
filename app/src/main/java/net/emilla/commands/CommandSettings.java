@@ -31,7 +31,7 @@ public int imeAction() {
     return EditorInfo.IME_ACTION_DONE;
 }
 
-public CommandSettings(final AssistActivity act, final String instruct) {
+public CommandSettings(AssistActivity act, String instruct) {
     super(act, instruct, R.string.command_settings, R.string.instruction_settings);
 }
 
@@ -42,7 +42,7 @@ protected void run() {
 }
 
 @Override
-protected void run(final String query) {
+protected void run(String query) {
     // TODO: settings search and value-changing
     run();
 }

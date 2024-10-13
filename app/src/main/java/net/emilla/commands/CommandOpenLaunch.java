@@ -16,11 +16,11 @@ public int icon() {
     return R.drawable.ic_launch;
 }
 
-protected AlertDialog.Builder getAppChooser(final AssistActivity act) {
+protected AlertDialog.Builder getAppChooser(AssistActivity act) {
     return Dialogs.appChooser(act, act.getPackageManager(), mAppList);
 }
 
-public CommandOpenLaunch(final AssistActivity act, final String instruct) {
+public CommandOpenLaunch(AssistActivity act, String instruct) {
     super(act, instruct, R.string.command_launch, R.string.instruction_app);
 }
 
@@ -30,7 +30,7 @@ protected void run() {
 }
 
 @Override
-protected Intent getIntent(final String pkg, final String cls) {
+protected Intent getIntent(String pkg, String cls) {
     return Apps.launchIntent(pkg, cls);
 }
 }

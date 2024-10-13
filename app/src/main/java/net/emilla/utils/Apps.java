@@ -1,12 +1,6 @@
 package net.emilla.utils;
 
-import static android.content.Intent.ACTION_MAIN;
-import static android.content.Intent.ACTION_SEARCH;
-import static android.content.Intent.ACTION_SEND;
-import static android.content.Intent.ACTION_UNINSTALL_PACKAGE;
-import static android.content.Intent.ACTION_VIEW;
-import static android.content.Intent.CATEGORY_LAUNCHER;
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static android.content.Intent.*;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -40,106 +34,106 @@ public static final String
     PKG_DISCORD = "com.discord";
 
 @NonNull
-public static List<ResolveInfo> resolveList(final PackageManager pm) {
+public static List<ResolveInfo> resolveList(PackageManager pm) {
     return pm.queryIntentActivities(new Intent(ACTION_MAIN).addCategory(CATEGORY_LAUNCHER), 0);
 }
 
 @NonNull
-public static List<ResolveInfo> resolveList(final PackageManager pm, final String category) {
+public static List<ResolveInfo> resolveList(PackageManager pm, String category) {
     return pm.queryIntentActivities(categoryIntent(category), 0);
 }
 
-public static Intent launchIntent(final String pkg, final String cls) {
-    final ComponentName cn = new ComponentName(pkg, cls);
+public static Intent launchIntent(String pkg, String cls) {
+    ComponentName cn = new ComponentName(pkg, cls);
     return new Intent(ACTION_MAIN).addCategory(CATEGORY_LAUNCHER).setPackage(pkg).setComponent(cn)
             .addFlags(FLAG_ACTIVITY_NEW_TASK);
 }
 
-public static Intent launchIntent(final ActivityInfo info) {
+public static Intent launchIntent(ActivityInfo info) {
     return launchIntent(info.packageName, info.name);
 }
 
-public static Intent newTask(final String action) {
+public static Intent newTask(String action) {
     return new Intent(action).addFlags(FLAG_ACTIVITY_NEW_TASK);
 }
 
-public static Intent newTask(final String action, final Uri data) {
+public static Intent newTask(String action, Uri data) {
     return new Intent(action, data).addFlags(FLAG_ACTIVITY_NEW_TASK);
 }
 
-public static Intent newTask(final String action, final String type) {
+public static Intent newTask(String action, String type) {
     return new Intent(action).setType(type).addFlags(FLAG_ACTIVITY_NEW_TASK);
 }
 
-public static Intent newTask(final String action, final Uri data, final String type) {
+public static Intent newTask(String action, Uri data, String type) {
     return new Intent(action).setDataAndType(data, type).addFlags(FLAG_ACTIVITY_NEW_TASK);
 }
 
-public static Intent categoryIntent(final String category) {
+public static Intent categoryIntent(String category) {
     return new Intent(ACTION_MAIN).addCategory(CATEGORY_LAUNCHER).addCategory(category);
 }
 
-public static Intent sendTask(final String pkg) {
+public static Intent sendTask(String pkg) {
     // Todo: attachments
     return new Intent(ACTION_SEND).setType("text/plain").setPackage(pkg)
             .addFlags(FLAG_ACTIVITY_NEW_TASK);
 }
 
-public static Intent searchTask(final String pkg) {
+public static Intent searchTask(String pkg) {
     return new Intent(ACTION_SEARCH).setPackage(pkg).addFlags(FLAG_ACTIVITY_NEW_TASK);
 }
 
-public static Intent viewTask(final String uriStr) {
+public static Intent viewTask(String uriStr) {
     return new Intent(ACTION_VIEW, Uri.parse(uriStr)).addFlags(FLAG_ACTIVITY_NEW_TASK);
 }
 
-public static Intent meTask(final Context ctxt, final Class<? extends EmillaActivity> cls) {
+public static Intent meTask(Context ctxt, Class<? extends EmillaActivity> cls) {
     return new Intent(ctxt, cls).addFlags(FLAG_ACTIVITY_NEW_TASK);
 }
 
-public static CharSequence[] labels(final List<ResolveInfo> appList, final PackageManager pm) {
+public static CharSequence[] labels(List<ResolveInfo> appList, PackageManager pm) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) return appList.parallelStream()
             .map(ri -> ri.activityInfo.loadLabel(pm)).toArray(CharSequence[]::new);
-    final CharSequence[] labels = new CharSequence[appList.size()];
+    CharSequence[] labels = new CharSequence[appList.size()];
     int i = -1;
-    for (final ResolveInfo ri : appList) labels[++i] = ri.activityInfo.packageName;
+    for (ResolveInfo ri : appList) labels[++i] = ri.activityInfo.packageName;
     return labels;
 }
 
-public static Intent[] intents(final List<ResolveInfo> appList) {
+public static Intent[] intents(List<ResolveInfo> appList) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) return appList.parallelStream()
             .map(ri -> launchIntent(ri.activityInfo)).toArray(Intent[]::new);
-    final Intent[] intents = new Intent[appList.size()];
+    Intent[] intents = new Intent[appList.size()];
     int i = -1;
-    for (final ResolveInfo ri : appList) intents[++i] = launchIntent(ri.activityInfo);
+    for (ResolveInfo ri : appList) intents[++i] = launchIntent(ri.activityInfo);
     return intents;
 }
 
-public static Uri pkgUri(final String pkg) {
+public static Uri pkgUri(String pkg) {
     return Uri.parse("package:" + pkg);
 }
 
-public static Intent uninstallIntent(final String pkg, final PackageManager pm) {
-    final ApplicationInfo info;
+public static Intent uninstallIntent(String pkg, PackageManager pm) {
+    ApplicationInfo info;
 try {
     info = pm.getApplicationInfo(pkg, 0);
-    final boolean uninstallable = (info.flags & ApplicationInfo.FLAG_SYSTEM) == 0;
+    boolean uninstallable = (info.flags & ApplicationInfo.FLAG_SYSTEM) == 0;
     if (uninstallable) return newTask(ACTION_UNINSTALL_PACKAGE, pkgUri(pkg));
     // Todo: ACTION_UNINSTALL_PACKAGE is deprecated.
-    final Intent appInfo = newTask(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, pkgUri(pkg));
+    Intent appInfo = newTask(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, pkgUri(pkg));
     if (appInfo.resolveActivity(pm) != null) return appInfo;
-    final Intent settings = newTask(Settings.ACTION_SETTINGS);
+    Intent settings = newTask(Settings.ACTION_SETTINGS);
     if (appInfo.resolveActivity(pm) != null) return settings;
 } catch (PackageManager.NameNotFoundException ignored) {}
     return null;
 }
 
-public static Intent[] uninstalls(final List<ResolveInfo> appList, final PackageManager pm) {
+public static Intent[] uninstalls(List<ResolveInfo> appList, PackageManager pm) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) return appList.parallelStream()
             .map(ri -> uninstallIntent(ri.activityInfo.packageName, pm)).toArray(Intent[]::new);
-    final Intent[] intents = new Intent[appList.size()];
+    Intent[] intents = new Intent[appList.size()];
     int i = -1;
-    for (final ResolveInfo ri : appList) intents[++i] = uninstallIntent(ri.activityInfo.packageName, pm);
+    for (ResolveInfo ri : appList) intents[++i] = uninstallIntent(ri.activityInfo.packageName, pm);
     return intents;
 }
 

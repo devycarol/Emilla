@@ -23,7 +23,7 @@ public static final String // Sound sets
     CUSTOM = "custom";
 
 @RawRes
-public static int nebula(final byte chime) {
+public static int nebula(byte chime) {
     return switch (chime) {
     case START -> R.raw.nebula_start;
     case ACT -> R.raw.nebula_act;
@@ -36,7 +36,7 @@ public static int nebula(final byte chime) {
     };
 }
 
-public static int dialerTone(final byte chime) {
+public static int dialerTone(byte chime) {
     return switch (chime) {
         case START, PEND, RESUME -> ToneGenerator.TONE_PROP_BEEP;
         case ACT -> ToneGenerator.TONE_PROP_PROMPT;
@@ -47,7 +47,7 @@ public static int dialerTone(final byte chime) {
     };
 }
 
-public static String preferenceOf(final byte chime) {
+public static String preferenceOf(byte chime) {
     return switch(chime) {
     case START -> SettingVals.CHIME_START;
     case ACT -> SettingVals.CHIME_ACT;

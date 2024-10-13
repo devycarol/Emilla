@@ -9,7 +9,7 @@ import net.emilla.R;
 import net.emilla.exceptions.EmlaBadCommandException;
 
 public class CommandFind extends CoreCommand {
-public CommandFind(final AssistActivity act, final String instruct) {
+public CommandFind(AssistActivity act, String instruct) {
     super(act, instruct, R.string.command_find, R.string.instruction_find);
 }
 
@@ -30,7 +30,7 @@ protected void run() {
 }
 
 @Override
-protected void run(final String fileOrFolder) {
+protected void run(String fileOrFolder) {
     throw new EmlaBadCommandException("Sorry! I don't know how to search for files yet.");
     // where all should I be searching for files? shared storage? external drives?
 }

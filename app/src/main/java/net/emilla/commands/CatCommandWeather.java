@@ -13,7 +13,7 @@ import net.emilla.exceptions.EmlaAppsException;
 import net.emilla.exceptions.EmlaBadCommandException;
 
 public class CatCommandWeather extends CatCommand {
-public CatCommandWeather(final AssistActivity act, final String instruct) {
+public CatCommandWeather(AssistActivity act, String instruct) {
     super(act, instruct, CATEGORY_APP_WEATHER, R.string.command_weather, R.string.instruction_app);
 }
 
@@ -39,7 +39,7 @@ protected void run() {
 }
 
 @Override
-protected void run(final String expression) {
+protected void run(String expression) {
     throw new EmlaBadCommandException("Sorry! I don't have categorical app search yet."); // Todo
 }
 }

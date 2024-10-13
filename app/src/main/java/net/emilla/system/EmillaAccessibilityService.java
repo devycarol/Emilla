@@ -17,7 +17,7 @@ private static final String TAG = "AccessibilityService";
 // TODO: google assistant changes the accessibility menu icon for "assistant," so we should also do this.
 //  I wonder if you can add items to that menu..
 @Override
-public void onAccessibilityEvent(final AccessibilityEvent event) {}
+public void onAccessibilityEvent(AccessibilityEvent event) {}
 
 @Override
 public void onInterrupt() {}
@@ -25,17 +25,17 @@ public void onInterrupt() {}
 @RequiresApi(api = Build.VERSION_CODES.O)
 @Override
 public void onCreate() {
-    final AccessibilityButtonController controller = getAccessibilityButtonController();
+    AccessibilityButtonController controller = getAccessibilityButtonController();
     controller.registerAccessibilityButtonCallback(new AccessibilityButtonCallback() {
         @Override
-        public void onClicked(final AccessibilityButtonController controller) {
+        public void onClicked(AccessibilityButtonController controller) {
             startActivity(Apps.newTask(ACTION_VOICE_COMMAND));
             // No need to validate this intent since we provide it ourself ;)
         }
 
 //        @Override
-//        public void onAvailabilityChanged(final AccessibilityButtonController controller,
-//                final boolean available) {}
+//        public void onAvailabilityChanged(AccessibilityButtonController controller,
+//                boolean available) {}
     });
 }
 }

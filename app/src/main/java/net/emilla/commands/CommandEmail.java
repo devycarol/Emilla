@@ -42,7 +42,7 @@ public int icon() {
     return R.drawable.ic_email;
 }
 
-public CommandEmail(final AssistActivity act, final String instruct) {
+public CommandEmail(AssistActivity act, String instruct) {
     super(act, instruct, R.string.command_email, R.string.instruction_email);
     mEmailMap = Contact.mapEmails(act.prefs());
 }
@@ -54,30 +54,30 @@ private void clearDetails() {
     mIntent.removeExtra(EXTRA_SUBJECT);
 }
 
-private Intent putRecipients(final Intent intent, final String recipients) {
-    final String[] peopleAndSubject = recipients.split(" *\\| *", 2);
+private Intent putRecipients(Intent intent, String recipients) {
+    String[] peopleAndSubject = recipients.split(" *\\| *", 2);
     String people = peopleAndSubject[0];
     // todo: validate the emails
     people = EmailTags.putEmailsIfPresent(people, EmailTags.CC, intent, EXTRA_CC, EmailTags.EMAIL_TAGS, mEmailMap);
     people = EmailTags.putEmailsIfPresent(people, EmailTags.BCC, intent, EXTRA_BCC, EmailTags.EMAIL_TAGS, mEmailMap);
     if (EmailTags.itHas(people, EmailTags.TO)) {
-        final String to = EmailTags.getFrom(people, EmailTags.TO, EmailTags.EMAIL_TAGS);
+        String to = EmailTags.getFrom(people, EmailTags.TO, EmailTags.EMAIL_TAGS);
         people = EmailTags.strip(people, EmailTags.TO, to);
         if (people.isEmpty()) people = to;
         else people = people + ',' + to;
         intent.putExtra(EXTRA_EMAIL, Contact.namesToEmails(people, mEmailMap));
     } else if (!people.isEmpty()) intent.putExtra(EXTRA_EMAIL, Contact.namesToEmails(people, mEmailMap));
     if (peopleAndSubject.length > 1) {
-        final String subject = peopleAndSubject[1];
+        String subject = peopleAndSubject[1];
         if (!subject.isEmpty()) intent.putExtra(EXTRA_SUBJECT, subject);
     }
     return intent;
 }
 
-private Intent putAttachmentsAndRecipients(final String recipients) {
-    final Matcher m = compile(FLAG_ATTACH).matcher(recipients);
+private Intent putAttachmentsAndRecipients(String recipients) {
+    Matcher m = compile(FLAG_ATTACH).matcher(recipients);
     if (m.find()) {
-        final AssistActivity act = activity();
+        AssistActivity act = activity();
         if (act.attachments() == null) {
             act.getFiles();
             return null;
@@ -85,7 +85,7 @@ private Intent putAttachmentsAndRecipients(final String recipients) {
         mSendMultipleIntent.putExtra(EXTRA_STREAM, act.attachments());
         mSendMultipleIntent.setSelector(mIntent);
         act.nullifyAttachments(); // this will overwrite attachments if /pic is added
-        final String actualRecipients = m.replaceFirst("");
+        String actualRecipients = m.replaceFirst("");
         return actualRecipients.isEmpty() ? mSendMultipleIntent : putRecipients(mSendMultipleIntent,
                 actualRecipients);
     }
@@ -102,8 +102,8 @@ protected void run() {
 }
 
 @Override
-protected void run(final String recipients) {
-    final Intent in = putAttachmentsAndRecipients(recipients);
+protected void run(String recipients) {
+    Intent in = putAttachmentsAndRecipients(recipients);
     if (in == null) return;
     if (in.resolveActivity(packageManager()) == null) {
         clearDetails();
@@ -113,7 +113,7 @@ protected void run(final String recipients) {
 }
 
 @Override
-protected void runWithData(final String body) {
+protected void runWithData(String body) {
     if (mIntent.resolveActivity(packageManager()) == null) {
         clearDetails();
         throw new EmlaAppsException("No email app found on your device."); // todo handle at mapping
@@ -122,8 +122,8 @@ protected void runWithData(final String body) {
 }
 
 @Override
-protected void runWithData(final String recipients, final String body) {
-    final Intent in = putAttachmentsAndRecipients(recipients);
+protected void runWithData(String recipients, String body) {
+    Intent in = putAttachmentsAndRecipients(recipients);
     if (in == null) return;
     if (in.resolveActivity(packageManager()) == null) { // todo handle at mapping
         clearDetails();

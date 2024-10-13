@@ -18,12 +18,12 @@ private final int mAppCount;
 private Intent mLaunchIntent;
 private AlertDialog mAppChooser;
 
-public CatCommand(final AssistActivity act, final String instruct, final String category,
-        @StringRes final int nameId, @StringRes final int instructionId) {
+public CatCommand(AssistActivity act, String instruct, String category,
+        @StringRes int nameId, @StringRes int instructionId) {
     super(act, instruct, nameId, instructionId);
 
-    final PackageManager pm = act.getPackageManager();
-    final List<ResolveInfo> appList = Apps.resolveList(pm, category);
+    PackageManager pm = act.getPackageManager();
+    List<ResolveInfo> appList = Apps.resolveList(pm, category);
     mAppCount = appList.size();
     if (mAppCount == 1) mLaunchIntent = Apps.launchIntent(appList.get(0).activityInfo);
     else if (mAppCount > 1) mAppChooser = Dialogs.appChooser(act, pm, appList).create();

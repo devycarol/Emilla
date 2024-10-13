@@ -47,7 +47,7 @@ public int icon() {
     return R.drawable.ic_sms;
 }
 
-public CommandSms(final AssistActivity act, final String instruct) {
+public CommandSms(AssistActivity act, String instruct) {
     super(act, instruct, R.string.command_sms, R.string.instruction_phone);
     mPhoneMap = Contact.mapPhones(act.prefs());
 }
@@ -70,23 +70,23 @@ public void clean() {
     hideField(R.id.field_subject);
 }
 
-private void launchMessenger(final Intent intent) {
-    final PackageManager pm = packageManager();
+private void launchMessenger(Intent intent) {
+    PackageManager pm = packageManager();
     if (!pm.hasSystemFeature(FEATURE_TELEPHONY_MESSAGING)) throw new EmlaFeatureException("Your device doesn't support SMS messaging."); // TODO: handle at install—don't store in sharedprefs in case of settings sync/transfer
     if (pm.resolveActivity(intent, 0) == null) throw new EmlaAppsException("No SMS app found on your device."); // todo handle at mapping
-    final String subject = fieldText(R.id.field_subject);
+    String subject = fieldText(R.id.field_subject);
     // TODO: I've not gotten this to work yet
     succeed(subject == null ? intent : intent.putExtra(EXTRA_SUBJECT, subject));
 }
 
 @NonNull
-private Intent withMsg(final Intent intent, final String message) {
+private Intent withMsg(Intent intent, String message) {
     return intent.putExtra("sms_body", message);
     // overwrites any existing draft to the recipient TODO: detect, warn, confirm.
 }
 
 @NonNull
-private Intent withRecipients(final Intent intent, final String recipients) {
+private Intent withRecipients(Intent intent, String recipients) {
     return intent.setData(Uri.parse("sms:" + Contact.namesToPhones(recipients, mPhoneMap)));
 }
 
@@ -96,17 +96,17 @@ protected void run() {
 }
 
 @Override
-protected void run(final String recipients) {
+protected void run(String recipients) {
     launchMessenger(withRecipients(mIntent, recipients));
 }
 
 @Override
-protected void runWithData(final String message) {
+protected void runWithData(String message) {
     launchMessenger(withMsg(mIntent, message));
 }
 
 @Override
-protected void runWithData(final String recipients, final String message) {
+protected void runWithData(String recipients, String message) {
     launchMessenger(withMsg(withRecipients(mIntent, recipients), message));
 }
 }

@@ -24,14 +24,14 @@ protected void onCreate(Bundle savedInstanceState) {
     setContentView(binding.getRoot());
 
     binding.navView.setOnItemReselectedListener(item -> {
-        final boolean assistantItem = item.getItemId() == R.id.navigation_assistant;
+        boolean assistantItem = item.getItemId() == R.id.navigation_assistant;
         if (assistantItem) startActivity(Apps.meTask(this, AssistActivity.class));
     });
-    final NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+    NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
             .findFragmentById(R.id.nav_host_fragment_activity_config);
     if (navHostFragment == null) return;
-    final NavController navController = navHostFragment.getNavController();
-    final AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+    NavController navController = navHostFragment.getNavController();
+    AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
             R.id.navigation_commands, R.id.navigation_assistant, R.id.navigation_settings)
             .build();
     NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);

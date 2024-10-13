@@ -17,23 +17,23 @@ private static final String
 private static HashMap<String, String> sPhones;
 private static HashMap<String, String> sEmails;
 
-private static HashMap<String, String> mapContacts(final String csv) {
-    final HashMap<String, String> contactMap = new HashMap<>();
-    for (final String line : csv.split("\\s*\n\\s*")) {
-        final String[] vals = line.split("\\s*,\\s*");
-        final int lastIdx = vals.length - 1;
+private static HashMap<String, String> mapContacts(String csv) {
+    HashMap<String, String> contactMap = new HashMap<>();
+    for (String line : csv.split("\\s*\n\\s*")) {
+        String[] vals = line.split("\\s*,\\s*");
+        int lastIdx = vals.length - 1;
         for (int i = 0; i < lastIdx; ++i)
         if (contactMap.put(vals[i].toLowerCase(), vals[lastIdx]) != null) Log.d("Emilla Contacts", "Duplicate contact discarded. Sorry!"); // TODO
     }
     return contactMap;
 }
 
-public static HashMap<String, String> mapPhones(final SharedPreferences prefs) {
+public static HashMap<String, String> mapPhones(SharedPreferences prefs) {
     return sPhones == null ? sPhones = mapContacts(prefs.getString("phones", DFLT_PHONES).trim())
             : sPhones;
 }
 
-public static HashMap<String, String> mapEmails(final SharedPreferences prefs) {
+public static HashMap<String, String> mapEmails(SharedPreferences prefs) {
     return sEmails == null ? sEmails = mapContacts(prefs.getString("emails", DFLT_EMAILS).trim())
             : sEmails;
 }
@@ -43,12 +43,12 @@ public static void clean() {
     sEmails = null;
 }
 
-public static String fromName(final String name, final HashMap<String, String> contactMap) {
+public static String fromName(String name, HashMap<String, String> contactMap) {
     // TODO: need to warn about phonewords when using 'call' and no contact has been found
     // When you implement this for system contacts, you'll need to allow for distinguishing between "home", "mobile", etc.
     // when you do, make sure you allow for spaces in contact names and all that delightfully overcomplicated stuffstuff.
     // even harder: commas/ampersands in contact names, splitting by 'and' while still allowing that word in contact names
-    final String get = contactMap.get(name.toLowerCase());
+    String get = contactMap.get(name.toLowerCase());
     return get == null ? name : get;
     // if a word is provided with no matching contact, it's returned unedited. this is a phoneword hazard ^
 }
@@ -57,22 +57,22 @@ public static String fromName(final String name, final HashMap<String, String> c
  * @param names comma-separated list of names and/or phone numbers
  * @return comma-separated list of phone numbers (or just the one if only one was provided)
  */
-public static String namesToPhones(final String names, final HashMap<String, String> phoneMap) {
+public static String namesToPhones(String names, HashMap<String, String> phoneMap) {
     // test if is valid phone number: if ya, carry on; if na, search contacts for that string.
     // pull up best match, prompt w/ selection dialog if there are multiple good results
     if (names.contains(",") || names.contains("&")) {
-        final StringBuilder sb = new StringBuilder();
-        final String[] people = names.split(" *[,&] *");
-        for (final String name : people) sb.append(fromName(name, phoneMap)).append(", ");
+        StringBuilder sb = new StringBuilder();
+        String[] people = names.split(" *[,&] *");
+        for (String name : people) sb.append(fromName(name, phoneMap)).append(", ");
         sb.setLength(sb.length() - 2);
         return sb.toString();
     } else return fromName(names, phoneMap);
 }
 
-public static String[] namesToEmails(final String names, final HashMap<String, String> emailMap) {
-    final String[] emails = names.replaceAll(",(\\s*,)+", ",").split("\\s*[,&]\\s*");
+public static String[] namesToEmails(String names, HashMap<String, String> emailMap) {
+    String[] emails = names.replaceAll(",(\\s*,)+", ",").split("\\s*[,&]\\s*");
     int i = -1;
-    for (final String name : emails) emails[++i] = fromName(name, emailMap);
+    for (String name : emails) emails[++i] = fromName(name, emailMap);
     return emails;
 }
 

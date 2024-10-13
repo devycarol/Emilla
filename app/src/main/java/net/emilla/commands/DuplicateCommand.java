@@ -63,14 +63,14 @@ private final EmillaCommand[] mCommands;
 private final AlertDialog.Builder mBuilder;
 private final boolean mUsesData;
 
-public DuplicateCommand(final AssistActivity act, final String instruct, final EmillaCommand[] cmds) {
+public DuplicateCommand(AssistActivity act, String instruct, EmillaCommand[] cmds) {
     super(act, instruct);
 
     mCommands = cmds;
     mLabels = new CharSequence[cmds.length];
     boolean usesData = false;
     int i = -1;
-    for (final EmillaCommand cmd : cmds) {
+    for (EmillaCommand cmd : cmds) {
         if (!usesData && cmd.usesData()) usesData = true;
         mLabels[++i] = cmd.dupeLabel();
         // Todo: whittle down when data is entered and some of the commands don't use data
@@ -79,7 +79,7 @@ public DuplicateCommand(final AssistActivity act, final String instruct, final E
     mBuilder = Dialogs.base(act, R.string.dialog_command);
 }
 
-private void chooseCommand(final DialogInterface.OnClickListener listener) {
+private void chooseCommand(DialogInterface.OnClickListener listener) {
     offer(mBuilder.setItems(mLabels, listener).create());
 }
 
@@ -87,12 +87,12 @@ private void chooseCommand(final DialogInterface.OnClickListener listener) {
 @Override
 protected void run() {}
 @Override
-protected void run(final String instruction) {}
+protected void run(String instruction) {}
 
 @Override
-public void execute(final String data) {
+public void execute(String data) {
     chooseCommand((dialog, which) -> {
-        final EmillaCommand cmd = mCommands[which];
+        EmillaCommand cmd = mCommands[which];
         if (cmd.usesData()) ((DataCmd) cmd).execute(data);
         else { // TODO: handle this more gracefully
             cmd.instructAppend(data);

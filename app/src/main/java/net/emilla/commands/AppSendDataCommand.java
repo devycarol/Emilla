@@ -29,21 +29,21 @@ public int imeAction() {
     return EditorInfo.IME_ACTION_NEXT;
 }
 
-public AppSendDataCommand(final AssistActivity act, final String instruct, final AppCmdInfo info,
-        @StringRes final int instructionId) {
+public AppSendDataCommand(AssistActivity act, String instruct, AppCmdInfo info,
+        @StringRes int instructionId) {
     super(act, instruct, info, instructionId);
 }
 
-protected void runWithData(final String message) {
+protected void runWithData(String message) {
     run(message);
 }
 
-protected void runWithData(final String message, final String cont) {
+protected void runWithData(String message, String cont) {
     run(message + '\n' + cont);
 }
 
 @Override
-public void execute(final String data) {
+public void execute(String data) {
     if (mInstruction == null) runWithData(data);
     else runWithData(mInstruction, data);
 }

@@ -41,7 +41,7 @@ public int imeAction() {
     return EditorInfo.IME_ACTION_GO;
 }
 
-public CommandCall(final AssistActivity act, final String instruct) {
+public CommandCall(AssistActivity act, String instruct) {
     super(act, instruct, R.string.command_call, R.string.instruction_phone);
     mPhoneMap = Contact.mapPhones(act.prefs());
 }
@@ -52,10 +52,10 @@ protected void run() {
 }
 
 @Override
-protected void run(final String nameOrNumber) {
+protected void run(String nameOrNumber) {
     // todo: conference calls?
     // todo: immediate calls to phonewords
-    final PackageManager pm = packageManager();
+    PackageManager pm = packageManager();
     if (!pm.hasSystemFeature(FEATURE_TELEPHONY)) throw new EmlaFeatureException("Your device doesn't support phone calls.");
     if (!Permissions.phone(activity(), pm)) return;
     mIntent.setData(parse("tel:" + Contact.fromName(nameOrNumber, mPhoneMap)));

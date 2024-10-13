@@ -41,8 +41,8 @@ public int imeAction() {
     return mCmd.imeAction();
 }
 
-protected CommandWrapDefault(final AssistActivity act, final String instruct,
-        final EmillaCommand cmd) {
+protected CommandWrapDefault(AssistActivity act, String instruct,
+        EmillaCommand cmd) {
     super(act, instruct);
     mCmd = cmd;
 }
@@ -53,7 +53,7 @@ protected void run() {
 }
 
 @Override
-protected void run(final String instruction) {
+protected void run(String instruction) {
     mCmd.run(instruction);
 }
 }

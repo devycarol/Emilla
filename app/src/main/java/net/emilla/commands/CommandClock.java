@@ -14,7 +14,7 @@ import net.emilla.exceptions.EmlaBadCommandException;
 import java.text.Format;
 
 public class CommandClock extends CoreCommand {
-public CommandClock(final AssistActivity act, final String instruct) {
+public CommandClock(AssistActivity act, String instruct) {
     super(act, instruct, R.string.command_clock, R.string.instruction_location);
 }
 
@@ -32,14 +32,14 @@ public int imeAction() {
 protected void run() {
     // TODO: show a widget dialog with copy button and other useful stuff
     // you could also show date information and call this command "date"
-    final String localTime;
-    final Format time;
+    String localTime;
+    Format time;
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        final Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance();
         time = DateFormat.getTimeInstance();
         localTime = string(R.string.toast_local_time, time.format(cal.getTime()));
     } else {
-        final java.util.Calendar cal = java.util.Calendar.getInstance();
+        java.util.Calendar cal = java.util.Calendar.getInstance();
         time = java.text.DateFormat.getTimeInstance();
         localTime = string(R.string.toast_local_time, time.format(cal.getTime()));
     }
@@ -48,7 +48,7 @@ protected void run() {
 }
 
 @Override
-protected void run(final String location) {
+protected void run(String location) {
     throw new EmlaBadCommandException("Sorry! No locations or elapse-time yet, working on it."); // TODO
 }
 }

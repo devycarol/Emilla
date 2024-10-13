@@ -21,10 +21,10 @@ private static final String
 public static final int
     REQUEST_PHONE = 1;
 
-private static AlertDialog courtesyDialog(final AssistActivity act, final String permission,
-        @StringRes final int permDescId) {
-    final Resources res = act.getResources();
-    final CharSequence msg = res.getString(R.string.dlg_msg_perm_consent, res.getString(permDescId));
+private static AlertDialog courtesyDialog(AssistActivity act, String permission,
+        @StringRes int permDescId) {
+    Resources res = act.getResources();
+    CharSequence msg = res.getString(R.string.dlg_msg_perm_consent, res.getString(permDescId));
     return Dialogs.yesNoMsg(act, R.string.dialog_permissions, msg, (dialog, which) -> {
         act.prefs().edit().putBoolean(permission, true).apply();
         act.onCloseDialog(true);
@@ -33,28 +33,28 @@ private static AlertDialog courtesyDialog(final AssistActivity act, final String
     // respectful to have a setting that withdraws all of these
 }
 
-private static AlertDialog permissionDialog(final AssistActivity act, final PackageManager pm,
-        @StringRes final int permId) {
-    final Intent settings = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+private static AlertDialog permissionDialog(AssistActivity act, PackageManager pm,
+        @StringRes int permId) {
+    Intent settings = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
             Apps.pkgUri(act.getPackageName()));
-    final boolean noAppInfo = settings.resolveActivity(pm) == null;
+    boolean noAppInfo = settings.resolveActivity(pm) == null;
     if (noAppInfo) settings.setAction(Settings.ACTION_SETTINGS).setData(null)
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    final Resources res = act.getResources();
-    final CharSequence msg = res.getString(R.string.dlg_msg_perm_denial, res.getString(permId));
+    Resources res = act.getResources();
+    CharSequence msg = res.getString(R.string.dlg_msg_perm_denial, res.getString(permId));
     if (settings.resolveActivity(pm) == null) return Dialogs.msg(act, R.string.dialog_permissions, msg)
             .setNeutralButton(R.string.close, (dialog, which) -> act.onCloseDialog(true)).create();
-    final int posId = noAppInfo ? R.string.settings : R.string.app_info;
+    int posId = noAppInfo ? R.string.settings : R.string.app_info;
     return Dialogs.okCancelMsg(act, R.string.dialog_permissions, msg, posId, (dialog, which) -> {
         act.startActivity(settings);
         act.onCloseDialog(false);
     }).create();
 }
 
-public static boolean phone(final AssistActivity act, final PackageManager pm) {
+public static boolean phone(AssistActivity act, PackageManager pm) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         if (act.checkSelfPermission(PERM_PHONE) == PERMISSION_GRANTED) return true;
-        final boolean hasPrompt = act.shouldShowRequestPermissionRationale(PERM_PHONE);
+        boolean hasPrompt = act.shouldShowRequestPermissionRationale(PERM_PHONE);
         if (hasPrompt) act.offer(PERM_PHONE, REQUEST_PHONE);
         else act.fail(permissionDialog(act, pm, R.string.perm_calling));
         return false;

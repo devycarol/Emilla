@@ -23,11 +23,11 @@ public static final String // Preference keys
     CHIME_FAIL = "chime_fail";
 
 @NonNull
-public static String soundSet(final SharedPreferences prefs) {
+public static String soundSet(SharedPreferences prefs) {
     return prefs.getString(SOUND_SET, Chime.NEBULA);
 }
 
-private static short cmdId(final String s) {
+private static short cmdId(String s) {
     return switch (s) {
     case "call" -> CALL;
     case "dial" -> DIAL;
@@ -57,24 +57,24 @@ private static short cmdId(final String s) {
     };
 }
 
-public static short defaultCommand(final SharedPreferences prefs) {
+public static short defaultCommand(SharedPreferences prefs) {
     return cmdId(prefs.getString("default_command", "web"));
 }
 
-public static boolean showTitleBar(final SharedPreferences prefs, final Resources res) {
+public static boolean showTitleBar(SharedPreferences prefs, Resources res) {
     return switch (prefs.getString("show_titlebar", res.getString(R.string.conf_show_titlebar))) {
         // Todo: in the off chance app-data is transferred across phone/tablet, the setting
         //  should change if it's still default. back:prefs.xml
         case "never" -> false;
         case "portrait" -> {
-            final DisplayMetrics dm = res.getDisplayMetrics();
+            DisplayMetrics dm = res.getDisplayMetrics();
             yield dm.widthPixels < dm.heightPixels;
         }
         default /*always*/ -> true;
     };
 }
 
-public static boolean alwaysShowData(final SharedPreferences prefs) {
+public static boolean alwaysShowData(SharedPreferences prefs) {
     return prefs.getBoolean("always_show_data", false);
 }
 }

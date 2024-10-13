@@ -27,7 +27,7 @@ public int imeAction() {
     return EditorInfo.IME_ACTION_SEARCH;
 }
 
-public CatCommandNavigate(final AssistActivity act, final String instruct) {
+public CatCommandNavigate(AssistActivity act, String instruct) {
     super(act, instruct, CATEGORY_APP_MAPS, R.string.command_navigate, R.string.instruction_location);
 }
 
@@ -37,7 +37,7 @@ protected void noSuchApp() {
 }
 
 @Override
-protected void run(final String location) {
+protected void run(String location) {
     // Todo: location bookmarks, navigate to contacts' addresses
     if (mIntent.setData(Uri.parse("geo:0,0?q=" + location)).resolveActivity(packageManager()) == null) throw new EmlaAppsException("No app found for web search."); // todo handle at mapping
     succeed(mIntent);

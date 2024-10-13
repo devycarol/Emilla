@@ -17,7 +17,7 @@ import net.emilla.utils.Lang;
 
 public class AppSendCommand extends AppCommand {
 @NonNull
-private static CharSequence genericTitle(final Context ctxt, final CharSequence appLabel) {
+private static CharSequence genericTitle(Context ctxt, CharSequence appLabel) {
     return Lang.colonConcat(ctxt.getResources(), R.string.command_app_send, appLabel);
 }
 
@@ -35,23 +35,23 @@ public int imeAction() {
 
 private final Intent mSendIntent;
 
-private AppSendCommand(final AssistActivity act, final String instruct, final AppCmdInfo info,
-        final CharSequence cmdTitle) {
+private AppSendCommand(AssistActivity act, String instruct, AppCmdInfo info,
+        CharSequence cmdTitle) {
     super(act, instruct, info, cmdTitle);
     mSendIntent = Apps.sendTask(info.pkg);
 }
 
-public AppSendCommand(final AssistActivity act, final String instruct, final AppCmdInfo info) {
+public AppSendCommand(AssistActivity act, String instruct, AppCmdInfo info) {
     this(act, instruct, info, genericTitle(act, info.label));
 }
 
-public AppSendCommand(final AssistActivity act, final String instruct, final AppCmdInfo info,
-        @StringRes final int instructionId) {
+public AppSendCommand(AssistActivity act, String instruct, AppCmdInfo info,
+        @StringRes int instructionId) {
     this(act, instruct, info, specificTitle(act, info.label, instructionId));
 }
 
 @Override
-protected void run(final String message) {
+protected void run(String message) {
     // todo: instantly pull up bookmarked videos for newpipe
     succeed(mSendIntent.putExtra(EXTRA_TEXT, message));
 }

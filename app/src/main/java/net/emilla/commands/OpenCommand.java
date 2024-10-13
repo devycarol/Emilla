@@ -23,8 +23,8 @@ protected final List<ResolveInfo> mAppList;
 protected final AlertDialog.Builder mAppChooser;
 protected final PackageManager mPm;
 
-public OpenCommand(final AssistActivity act, final String instruct, @StringRes final int nameId,
-        @StringRes final int instructionId) {
+public OpenCommand(AssistActivity act, String instruct, @StringRes int nameId,
+        @StringRes int instructionId) {
     super(act, instruct, nameId, instructionId);
 
     mAppList = act.appList();
@@ -32,22 +32,22 @@ public OpenCommand(final AssistActivity act, final String instruct, @StringRes f
     mPm = act.getPackageManager();
 }
 
-protected abstract AlertDialog.Builder getAppChooser(final AssistActivity act);
+protected abstract AlertDialog.Builder getAppChooser(AssistActivity act);
 
 @Override
 public int imeAction() {
     return EditorInfo.IME_ACTION_GO;
 }
 
-private AlertDialog getDialog(final CharSequence[] prefLabels, final int prefCount,
-        final Intent[] prefIntents) {
+private AlertDialog getDialog(CharSequence[] prefLabels, int prefCount,
+        Intent[] prefIntents) {
     return Dialogs.withIntents(mAppChooser, activity(), copyOfRange(prefLabels, 0, prefCount), prefIntents).create();
 }
 
 @Override
-protected void run(final String app) {
+protected void run(String app) {
     // todo: optimized pre-processed search
-    final int appCount = mAppList.size();
+    int appCount = mAppList.size();
 
     CharSequence[] prefLabels = new CharSequence[appCount];
     CharSequence[] otherLabels = new CharSequence[appCount];
@@ -56,7 +56,7 @@ protected void run(final String app) {
     int prefCount = 0;
     int otherCount = 0;
 
-    final String lcQuery = app.toLowerCase();
+    String lcQuery = app.toLowerCase();
     boolean exactMatch = false;
 
     for (int i = 0; i < appCount; ++i) {
@@ -91,7 +91,7 @@ protected void run(final String app) {
             break; // search is finished
         }
         if (lcLabel.contains(lcQuery)) {
-            final Intent in = getIntent(info.packageName, info.name);
+            Intent in = getIntent(info.packageName, info.name);
             if (lcLabel.startsWith(lcQuery)) {
                 prefLabels[prefCount] = label;
                 prefIntents[prefCount] = in;
@@ -121,5 +121,5 @@ protected void run(final String app) {
     default -> offer(getDialog(prefLabels, prefCount, prefIntents));
 }}
 
-protected abstract Intent getIntent(final String pkg, final String cls);
+protected abstract Intent getIntent(String pkg, String cls);
 }

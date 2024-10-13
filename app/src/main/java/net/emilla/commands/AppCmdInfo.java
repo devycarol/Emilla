@@ -14,7 +14,7 @@ final String cls;
 final boolean has_send;
 final boolean basic;
 
-AppCmdInfo(final ActivityInfo info, final PackageManager pm, final CharSequence appLabel) {
+AppCmdInfo(ActivityInfo info, PackageManager pm, CharSequence appLabel) {
     label = appLabel;
     pkg = info.packageName;
     cls = info.name;

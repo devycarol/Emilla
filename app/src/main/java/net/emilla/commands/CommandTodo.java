@@ -35,7 +35,7 @@ private final Intent mViewIntent = Apps.newTask(ACTION_VIEW, mUri, "text/plain")
         .putExtra(EXTRA_STREAM, mUri)
         .putExtra("EXTRA_FILEPATH", mFile.getAbsolutePath());
 
-public CommandTodo(final AssistActivity act, final String instruct) {
+public CommandTodo(AssistActivity act, String instruct) {
     super(act, instruct, R.string.command_todo, R.string.instruction_todo);
 }
 
@@ -49,19 +49,19 @@ public int icon() {
     return R.drawable.ic_todo;
 }
 
-private void todo(final String task) /* todo FRICK + filenotfound */ {
-    final ContentResolver cr = activity().getContentResolver();
+private void todo(String task) /* todo FRICK + filenotfound */ {
+    ContentResolver cr = activity().getContentResolver();
 try {
-    final InputStream is = requireNonNull(cr.openInputStream(mUri)); // todo null safety ???
-    final BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+    InputStream is = requireNonNull(cr.openInputStream(mUri)); // todo null safety ???
+    BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
     int c, lastChar = '\n';
     while ((c = reader.read()) != -1) lastChar = c;
     reader.close();
     is.close();
 
-    final ParcelFileDescriptor pfd = requireNonNull(cr.openFileDescriptor(mUri, "wa")); // todo null safety ???
-    final FileOutputStream fos = new FileOutputStream(pfd.getFileDescriptor());
+    ParcelFileDescriptor pfd = requireNonNull(cr.openFileDescriptor(mUri, "wa")); // todo null safety ???
+    FileOutputStream fos = new FileOutputStream(pfd.getFileDescriptor());
     fos.write(((lastChar == '\n' ? "" : '\n') + task + '\n').getBytes());
     fos.close();
     pfd.close();
@@ -76,32 +76,32 @@ protected void run() {
 }
 
 @Override
-protected void run(final String task) {
+protected void run(String task) {
     // todo: newline handling unnecessary in this case
     todo(task); // TODO
     give(string(R.string.toast_task_created), false); // TODO: lang
 }
 
 @Override
-protected void runWithData(final String tasks) {
+protected void runWithData(String tasks) {
     todo(tasks); // TODO
 
     int taskCount = 0;
-    for (final String t : tasks.split("\n"))
+    for (String t : tasks.split("\n"))
     if (!t.isBlank()) ++taskCount;
-    final String msg = taskCount == 1 ? string(R.string.toast_task_created)
+    String msg = taskCount == 1 ? string(R.string.toast_task_created)
             : string(R.string.toast_tasks_created, taskCount); // TODO: look into getQuantityString
     give(msg, false);
 }
 
 @Override
-protected void runWithData(final String task, final String moreTasks) {
+protected void runWithData(String task, String moreTasks) {
     todo(task + '\n' + moreTasks); // TODO
 
     int taskCount = 0;
-    for (final String t : task.split("\n"))
+    for (String t : task.split("\n"))
     if (!t.isBlank()) ++taskCount;
-    final String msg = taskCount == 1 ? string(R.string.toast_task_created)
+    String msg = taskCount == 1 ? string(R.string.toast_task_created)
             : string(R.string.toast_tasks_created, taskCount); // TODO: look into getQuantityString
     give(msg, false);
 }

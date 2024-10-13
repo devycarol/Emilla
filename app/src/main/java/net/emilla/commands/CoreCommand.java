@@ -6,13 +6,12 @@ import net.emilla.AssistActivity;
 import net.emilla.utils.Lang;
 
 public abstract class CoreCommand extends EmillaCommand {
-@StringRes
-private final int
+@StringRes private final int
     mNameId,
     mInstructionId;
 
-public CoreCommand(final AssistActivity act, final String instruct, @StringRes final int nameId,
-        @StringRes final int instructionId) {
+public CoreCommand(AssistActivity act, String instruct, @StringRes int nameId,
+        @StringRes int instructionId) {
     super(act, instruct);
 
     mNameId = nameId;

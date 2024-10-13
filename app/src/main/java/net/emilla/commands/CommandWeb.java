@@ -27,7 +27,7 @@ public int imeAction() {
     return EditorInfo.IME_ACTION_SEARCH;
 }
 
-public CommandWeb(final AssistActivity act, final String instruct) {
+public CommandWeb(AssistActivity act, String instruct) {
     super(act, instruct, R.string.command_web, R.string.instruction_web);
     mUnsafe = mIntent.resolveActivity(packageManager()) == null;
 }
@@ -39,7 +39,7 @@ protected void run() {
 }
 
 @Override
-protected void run(final String searchOrUrl) {
+protected void run(String searchOrUrl) {
     if (mUnsafe) throw new EmlaAppsException("No app found for web search.");
     succeed(mIntent.putExtra(QUERY, searchOrUrl));
 }

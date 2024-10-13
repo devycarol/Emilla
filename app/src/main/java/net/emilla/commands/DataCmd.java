@@ -4,5 +4,5 @@ import androidx.annotation.StringRes;
 
 public interface DataCmd {
 @StringRes int dataHint();
-void execute(final String data);
+void execute(String data);
 }

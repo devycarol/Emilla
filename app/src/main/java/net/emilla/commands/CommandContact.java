@@ -28,13 +28,13 @@ private static final byte
     CONTACT_CREATE = 1,
     CONTACT_EDIT = 2;
 
-private static byte getContactAction(final String person) { // TODO: lang
+private static byte getContactAction(String person) { // TODO: lang
     if (person.startsWith("create") || person.startsWith("new")) return CONTACT_CREATE;
     if (person.startsWith("edit")) return CONTACT_EDIT;
     return CONTACT_VIEW;
 }
 
-private static String stripContactAction(final String person) { // TODO: lang
+private static String stripContactAction(String person) { // TODO: lang
     return Pattern.compile("(create|new|edit) *").matcher(person).replaceFirst("");
 }
 
@@ -61,17 +61,17 @@ protected void run() {
 
 private final Intent mChooserIntent = new Intent(ACTION_PICK).setType(Contacts.CONTENT_TYPE);
 
-public CommandContact(final AssistActivity act, final String instruct) {
+public CommandContact(AssistActivity act, String instruct) {
     super(act, instruct, R.string.command_contact, R.string.instruction_contact);
 }
 
 @Override
-protected void run(final String person) {
-    final PackageManager pm = packageManager();
+protected void run(String person) {
+    PackageManager pm = packageManager();
     byte action = getContactAction(person); // todo: standardize subcommand handling
     switch (action) {
     case CONTACT_VIEW -> {
-        final Intent in = Apps.newTask(ACTION_SEARCH, Contacts.CONTENT_TYPE)
+        Intent in = Apps.newTask(ACTION_SEARCH, Contacts.CONTENT_TYPE)
                 .putExtra(SearchManager.QUERY, person);
         if (in.resolveActivity(pm) == null) {
             // TODO: handle at mapping and fall back to the below search interface if there's no
@@ -81,8 +81,8 @@ protected void run(final String person) {
         succeed(in);
     }
     case CONTACT_CREATE -> {
-        final String actualPerson = stripContactAction(person);
-        final Intent in = Apps.newTask(ACTION_INSERT, Contacts.CONTENT_TYPE);
+        String actualPerson = stripContactAction(person);
+        Intent in = Apps.newTask(ACTION_INSERT, Contacts.CONTENT_TYPE);
         if (!actualPerson.isEmpty()) in.putExtra(NAME, actualPerson);
         // TODO further details
         //  flexibility in where they're put, i.e. "contact new 555-9879"
@@ -94,7 +94,7 @@ protected void run(final String person) {
         succeed(in);
     }
     case CONTACT_EDIT -> {
-        final String actualPerson = stripContactAction(person);
+        String actualPerson = stripContactAction(person);
         if (actualPerson.isEmpty()) {
             if (mChooserIntent.resolveActivity(pm) == null) {// todo handle at mapping
                 throw new EmlaAppsException("No contacts app found on your device.");
@@ -116,12 +116,12 @@ protected void run(final String person) {
 }
 
 @Override
-protected void runWithData(final String details) {
+protected void runWithData(String details) {
     throw new EmlaBadCommandException("Sorry! I can't parse contact info yet."); // TODO
 }
 
 @Override
-protected void runWithData(final String person, final String details) {
+protected void runWithData(String person, String details) {
     throw new EmlaBadCommandException("Sorry! I can't parse contact info yet."); // TODO
 }
 }

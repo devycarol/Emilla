@@ -19,7 +19,7 @@ public int icon() {
 }
 
 @Override
-protected AlertDialog.Builder getAppChooser(final AssistActivity act) {
+protected AlertDialog.Builder getAppChooser(AssistActivity act) {
     return Dialogs.appChooser(act, act.getPackageManager(), mAppList);
 }
 
@@ -27,7 +27,7 @@ private final Intent mInfoIntent = Apps.newTask(Settings.ACTION_APPLICATION_DETA
         Apps.pkgUri(Apps.PKG));
 private final boolean mUnsafe;
 
-public CommandOpenInfo(final AssistActivity act, final String instruct) {
+public CommandOpenInfo(AssistActivity act, String instruct) {
     super(act, instruct, R.string.command_info, R.string.instruction_app);
     mUnsafe = mInfoIntent.resolveActivity(packageManager()) == null;
 }
@@ -41,7 +41,7 @@ protected void run() {
 }
 
 @Override
-protected Intent getIntent(final String pkg, final String cls) {
+protected Intent getIntent(String pkg, String cls) {
     return Apps.newTask(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Apps.pkgUri(pkg));
 }
 }

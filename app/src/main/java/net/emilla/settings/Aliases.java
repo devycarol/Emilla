@@ -69,12 +69,12 @@ public static final String[] PREFS = {
     "aliases_toast"
 };
 
-public static Set<String> set(final SharedPreferences prefs, final Resources res, final int idx) {
+public static Set<String> set(SharedPreferences prefs, Resources res, int idx) {
     return prefs.getStringSet(PREFS[idx], Set.of(res.getStringArray(SETS[idx])));
 }
 
 @ArrayRes
-public static int appSetId(final String pkg, final String cls) {
+public static int appSetId(String pkg, String cls) {
     return switch (pkg) {
     case Apps.PKG_AOSP_CONTACTS -> R.array.aliases_aosp_contacts;
     case Apps.PKG_MARKOR -> cls.equals(AppCmdInfo.CLS_MARKOR_MAIN) ? R.array.aliases_markor : -1;
@@ -92,9 +92,9 @@ public static int appSetId(final String pkg, final String cls) {
 }
 
 @Nullable
-public static Set<String> appSet(final SharedPreferences prefs, final Resources res,
-        final String pkg, final String cls) {
-    @ArrayRes final int setId = appSetId(pkg, cls);
+public static Set<String> appSet(SharedPreferences prefs, Resources res,
+        String pkg, String cls) {
+    @ArrayRes int setId = appSetId(pkg, cls);
     return setId == -1 ? null : prefs.getStringSet("aliases_" + pkg, Set.of(res.getStringArray(setId)));
 }
 }

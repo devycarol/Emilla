@@ -22,7 +22,7 @@ public int icon() {
     return R.drawable.ic_calculate;
 }
 
-public CatCommandCalculate(final AssistActivity act, final String instruct) {
+public CatCommandCalculate(AssistActivity act, String instruct) {
     super(act, instruct, CATEGORY_APP_CALCULATOR, R.string.command_calculate, R.string.instruction_calculate);
 }
 
@@ -32,7 +32,7 @@ protected void noSuchApp() {
 }
 
 @Override
-protected void run(final String expression) {
+protected void run(String expression) {
     give(String.valueOf(Calculator.compute(expression)), true);
 }
 }

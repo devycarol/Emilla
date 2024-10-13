@@ -23,7 +23,7 @@ public int icon() {
     return R.drawable.ic_toast;
 }
 
-public CommandToast(final AssistActivity act, final String instruct) {
+public CommandToast(AssistActivity act, String instruct) {
     super(act, instruct, R.string.command_toast, R.string.instruction_text);
 }
 
@@ -33,31 +33,31 @@ protected void run() { // todo: configurable default message
 }
 
 @Override
-protected void run(final String message) {
-    final String longTag = string(R.string.tag_toast_long); // todo way later make configurable
+protected void run(String message) {
+    String longTag = string(R.string.tag_toast_long); // todo way later make configurable
     if (message.toLowerCase().endsWith(longTag)) {
-        final String actualMessage = message.substring(0, message.length() - longTag.length()).trim();
+        String actualMessage = message.substring(0, message.length() - longTag.length()).trim();
         give(actualMessage.isEmpty() ? string(R.string.toast_hello) : actualMessage, true); // todo: configurable default message
     } else give(message, false);
 }
 
 @Override
-protected void runWithData(final String message) {
-    final String longTag = string(R.string.tag_toast_long); // todo way later make configurable
+protected void runWithData(String message) {
+    String longTag = string(R.string.tag_toast_long); // todo way later make configurable
     if (message.toLowerCase().endsWith(longTag)) {
-        final String actualMessage = message.substring(0, message.length() - longTag.length()).trim();
+        String actualMessage = message.substring(0, message.length() - longTag.length()).trim();
         give(actualMessage.isEmpty() ? string(R.string.toast_hello) : actualMessage, true); // todo: configurable default message
     } else give(message, false);
 }
 
 @Override
-protected void runWithData(final String message, final String cont) {
-    final String longTag = string(R.string.tag_toast_long); // todo way later make configurable
+protected void runWithData(String message, String cont) {
+    String longTag = string(R.string.tag_toast_long); // todo way later make configurable
     if (message.toLowerCase().endsWith(longTag)) {
-        final String actualMessage = message.substring(0, message.length() - longTag.length()).trim() + '\n' + cont;
+        String actualMessage = message.substring(0, message.length() - longTag.length()).trim() + '\n' + cont;
         give(actualMessage, true);
     } else if (cont.toLowerCase().endsWith(longTag)) {
-        final String actualMessage = message + '\n' + cont.substring(0, message.length() - longTag.length());
+        String actualMessage = message + '\n' + cont.substring(0, message.length() - longTag.length());
         give(actualMessage, true);
     }
     else give(message + '\n' + cont, false);

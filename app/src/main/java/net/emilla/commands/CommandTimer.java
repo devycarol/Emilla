@@ -18,12 +18,12 @@ import net.emilla.utils.Apps;
 import net.emilla.utils.Time;
 
 public class CommandTimer extends CoreDataCommand {
-private static int seconds(final CommandTimer cmd, final String duration) {
+private static int seconds(CommandTimer cmd, String duration) {
     // todo: cleanup this logic
-    final int[] timeUnits = Time.parseDuration(duration);
-    final int warn = timeUnits[3];
+    int[] timeUnits = Time.parseDuration(duration);
+    int warn = timeUnits[3];
     if (warn > 0) { // todo: replace with a confirm/set-default dialog - reduces localization woes
-        final String curPeriod, nextPeriod;
+        String curPeriod, nextPeriod;
         if (warn == 1) {
             nextPeriod = "AM";
             curPeriod = "PM";
@@ -31,10 +31,10 @@ private static int seconds(final CommandTimer cmd, final String duration) {
             nextPeriod = "PM";
             curPeriod = "AM";
         }
-        final String endTime = format(ROOT, "%d:%02d%s", timeUnits[4], timeUnits[5], nextPeriod);
+        String endTime = format(ROOT, "%d:%02d%s", timeUnits[4], timeUnits[5], nextPeriod);
         cmd.toast(format(ROOT, "Warning! Timer set for %s, not %s.", endTime, curPeriod), true); // not good...
     }
-    final int offset = timeUnits.length == 6 ? 1 : 0; // remind me what this means??
+    int offset = timeUnits.length == 6 ? 1 : 0; // remind me what this means??
     return timeUnits[0] * 3600 + timeUnits[1] * 60 + timeUnits[2] - offset;
 }
 
@@ -57,7 +57,7 @@ public int icon() {
     return R.drawable.ic_timer;
 }
 
-public CommandTimer(final AssistActivity act, final String instruct) {
+public CommandTimer(AssistActivity act, String instruct) {
     super(act, instruct, R.string.command_timer, R.string.instruction_timer);
 }
 
@@ -68,13 +68,13 @@ protected void run() {
 }
 
 @Override
-protected void run(final String duration) {
+protected void run(String duration) {
     if (mIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
     succeed(mIntent.putExtra(EXTRA_LENGTH, seconds(this, duration)));
 }
 
 @Override
-protected void runWithData(final String title) {
+protected void runWithData(String title) {
     throw new EmlaBadCommandException("Sorry! I can't label the timer without a duration.");
     // TODO: is this always the case? I'd strongly prefer to defer to the user's app's UI. At
     //  the least, this failure should be replaced with an input dialog for com.android.deskclock
@@ -83,7 +83,7 @@ protected void runWithData(final String title) {
 }
 
 @Override
-protected void runWithData(final String duration, final String title) {
+protected void runWithData(String duration, String title) {
     if (mIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
     succeed(mIntent.putExtra(EXTRA_LENGTH, seconds(this, duration)).putExtra(EXTRA_MESSAGE, title));
 }

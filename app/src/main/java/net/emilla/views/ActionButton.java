@@ -28,26 +28,26 @@ private final Runnable onLongPress = () -> {
     setImageDrawable(mLongIcon);
 };
 
-public ActionButton(@NonNull final Context context, @Nullable final AttributeSet attrs) {
+public ActionButton(@NonNull Context context, @Nullable AttributeSet attrs) {
     super(context, attrs);
 
     setOnTouchListener(this);
     mIcon = getDrawable();
 }
 
-public void setIcon(@DrawableRes final int resId) {
-    final Drawable d = AppCompatResources.getDrawable(getContext(), resId);
+public void setIcon(@DrawableRes int resId) {
+    Drawable d = AppCompatResources.getDrawable(getContext(), resId);
     setImageDrawable(mIcon = d);
 }
 
-public void setLongPress(final OnLongClickListener l, @DrawableRes final int resId) {
+public void setLongPress(OnLongClickListener l, @DrawableRes int resId) {
     setOnLongClickListener(l);
     mLongIcon = AppCompatResources.getDrawable(getContext(), resId);
     mHasLongPress = true;
 }
 
 @Override
-public boolean onTouch(final View v, final MotionEvent event) {
+public boolean onTouch(View v, MotionEvent event) {
     switch (event.getAction()) {
     case MotionEvent.ACTION_DOWN -> {
         setPressed(true);
@@ -58,7 +58,7 @@ public boolean onTouch(final View v, final MotionEvent event) {
         return true;
     }
     case MotionEvent.ACTION_MOVE -> {
-        final boolean pressed = isPressed();
+        boolean pressed = isPressed();
         super.onTouchEvent(event);
         if (isPressed() != pressed) {
             if (mLongTouching) {

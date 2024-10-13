@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 public abstract class EmillaException extends RuntimeException {
     private final String mMessage;
 
-    public EmillaException(@NonNull final String message) {
+    public EmillaException(@NonNull String message) {
         super();
         mMessage = message;
     }

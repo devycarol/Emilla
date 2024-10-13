@@ -140,7 +140,7 @@ private static CharSequence cleanup(CharSequence expr) { // TODO parens - "all o
     return expr;
 }
 
-public static long compute(final String expression) {
+public static long compute(String expression) {
     // Todo: ans, floating point math, many more math functions...
     if (expression.matches("[+-]?\\d+")) return parseLong(expression);
     try {

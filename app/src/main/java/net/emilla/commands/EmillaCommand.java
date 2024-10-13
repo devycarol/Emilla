@@ -82,31 +82,31 @@ private static final int[] NAMES = {
     R.string.command_toast
 };
 
-public static CmdTree tree(final SharedPreferences prefs, final Resources res,
-        final PackageManager pm, final List<ResolveInfo> appList) {
+public static CmdTree tree(SharedPreferences prefs, Resources res,
+        PackageManager pm, List<ResolveInfo> appList) {
     // todo: configurable aliasing
     // todo: edge case where a mapped app is uninstalled during the activity lifecycle
-    final CmdTree cmdTree = new CmdTree(res, appList.size());
+    CmdTree cmdTree = new CmdTree(res, appList.size());
     short i = 0;
     while (i < Commands.DUPLICATE - 1) {
-        final String lcName = res.getString(NAMES[i]).toLowerCase();
-        final Set<String> aliases = Aliases.set(prefs, res, i);
+        String lcName = res.getString(NAMES[i]).toLowerCase();
+        Set<String> aliases = Aliases.set(prefs, res, i);
         cmdTree.putSingle(lcName, ++i);
-        for (final String alias : aliases) cmdTree.put(alias, i);
+        for (String alias : aliases) cmdTree.put(alias, i);
         // Todo: have separate set for multi-word aliases and use putSingle for the rest
     }
     i = 0;
-    for (final ResolveInfo ri : appList) {
-        final ActivityInfo actInfo = ri.activityInfo;
-        final CharSequence label = actInfo.loadLabel(pm);
+    for (ResolveInfo ri : appList) {
+        ActivityInfo actInfo = ri.activityInfo;
+        CharSequence label = actInfo.loadLabel(pm);
         // TODO: there's the biggest performance bottleneck I've found thus far. Look into how the
         //  launcher caches labels for ideas on how to improve the performance of this critical
         //  onCreate task. That is, if they do to begin with (I can only assume..)
-        final AppCmdInfo cmdInfo = new AppCmdInfo(actInfo, pm, label);
+        AppCmdInfo cmdInfo = new AppCmdInfo(actInfo, pm, label);
         cmdTree.putApp(label, --i, cmdInfo, ~i);
-        final Set<String> aliases = Aliases.appSet(prefs, res, cmdInfo.pkg, cmdInfo.cls);
+        Set<String> aliases = Aliases.appSet(prefs, res, cmdInfo.pkg, cmdInfo.cls);
         if (aliases == null) continue;
-        for (final String alias : aliases) cmdTree.put(alias, i);
+        for (String alias : aliases) cmdTree.put(alias, i);
         // No need to pass app info again for aliases
         // Todo: have separate set for multi-word aliases and use putSingle for the rest
     }
@@ -117,7 +117,7 @@ private final AssistActivity mActivity;
 private final Resources mResources;
 protected String mInstruction;
 
-protected EmillaCommand(final AssistActivity act, final String instruct) {
+protected EmillaCommand(AssistActivity act, String instruct) {
     mActivity = act;
     mResources = act.getResources();
     mInstruction = instruct;
@@ -134,11 +134,11 @@ public void init() {
 @CallSuper
 public void clean() {}
 
-void instruct(final String instruction) {
+void instruct(String instruction) {
     mInstruction = instruction;
 }
 
-void instructAppend(final String data) {
+void instructAppend(String data) {
     if (mInstruction == null) mInstruction = data;
     else mInstruction += '\n' + data;
 }
@@ -151,15 +151,15 @@ protected Resources resources() {
     return mResources;
 }
 
-protected String string(@StringRes final int id) {
+protected String string(@StringRes int id) {
     return mResources.getString(id);
 }
 
-protected String string(@StringRes final int id, final Object ... formatArgs) {
+protected String string(@StringRes int id, Object ... formatArgs) {
     return mResources.getString(id, formatArgs);
 }
 
-protected String[] stringArray(@ArrayRes final int id) {
+protected String[] stringArray(@ArrayRes int id) {
     return mResources.getStringArray(id);
 }
 
@@ -185,36 +185,36 @@ public void execute() {
  *             hard-coded text.
  * @param longToast whether to use Toast.LENGTH_LONG. Use this sparingly, for reasons above.
  */
-protected void toast(final CharSequence text, final boolean longToast) {
+protected void toast(CharSequence text, boolean longToast) {
     mActivity.toast(text, longToast);
 }
 
-protected void giveAction(@IdRes final int actionId, @StringRes final int descriptionId,
-        @DrawableRes final int iconId, final View.OnClickListener click) {
+protected void giveAction(@IdRes int actionId, @StringRes int descriptionId,
+        @DrawableRes int iconId, View.OnClickListener click) {
     mActivity.addAction(actionId, string(descriptionId), iconId, click);
 }
 
-protected void giveFieldToggle(@IdRes final int actionId, @StringRes final int fieldNameId,
-        @DrawableRes final int iconId, final View.OnClickListener click) {
+protected void giveFieldToggle(@IdRes int actionId, @StringRes int fieldNameId,
+        @DrawableRes int iconId, View.OnClickListener click) {
     // Todo acc: the spoken description should update on toggle
     mActivity.addAction(actionId, string(R.string.action_field, string(fieldNameId)),
             iconId, click);
 }
 
-protected boolean toggleField(@IdRes final int fieldId, @StringRes final int hintId,
-        final boolean focus) {
+protected boolean toggleField(@IdRes int fieldId, @StringRes int hintId,
+        boolean focus) {
     return mActivity.toggleField(fieldId, hintId, focus);
 }
 
-protected String fieldText(@IdRes final int fieldId) {
+protected String fieldText(@IdRes int fieldId) {
     return mActivity.getFieldText(fieldId);
 }
 
-protected void hideField(@IdRes final int fieldId) {
+protected void hideField(@IdRes int fieldId) {
     mActivity.hideField(fieldId);
 }
 
-protected void removeAction(@IdRes final int actionId) {
+protected void removeAction(@IdRes int actionId) {
     mActivity.removeAction(actionId);
 }
 
@@ -224,7 +224,7 @@ protected void removeAction(@IdRes final int actionId) {
  *
  * @param chime whether to play a 'resume' sound if wanted
  */
-protected void onCloseDialog(final boolean chime) {
+protected void onCloseDialog(boolean chime) {
     mActivity.onCloseDialog(chime);
 }
 
@@ -239,7 +239,7 @@ protected void onCloseDialog(final boolean chime) {
  * @param intent is launched after the assistant closes. It's very important that this is
  *               resolvable, else an ANF exception will occur.
  */
-protected void succeed(final Intent intent) {
+protected void succeed(Intent intent) {
     mActivity.succeed(intent);
 }
 
@@ -251,7 +251,7 @@ protected void succeed(final Intent intent) {
  * @param text is shown as a toast notification at the bottom of the screen. Don't hard-code text.
  * @param longToast whether to use Toast.LENGTH_LONG. Use this sparingly, for reasons above.
  */
-protected void give(final CharSequence text, final boolean longToast) {
+protected void give(CharSequence text, boolean longToast) {
     mActivity.toast(text, longToast);
     mActivity.refreshInput();
     mActivity.onCloseDialog(false); // todo: revise handling and remove
@@ -266,7 +266,7 @@ protected void give(final CharSequence text, final boolean longToast) {
  * @param dialog is shown to the user. Please ensure these are easy to use with screen readers
  *               and other assistive technology.
  */
-protected void offer(final AlertDialog dialog) {
+protected void offer(AlertDialog dialog) {
     mActivity.offer(dialog);
 }
 
@@ -277,7 +277,7 @@ protected void offer(final AlertDialog dialog) {
  * @param intent should be "offering" in nature, such as a selection screen. Don't use
  *               {@link Intent#FLAG_ACTIVITY_NEW_TASK}.
  */
-protected void offer(final Intent intent, final int requestCode) {
+protected void offer(Intent intent, int requestCode) {
     mActivity.offer(intent, requestCode);
 }
 
@@ -309,5 +309,5 @@ protected abstract void run();
  * @param instruction is provided after in the command field after the command's name. It's always
  *                    space-trimmed should remain as such.
  */
-protected abstract void run(final String instruction);
+protected abstract void run(String instruction);
 }

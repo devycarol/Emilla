@@ -46,7 +46,7 @@ public int icon() {
 private final Intent mIntent = Apps.newTask(ACTION_INSERT, Events.CONTENT_URI, "vnd.android.cursor.dir/event");
 private boolean mShowLocationField = false, mShowUrlField = false;
 
-public CommandCalendar(final AssistActivity act, final String instruct) {
+public CommandCalendar(AssistActivity act, String instruct) {
     super(act, instruct, R.string.command_calendar, R.string.instruction_calendar);
 }
 
@@ -74,12 +74,12 @@ public void clean() {
 
 private void putTitleAndDate(/*mutable*/ String title) throws EmlaBadCommandException {
     // todo: clean this up
-    final Matcher m = compile(" */all(day)?", CASE_INSENSITIVE).matcher(title);
+    Matcher m = compile(" */all(day)?", CASE_INSENSITIVE).matcher(title);
     if (m.find()) {
         title = m.replaceFirst("");
         mIntent.putExtra(EXTRA_EVENT_ALL_DAY, true);
     }
-    final String[] nameAndTime = title.split(" *\\| *");
+    String[] nameAndTime = title.split(" *\\| *");
     switch (nameAndTime.length) {
     case 1 -> {}
     case 2 -> {
@@ -96,9 +96,9 @@ private void putTitleAndDate(/*mutable*/ String title) throws EmlaBadCommandExce
 @Override
 protected void run() {
     if (mIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No calendar app found on your device."); // todo: handle at mapping
-    final String location = fieldText(R.id.field_location);
+    String location = fieldText(R.id.field_location);
     if (location != null) mIntent.putExtra(EVENT_LOCATION, location);
-    final String url = fieldText(R.id.field_url);
+    String url = fieldText(R.id.field_url);
     if (url != null) mIntent.putExtra("url", url); // todo: is there a way to query supported extras?
     // Todo: action buttons to select availability, access level, and guests—last requires contacts
     //  stuff. If possible also: reminders, repeats, timezone, event color, and calendar selection.
@@ -108,19 +108,19 @@ protected void run() {
 }
 
 @Override
-protected void run(final String titleAndDate) {
+protected void run(String titleAndDate) {
     putTitleAndDate(titleAndDate);
     run();
 }
 
 @Override
-protected void runWithData(final String details) {
+protected void runWithData(String details) {
     mIntent.putExtra(DESCRIPTION, details);
     run();
 }
 
 @Override
-protected void runWithData(final String titleAndDate, final String details) {
+protected void runWithData(String titleAndDate, String details) {
     putTitleAndDate(titleAndDate);
     mIntent.putExtra(DESCRIPTION, details);
     run();

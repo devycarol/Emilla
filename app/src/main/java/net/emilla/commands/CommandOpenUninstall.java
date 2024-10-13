@@ -17,11 +17,11 @@ public int icon() {
 }
 
 @Override
-protected AlertDialog.Builder getAppChooser(final AssistActivity act) {
+protected AlertDialog.Builder getAppChooser(AssistActivity act) {
     return Dialogs.appUninstaller(act, mAppList);
 }
 
-public CommandOpenUninstall(final AssistActivity act, final String instruct) {
+public CommandOpenUninstall(AssistActivity act, String instruct) {
     super(act, instruct, R.string.command_uninstall, R.string.instruction_app);
 }
 
@@ -31,7 +31,7 @@ protected void run() {
 }
 
 @Override
-protected Intent getIntent(final String pkg, final String cls) {
+protected Intent getIntent(String pkg, String cls) {
     return Apps.uninstallIntent(pkg, mPm);
 }
 }

@@ -15,13 +15,13 @@ import net.emilla.utils.Lang;
 
 public class AppCommand extends EmillaCommand {
 @NonNull
-private static String genericTitle(final Context ctxt, final CharSequence appLabel) {
+private static String genericTitle(Context ctxt, CharSequence appLabel) {
     return Lang.colonConcat(ctxt.getResources(), R.string.command_app, appLabel);
 }
 
 @NonNull
-protected static String specificTitle(final Context ctxt, final CharSequence appLabel,
-        @StringRes final int instructionId) {
+protected static String specificTitle(Context ctxt, CharSequence appLabel,
+        @StringRes int instructionId) {
     return Lang.colonConcat(ctxt.getResources(), appLabel, instructionId);
 }
 
@@ -29,8 +29,8 @@ protected final Intent mLaunchIntent;
 private final CharSequence mTitle;
 protected final AppCmdInfo mInfo;
 
-protected AppCommand(final AssistActivity act, final String instruct, final AppCmdInfo info,
-        final CharSequence cmdTitle) {
+protected AppCommand(AssistActivity act, String instruct, AppCmdInfo info,
+        CharSequence cmdTitle) {
     super(act, instruct);
 
     mLaunchIntent = Apps.launchIntent(info.pkg, info.cls);
@@ -38,7 +38,7 @@ protected AppCommand(final AssistActivity act, final String instruct, final AppC
     mInfo = info;
 }
 
-public AppCommand(final AssistActivity act, final String instruct, final AppCmdInfo info) {
+public AppCommand(AssistActivity act, String instruct, AppCmdInfo info) {
     this(act, instruct, info, genericTitle(act, info.label));
 }
 
@@ -78,7 +78,7 @@ protected void run() {
 }
 
 @Override
-protected void run(final String ignored) {
+protected void run(String ignored) {
     run(); // TODO: instead, this should revert to the default command
 }
 }

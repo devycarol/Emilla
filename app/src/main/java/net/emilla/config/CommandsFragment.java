@@ -23,23 +23,23 @@ import net.emilla.utils.Apps;
 import java.util.Set;
 
 public class CommandsFragment extends PreferenceFragmentCompat {
-private void setupPref(final EditTextPreference cmdPref, final String setKey,
-        final OnPreferenceChangeListener listener, final SharedPreferences prefs,
-        final Resources res, @ArrayRes final int setId) {
-    final Set<String> aliases = prefs.getStringSet(setKey,  Set.of(res.getStringArray(setId)));
+private void setupPref(EditTextPreference cmdPref, String setKey,
+        OnPreferenceChangeListener listener, SharedPreferences prefs,
+        Resources res, @ArrayRes int setId) {
+    Set<String> aliases = prefs.getStringSet(setKey,  Set.of(res.getStringArray(setId)));
     cmdPref.setText(String.join(", ", aliases));
     cmdPref.setOnPreferenceChangeListener(listener);
 }
 
-private void setupAppPref(final String pkg, final SharedPreferences prefs, final Resources res,
-        final PackageManager pm, final OnPreferenceChangeListener listener) {
-    final EditTextPreference appCmdPref = findPreference("aliases_" + pkg + "_text");
+private void setupAppPref(String pkg, SharedPreferences prefs, Resources res,
+        PackageManager pm, OnPreferenceChangeListener listener) {
+    EditTextPreference appCmdPref = findPreference("aliases_" + pkg + "_text");
     if (appCmdPref != null) try {
-        final ApplicationInfo info = pm.getApplicationInfo(pkg, 0);
-        final CharSequence label = pm.getApplicationLabel(info);
+        ApplicationInfo info = pm.getApplicationInfo(pkg, 0);
+        CharSequence label = pm.getApplicationLabel(info);
         appCmdPref.setTitle(label);
         // this uses the application icon and doesn't account for multiple launcher icons yet
-        final Drawable appIcon = pm.getApplicationIcon(pkg);
+        Drawable appIcon = pm.getApplicationIcon(pkg);
         appCmdPref.setIcon(appIcon);
         setupPref(appCmdPref, "aliases_" + pkg, listener, prefs, res, Aliases.appSetId(pkg, AppCmdInfo.CLS_MARKOR_MAIN /*Todo: procedurally generate these prefs*/));
     } catch (PackageManager.NameNotFoundException e) {
@@ -47,9 +47,9 @@ private void setupAppPref(final String pkg, final SharedPreferences prefs, final
     }
 }
 
-private void setupApps(final EmillaActivity act, final SharedPreferences prefs, final Resources res,
-        final OnPreferenceChangeListener listener) {
-    final PackageManager pm = act.getPackageManager();
+private void setupApps(EmillaActivity act, SharedPreferences prefs, Resources res,
+        OnPreferenceChangeListener listener) {
+    PackageManager pm = act.getPackageManager();
     setupAppPref(Apps.PKG_AOSP_CONTACTS, prefs, res, pm, listener);
     setupAppPref(Apps.PKG_MARKOR, prefs, res, pm, listener);
     setupAppPref(Apps.PKG_FIREFOX, prefs, res, pm, listener);
@@ -63,23 +63,23 @@ private void setupApps(final EmillaActivity act, final SharedPreferences prefs, 
     // Todo: procedurally generate these
 }
 
-private void setupCorePref(final String textKey, final OnPreferenceChangeListener listener,
-        final SharedPreferences prefs, final Resources res, @ArrayRes final int setId) {
-    final EditTextPreference cmdPref = findPreference(textKey);
+private void setupCorePref(String textKey, OnPreferenceChangeListener listener,
+        SharedPreferences prefs, Resources res, @ArrayRes int setId) {
+    EditTextPreference cmdPref = findPreference(textKey);
     if (cmdPref == null) return;
-    final String setKey = textKey.substring(0, textKey.length() - 5);
+    String setKey = textKey.substring(0, textKey.length() - 5);
     setupPref(cmdPref, setKey, listener, prefs, res, setId);
 }
 
-private void deactivate(final String textKey, final OnPreferenceClickListener listener) {
-    final Preference cmdPref = findPreference(textKey);
+private void deactivate(String textKey, OnPreferenceClickListener listener) {
+    Preference cmdPref = findPreference(textKey);
     if (cmdPref != null) cmdPref.setOnPreferenceClickListener(listener);
 }
 
-private void setupCores(final EmillaActivity act, final SharedPreferences prefs, final Resources res,
-        final OnPreferenceChangeListener listener) {
+private void setupCores(EmillaActivity act, SharedPreferences prefs, Resources res,
+        OnPreferenceChangeListener listener) {
     if (prefs == null) return;
-    final OnPreferenceClickListener dListener = pref -> {
+    OnPreferenceClickListener dListener = pref -> {
         act.toast("Coming soon!", false);
         return false;
     };
@@ -110,18 +110,18 @@ private void setupCores(final EmillaActivity act, final SharedPreferences prefs,
 }
 
 @Override
-public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
+public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
     setPreferencesFromResource(R.xml.command_prefs, rootKey);
-    final EmillaActivity act = (EmillaActivity) requireActivity();
-    final SharedPreferences prefs = getPreferenceManager().getSharedPreferences();
-    final Resources res = getResources();
-    final OnPreferenceChangeListener listener = (pref, newVal) -> {
-        final String textKey = pref.getKey();
-        final String setKey = textKey.substring(0, textKey.length() - 5);
-        final String correctedText = ((String) newVal).trim().toLowerCase();
-        final String[] vals = (correctedText.split(" *, *"));
-        final Set<String> aliases = Set.of(vals);
-        final String joined = String.join(", ", aliases);
+    EmillaActivity act = (EmillaActivity) requireActivity();
+    SharedPreferences prefs = getPreferenceManager().getSharedPreferences();
+    Resources res = getResources();
+    OnPreferenceChangeListener listener = (pref, newVal) -> {
+        String textKey = pref.getKey();
+        String setKey = textKey.substring(0, textKey.length() - 5);
+        String correctedText = ((String) newVal).trim().toLowerCase();
+        String[] vals = (correctedText.split(" *, *"));
+        Set<String> aliases = Set.of(vals);
+        String joined = String.join(", ", aliases);
         ((EditTextPreference) pref).setText(joined);
         prefs.edit()
                 .putString(textKey, joined)

@@ -8,7 +8,7 @@ import net.emilla.R;
 import net.emilla.exceptions.EmlaBadCommandException;
 
 public class CommandNotify extends CoreDataCommand {
-public CommandNotify(final AssistActivity act, final String instruct) {
+public CommandNotify(AssistActivity act, String instruct) {
     super(act, instruct, R.string.command_notify, R.string.instruction_notify);
 }
 
@@ -28,17 +28,17 @@ protected void run() {
 }
 
 @Override
-protected void run(final String text) {
+protected void run(String text) {
     throw new EmlaBadCommandException("Sorry! I don't know how to make reminders yet."); // Todo
 }
 
 @Override
-protected void runWithData(final String data) {
+protected void runWithData(String data) {
     throw new EmlaBadCommandException("Sorry! I don't know how to make reminders yet."); // Todo
 }
 
 @Override
-protected void runWithData(final String instruction, final String data) {
+protected void runWithData(String instruction, String data) {
     throw new EmlaBadCommandException("Sorry! I don't know how to make reminders yet."); // Todo
 }
 }

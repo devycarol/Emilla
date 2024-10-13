@@ -19,7 +19,7 @@ public int icon() {
     return R.drawable.ic_note;
 }
 
-public CommandNote(final AssistActivity act, final String instruct) {
+public CommandNote(AssistActivity act, String instruct) {
     super(act, instruct, R.string.command_note, R.string.instruction_file);
 }
 
@@ -34,17 +34,17 @@ protected void run() {
 }
 
 @Override
-protected void run(final String title) {
+protected void run(String title) {
     throw new EmlaAppsException("Sorry! I don't know how to write notes yet.");
 }
 
 @Override
-protected void runWithData(final String text) {
+protected void runWithData(String text) {
     throw new EmlaAppsException("Sorry! I don't know how to write notes yet.");
 }
 
 @Override
-protected void runWithData(final String title, final String text) {
+protected void runWithData(String title, String text) {
     throw new EmlaAppsException("Sorry! I don't know how to write notes yet.");
 }
 }

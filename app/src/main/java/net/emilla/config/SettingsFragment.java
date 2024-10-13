@@ -33,13 +33,13 @@ private static final String
     EXTRA_FRAGMENT_ARG_KEY = ":settings:fragment_args_key",
     EXTRA_SHOW_FRAGMENT_ARGUMENTS = ":settings:show_fragment_args";
 
-private static boolean caveat(final EmillaActivity act, final CharSequence text, final boolean longToast) { // Todo: remove these
+private static boolean caveat(EmillaActivity act, CharSequence text, boolean longToast) { // Todo: remove these
     act.toast(text, longToast);
     return false;
 }
 
 //@StringRes
-//private static int resourceOf(final String prefKey) {
+//private static int resourceOf(String prefKey) {
 //    return switch (prefKey) {
 //    case SettingVals.CHIME_START -> R.string.chime_start;
 //    case SettingVals.CHIME_ACT -> R.string.chime_act;
@@ -57,18 +57,18 @@ private ActivityResultLauncher<Intent> mResultLauncher;
 private String mPrefKey;
 
 @Override
-public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
+public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
     setPreferencesFromResource(R.xml.prefs, rootKey);
 
-    final EmillaActivity act = (EmillaActivity) requireActivity();
-    final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(act);
-    final Resources res = act.getResources();
+    EmillaActivity act = (EmillaActivity) requireActivity();
+    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(act);
+    Resources res = act.getResources();
     mResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == Activity.RESULT_OK) {
-            final Intent data = result.getData();
+            Intent data = result.getData();
             if (data == null) return;
-            final Uri uri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+            Uri uri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
             prefs.edit().putString(mPrefKey, uri == null ? null : uri.toString()).apply();
             updateCustomSoundPref(/*act, prefs, res,*/ mPrefKey, true/*, resourceOf(mPrefKey)*/);
         }
@@ -78,8 +78,8 @@ public void onCreatePreferences(final Bundle savedInstanceState, final String ro
     mCustomSounds = SettingVals.soundSet(prefs).equals(Chime.CUSTOM);
     setupCustomSoundPrefs(/*act,*/ prefs, /*res,*/ mCustomSounds);
     setupFavoriteCommandsPref(act);
-    final PackageManager pm = act.getPackageManager();
-    final boolean noTorch = !Features.torch(pm);
+    PackageManager pm = act.getPackageManager();
+    boolean noTorch = !Features.torch(pm);
     setupActionPref(findPreference("action_no_command"), act, noTorch, true);
     setupDoubleAssistPref(act, noTorch);
     setupActionPref(findPreference("action_long_press_submit"), act, noTorch, false);
@@ -90,11 +90,11 @@ public void onCreatePreferences(final Bundle savedInstanceState, final String ro
     setupAppInfoPref(pm);
 }
 
-private void setupSoundSetPref(/*final Context ctxt, final SharedPreferences prefs, final Resources res*/) {
-    final Preference soundSetPref = findPreference(SettingVals.SOUND_SET);
+private void setupSoundSetPref(/*Context ctxt, SharedPreferences prefs, Resources res*/) {
+    Preference soundSetPref = findPreference(SettingVals.SOUND_SET);
     if (soundSetPref == null) return;
     soundSetPref.setOnPreferenceChangeListener((pref, newVal) -> {
-        final boolean customSounds = newVal.equals(Chime.CUSTOM);
+        boolean customSounds = newVal.equals(Chime.CUSTOM);
         if (mCustomSounds != customSounds) {
             updateCustomSoundPrefs(/*ctxt, prefs, res,*/ customSounds);
             mCustomSounds = customSounds;
@@ -103,18 +103,18 @@ private void setupSoundSetPref(/*final Context ctxt, final SharedPreferences pre
     });
 }
 
-private void setupCustomSoundPref(/*final Context ctxt,*/ final SharedPreferences prefs,
-        /*final Resources res,*/ final String prefKey, final boolean enabled/*, @StringRes final int resId*/) {
-    final Preference soundPref = findPreference(prefKey);
+private void setupCustomSoundPref(/*Context ctxt,*/ SharedPreferences prefs,
+        /*Resources res,*/ String prefKey, boolean enabled/*, @StringRes int resId*/) {
+    Preference soundPref = findPreference(prefKey);
     if (soundPref == null) return;
     soundPref.setOnPreferenceClickListener((pref) -> onClickCustomSoundPref(prefs, prefKey));
     if (!enabled) soundPref.setVisible(false);
 //    soundPref.setSummaryProvider(new Preference.SummaryProvider<>() {
 //        @Nullable @Override
-//        public CharSequence provideSummary(@NonNull final Preference pref) {
-//            final String uriStr = prefs.getString(prefKey, null);
+//        public CharSequence provideSummary(@NonNull Preference pref) {
+//            String uriStr = prefs.getString(prefKey, null);
 //            if (uriStr != null) {
-//                final Ringtone ringtone = RingtoneManager.getRingtone(ctxt, Uri.parse(uriStr));
+//                Ringtone ringtone = RingtoneManager.getRingtone(ctxt, Uri.parse(uriStr));
 //                if (ringtone != null) {
 //                    return ringtone.getTitle(ctxt);
 //                }
@@ -125,12 +125,12 @@ private void setupCustomSoundPref(/*final Context ctxt,*/ final SharedPreference
     // Too laggy for now.
 }
 
-private boolean onClickCustomSoundPref(final SharedPreferences prefs, final String prefKey) {
-    final Intent soundPicker = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER)
+private boolean onClickCustomSoundPref(SharedPreferences prefs, String prefKey) {
+    Intent soundPicker = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER)
             .putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION)
             .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true)
             .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, false);
-    final String uriStr = prefs.getString(prefKey, null);
+    String uriStr = prefs.getString(prefKey, null);
     soundPicker.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI,
             uriStr != null ? Uri.parse(uriStr) : null);
     mPrefKey = prefKey;
@@ -138,8 +138,8 @@ private boolean onClickCustomSoundPref(final SharedPreferences prefs, final Stri
     return false;
 }
 
-private void setupCustomSoundPrefs(/*final Context ctxt,*/ final SharedPreferences prefs,
-        /*final Resources res,*/ final boolean enabled) {
+private void setupCustomSoundPrefs(/*Context ctxt,*/ SharedPreferences prefs,
+        /*Resources res,*/ boolean enabled) {
     setupCustomSoundPref(/*ctxt,*/ prefs, /*res,*/ SettingVals.CHIME_START, enabled/*, R.string.chime_start*/);
     setupCustomSoundPref(/*ctxt,*/ prefs, /*res,*/ SettingVals.CHIME_ACT, enabled/*, R.string.chime_act*/);
     setupCustomSoundPref(/*ctxt,*/ prefs, /*res,*/ SettingVals.CHIME_PEND, enabled/*, R.string.chime_pend*/);
@@ -149,15 +149,15 @@ private void setupCustomSoundPrefs(/*final Context ctxt,*/ final SharedPreferenc
     setupCustomSoundPref(/*ctxt,*/ prefs, /*res,*/ SettingVals.CHIME_FAIL, enabled/*, R.string.chime_fail*/);
 }
 
-private void updateCustomSoundPref(/*final Context ctxt, final SharedPreferences prefs,
-        final Resources res,*/ final String prefKey, final boolean enabled/*, @StringRes final int resId*/) {
-    final Preference soundPref = findPreference(prefKey);
+private void updateCustomSoundPref(/*Context ctxt, SharedPreferences prefs,
+        Resources res,*/ String prefKey, boolean enabled/*, @StringRes int resId*/) {
+    Preference soundPref = findPreference(prefKey);
     if (soundPref == null) return;
     soundPref.setVisible(enabled);
 }
 
-private void updateCustomSoundPrefs(/*final Context ctxt, final SharedPreferences prefs,
-        final Resources res,*/ final boolean enabled) {
+private void updateCustomSoundPrefs(/*Context ctxt, SharedPreferences prefs,
+        Resources res,*/ boolean enabled) {
     updateCustomSoundPref(/*ctxt, prefs, res,*/ SettingVals.CHIME_START, enabled/*, R.string.chime_start*/);
     updateCustomSoundPref(/*ctxt, prefs, res,*/ SettingVals.CHIME_ACT, enabled/*, R.string.chime_act*/);
     updateCustomSoundPref(/*ctxt, prefs, res,*/ SettingVals.CHIME_PEND, enabled/*, R.string.chime_pend*/);
@@ -167,21 +167,21 @@ private void updateCustomSoundPrefs(/*final Context ctxt, final SharedPreference
     updateCustomSoundPref(/*ctxt, prefs, res,*/ SettingVals.CHIME_FAIL, enabled/*, R.string.chime_fail*/);
 }
 
-private void setupFavoriteCommandsPref(final EmillaActivity act) {
-    final Preference favoriteCommmands = findPreference("favorite_commands");
+private void setupFavoriteCommandsPref(EmillaActivity act) {
+    Preference favoriteCommmands = findPreference("favorite_commands");
     if (favoriteCommmands == null) return;
     favoriteCommmands.setOnPreferenceClickListener(pref -> caveat(act, "Coming soon!", false)); // todo
 }
 
 private boolean mShouldToast = true;
-private boolean setupActionPref(final ListPreference actionPref, final EmillaActivity act,
-        final boolean noTorch, final boolean noSelectAll) {
+private boolean setupActionPref(ListPreference actionPref, EmillaActivity act,
+        boolean noTorch, boolean noSelectAll) {
     if (actionPref == null) return false;
     if (noTorch) {
-        final CharSequence[] entries = noSelectAll ? new CharSequence[]{"None", "These settings"}
+        CharSequence[] entries = noSelectAll ? new CharSequence[]{"None", "These settings"}
                 : new CharSequence[]{"None", "These settings", "Select whole command"}; // TODO LANG: remove
         actionPref.setEntries(entries);
-        final CharSequence[] values = {"none", "config", "select_all"};
+        CharSequence[] values = {"none", "config", "select_all"};
         actionPref.setEntryValues(values);
     }
     actionPref.setOnPreferenceClickListener(pref -> { // todo
@@ -194,16 +194,16 @@ private boolean setupActionPref(final ListPreference actionPref, final EmillaAct
     return true;
 }
 
-private void setupDoubleAssistPref(final EmillaActivity act, final boolean noTorch) {
-    final ListPreference doubleAction = findPreference("action_double_assist");
+private void setupDoubleAssistPref(EmillaActivity act, boolean noTorch) {
+    ListPreference doubleAction = findPreference("action_double_assist");
     if (setupActionPref(doubleAction, act, noTorch, false) && noTorch) doubleAction.setDefaultValue("config");
 }
 
-private void setupDefaultAssistantPref(final PackageManager pm) {
+private void setupDefaultAssistantPref(PackageManager pm) {
     // todo: whatever sneaky nonsense the g assistant uses to highlight system settings should also be used here
-    final Preference systemDefaultAssistant = findPreference("default_assistant");
+    Preference systemDefaultAssistant = findPreference("default_assistant");
     if (systemDefaultAssistant == null) return;
-    final Intent assistantSettings = new Intent(Settings.ACTION_VOICE_INPUT_SETTINGS);
+    Intent assistantSettings = new Intent(Settings.ACTION_VOICE_INPUT_SETTINGS);
     if (assistantSettings.resolveActivity(pm) != null) {
         systemDefaultAssistant.setIntent(assistantSettings);
         return;
@@ -211,10 +211,10 @@ private void setupDefaultAssistantPref(final PackageManager pm) {
     systemDefaultAssistant.setVisible(false);
 }
 
-private void setupNotificationsPref(final PackageManager pm) {
-    final Preference appNotifications = requireNonNull(findPreference("notifications"));
+private void setupNotificationsPref(PackageManager pm) {
+    Preference appNotifications = requireNonNull(findPreference("notifications"));
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        final Intent notifSettings = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+        Intent notifSettings = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
                 .putExtra(Settings.EXTRA_APP_PACKAGE, Apps.PKG);
         if (notifSettings.resolveActivity(pm) != null) {
             appNotifications.setIntent(notifSettings);
@@ -224,13 +224,13 @@ private void setupNotificationsPref(final PackageManager pm) {
     appNotifications.setVisible(false);
 }
 
-private void setupAccessibilityButtonPref(final PackageManager pm) {
-    final Preference accessibilityButton = requireNonNull(findPreference("accessibility_button"));
+private void setupAccessibilityButtonPref(PackageManager pm) {
+    Preference accessibilityButton = requireNonNull(findPreference("accessibility_button"));
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        final String showArgs = Apps.PKG + '/' + EmillaAccessibilityService.class.getName();
-        final Bundle bundle = new Bundle();
+        String showArgs = Apps.PKG + '/' + EmillaAccessibilityService.class.getName();
+        Bundle bundle = new Bundle();
         bundle.putString(EXTRA_FRAGMENT_ARG_KEY, showArgs);
-        final Intent in = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+        Intent in = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
                 .putExtra(Settings.EXTRA_APP_PACKAGE, Apps.PKG)
                 .putExtra(EXTRA_FRAGMENT_ARG_KEY, showArgs)
                 .putExtra(EXTRA_SHOW_FRAGMENT_ARGUMENTS, bundle);
@@ -242,9 +242,9 @@ private void setupAccessibilityButtonPref(final PackageManager pm) {
     accessibilityButton.setVisible(false);
 }
 
-private void setupAppInfoPref(final PackageManager pm) {
-    final Preference systemAppInfo = requireNonNull(findPreference("app_info"));
-    final Intent in = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+private void setupAppInfoPref(PackageManager pm) {
+    Preference systemAppInfo = requireNonNull(findPreference("app_info"));
+    Intent in = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
             Apps.pkgUri(Apps.PKG));
     if (in.resolveActivity(pm) != null) systemAppInfo.setIntent(in);
     else systemAppInfo.setVisible(false);

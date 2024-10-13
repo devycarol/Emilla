@@ -39,7 +39,7 @@ public int icon() {
     return R.drawable.ic_pomodoro;
 }
 
-public CommandPomodoro(final AssistActivity act, final String instruct) {
+public CommandPomodoro(AssistActivity act, String instruct) {
     super(act, instruct, R.string.command_pomodoro, R.string.instruction_pomodoro);
     mIntent.putExtra(EXTRA_MESSAGE, string(R.string.command_pomodoro));
 }
@@ -47,16 +47,16 @@ public CommandPomodoro(final AssistActivity act, final String instruct) {
 /**
  * @return true if this is a break timer
  */
-private boolean putDuration(final Resources res, /*mutable*/ String duration) throws EmlaBadCommandException {
+private boolean putDuration(Resources res, /*mutable*/ String duration) throws EmlaBadCommandException {
     if (mIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
-    final Matcher m = compile(" *b(reak)? *").matcher(duration); // TODO: lang
-    final boolean isBreak = m.find();
+    Matcher m = compile(" *b(reak)? *").matcher(duration); // TODO: lang
+    boolean isBreak = m.find();
     if (isBreak) duration = m.replaceFirst("");
 
     if (duration.isEmpty()) mIntent.putExtra(EXTRA_LENGTH, 300 /*5m*/); // todo: make configurable
     // only reached if the string was emptied by the stripping the 'break' tag
     else try {
-        final float dur = parseFloat(duration);
+        float dur = parseFloat(duration);
         // todo: I need to learn more about float errors..
         //  and this function... ion wanna worry about hexadecimal :sob:
         if (dur <= 0.0f) throw new EmlaBadCommandException(
@@ -75,9 +75,9 @@ protected void run() {
 }
 
 @Override
-protected void run(final String duration) throws EmlaBadCommandException {
+protected void run(String duration) throws EmlaBadCommandException {
     if (mIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
-    final boolean isBreak = putDuration(resources(), duration);
+    boolean isBreak = putDuration(resources(), duration);
     if (isBreak) mIntent.putExtra(EXTRA_MESSAGE, string(R.string.memo_pomodoro_break));
     succeed(mIntent);
     toast(isBreak ? string(R.string.toast_pomodoro_break)
@@ -85,15 +85,15 @@ protected void run(final String duration) throws EmlaBadCommandException {
 }
 
 @Override
-protected void runWithData(final String memo) {
+protected void runWithData(String memo) {
     if (mIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
     succeed(mIntent.putExtra(EXTRA_MESSAGE, memo));
 }
 
 @Override
-protected void runWithData(final String duration, final String memo) throws EmlaBadCommandException {
+protected void runWithData(String duration, String memo) throws EmlaBadCommandException {
     if (mIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
-    final boolean isBreak = putDuration(resources(), duration);
+    boolean isBreak = putDuration(resources(), duration);
     mIntent.putExtra(EXTRA_MESSAGE, memo);
     succeed(mIntent);
     toast(isBreak ? string(R.string.toast_pomodoro_break)

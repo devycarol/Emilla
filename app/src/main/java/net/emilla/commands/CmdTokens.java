@@ -19,7 +19,7 @@ protected int mIdx = 0;
 protected boolean mHasNext;
 private String mInstruction;
 
-private CmdTokens(final String command) {
+private CmdTokens(String command) {
     mCommand = command;
     mLcCommand = command.toLowerCase();
     mHasNext = !command.isEmpty();
@@ -33,19 +33,19 @@ public static class Latin extends CmdTokens {
 /**
  * @param command is assumed not to have leading spaces!
  */
-public Latin(final String command) {
+public Latin(String command) {
     super(command);
 }
 
 @Override @NonNull
 public String next() {
     int idx = mIdx;
-    final int len = mLcCommand.length();
+    int len = mLcCommand.length();
     do if (++idx >= len) {
         mHasNext = false;
         break;
     } while (!isWhitespace(mLcCommand.charAt(idx)));
-    final String token = mLcCommand.substring(mIdx, idx);
+    String token = mLcCommand.substring(mIdx, idx);
 
     if (mHasNext) do if (++idx >= len) {
         mHasNext = false;
@@ -60,13 +60,13 @@ public String next() {
  * "Glyph" implementation should be used for character languages where words aren't space-separated.
  */
 public static class Glyph extends CmdTokens {
-public Glyph(final String command) {
+public Glyph(String command) {
     super(command);
 }
 
 @Override @NonNull
 public String next() {
-    final int codePoint = mLcCommand.codePointAt(mIdx);
+    int codePoint = mLcCommand.codePointAt(mIdx);
     if ((mIdx += Character.charCount(codePoint)) >= mLcCommand.length()) mHasNext = false;
     return new String(Character.toChars(codePoint));
 }
