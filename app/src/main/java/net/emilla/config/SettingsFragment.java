@@ -22,10 +22,10 @@ import androidx.preference.PreferenceManager;
 
 import net.emilla.EmillaActivity;
 import net.emilla.R;
+import net.emilla.chime.Chimer;
 import net.emilla.settings.SettingVals;
 import net.emilla.system.EmillaAccessibilityService;
 import net.emilla.utils.Apps;
-import net.emilla.utils.Chime;
 import net.emilla.utils.Features;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
@@ -75,7 +75,7 @@ public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
     });
 
     setupSoundSetPref(/*act, prefs, res*/);
-    mCustomSounds = SettingVals.soundSet(prefs).equals(Chime.CUSTOM);
+    mCustomSounds = SettingVals.soundSet(prefs).equals(Chimer.CUSTOM);
     setupCustomSoundPrefs(/*act,*/ prefs, /*res,*/ mCustomSounds);
     setupFavoriteCommandsPref(act);
     PackageManager pm = act.getPackageManager();
@@ -94,7 +94,7 @@ private void setupSoundSetPref(/*Context ctxt, SharedPreferences prefs, Resource
     Preference soundSetPref = findPreference(SettingVals.SOUND_SET);
     if (soundSetPref == null) return;
     soundSetPref.setOnPreferenceChangeListener((pref, newVal) -> {
-        boolean customSounds = newVal.equals(Chime.CUSTOM);
+        boolean customSounds = newVal.equals(Chimer.CUSTOM);
         if (mCustomSounds != customSounds) {
             updateCustomSoundPrefs(/*ctxt, prefs, res,*/ customSounds);
             mCustomSounds = customSounds;

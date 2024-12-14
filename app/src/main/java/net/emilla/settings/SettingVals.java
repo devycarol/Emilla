@@ -9,7 +9,7 @@ import android.util.DisplayMetrics;
 import androidx.annotation.NonNull;
 
 import net.emilla.R;
-import net.emilla.utils.Chime;
+import net.emilla.chime.Chimer;
 
 public class SettingVals {
 public static final String // Preference keys
@@ -24,7 +24,7 @@ public static final String // Preference keys
 
 @NonNull
 public static String soundSet(SharedPreferences prefs) {
-    return prefs.getString(SOUND_SET, Chime.NEBULA);
+    return prefs.getString(SOUND_SET, Chimer.NEBULA);
 }
 
 private static short cmdId(String s) {

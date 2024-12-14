@@ -3,7 +3,7 @@ package net.emilla;
 import static android.content.Intent.*;
 import static android.view.KeyEvent.*;
 import static android.view.inputmethod.EditorInfo.*;
-import static net.emilla.utils.Chime.*;
+import static net.emilla.chime.Chimer.*;
 import static java.lang.Character.isWhitespace;
 import static java.lang.Math.max;
 
@@ -17,9 +17,6 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.media.ToneGenerator;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -43,6 +40,11 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.preference.PreferenceManager;
 
+import net.emilla.chime.Chimer;
+import net.emilla.chime.Custom;
+import net.emilla.chime.Nebula;
+import net.emilla.chime.Redial;
+import net.emilla.chime.Silence;
 import net.emilla.command.CmdTree;
 import net.emilla.command.DataCmd;
 import net.emilla.command.EmillaCommand;
@@ -55,7 +57,6 @@ import net.emilla.settings.SettingVals;
 import net.emilla.system.AppEmilla;
 import net.emilla.system.EmillaForegroundService;
 import net.emilla.utils.Apps;
-import net.emilla.utils.Chime;
 import net.emilla.utils.Contact;
 import net.emilla.utils.Dialogs;
 import net.emilla.utils.Features;
@@ -75,8 +76,7 @@ public static final int // intent codes
 private SharedPreferences mPrefs;
 private CmdTree mCmdTree;
 private List<ResolveInfo> mAppList;
-private String mSounds;
-private ToneGenerator mToneGenerator;
+private Chimer mChimer;
 
 private LayoutInflater mInflater;
 private FrameLayout mEmptySpace;
@@ -118,13 +118,18 @@ private boolean mHasTitlebar;
 protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
+    setContentView(R.layout.activity_assist);
+
     mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-    mSounds = SettingVals.soundSet(mPrefs);
-    if (mSounds.equals("voice_dialer")) mToneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC,
-            ToneGenerator.MAX_VOLUME);
+    mChimer = switch (SettingVals.soundSet(mPrefs)) {
+        case Chimer.NONE -> new Silence();
+        case Chimer.NEBULA -> new Nebula(this);
+        case Chimer.VOICE_DIALER -> new Redial();
+        case Chimer.CUSTOM -> new Custom(this, mPrefs);
+        default -> throw new RuntimeException();
+    };
     if (savedInstanceState == null) chime(START);
 
-    setContentView(R.layout.activity_assist);
     Resources res = getResources();
 
     ActionBar actionBar = getSupportActionBar();
@@ -629,28 +634,7 @@ public void getFiles() { // todo: make private?
 private void chime(byte id) {
     // Todo: I'd love to add a couple more in-built sound packs from open source ecosystems! Anyone
     //  stumbling across this is welcome to give suggestions.
-    switch (mSounds) {
-    case Chime.NONE -> {}
-    case Chime.NEBULA -> {
-        // Todo: still encountering occasional sound cracking issues
-        MediaPlayer player = MediaPlayer.create(this, Chime.nebula(id));
-        player.setVolume(0.25f, 0.25f); // todo: adjust the sound resources directly and remove this but maybe make volume configurable
-        player.setOnCompletionListener(MediaPlayer::release);
-        player.start();
-    }
-    case Chime.VOICE_DIALER -> mToneGenerator.startTone(Chime.dialerTone(id));
-    case Chime.CUSTOM -> {
-        String uriStr = mPrefs.getString(Chime.preferenceOf(id), null);
-        MediaPlayer player;
-        if (uriStr == null) player = MediaPlayer.create(this, Chime.nebula(id));
-        else {
-            player = MediaPlayer.create(this, Uri.parse(uriStr));
-            if (player == null) player = MediaPlayer.create(this, Chime.nebula(id));
-            // In case the URI breaks
-        }
-        player.setOnCompletionListener(MediaPlayer::release);
-        player.start();
-    }}
+    mChimer.chime(id);
 }
 
 private void resume(boolean chime) {
