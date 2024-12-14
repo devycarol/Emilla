@@ -47,7 +47,7 @@ public Pomodoro(AssistActivity act, String instruct) {
 /**
  * @return true if this is a break timer
  */
-private boolean putDuration(Resources res, /*mutable*/ String duration) throws EmlaBadCommandException {
+private boolean putDuration(Resources res, String duration) throws EmlaBadCommandException {
     if (mIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
     Matcher m = compile(" *b(reak)? *").matcher(duration); // TODO: lang
     boolean isBreak = m.find();

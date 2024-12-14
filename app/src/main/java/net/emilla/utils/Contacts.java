@@ -5,7 +5,7 @@ import android.util.Log;
 
 import java.util.HashMap;
 
-public class Contact {
+public class Contacts {
 private static final String
     DFLT_PHONES = "Cameron, (208) 555-1234\n" +
         "John, Johnny, (208) 555-6789\n" +
@@ -76,5 +76,5 @@ public static String[] namesToEmails(String names, HashMap<String, String> email
     return emails;
 }
 
-private Contact () {}
+private Contacts() {}
 }

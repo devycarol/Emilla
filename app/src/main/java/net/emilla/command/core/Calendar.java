@@ -72,7 +72,7 @@ public void clean() {
     hideField(R.id.field_url);
 }
 
-private void putTitleAndDate(/*mutable*/ String title) throws EmlaBadCommandException {
+private void putTitleAndDate(String title) throws EmlaBadCommandException {
     // todo: clean this up
     Matcher m = compile(" */all(day)?", CASE_INSENSITIVE).matcher(title);
     if (m.find()) {

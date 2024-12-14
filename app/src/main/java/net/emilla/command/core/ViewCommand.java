@@ -15,7 +15,7 @@ import net.emilla.utils.Dialogs;
 
 import java.util.HashMap;
 
-public class View extends CoreCommand {
+public class ViewCommand extends CoreCommand {
 public static final String DFLT_MEDIA = "Emilla GitHub, emla, https://github.com/devycarol/Emilla\n" +
         "Open-source software, OSS, https://en.wikipedia.org/wiki/Open_source_software\n" +
         "Rick, dQw, https://www.youtube.com/watch?v=dQw4w9WgXcQ";
@@ -24,11 +24,11 @@ private final HashMap<String, Intent> mBookmarkMap = new HashMap<>();
 private final AlertDialog mBookmarkChooser;
 private final boolean mHasBookmarks; // Todo: remove once search is implemented
 
-public View(AssistActivity act, String instruct) {
+public ViewCommand(AssistActivity act, String instruct) {
     super(act, instruct, R.string.command_view, R.string.instruction_view);
 
     String[] lines = act.mediaCsv().split("\\s*\n\\s*");
-    CharSequence[] labels = new String[lines.length];
+    String[] labels = new String[lines.length];
     Intent[] intents = new Intent[lines.length];
     int idx = -1;
     for (String line : lines) {

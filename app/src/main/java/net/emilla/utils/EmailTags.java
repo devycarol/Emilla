@@ -41,7 +41,7 @@ public static String putEmailsIfPresent(String text, String tagKey, Intent inten
         String extra, String tagSet, HashMap<String, String> emailMap) {
     if (EmailTags.itHas(text, tagKey)) {
         String tagVal = EmailTags.getFrom(text, tagKey, tagSet);
-        intent.putExtra(extra, Contact.namesToEmails(tagVal, emailMap));
+        intent.putExtra(extra, Contacts.namesToEmails(tagVal, emailMap));
         return EmailTags.strip(text, tagKey, tagVal);
     }
     return text;

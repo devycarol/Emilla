@@ -110,6 +110,7 @@
     <string name="command_notify">Notify</string>
     <string name="command_settings">Settings</string>
     <string name="command_share">Share</string>
+    <string name="command_torch">Torch</string>
     <string name="command_info">Info</string>
     <string name="command_uninstall">Uninstall</string>
     <string name="command_toast">Toast</string>
@@ -141,6 +142,7 @@
     <string name="summary_notify">Set notification reminders</string>
     <string name="summary_settings">Search and change system settings</string>
     <string name="summary_share">Send text, images, and files to your apps</string>
+    <string name="summary_torch">Toggle flashlight</string>
     <string name="summary_info">View application details</string>
     <string name="summary_uninstall">Remove installed apps</string>
     <string name="summary_toast">Show a little message!</string>
@@ -175,6 +177,7 @@
     <string name="instruction_calendar">event name | DATETIME</string>
     <!-- Todo: details page that specifies abbreviations, also simplify this text -->
     <string name="instruction_settings">name of setting</string>
+    <string name="instruction_torch">toggle flashlight</string>
     <string name="instruction_todo">task</string>
     <string name="instruction_pomodoro">minutes</string>
     <string name="instruction_notify">notification title (doesn\'t work yet)</string><!--todo-->

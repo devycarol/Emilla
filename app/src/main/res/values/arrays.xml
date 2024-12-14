@@ -80,6 +80,7 @@
 <!--        <item>@string/command_notify</item>-->
         <item>@string/command_settings</item>
         <item>@string/command_share</item>
+        <item>@string/command_torch</item>
         <item>@string/command_info</item>
         <item>@string/command_uninstall</item>
         <item>@string/command_toast</item>
@@ -108,6 +109,7 @@
 <!--        <item>notify</item>-->
         <item>settings</item>
         <item>share</item>
+        <item>torch</item>
         <item>info</item>
         <item>uninstall</item>
         <item>toast</item>
@@ -194,6 +196,7 @@
         <item>bookmark</item>
         <item>mrk</item>
     </string-array>
+    <string-array name="aliases_torch" />
     <string-array name="aliases_info" />
     <string-array name="aliases_uninstall">
         <item>remove</item>

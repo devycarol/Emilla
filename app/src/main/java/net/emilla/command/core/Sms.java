@@ -18,7 +18,7 @@ import net.emilla.R;
 import net.emilla.exceptions.EmlaAppsException;
 import net.emilla.exceptions.EmlaFeatureException;
 import net.emilla.utils.Apps;
-import net.emilla.utils.Contact;
+import net.emilla.utils.Contacts;
 
 import java.util.HashMap;
 
@@ -49,7 +49,7 @@ public int icon() {
 
 public Sms(AssistActivity act, String instruct) {
     super(act, instruct, R.string.command_sms, R.string.instruction_phone);
-    mPhoneMap = Contact.mapPhones(act.prefs());
+    mPhoneMap = Contacts.mapPhones(act.prefs());
 }
 
 @Override
@@ -87,7 +87,7 @@ private Intent withMsg(Intent intent, String message) {
 
 @NonNull
 private Intent withRecipients(Intent intent, String recipients) {
-    return intent.setData(Uri.parse("sms:" + Contact.namesToPhones(recipients, mPhoneMap)));
+    return intent.setData(Uri.parse("sms:" + Contacts.namesToPhones(recipients, mPhoneMap)));
 }
 
 @Override

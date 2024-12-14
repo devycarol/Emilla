@@ -50,6 +50,7 @@ private static short cmdId(String s) {
     case "calculate" -> CALCULATE;
     case "weather" -> WEATHER;
     case "view" -> VIEW;
+    case "torch" -> TORCH;
     case "info" -> INFO;
     case "uninstall" -> UNINSTALL;
     case "toast" -> TOAST;

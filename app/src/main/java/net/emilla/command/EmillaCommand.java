@@ -49,10 +49,11 @@ public static class Commands {
         CALCULATE = 16,
         WEATHER = 17,
         VIEW = 18,
-        INFO = 19,
-        UNINSTALL = 20,
-        TOAST = 21,
-        DUPLICATE = 22;
+        TORCH = 19,
+        INFO = 20,
+        UNINSTALL = 21,
+        TOAST = 22,
+        DUPLICATE = 23;
 }
 
 private static final int[] NAMES = {
@@ -78,6 +79,7 @@ private static final int[] NAMES = {
     R.string.command_calculate,
     R.string.command_weather,
     R.string.command_view,
+    R.string.command_torch,
     R.string.command_info,
     R.string.command_uninstall,
     R.string.command_toast
@@ -190,6 +192,10 @@ protected void toast(CharSequence text, boolean longToast) {
     mActivity.toast(text, longToast);
 }
 
+protected void chime(byte id) {
+    mActivity.chime(id);
+}
+
 protected void giveAction(@IdRes int actionId, @StringRes int descriptionId,
         @DrawableRes int iconId, View.OnClickListener click) {
     mActivity.addAction(actionId, string(descriptionId), iconId, click);
@@ -299,7 +305,8 @@ protected abstract CharSequence name();
 protected abstract CharSequence dupeLabel(); // Todo: replace with icons
 protected abstract CharSequence lcName();
 protected abstract CharSequence title();
-@DrawableRes public abstract int icon();
+@DrawableRes
+public abstract int icon();
 public abstract int imeAction();
 // todo: you should be able to long-click the enter key in the command or data field to submit
 //  the command, using the action icon of one of the below.

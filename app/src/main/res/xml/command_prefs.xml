@@ -103,6 +103,11 @@
             android:summary="@string/summary_share"
             android:title="@string/command_share" />
         <EditTextPreference
+            android:icon="@drawable/ic_torch"
+            android:key="aliases_torch"
+            android:summary="@string/summary_torch"
+            android:title="@string/command_torch" />
+        <EditTextPreference
             android:icon="@drawable/ic_info"
             android:key="aliases_info_text"
             android:summary="@string/summary_info"
