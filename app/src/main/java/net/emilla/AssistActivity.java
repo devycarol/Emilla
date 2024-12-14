@@ -29,7 +29,6 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -44,11 +43,11 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.preference.PreferenceManager;
 
-import net.emilla.commands.CmdTree;
-import net.emilla.commands.CommandView;
-import net.emilla.commands.DataCmd;
-import net.emilla.commands.EmillaCommand;
-import net.emilla.commands.EmillaCommand.Commands;
+import net.emilla.command.CmdTree;
+import net.emilla.command.DataCmd;
+import net.emilla.command.EmillaCommand;
+import net.emilla.command.EmillaCommand.Commands;
+import net.emilla.command.core.View;
 import net.emilla.config.ConfigActivity;
 import net.emilla.exceptions.EmillaException;
 import net.emilla.exceptions.EmlaAppsException;
@@ -320,7 +319,7 @@ private void setupShowDataButton(boolean disable) {
 }
 
 public void addAction(@IdRes int actionId, CharSequence description,
-        @DrawableRes int iconId, View.OnClickListener click) {
+        @DrawableRes int iconId, android.view.View.OnClickListener click) {
     ActionButton actionButton = (ActionButton) mInflater.inflate(R.layout.btn_action,
             mActionsContainer, false);
     actionButton.setId(actionId);
@@ -596,7 +595,7 @@ public List<ResolveInfo> appList() {
 }
 
 public String mediaCsv() {
-    return mPrefs.getString("medias", CommandView.DFLT_MEDIA);
+    return mPrefs.getString("medias", View.DFLT_MEDIA);
 }
 
 public ArrayList<Uri> attachments() {

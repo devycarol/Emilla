@@ -7,7 +7,7 @@ import androidx.annotation.ArrayRes;
 import androidx.annotation.Nullable;
 
 import net.emilla.R;
-import net.emilla.commands.AppCmdInfo;
+import net.emilla.command.app.AppCmdInfo;
 import net.emilla.utils.Apps;
 
 import java.util.Set;

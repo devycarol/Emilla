@@ -5,7 +5,7 @@ import android.content.res.Resources;
 import androidx.annotation.StringRes;
 
 import net.emilla.R;
-import net.emilla.commands.CmdTokens;
+import net.emilla.command.CmdTokens;
 
 public class Lang {
 public static CmdTokens cmdTokens(Resources res, String command) {

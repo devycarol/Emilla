@@ -16,7 +16,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import net.emilla.EmillaActivity;
 import net.emilla.R;
-import net.emilla.commands.AppCmdInfo;
+import net.emilla.command.app.AppCmdInfo;
 import net.emilla.settings.Aliases;
 import net.emilla.utils.Apps;
 
