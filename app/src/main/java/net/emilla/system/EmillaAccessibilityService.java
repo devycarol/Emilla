@@ -13,7 +13,6 @@ import androidx.annotation.RequiresApi;
 import net.emilla.utils.Apps;
 
 public class EmillaAccessibilityService extends AccessibilityService {
-private static final String TAG = "AccessibilityService";
 // TODO: google assistant changes the accessibility menu icon for "assistant," so we should also do this.
 //  I wonder if you can add items to that menu..
 @Override
@@ -22,8 +21,7 @@ public void onAccessibilityEvent(AccessibilityEvent event) {}
 @Override
 public void onInterrupt() {}
 
-@RequiresApi(api = Build.VERSION_CODES.O)
-@Override
+@Override @RequiresApi(api = Build.VERSION_CODES.O)
 public void onCreate() {
     AccessibilityButtonController controller = getAccessibilityButtonController();
     controller.registerAccessibilityButtonCallback(new AccessibilityButtonCallback() {

@@ -158,7 +158,7 @@ public class AssistActivity extends EmillaActivity {
 
         mEmptySpace = findViewById(R.id.empty_space);
         mHelpBox = findViewById(R.id.help_text_box);
-        mHelpBox.setVisibility(TextView.GONE);
+        mHelpBox.setVisibility(View.GONE);
         mCommandField = findViewById(R.id.field_command);
         mDataField = findViewById(R.id.field_data);
         mSubmitButton = findViewById(R.id.button_submit);
@@ -270,7 +270,7 @@ public class AssistActivity extends EmillaActivity {
     }
 
     private void showDataField(boolean focus) {
-        mDataField.setVisibility(EditText.VISIBLE);
+        mDataField.setVisibility(View.VISIBLE);
         if (focus) mDataField.requestFocus();
         mShowDataButton.setIcon(R.drawable.ic_hide_data);
         mShowDataButton.setContentDescription(getString(R.string.spoken_description_hide_data));
@@ -305,7 +305,7 @@ public class AssistActivity extends EmillaActivity {
         int newLen = mCommandField.length();
         if (dataFocused) mCommandField.setSelection(newLen + start, newLen + end);
         else mCommandField.setSelection(start, end);
-        mDataField.setVisibility(EditText.GONE);
+        mDataField.setVisibility(View.GONE);
         if (!mDataAvailable) disableDataButton();
         mShowDataButton.setIcon(R.drawable.ic_show_data);
         mShowDataButton.setContentDescription(getString(R.string.spoken_description_show_data));
@@ -313,7 +313,7 @@ public class AssistActivity extends EmillaActivity {
     }
 
     private void setupShowDataButton(boolean disable) {
-        if (disable) mShowDataButton.setVisibility(ActionButton.GONE);
+        if (disable) mShowDataButton.setVisibility(View.GONE);
         else mShowDataButton.setOnClickListener(v -> {
             if (mDataVisible) hideDataField();
             else showDataField(true);
@@ -355,13 +355,13 @@ public class AssistActivity extends EmillaActivity {
             mFieldsContainer.addView(field);
             if (focus) field.requestFocus();
             return true;
-        } else if (field.getVisibility() == EditText.VISIBLE) {
+        } else if (field.getVisibility() == View.VISIBLE) {
             if (field.hasFocus()) mCommandField.requestFocus();
             // Todo: instead track the previously focused field(s)?
-            field.setVisibility(EditText.GONE);
+            field.setVisibility(View.GONE);
             return false;
         } else {
-            field.setVisibility(EditText.VISIBLE);
+            field.setVisibility(View.VISIBLE);
             if (focus) field.requestFocus();
             return true;
         }
@@ -372,13 +372,13 @@ public class AssistActivity extends EmillaActivity {
         if (field != null) {
             if (field.hasFocus()) mCommandField.requestFocus();
             // Todo: instead track the previously focused field(s)?
-            field.setVisibility(EditText.GONE);
+            field.setVisibility(View.GONE);
         }
     }
 
     public String getFieldText(@IdRes int fieldId) {
         EditText field = findViewById(fieldId);
-        return field == null || field.getVisibility() == EditText.GONE ? null : field.getText().toString();
+        return field == null || field.getVisibility() == View.GONE ? null : field.getText().toString();
     }
 
     private void config() {
@@ -428,6 +428,7 @@ public class AssistActivity extends EmillaActivity {
         mFocused = false;
         if (!(isChangingConfigurations() || isFinishing())) {
             if (shouldCancel()) cancel();
+            // TODO: the launch fail bug is caused by focus stealing
             else if (!mDialogOpen) chime(PEND);
         }
     }
@@ -480,9 +481,9 @@ public class AssistActivity extends EmillaActivity {
 
     public void updateDetails(int detailsId) {
         CharSequence details = detailsId == -1 ? null : String.join("\n\n", getResources().getStringArray(detailsId));
-        if (details == null) mHelpBox.setVisibility(TextView.GONE);
+        if (details == null) mHelpBox.setVisibility(View.GONE);
         else {
-            mHelpBox.setVisibility(TextView.VISIBLE);
+            mHelpBox.setVisibility(View.VISIBLE);
             mHelpBox.setText(details);
         }
     }
