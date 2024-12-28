@@ -28,6 +28,7 @@
     <string name="field_location">Location</string>
     <string name="field_url">URL</string>
     <string name="action_field">Toggle %s field</string>
+    <string name="action_assistant_settings">Assistant settings</string>
     <string name="action_select_all">Select all</string>
     <string name="spoken_description_submit_command">Submit command</string>
     <string name="spoken_description_empty_space">Empty space</string>
@@ -67,7 +68,7 @@
     <!-- Action settings -->
     <string name="pref_action_no_command">No command</string>
     <string name="pref_action_double_assist">"Second 'assist'"</string>
-    <string name="pref_action_long_press_submit">Long-press submit</string>
+    <string name="pref_action_long_submit">Long-press submit</string>
     <string name="pref_action_menu">Menu key</string>
 
     <!-- System Settings -->

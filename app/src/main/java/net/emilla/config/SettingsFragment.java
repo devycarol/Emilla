@@ -82,7 +82,7 @@ public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
     boolean noTorch = !Features.torch(pm);
     setupActionPref(findPreference("action_no_command"), act, noTorch, true);
     setupDoubleAssistPref(act, noTorch);
-    setupActionPref(findPreference("action_long_press_submit"), act, noTorch, false);
+    setupActionPref(findPreference("action_long_submit"), act, noTorch, false);
     setupActionPref(findPreference("action_menu"), act, noTorch, false);
     setupDefaultAssistantPref(pm);
     setupNotificationsPref(pm);
@@ -91,7 +91,7 @@ public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 }
 
 private void setupSoundSetPref(/*Context ctxt, SharedPreferences prefs, Resources res*/) {
-    Preference soundSetPref = findPreference(SettingVals.SOUND_SET);
+    Preference soundSetPref = findPreference(Chimer.SOUND_SET);
     if (soundSetPref == null) return;
     soundSetPref.setOnPreferenceChangeListener((pref, newVal) -> {
         boolean customSounds = newVal.equals(Chimer.CUSTOM);
@@ -140,13 +140,13 @@ private boolean onClickCustomSoundPref(SharedPreferences prefs, String prefKey) 
 
 private void setupCustomSoundPrefs(/*Context ctxt,*/ SharedPreferences prefs,
         /*Resources res,*/ boolean enabled) {
-    setupCustomSoundPref(/*ctxt,*/ prefs, /*res,*/ SettingVals.CHIME_START, enabled/*, R.string.chime_start*/);
-    setupCustomSoundPref(/*ctxt,*/ prefs, /*res,*/ SettingVals.CHIME_ACT, enabled/*, R.string.chime_act*/);
-    setupCustomSoundPref(/*ctxt,*/ prefs, /*res,*/ SettingVals.CHIME_PEND, enabled/*, R.string.chime_pend*/);
-    setupCustomSoundPref(/*ctxt,*/ prefs, /*res,*/ SettingVals.CHIME_RESUME, enabled/*, R.string.chime_resume*/);
-    setupCustomSoundPref(/*ctxt,*/ prefs, /*res,*/ SettingVals.CHIME_EXIT, enabled/*, R.string.chime_exit*/);
-    setupCustomSoundPref(/*ctxt,*/ prefs, /*res,*/ SettingVals.CHIME_SUCCEED, enabled/*, R.string.chime_succeed*/);
-    setupCustomSoundPref(/*ctxt,*/ prefs, /*res,*/ SettingVals.CHIME_FAIL, enabled/*, R.string.chime_fail*/);
+    setupCustomSoundPref(/*ctxt,*/ prefs, /*res,*/ Chimer.PREF_START, enabled/*, R.string.chime_start*/);
+    setupCustomSoundPref(/*ctxt,*/ prefs, /*res,*/ Chimer.PREF_ACT, enabled/*, R.string.chime_act*/);
+    setupCustomSoundPref(/*ctxt,*/ prefs, /*res,*/ Chimer.PREF_PEND, enabled/*, R.string.chime_pend*/);
+    setupCustomSoundPref(/*ctxt,*/ prefs, /*res,*/ Chimer.PREF_RESUME, enabled/*, R.string.chime_resume*/);
+    setupCustomSoundPref(/*ctxt,*/ prefs, /*res,*/ Chimer.PREF_EXIT, enabled/*, R.string.chime_exit*/);
+    setupCustomSoundPref(/*ctxt,*/ prefs, /*res,*/ Chimer.PREF_SUCCEED, enabled/*, R.string.chime_succeed*/);
+    setupCustomSoundPref(/*ctxt,*/ prefs, /*res,*/ Chimer.PREF_FAIL, enabled/*, R.string.chime_fail*/);
 }
 
 private void updateCustomSoundPref(/*Context ctxt, SharedPreferences prefs,
@@ -158,13 +158,13 @@ private void updateCustomSoundPref(/*Context ctxt, SharedPreferences prefs,
 
 private void updateCustomSoundPrefs(/*Context ctxt, SharedPreferences prefs,
         Resources res,*/ boolean enabled) {
-    updateCustomSoundPref(/*ctxt, prefs, res,*/ SettingVals.CHIME_START, enabled/*, R.string.chime_start*/);
-    updateCustomSoundPref(/*ctxt, prefs, res,*/ SettingVals.CHIME_ACT, enabled/*, R.string.chime_act*/);
-    updateCustomSoundPref(/*ctxt, prefs, res,*/ SettingVals.CHIME_PEND, enabled/*, R.string.chime_pend*/);
-    updateCustomSoundPref(/*ctxt, prefs, res,*/ SettingVals.CHIME_RESUME, enabled/*, R.string.chime_resume*/);
-    updateCustomSoundPref(/*ctxt, prefs, res,*/ SettingVals.CHIME_EXIT, enabled/*, R.string.chime_exit*/);
-    updateCustomSoundPref(/*ctxt, prefs, res,*/ SettingVals.CHIME_SUCCEED, enabled/*, R.string.chime_succeed*/);
-    updateCustomSoundPref(/*ctxt, prefs, res,*/ SettingVals.CHIME_FAIL, enabled/*, R.string.chime_fail*/);
+    updateCustomSoundPref(/*ctxt, prefs, res,*/ Chimer.PREF_START, enabled/*, R.string.chime_start*/);
+    updateCustomSoundPref(/*ctxt, prefs, res,*/ Chimer.PREF_ACT, enabled/*, R.string.chime_act*/);
+    updateCustomSoundPref(/*ctxt, prefs, res,*/ Chimer.PREF_PEND, enabled/*, R.string.chime_pend*/);
+    updateCustomSoundPref(/*ctxt, prefs, res,*/ Chimer.PREF_RESUME, enabled/*, R.string.chime_resume*/);
+    updateCustomSoundPref(/*ctxt, prefs, res,*/ Chimer.PREF_EXIT, enabled/*, R.string.chime_exit*/);
+    updateCustomSoundPref(/*ctxt, prefs, res,*/ Chimer.PREF_SUCCEED, enabled/*, R.string.chime_succeed*/);
+    updateCustomSoundPref(/*ctxt, prefs, res,*/ Chimer.PREF_FAIL, enabled/*, R.string.chime_fail*/);
 }
 
 private void setupFavoriteCommandsPref(EmillaActivity act) {

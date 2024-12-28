@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <net.emilla.views.ActionButton
+            <net.emilla.view.ActionButton
                 android:id="@+id/button_show_data"
                 android:layout_width="@dimen/width_action"
                 android:layout_height="@dimen/width_action"
@@ -103,7 +103,7 @@
                 android:textColorHint="?attr/colorControlNormal"
                 tools:ignore="VisualLintTextFieldSize" />
 
-            <net.emilla.views.ActionButton
+            <net.emilla.view.ActionButton
                 android:id="@+id/button_submit"
                 android:layout_width="@dimen/width_action"
                 android:layout_height="match_parent"
@@ -113,8 +113,10 @@
                 android:contentDescription="@string/spoken_description_submit_command"
                 android:padding="@dimen/margin_narrow"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_assistant"
                 app:elevation="0dp" />
+
         </LinearLayout>
+
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

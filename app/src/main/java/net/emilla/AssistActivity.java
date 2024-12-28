@@ -39,6 +39,7 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.preference.PreferenceManager;
 
+import net.emilla.action.QuickAction;
 import net.emilla.chime.Chimer;
 import net.emilla.chime.Custom;
 import net.emilla.chime.Nebula;
@@ -48,7 +49,6 @@ import net.emilla.command.CmdTree;
 import net.emilla.command.DataCmd;
 import net.emilla.command.EmillaCommand;
 import net.emilla.command.EmillaCommand.Commands;
-import net.emilla.command.core.Torch;
 import net.emilla.command.core.ViewCommand;
 import net.emilla.config.ConfigActivity;
 import net.emilla.exceptions.EmillaException;
@@ -58,9 +58,8 @@ import net.emilla.system.EmillaForegroundService;
 import net.emilla.utils.Apps;
 import net.emilla.utils.Contacts;
 import net.emilla.utils.Dialogs;
-import net.emilla.utils.Features;
 import net.emilla.utils.Lang;
-import net.emilla.views.ActionButton;
+import net.emilla.view.ActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,6 +86,10 @@ public class AssistActivity extends EmillaActivity {
     private LinearLayout mFieldsContainer;
     private AlertDialog mCancelDialog;
 
+    private QuickAction mNoCommandAction;
+    private QuickAction mDoubleAssistAction;
+    private QuickAction mMenuKeyAction;
+
     private ArrayList<Uri> mAttachments;
     private EmillaCommand mCommand;
 
@@ -101,6 +104,7 @@ public class AssistActivity extends EmillaActivity {
     private boolean mFocused = false;
     private boolean mPendingCancel = false;
     private boolean mDialogOpen = false;
+    private boolean mDontChime = false;
     private boolean mHasTitlebar;
 
     //public static long nanosPlease(long prevTime, String label) {
@@ -174,6 +178,10 @@ public class AssistActivity extends EmillaActivity {
         mEmptySpace.setOnClickListener(v -> cancelIfWarranted());
         mHelpBox.setOnClickListener(v -> cancelIfWarranted());
 
+        mNoCommandAction = SettingVals.noCommand(mPrefs, this);
+        mDoubleAssistAction = SettingVals.doubleAssist(mPrefs, this, pm);
+        mMenuKeyAction = SettingVals.menuAction(mPrefs, this);
+
         setupSubmitButton();
         setupShowDataButton(alwaysShowData);
         setupMoreActions();
@@ -185,8 +193,7 @@ public class AssistActivity extends EmillaActivity {
 
         String action = intent.getAction();
         if (mFocused && action != null) switch (action) {
-            case ACTION_ASSIST, ACTION_VOICE_COMMAND -> quickAct(mPrefs.getString("action_double_assist",
-                    Features.torch(getPackageManager()) ? "torch" : "config"));
+            case ACTION_ASSIST, ACTION_VOICE_COMMAND -> mDoubleAssistAction.perform();
             // Todo: this is broken for the corner gesture. Seems to be an Android bug (LineageOS 21,
             //  no animations, navbar hell).
         }
@@ -246,25 +253,25 @@ public class AssistActivity extends EmillaActivity {
     }
 
     private void setupSubmitButton() {
+        mSubmitButton.setIcon(mNoCommandAction.icon());
         mSubmitButton.setOnClickListener(v -> submitCommand());
-        mSubmitButton.setLongPress(v -> {
-            quickAct(mPrefs.getString("action_long_press_submit", "select_all"));
-            return true;
-        }, R.drawable.ic_select_all); // Todo: icon should be in tandem with the action setting
+
+        mSubmitButton.setLongPress(SettingVals.longSubmit(mPrefs, this));
     }
 
     private void cursorStart() {
-        if (mCommandField.length() == 0) {
+        EditText field = focusedEditBox();
+        int len = field.length();
+        if (len == 0) {
             chime(PEND);
             return;
         }
-        if (!mCommandField.hasFocus()) mCommandField.requestFocus();
-        int start = mCommandField.getSelectionStart(), end = mCommandField.getSelectionEnd();
+        int start = field.getSelectionStart(), end = field.getSelectionEnd();
         if (max(start, end) == 0) {
-            mCommandField.setSelection(mCommandField.length());
+            field.setSelection(len);
             chime(RESUME);
         } else {
-            mCommandField.setSelection(0);
+            field.setSelection(0);
             chime(ACT);
         }
     }
@@ -320,6 +327,15 @@ public class AssistActivity extends EmillaActivity {
         });
     }
 
+    private void setupMoreActions() {
+        // TODO: save state hell
+        mInflater = LayoutInflater.from(this);
+        mActionsContainer = findViewById(R.id.container_more_actions);
+        addAction(R.id.action_cursor_start, getString(R.string.action_cursor_start),
+                R.drawable.ic_cursor_start, v -> cursorStart());
+        mFieldsContainer = findViewById(R.id.container_more_fields);
+    }
+
     public void addAction(@IdRes int actionId, CharSequence description,
             @DrawableRes int iconId, View.OnClickListener click) {
         ActionButton actionButton = (ActionButton) mInflater.inflate(R.layout.btn_action,
@@ -329,15 +345,6 @@ public class AssistActivity extends EmillaActivity {
         actionButton.setContentDescription(description);
         actionButton.setOnClickListener(click);
         mActionsContainer.addView(actionButton);
-    }
-
-    private void setupMoreActions() {
-        // TODO: save state hell
-        mInflater = LayoutInflater.from(this);
-        mActionsContainer = findViewById(R.id.container_more_actions);
-        addAction(R.id.action_cursor_start, getString(R.string.action_cursor_start),
-                R.drawable.ic_cursor_start, v -> cursorStart());
-        mFieldsContainer = findViewById(R.id.container_more_fields);
     }
 
     public void removeAction(@IdRes int actionId) {
@@ -390,28 +397,6 @@ public class AssistActivity extends EmillaActivity {
         }
     }
 
-    private void selectAll() {
-        if (mCommandField.length() != 0) {
-            int selStart = mCommandField.getSelectionStart();
-            int selEnd = mCommandField.getSelectionEnd();
-            int len = mCommandField.length();
-            if (selStart != 0 || selEnd != len) refreshInput();
-            else {
-                mCommandField.setSelection(len, len);
-                chime(RESUME);
-            }
-        }
-    }
-
-    private void quickAct(String action) {
-        switch (action) {
-            case "torch" -> new Torch(this, null).execute();
-            case "config" -> config();
-            case "select_all" -> selectAll();
-            default -> chime(PEND);
-        }
-    }
-
     protected void onResume() {
         super.onResume();
         if (!mFocused) {
@@ -429,7 +414,10 @@ public class AssistActivity extends EmillaActivity {
         if (!(isChangingConfigurations() || isFinishing())) {
             if (shouldCancel()) cancel();
             // TODO: the launch fail bug is caused by focus stealing
-            else if (!mDialogOpen) chime(PEND);
+            else if (!mDialogOpen) {
+                if (mDontChime) mDontChime = false;
+                else chime(PEND);
+            }
         }
     }
 
@@ -449,7 +437,7 @@ public class AssistActivity extends EmillaActivity {
             if (mPendingCancel) cancel(); // todo: is this necessary, or is it already handled by the dialog's key event listener?
             else cancelIfWarranted();
         }
-        case KEYCODE_MENU -> quickAct(mPrefs.getString("action_menu", "config"));
+        case KEYCODE_MENU -> mMenuKeyAction.perform();
         case KEYCODE_SEARCH -> refreshInput(); // Todo config
         default -> { return false; }
         }
@@ -522,8 +510,7 @@ public class AssistActivity extends EmillaActivity {
             mNoCommand = noCommand;
             cmd.init();
 
-            int iconId = noCommand ? R.drawable.ic_assistant : mCommand.icon();
-            mSubmitButton.setIcon(iconId);
+            mSubmitButton.setIcon(noCommand ? mNoCommandAction.icon() : mCommand.icon());
             boolean dataAvailable = noCommand || mCommand.usesData();
             if (dataAvailable != mDataAvailable) updateDataAvailability(dataAvailable);
         }
@@ -582,12 +569,23 @@ public class AssistActivity extends EmillaActivity {
         return mAttachments;
     }
 
+    public EditText focusedEditBox() {
+        if (getCurrentFocus() instanceof EditText focusedTextBox) return focusedTextBox;
+        mCommandField.requestFocus();
+        return mCommandField;
+        // default to the command field
+    }
+
     /*================*
      * Setter methods *
      *================*/
 
     public void nullifyAttachments() {
         mAttachments = null;
+    }
+
+    public void suppressPendingChime() {
+        mDontChime = true;
     }
 
     /*================*
@@ -627,7 +625,7 @@ public class AssistActivity extends EmillaActivity {
         chime(ACT);
     }
 
-    private boolean shouldCancel() {
+    public boolean shouldCancel() {
         return mCommandField.length() + mDataField.length() == 0;
     }
 
@@ -718,7 +716,7 @@ public class AssistActivity extends EmillaActivity {
     private void submitCommand() {
         String fullCommand = mCommandField.getText().toString().trim();
         if (fullCommand.isEmpty()) {
-            quickAct(mPrefs.getString("action_no_command", "config"));
+            mNoCommandAction.perform();
             return;
         }
     try {

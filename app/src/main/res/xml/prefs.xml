@@ -106,8 +106,8 @@
             app:defaultValue="select_all"
             app:entries="@array/action_entries"
             app:entryValues="@array/action_values"
-            app:key="action_long_press_submit"
-            app:title="@string/pref_action_long_press_submit"
+            app:key="action_long_submit"
+            app:title="@string/pref_action_long_submit"
             app:useSimpleSummaryProvider="true" />
         <ListPreference
             app:defaultValue="config"
