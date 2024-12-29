@@ -5,7 +5,6 @@ import static android.view.KeyEvent.*;
 import static android.view.inputmethod.EditorInfo.*;
 import static net.emilla.chime.Chimer.*;
 import static java.lang.Character.isWhitespace;
-import static java.lang.Math.max;
 
 import android.app.AlertDialog;
 import android.content.ClipData;
@@ -25,13 +24,11 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -39,6 +36,7 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.preference.PreferenceManager;
 
+import net.emilla.action.CursorStart;
 import net.emilla.action.QuickAction;
 import net.emilla.chime.Chimer;
 import net.emilla.chime.Custom;
@@ -246,9 +244,6 @@ public class AssistActivity extends EmillaActivity {
     }
 
     private void setupDataField() {
-        mDataField.setOnFocusChangeListener((v, hasFocus) -> {
-            if (!mDialogOpen) mDataFocused = hasFocus;
-        });
         if (mDataVisible) showDataField(false);
     }
 
@@ -257,23 +252,6 @@ public class AssistActivity extends EmillaActivity {
         mSubmitButton.setOnClickListener(v -> submitCommand());
 
         mSubmitButton.setLongPress(SettingVals.longSubmit(mPrefs, this));
-    }
-
-    private void cursorStart() {
-        EditText field = focusedEditBox();
-        int len = field.length();
-        if (len == 0) {
-            chime(PEND);
-            return;
-        }
-        int start = field.getSelectionStart(), end = field.getSelectionEnd();
-        if (max(start, end) == 0) {
-            field.setSelection(len);
-            chime(RESUME);
-        } else {
-            field.setSelection(0);
-            chime(ACT);
-        }
     }
 
     private void showDataField(boolean focus) {
@@ -331,61 +309,64 @@ public class AssistActivity extends EmillaActivity {
         // TODO: save state hell
         mInflater = LayoutInflater.from(this);
         mActionsContainer = findViewById(R.id.container_more_actions);
-        addAction(R.id.action_cursor_start, getString(R.string.action_cursor_start),
-                R.drawable.ic_cursor_start, v -> cursorStart());
+        addAction(new CursorStart(this));
         mFieldsContainer = findViewById(R.id.container_more_fields);
     }
 
-    public void addAction(@IdRes int actionId, CharSequence description,
-            @DrawableRes int iconId, View.OnClickListener click) {
-        ActionButton actionButton = (ActionButton) mInflater.inflate(R.layout.btn_action,
+    public void addAction(QuickAction action) {
+        ActionButton button = (ActionButton) mInflater.inflate(R.layout.btn_action,
                 mActionsContainer, false);
-        actionButton.setId(actionId);
-        actionButton.setIcon(iconId);
-        actionButton.setContentDescription(description);
-        actionButton.setOnClickListener(click);
-        mActionsContainer.addView(actionButton);
+        button.setId(action.id());
+        button.setIcon(action.icon());
+        button.setContentDescription(action.label());
+        button.setOnClickListener(v -> action.perform());
+        mActionsContainer.addView(button);
     }
 
-    public void removeAction(@IdRes int actionId) {
-        mActionsContainer.removeView(findViewById(actionId));
+    public void removeAction(@IdRes int action) {
+        mActionsContainer.removeView(findViewById(action));
     }
 
-    public boolean toggleField(@IdRes int fieldId, @StringRes int hintId,
-            boolean focus) {
-        // Todo: it's vague which field is which. First step: make them be ordered consistently.
-        EditText field = findViewById(fieldId);
-        if (field == null) {
-            field = (EditText) mInflater.inflate(R.layout.field_extra, mFieldsContainer, false);
-            field.setId(fieldId);
-            field.setHint(hintId);
-            mFieldsContainer.addView(field);
-            if (focus) field.requestFocus();
-            return true;
-        } else if (field.getVisibility() == View.VISIBLE) {
-            if (field.hasFocus()) mCommandField.requestFocus();
-            // Todo: instead track the previously focused field(s)?
-            field.setVisibility(View.GONE);
+    public EditText createField(@IdRes int id, @StringRes int hint) {
+        EditText box = (EditText) mInflater.inflate(R.layout.field_extra, mFieldsContainer, false);
+        box.setId(id);
+        box.setHint(hint);
+        mFieldsContainer.addView(box);
+        box.requestFocus();
+        return box;
+    }
+
+    /**
+     * Toggles the visibility of an input field.
+     *
+     * @param id the field to toggle.
+     * @return true if the field is visible now, false if it's hidden.
+     */
+    public boolean toggleField(@IdRes int id) {
+        // Todo: it's vague which field is which. First step: make them ordered consistently.
+        EditText box = findViewById(id);
+        if (box.getVisibility() == View.VISIBLE) {
+            if (box.hasFocus()) mCommandField.requestFocus();
+            box.setVisibility(View.GONE);
             return false;
         } else {
-            field.setVisibility(View.VISIBLE);
-            if (focus) field.requestFocus();
+            box.setVisibility(View.VISIBLE);
+            box.requestFocus();
             return true;
         }
     }
 
-    public void hideField(@IdRes int fieldId) {
-        EditText field = findViewById(fieldId);
-        if (field != null) {
-            if (field.hasFocus()) mCommandField.requestFocus();
-            // Todo: instead track the previously focused field(s)?
-            field.setVisibility(View.GONE);
-        }
+    public void reshowField(@IdRes int id) {
+        EditText box = findViewById(id);
+        box.setVisibility(View.VISIBLE);
     }
 
-    public String getFieldText(@IdRes int fieldId) {
-        EditText field = findViewById(fieldId);
-        return field == null || field.getVisibility() == View.GONE ? null : field.getText().toString();
+    public void hideField(@IdRes int id) {
+        EditText box = findViewById(id);
+        if (box != null && box.getVisibility() == View.VISIBLE) {
+            if (box.hasFocus()) mCommandField.requestFocus();
+            box.setVisibility(View.GONE);
+        }
     }
 
     private void config() {
@@ -611,13 +592,7 @@ public class AssistActivity extends EmillaActivity {
     }
 
     private void resume(boolean chime) {
-        if (!mDialogOpen) {
-            EditText field = mDataFocused ? mDataField : mCommandField;
-            field.requestFocus();
-            ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
-                    .showSoftInput(field, InputMethodManager.SHOW_IMPLICIT);
-            if (chime) chime(RESUME);
-        }
+        if (!mDialogOpen && chime) chime(RESUME);
     }
 
     public void refreshInput() {
@@ -637,8 +612,6 @@ public class AssistActivity extends EmillaActivity {
     public void onCloseDialog(boolean chime) {
         mEmptySpace.setEnabled(true);
         mSubmitButton.setEnabled(true);
-        mCommandField.setEnabled(true);
-        mDataField.setEnabled(mDataEnabled);
         mDialogOpen = false;
 
         resume(chime);
@@ -672,14 +645,12 @@ public class AssistActivity extends EmillaActivity {
     }
 
     private void showDialog(AlertDialog dialog, byte chime) {
-        // TODO: view enablement shouldn't be handled on a view-by-view basis. Perhaps target the mother
-        //  of all views (whatever that is) or get to the bottom of why views can be clicked in the
-        //  split-second after dialog invocation in the first place
+        // TODO: view enablement shouldn't be handled on a view-by-view basis. Perhaps target the
+        //  mother of all views (whatever that is) or get to the bottom of why views can be clicked
+        //  in the split-second after dialog invocation in the first place
         mDialogOpen = true;
         mEmptySpace.setEnabled(false);
         mSubmitButton.setEnabled(false);
-        mCommandField.setEnabled(false);
-        mDataField.setEnabled(false);
         dialog.show();
         chime(chime);
     }

@@ -37,8 +37,8 @@
     <!-- Double action preference -->
     <string-array name="action_entries" translatable="false">
         <!--Todo: replace with a wider *command* selection-->
-        <item>None</item>
-        <item>Toggle flashlight</item>
+        <item>@string/action_none</item>
+        <item>@string/action_flashlight</item>
         <item>@string/action_assistant_settings</item>
         <item>@string/action_select_all</item>
     </string-array>
@@ -50,8 +50,8 @@
     </string-array>
     <string-array name="no_command_action_entries" translatable="false">
         <!--Todo: replace with a wider *command* selection-->
-        <item>None</item>
-        <item>Toggle flashlight</item>
+        <item>@string/action_none</item>
+        <item>@string/action_flashlight</item>
         <item>@string/action_assistant_settings</item>
     </string-array>
     <string-array name="no_command_action_values" translatable="false">

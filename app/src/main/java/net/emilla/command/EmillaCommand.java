@@ -7,7 +7,6 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
-import android.view.View;
 
 import androidx.annotation.ArrayRes;
 import androidx.annotation.CallSuper;
@@ -17,6 +16,7 @@ import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.action.QuickAction;
 import net.emilla.command.app.AppCmdInfo;
 import net.emilla.settings.Aliases;
 
@@ -196,33 +196,20 @@ protected void chime(byte id) {
     mActivity.chime(id);
 }
 
-protected void giveAction(@IdRes int actionId, @StringRes int descriptionId,
-        @DrawableRes int iconId, View.OnClickListener click) {
-    mActivity.addAction(actionId, string(descriptionId), iconId, click);
+protected void giveAction(QuickAction action) {
+    mActivity.addAction(action);
 }
 
-protected void giveFieldToggle(@IdRes int actionId, @StringRes int fieldNameId,
-        @DrawableRes int iconId, View.OnClickListener click) {
-    // Todo acc: the spoken description should update on toggle
-    mActivity.addAction(actionId, string(R.string.action_field, string(fieldNameId)),
-            iconId, click);
+protected void reshowField(@IdRes int id) {
+    mActivity.reshowField(id);
 }
 
-protected boolean toggleField(@IdRes int fieldId, @StringRes int hintId,
-        boolean focus) {
-    return mActivity.toggleField(fieldId, hintId, focus);
+protected void hideField(@IdRes int id) {
+    mActivity.hideField(id);
 }
 
-protected String fieldText(@IdRes int fieldId) {
-    return mActivity.getFieldText(fieldId);
-}
-
-protected void hideField(@IdRes int fieldId) {
-    mActivity.hideField(fieldId);
-}
-
-protected void removeAction(@IdRes int actionId) {
-    mActivity.removeAction(actionId);
+protected void removeAction(@IdRes int id) {
+    mActivity.removeAction(id);
 }
 
 /**

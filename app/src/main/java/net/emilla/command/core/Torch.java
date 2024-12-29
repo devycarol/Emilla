@@ -15,9 +15,13 @@ import androidx.annotation.DrawableRes;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exceptions.EmlaBadCommandException;
-import net.emilla.system.AppEmilla;
 
 public class Torch extends CoreCommand {
+
+    private static boolean sTorching = false;
+    // TODO: replace this with a query - this isn't fully reliable for detecting toggle state. e.g.
+    //  what if the torch was turned on before the app was started?
+
     private static String cameraId(CameraManager camMgr) throws CameraAccessException {
         String[] ids = camMgr.getCameraIdList();
         for (String id : ids) {
@@ -30,7 +34,7 @@ public class Torch extends CoreCommand {
             }
         }
         return null;
-        // TODO: what if multiple torches?
+        // Todo: what if multiple torches?
     }
 
     @Override @DrawableRes
@@ -55,16 +59,16 @@ public class Torch extends CoreCommand {
         try {
             String camId = cameraId(camMgr);
             if (camId == null) return;
-            if (AppEmilla.sTorching) {
+            if (sTorching) {
                 camMgr.setTorchMode(camId, false);
                 chime(RESUME);
                 // TODO ACC: if you can't see the torch, this feedback is critically insufficient.
-                AppEmilla.sTorching = false;
+                sTorching = false;
             } else {
                 camMgr.setTorchMode(camId, true);
                 chime(ACT);
                 // TODO ACC: if you can't see the torch, this feedback is critically insufficient.
-                AppEmilla.sTorching = true;
+                sTorching = true;
             }
         } catch (CameraAccessException ignored) {} // Torch not toggled, nothing to do.
     }

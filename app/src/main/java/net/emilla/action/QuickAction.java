@@ -1,6 +1,7 @@
 package net.emilla.action;
 
 import androidx.annotation.DrawableRes;
+import androidx.annotation.IdRes;
 
 public interface QuickAction {
 
@@ -16,7 +17,11 @@ public interface QuickAction {
            ASSISTANT_SETTINGS = "config",
            SELECT_ALL = "select_all";
 
+    @IdRes
+    int id();
     @DrawableRes
     int icon();
+    String label();
+    String description();
     void perform();
 }

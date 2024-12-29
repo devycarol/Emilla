@@ -16,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
 
 import net.emilla.action.QuickAction;
 
@@ -49,7 +51,12 @@ public class ActionButton extends AppCompatImageButton implements View.OnTouchLi
             action.perform();
             return true;
         });
+
         mLongIcon = AppCompatResources.getDrawable(getContext(), action.icon());
+
+        ViewCompat.replaceAccessibilityAction(this, AccessibilityActionCompat.ACTION_LONG_CLICK,
+                action.description(), null);
+
         mHasLongPress = true;
     }
 

@@ -15,6 +15,8 @@ import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.action.field.FieldToggle;
+import net.emilla.action.field.SubjectField;
 import net.emilla.exceptions.EmlaAppsException;
 import net.emilla.exceptions.EmlaFeatureException;
 import net.emilla.utils.Apps;
@@ -23,90 +25,91 @@ import net.emilla.utils.Contacts;
 import java.util.HashMap;
 
 public class Sms extends CoreDataCommand {
-private final Intent mIntent = Apps.newTask(ACTION_SENDTO, Uri.parse("sms:"));
-private final HashMap<String, String> mPhoneMap;
-private boolean mShowSubjectField;
 
-@Override
-public CharSequence lcName() { // The initialism "SMS" shouldn't be lowercased.
-    return string(R.string.command_sms);
-}
+    private final Intent mIntent = Apps.newTask(ACTION_SENDTO, Uri.parse("sms:"));
+    private final HashMap<String, String> mPhoneMap;
+    private FieldToggle mSubjectToggle;
 
-@Override @ArrayRes
-public int detailsId() {
-    return R.array.details_sms;
-}
+    @Override
+    public CharSequence lcName() { // The initialism "SMS" shouldn't be lowercased.
+        return string(R.string.command_sms);
+    }
 
-@Override @StringRes
-public int dataHint() {
-    return R.string.data_hint_sms;
-}
+    @Override @ArrayRes
+    public int detailsId() {
+        return R.array.details_sms;
+    }
 
-@Override @DrawableRes
-public int icon() {
-    return R.drawable.ic_sms;
-}
+    @Override @StringRes
+    public int dataHint() {
+        return R.string.data_hint_sms;
+    }
 
-public Sms(AssistActivity act, String instruct) {
-    super(act, instruct, R.string.command_sms, R.string.instruction_phone);
-    mPhoneMap = Contacts.mapPhones(act.prefs());
-}
+    @Override @DrawableRes
+    public int icon() {
+        return R.drawable.ic_sms;
+    }
 
-@Override
-public void init() {
-    super.init();
+    public Sms(AssistActivity act, String instruct) {
+        super(act, instruct, R.string.command_sms, R.string.instruction_phone);
+        mPhoneMap = Contacts.mapPhones(act.prefs());
+    }
 
-    if (mShowSubjectField) toggleField(R.id.field_subject, R.string.field_subject, false);
-    giveFieldToggle(R.id.action_field_subject, R.string.field_subject, R.drawable.ic_subject,
-            v -> mShowSubjectField = toggleField(R.id.field_subject, R.string.field_subject, true));
-    // Todo: attachments
-}
+    @Override
+    public void init() {
+        super.init();
 
-@Override
-public void clean() {
-    super.clean();
+        if (mSubjectToggle == null) mSubjectToggle = new SubjectField(activity());
+        else if (mSubjectToggle.activated()) reshowField(SubjectField.FIELD_ID);
+        giveAction(mSubjectToggle);
+        // Todo: attachments
+    }
 
-    removeAction(R.id.action_field_subject);
-    hideField(R.id.field_subject);
-}
+    @Override
+    public void clean() {
+        super.clean();
 
-private void launchMessenger(Intent intent) {
-    PackageManager pm = packageManager();
-    if (!pm.hasSystemFeature(FEATURE_TELEPHONY_MESSAGING)) throw new EmlaFeatureException("Your device doesn't support SMS messaging."); // TODO: handle at install—don't store in sharedprefs in case of settings sync/transfer
-    if (pm.resolveActivity(intent, 0) == null) throw new EmlaAppsException("No SMS app found on your device."); // todo handle at mapping
-    String subject = fieldText(R.id.field_subject);
-    // TODO: I've not gotten this to work yet
-    succeed(subject == null ? intent : intent.putExtra(EXTRA_SUBJECT, subject));
-}
+        removeAction(SubjectField.ACTION_ID);
+        hideField(SubjectField.FIELD_ID);
+    }
 
-@NonNull
-private Intent withMsg(Intent intent, String message) {
-    return intent.putExtra("sms_body", message);
-    // overwrites any existing draft to the recipient TODO: detect, warn, confirm.
-}
+    private void launchMessenger(Intent intent) {
+        PackageManager pm = packageManager();
+        if (!pm.hasSystemFeature(FEATURE_TELEPHONY_MESSAGING)) throw new EmlaFeatureException("Your device doesn't support SMS messaging."); // TODO: handle at install—don't store in sharedprefs in case of settings sync/transfer
+        if (pm.resolveActivity(intent, 0) == null) throw new EmlaAppsException("No SMS app found on your device."); // todo handle at mapping
+        String subject = mSubjectToggle.fieldText();
+        succeed(subject == null ? intent : intent.putExtra(EXTRA_SUBJECT, subject));
+        // TODO: I've not gotten this to work yet
+    }
 
-@NonNull
-private Intent withRecipients(Intent intent, String recipients) {
-    return intent.setData(Uri.parse("sms:" + Contacts.namesToPhones(recipients, mPhoneMap)));
-}
+    @NonNull
+    private Intent withMsg(Intent intent, String message) {
+        return intent.putExtra("sms_body", message);
+        // overwrites any existing draft to the recipient TODO: detect, warn, confirm.
+    }
 
-@Override
-protected void run() {
-    launchMessenger(mIntent);
-}
+    @NonNull
+    private Intent withRecipients(Intent intent, String recipients) {
+        return intent.setData(Uri.parse("sms:" + Contacts.namesToPhones(recipients, mPhoneMap)));
+    }
 
-@Override
-protected void run(String recipients) {
-    launchMessenger(withRecipients(mIntent, recipients));
-}
+    @Override
+    protected void run() {
+        launchMessenger(mIntent);
+    }
 
-@Override
-protected void runWithData(String message) {
-    launchMessenger(withMsg(mIntent, message));
-}
+    @Override
+    protected void run(String recipients) {
+        launchMessenger(withRecipients(mIntent, recipients));
+    }
 
-@Override
-protected void runWithData(String recipients, String message) {
-    launchMessenger(withMsg(withRecipients(mIntent, recipients), message));
-}
+    @Override
+    protected void runWithData(String message) {
+        launchMessenger(withMsg(mIntent, message));
+    }
+
+    @Override
+    protected void runWithData(String recipients, String message) {
+        launchMessenger(withMsg(withRecipients(mIntent, recipients), message));
+    }
 }

@@ -27,12 +27,22 @@
     <string name="field_subject">Subject</string>
     <string name="field_location">Location</string>
     <string name="field_url">URL</string>
-    <string name="action_field">Toggle %s field</string>
+    <string name="action_none">No action</string>
+    <string name="action_desc_none">Do nothing</string>
+    <string name="action_flashlight">Flashlight</string>
+    <string name="action_desc_flashlight">Toggle the flashlight</string>
     <string name="action_assistant_settings">Assistant settings</string>
+    <string name="action_desc_assistant_settings">Open assistant settings</string>
     <string name="action_select_all">Select all</string>
+    <!--TODO ACC: this is inaccurate if all text is already selected-->
+    <string name="action_desc_select_all">Select all text</string>
+    <string name="action_cursor_start">Cursor start</string>
+    <!--TODO ACC: this is inaccurate if the caret is already at the start of the edit box-->
+    <string name="action_desc_cursor_start">Move the caret to the start of the edit box</string>
+    <string name="action_toggle_field">Toggle %s field</string>
+    <string name="action_desc_toggle_field">Toggle the %s field</string>
     <string name="spoken_description_submit_command">Submit command</string>
     <string name="spoken_description_empty_space">Empty space</string>
-    <string name="action_cursor_start">Cursor start</string>
     <string name="spoken_description_show_data">Show data field</string>
     <string name="spoken_description_hide_data">Hide data field</string>
     <string name="welcome_message">Hello there!</string>
