@@ -14,7 +14,7 @@ import androidx.annotation.DrawableRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.exceptions.EmlaBadCommandException;
+import net.emilla.exception.EmlaBadCommandException;
 
 public class Torch extends CoreCommand {
 
@@ -55,7 +55,7 @@ public class Torch extends CoreCommand {
     protected void run() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) throw new EmlaBadCommandException("Sorry! This command doesn't support your Android version yet.");
         // TODO: https://github.com/LineageOS/android_packages_apps_Torch
-        CameraManager camMgr = (CameraManager) activity().getSystemService(Context.CAMERA_SERVICE);
+        CameraManager camMgr = (CameraManager) activity.getSystemService(Context.CAMERA_SERVICE);
         try {
             String camId = cameraId(camMgr);
             if (camId == null) return;

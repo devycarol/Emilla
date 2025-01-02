@@ -7,6 +7,10 @@
         <item name="android:statusBarColor">?attr/colorBackgroundFloating</item>
         <!--Todo: this is frugly for the assistant when no action bar-->
         <item name="android:navigationBarColor">#000</item>
+
+        <item name="alertDialogStyle">@style/AlertDialog.Emilla</item>
+        <item name="android:buttonBarButtonStyle">@style/Widget.Emilla.Button.TextButton</item>
+        <item name="textAppearanceButton">@style/TextAppearance.Emilla.Button</item>
     </style>
 
     <style name="ActionBarStyle" parent="Widget.AppCompat.ActionBar">
@@ -24,6 +28,7 @@
         <item name="colorBackgroundFloating">@color/secn_background_dark</item>
         <item name="android:textColor">#FFF</item>
         <item name="android:windowBackground">@color/main_background_dark</item>
+        <item name="listDividerAlertDialog">@drawable/list_divider_emilla_dark</item>
     </style>
 
     <style name="Theme.Assistant.Base" parent="Theme.Emilla">

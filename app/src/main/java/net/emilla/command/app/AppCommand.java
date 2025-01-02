@@ -15,71 +15,72 @@ import net.emilla.utils.Apps;
 import net.emilla.utils.Lang;
 
 public class AppCommand extends EmillaCommand {
-@NonNull
-private static String genericTitle(Context ctxt, CharSequence appLabel) {
-    return Lang.colonConcat(ctxt.getResources(), R.string.command_app, appLabel);
-}
 
-@NonNull
-protected static String specificTitle(Context ctxt, CharSequence appLabel,
-        @StringRes int instructionId) {
-    return Lang.colonConcat(ctxt.getResources(), appLabel, instructionId);
-}
+    @NonNull
+    private static String genericTitle(Context ctxt, CharSequence appLabel) {
+        return Lang.colonConcat(ctxt.getResources(), R.string.command_app, appLabel);
+    }
 
-protected final Intent mLaunchIntent;
-private final CharSequence mTitle;
-protected final AppCmdInfo mInfo;
+    @NonNull
+    protected static String specificTitle(Context ctxt, CharSequence appLabel,
+            @StringRes int instructionId) {
+        return Lang.colonConcat(ctxt.getResources(), appLabel, instructionId);
+    }
 
-protected AppCommand(AssistActivity act, String instruct, AppCmdInfo info,
-        CharSequence cmdTitle) {
-    super(act, instruct);
+    protected final Intent mLaunchIntent;
+    private final CharSequence mTitle;
+    protected final AppCmdInfo mInfo;
 
-    mLaunchIntent = Apps.launchIntent(info.pkg, info.cls);
-    mTitle = cmdTitle;
-    mInfo = info;
-}
+    protected AppCommand(AssistActivity act, String instruct, AppCmdInfo info,
+            CharSequence cmdTitle) {
+        super(act, instruct);
 
-public AppCommand(AssistActivity act, String instruct, AppCmdInfo info) {
-    this(act, instruct, info, genericTitle(act, info.label));
-}
+        mLaunchIntent = Apps.launchIntent(info.pkg, info.cls);
+        mTitle = cmdTitle;
+        mInfo = info;
+    }
 
-@Override
-protected CharSequence name() {
-    return mInfo.label;
-}
+    public AppCommand(AssistActivity act, String instruct, AppCmdInfo info) {
+        this(act, instruct, info, genericTitle(act, info.label));
+    }
 
-@Override
-protected CharSequence dupeLabel() {
-    return mInfo.label + " (" + mInfo.pkg + ")";
-}
+    @Override
+    protected CharSequence name() {
+        return mInfo.label;
+    }
 
-@Override
-public CharSequence lcName() {
-    return mInfo.label; // Apps are proper names and shouldn't be lowercased
-}
+    @Override
+    protected CharSequence dupeLabel() {
+        return mInfo.label + " (" + mInfo.pkg + ")";
+    }
 
-@Override
-public CharSequence title() {
-    return mTitle;
-}
+    @Override
+    public CharSequence lcName() {
+        return mInfo.label; // Apps are proper names and shouldn't be lowercased
+    }
 
-@Override @DrawableRes
-public int icon() {
-    return R.drawable.ic_app;
-}
+    @Override
+    public CharSequence title() {
+        return mTitle;
+    }
 
-@Override
-public int imeAction() {
-    return EditorInfo.IME_ACTION_GO;
-}
+    @Override @DrawableRes
+    public int icon() {
+        return R.drawable.ic_app;
+    }
 
-@Override
-protected void run() {
-    succeed(mLaunchIntent);
-}
+    @Override
+    public int imeAction() {
+        return EditorInfo.IME_ACTION_GO;
+    }
 
-@Override
-protected void run(String ignored) {
-    run(); // TODO: instead, this should revert to the default command
-}
+    @Override
+    protected void run() {
+        appSucceed(mLaunchIntent);
+    }
+
+    @Override
+    protected void run(String ignored) {
+        run(); // TODO: instead, this should revert to the default command
+    }
 }

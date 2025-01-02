@@ -1,8 +1,9 @@
-package net.emilla.exceptions;
+package net.emilla.exception;
 
 import androidx.annotation.NonNull;
 
 public abstract class EmillaException extends RuntimeException {
+
     private final String mMessage;
 
     public EmillaException(@NonNull String message) {
@@ -10,8 +11,7 @@ public abstract class EmillaException extends RuntimeException {
         mMessage = message;
     }
 
-    @Override
-    @NonNull
+    @Override @NonNull
     public String getMessage() {
         return mMessage;
     }

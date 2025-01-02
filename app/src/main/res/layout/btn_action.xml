@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="@dimen/width_action"
     android:layout_height="@dimen/width_action"
-    android:background="@drawable/background_action_button"
+    android:background="@drawable/bg_action_button"
     android:padding="@dimen/margin_narrow"
     android:layout_marginEnd="@dimen/margin_narrow"
     android:scaleType="fitCenter"

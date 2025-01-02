@@ -263,7 +263,6 @@
         <string name="dialog_no_bookmarks">No bookmarks</string>
         <string name="dlg_msg_choose_media">Search will improve in future releases.</string>
         <string name="dlg_yes_add_bookmarks">Add more</string>
-    <string name="dialog_alarm">Set alarm</string>
     <string name="dialog_command">Select command</string>
 
     <!-- Permissions in present-participle tense. Ex: "Calling permission is denied, but you can allow it in settings." -->

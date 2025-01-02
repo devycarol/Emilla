@@ -11,6 +11,7 @@ import androidx.annotation.IdRes;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.config.ConfigActivity;
+import net.emilla.run.AppSuccess;
 import net.emilla.utils.Apps;
 
 public class AssistantSettings implements QuickAction {
@@ -46,10 +47,10 @@ public class AssistantSettings implements QuickAction {
     @Override
     public void perform() {
         Intent config = Apps.meTask(mActivity, ConfigActivity.class);
-        if (mActivity.shouldCancel()) mActivity.succeed(config);
+        if (mActivity.shouldCancel()) mActivity.succeed(new AppSuccess(mActivity, config));
         else {
             mActivity.suppressPendingChime();
-            mActivity.startActivity(config);
+            mActivity.startActivity(config.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             mActivity.chime(ACT);
         }
     }

@@ -1,6 +1,6 @@
 package net.emilla.settings;
 
-import static net.emilla.command.EmillaCommand.Commands.*;
+import static net.emilla.command.EmillaCommand.*;
 
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;

@@ -6,7 +6,6 @@ import static android.view.inputmethod.EditorInfo.*;
 import static net.emilla.chime.Chimer.*;
 import static java.lang.Character.isWhitespace;
 
-import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +14,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.text.Editable;
@@ -31,9 +29,9 @@ import android.widget.TextView;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.preference.PreferenceManager;
 
 import net.emilla.action.CursorStart;
@@ -46,11 +44,17 @@ import net.emilla.chime.Silence;
 import net.emilla.command.CmdTree;
 import net.emilla.command.DataCmd;
 import net.emilla.command.EmillaCommand;
-import net.emilla.command.EmillaCommand.Commands;
 import net.emilla.command.core.ViewCommand;
 import net.emilla.config.ConfigActivity;
-import net.emilla.exceptions.EmillaException;
-import net.emilla.exceptions.EmlaAppsException;
+import net.emilla.exception.EmillaException;
+import net.emilla.exception.EmlaAppsException;
+import net.emilla.run.AppSuccess;
+import net.emilla.run.DialogOffering;
+import net.emilla.run.Failure;
+import net.emilla.run.Gift;
+import net.emilla.run.Offering;
+import net.emilla.run.Success;
+import net.emilla.run.ToastFailure;
 import net.emilla.settings.SettingVals;
 import net.emilla.system.EmillaForegroundService;
 import net.emilla.utils.Apps;
@@ -63,11 +67,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AssistActivity extends EmillaActivity {
+
     public static final int // intent codes
-        GET_FILE = 1,
-        GET_PICTURE = 2,
-        PICK_VIEW_CONTACT = 3,
-        PICK_EDIT_CONTACT = 4;
+            GET_FILE = 1,
+            GET_PICTURE = 2,
+            PICK_VIEW_CONTACT = 3,
+            PICK_EDIT_CONTACT = 4;
 
     private SharedPreferences mPrefs;
     private CmdTree mCmdTree;
@@ -93,10 +98,8 @@ public class AssistActivity extends EmillaActivity {
 
     private boolean mNoCommand = true;
     private boolean
-        mDataAvailable = true,
-        mDataEnabled = true,
-        mDataVisible = false,
-        mDataFocused = false;
+            mDataAvailable = true,
+            mDataVisible = false;
     private int mImeAction = IME_ACTION_NEXT;
     private boolean mLaunched = false;
     private boolean mFocused = false;
@@ -105,15 +108,15 @@ public class AssistActivity extends EmillaActivity {
     private boolean mDontChime = false;
     private boolean mHasTitlebar;
 
-    //public static long nanosPlease(long prevTime, String label) {
-    //    long curTime = System.nanoTime();
-    //    String s = String.valueOf(curTime - prevTime);
-    //    StringBuilder sb = new StringBuilder(label).append(": ");
-    //    int start = sb.length();
-    //    for (int i = sb.append(s).length() - 3; i > start; i -= 3) sb.insert(i, ',');
-    //    Log.d("nanosPlease", sb.append(" nanoseconds").toString());
-    //    return System.nanoTime();
-    //}
+//    public static long nanosPlease(long prevTime, String label) {
+//        long curTime = System.nanoTime();
+//        String s = String.valueOf(curTime - prevTime);
+//        StringBuilder sb = new StringBuilder(label).append(": ");
+//        int start = sb.length();
+//        for (int i = sb.append(s).length() - 3; i > start; i -= 3) sb.insert(i, ',');
+//        Log.d("nanosPlease", sb.append(" nanoseconds").toString());
+//        return System.nanoTime();
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -236,7 +239,7 @@ public class AssistActivity extends EmillaActivity {
             };
         });
 
-        mCommand = mCmdTree.newCore(this, Commands.DEFAULT, null);
+        mCommand = mCmdTree.newCore(this, EmillaCommand.DEFAULT, null);
 
         mCommandField.setHorizontallyScrolling(false);
         mCommandField.setMaxLines(8);
@@ -369,15 +372,6 @@ public class AssistActivity extends EmillaActivity {
         }
     }
 
-    private void config() {
-        Intent config = Apps.meTask(this, ConfigActivity.class);
-        if (shouldCancel()) succeed(config);
-        else {
-            startActivity(config);
-            chime(ACT);
-        }
-    }
-
     protected void onResume() {
         super.onResume();
         if (!mFocused) {
@@ -433,9 +427,9 @@ public class AssistActivity extends EmillaActivity {
     private void updateDataAvailability(boolean available) {
         if (available) {
             enableDataButton();
-            mDataField.setEnabled(mDataEnabled = true);
+            mDataField.setEnabled(true);
         } else if (!mDataVisible) disableDataButton();
-        else mDataField.setEnabled(mDataEnabled = false);
+        else mDataField.setEnabled(false);
         mDataAvailable = available;
     }
 
@@ -449,7 +443,7 @@ public class AssistActivity extends EmillaActivity {
     }
 
     public void updateDetails(int detailsId) {
-        CharSequence details = detailsId == -1 ? null : String.join("\n\n", getResources().getStringArray(detailsId));
+        String details = detailsId == -1 ? null : String.join("\n\n", getResources().getStringArray(detailsId));
         if (details == null) mHelpBox.setVisibility(View.GONE);
         else {
             mHelpBox.setVisibility(View.VISIBLE);
@@ -517,22 +511,22 @@ public class AssistActivity extends EmillaActivity {
             } else toast("Files weren't selected.", false);
         }
         case PICK_VIEW_CONTACT -> {
-            if (resultCode == RESULT_OK) succeed(Apps.newTask(ACTION_VIEW, data.getData()));
+            if (resultCode == RESULT_OK) succeed(new AppSuccess(this, Apps.viewTask(data.getData())));
             // TODO: we must resolve that activity at mapping time
             else toast("A contact wasn't selected.", false);
         }
         case PICK_EDIT_CONTACT -> {
             // todo: i wish that the exit button actually freakin EXITED! - com.android.contacts
             //  similar deal with calendar. make a PR or find some other way to enforce it.
-            if (resultCode == RESULT_OK) succeed(Apps.newTask(ACTION_EDIT, data.getData()));
+            if (resultCode == RESULT_OK) succeed(new AppSuccess(this, Apps.editTask(data.getData())));
             // TODO: we must resolve that activity at mapping time
             else toast("A contact wasn't selected.", false);
         }}
     }
 
-    /*================*
-     * Getter methods *
-     *================*/
+    /*=========*
+     * Getters *
+     *=========*/
 
     public SharedPreferences prefs() {
         return mPrefs;
@@ -557,9 +551,9 @@ public class AssistActivity extends EmillaActivity {
         // default to the command field
     }
 
-    /*================*
-     * Setter methods *
-     *================*/
+    /*=========*
+     * Setters *
+     *=========*/
 
     public void nullifyAttachments() {
         mAttachments = null;
@@ -569,9 +563,9 @@ public class AssistActivity extends EmillaActivity {
         mDontChime = true;
     }
 
-    /*================*
-     * Helper methods *
-     *================*/
+    /*=========*
+     * Helpers *
+     *=========*/
 
     public void getFiles() { // todo: make private?
         Intent in = new Intent(ACTION_GET_CONTENT).setType("*/*")
@@ -640,48 +634,37 @@ public class AssistActivity extends EmillaActivity {
                     return false;
                 });
             }
-            offer(mCancelDialog);
+            offer(new DialogOffering(this, mCancelDialog));
         }
     }
 
-    private void showDialog(AlertDialog dialog, byte chime) {
+    public void prepareForDialog() {
         // TODO: view enablement shouldn't be handled on a view-by-view basis. Perhaps target the
         //  mother of all views (whatever that is) or get to the bottom of why views can be clicked
         //  in the split-second after dialog invocation in the first place
         mDialogOpen = true;
         mEmptySpace.setEnabled(false);
         mSubmitButton.setEnabled(false);
-        dialog.show();
-        chime(chime);
     }
 
-    public void fail(CharSequence message) {
-        chime(FAIL);
-        toast(message, true);
-    }
-
-    public void fail(AlertDialog dialog) {
-        showDialog(dialog, FAIL);
-    }
-
-    public void offer(AlertDialog dialog) {
-        showDialog(dialog, PEND);
-    }
-
-    public void offer(Intent intent, int requestCode) {
-        startActivityForResult(intent, requestCode); // Todo: rework handling, resolve deprecation
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public void offer(String permission, int requestCode) {
-        requestPermissions(new String[]{permission}, requestCode);
+    public void offer(Offering offering) {
+        offering.run();
         chime(PEND);
     }
 
-    public void succeed(Intent intent) {
-        finishAndRemoveTask();
-        startActivity(intent);
+    public void give(Gift gift) {
+        gift.run();
+        chime(ACT);
+    }
+
+    public void succeed(Success success) {
+        success.run();
         chime(SUCCEED);
+    }
+
+    public void fail(Failure failure) {
+        failure.run();
+        chime(FAIL);
     }
 
     private void submitCommand() {
@@ -695,10 +678,10 @@ public class AssistActivity extends EmillaActivity {
             ((DataCmd) mCommand).execute(mDataField.getText().toString());
         } else mCommand.execute();
     } catch (EmillaException e) {
-        fail(e.getMessage());
+        fail(new ToastFailure(this, e.getMessage()));
     } catch (Exception e) {
-        fail(getString(R.string.toast_error_unknown));
-        Log.e("UNKNOWN COMMAND ERROR", "", e);
+        fail(new ToastFailure(this, getString(R.string.toast_error_unknown)));
+        Log.e("UNKNOWN COMMAND ERROR", "in command " + mCommand.getClass().getSimpleName(), e);
         // Todo: easy bug reporting ;)
     }}
 }

@@ -1,6 +1,5 @@
 package net.emilla.command.core;
 
-import static android.content.Intent.ACTION_INSERT;
 import static android.provider.CalendarContract.EXTRA_EVENT_ALL_DAY;
 import static android.provider.CalendarContract.EXTRA_EVENT_BEGIN_TIME;
 import static android.provider.CalendarContract.EXTRA_EVENT_END_TIME;
@@ -22,8 +21,8 @@ import net.emilla.R;
 import net.emilla.action.field.FieldToggle;
 import net.emilla.action.field.LocationField;
 import net.emilla.action.field.UrlField;
-import net.emilla.exceptions.EmlaAppsException;
-import net.emilla.exceptions.EmlaBadCommandException;
+import net.emilla.exception.EmlaAppsException;
+import net.emilla.exception.EmlaBadCommandException;
 import net.emilla.utils.Apps;
 import net.emilla.utils.Time;
 
@@ -47,7 +46,7 @@ public class Calendar extends CoreDataCommand {
     }
 
     // Todo: Etar is broken if already open. May be a flags issue?
-    private final Intent mIntent = Apps.newTask(ACTION_INSERT, Events.CONTENT_URI, "vnd.android.cursor.dir/event");
+    private final Intent mIntent = Apps.insertTask(Events.CONTENT_URI, "vnd.android.cursor.dir/event");
     private FieldToggle mLocationToggle, mUrlToggle;
 
     public Calendar(AssistActivity act, String instruct) {
@@ -58,7 +57,7 @@ public class Calendar extends CoreDataCommand {
     public void init() {
         super.init();
 
-        AssistActivity act = activity();
+        AssistActivity act = activity;
         if (mLocationToggle == null) mLocationToggle = new LocationField(act);
         else if (mLocationToggle.activated()) reshowField(LocationField.FIELD_ID);
         giveAction(mLocationToggle);
@@ -108,7 +107,7 @@ public class Calendar extends CoreDataCommand {
         // todo: is there a way to query supported extras?
         // Todo: action buttons to select availability, access level, and guests—last requires contacts
         //  stuff. If possible also: reminders, repeats, timezone, event color, and calendar selection.
-        succeed(mIntent);
+        appSucceed(mIntent);
         // todo: etar calendar acts really janky in the recents which causes unwanted event-saving
         // it also flashes white on start even in the dark (black, LineageOS) theme
     }

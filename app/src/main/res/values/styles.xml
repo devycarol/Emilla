@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Perfect rectangle :) -->
+    <style name="ShapeAppearance" />
+
     <style name="Preference.Category.Emilla" parent="Preference.Category.Material">
         <item name="android:layout">@layout/preference_category_emilla</item>
         <item name="iconSpaceReserved">false</item>
@@ -36,4 +39,23 @@
         <item name="android:textAppearance">?attr/preferenceCategoryTitleTextAppearance</item>
         <item name="android:textColor">?attr/preferenceCategoryTitleTextColor</item>
     </style>
+
+    <style name="AlertDialog.Emilla" parent="AlertDialog.AppCompat">
+        <item name="android:layout">@layout/alert_dialog_emilla</item>
+    </style>
+
+    <style name="Widget.Emilla.Button.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="shapeAppearance">@style/ShapeAppearance</item>
+        <item name="backgroundTint">@color/bg_text_button</item>
+        <!-- TODO: make this a ripple that just holds the ripple color when held. Currently it just
+              adds the ripple color on top of the pressed color which is not ideal. Examine the
+              Android accessibility consent dialog because that's goated.. -->
+    </style>
+
+    <style name="TextAppearance.Emilla.Button" parent="TextAppearance.AppCompat.Button">
+        <item name="textAllCaps">false</item>
+    </style>
+
 </resources>

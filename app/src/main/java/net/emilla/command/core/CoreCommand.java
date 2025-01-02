@@ -7,35 +7,36 @@ import net.emilla.command.EmillaCommand;
 import net.emilla.utils.Lang;
 
 public abstract class CoreCommand extends EmillaCommand {
-@StringRes private final int
-    mNameId,
-    mInstructionId;
 
-public CoreCommand(AssistActivity act, String instruct, @StringRes int nameId,
-        @StringRes int instructionId) {
-    super(act, instruct);
+    @StringRes private final int
+            mNameId,
+            mInstructionId;
 
-    mNameId = nameId;
-    mInstructionId = instructionId;
-}
+    public CoreCommand(AssistActivity act, String instruct, @StringRes int nameId,
+            @StringRes int instructionId) {
+        super(act, instruct);
 
-@Override
-protected CharSequence name() {
-    return string(mNameId);
-}
+        mNameId = nameId;
+        mInstructionId = instructionId;
+    }
 
-@Override
-protected CharSequence dupeLabel() {
-    return string(mNameId) + " (Emilla command)";
-}
+    @Override
+    protected CharSequence name() {
+        return string(mNameId);
+    }
 
-@Override
-public CharSequence lcName() {
-    return string(mNameId).toLowerCase();
-}
+    @Override
+    protected CharSequence dupeLabel() {
+        return string(mNameId) + " (Emilla command)";
+    }
 
-@Override
-public CharSequence title() {
-    return Lang.colonConcat(resources(), mNameId, mInstructionId);
-}
+    @Override
+    public CharSequence lcName() {
+        return string(mNameId).toLowerCase();
+    }
+
+    @Override
+    public CharSequence title() {
+        return Lang.colonConcat(resources, mNameId, mInstructionId);
+    }
 }

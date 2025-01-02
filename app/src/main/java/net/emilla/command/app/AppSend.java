@@ -16,43 +16,44 @@ import net.emilla.utils.Apps;
 import net.emilla.utils.Lang;
 
 public class AppSend extends AppCommand {
-@NonNull
-private static CharSequence genericTitle(Context ctxt, CharSequence appLabel) {
-    return Lang.colonConcat(ctxt.getResources(), R.string.command_app_send, appLabel);
-}
 
-@Override @ArrayRes
-public int detailsId() {
-    // Todo: this shouldn't apply to newpipes
-    return R.array.details_app_send;
-}
+    @NonNull
+    private static CharSequence genericTitle(Context ctxt, CharSequence appLabel) {
+        return Lang.colonConcat(ctxt.getResources(), R.string.command_app_send, appLabel);
+    }
 
-@Override
-public int imeAction() {
-    // Todo: this shouldn't apply when just launching and also not to the newpipes
-    return EditorInfo.IME_ACTION_SEND;
-}
+    @Override @ArrayRes
+    public int detailsId() {
+        // Todo: this shouldn't apply to newpipes
+        return R.array.details_app_send;
+    }
 
-private final Intent mSendIntent;
+    @Override
+    public int imeAction() {
+        // Todo: this shouldn't apply when just launching and also not to the newpipes
+        return EditorInfo.IME_ACTION_SEND;
+    }
 
-private AppSend(AssistActivity act, String instruct, AppCmdInfo info,
-        CharSequence cmdTitle) {
-    super(act, instruct, info, cmdTitle);
-    mSendIntent = Apps.sendTask(info.pkg);
-}
+    private final Intent mSendIntent;
 
-public AppSend(AssistActivity act, String instruct, AppCmdInfo info) {
-    this(act, instruct, info, genericTitle(act, info.label));
-}
+    private AppSend(AssistActivity act, String instruct, AppCmdInfo info,
+            CharSequence cmdTitle) {
+        super(act, instruct, info, cmdTitle);
+        mSendIntent = Apps.sendTask(info.pkg);
+    }
 
-public AppSend(AssistActivity act, String instruct, AppCmdInfo info,
-        @StringRes int instructionId) {
-    this(act, instruct, info, specificTitle(act, info.label, instructionId));
-}
+    public AppSend(AssistActivity act, String instruct, AppCmdInfo info) {
+        this(act, instruct, info, genericTitle(act, info.label));
+    }
 
-@Override
-protected void run(String message) {
-    // todo: instantly pull up bookmarked videos for newpipe
-    succeed(mSendIntent.putExtra(EXTRA_TEXT, message));
-}
+    public AppSend(AssistActivity act, String instruct, AppCmdInfo info,
+            @StringRes int instructionId) {
+        this(act, instruct, info, specificTitle(act, info.label, instructionId));
+    }
+
+    @Override
+    protected void run(String message) {
+        // todo: instantly pull up bookmarked videos for newpipe
+        appSucceed(mSendIntent.putExtra(EXTRA_TEXT, message));
+    }
 }

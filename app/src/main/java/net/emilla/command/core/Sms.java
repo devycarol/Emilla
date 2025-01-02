@@ -17,16 +17,15 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.action.field.FieldToggle;
 import net.emilla.action.field.SubjectField;
-import net.emilla.exceptions.EmlaAppsException;
-import net.emilla.exceptions.EmlaFeatureException;
-import net.emilla.utils.Apps;
+import net.emilla.exception.EmlaAppsException;
+import net.emilla.exception.EmlaFeatureException;
 import net.emilla.utils.Contacts;
 
 import java.util.HashMap;
 
 public class Sms extends CoreDataCommand {
 
-    private final Intent mIntent = Apps.newTask(ACTION_SENDTO, Uri.parse("sms:"));
+    private final Intent mIntent = new Intent(ACTION_SENDTO, Uri.parse("sms:"));
     private final HashMap<String, String> mPhoneMap;
     private FieldToggle mSubjectToggle;
 
@@ -59,7 +58,7 @@ public class Sms extends CoreDataCommand {
     public void init() {
         super.init();
 
-        if (mSubjectToggle == null) mSubjectToggle = new SubjectField(activity());
+        if (mSubjectToggle == null) mSubjectToggle = new SubjectField(activity);
         else if (mSubjectToggle.activated()) reshowField(SubjectField.FIELD_ID);
         giveAction(mSubjectToggle);
         // Todo: attachments
@@ -78,7 +77,7 @@ public class Sms extends CoreDataCommand {
         if (!pm.hasSystemFeature(FEATURE_TELEPHONY_MESSAGING)) throw new EmlaFeatureException("Your device doesn't support SMS messaging."); // TODO: handle at install—don't store in sharedprefs in case of settings sync/transfer
         if (pm.resolveActivity(intent, 0) == null) throw new EmlaAppsException("No SMS app found on your device."); // todo handle at mapping
         String subject = mSubjectToggle.fieldText();
-        succeed(subject == null ? intent : intent.putExtra(EXTRA_SUBJECT, subject));
+        appSucceed(subject == null ? intent : intent.putExtra(EXTRA_SUBJECT, subject));
         // TODO: I've not gotten this to work yet
     }
 
