@@ -12,12 +12,12 @@ public abstract class CoreCommand extends EmillaCommand {
             mNameId,
             mInstructionId;
 
-    public CoreCommand(AssistActivity act, String instruct, @StringRes int nameId,
-            @StringRes int instructionId) {
+    public CoreCommand(AssistActivity act, String instruct, @StringRes int name,
+            @StringRes int instruction) {
         super(act, instruct);
 
-        mNameId = nameId;
-        mInstructionId = instructionId;
+        mNameId = name;
+        mInstructionId = instruction;
     }
 
     @Override

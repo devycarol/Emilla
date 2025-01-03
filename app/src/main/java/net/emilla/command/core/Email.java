@@ -1,7 +1,6 @@
 package net.emilla.command.core;
 
 import static android.content.Intent.*;
-import static java.util.regex.Pattern.compile;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -12,20 +11,19 @@ import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.action.FileFetcher;
+import net.emilla.action.MediaFetcher;
 import net.emilla.exception.EmlaAppsException;
 import net.emilla.utils.Contacts;
 import net.emilla.utils.EmailTags;
 
 import java.util.HashMap;
-import java.util.regex.Matcher;
 
-public class Email extends CoreDataCommand {
+public class Email extends AttachCommand {
 
-    private static final String FLAG_ATTACH = " */a(t(ta)?ch)?"; // Todo lang
-
-    private final Intent mIntent = new Intent(ACTION_SENDTO, Uri.parse("mailto:"));
-    private final Intent mSendMultipleIntent = new Intent(ACTION_SEND_MULTIPLE); // Todo: should this have "mailto:"?
-    private final HashMap<String, String> mEmailMap;
+    private HashMap<String, String> mEmailMap;
+    private FileFetcher mFileFetcher;
+    private MediaFetcher mMediaFetcher;
 
     @Override @ArrayRes
     public int detailsId() {
@@ -44,17 +42,41 @@ public class Email extends CoreDataCommand {
 
     public Email(AssistActivity act, String instruct) {
         super(act, instruct, R.string.command_email, R.string.instruction_email);
-        mEmailMap = Contacts.mapEmails(act.prefs());
     }
 
-    private void clearDetails() {
-        mIntent.removeExtra(EXTRA_CC);
-        mIntent.removeExtra(EXTRA_BCC);
-        mIntent.removeExtra(EXTRA_EMAIL);
-        mIntent.removeExtra(EXTRA_SUBJECT);
+    @Override
+    public void init() {
+        super.init();
+
+        if (mFileFetcher == null) mFileFetcher = new FileFetcher(activity, this, "*/*");
+        // TODO: Thunderbird doesn't like certain filetypes. See if you can find a type statement
+        //  that's consistently email-friendly.
+        giveAction(mFileFetcher);
+        if (mMediaFetcher == null) mMediaFetcher = new MediaFetcher(activity, this);
+        giveAction(mMediaFetcher);
+
+        mEmailMap = Contacts.mapEmails(activity.prefs());
     }
 
-    private Intent putRecipients(Intent intent, String recipients) {
+    @Override
+    public void clean() {
+        super.clean();
+
+        removeAction(FileFetcher.ID);
+        removeAction(MediaFetcher.ID);
+    }
+
+    private Intent makeIntent() {
+        Intent sendTo = new Intent(ACTION_SENDTO, Uri.parse("mailto:"));
+        if (attachments == null) return sendTo;
+        Intent sendMultiple = new Intent(ACTION_SEND_MULTIPLE).putExtra(EXTRA_STREAM, attachments);
+        // TODO: should this have "mailto:"?
+        sendMultiple.setSelector(sendTo);
+        return sendMultiple;
+    }
+
+    private Intent makeIntent(String recipients) {
+        Intent intent = makeIntent();
         String[] peopleAndSubject = recipients.split(" *\\| *", 2);
         String people = peopleAndSubject[0];
         // todo: validate the emails
@@ -74,61 +96,39 @@ public class Email extends CoreDataCommand {
         return intent;
     }
 
-    private Intent putAttachmentsAndRecipients(String recipients) {
-        Matcher m = compile(FLAG_ATTACH).matcher(recipients);
-        if (m.find()) {
-            AssistActivity act = activity;
-            if (act.attachments() == null) {
-                act.getFiles();
-                return null;
-            }
-            mSendMultipleIntent.putExtra(EXTRA_STREAM, act.attachments());
-            mSendMultipleIntent.setSelector(mIntent);
-            act.nullifyAttachments(); // this will overwrite attachments if /pic is added
-            String actualRecipients = m.replaceFirst("");
-            return actualRecipients.isEmpty() ? mSendMultipleIntent : putRecipients(mSendMultipleIntent,
-                    actualRecipients);
-        }
-        return putRecipients(mIntent, recipients);
-    }
-
     @Override
     protected void run() {
-        if (mIntent.resolveActivity(pm) == null) {
-            clearDetails();
-            throw new EmlaAppsException("No email app found on your device."); // todo handle at mapping
+        Intent intent = makeIntent();
+        if (intent.resolveActivity(pm) == null) { // todo handle at mapping
+            throw new EmlaAppsException("No email app found on your device.");
         }
-        appSucceed(mIntent);
+        appSucceed(intent);
     }
 
     @Override
     protected void run(String recipients) {
-        Intent in = putAttachmentsAndRecipients(recipients);
-        if (in == null) return;
-        if (in.resolveActivity(pm) == null) {
-            clearDetails();
-            throw new EmlaAppsException("No email app found on your device."); // todo handle at mapping
+        Intent intent = makeIntent(recipients);
+        if (intent.resolveActivity(pm) == null) { // todo handle at mapping
+            throw new EmlaAppsException("No email app found on your device.");
         }
-        appSucceed(in);
+        appSucceed(intent);
     }
 
     @Override
     protected void runWithData(String body) {
-        if (mIntent.resolveActivity(pm) == null) {
-            clearDetails();
-            throw new EmlaAppsException("No email app found on your device."); // todo handle at mapping
+        Intent intent = makeIntent();
+        if (intent.resolveActivity(pm) == null) { // todo handle at mapping
+            throw new EmlaAppsException("No email app found on your device.");
         }
-        appSucceed(mIntent.putExtra(EXTRA_TEXT, body));
+        appSucceed(intent.putExtra(EXTRA_TEXT, body));
     }
 
     @Override
     protected void runWithData(String recipients, String body) {
-        Intent in = putAttachmentsAndRecipients(recipients);
-        if (in == null) return;
-        if (in.resolveActivity(pm) == null) { // todo handle at mapping
-            clearDetails();
+        Intent intent = makeIntent(recipients);
+        if (intent.resolveActivity(pm) == null) { // todo handle at mapping
             throw new EmlaAppsException("No email app found on your device.");
         }
-        appSucceed(in.putExtra(EXTRA_TEXT, body));
+        appSucceed(intent.putExtra(EXTRA_TEXT, body));
     }
 }

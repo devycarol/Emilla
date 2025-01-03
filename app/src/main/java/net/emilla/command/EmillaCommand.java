@@ -21,7 +21,6 @@ import net.emilla.R;
 import net.emilla.action.QuickAction;
 import net.emilla.command.app.AppCmdInfo;
 import net.emilla.run.AppSuccess;
-import net.emilla.run.ChooserOffering;
 import net.emilla.run.DialogOffering;
 import net.emilla.run.Offering;
 import net.emilla.run.Success;
@@ -290,10 +289,6 @@ public abstract class EmillaCommand {
 
     protected void offerTimePicker(TimePickerDialog dialog) {
         offer(new TimePickerOffering(activity, dialog));
-    }
-
-    protected void offerChooser(Intent intent, int requestCode) {
-        offer(new ChooserOffering(activity, intent, requestCode));
     }
 
     /*==========================*

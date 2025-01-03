@@ -7,6 +7,9 @@
     <item type="id" name="action_select_all" />
     <item type="id" name="action_cursor_start" />
 
+    <item type="id" name="action_get_files" />
+    <item type="id" name="action_get_media" />
+
     <!-- Field toggle actions -->
     <item type="id" name="action_field_subject" />
     <item type="id" name="action_field_location" />

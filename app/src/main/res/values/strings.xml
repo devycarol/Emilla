@@ -39,6 +39,10 @@
     <string name="action_cursor_start">Cursor start</string>
     <!--TODO ACC: this is inaccurate if the caret is already at the start of the edit box-->
     <string name="action_desc_cursor_start">Move the caret to the start of the edit box</string>
+    <string name="action_attach_files">Attach</string>
+    <string name="action_desc_attach_files">Attach files</string>
+    <string name="action_attach_media">Media</string>
+    <string name="action_desc_attach_media">Attach media</string>
     <string name="action_toggle_field">Toggle %s field</string>
     <string name="action_desc_toggle_field">Toggle the %s field</string>
     <string name="spoken_description_submit_command">Submit command</string>
@@ -284,6 +288,13 @@
         <item quantity="one">Task created.</item>
         <item quantity="other">%d tasks created.</item>
     </plurals>
+    <string name="toast_files_not_selected">Files weren\'t selected.</string>
+    <plurals name="toast_files_attached">
+        <item quantity="one">1 file attached.</item>
+        <item quantity="other">%d files attached.</item>
+    </plurals>
+    <string name="toast_media_not_selected">Media weren\'t selected.</string>
+    <string name="toast_contact_not_selected">A contact wasn\'t selected.</string>
     <string name="toast_error_unknown">Unknown error. Please submit a bug report!</string>
 
     <string name="tag_toast_long">/long</string>

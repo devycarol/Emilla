@@ -58,12 +58,10 @@ public class Apps {
     }
 
     public static Intent sendTask() {
-        // Todo: attachments
         return new Intent(ACTION_SEND).setType("text/plain");
     }
 
     public static Intent sendTask(String pkg) {
-        // Todo: attachments
         return sendTask().setPackage(pkg);
     }
 

@@ -1,19 +1,18 @@
 package net.emilla;
 
-import static android.content.Intent.*;
+import static android.content.Intent.ACTION_ASSIST;
+import static android.content.Intent.ACTION_VOICE_COMMAND;
 import static android.view.KeyEvent.*;
 import static android.view.inputmethod.EditorInfo.*;
 import static net.emilla.chime.Chimer.*;
 import static java.lang.Character.isWhitespace;
 
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.text.Editable;
@@ -45,9 +44,12 @@ import net.emilla.command.CmdTree;
 import net.emilla.command.DataCmd;
 import net.emilla.command.EmillaCommand;
 import net.emilla.command.core.Bookmark;
+import net.emilla.content.AttachReceiver;
+import net.emilla.content.ContactContract;
+import net.emilla.content.ContactReceiver;
+import net.emilla.content.FileContract;
+import net.emilla.content.MediaContract;
 import net.emilla.exception.EmillaException;
-import net.emilla.exception.EmlaAppsException;
-import net.emilla.run.AppSuccess;
 import net.emilla.run.DialogOffering;
 import net.emilla.run.Failure;
 import net.emilla.run.Gift;
@@ -62,16 +64,9 @@ import net.emilla.utils.Dialogs;
 import net.emilla.utils.Lang;
 import net.emilla.view.ActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AssistActivity extends EmillaActivity {
-
-    public static final int // intent codes
-            GET_FILE = 1,
-            GET_PICTURE = 2,
-            PICK_VIEW_CONTACT = 3,
-            PICK_EDIT_CONTACT = 4;
 
     private SharedPreferences mPrefs;
     private CmdTree mCmdTree;
@@ -92,7 +87,10 @@ public class AssistActivity extends EmillaActivity {
     private QuickAction mDoubleAssistAction;
     private QuickAction mMenuKeyAction;
 
-    private ArrayList<Uri> mAttachments;
+    private FileContract mFileContract;
+    private MediaContract mMediaContract;
+    private ContactContract mContactContract;
+
     private EmillaCommand mCommand;
 
     private boolean mNoCommand = true;
@@ -185,6 +183,12 @@ public class AssistActivity extends EmillaActivity {
         setupSubmitButton();
         setupShowDataButton(alwaysShowData);
         setupMoreActions();
+
+        mFileContract = new FileContract(this);
+        mMediaContract = new MediaContract(this);
+        mContactContract = new ContactContract(this);
+        // TODO: save state hell. rotation deletes attachments ughhhhh probably because the command
+        //  tree is rebuilt.
     }
 
     @Override
@@ -491,39 +495,6 @@ public class AssistActivity extends EmillaActivity {
         }
     }
 
-    /*=================*
-     * Result handling *
-     *=================*/
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // Todo: re-work this entirely. Would like to pass ready-to-go intents whenever possible
-
-        switch (requestCode) {
-        case GET_FILE -> {
-            if (resultCode == RESULT_OK) {
-                mAttachments = new ArrayList<>();
-                ClipData cd;
-                if ((cd = data.getClipData()) == null) mAttachments.add(data.getData());
-                else for (int i = 0; i < cd.getItemCount(); ++i) mAttachments.add(cd.getItemAt(i).getUri());
-                submitCommand();
-            } else toast("Files weren't selected.", false);
-        }
-        case PICK_VIEW_CONTACT -> {
-            if (resultCode == RESULT_OK) succeed(new AppSuccess(this, Apps.viewTask(data.getData())));
-            // TODO: we must resolve that activity at mapping time
-            else toast("A contact wasn't selected.", false);
-        }
-        case PICK_EDIT_CONTACT -> {
-            // todo: i wish that the exit button actually freakin EXITED! - com.android.contacts
-            //  similar deal with calendar. make a PR or find some other way to enforce it.
-            if (resultCode == RESULT_OK) succeed(new AppSuccess(this, Apps.editTask(data.getData())));
-            // TODO: we must resolve that activity at mapping time
-            else toast("A contact wasn't selected.", false);
-        }}
-    }
-
     /*=========*
      * Getters *
      *=========*/
@@ -540,10 +511,6 @@ public class AssistActivity extends EmillaActivity {
         return mPrefs.getString("medias", Bookmark.DFLT_MEDIA);
     }
 
-    public ArrayList<Uri> attachments() {
-        return mAttachments;
-    }
-
     public EditText focusedEditBox() {
         if (getCurrentFocus() instanceof EditText focusedTextBox) return focusedTextBox;
         mCommandField.requestFocus();
@@ -551,28 +518,24 @@ public class AssistActivity extends EmillaActivity {
         // default to the command field
     }
 
+    public void retrieveFiles(AttachReceiver retriever, String mimeType) {
+        mFileContract.retrieve(retriever, mimeType);
+    }
+
+    public void retrieveMedia(AttachReceiver receiver) {
+        mMediaContract.retrieve(receiver);
+    }
+
+    public void retrieveContact(ContactReceiver receiver) {
+        mContactContract.retrieve(receiver);
+    }
+
     /*=========*
      * Setters *
      *=========*/
 
-    public void nullifyAttachments() {
-        mAttachments = null;
-    }
-
     public void suppressPendingChime() {
         mDontChime = true;
-    }
-
-    /*=========*
-     * Helpers *
-     *=========*/
-
-    public void getFiles() { // todo: make private?
-        Intent in = new Intent(ACTION_GET_CONTENT).setType("*/*")
-                .putExtra(EXTRA_ALLOW_MULTIPLE, true);
-
-        if (in.resolveActivity(getPackageManager()) == null) throw new EmlaAppsException("No file selection app found on your device.");
-        startActivityForResult(in, GET_FILE);
     }
 
     /*====================*
