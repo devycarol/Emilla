@@ -19,7 +19,7 @@ import net.emilla.run.ToastFailure;
 
 import java.util.List;
 
-public class Dialogs {
+public final class Dialogs {
 
     public static AlertDialog.Builder base(AssistActivity act, @StringRes int title) {
         return new AlertDialog.Builder(act)

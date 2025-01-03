@@ -18,7 +18,7 @@ import net.emilla.run.DialogFailure;
 import net.emilla.run.DialogOffering;
 import net.emilla.run.PermissionOffering;
 
-public class Permissions {
+public final class Permissions {
 
     private static final String
             PERM_PHONE = Manifest.permission.CALL_PHONE;

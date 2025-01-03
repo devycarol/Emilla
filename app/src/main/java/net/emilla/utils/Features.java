@@ -1,12 +1,25 @@
 package net.emilla.utils;
 
 import android.content.pm.PackageManager;
+import android.os.Build;
 
-public class Features {
-public static boolean torch(PackageManager pm) {
-    // It'd be a good idea to test this on a minSdk device.
-    return pm.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
-}
+import androidx.annotation.RequiresApi;
 
-private Features() {}
+public final class Features {
+
+    public static boolean phone(PackageManager pm) {
+        return pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
+    public static boolean sms(PackageManager pm) {
+        return pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY_MESSAGING);
+    }
+
+    public static boolean torch(PackageManager pm) {
+        // todo: it'd be a good idea to test this on a minSdk device.
+        return pm.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
+    }
+
+    private Features() {}
 }

@@ -80,7 +80,7 @@ private void setupCores(EmillaActivity act, SharedPreferences prefs, Resources r
         OnPreferenceChangeListener listener) {
     if (prefs == null) return;
     OnPreferenceClickListener dListener = pref -> {
-        act.toast("Coming soon!", false);
+        act.toast("Coming soon!");
         return false;
     };
     setupCorePref("aliases_call_text", listener, prefs, res, R.array.aliases_call);
@@ -103,7 +103,7 @@ private void setupCores(EmillaActivity act, SharedPreferences prefs, Resources r
     deactivate("aliases_notify_text", dListener);
     setupCorePref("aliases_calculate_text", listener, prefs, res, R.array.aliases_calculate);
     setupCorePref("aliases_weather_text", listener, prefs, res, R.array.aliases_weather);
-    setupCorePref("aliases_view_text", listener, prefs, res, R.array.aliases_view);
+    setupCorePref("aliases_bookmark_text", listener, prefs, res, R.array.aliases_bookmark);
     setupCorePref("aliases_torch_text", listener, prefs, res, R.array.aliases_torch);
     setupCorePref("aliases_info_text", listener, prefs, res, R.array.aliases_info);
     setupCorePref("aliases_toast_text", listener, prefs, res, R.array.aliases_toast);

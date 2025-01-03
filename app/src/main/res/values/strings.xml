@@ -103,7 +103,7 @@
     <string name="command_duplicate">Duplicate command</string>
     <string name="command_web">Web</string>
     <string name="command_launch">Launch</string>
-    <string name="command_view">View</string>
+    <string name="command_bookmark">Bookmark</string>
     <string name="command_find">Find</string>
     <string name="command_call">Call</string>
     <string name="command_dial">Dial</string>
@@ -135,7 +135,7 @@
     <!-- Command summaries -->
     <string name="summary_web">Search the internet</string>
     <string name="summary_launch">Open other apps</string>
-    <string name="summary_view">Open bookmarked URLs</string><!--todo: other url types. also "play"—music, audiobooks, and podcasts-->
+    <string name="summary_bookmark">Open bookmarked URLs</string><!--todo: other url types. also "play"—music, audiobooks, and podcasts-->
     <string name="summary_find">Locate files and folders</string>
     <string name="summary_call">Make phone calls by name or number</string>
     <string name="summary_dial">Make phone calls by number or phone-word</string>
@@ -177,7 +177,7 @@
     <!-- Descriptions for command arguments -->
     <string name="instruction">instruction</string>
     <string name="instruction_web">search or URL</string>
-    <string name="instruction_view">bookmark</string><!--todo: song, playlist, album, audiobook, podcast, etc.-->
+    <string name="instruction_bookmark">bookmark</string><!--todo: song, playlist, album, audiobook, podcast, etc.-->
     <string name="instruction_find">file or folder</string>
     <string name="instruction_dial">number or phoneword</string>
     <string name="instruction_contact">name</string>
@@ -280,8 +280,10 @@
     <string name="toast_hello">Hi there!</string>
     <string name="toast_pomodoro_break">Take a breather :)</string>
     <string name="toast_pomodoro">You got it!</string>
-    <string name="toast_task_created">Task created.</string>
-    <string name="toast_tasks_created">%d tasks created.</string>
+    <plurals name="toast_tasks_created">
+        <item quantity="one">Task created.</item>
+        <item quantity="other">%d tasks created.</item>
+    </plurals>
     <string name="toast_error_unknown">Unknown error. Please submit a bug report!</string>
 
     <string name="tag_toast_long">/long</string>

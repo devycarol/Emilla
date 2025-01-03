@@ -38,13 +38,13 @@ public class Dial extends CoreCommand {
 
     @Override
     protected void run() {
-        if (packageManager().resolveActivity(mIntent, 0) == null) throw new EmlaAppsException("No dialer app found on your device."); // todo handle at mapping
+        if (pm.resolveActivity(mIntent, 0) == null) throw new EmlaAppsException("No dialer app found on your device."); // todo handle at mapping
         appSucceed(mIntent);
     }
 
     @Override
     protected void run(String nameOrNumber) {
-        if (packageManager().resolveActivity(mIntent, 0) == null) throw new EmlaAppsException("No dialer app found on your device."); // todo handle at mapping
+        if (pm.resolveActivity(mIntent, 0) == null) throw new EmlaAppsException("No dialer app found on your device."); // todo handle at mapping
         appSucceed(mIntent.setData(parse("tel:" + nameOrNumber)));
     }
 }

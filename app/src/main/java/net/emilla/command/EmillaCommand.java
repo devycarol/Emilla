@@ -12,6 +12,7 @@ import androidx.annotation.ArrayRes;
 import androidx.annotation.CallSuper;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
+import androidx.annotation.PluralsRes;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
@@ -55,7 +56,7 @@ public abstract class EmillaCommand {
 //            NOTIFY = ,
             CALCULATE = 16,
             WEATHER = 17,
-            VIEW = 18,
+            BOOKMARK = 18,
             TORCH = 19,
             INFO = 20,
             UNINSTALL = 21,
@@ -84,7 +85,7 @@ public abstract class EmillaCommand {
         //    R.string.command_notify,
             R.string.command_calculate,
             R.string.command_weather,
-            R.string.command_view,
+            R.string.command_bookmark,
             R.string.command_torch,
             R.string.command_info,
             R.string.command_uninstall,
@@ -124,16 +125,22 @@ public abstract class EmillaCommand {
 
     protected final AssistActivity activity;
     protected final Resources resources;
+    protected final PackageManager pm;
     protected String mInstruction;
 
     protected EmillaCommand(AssistActivity act, String instruct) {
         activity = act;
         resources = act.getResources();
+        pm = act.getPackageManager();
         mInstruction = instruct;
     }
 
     @CallSuper
     public void init() {
+        baseInit();
+    }
+
+    public final void baseInit() {
         activity.updateLabel(title());
         activity.updateDetails(detailsId());
         activity.updateDataHint();
@@ -160,12 +167,12 @@ public abstract class EmillaCommand {
         return resources.getString(id, formatArgs);
     }
 
-    protected String[] stringArray(@ArrayRes int id) {
-        return resources.getStringArray(id);
+    protected String quantityString(@PluralsRes int id, int quantity) {
+        return resources.getQuantityString(id, quantity, quantity);
     }
 
-    protected PackageManager packageManager() {
-        return activity.getPackageManager();
+    protected String[] stringArray(@ArrayRes int id) {
+        return resources.getStringArray(id);
     }
 
     protected String packageName() {
@@ -188,6 +195,10 @@ public abstract class EmillaCommand {
      */
     protected void toast(CharSequence text, boolean longToast) {
         activity.toast(text, longToast);
+    }
+
+    protected void toast(CharSequence text) {
+        activity.toast(text);
     }
 
     protected void chime(byte id) {

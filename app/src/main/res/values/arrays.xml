@@ -63,7 +63,7 @@
     <string-array name="command_entries">
         <item>@string/command_web</item>
         <item>@string/command_launch</item>
-        <item>@string/command_view</item>
+        <item>@string/command_bookmark</item>
 <!--        <item>@string/command_find</item>-->
         <item>@string/command_call</item>
         <item>@string/command_dial</item>
@@ -85,14 +85,14 @@
         <item>@string/command_uninstall</item>
         <item>@string/command_toast</item>
 <!--        <item>@string/command_todo</item>-->
-        <item>@string/command_pomodoro</item>
+<!--        <item>@string/command_pomodoro</item>-->
     </string-array>
     <!--Todo: allow app commands-->
 
     <string-array name="command_values">
         <item>web</item>
         <item>launch</item>
-        <item>view</item>
+        <item>bookmark</item>
 <!--        <item>find</item>-->
         <item>call</item>
         <item>dial</item>
@@ -114,7 +114,7 @@
         <item>uninstall</item>
         <item>toast</item>
 <!--        <item>todo</item>-->
-        <item>pomodoro</item>
+<!--        <item>pomodoro</item>-->
     </string-array>
 
     <!-- Command aliases -->
@@ -190,7 +190,7 @@
     <string-array name="aliases_weather">
         <item>wea</item>
     </string-array>
-    <string-array name="aliases_view">
+    <string-array name="aliases_bookmark">
         <item>look</item>
         <item>see</item>
         <item>bookmark</item>

@@ -45,7 +45,7 @@ public class SettingVals {
     //    case "notify" -> NOTIFY;
         case "calculate" -> CALCULATE;
         case "weather" -> WEATHER;
-        case "view" -> VIEW;
+        case "bookmark" -> BOOKMARK;
         case "torch" -> TORCH;
         case "info" -> INFO;
         case "uninstall" -> UNINSTALL;

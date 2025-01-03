@@ -63,13 +63,13 @@ public class Timer extends CoreDataCommand {
 
     @Override
     protected void run() {
-        if (mUiIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
+        if (mUiIntent.resolveActivity(pm) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
         appSucceed(mUiIntent);
     }
 
     @Override
     protected void run(String duration) {
-        if (mIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
+        if (mIntent.resolveActivity(pm) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
         appSucceed(mIntent.putExtra(EXTRA_LENGTH, seconds(this, duration)));
     }
 
@@ -84,7 +84,7 @@ public class Timer extends CoreDataCommand {
 
     @Override
     protected void runWithData(String duration, String title) {
-        if (mIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
+        if (mIntent.resolveActivity(pm) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
         appSucceed(mIntent.putExtra(EXTRA_LENGTH, seconds(this, duration)).putExtra(EXTRA_MESSAGE, title));
     }
 }

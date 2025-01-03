@@ -37,7 +37,7 @@ public class Settings extends CoreCommand {
 
     @Override
     protected void run() {
-        if (mIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No app found for system settings."); // todo handle at mapping
+        if (mIntent.resolveActivity(pm) == null) throw new EmlaAppsException("No app found for system settings."); // todo handle at mapping
         appSucceed(mIntent);
     }
 

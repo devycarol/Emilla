@@ -1,5 +1,7 @@
 package net.emilla.command;
 
+import android.annotation.SuppressLint;
+
 import androidx.annotation.DrawableRes;
 
 import net.emilla.AssistActivity;
@@ -46,6 +48,16 @@ public class DefaultCommandWrapper extends EmillaCommand {
             EmillaCommand cmd) {
         super(act, instruct);
         mCmd = cmd;
+    }
+
+    @Override @SuppressLint("MissingSuperCall")
+    public void init() {
+        mCmd.init();
+    }
+
+    @Override @SuppressLint("MissingSuperCall")
+    public void clean() {
+        mCmd.clean();
     }
 
     @Override

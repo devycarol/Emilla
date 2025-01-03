@@ -13,10 +13,10 @@
             android:summary="@string/summary_launch"
             android:title="@string/command_launch" />
         <EditTextPreference
-            android:icon="@drawable/ic_view"
-            android:key="aliases_view_text"
-            android:summary="@string/summary_view"
-            android:title="@string/command_view" />
+            android:icon="@drawable/ic_bookmark"
+            android:key="aliases_bookmark_text"
+            android:summary="@string/summary_bookmark"
+            android:title="@string/command_bookmark" />
         <Preference
             android:icon="@drawable/ic_find"
             android:key="aliases_find_text"

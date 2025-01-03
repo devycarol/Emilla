@@ -21,7 +21,7 @@
         <EditTextPreference
             app:defaultValue="Emilla GitHub, emla, https://github.com/devycarol/Emilla\nOpen-source software, OSS, https://en.wikipedia.org/wiki/Open_source_software\nRick, dQw, https://www.youtube.com/watch?v=dQw4w9WgXcQ"
             app:key="medias"
-            app:summary="Used in the 'view' command; only supports web URLs for now"
+            app:summary="Used in the 'bookmark' command; only supports web URLs for now"
             app:title="Bookmarks" />
         <ListPreference
             app:defaultValue="follow_system"

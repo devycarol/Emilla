@@ -8,12 +8,13 @@ import static java.util.Calendar.*;
 import static java.util.regex.Pattern.CASE_INSENSITIVE;
 import static java.util.regex.Pattern.compile;
 
+import net.emilla.R;
 import net.emilla.exception.EmlaBadCommandException;
 
 import java.util.Calendar;
 import java.util.regex.Matcher;
 
-public class Time {
+public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
 
     private static final String JAN = "jan(uary)?", FEB = "feb(ruary)?", MAR = "mar(ch)?";
     private static final String APR = "apr(il)?", MAY = "may", JUN = "june?";
@@ -37,7 +38,7 @@ public class Time {
 
     private static int[] splitTimeString(String time) {
         time = time.replaceAll("\\D", "");
-        if (!time.matches("\\d{1,6}")) throw new EmlaBadCommandException("Invalid format!");
+        if (!time.matches("\\d{1,6}")) throw new EmlaBadCommandException(R.string.error, R.string.error_invalid_time);
 
         int h = 0, m = 0, s = 0;
         int len = time.length();
@@ -69,12 +70,12 @@ public class Time {
             if (1 <= h && h <= 11) warn = 1;
             if (h == 12) warn = 2;
         } else {
-            if (1 > h || h > 12) throw new EmlaBadCommandException("Invalid time!");
+            if (1 > h || h > 12) throw new EmlaBadCommandException(R.string.error, R.string.error_invalid_time);
             if (h == 12) h = 0;
             if (period == PM) h += 12;
         }
 
-        if (h > 23 || max(m, s) > 59) throw new EmlaBadCommandException("Invalid time!");
+        if (h > 23 || max(m, s) > 59) throw new EmlaBadCommandException(R.string.error, R.string.error_invalid_time);
 
         return new int[]{h, m, s, warn};
     }
@@ -150,7 +151,7 @@ public class Time {
                     hit = true;
 
                     String[] sansHrs = dur.split(rgx);
-                    if (sansHrs.length > 2) throw new EmlaBadCommandException("");
+                    if (sansHrs.length > 2) throw new EmlaBadCommandException(R.string.command_timer, R.string.error_invalid_duration);
 
                     String before = "", after = "";
                     switch (sansHrs.length) {
@@ -169,7 +170,7 @@ public class Time {
             }
 
             if (hit) {
-                if (notEmpty) throw new EmlaBadCommandException("Too many time units!");
+                if (notEmpty) throw new EmlaBadCommandException(R.string.command_timer, R.string.error_excess_time_units);
 
                 timeUnits[1] += timeUnits[0] % 1.0 * 60.0;
                 timeUnits[2] += timeUnits[1] % 1.0 * 60.0;
@@ -216,19 +217,19 @@ public class Time {
         Matcher m = compile("(?i)" + MONTH_RGX).matcher(s);
         if (m.find()) {
             cal.set(MONTH, parseMonth(m.group()));
-            if (m.find()) throw new EmlaBadCommandException("Multiple months!");
+            if (m.find()) throw new EmlaBadCommandException(R.string.command_calendar, R.string.error_excess_time_units);
         }
 
         m = compile(DAY_RGX).matcher(s);
         if (m.find()) {
             cal.set(DAY_OF_MONTH, parseInt(m.group().trim()));
-            if (m.find()) throw new EmlaBadCommandException("Multiple days!");
+            if (m.find()) throw new EmlaBadCommandException(R.string.command_calendar, R.string.error_excess_time_units);
         }
 
         m = compile(YEAR_RGX).matcher(s);
         if (m.find()) {
             String y = m.group();
-            if (m.find()) throw new EmlaBadCommandException("Multiple years!");
+            if (m.find()) throw new EmlaBadCommandException(R.string.command_calendar, R.string.error_excess_time_units);
 
             int tickIdx = y.indexOf('\'');
             if (tickIdx == -1) cal.set(YEAR, parseInt(y));
@@ -260,9 +261,9 @@ public class Time {
             case 1:
                 startTime = parseTime(times[0]);
                 break;
-            default: throw new EmlaBadCommandException("You can't span more than 2 times.");
+            default: throw new EmlaBadCommandException(R.string.command_calendar, R.string.error_excess_timespan);
             }
-        } else if (len != 1) throw new EmlaBadCommandException("You can't have multiple timespans.");
+        } else if (len != 1) throw new EmlaBadCommandException(R.string.command_calendar, R.string.error_excess_timespans);
 
         Calendar cal = parseDate(date);
         Calendar endCal = null;
@@ -292,7 +293,7 @@ public class Time {
             case "thursday", "thurs", "thur", "thu", "th", "r" -> 'r';
             case "friday", "fri", "f" -> 'f';
             case "saturday", "sat", "s" -> 's';
-            default -> throw new EmlaBadCommandException("Not a weekday!");
+            default -> throw new EmlaBadCommandException(R.string.command_alarm, R.string.error_invalid_weekday);
         };
     }
 
@@ -308,7 +309,7 @@ public class Time {
     public static int[] parseWeekdays(String s) {
         s = s.toLowerCase().replaceAll("\\d?\\d *[ap]m?|[^\\w, ]+|\\d+", "").trim();
         if (s.isEmpty()) return new int[0];
-        if (!s.matches("\\w+( +\\w+){0,6}")) throw new EmlaBadCommandException("Invalid weekday format!");
+        if (!s.matches("\\w+( +\\w+){0,6}")) throw new EmlaBadCommandException(R.string.command_alarm, R.string.error_invalid_weekday_format);
 
         if (!s.matches("[umtwrfs]{1,7}")) s = buildWeekdayString(s);
 
@@ -328,7 +329,7 @@ public class Time {
                 case 'f' -> weekdays[i] = Calendar.FRIDAY;
                 case 's' -> weekdays[i] = Calendar.SATURDAY;
                 }
-            } else throw new EmlaBadCommandException("More than one instance of a weekday!");
+            } else throw new EmlaBadCommandException(R.string.command_alarm, R.string.error_excess_weekdays);
 
             ++i;
         }

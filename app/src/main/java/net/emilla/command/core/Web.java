@@ -29,7 +29,7 @@ public class Web extends CoreCommand {
 
     public Web(AssistActivity act, String instruct) {
         super(act, instruct, R.string.command_web, R.string.instruction_web);
-        mUnsafe = mIntent.resolveActivity(packageManager()) == null;
+        mUnsafe = mIntent.resolveActivity(pm) == null;
     }
 
     @Override

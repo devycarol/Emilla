@@ -39,7 +39,7 @@ public class CateNavigate extends CategoryCommand {
     @Override
     protected void run(String location) {
         // Todo: location bookmarks, navigate to contacts' addresses
-        if (mIntent.setData(Uri.parse("geo:0,0?q=" + location)).resolveActivity(packageManager()) == null) throw new EmlaAppsException("No app found for web search."); // todo handle at mapping
+        if (mIntent.setData(Uri.parse("geo:0,0?q=" + location)).resolveActivity(pm) == null) throw new EmlaAppsException("No app found for web search."); // todo handle at mapping
         appSucceed(mIntent);
     }
 }

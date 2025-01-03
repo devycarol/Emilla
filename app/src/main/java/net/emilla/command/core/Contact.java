@@ -6,7 +6,6 @@ import static android.provider.ContactsContract.Intents.Insert.NAME;
 
 import android.app.SearchManager;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.provider.ContactsContract.Contacts;
 
 import androidx.annotation.ArrayRes;
@@ -24,14 +23,14 @@ import java.util.regex.Pattern;
 public class Contact extends CoreDataCommand {
 
     private static final byte
-            CONTACT_VIEW = 0,
-            CONTACT_CREATE = 1,
-            CONTACT_EDIT = 2;
+            VIEW = 0,
+            CREATE = 1,
+            EDIT = 2;
 
     private static byte getContactAction(String person) { // TODO: lang
-        if (person.startsWith("create") || person.startsWith("new")) return CONTACT_CREATE;
-        if (person.startsWith("edit")) return CONTACT_EDIT;
-        return CONTACT_VIEW;
+        if (person.startsWith("create") || person.startsWith("new")) return CREATE;
+        if (person.startsWith("edit")) return EDIT;
+        return VIEW;
     }
 
     private static String stripContactAction(String person) { // TODO: lang
@@ -55,7 +54,7 @@ public class Contact extends CoreDataCommand {
 
     @Override
     protected void run() {
-        if (mChooserIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No contacts app found on your device."); // todo handle at mapping
+        if (mChooserIntent.resolveActivity(pm) == null) throw new EmlaAppsException("No contacts app found on your device."); // todo handle at mapping
         offerChooser(mChooserIntent, AssistActivity.PICK_VIEW_CONTACT);
     }
 
@@ -67,10 +66,9 @@ public class Contact extends CoreDataCommand {
 
     @Override
     protected void run(String person) {
-        PackageManager pm = packageManager();
         byte action = getContactAction(person); // todo: standardize subcommand handling
         switch (action) {
-        case CONTACT_VIEW -> {
+        case VIEW -> {
             Intent in = new Intent(ACTION_SEARCH).setType(Contacts.CONTENT_TYPE)
                     .putExtra(SearchManager.QUERY, person);
             if (in.resolveActivity(pm) == null) {
@@ -80,7 +78,7 @@ public class Contact extends CoreDataCommand {
             }
             appSucceed(in);
         }
-        case CONTACT_CREATE -> {
+        case CREATE -> {
             String actualPerson = stripContactAction(person);
             Intent in = Apps.insertTask(Contacts.CONTENT_TYPE);
             if (!actualPerson.isEmpty()) in.putExtra(NAME, actualPerson);
@@ -93,7 +91,7 @@ public class Contact extends CoreDataCommand {
             }
             appSucceed(in);
         }
-        case CONTACT_EDIT -> {
+        case EDIT -> {
             String actualPerson = stripContactAction(person);
             if (actualPerson.isEmpty()) {
                 if (mChooserIntent.resolveActivity(pm) == null) {// todo handle at mapping

@@ -5,7 +5,6 @@ import static android.content.Intent.EXTRA_SUBJECT;
 import static android.content.pm.PackageManager.FEATURE_TELEPHONY_MESSAGING;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 
 import androidx.annotation.ArrayRes;
@@ -73,7 +72,6 @@ public class Sms extends CoreDataCommand {
     }
 
     private void launchMessenger(Intent intent) {
-        PackageManager pm = packageManager();
         if (!pm.hasSystemFeature(FEATURE_TELEPHONY_MESSAGING)) throw new EmlaFeatureException("Your device doesn't support SMS messaging."); // TODO: handle at install—don't store in sharedprefs in case of settings sync/transfer
         if (pm.resolveActivity(intent, 0) == null) throw new EmlaAppsException("No SMS app found on your device."); // todo handle at mapping
         String subject = mSubjectToggle.fieldText();

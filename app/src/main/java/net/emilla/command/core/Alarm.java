@@ -71,7 +71,7 @@ public class Alarm extends CoreDataCommand {
     }
 
     private void execute(Intent intent) {
-        if (intent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No alarm clock app found on your device."); // TODO: handle at mapping - both intents will probably need to be checked
+        if (intent.resolveActivity(pm) == null) throw new EmlaAppsException("No alarm clock app found on your device."); // TODO: handle at mapping - both intents will probably need to be checked
         appSucceed(intent);
     }
 

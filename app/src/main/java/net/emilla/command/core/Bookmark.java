@@ -16,7 +16,7 @@ import net.emilla.utils.Dialogs;
 
 import java.util.HashMap;
 
-public class ViewCommand extends CoreCommand {
+public class Bookmark extends CoreCommand {
 
     public static final String DFLT_MEDIA = "Emilla GitHub, emla, https://github.com/devycarol/Emilla\n" +
             "Open-source software, OSS, https://en.wikipedia.org/wiki/Open_source_software\n" +
@@ -26,8 +26,8 @@ public class ViewCommand extends CoreCommand {
     private final AlertDialog mBookmarkChooser;
     private final boolean mHasBookmarks; // Todo: remove once search is implemented
 
-    public ViewCommand(AssistActivity act, String instruct) {
-        super(act, instruct, R.string.command_view, R.string.instruction_view);
+    public Bookmark(AssistActivity act, String instruct) {
+        super(act, instruct, R.string.command_bookmark, R.string.instruction_bookmark);
 
         String[] lines = act.mediaCsv().split("\\s*\n\\s*");
         String[] labels = new String[lines.length];
@@ -52,7 +52,7 @@ public class ViewCommand extends CoreCommand {
 
     @Override @DrawableRes
     public int icon() {
-        return R.drawable.ic_view;
+        return R.drawable.ic_bookmark;
     }
 
     @Override
@@ -66,14 +66,14 @@ public class ViewCommand extends CoreCommand {
     }
 
     @Override
-    protected void run(String media) {
-        Intent get = mBookmarkMap.get(media.toLowerCase());
+    protected void run(String bookmark) {
+        Intent get = mBookmarkMap.get(bookmark.toLowerCase());
         if (get == null) {
             offerDialog(mBookmarkChooser); // TODO: rare as it may be, this is not yet resolve-safe as is below
             if (mHasBookmarks) toast(string(R.string.dlg_msg_choose_media), false);
             return;
         }
-        if (get.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No app found to view media."); // todo handle at mapping
+        if (get.resolveActivity(pm) == null) throw new EmlaAppsException("No app found to view media."); // todo handle at mapping
         appSucceed(get);
     }
 }

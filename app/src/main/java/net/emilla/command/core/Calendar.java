@@ -57,11 +57,10 @@ public class Calendar extends CoreDataCommand {
     public void init() {
         super.init();
 
-        AssistActivity act = activity;
-        if (mLocationToggle == null) mLocationToggle = new LocationField(act);
+        if (mLocationToggle == null) mLocationToggle = new LocationField(activity);
         else if (mLocationToggle.activated()) reshowField(LocationField.FIELD_ID);
         giveAction(mLocationToggle);
-        if (mUrlToggle == null) mUrlToggle = new UrlField(act);
+        if (mUrlToggle == null) mUrlToggle = new UrlField(activity);
         else if (mUrlToggle.activated()) reshowField(UrlField.FIELD_ID);
         giveAction(mUrlToggle);
     }
@@ -99,7 +98,7 @@ public class Calendar extends CoreDataCommand {
 
     @Override
     protected void run() {
-        if (mIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No calendar app found on your device."); // todo: handle at mapping
+        if (mIntent.resolveActivity(pm) == null) throw new EmlaAppsException("No calendar app found on your device."); // todo: handle at mapping
         String location = mLocationToggle.fieldText();
         if (location != null) mIntent.putExtra(EVENT_LOCATION, location);
         String url = mUrlToggle.fieldText();

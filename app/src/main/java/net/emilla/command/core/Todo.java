@@ -71,7 +71,7 @@ public class Todo extends CoreDataCommand {
 
     @Override
     protected void run() {
-        if (mViewIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No app found to view text files.");
+        if (mViewIntent.resolveActivity(pm) == null) throw new EmlaAppsException("No app found to view text files.");
         appSucceed(mViewIntent);
     }
 
@@ -79,7 +79,7 @@ public class Todo extends CoreDataCommand {
     protected void run(String task) {
         // todo: newline handling unnecessary in this case
         todo(task); // TODO
-        give(string(R.string.toast_task_created), false); // TODO: lang
+        give(quantityString(R.plurals.toast_tasks_created, 1), false); // TODO LANG
     }
 
     @Override
@@ -89,9 +89,7 @@ public class Todo extends CoreDataCommand {
         int taskCount = 0;
         for (String t : tasks.split("\n"))
         if (!t.isBlank()) ++taskCount;
-        String msg = taskCount == 1 ? string(R.string.toast_task_created)
-                : string(R.string.toast_tasks_created, taskCount); // TODO: look into getQuantityString
-        give(msg, false);
+        give(quantityString(R.plurals.toast_tasks_created, taskCount), false);
     }
 
     @Override
@@ -101,8 +99,6 @@ public class Todo extends CoreDataCommand {
         int taskCount = 0;
         for (String t : task.split("\n"))
         if (!t.isBlank()) ++taskCount;
-        String msg = taskCount == 1 ? string(R.string.toast_task_created)
-                : string(R.string.toast_tasks_created, taskCount); // TODO: look into getQuantityString
-        give(msg, false);
+        give(quantityString(R.plurals.toast_tasks_created, taskCount), false);
     }
 }

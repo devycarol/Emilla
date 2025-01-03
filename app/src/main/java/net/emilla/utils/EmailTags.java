@@ -10,7 +10,8 @@ import net.emilla.exception.EmlaBadCommandException;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 
-public class EmailTags { // Todo lang
+@Deprecated
+public final class EmailTags { // Todo lang
 
     public static final String CC = "(^| )cc";
     public static final String BCC = "(^| )bcc";

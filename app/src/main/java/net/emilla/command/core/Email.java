@@ -94,7 +94,7 @@ public class Email extends CoreDataCommand {
 
     @Override
     protected void run() {
-        if (mIntent.resolveActivity(packageManager()) == null) {
+        if (mIntent.resolveActivity(pm) == null) {
             clearDetails();
             throw new EmlaAppsException("No email app found on your device."); // todo handle at mapping
         }
@@ -105,7 +105,7 @@ public class Email extends CoreDataCommand {
     protected void run(String recipients) {
         Intent in = putAttachmentsAndRecipients(recipients);
         if (in == null) return;
-        if (in.resolveActivity(packageManager()) == null) {
+        if (in.resolveActivity(pm) == null) {
             clearDetails();
             throw new EmlaAppsException("No email app found on your device."); // todo handle at mapping
         }
@@ -114,7 +114,7 @@ public class Email extends CoreDataCommand {
 
     @Override
     protected void runWithData(String body) {
-        if (mIntent.resolveActivity(packageManager()) == null) {
+        if (mIntent.resolveActivity(pm) == null) {
             clearDetails();
             throw new EmlaAppsException("No email app found on your device."); // todo handle at mapping
         }
@@ -125,7 +125,7 @@ public class Email extends CoreDataCommand {
     protected void runWithData(String recipients, String body) {
         Intent in = putAttachmentsAndRecipients(recipients);
         if (in == null) return;
-        if (in.resolveActivity(packageManager()) == null) { // todo handle at mapping
+        if (in.resolveActivity(pm) == null) { // todo handle at mapping
             clearDetails();
             throw new EmlaAppsException("No email app found on your device.");
         }

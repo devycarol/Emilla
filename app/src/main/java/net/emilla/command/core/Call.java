@@ -5,7 +5,6 @@ import static android.content.pm.PackageManager.FEATURE_TELEPHONY;
 import static android.net.Uri.parse;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
@@ -55,7 +54,6 @@ public class Call extends CoreCommand {
     protected void run(String nameOrNumber) {
         // todo: conference calls?
         // todo: immediate calls to phonewords
-        PackageManager pm = packageManager();
         if (!pm.hasSystemFeature(FEATURE_TELEPHONY)) throw new EmlaFeatureException("Your device doesn't support phone calls.");
         if (!Permissions.phone(activity, pm)) return;
         mIntent.setData(parse("tel:" + Contacts.fromName(nameOrNumber, mPhoneMap)));

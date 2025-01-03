@@ -44,8 +44,7 @@ import net.emilla.chime.Silence;
 import net.emilla.command.CmdTree;
 import net.emilla.command.DataCmd;
 import net.emilla.command.EmillaCommand;
-import net.emilla.command.core.ViewCommand;
-import net.emilla.config.ConfigActivity;
+import net.emilla.command.core.Bookmark;
 import net.emilla.exception.EmillaException;
 import net.emilla.exception.EmlaAppsException;
 import net.emilla.run.AppSuccess;
@@ -483,7 +482,8 @@ public class AssistActivity extends EmillaActivity {
             mCommand.clean();
             mCommand = cmd;
             mNoCommand = noCommand;
-            cmd.init();
+            if (noCommand) cmd.baseInit();
+            else cmd.init();
 
             mSubmitButton.setIcon(noCommand ? mNoCommandAction.icon() : mCommand.icon());
             boolean dataAvailable = noCommand || mCommand.usesData();
@@ -537,7 +537,7 @@ public class AssistActivity extends EmillaActivity {
     }
 
     public String mediaCsv() {
-        return mPrefs.getString("medias", ViewCommand.DFLT_MEDIA);
+        return mPrefs.getString("medias", Bookmark.DFLT_MEDIA);
     }
 
     public ArrayList<Uri> attachments() {

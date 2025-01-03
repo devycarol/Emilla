@@ -4,7 +4,6 @@ import static java.util.Arrays.copyOfRange;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.view.inputmethod.EditorInfo;
 
@@ -22,7 +21,6 @@ public abstract class OpenCommand extends CoreCommand {
 
     protected final List<ResolveInfo> mAppList;
     protected final AlertDialog.Builder mAppChooser;
-    protected final PackageManager mPm;
 
     public OpenCommand(AssistActivity act, String instruct, @StringRes int nameId,
             @StringRes int instructionId) {
@@ -30,7 +28,6 @@ public abstract class OpenCommand extends CoreCommand {
 
         mAppList = act.appList();
         mAppChooser = getAppChooser(act);
-        mPm = act.getPackageManager();
     }
 
     protected abstract AlertDialog.Builder getAppChooser(AssistActivity act);
@@ -63,7 +60,7 @@ public abstract class OpenCommand extends CoreCommand {
         for (int i = 0; i < appCount; ++i) {
             ActivityInfo info = mAppList.get(i).activityInfo;
 
-            CharSequence label = info.loadLabel(mPm);
+            CharSequence label = info.loadLabel(pm);
             String lcLabel = label.toString().toLowerCase();
 
             if (lcLabel.equals(lcQuery)) { // an exact match will drop all other results
@@ -78,7 +75,7 @@ public abstract class OpenCommand extends CoreCommand {
 
                 for (++i; i < appCount; ++i) { // continue searching for duplicates only
                     info = mAppList.get(i).activityInfo;
-                    label = info.loadLabel(mPm);
+                    label = info.loadLabel(pm);
                     lcLabel = label.toString().toLowerCase();
 
                     if (lcLabel.equals(lcQuery)) {

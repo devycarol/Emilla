@@ -48,8 +48,8 @@ public class Pomodoro extends CoreDataCommand {
      * @return true if this is a break timer
      */
     private boolean putDuration(Resources res, String duration) throws EmlaBadCommandException {
-        if (mIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
-        Matcher m = compile(" *b(reak)? *").matcher(duration); // TODO: lang
+        if (mIntent.resolveActivity(pm) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
+        Matcher m = compile(" *b(reak)? *").matcher(duration); // TODO LANG
         boolean isBreak = m.find();
         if (isBreak) duration = m.replaceFirst("");
 
@@ -70,13 +70,13 @@ public class Pomodoro extends CoreDataCommand {
 
     @Override
     protected void run() {
-        if (mIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
+        if (mIntent.resolveActivity(pm) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
         appSucceed(mIntent);
     }
 
     @Override
     protected void run(String duration) throws EmlaBadCommandException {
-        if (mIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
+        if (mIntent.resolveActivity(pm) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
         boolean isBreak = putDuration(resources, duration);
         if (isBreak) mIntent.putExtra(EXTRA_MESSAGE, string(R.string.memo_pomodoro_break));
         appSucceed(mIntent);
@@ -86,13 +86,13 @@ public class Pomodoro extends CoreDataCommand {
 
     @Override
     protected void runWithData(String memo) {
-        if (mIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
+        if (mIntent.resolveActivity(pm) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
         appSucceed(mIntent.putExtra(EXTRA_MESSAGE, memo));
     }
 
     @Override
     protected void runWithData(String duration, String memo) throws EmlaBadCommandException {
-        if (mIntent.resolveActivity(packageManager()) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
+        if (mIntent.resolveActivity(pm) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
         boolean isBreak = putDuration(resources, duration);
         mIntent.putExtra(EXTRA_MESSAGE, memo);
         appSucceed(mIntent);

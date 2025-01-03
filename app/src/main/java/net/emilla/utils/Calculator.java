@@ -9,7 +9,7 @@ import net.emilla.exception.EmlaBadCommandException;
 
 import java.util.regex.Matcher;
 
-public class Calculator { // i should definitely be using an expression tree LOL
+public final class Calculator { // i should definitely be using an expression tree LOL
 
     private static final String ALL_OF = "all ?of", DONE = "done|good";
 

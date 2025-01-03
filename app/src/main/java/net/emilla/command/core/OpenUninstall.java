@@ -33,6 +33,6 @@ public class OpenUninstall extends OpenCommand {
 
     @Override
     protected Intent getIntent(String pkg, String cls) {
-        return Apps.uninstallIntent(pkg, mPm);
+        return Apps.uninstallIntent(pkg, pm);
     }
 }

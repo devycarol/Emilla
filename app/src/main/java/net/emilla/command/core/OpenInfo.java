@@ -30,7 +30,7 @@ public class OpenInfo extends OpenCommand {
 
     public OpenInfo(AssistActivity act, String instruct) {
         super(act, instruct, R.string.command_info, R.string.instruction_app);
-        mUnsafe = mInfoIntent.resolveActivity(packageManager()) == null;
+        mUnsafe = mInfoIntent.resolveActivity(pm) == null;
     }
 
     @Override
