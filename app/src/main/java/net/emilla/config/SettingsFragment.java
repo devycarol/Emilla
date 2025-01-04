@@ -215,7 +215,7 @@ private void setupNotificationsPref(PackageManager pm) {
     Preference appNotifications = requireNonNull(findPreference("notifications"));
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         Intent notifSettings = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
-                .putExtra(Settings.EXTRA_APP_PACKAGE, Apps.PKG);
+                .putExtra(Settings.EXTRA_APP_PACKAGE, Apps.MY_PKG);
         if (notifSettings.resolveActivity(pm) != null) {
             appNotifications.setIntent(notifSettings);
             return;
@@ -227,11 +227,11 @@ private void setupNotificationsPref(PackageManager pm) {
 private void setupAccessibilityButtonPref(PackageManager pm) {
     Preference accessibilityButton = requireNonNull(findPreference("accessibility_button"));
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        String showArgs = Apps.PKG + '/' + EmillaAccessibilityService.class.getName();
+        String showArgs = Apps.MY_PKG + '/' + EmillaAccessibilityService.class.getName();
         Bundle bundle = new Bundle();
         bundle.putString(EXTRA_FRAGMENT_ARG_KEY, showArgs);
         Intent in = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
-                .putExtra(Settings.EXTRA_APP_PACKAGE, Apps.PKG)
+                .putExtra(Settings.EXTRA_APP_PACKAGE, Apps.MY_PKG)
                 .putExtra(EXTRA_FRAGMENT_ARG_KEY, showArgs)
                 .putExtra(EXTRA_SHOW_FRAGMENT_ARGUMENTS, bundle);
         if (in.resolveActivity(pm) != null) {
@@ -245,7 +245,7 @@ private void setupAccessibilityButtonPref(PackageManager pm) {
 private void setupAppInfoPref(PackageManager pm) {
     Preference systemAppInfo = requireNonNull(findPreference("app_info"));
     Intent in = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-            Apps.pkgUri(Apps.PKG));
+            Apps.pkgUri(Apps.MY_PKG));
     if (in.resolveActivity(pm) != null) systemAppInfo.setIntent(in);
     else systemAppInfo.setVisible(false);
 }

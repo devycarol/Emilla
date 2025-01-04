@@ -53,7 +53,7 @@ public class Torch extends CoreCommand {
 
     @Override
     protected void run() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) throw new EmlaBadCommandException("Sorry! This command doesn't support your Android version yet.");
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) throw new EmlaBadCommandException(R.string.command_torch, R.string.error_unfinished_version);
         // TODO: https://github.com/LineageOS/android_packages_apps_Torch
         CameraManager camMgr = (CameraManager) activity.getSystemService(Context.CAMERA_SERVICE);
         try {

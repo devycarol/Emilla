@@ -27,12 +27,12 @@ public class Find extends CoreCommand {
     @Override
     protected void run() {
         // todo: select file manager?
-        throw new EmlaBadCommandException("Sorry! I don't know how to search for files yet.");
+        throw new EmlaBadCommandException(R.string.command_find, R.string.error_unfinished_file_search);
     }
 
     @Override
     protected void run(String fileOrFolder) {
-        throw new EmlaBadCommandException("Sorry! I don't know how to search for files yet.");
+        throw new EmlaBadCommandException(R.string.command_find, R.string.error_unfinished_file_search);
         // where all should I be searching for files? shared storage? external drives?
     }
 }

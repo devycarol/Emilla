@@ -17,21 +17,22 @@ public class OpenLaunch extends OpenCommand {
         return R.drawable.ic_launch;
     }
 
-    protected AlertDialog.Builder getAppChooser(AssistActivity act) {
-        return Dialogs.appChooser(act, act.getPackageManager(), mAppList);
-    }
-
     public OpenLaunch(AssistActivity act, String instruct) {
         super(act, instruct, R.string.command_launch, R.string.instruction_app);
     }
 
     @Override
-    protected void run() {
-        offerDialog(mAppChooser);
+    protected AlertDialog.Builder getAppChooser(AssistActivity act) {
+        return Dialogs.appChooser(act, act.getPackageManager(), mAppList);
     }
 
     @Override
-    protected Intent getIntent(String pkg, String cls) {
+    protected Intent makeIntent(String pkg, String cls) {
         return Apps.launchIntent(pkg, cls);
+    }
+
+    @Override
+    protected void run() {
+        offerDialog(mAppChooser);
     }
 }

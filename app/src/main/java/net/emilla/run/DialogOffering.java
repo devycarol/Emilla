@@ -9,8 +9,4 @@ public class DialogOffering extends DialogRun implements Offering {
     public DialogOffering(AssistActivity act, AlertDialog.Builder builder) {
         super(act, builder);
     }
-
-    public DialogOffering(AssistActivity act, AlertDialog dialog) {
-        super(act, dialog);
-    }
 }

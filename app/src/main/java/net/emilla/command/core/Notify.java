@@ -25,21 +25,21 @@ public class Notify extends CoreDataCommand {
 
     @Override
     protected void run() {
-        throw new EmlaBadCommandException("Sorry! I don't know how to make reminders yet."); // Todo
+        throw new EmlaBadCommandException(R.string.command_notify, R.string.error_unfinished_reminders); // Todo
     }
 
     @Override
     protected void run(String text) {
-        throw new EmlaBadCommandException("Sorry! I don't know how to make reminders yet."); // Todo
+        throw new EmlaBadCommandException(R.string.command_notify, R.string.error_unfinished_reminders); // Todo
     }
 
     @Override
     protected void runWithData(String data) {
-        throw new EmlaBadCommandException("Sorry! I don't know how to make reminders yet."); // Todo
+        throw new EmlaBadCommandException(R.string.command_notify, R.string.error_unfinished_reminders); // Todo
     }
 
     @Override
     protected void runWithData(String instruction, String data) {
-        throw new EmlaBadCommandException("Sorry! I don't know how to make reminders yet."); // Todo
+        throw new EmlaBadCommandException(R.string.command_notify, R.string.error_unfinished_reminders); // Todo
     }
 }

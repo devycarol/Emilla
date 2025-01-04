@@ -16,8 +16,8 @@ import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.exception.EmlaAppsException;
 import net.emilla.exception.EmlaBadCommandException;
+import net.emilla.utils.Apps;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -29,7 +29,7 @@ import java.io.InputStreamReader;
 public class Todo extends CoreDataCommand {
 
     private final File mFile = new File(getExternalStoragePublicDirectory(DIRECTORY_DOCUMENTS), "todo.txt"); // TODO: allow configurable path and don't require all files permission
-    private final Uri mUri = getUriForFile(activity, packageName() + ".fileprovider", mFile);
+    private final Uri mUri = getUriForFile(activity, Apps.MY_PKG + ".fileprovider", mFile);
     private final Intent mViewIntent = new Intent(ACTION_VIEW).setDataAndType(mUri, "text/plain")
             .addFlags(FLAG_GRANT_READ_URI_PERMISSION | FLAG_GRANT_WRITE_URI_PERMISSION)
             .putExtra(EXTRA_STREAM, mUri)
@@ -66,12 +66,11 @@ public class Todo extends CoreDataCommand {
         fos.close();
         pfd.close();
     } catch (IOException e) {
-        throw new EmlaBadCommandException("This is really really bad!"); // TODO LMAO
+        throw new EmlaBadCommandException(R.string.command_todo, R.string.error_lmao); // TODO LMAO
     }}
 
     @Override
     protected void run() {
-        if (mViewIntent.resolveActivity(pm) == null) throw new EmlaAppsException("No app found to view text files.");
         appSucceed(mViewIntent);
     }
 
@@ -79,7 +78,7 @@ public class Todo extends CoreDataCommand {
     protected void run(String task) {
         // todo: newline handling unnecessary in this case
         todo(task); // TODO
-        give(quantityString(R.plurals.toast_tasks_created, 1), false); // TODO LANG
+        giveText(quantityString(R.plurals.toast_tasks_created, 1), false);
     }
 
     @Override
@@ -89,7 +88,7 @@ public class Todo extends CoreDataCommand {
         int taskCount = 0;
         for (String t : tasks.split("\n"))
         if (!t.isBlank()) ++taskCount;
-        give(quantityString(R.plurals.toast_tasks_created, taskCount), false);
+        giveText(quantityString(R.plurals.toast_tasks_created, taskCount), false);
     }
 
     @Override
@@ -99,6 +98,6 @@ public class Todo extends CoreDataCommand {
         int taskCount = 0;
         for (String t : task.split("\n"))
         if (!t.isBlank()) ++taskCount;
-        give(quantityString(R.plurals.toast_tasks_created, taskCount), false);
+        giveText(quantityString(R.plurals.toast_tasks_created, taskCount), false);
     }
 }

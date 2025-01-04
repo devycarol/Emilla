@@ -15,7 +15,6 @@ import androidx.annotation.StringRes;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.content.ContactReceiver;
-import net.emilla.exception.EmlaAppsException;
 import net.emilla.exception.EmlaBadCommandException;
 import net.emilla.utils.Apps;
 
@@ -51,11 +50,11 @@ public class Contact extends CoreDataCommand implements ContactReceiver {
         // TODO LANG: replace with tri-state button
         if (person.startsWith("create")) {
             mAction = CREATE;
-            return person.substring(7).trim();
+            return person.substring(6).trim();
         }
         if (person.startsWith("new")) {
             mAction = CREATE;
-            return person.substring(4).trim();
+            return person.substring(3).trim();
         }
         if (person.startsWith("edit")) {
             mAction = EDIT;
@@ -67,7 +66,7 @@ public class Contact extends CoreDataCommand implements ContactReceiver {
 
     @Override
     protected void run() {
-        activity.retrieveContact(this);
+        activity.offerContacts(this);
     }
 
     @Override
@@ -75,14 +74,9 @@ public class Contact extends CoreDataCommand implements ContactReceiver {
         person = extractAction(person);
         switch (mAction) {
         case VIEW -> {
-            Intent in = new Intent(ACTION_SEARCH).setType(Contacts.CONTENT_TYPE)
-                    .putExtra(SearchManager.QUERY, person);
-            if (in.resolveActivity(pm) == null) {
-                // Todo: handle at mapping and fall back to the below search interface if there's no
-                //  resolution for the ACTION_SEARCH intent.
-                throw new EmlaAppsException("No contact-search app found on your device.");
-            }
-            appSucceed(in);
+            appSucceed(new Intent(ACTION_SEARCH).setType(Contacts.CONTENT_TYPE)
+                    .putExtra(SearchManager.QUERY, person));
+            // Todo: fall back to the search interface if there's no ACTION_SEARCH app.
         }
         case CREATE -> {
             Intent in = Apps.insertTask(Contacts.CONTENT_TYPE);
@@ -91,14 +85,11 @@ public class Contact extends CoreDataCommand implements ContactReceiver {
             //  flexibility in where they're put, i.e. "contact new 555-9879"
             //  different phone number types (cell, work, home, etc.)
 
-            if (in.resolveActivity(pm) == null) { // todo handle at mapping
-                throw new EmlaAppsException("No contacts app found on your device.");
-            }
             appSucceed(in);
         }
         case EDIT -> {
-            if (person.isEmpty()) activity.retrieveContact(this);
-            else throw new EmlaBadCommandException("Sorry! I don't know how to search through contacts yet.");
+            if (person.isEmpty()) activity.offerContacts(this);
+            else throw new EmlaBadCommandException(R.string.command_contact, R.string.error_unfinished_contact_search);
             // Todo: search contacts
             //  no matches: offer to create a contact with the provided details
             //      if declined, return to the command prompt
@@ -113,20 +104,16 @@ public class Contact extends CoreDataCommand implements ContactReceiver {
 
     @Override
     protected void runWithData(String details) {
-        throw new EmlaBadCommandException("Sorry! I can't parse contact info yet."); // TODO
+        throw new EmlaBadCommandException(R.string.command_contact, R.string.error_unfinished_contact_details); // TODO
     }
 
     @Override
     protected void runWithData(String person, String details) {
-        throw new EmlaBadCommandException("Sorry! I can't parse contact info yet."); // TODO
+        throw new EmlaBadCommandException(R.string.command_contact, R.string.error_unfinished_contact_details); // TODO
     }
 
     @Override
     public void provide(Uri contact) {
-        Intent in = mAction == EDIT ? Apps.editTask(contact) : Apps.viewTask(contact);
-        if (in.resolveActivity(pm) == null) { // todo handle at mapping
-            throw new EmlaAppsException("No contact-search app found on your device.");
-        }
-        appSucceed(in);
+        appSucceed(mAction == EDIT ? Apps.editTask(contact) : Apps.viewTask(contact));
     }
 }

@@ -9,7 +9,6 @@ import androidx.appcompat.app.AlertDialog;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.config.ConfigActivity;
-import net.emilla.exception.EmlaAppsException;
 import net.emilla.run.AppSuccess;
 import net.emilla.utils.Apps;
 import net.emilla.utils.Dialogs;
@@ -23,7 +22,7 @@ public class Bookmark extends CoreCommand {
             "Rick, dQw, https://www.youtube.com/watch?v=dQw4w9WgXcQ";
 
     private final HashMap<String, Intent> mBookmarkMap = new HashMap<>();
-    private final AlertDialog mBookmarkChooser;
+    private final AlertDialog.Builder mBookmarkChooser;
     private final boolean mHasBookmarks; // Todo: remove once search is implemented
 
     public Bookmark(AssistActivity act, String instruct) {
@@ -44,10 +43,10 @@ public class Bookmark extends CoreCommand {
             }
         }
         mHasBookmarks = idx != -1;
-        if (mHasBookmarks) mBookmarkChooser = Dialogs.withIntents(Dialogs.base(act, R.string.dialog_media), act, labels, intents).create();
-        else mBookmarkChooser = Dialogs.okCancelMsg(act, R.string.dialog_no_bookmarks,
+        if (mHasBookmarks) mBookmarkChooser = Dialogs.withIntents(Dialogs.base(act, R.string.dialog_media), act, labels, intents);
+        else mBookmarkChooser = Dialogs.dual(act, R.string.dialog_no_bookmarks,
                 R.string.dlg_msg_choose_media, R.string.dlg_yes_add_bookmarks,
-                (dialog, id) -> act.succeed(new AppSuccess(act, Apps.meTask(act, ConfigActivity.class)))).create();
+                (dialog, id) -> act.succeed(new AppSuccess(act, Apps.meTask(act, ConfigActivity.class))));
     }
 
     @Override @DrawableRes
@@ -69,11 +68,10 @@ public class Bookmark extends CoreCommand {
     protected void run(String bookmark) {
         Intent get = mBookmarkMap.get(bookmark.toLowerCase());
         if (get == null) {
-            offerDialog(mBookmarkChooser); // TODO: rare as it may be, this is not yet resolve-safe as is below
+            offerDialog(mBookmarkChooser);
             if (mHasBookmarks) toast(string(R.string.dlg_msg_choose_media), false);
             return;
         }
-        if (get.resolveActivity(pm) == null) throw new EmlaAppsException("No app found to view media."); // todo handle at mapping
         appSucceed(get);
     }
 }

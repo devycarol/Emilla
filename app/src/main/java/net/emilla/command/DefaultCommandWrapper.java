@@ -13,7 +13,7 @@ public class DefaultCommandWrapper extends EmillaCommand {
     private final EmillaCommand mCmd; // Todo: allow app commands
 
     @Override
-    protected CharSequence name() {
+    public CharSequence name() {
         return mCmd.name();
     }
 

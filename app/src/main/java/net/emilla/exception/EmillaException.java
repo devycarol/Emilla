@@ -1,18 +1,25 @@
 package net.emilla.exception;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 
 public abstract class EmillaException extends RuntimeException {
 
-    private final String mMessage;
+    @StringRes
+    private final int mTitle, mMessage;
 
-    public EmillaException(@NonNull String message) {
+    public EmillaException(@StringRes int title, @StringRes int msg) {
         super();
-        mMessage = message;
+        mTitle = title;
+        mMessage = msg;
     }
 
-    @Override @NonNull
-    public String getMessage() {
+    @StringRes
+    public int title() {
+        return mTitle;
+    }
+
+    @StringRes
+    public int message() {
         return mMessage;
     }
 }

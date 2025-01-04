@@ -4,6 +4,7 @@ import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.command.EmillaCommand;
+import net.emilla.run.MessageFailure;
 import net.emilla.utils.Lang;
 
 public abstract class CoreCommand extends EmillaCommand {
@@ -21,7 +22,7 @@ public abstract class CoreCommand extends EmillaCommand {
     }
 
     @Override
-    protected CharSequence name() {
+    public CharSequence name() {
         return string(mNameId);
     }
 
@@ -38,5 +39,9 @@ public abstract class CoreCommand extends EmillaCommand {
     @Override
     public CharSequence title() {
         return Lang.colonConcat(resources, mNameId, mInstructionId);
+    }
+
+    protected void fail(@StringRes int msg) {
+        fail(new MessageFailure(activity, mNameId, msg));
     }
 }

@@ -8,6 +8,8 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.AssistActivity;
+import net.emilla.R;
+import net.emilla.exception.EmlaAppsException;
 import net.emilla.utils.Apps;
 import net.emilla.utils.Dialogs;
 
@@ -17,7 +19,7 @@ public abstract class CategoryCommand extends CoreCommand {
 
     private final int mAppCount;
     private Intent mLaunchIntent;
-    private AlertDialog mAppChooser;
+    private AlertDialog.Builder mAppChooser;
 
     public CategoryCommand(AssistActivity act, String instruct, String category,
             @StringRes int nameId, @StringRes int instructionId) {
@@ -27,15 +29,13 @@ public abstract class CategoryCommand extends CoreCommand {
         List<ResolveInfo> appList = Apps.resolveList(pm, category);
         mAppCount = appList.size();
         if (mAppCount == 1) mLaunchIntent = Apps.launchIntent(appList.get(0).activityInfo);
-        else if (mAppCount > 1) mAppChooser = Dialogs.appChooser(act, pm, appList).create();
+        else if (mAppCount > 1) mAppChooser = Dialogs.appChooser(act, pm, appList);
     }
-
-    protected abstract void noSuchApp(); // TODO: handle at mapping
 
     @Override
     protected void run() {
         switch (mAppCount) {
-        case 0 -> noSuchApp();
+        case 0 -> throw new EmlaAppsException(R.string.error, R.string.error_no_app);
         case 1 -> appSucceed(mLaunchIntent);
         default -> offerDialog(mAppChooser);
         // todo: allow to select a default app, ensuring that the preference is cleared if ever the default is no longer installed or a new candidate is installed

@@ -35,8 +35,8 @@ public class AppSearch extends AppCommand {
         for (String alias : searchAliases)
         if (lcQuery.startsWith(alias)) {
             // Todo livecmd: visual indication that this will be used
-            String actualQuery = query.substring(alias.length()).trim();
-            if (!actualQuery.isEmpty()) mSearchIntent.putExtra(SearchManager.QUERY, actualQuery);
+            query = query.substring(alias.length()).trim();
+            if (!query.isEmpty()) mSearchIntent.putExtra(SearchManager.QUERY, query);
             appSucceed(mSearchIntent);
             return;
         }

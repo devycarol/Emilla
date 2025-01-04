@@ -45,11 +45,11 @@ public class Clock extends CoreCommand {
             localTime = string(R.string.toast_local_time, time.format(cal.getTime()));
         }
         // todo: configurable format &/ allow adjustment via the command instruction
-        give(localTime, false);
+        giveText(localTime, false);
     }
 
     @Override
     protected void run(String location) {
-        throw new EmlaBadCommandException("Sorry! No locations or elapse-time yet, working on it."); // TODO
+        throw new EmlaBadCommandException(R.string.command_clock, R.string.error_unfinished_clock_location_elapse); // TODO
     }
 }

@@ -4,6 +4,7 @@ import static java.util.Arrays.copyOfRange;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.view.inputmethod.EditorInfo;
 
@@ -60,6 +61,7 @@ public abstract class OpenCommand extends CoreCommand {
         for (int i = 0; i < appCount; ++i) {
             ActivityInfo info = mAppList.get(i).activityInfo;
 
+            PackageManager pm = pm();
             CharSequence label = info.loadLabel(pm);
             String lcLabel = label.toString().toLowerCase();
 
@@ -70,7 +72,7 @@ public abstract class OpenCommand extends CoreCommand {
                 otherIntents = null;
 
                 prefLabels[0] = label;
-                prefIntents[0] = getIntent(info.packageName, info.name);
+                prefIntents[0] = makeIntent(info.packageName, info.name);
                 prefCount = 1;
 
                 for (++i; i < appCount; ++i) { // continue searching for duplicates only
@@ -80,7 +82,7 @@ public abstract class OpenCommand extends CoreCommand {
 
                     if (lcLabel.equals(lcQuery)) {
                         prefLabels[prefCount] = label;
-                        prefIntents[prefCount] = getIntent(info.packageName, info.name);
+                        prefIntents[prefCount] = makeIntent(info.packageName, info.name);
                         ++prefCount;
                     }
                 }
@@ -89,7 +91,7 @@ public abstract class OpenCommand extends CoreCommand {
                 break; // search is finished
             }
             if (lcLabel.contains(lcQuery)) {
-                Intent in = getIntent(info.packageName, info.name);
+                Intent in = makeIntent(info.packageName, info.name);
                 if (lcLabel.startsWith(lcQuery)) {
                     prefLabels[prefCount] = label;
                     prefIntents[prefCount] = in;
@@ -114,10 +116,11 @@ public abstract class OpenCommand extends CoreCommand {
         } // else `other` arrays are null
 
         switch (prefCount) {
-        case 0 -> throw new EmlaAppsException(string(R.string.error_no_apps));
+        case 0 -> throw new EmlaAppsException(R.string.error, R.string.error_apps_not_found);
+        // Todo: offer to search app store
         case 1 -> appSucceed(prefIntents[0]);
         default -> offerDialog(getDialog(prefLabels, prefCount, prefIntents));
     }}
 
-    protected abstract Intent getIntent(String pkg, String cls);
+    protected abstract Intent makeIntent(String pkg, String cls);
 }

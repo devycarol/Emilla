@@ -45,7 +45,7 @@ public class AppCommand extends EmillaCommand {
     }
 
     @Override
-    protected CharSequence name() {
+    public CharSequence name() {
         return mInfo.label;
     }
 

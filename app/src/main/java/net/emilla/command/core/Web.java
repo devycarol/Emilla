@@ -10,12 +10,8 @@ import androidx.annotation.DrawableRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.exception.EmlaAppsException;
 
 public class Web extends CoreCommand {
-
-    private final Intent mIntent = new Intent(ACTION_WEB_SEARCH);
-    private final boolean mUnsafe; // todo: handle at mapping and remove
 
     @Override @DrawableRes
     public int icon() {
@@ -29,18 +25,15 @@ public class Web extends CoreCommand {
 
     public Web(AssistActivity act, String instruct) {
         super(act, instruct, R.string.command_web, R.string.instruction_web);
-        mUnsafe = mIntent.resolveActivity(pm) == null;
     }
 
     @Override
     protected void run() {
-        if (mUnsafe) throw new EmlaAppsException("No app found for web search.");
-        appSucceed(mIntent);
+        appSucceed(new Intent(ACTION_WEB_SEARCH));
     }
 
     @Override
     protected void run(String searchOrUrl) {
-        if (mUnsafe) throw new EmlaAppsException("No app found for web search.");
-        appSucceed(mIntent.putExtra(QUERY, searchOrUrl));
+        appSucceed(new Intent(ACTION_WEB_SEARCH).putExtra(QUERY, searchOrUrl));
     }
 }

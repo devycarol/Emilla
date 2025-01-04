@@ -10,12 +10,8 @@ public abstract class DialogRun implements CommandRun {
     private final AlertDialog mDialog;
 
     public DialogRun(AssistActivity act, AlertDialog.Builder builder) {
-        this(act, builder.create());
-    }
-
-    public DialogRun(AssistActivity act, AlertDialog dialog) {
         mActivity = act;
-        mDialog = dialog;
+        mDialog = builder.create();
     }
 
     @Override

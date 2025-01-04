@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,17 +49,17 @@ import net.emilla.content.ContactReceiver;
 import net.emilla.content.FileContract;
 import net.emilla.content.MediaContract;
 import net.emilla.exception.EmillaException;
+import net.emilla.run.BugFailure;
 import net.emilla.run.DialogOffering;
 import net.emilla.run.Failure;
 import net.emilla.run.Gift;
+import net.emilla.run.MessageFailure;
 import net.emilla.run.Offering;
 import net.emilla.run.Success;
-import net.emilla.run.ToastFailure;
 import net.emilla.settings.SettingVals;
 import net.emilla.system.EmillaForegroundService;
 import net.emilla.utils.Apps;
 import net.emilla.utils.Contacts;
-import net.emilla.utils.Dialogs;
 import net.emilla.utils.Lang;
 import net.emilla.view.ActionButton;
 
@@ -81,7 +80,6 @@ public class AssistActivity extends EmillaActivity {
     private ActionButton mShowDataButton;
     private LinearLayout mActionsContainer;
     private LinearLayout mFieldsContainer;
-    private AlertDialog mCancelDialog;
 
     private QuickAction mNoCommandAction;
     private QuickAction mDoubleAssistAction;
@@ -102,7 +100,9 @@ public class AssistActivity extends EmillaActivity {
     private boolean mFocused = false;
     private boolean mPendingCancel = false;
     private boolean mDialogOpen = false;
-    private boolean mDontChime = false;
+    private boolean
+            mDontChimePend = false,
+            mDontChimeResume = false;
     private boolean mHasTitlebar;
 
 //    public static long nanosPlease(long prevTime, String label) {
@@ -378,7 +378,7 @@ public class AssistActivity extends EmillaActivity {
     protected void onResume() {
         super.onResume();
         if (!mFocused) {
-            if (mLaunched) resume(true);
+            if (mLaunched) resume();
             else mLaunched = true;
             mFocused = true;
         }
@@ -393,7 +393,7 @@ public class AssistActivity extends EmillaActivity {
             if (shouldCancel()) cancel();
             // TODO: the launch fail bug is caused by focus stealing
             else if (!mDialogOpen) {
-                if (mDontChime) mDontChime = false;
+                if (mDontChimePend) mDontChimePend = false;
                 else chime(PEND);
             }
         }
@@ -416,7 +416,10 @@ public class AssistActivity extends EmillaActivity {
             else cancelIfWarranted();
         }
         case KEYCODE_MENU -> mMenuKeyAction.perform();
-        case KEYCODE_SEARCH -> refreshInput(); // Todo config
+        case KEYCODE_SEARCH -> {
+            restartInput(); // Todo config
+            chime(ACT);
+        }
         default -> { return false; }
         }
         return true;
@@ -518,24 +521,16 @@ public class AssistActivity extends EmillaActivity {
         // default to the command field
     }
 
-    public void retrieveFiles(AttachReceiver retriever, String mimeType) {
-        mFileContract.retrieve(retriever, mimeType);
-    }
-
-    public void retrieveMedia(AttachReceiver receiver) {
-        mMediaContract.retrieve(receiver);
-    }
-
-    public void retrieveContact(ContactReceiver receiver) {
-        mContactContract.retrieve(receiver);
-    }
-
     /*=========*
      * Setters *
      *=========*/
 
     public void suppressPendingChime() {
-        mDontChime = true;
+        mDontChimePend = true;
+    }
+
+    public void suppressResumeChime() {
+        mDontChimeResume = true;
     }
 
     /*====================*
@@ -548,56 +543,57 @@ public class AssistActivity extends EmillaActivity {
         mChimer.chime(id);
     }
 
-    private void resume(boolean chime) {
-        if (!mDialogOpen && chime) chime(RESUME);
+    private void resume() {
+        if (!mDialogOpen) {
+            if (mDontChimeResume) mDontChimeResume = false;
+            else chime(RESUME);
+        }
     }
 
-    public void refreshInput() {
-        mCommandField.selectAll();
-        chime(ACT);
+    public void restartInput() {
+        focusedEditBox().selectAll();
     }
 
     public boolean shouldCancel() {
         return mCommandField.length() + mDataField.length() == 0;
     }
 
-    private void cancel() {
+    public void cancel() {
         chime(EXIT);
         finishAndRemoveTask();
     }
 
-    public void onCloseDialog(boolean chime) {
+    public void onCloseDialog() {
         mEmptySpace.setEnabled(true);
         mSubmitButton.setEnabled(true);
         mDialogOpen = false;
 
-        resume(chime);
+        resume();
     }
 
     private void declineCancel() {
         mPendingCancel = false;
-        onCloseDialog(true);
+        onCloseDialog();
     }
 
     private void cancelIfWarranted() {
         if (shouldCancel()) cancel();
         else {
             mPendingCancel = true;
-            if (mCancelDialog == null) {
-                mCancelDialog = Dialogs.okCancelMsg(this, R.string.dialog_exit, R.string.dlg_msg_exit,
-                        (dialog, id) -> cancel())
-                        .setNegativeButton(android.R.string.cancel, (dialog, which) -> declineCancel())
-                        .setOnCancelListener(dialog -> declineCancel())
-                        .create();
-                mCancelDialog.setOnKeyListener((dialog, keyCode, keyEvent) -> {
-                    if (keyCode == KEYCODE_BACK && keyEvent.getAction() == ACTION_UP) {
-                        cancel();
-                        return true;
-                    }
-                    return false;
-                });
-            }
-            offer(new DialogOffering(this, mCancelDialog));
+            AlertDialog.Builder cancelDialog = new AlertDialog.Builder(this)
+                    .setTitle(R.string.exit)
+                    .setMessage(R.string.dlg_msg_exit)
+                    .setPositiveButton(R.string.leave, (dialog, id) -> cancel())
+                    .setNegativeButton(android.R.string.cancel, (dialog, which) -> declineCancel())
+                    .setOnCancelListener(dialog -> declineCancel())
+                    .setOnKeyListener((dialog, keyCode, keyEvent) -> {
+                if (keyCode == KEYCODE_BACK && keyEvent.getAction() == ACTION_UP) {
+                    cancel();
+                    return true;
+                }
+                return false;
+            });
+            offer(new DialogOffering(this, cancelDialog));
         }
     }
 
@@ -613,6 +609,18 @@ public class AssistActivity extends EmillaActivity {
     public void offer(Offering offering) {
         offering.run();
         chime(PEND);
+    }
+
+    public void offerFiles(AttachReceiver retriever, String mimeType) {
+        mFileContract.retrieve(retriever, mimeType);
+    }
+
+    public void offerMedia(AttachReceiver receiver) {
+        mMediaContract.retrieve(receiver);
+    }
+
+    public void offerContacts(ContactReceiver receiver) {
+        mContactContract.retrieve(receiver);
     }
 
     public void give(Gift gift) {
@@ -641,10 +649,8 @@ public class AssistActivity extends EmillaActivity {
             ((DataCmd) mCommand).execute(mDataField.getText().toString());
         } else mCommand.execute();
     } catch (EmillaException e) {
-        fail(new ToastFailure(this, e.getMessage()));
-    } catch (Exception e) {
-        fail(new ToastFailure(this, getString(R.string.toast_error_unknown)));
-        Log.e("UNKNOWN COMMAND ERROR", "in command " + mCommand.getClass().getSimpleName(), e);
-        // Todo: easy bug reporting ;)
+        fail(new MessageFailure(this, e.title(), e.message()));
+    } catch (RuntimeException e) {
+        fail(new BugFailure(this, e, mCommand.name()));
     }}
 }

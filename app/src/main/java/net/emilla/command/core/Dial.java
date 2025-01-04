@@ -11,7 +11,6 @@ import androidx.annotation.DrawableRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.exception.EmlaAppsException;
 
 public class Dial extends CoreCommand {
 
@@ -38,13 +37,11 @@ public class Dial extends CoreCommand {
 
     @Override
     protected void run() {
-        if (pm.resolveActivity(mIntent, 0) == null) throw new EmlaAppsException("No dialer app found on your device."); // todo handle at mapping
         appSucceed(mIntent);
     }
 
     @Override
     protected void run(String nameOrNumber) {
-        if (pm.resolveActivity(mIntent, 0) == null) throw new EmlaAppsException("No dialer app found on your device."); // todo handle at mapping
         appSucceed(mIntent.setData(parse("tel:" + nameOrNumber)));
     }
 }

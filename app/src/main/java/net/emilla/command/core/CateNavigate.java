@@ -10,7 +10,6 @@ import androidx.annotation.DrawableRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.exception.EmlaAppsException;
 import net.emilla.utils.Apps;
 
 public class CateNavigate extends CategoryCommand {
@@ -32,14 +31,8 @@ public class CateNavigate extends CategoryCommand {
     }
 
     @Override
-    protected void noSuchApp() {
-        throw new EmlaAppsException("No maps app found for your device.");
-    }
-
-    @Override
     protected void run(String location) {
         // Todo: location bookmarks, navigate to contacts' addresses
-        if (mIntent.setData(Uri.parse("geo:0,0?q=" + location)).resolveActivity(pm) == null) throw new EmlaAppsException("No app found for web search."); // todo handle at mapping
-        appSucceed(mIntent);
+        appSucceed(mIntent.setData(Uri.parse("geo:0,0?q=" + location)));
     }
 }

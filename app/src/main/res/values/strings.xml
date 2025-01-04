@@ -2,8 +2,11 @@
     <!-- Common strings -->
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="close">Close</string>
+    <string name="exit">Exit</string>
+    <string name="leave">Leave</string>
     <string name="settings">Settings</string>
+    <!-- Generic error title. Should match @android:string/error_message_title -->
+    <string name="error">Error</string>
     <!-- Android system "App info" link. Should match @android:string/app_info -->
     <string name="app_info">App info</string>
     <string name="always">Always</string>
@@ -252,30 +255,61 @@
     <string name="data_hint_app_send_data">Message (cont.)</string>
 
     <!-- Error messages for failed commands -->
-    <string name="error_no_apps">Apps weren\'t found</string>
-    <string name="error_bad_minutes">Invalid minute value: %s</string>
+    <string name="error_bad_minutes">Invalid minute value.</string>
+    <string name="error_invalid_time">Invalid time!</string>
+    <string name="error_excess_time_units">Too many time units!</string>
+    <string name="error_excess_timespan">You can\'t span more than 2 times.</string>
+    <string name="error_excess_timespans">You can\'t have multiple timespans.</string>
+    <string name="error_invalid_duration">Invalid duration!</string>
+    <string name="error_multiple_dates">You can\'t have multiple dates.</string>
+    <string name="error_invalid_weekday">Not a weekday!</string>
+    <string name="error_invalid_weekday_format">Invalid weekday format.</string>
+    <string name="error_excess_weekdays">You can\'t have duplicate weekdays.</string>
+    <string name="error_duplicate_tags">You can\'t have duplicate tags.</string>
+    <string name="error_calc_malformed_expression">Malformed expression!</string>
+    <string name="error_calc_undefined">Undefined!</string>
+    <string name="error_no_contact_phone">The contact doesn\'t have a phone number.</string>
+    <!-- Should match @android:string/noApplications. -->
+    <string name="error_no_app">No apps can perform this action.</string>
+    <string name="error_apps_not_found">Apps weren\'t found.</string>
+    <string name="error_cant_uninstall">Failed to uninstall the app.</string>
+    <string name="error_lmao">This is really really bad!</string>
+    <string name="error_feature_phone">Your device doesn\'t support phone calls.</string>
+    <string name="error_feature_sms">Your device doesn\'t support SMS messaging.</string>
+    <string name="error_unfinished_feature">Unfinished feature!</string>
+    <string name="error_unfinished_reminders">Sorry! I don\'t know how to make reminders yet.</string>
+    <string name="error_unfinished_notes">Sorry! I don\'t know how to write notes yet.</string>
+    <string name="error_unfinished_version">Sorry! This command doesn\'t support your Android version yet.</string>
+    <string name="error_unfinished_contact_search">Sorry! I don\'t know how to search through contacts yet.</string>
+    <string name="error_unfinished_contact_details">Sorry! I can\'t parse contact info yet.</string>
+    <string name="error_unfinished_file_search">Sorry! I don\'t know how to search for files yet.</string>
+    <string name="error_unfinished_categorical_app_search">Sorry! I don\'t have categorical app search yet.</string>
+    <string name="error_unfinished_timer_label">Sorry! I can\'t label the timer without a duration.</string>
+    <string name="error_unfinished_clock_location_elapse">Sorry! No locations or elapse-time yet, working on it.</string>
+    <string name="error_unknown">Unknown error</string>
+    <string name="error_bug_report_please">Please submit the bug report!</string>
+    <string name="email_bug_report">Email report</string>
 
     <!-- Alert dialogs -->
-    <string name="dialog_exit">Exit?</string>
-        <!-- The user may use the back button/gesture to confirm the exit dialog. -->
-        <string name="dlg_msg_exit">"You may 'back' to confirm."</string>
-    <string name="dialog_permissions">Permissions</string>
-        <string name="dlg_msg_perm_denial">%s permission is denied, but you can allow it in settings.</string>
-        <string name="dlg_msg_perm_consent">Is it okay to %s?</string>
     <string name="dialog_app">Select application</string>
+
     <string name="dialog_media">Select media</string>
-        <string name="dialog_no_bookmarks">No bookmarks</string>
-        <string name="dlg_msg_choose_media">Search will improve in future releases.</string>
-        <string name="dlg_yes_add_bookmarks">Add more</string>
+    <string name="dialog_no_bookmarks">No bookmarks</string>
+    <string name="dlg_msg_choose_media">Search will improve in future releases.</string>
+    <string name="dlg_yes_add_bookmarks">Add more</string>
+
     <string name="dialog_command">Select command</string>
 
-    <!-- Permissions in present-participle tense. Ex: "Calling permission is denied, but you can allow it in settings." -->
-    <string name="perm_calling">Calling</string>
-    <string name="perm_contacts">Contacts</string>
+    <!-- The user may use the back button or gesture to confirm the exit dialog. -->
+    <string name="dlg_msg_exit">"You may 'back' to confirm."</string>
 
-    <!-- Permission descriptions in present tense. Ex: "Is it okay to make immediate phone calls?" -->
-    <string name="perm_desc_calling">make immediate phone calls</string>
-    <string name="perm_desc_contacts">read device contacts</string>
+    <string name="dlg_msg_perm_denial">Permission is denied, but you can allow it in settings.</string>
+
+    <!-- Permission labels  -->
+    <string name="perm_calling">Calling</string>
+    <string name="perm_consent_call">Is it okay to make immediate phone calls?</string>
+    <string name="perm_contacts">Contacts</string>
+    <string name="perm_consent_contacts">Is it okay to read device contacts?</string>
 
     <string name="memo_pomodoro_break">Pomodoro break</string>
 
@@ -295,7 +329,6 @@
     </plurals>
     <string name="toast_media_not_selected">Media weren\'t selected.</string>
     <string name="toast_contact_not_selected">A contact wasn\'t selected.</string>
-    <string name="toast_error_unknown">Unknown error. Please submit a bug report!</string>
 
     <string name="tag_toast_long">/long</string>
 </resources>

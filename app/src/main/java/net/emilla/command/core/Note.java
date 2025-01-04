@@ -6,7 +6,7 @@ import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.exception.EmlaAppsException;
+import net.emilla.exception.EmlaBadCommandException;
 
 public class Note extends CoreDataCommand {
 
@@ -31,21 +31,21 @@ public class Note extends CoreDataCommand {
 
     @Override
     protected void run() {
-        throw new EmlaAppsException("Sorry! I don't know how to write notes yet.");
+        throw new EmlaBadCommandException(R.string.command_note, R.string.error_unfinished_notes);
     }
 
     @Override
     protected void run(String title) {
-        throw new EmlaAppsException("Sorry! I don't know how to write notes yet.");
+        throw new EmlaBadCommandException(R.string.command_note, R.string.error_unfinished_notes);
     }
 
     @Override
     protected void runWithData(String text) {
-        throw new EmlaAppsException("Sorry! I don't know how to write notes yet.");
+        throw new EmlaBadCommandException(R.string.command_note, R.string.error_unfinished_notes);
     }
 
     @Override
     protected void runWithData(String title, String text) {
-        throw new EmlaAppsException("Sorry! I don't know how to write notes yet.");
+        throw new EmlaBadCommandException(R.string.command_note, R.string.error_unfinished_notes);
     }
 }

@@ -9,8 +9,4 @@ public class DialogFailure extends DialogRun implements Failure {
     public DialogFailure(AssistActivity act, AlertDialog.Builder builder) {
         super(act, builder);
     }
-
-    public DialogFailure(AssistActivity act, AlertDialog dialog) {
-        super(act, dialog);
-    }
 }

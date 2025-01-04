@@ -1,10 +1,12 @@
 package net.emilla.exception;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 
 public class EmlaFeatureException extends EmillaException {
 
-    public EmlaFeatureException(@NonNull String message) { // TODO: handle at install
-        super(message);
+    @Deprecated
+    public EmlaFeatureException(@StringRes int title, @StringRes int msg) {
+        // TODO: handle these at install
+        super(title, msg);
     }
 }

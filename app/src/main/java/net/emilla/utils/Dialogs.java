@@ -15,7 +15,7 @@ import androidx.appcompat.app.AlertDialog;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.run.AppSuccess;
-import net.emilla.run.ToastFailure;
+import net.emilla.run.MessageFailure;
 
 import java.util.List;
 
@@ -24,55 +24,39 @@ public final class Dialogs {
     public static AlertDialog.Builder base(AssistActivity act, @StringRes int title) {
         return new AlertDialog.Builder(act)
                 .setTitle(title)
-                .setOnCancelListener(dialog -> act.onCloseDialog(true)); // todo: separate function for the special case that doesn't want this listener
+                .setOnCancelListener(dialog -> act.onCloseDialog()); // Todo: don't require this
     }
 
-    public static AlertDialog.Builder msg(AssistActivity act, @StringRes int title, @StringRes int msg) {
+    public static AlertDialog.Builder base(AssistActivity act, @StringRes int title,
+            @StringRes int msg) {
         return base(act, title).setMessage(msg);
     }
 
-    public static AlertDialog.Builder msg(AssistActivity act, @StringRes int title, String msg) {
-        return base(act, title).setMessage(msg);
+    public static AlertDialog.Builder baseCancel(AssistActivity act, @StringRes int title,
+            @StringRes int msg) {
+        return baseCancel(act, title, msg, android.R.string.ok);
     }
 
-    private static AlertDialog.Builder dual(AssistActivity act, AlertDialog.Builder builder,
-            @StringRes int posId, int negId, DialogInterface.OnClickListener yes) {
-        return builder.setPositiveButton(posId, yes)
-                .setNegativeButton(negId, (dialog, which) -> act.onCloseDialog(true));
+    public static AlertDialog.Builder baseCancel(AssistActivity act, @StringRes int title,
+            @StringRes int msg, @StringRes int negLabel) {
+        return base(act, title, msg).setNegativeButton(negLabel,
+                (dialog, which) -> act.onCloseDialog());
     }
 
-    public static AlertDialog.Builder okCancel(AssistActivity act, @StringRes int title,
-            @StringRes int yesId, DialogInterface.OnClickListener yes) {
-        return dual(act, base(act, title), yesId, android.R.string.cancel, yes);
+    public static AlertDialog.Builder dual(AssistActivity act, @StringRes int title,
+            @StringRes int msg, @StringRes int posLabel, DialogInterface.OnClickListener yesClick) {
+        return dual(act, title, msg, posLabel, android.R.string.cancel, yesClick);
     }
 
-    public static AlertDialog.Builder okCancel(AssistActivity act, @StringRes int title,
-            DialogInterface.OnClickListener yes) {
-        return dual(act, base(act, title), android.R.string.ok, android.R.string.cancel, yes);
+    public static AlertDialog.Builder dual(AssistActivity act, @StringRes int title,
+            @StringRes int msg, @StringRes int posLabel, @StringRes int negLabel,
+            DialogInterface.OnClickListener yesClick) {
+        return baseCancel(act, title, msg, negLabel).setPositiveButton(posLabel, yesClick);
     }
 
-    public static AlertDialog.Builder okCancelMsg(AssistActivity act,
-            @StringRes int title, @StringRes int msg, @StringRes int yesId,
-            DialogInterface.OnClickListener yes) {
-        return dual(act, msg(act, title, msg), yesId, android.R.string.cancel, yes);
-    }
-
-    public static AlertDialog.Builder okCancelMsg(AssistActivity act, @StringRes int title,
-            String msg, @StringRes int yesId,
-            DialogInterface.OnClickListener yes) {
-        return dual(act, msg(act, title, msg), yesId, android.R.string.cancel, yes);
-    }
-
-    public static AlertDialog.Builder okCancelMsg(AssistActivity act,
-            @StringRes int title, @StringRes int msg,
-            DialogInterface.OnClickListener yes) {
-        return dual(act, msg(act, title, msg), android.R.string.ok, android.R.string.cancel, yes);
-    }
-
-    public static AlertDialog.Builder yesNoMsg(AssistActivity act,
-            @StringRes int title, String msg,
-            DialogInterface.OnClickListener yes) {
-        return dual(act, msg(act, title, msg), R.string.yes, R.string.no, yes);
+    public static AlertDialog.Builder yesNo(AssistActivity act, @StringRes int title,
+            @StringRes int msg, DialogInterface.OnClickListener yes) {
+        return dual(act, title, msg, R.string.yes, R.string.no, yes);
     }
 
     public static TimePickerDialog timePicker(Context ctx, OnTimeSetListener listener) {
@@ -86,16 +70,6 @@ public final class Dialogs {
     public static AlertDialog.Builder withIntents(AlertDialog.Builder builder,
             AssistActivity act, CharSequence[] labels, Intent[] intents) {
         return builder.setItems(labels, (dialog, which) -> act.succeed(new AppSuccess(act, intents[which])));
-    }
-
-    public static AlertDialog.Builder withNullableIntents(AlertDialog.Builder builder,
-            AssistActivity act, CharSequence[] labels, Intent[] intents,
-            String failMsg) {
-        return builder.setItems(labels, (dialog, which) -> {
-            Intent in = intents[which];
-            if (in == null) act.fail(new ToastFailure(act, failMsg));
-            else act.succeed(new AppSuccess(act, in));
-        });
     }
 
     private static AlertDialog.Builder withApps(AlertDialog.Builder builder,
@@ -117,8 +91,14 @@ public final class Dialogs {
 
     private static AlertDialog.Builder withUninstalls(AlertDialog.Builder builder,
             AssistActivity act, PackageManager pm, List<ResolveInfo> appList) {
-        return withNullableIntents(builder, act, Apps.labels(appList, pm), Apps.uninstalls(appList, pm),
-                "No settings app found for your device"); // Todo: instead handle at mapping somehow
+        CharSequence[] labels = Apps.labels(appList, pm);
+        Intent[] intents = Apps.uninstalls(appList, pm);
+        return builder.setItems(labels, (dialog, which) -> {
+            if (intents[which] == null) act.fail(new MessageFailure(act, R.string.command_uninstall,
+                    R.string.error_cant_uninstall));
+            // Todo: instead handle at mapping somehow
+            else act.succeed(new AppSuccess(act, intents[which]));
+        });
     }
 
     public static AlertDialog.Builder appUninstaller(AssistActivity act,

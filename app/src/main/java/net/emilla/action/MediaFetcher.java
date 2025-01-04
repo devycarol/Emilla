@@ -45,6 +45,6 @@ public class MediaFetcher implements QuickAction {
 
     @Override
     public void perform() {
-        mActivity.retrieveMedia(mReceiver);
+        mActivity.offerMedia(mReceiver);
     }
 }

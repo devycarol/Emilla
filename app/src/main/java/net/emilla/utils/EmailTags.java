@@ -5,6 +5,7 @@ import static java.util.regex.Pattern.compile;
 
 import android.content.Intent;
 
+import net.emilla.R;
 import net.emilla.exception.EmlaBadCommandException;
 
 import java.util.HashMap;
@@ -21,7 +22,7 @@ public final class EmailTags { // Todo lang
     public static boolean itHas(String text, String tagRgx) {
         Matcher m = compile(tagRgx + "\\s+\\S", CASE_INSENSITIVE).matcher(text); // must be trimmed
         if (m.find()) {
-            if (m.find()) throw new EmlaBadCommandException("You can't have duplicate tags.");
+            if (m.find()) throw new EmlaBadCommandException(R.string.command_email, R.string.error_duplicate_tags);
             return true;
         }
         return false;

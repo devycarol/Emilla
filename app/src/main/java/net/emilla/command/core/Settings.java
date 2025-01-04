@@ -10,11 +10,8 @@ import androidx.annotation.DrawableRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.exception.EmlaAppsException;
 
 public class Settings extends CoreCommand {
-
-    private final Intent mIntent = new Intent(ACTION_SETTINGS);
 
     @Override @ArrayRes
     public int detailsId() {
@@ -37,8 +34,7 @@ public class Settings extends CoreCommand {
 
     @Override
     protected void run() {
-        if (mIntent.resolveActivity(pm) == null) throw new EmlaAppsException("No app found for system settings."); // todo handle at mapping
-        appSucceed(mIntent);
+        appSucceed(new Intent(ACTION_SETTINGS));
     }
 
     @Override

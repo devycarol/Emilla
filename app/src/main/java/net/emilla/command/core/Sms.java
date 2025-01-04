@@ -2,10 +2,10 @@ package net.emilla.command.core;
 
 import static android.content.Intent.ACTION_SENDTO;
 import static android.content.Intent.EXTRA_SUBJECT;
-import static android.content.pm.PackageManager.FEATURE_TELEPHONY_MESSAGING;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 
 import androidx.annotation.ArrayRes;
 import androidx.annotation.DrawableRes;
@@ -16,9 +16,9 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.action.field.FieldToggle;
 import net.emilla.action.field.SubjectField;
-import net.emilla.exception.EmlaAppsException;
 import net.emilla.exception.EmlaFeatureException;
 import net.emilla.utils.Contacts;
+import net.emilla.utils.Features;
 
 import java.util.HashMap;
 
@@ -72,8 +72,11 @@ public class Sms extends CoreDataCommand {
     }
 
     private void launchMessenger(Intent intent) {
-        if (!pm.hasSystemFeature(FEATURE_TELEPHONY_MESSAGING)) throw new EmlaFeatureException("Your device doesn't support SMS messaging."); // TODO: handle at install—don't store in sharedprefs in case of settings sync/transfer
-        if (pm.resolveActivity(intent, 0) == null) throw new EmlaAppsException("No SMS app found on your device."); // todo handle at mapping
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !Features.sms(pm())) {
+            throw new EmlaFeatureException(R.string.command_sms, R.string.error_feature_sms);
+            // TODO: handle at install—don't store in sharedprefs in case of settings sync/transfer
+            //  It's also possible that this check isn't necessary.
+        }
         String subject = mSubjectToggle.fieldText();
         appSucceed(subject == null ? intent : intent.putExtra(EXTRA_SUBJECT, subject));
         // TODO: I've not gotten this to work yet

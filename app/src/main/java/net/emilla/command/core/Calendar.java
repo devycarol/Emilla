@@ -21,7 +21,6 @@ import net.emilla.R;
 import net.emilla.action.field.FieldToggle;
 import net.emilla.action.field.LocationField;
 import net.emilla.action.field.UrlField;
-import net.emilla.exception.EmlaAppsException;
 import net.emilla.exception.EmlaBadCommandException;
 import net.emilla.utils.Apps;
 import net.emilla.utils.Time;
@@ -91,14 +90,13 @@ public class Calendar extends CoreDataCommand {
             mIntent.putExtra(EXTRA_EVENT_BEGIN_TIME, times[0]);
             if (times[1] != 0) mIntent.putExtra(EXTRA_EVENT_END_TIME, times[1]);
         }
-        default -> throw new EmlaBadCommandException("You can't have multiple dates.");
+        default -> throw new EmlaBadCommandException(R.string.command_calendar, R.string.error_multiple_dates);
         }
         if (!title.isEmpty()) mIntent.putExtra(TITLE, title);
     }
 
     @Override
     protected void run() {
-        if (mIntent.resolveActivity(pm) == null) throw new EmlaAppsException("No calendar app found on your device."); // todo: handle at mapping
         String location = mLocationToggle.fieldText();
         if (location != null) mIntent.putExtra(EVENT_LOCATION, location);
         String url = mUrlToggle.fieldText();

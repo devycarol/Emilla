@@ -8,7 +8,6 @@ import androidx.annotation.DrawableRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.exception.EmlaAppsException;
 import net.emilla.utils.Calculator;
 
 public class CateCalculate extends CategoryCommand {
@@ -28,12 +27,7 @@ public class CateCalculate extends CategoryCommand {
     }
 
     @Override
-    protected void noSuchApp() {
-        throw new EmlaAppsException("No calculator app found for your device.");
-    }
-
-    @Override
     protected void run(String expression) {
-        give(String.valueOf(Calculator.compute(expression)), true);
+        giveText(String.valueOf(Calculator.compute(expression)), true);
     }
 }

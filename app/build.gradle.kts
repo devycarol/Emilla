@@ -14,6 +14,9 @@ android {
         versionName = "Alpha 1.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "APPLICATION_NAME", "\"Emilla Nebula\"")
+        buildConfigField("String", "VERSION_CODENAME", "\"Protostar\"")
     }
 
     buildTypes {
@@ -29,6 +32,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
     lint {
         disable.add("SuspiciousIndentation")

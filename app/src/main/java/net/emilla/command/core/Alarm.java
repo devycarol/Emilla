@@ -11,7 +11,6 @@ import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.exception.EmlaAppsException;
 import net.emilla.utils.Dialogs;
 import net.emilla.utils.Time;
 
@@ -71,7 +70,6 @@ public class Alarm extends CoreDataCommand {
     }
 
     private void execute(Intent intent) {
-        if (intent.resolveActivity(pm) == null) throw new EmlaAppsException("No alarm clock app found on your device."); // TODO: handle at mapping - both intents will probably need to be checked
         appSucceed(intent);
     }
 
@@ -92,7 +90,7 @@ public class Alarm extends CoreDataCommand {
         putLabel(label);
         mTimePicker.setOnCancelListener(dialog -> {
             mSetIntent.removeExtra(EXTRA_MESSAGE);
-            onCloseDialog(true);
+            onCloseDialog();
         });
         offerTimePicker(mTimePicker);
     }

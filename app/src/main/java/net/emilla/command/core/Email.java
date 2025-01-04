@@ -13,7 +13,6 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.action.FileFetcher;
 import net.emilla.action.MediaFetcher;
-import net.emilla.exception.EmlaAppsException;
 import net.emilla.utils.Contacts;
 import net.emilla.utils.EmailTags;
 
@@ -98,37 +97,21 @@ public class Email extends AttachCommand {
 
     @Override
     protected void run() {
-        Intent intent = makeIntent();
-        if (intent.resolveActivity(pm) == null) { // todo handle at mapping
-            throw new EmlaAppsException("No email app found on your device.");
-        }
-        appSucceed(intent);
+        appSucceed(makeIntent());
     }
 
     @Override
     protected void run(String recipients) {
-        Intent intent = makeIntent(recipients);
-        if (intent.resolveActivity(pm) == null) { // todo handle at mapping
-            throw new EmlaAppsException("No email app found on your device.");
-        }
-        appSucceed(intent);
+        appSucceed(makeIntent(recipients));
     }
 
     @Override
     protected void runWithData(String body) {
-        Intent intent = makeIntent();
-        if (intent.resolveActivity(pm) == null) { // todo handle at mapping
-            throw new EmlaAppsException("No email app found on your device.");
-        }
-        appSucceed(intent.putExtra(EXTRA_TEXT, body));
+        appSucceed(makeIntent().putExtra(EXTRA_TEXT, body));
     }
 
     @Override
     protected void runWithData(String recipients, String body) {
-        Intent intent = makeIntent(recipients);
-        if (intent.resolveActivity(pm) == null) { // todo handle at mapping
-            throw new EmlaAppsException("No email app found on your device.");
-        }
-        appSucceed(intent.putExtra(EXTRA_TEXT, body));
+        appSucceed(makeIntent(recipients).putExtra(EXTRA_TEXT, body));
     }
 }

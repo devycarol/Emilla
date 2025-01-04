@@ -5,6 +5,7 @@ import static java.lang.Math.pow;
 import static java.util.regex.Pattern.CASE_INSENSITIVE;
 import static java.util.regex.Pattern.compile;
 
+import net.emilla.R;
 import net.emilla.exception.EmlaBadCommandException;
 
 import java.util.regex.Matcher;
@@ -144,16 +145,13 @@ public final class Calculator { // i should definitely be using an expression tr
     public static long compute(String expression) {
         // Todo: ans, floating point math, many more math functions...
         if (expression.matches("[+-]?\\d+")) return parseLong(expression);
-        try {
-            return evaluate(cleanup(expression));
-        }
-        catch (NumberFormatException e) {
-            throw new EmlaBadCommandException("Malformed expression!");
-        }
-        catch (ArithmeticException e) {
-            throw new EmlaBadCommandException("Undefined!");
-        }
-    }
+    try {
+        return evaluate(cleanup(expression));
+    } catch (NumberFormatException e) {
+        throw new EmlaBadCommandException(R.string.command_calculate, R.string.error_calc_malformed_expression);
+    } catch (ArithmeticException e) {
+        throw new EmlaBadCommandException(R.string.command_calculate, R.string.error_calc_undefined);
+    }}
 
     private Calculator() {}
 }

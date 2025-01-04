@@ -15,6 +15,7 @@ import android.provider.Settings;
 
 import androidx.annotation.NonNull;
 
+import net.emilla.BuildConfig;
 import net.emilla.EmillaActivity;
 
 import java.util.List;
@@ -22,7 +23,7 @@ import java.util.List;
 public class Apps {
 
     public static final String
-            PKG = "net.emilla.nebula",
+            MY_PKG = BuildConfig.APPLICATION_ID,
             PKG_AOSP_CONTACTS = "com.android.contacts",
             PKG_MARKOR = "net.gsantner.markor",
             PKG_FIREFOX = "org.mozilla.firefox",

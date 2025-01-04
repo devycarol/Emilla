@@ -50,7 +50,7 @@ public class FileFetcher implements QuickAction, AttachReceiver {
 
     @Override
     public void perform() {
-        mActivity.retrieveFiles(this, mMimeType);
+        mActivity.offerFiles(this, mMimeType);
     }
 
     @Override

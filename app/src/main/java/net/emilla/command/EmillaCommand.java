@@ -22,9 +22,12 @@ import net.emilla.action.QuickAction;
 import net.emilla.command.app.AppCmdInfo;
 import net.emilla.run.AppSuccess;
 import net.emilla.run.DialogOffering;
+import net.emilla.run.Failure;
+import net.emilla.run.Gift;
 import net.emilla.run.Offering;
 import net.emilla.run.Success;
 import net.emilla.run.TimePickerOffering;
+import net.emilla.run.ToastGift;
 import net.emilla.settings.Aliases;
 
 import java.util.List;
@@ -124,13 +127,11 @@ public abstract class EmillaCommand {
 
     protected final AssistActivity activity;
     protected final Resources resources;
-    protected final PackageManager pm;
     protected String mInstruction;
 
     protected EmillaCommand(AssistActivity act, String instruct) {
         activity = act;
         resources = act.getResources();
-        pm = act.getPackageManager();
         mInstruction = instruct;
     }
 
@@ -174,8 +175,8 @@ public abstract class EmillaCommand {
         return resources.getStringArray(id);
     }
 
-    protected String packageName() {
-        return activity.getPackageName();
+    protected PackageManager pm() {
+        return activity.getPackageManager();
     }
 
     public void execute() {
@@ -223,11 +224,9 @@ public abstract class EmillaCommand {
     /**
      * This should be called any time a dialog is closed without calling {@link this#appSucceed(Intent)} to
      * reactivate the UI.
-     *
-     * @param chime whether to play a 'resume' sound if wanted
      */
-    protected void onCloseDialog(boolean chime) {
-        activity.onCloseDialog(chime);
+    protected void onCloseDialog() {
+        activity.onCloseDialog();
     }
 
     /*======================================================================================*
@@ -237,6 +236,7 @@ public abstract class EmillaCommand {
     /**
      * Completes the work that the user wants from the assistant and closes it. Typically entails
      * opening another app window, handing work to another program.
+     *
      * @param success finishes the work of the assistant.
      */
     protected void succeed(Success success) {
@@ -255,6 +255,16 @@ public abstract class EmillaCommand {
     }
 
     /**
+     * Gives the user a gadget to play with. The assistant is done with its work for now and the
+     * user can use the gadget for whatever they need it for.
+     *
+     * @param gift gadget for the user.
+     */
+    protected void give(Gift gift) {
+        activity.give(gift);
+    }
+
+    /**
      * Todo: these toast messages should generally be replaced with widget dialogs (which would have
      *  their own "here you go" chime). Text displayed in toasts can't be copied, and excessive
      *  toasting is disruptive (the messages cover the keyboard and are opaque in many ROMs)
@@ -262,18 +272,17 @@ public abstract class EmillaCommand {
      * @param text is shown as a toast notification at the bottom of the screen. Don't hard-code text.
      * @param longToast whether to use Toast.LENGTH_LONG. Use this sparingly, for reasons above.
      */
-    protected void give(CharSequence text, boolean longToast) {
-        activity.toast(text, longToast);
-        activity.refreshInput();
-        activity.onCloseDialog(false); // todo: revise handling and remove
+    @Deprecated
+    protected void giveText(CharSequence text, boolean longToast) {
+        give(new ToastGift(activity, text, longToast));
     }
 
     /**
-     * The user is "offered" a tool to complete their command with. Successful use of the tool should
-     * lead to a prompt 'success', whereas canceled use should lead to a full reset of the command and
-     * UI to their pre-offer state.
+     * Offers the user a tool to complete their command. Successful use of the tool should lead to a
+     * prompt 'success', whereas canceled use should lead to a full reset of the command and UI to
+     * their pre-offer state.
      *
-     * @param offering the tool for the user.
+     * @param offering tool for the user.
      */
     protected void offer(Offering offering) {
         activity.offer(offering);
@@ -283,12 +292,18 @@ public abstract class EmillaCommand {
         offer(new DialogOffering(activity, builder));
     }
 
-    protected void offerDialog(AlertDialog dialog) {
-        offer(new DialogOffering(activity, dialog));
-    }
-
     protected void offerTimePicker(TimePickerDialog dialog) {
         offer(new TimePickerOffering(activity, dialog));
+    }
+
+    /**
+     * Stops the command in its tracks because something has gone wrong. Offers the user a tool to
+     * help fix the problem.
+     *
+     * @param failure tool for the user to resolve the issue.
+     */
+    protected void fail(Failure failure) {
+        activity.fail(failure);
     }
 
     /*==========================*
@@ -304,7 +319,7 @@ public abstract class EmillaCommand {
         return false;
     }
 
-    protected abstract CharSequence name();
+    public abstract CharSequence name();
     protected abstract CharSequence dupeLabel(); // Todo: replace with icons
     protected abstract CharSequence lcName();
     protected abstract CharSequence title();

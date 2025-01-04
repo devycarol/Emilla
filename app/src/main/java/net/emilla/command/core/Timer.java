@@ -12,7 +12,6 @@ import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.exception.EmlaAppsException;
 import net.emilla.exception.EmlaBadCommandException;
 import net.emilla.utils.Time;
 
@@ -38,11 +37,7 @@ public class Timer extends CoreDataCommand {
         return timeUnits[0] * 3600 + timeUnits[1] * 60 + timeUnits[2] - offset;
     }
 
-    private final Intent mIntent = new Intent(ACTION_SET_TIMER)
-            .putExtra(EXTRA_SKIP_UI, true);
-        private final Intent mUiIntent = new Intent(ACTION_SET_TIMER);
-
-        @Override @ArrayRes
+    @Override @ArrayRes
     public int detailsId() {
         return R.array.details_timer;
     }
@@ -61,21 +56,29 @@ public class Timer extends CoreDataCommand {
         super(act, instruct, R.string.command_timer, R.string.instruction_timer);
     }
 
+    private Intent makeIntent() {
+        return new Intent(ACTION_SET_TIMER);
+    }
+
+    private Intent makeIntent(String duration) {
+        return makeIntent()
+                .putExtra(EXTRA_SKIP_UI, true)
+                .putExtra(EXTRA_LENGTH, seconds(this, duration));
+    }
+
     @Override
     protected void run() {
-        if (mUiIntent.resolveActivity(pm) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
-        appSucceed(mUiIntent);
+        appSucceed(makeIntent());
     }
 
     @Override
     protected void run(String duration) {
-        if (mIntent.resolveActivity(pm) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
-        appSucceed(mIntent.putExtra(EXTRA_LENGTH, seconds(this, duration)));
+        appSucceed(makeIntent(duration));
     }
 
     @Override
     protected void runWithData(String title) {
-        throw new EmlaBadCommandException("Sorry! I can't label the timer without a duration.");
+        throw new EmlaBadCommandException(R.string.command_timer, R.string.error_unfinished_timer_label);
         // TODO: is this always the case? I'd strongly prefer to defer to the user's app's UI. At
         //  the least, this failure should be replaced with an input dialog for com.android.deskclock
         //  in the *current* android version (previous ones may have been more functional, as we
@@ -84,7 +87,6 @@ public class Timer extends CoreDataCommand {
 
     @Override
     protected void runWithData(String duration, String title) {
-        if (mIntent.resolveActivity(pm) == null) throw new EmlaAppsException("No timer app found on your device."); // todo handle at mapping
-        appSucceed(mIntent.putExtra(EXTRA_LENGTH, seconds(this, duration)).putExtra(EXTRA_MESSAGE, title));
+        appSucceed(makeIntent(duration).putExtra(EXTRA_MESSAGE, title));
     }
 }

@@ -17,22 +17,22 @@ public class OpenUninstall extends OpenCommand {
         return R.drawable.ic_uninstall;
     }
 
-    @Override
-    protected AlertDialog.Builder getAppChooser(AssistActivity act) {
-        return Dialogs.appUninstaller(act, mAppList);
-    }
-
     public OpenUninstall(AssistActivity act, String instruct) {
         super(act, instruct, R.string.command_uninstall, R.string.instruction_app);
     }
 
     @Override
-    protected void run() {
-        offerDialog(mAppChooser);
+    protected AlertDialog.Builder getAppChooser(AssistActivity act) {
+        return Dialogs.appUninstaller(act, mAppList);
     }
 
     @Override
-    protected Intent getIntent(String pkg, String cls) {
-        return Apps.uninstallIntent(pkg, pm);
+    protected Intent makeIntent(String pkg, String cls) {
+        return Apps.uninstallIntent(pkg, pm());
+    }
+
+    @Override
+    protected void run() {
+        offerDialog(mAppChooser);
     }
 }
