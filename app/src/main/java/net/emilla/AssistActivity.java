@@ -43,13 +43,13 @@ import net.emilla.command.CmdTree;
 import net.emilla.command.DataCmd;
 import net.emilla.command.EmillaCommand;
 import net.emilla.command.core.Bookmark;
-import net.emilla.content.AppChoiceReceiver;
-import net.emilla.content.AppChooserContract;
-import net.emilla.content.ContactContract;
-import net.emilla.content.ContactReceiver;
-import net.emilla.content.FileContract;
-import net.emilla.content.FileReceiver;
-import net.emilla.content.MediaContract;
+import net.emilla.content.receive.AppChoiceReceiver;
+import net.emilla.content.receive.ContactReceiver;
+import net.emilla.content.receive.FileReceiver;
+import net.emilla.content.retrieve.AppChoiceRetriever;
+import net.emilla.content.retrieve.ContactRetriever;
+import net.emilla.content.retrieve.FileRetriever;
+import net.emilla.content.retrieve.MediaRetriever;
 import net.emilla.exception.EmillaException;
 import net.emilla.run.BugFailure;
 import net.emilla.run.DialogOffering;
@@ -87,10 +87,10 @@ public class AssistActivity extends EmillaActivity {
     private QuickAction mDoubleAssistAction;
     private QuickAction mMenuKeyAction;
 
-    private FileContract mFileContract;
-    private MediaContract mMediaContract;
-    private ContactContract mContactContract;
-    private AppChooserContract mAppChooserContract;
+    private FileRetriever mFileRetriever;
+    private MediaRetriever mMediaRetriever;
+    private ContactRetriever mContactRetriever;
+    private AppChoiceRetriever mAppChoiceRetriever;
 
     private EmillaCommand mCommand;
 
@@ -187,10 +187,10 @@ public class AssistActivity extends EmillaActivity {
         setupShowDataButton(alwaysShowData);
         setupMoreActions();
 
-        mFileContract = new FileContract(this);
-        mMediaContract = new MediaContract(this);
-        mContactContract = new ContactContract(this);
-        mAppChooserContract = new AppChooserContract(this);
+        mFileRetriever = new FileRetriever(this);
+        mMediaRetriever = new MediaRetriever(this);
+        mContactRetriever = new ContactRetriever(this);
+        mAppChoiceRetriever = new AppChoiceRetriever(this);
         // TODO: save state hell. rotation deletes attachments ughhhhh probably because the command
         //  tree is rebuilt.
     }
@@ -621,20 +621,20 @@ public class AssistActivity extends EmillaActivity {
     }
 
     public void offerFiles(FileReceiver retriever, String mimeType) {
-        mFileContract.retrieve(retriever, mimeType);
+        mFileRetriever.retrieve(retriever, mimeType);
     }
 
     public void offerMedia(FileReceiver receiver) {
-        mMediaContract.retrieve(receiver);
+        mMediaRetriever.retrieve(receiver);
         chime(PEND);
     }
 
     public void offerContacts(ContactReceiver receiver) {
-        mContactContract.retrieve(receiver);
+        mContactRetriever.retrieve(receiver);
     }
 
     public void offerChooser(AppChoiceReceiver receiver, Intent target, @StringRes int title) {
-        mAppChooserContract.retrieve(receiver, target, title);
+        mAppChoiceRetriever.retrieve(receiver, target, title);
         chime(PEND);
     }
 

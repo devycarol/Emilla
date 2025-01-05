@@ -1,4 +1,4 @@
-package net.emilla.content;
+package net.emilla.content.retrieve;
 
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -10,17 +10,18 @@ import androidx.activity.result.contract.ActivityResultContracts.StartActivityFo
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
+import net.emilla.content.receive.AppChoiceReceiver;
 
-public class AppChooserContract extends ResultContract<Intent, ActivityResult, AppChoiceReceiver> {
+public class AppChoiceRetriever extends ResultRetriever<Intent, ActivityResult, AppChoiceReceiver> {
 
-    public AppChooserContract(AssistActivity act) {
+    public AppChoiceRetriever(AssistActivity act) {
         super(act, new StartActivityForResult());
     }
 
     public void retrieve(AppChoiceReceiver receiver, Intent target, @StringRes int title) {
         if (alreadyHas(receiver)) return;
 
-        AppChoiceRetriever.setContract(this);
+        AppChoiceBroadcastReceiver.setRetriever(this);
 
         target.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
@@ -28,7 +29,7 @@ public class AppChooserContract extends ResultContract<Intent, ActivityResult, A
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             int flags = PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_UPDATE_CURRENT;
             IntentSender sender = PendingIntent.getBroadcast(activity, 0,
-                    new Intent(activity, AppChoiceRetriever.class), flags).getIntentSender();
+                    new Intent(activity, AppChoiceBroadcastReceiver.class), flags).getIntentSender();
 
             chooser = Intent.createChooser(target, activity.getString(title), sender);
         } else chooser = Intent.createChooser(target, activity.getString(title));
@@ -57,7 +58,7 @@ public class AppChooserContract extends ResultContract<Intent, ActivityResult, A
         protected void onActivityResult(ActivityResult output, AppChoiceReceiver receiver) {
             if (receiver == null) return;
             receiver.provide(false);
-            AppChoiceRetriever.deleteContract();
+            AppChoiceBroadcastReceiver.deleteRetriever();
         }
     }
 }

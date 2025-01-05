@@ -6,7 +6,7 @@ import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.content.FileReceiver;
+import net.emilla.content.receive.FileReceiver;
 
 import java.util.ArrayList;
 import java.util.List;

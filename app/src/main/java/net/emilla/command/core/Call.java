@@ -12,7 +12,7 @@ import androidx.annotation.DrawableRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.content.ContactReceiver;
+import net.emilla.content.receive.ContactReceiver;
 import net.emilla.exception.EmlaFeatureException;
 import net.emilla.utils.Contacts;
 import net.emilla.utils.Features;

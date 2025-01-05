@@ -13,7 +13,7 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.action.FileFetcher;
 import net.emilla.action.MediaFetcher;
-import net.emilla.content.AppChoiceReceiver;
+import net.emilla.content.receive.AppChoiceReceiver;
 import net.emilla.utils.Apps;
 import net.emilla.utils.Files.MimeType;
 

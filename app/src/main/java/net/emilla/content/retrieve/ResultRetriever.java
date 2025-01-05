@@ -1,4 +1,4 @@
-package net.emilla.content;
+package net.emilla.content.retrieve;
 
 import android.util.Log;
 
@@ -7,17 +7,18 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContract;
 
 import net.emilla.AssistActivity;
+import net.emilla.content.receive.ResultReceiver;
 
-abstract class ResultContract<I, O, R extends Receiver> {
+abstract class ResultRetriever<I, O, R extends ResultReceiver> {
 
-    private static final String TAG = FileContract.class.getSimpleName();
+    private static final String TAG = FileRetriever.class.getSimpleName();
 
     protected final AssistActivity activity;
     protected final ActivityResultLauncher<I> launcher;
     @Deprecated // Todo: incorporate these in the launchers directly if possible.
     private R receiver;
 
-    protected ResultContract(AssistActivity act, ActivityResultContract<I, O> contract) {
+    protected ResultRetriever(AssistActivity act, ActivityResultContract<I, O> contract) {
         this.activity = act;
         this.launcher = act.registerForActivityResult(contract, makeCallback());
     }
@@ -48,8 +49,8 @@ abstract class ResultContract<I, O, R extends Receiver> {
 
         @Override
         public final void onActivityResult(O output) {
-            R receiver = ResultContract.this.receiver;
-            ResultContract.this.receiver = null;
+            R receiver = ResultRetriever.this.receiver;
+            ResultRetriever.this.receiver = null;
             onActivityResult(output, receiver);
         }
 

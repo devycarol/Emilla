@@ -1,18 +1,15 @@
 package net.emilla.action;
 
 import android.content.res.Resources;
-import android.net.Uri;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.content.FileReceiver;
+import net.emilla.content.receive.FileReceiver;
 
-import java.util.List;
-
-public class FileFetcher implements QuickAction, FileReceiver {
+public class FileFetcher implements QuickAction {
 
     public static final int ID = R.id.action_get_files;
 
@@ -50,12 +47,7 @@ public class FileFetcher implements QuickAction, FileReceiver {
 
     @Override
     public void perform() {
-        mActivity.offerFiles(this, mMimeType);
-    }
-
-    @Override
-    public void provide(List<Uri> attachments) {
+        mActivity.offerFiles(mReceiver, mMimeType);
         // TODO: visual feedback via attachment manager widget
-        mReceiver.provide(attachments);
     }
 }

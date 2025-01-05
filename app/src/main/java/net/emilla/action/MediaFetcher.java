@@ -7,7 +7,7 @@ import androidx.annotation.IdRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.content.FileReceiver;
+import net.emilla.content.receive.FileReceiver;
 
 public class MediaFetcher implements QuickAction {
 

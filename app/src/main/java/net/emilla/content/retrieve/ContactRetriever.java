@@ -1,4 +1,4 @@
-package net.emilla.content;
+package net.emilla.content.retrieve;
 
 import android.net.Uri;
 
@@ -6,10 +6,11 @@ import androidx.activity.result.contract.ActivityResultContracts.PickContact;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.content.receive.ContactReceiver;
 
-public class ContactContract extends ResultContract<Void, Uri, ContactReceiver> {
+public class ContactRetriever extends ResultRetriever<Void, Uri, ContactReceiver> {
 
-    public ContactContract(AssistActivity act) {
+    public ContactRetriever(AssistActivity act) {
         super(act, new PickContact());
     }
 

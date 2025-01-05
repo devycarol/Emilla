@@ -14,7 +14,7 @@ import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.content.ContactReceiver;
+import net.emilla.content.receive.ContactReceiver;
 import net.emilla.exception.EmlaBadCommandException;
 import net.emilla.utils.Apps;
 

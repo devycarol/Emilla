@@ -1,4 +1,4 @@
-package net.emilla.content;
+package net.emilla.content.retrieve;
 
 import static net.emilla.chime.Chimer.RESUME;
 
@@ -10,12 +10,13 @@ import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.content.receive.FileReceiver;
 
 import java.util.List;
 
-public class MediaContract extends ResultContract<PickVisualMediaRequest, List<Uri>, FileReceiver> {
+public class MediaRetriever extends ResultRetriever<PickVisualMediaRequest, List<Uri>, FileReceiver> {
 
-    public MediaContract(AssistActivity act) {
+    public MediaRetriever(AssistActivity act) {
         super(act, new PickMultipleVisualMedia());
     }
 
