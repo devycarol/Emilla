@@ -1,45 +1,34 @@
 package net.emilla.content;
 
 import android.net.Uri;
-import android.util.Log;
 
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts.PickContact;
 
-import net.emilla.EmillaActivity;
+import net.emilla.AssistActivity;
 import net.emilla.R;
 
-public class ContactContract {
+public class ContactContract extends ResultContract<Void, Uri, ContactReceiver> {
 
-    private static final String TAG = ContactContract.class.getSimpleName();
-
-    private final EmillaActivity mActivity;
-    private final ActivityResultLauncher<Void> mLauncher;
-    private ContactReceiver mReceiver;
-
-    public ContactContract(EmillaActivity act) {
-        mActivity = act;
-        mLauncher = act.registerForActivityResult(new PickContact(), new ContactCallback());
+    public ContactContract(AssistActivity act) {
+        super(act, new PickContact());
     }
 
     public void retrieve(ContactReceiver receiver) {
-        if (mReceiver != null) {
-            Log.d(TAG, "retrieve: result launcher already engaged. Not launching again.");
-            return;
-        }
-
-        mReceiver = receiver;
-        mLauncher.launch(null);
+        if (alreadyHas(receiver)) return;
+        launcher.launch(null);
     }
 
-    private class ContactCallback implements ActivityResultCallback<Uri> {
+    @Override
+    protected ResultCallback makeCallback() {
+        return new ContactCallback();
+    }
+
+    private class ContactCallback extends ResultCallback {
 
         @Override
-        public void onActivityResult(Uri contact) {
-            if (contact != null) mReceiver.provide(contact);
-            else mActivity.toast(R.string.toast_contact_not_selected);
-            mReceiver = null;
+        protected void onActivityResult(Uri contact, ContactReceiver receiver) {
+            if (contact != null) receiver.provide(contact);
+            else activity.toast(R.string.toast_contact_not_selected);
         }
     }
 }

@@ -4,7 +4,7 @@ import android.net.Uri;
 
 import java.util.List;
 
-public interface FileReceiver {
+public interface FileReceiver extends Receiver {
 
     /**
      * Provides attachments to the object. Be sure to trigger visual and spoken feedback as needed.

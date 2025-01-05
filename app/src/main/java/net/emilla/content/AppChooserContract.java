@@ -4,46 +4,22 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;
 import androidx.annotation.StringRes;
 
-import net.emilla.EmillaActivity;
+import net.emilla.AssistActivity;
 
-public class AppChooserContract {
+public class AppChooserContract extends ResultContract<Intent, ActivityResult, AppChoiceReceiver> {
 
-    private static final String TAG = AppChooserContract.class.getSimpleName();
-
-    private final EmillaActivity mActivity;
-    private final ActivityResultLauncher<Intent> mLauncher;
-    private AppChoiceReceiver mReceiver;
-
-    public AppChooserContract(EmillaActivity act) {
-        mActivity = act;
-        mLauncher = act.registerForActivityResult(new StartActivityForResult(), new AppCallback());
-    }
-
-    @Deprecated
-    public AppChoiceReceiver receiver() {
-        return mReceiver;
-    }
-
-    @Deprecated
-    public void deleteReceiver() {
-        mReceiver = null;
+    public AppChooserContract(AssistActivity act) {
+        super(act, new StartActivityForResult());
     }
 
     public void retrieve(AppChoiceReceiver receiver, Intent target, @StringRes int title) {
-        if (mReceiver != null) {
-            Log.d(TAG, "retrieve: result launcher already engaged. Not launching again.");
-            return;
-        }
+        if (alreadyHas(receiver)) return;
 
-        mReceiver = receiver;
         AppChoiceRetriever.setContract(this);
 
         target.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -51,22 +27,36 @@ public class AppChooserContract {
         Intent chooser;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             int flags = PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_UPDATE_CURRENT;
-            IntentSender sender = PendingIntent.getBroadcast(mActivity, 0,
-                    new Intent(mActivity, AppChoiceRetriever.class), flags).getIntentSender();
+            IntentSender sender = PendingIntent.getBroadcast(activity, 0,
+                    new Intent(activity, AppChoiceRetriever.class), flags).getIntentSender();
 
-            chooser = Intent.createChooser(target, mActivity.getString(title), sender);
-        } else chooser = Intent.createChooser(target, mActivity.getString(title));
+            chooser = Intent.createChooser(target, activity.getString(title), sender);
+        } else chooser = Intent.createChooser(target, activity.getString(title));
 
-        mLauncher.launch(chooser);
+        launcher.launch(chooser);
     }
 
-    private class AppCallback implements ActivityResultCallback<ActivityResult> {
+    @Deprecated
+    public final AppChoiceReceiver receiver() {
+        return super.receiver();
+    }
+
+    @Deprecated
+    public final void deleteReceiver() {
+        super.deleteReceiver();
+    }
+
+    @Override
+    protected ResultCallback makeCallback() {
+        return new AppCallback();
+    }
+
+    private class AppCallback extends ResultCallback {
 
         @Override
-        public void onActivityResult(ActivityResult result) {
-            if (mReceiver == null) return;
-            mReceiver.provide(false);
-            mReceiver = null;
+        protected void onActivityResult(ActivityResult output, AppChoiceReceiver receiver) {
+            if (receiver == null) return;
+            receiver.provide(false);
             AppChoiceRetriever.deleteContract();
         }
     }

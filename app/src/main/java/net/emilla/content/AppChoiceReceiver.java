@@ -1,6 +1,6 @@
 package net.emilla.content;
 
-public interface AppChoiceReceiver {
+public interface AppChoiceReceiver extends Receiver {
 
     /**
      * Notifies the object of whether the chooser was accepted or dismissed

@@ -323,11 +323,11 @@
         <item quantity="other">%d tasks created.</item>
     </plurals>
     <string name="toast_files_not_selected">Files weren\'t selected.</string>
+    <string name="toast_media_not_selected">Media weren\'t selected.</string>
     <plurals name="toast_files_attached">
         <item quantity="one">1 file attached.</item>
         <item quantity="other">%d files attached.</item>
     </plurals>
-    <string name="toast_media_not_selected">Media weren\'t selected.</string>
     <string name="toast_contact_not_selected">A contact wasn\'t selected.</string>
 
     <string name="tag_toast_long">/long</string>
