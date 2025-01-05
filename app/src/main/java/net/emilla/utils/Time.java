@@ -8,12 +8,15 @@ import static java.util.Calendar.*;
 import static java.util.regex.Pattern.CASE_INSENSITIVE;
 import static java.util.regex.Pattern.compile;
 
+import net.emilla.EmillaActivity;
 import net.emilla.R;
 import net.emilla.exception.EmlaBadCommandException;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.regex.Matcher;
 
+// Todo: this class is utterly unreadable
 public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
 
     private static final String JAN = "jan(uary)?", FEB = "feb(ruary)?", MAR = "mar(ch)?";
@@ -36,7 +39,7 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         return compile(rgx, CASE_INSENSITIVE).matcher(s).find();
     }
 
-    private static int[] splitTimeString(String time) {
+    private static int[] timeUnits(String time) {
         time = time.replaceAll("\\D", "");
         if (!time.matches("\\d{1,6}")) throw new EmlaBadCommandException(R.string.error, R.string.error_invalid_time);
 
@@ -54,21 +57,23 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
             s = parseInt(time.substring(len - 2));
         }}
 
-        return new int[]{h, m, s, 0};
+        return new int[]{h, m, s};
     }
 
-    public static int[] parseTime(String time) {
+    public static int[] parseTime(String time, EmillaActivity act /*todo jesus christ*/) {
         int period;
         if (time.matches("(?i).*\\d *A.*")) period = AM;
         else if (time.matches("(?i).*\\d *P.*")) period = PM;
         else period = -1;
 
-        int[] units = splitTimeString(time);
-        int h = units[0], m = units[1], s = units[2], warn = 0;
+        int[] units = timeUnits(time);
+        int h = units[0], m = units[1], s = units[2];
 
         if (period == -1) {
-            if (1 <= h && h <= 11) warn = 1;
-            if (h == 12) warn = 2;
+            if (act != null) {
+                if (1 <= h && h <= 11) act.toast("Warning! Time set for AM.");
+                if (h == 12) act.toast("Warning! Time set for PM.");
+            }
         } else {
             if (1 > h || h > 12) throw new EmlaBadCommandException(R.string.error, R.string.error_invalid_time);
             if (h == 12) h = 0;
@@ -77,11 +82,11 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
 
         if (h > 23 || max(m, s) > 59) throw new EmlaBadCommandException(R.string.error, R.string.error_invalid_time);
 
-        return new int[]{h, m, s, warn};
+        return new int[]{h, m, s};
     }
 
     private static int[] parseDurationUntil(String until) {
-        int[] endUnits = parseTime(until);
+        int[] endUnits = parseTime(until, null);
         int endHour = endUnits[0], endMin = endUnits[1], endSec = endUnits[2];
 
         Calendar cal = getInstance();
@@ -203,7 +208,6 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
     }
 
     private static Calendar parseDate(String s) { // TODO more formats but dear god locales ughhhhh
-        int day, month, year;
         Calendar cal = getInstance();
         cal.set(MILLISECOND, 0);
         cal.set(SECOND, 0);
@@ -256,10 +260,10 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
                     endTomorrow = true;
                     endStr = endStr.replaceFirst(" *tomorrow", "");
                 } else if (containsRgxIgnoreCase(endStr, "on "))
-                endTime = parseTime(endStr);
+                endTime = parseTime(endStr, null);
                 // fallthrough
             case 1:
-                startTime = parseTime(times[0]);
+                startTime = parseTime(times[0], null);
                 break;
             default: throw new EmlaBadCommandException(R.string.command_calendar, R.string.error_excess_timespan);
             }
@@ -306,34 +310,30 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         return sb.toString();
     }
 
-    public static int[] parseWeekdays(String s) {
+    public static ArrayList<Integer> parseWeekdays(String s) {
         s = s.toLowerCase().replaceAll("\\d?\\d *[ap]m?|[^\\w, ]+|\\d+", "").trim();
-        if (s.isEmpty()) return new int[0];
+        if (s.isEmpty()) return new ArrayList<>();
         if (!s.matches("\\w+( +\\w+){0,6}")) throw new EmlaBadCommandException(R.string.command_alarm, R.string.error_invalid_weekday_format);
 
         if (!s.matches("[umtwrfs]{1,7}")) s = buildWeekdayString(s);
 
-        int[] weekdays = new int[s.length()];
-        int i = 0;
+        ArrayList<Integer> weekdays = new ArrayList<>(s.length());
         do {
             char c = s.charAt(0);
             s = s.substring(1);
 
             if (s.indexOf(c) == -1) {
                 switch (c) {
-                case 'u' -> weekdays[i] = Calendar.SUNDAY;
-                case 'm' -> weekdays[i] = Calendar.MONDAY;
-                case 't' -> weekdays[i] = Calendar.TUESDAY;
-                case 'w' -> weekdays[i] = Calendar.WEDNESDAY;
-                case 'r' -> weekdays[i] = Calendar.THURSDAY;
-                case 'f' -> weekdays[i] = Calendar.FRIDAY;
-                case 's' -> weekdays[i] = Calendar.SATURDAY;
+                case 'u' -> weekdays.add(Calendar.SUNDAY);
+                case 'm' -> weekdays.add(Calendar.MONDAY);
+                case 't' -> weekdays.add(Calendar.TUESDAY);
+                case 'w' -> weekdays.add(Calendar.WEDNESDAY);
+                case 'r' -> weekdays.add(Calendar.THURSDAY);
+                case 'f' -> weekdays.add(Calendar.FRIDAY);
+                case 's' -> weekdays.add(Calendar.SATURDAY);
                 }
             } else throw new EmlaBadCommandException(R.string.command_alarm, R.string.error_excess_weekdays);
-
-            ++i;
-        }
-        while (!s.isEmpty());
+        } while (!s.isEmpty());
 
         return weekdays;
     }

@@ -1,13 +1,10 @@
 package net.emilla.utils;
 
-import android.app.TimePickerDialog;
-import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.text.format.DateFormat;
 
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
@@ -21,59 +18,46 @@ import java.util.List;
 
 public final class Dialogs {
 
-    public static AlertDialog.Builder base(AssistActivity act, @StringRes int title) {
-        return new AlertDialog.Builder(act)
-                .setTitle(title)
-                .setOnCancelListener(dialog -> act.onCloseDialog()); // Todo: don't require this
+    private static AlertDialog.Builder base(Context ctx, @StringRes int title) {
+        return new AlertDialog.Builder(ctx).setTitle(title);
     }
 
-    public static AlertDialog.Builder base(AssistActivity act, @StringRes int title,
-            @StringRes int msg) {
-        return base(act, title).setMessage(msg);
-    }
-
-    public static AlertDialog.Builder baseCancel(AssistActivity act, @StringRes int title,
-            @StringRes int msg) {
-        return baseCancel(act, title, msg, android.R.string.ok);
-    }
-
-    public static AlertDialog.Builder baseCancel(AssistActivity act, @StringRes int title,
+    public static AlertDialog.Builder base(Context ctx, @StringRes int title,
             @StringRes int msg, @StringRes int negLabel) {
-        return base(act, title, msg).setNegativeButton(negLabel,
-                (dialog, which) -> act.onCloseDialog());
+        return base(ctx, title).setMessage(msg).setNegativeButton(negLabel, (dlg, which) -> dlg.cancel());
+        // Todo: don't require to call the cancel listener
     }
 
-    public static AlertDialog.Builder dual(AssistActivity act, @StringRes int title,
-            @StringRes int msg, @StringRes int posLabel, DialogInterface.OnClickListener yesClick) {
-        return dual(act, title, msg, posLabel, android.R.string.cancel, yesClick);
+    public static AlertDialog.Builder listBase(Context ctx, @StringRes int title) {
+        return base(ctx, title).setNegativeButton(android.R.string.cancel, (dlg, which) -> dlg.cancel());
+        // TODO ACC: the cancel button is destroyed when the list is bigger than the screen for some
+        //  reason
+        // Todo: don't require to call the cancel listener
     }
 
-    public static AlertDialog.Builder dual(AssistActivity act, @StringRes int title,
-            @StringRes int msg, @StringRes int posLabel, @StringRes int negLabel,
+    public static AlertDialog.Builder dual(Context ctx, @StringRes int title, @StringRes int msg,
+            @StringRes int posLabel, DialogInterface.OnClickListener yesClick) {
+        return dual(ctx, title, msg, posLabel, android.R.string.cancel, yesClick);
+    }
+
+    public static AlertDialog.Builder dual(Context ctx, @StringRes int title, @StringRes int msg,
+            @StringRes int posLabel, @StringRes int negLabel,
             DialogInterface.OnClickListener yesClick) {
-        return baseCancel(act, title, msg, negLabel).setPositiveButton(posLabel, yesClick);
+        return base(ctx, title, msg, negLabel).setPositiveButton(posLabel, yesClick);
     }
 
-    public static AlertDialog.Builder yesNo(AssistActivity act, @StringRes int title,
-            @StringRes int msg, DialogInterface.OnClickListener yes) {
-        return dual(act, title, msg, R.string.yes, R.string.no, yes);
+    public static AlertDialog.Builder yesNo(Context ctx, @StringRes int title, @StringRes int msg,
+            DialogInterface.OnClickListener yesClick) {
+        return dual(ctx, title, msg, R.string.yes, R.string.no, yesClick);
     }
 
-    public static TimePickerDialog timePicker(Context ctx, OnTimeSetListener listener) {
-        return new TimePickerDialog(ctx, 0, listener, 12, 0, DateFormat.is24HourFormat(ctx));
-        // TODO: this isn't respecting the LineageOS system 24-hour setting
-        // should there be an option for default time to be noon vs. the current time? noon seems much
-        // more reasonable in all cases tbh. infinitely more predictable—who the heck wants to set a
-        // timer for right now?!
+    public static AlertDialog.Builder withIntents(AlertDialog.Builder builder, AssistActivity act,
+            CharSequence[] labels, Intent[] intents) {
+        return builder.setItems(labels, (dlg, which) -> act.succeed(new AppSuccess(act, intents[which])));
     }
 
-    public static AlertDialog.Builder withIntents(AlertDialog.Builder builder,
-            AssistActivity act, CharSequence[] labels, Intent[] intents) {
-        return builder.setItems(labels, (dialog, which) -> act.succeed(new AppSuccess(act, intents[which])));
-    }
-
-    private static AlertDialog.Builder withApps(AlertDialog.Builder builder,
-            AssistActivity act, PackageManager pm, List<ResolveInfo> appList) {
+    private static AlertDialog.Builder withApps(AlertDialog.Builder builder, AssistActivity act,
+            PackageManager pm, List<ResolveInfo> appList) {
         return withIntents(builder, act, Apps.labels(appList, pm), Apps.intents(appList));
     }
 
@@ -85,7 +69,7 @@ public final class Dialogs {
         //  on the accessibility topic, being able to speak/type a (nato?) letter would be helpful for everyone.
         //  basically: very accessible search interface
         // a choice between list and grid layout would be cool
-        AlertDialog.Builder base = base(act, R.string.dialog_app);
+        AlertDialog.Builder base = listBase(act, R.string.dialog_app);
         return withApps(base, act, pm, appList);
     }
 
@@ -93,7 +77,7 @@ public final class Dialogs {
             AssistActivity act, PackageManager pm, List<ResolveInfo> appList) {
         CharSequence[] labels = Apps.labels(appList, pm);
         Intent[] intents = Apps.uninstalls(appList, pm);
-        return builder.setItems(labels, (dialog, which) -> {
+        return builder.setItems(labels, (dlg, which) -> {
             if (intents[which] == null) act.fail(new MessageFailure(act, R.string.command_uninstall,
                     R.string.error_cant_uninstall));
             // Todo: instead handle at mapping somehow
@@ -101,9 +85,8 @@ public final class Dialogs {
         });
     }
 
-    public static AlertDialog.Builder appUninstaller(AssistActivity act,
-            List<ResolveInfo> appList) {
-        AlertDialog.Builder base = base(act, R.string.dialog_app);
+    public static AlertDialog.Builder appUninstaller(AssistActivity act, List<ResolveInfo> appList) {
+        AlertDialog.Builder base = listBase(act, R.string.dialog_app);
         return withUninstalls(base, act, act.getPackageManager(), appList);
     }
 

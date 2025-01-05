@@ -571,6 +571,7 @@ public class AssistActivity extends EmillaActivity {
         finishAndRemoveTask();
     }
 
+    @Deprecated
     public void onCloseDialog() {
         mEmptySpace.setEnabled(true);
         mSubmitButton.setEnabled(true);
@@ -591,10 +592,10 @@ public class AssistActivity extends EmillaActivity {
             AlertDialog.Builder cancelDialog = new AlertDialog.Builder(this)
                     .setTitle(R.string.exit)
                     .setMessage(R.string.dlg_msg_exit)
-                    .setPositiveButton(R.string.leave, (dialog, id) -> cancel())
-                    .setNegativeButton(android.R.string.cancel, (dialog, which) -> declineCancel())
-                    .setOnCancelListener(dialog -> declineCancel())
-                    .setOnKeyListener((dialog, keyCode, keyEvent) -> {
+                    .setPositiveButton(R.string.leave, (dlg, id) -> cancel())
+                    .setNegativeButton(android.R.string.cancel, (dlg, which) -> declineCancel())
+                    .setOnCancelListener(dlg -> declineCancel())
+                    .setOnKeyListener((dlg, keyCode, keyEvent) -> {
                 if (keyCode == KEYCODE_BACK && keyEvent.getAction() == ACTION_UP) {
                     cancel();
                     return true;

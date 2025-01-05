@@ -26,9 +26,9 @@ public final class Permissions {
 
     private static AlertDialog.Builder courtesyDialog(AssistActivity act, String permissionId,
             @StringRes int permissionName, @StringRes int consentMessage) {
-        return Dialogs.yesNo(act, permissionName, consentMessage, (dialog, which) -> {
+        return Dialogs.yesNo(act, permissionName, consentMessage, (dlg, which) -> {
             act.prefs().edit().putBoolean(permissionId, true).apply();
-            act.onCloseDialog();
+            dlg.cancel(); // Todo: don't require this
         });
         // Should there be a settings page to revoke these? It's just courtesy, but it could be
         // respectful to have a setting that withdraws all of these
@@ -41,12 +41,13 @@ public final class Permissions {
         boolean noAppInfo = settings.resolveActivity(pm) == null;
         if (noAppInfo) settings.setAction(Settings.ACTION_SETTINGS).setData(null)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        if (settings.resolveActivity(pm) == null) return Dialogs.baseCancel(act, permission, R.string.dlg_msg_perm_denial);
+        if (settings.resolveActivity(pm) == null) return Dialogs.base(act, permission,
+                R.string.dlg_msg_perm_denial, android.R.string.ok);
         int posLabel = noAppInfo ? R.string.settings : R.string.app_info;
-        return Dialogs.dual(act, permission, R.string.dlg_msg_perm_denial, posLabel, (dialog, which) -> {
+        return Dialogs.dual(act, permission, R.string.dlg_msg_perm_denial, posLabel, (dlg, which) -> {
             act.startActivity(settings);
             act.suppressResumeChime();
-            act.onCloseDialog();
+            dlg.cancel(); // Todo: don't require this
         });
     }
 

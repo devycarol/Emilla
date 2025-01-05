@@ -17,26 +17,6 @@ import net.emilla.utils.Time;
 
 public class Timer extends CoreDataCommand {
 
-    private static int seconds(Timer cmd, String duration) {
-        // todo: cleanup this logic
-        int[] timeUnits = Time.parseDuration(duration);
-        int warn = timeUnits[3];
-        if (warn > 0) { // todo: replace with a confirm/set-default dialog - reduces localization woes
-            String curPeriod, nextPeriod;
-            if (warn == 1) {
-                nextPeriod = "AM";
-                curPeriod = "PM";
-            } else {
-                nextPeriod = "PM";
-                curPeriod = "AM";
-            }
-            String endTime = format(ROOT, "%d:%02d%s", timeUnits[4], timeUnits[5], nextPeriod);
-            cmd.toast(format(ROOT, "Warning! Timer set for %s, not %s.", endTime, curPeriod), true); // not good...
-        }
-        int offset = timeUnits.length == 6 ? 1 : 0; // remind me what this means??
-        return timeUnits[0] * 3600 + timeUnits[1] * 60 + timeUnits[2] - offset;
-    }
-
     @Override @ArrayRes
     public int detailsId() {
         return R.array.details_timer;
@@ -63,7 +43,27 @@ public class Timer extends CoreDataCommand {
     private Intent makeIntent(String duration) {
         return makeIntent()
                 .putExtra(EXTRA_SKIP_UI, true)
-                .putExtra(EXTRA_LENGTH, seconds(this, duration));
+                .putExtra(EXTRA_LENGTH, seconds(duration));
+    }
+
+    private int seconds(String duration) {
+        // todo: cleanup this logic
+        int[] timeUnits = Time.parseDuration(duration);
+        int warn = timeUnits[3];
+        if (warn > 0) { // todo: replace with a confirm/set-default dialog - reduces localization woes
+            String curPeriod, nextPeriod;
+            if (warn == 1) {
+                nextPeriod = "AM";
+                curPeriod = "PM";
+            } else {
+                nextPeriod = "PM";
+                curPeriod = "AM";
+            }
+            String endTime = format(ROOT, "%d:%02d%s", timeUnits[4], timeUnits[5], nextPeriod);
+            toast(format(ROOT, "Warning! Timer set for %s, not %s.", endTime, curPeriod)); // not good...
+        }
+        int offset = timeUnits.length == 6 ? 1 : 0; // remind me what this means??
+        return timeUnits[0] * 60 * 60 + timeUnits[1] * 60 + timeUnits[2] - offset;
     }
 
     @Override

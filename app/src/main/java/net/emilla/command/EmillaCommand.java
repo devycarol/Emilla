@@ -2,7 +2,7 @@ package net.emilla.command;
 
 import static net.emilla.chime.Chimer.RESUME;
 
-import android.app.TimePickerDialog;
+import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -193,12 +193,7 @@ public abstract class EmillaCommand {
      *
      * @param text is shown as a toast notification at the bottom of the screen. Don't use
      *             hard-coded text.
-     * @param longToast whether to use Toast.LENGTH_LONG. Use this sparingly, for reasons above.
      */
-    protected void toast(CharSequence text, boolean longToast) {
-        activity.toast(text, longToast);
-    }
-
     protected void toast(CharSequence text) {
         activity.toast(text);
     }
@@ -221,14 +216,6 @@ public abstract class EmillaCommand {
 
     protected void removeAction(@IdRes int id) {
         activity.removeAction(id);
-    }
-
-    /**
-     * This should be called any time a dialog is closed without calling {@link this#appSucceed(Intent)} to
-     * reactivate the UI.
-     */
-    protected void onCloseDialog() {
-        activity.onCloseDialog();
     }
 
     protected void resume() {
@@ -302,8 +289,8 @@ public abstract class EmillaCommand {
         offer(new DialogOffering(activity, builder));
     }
 
-    protected void offerTimePicker(TimePickerDialog dialog) {
-        offer(new TimePickerOffering(activity, dialog));
+    protected void offerTimePicker(OnTimeSetListener timeSet) {
+        offer(new TimePickerOffering(activity, timeSet));
     }
 
     /**

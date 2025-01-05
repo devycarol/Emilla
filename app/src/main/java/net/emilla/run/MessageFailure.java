@@ -9,7 +9,7 @@ import net.emilla.utils.Dialogs;
 public class MessageFailure extends DialogFailure {
 
     public MessageFailure(AssistActivity act, @StringRes int title, @StringRes int msg) {
-        super(act, Dialogs.baseCancel(act, title, msg)
-                .setNeutralButton(R.string.leave, (dialog, which) -> act.cancel()));
+        super(act, Dialogs.base(act, title, msg, android.R.string.ok)
+                .setNeutralButton(R.string.leave, (dlg, which) -> act.cancel()));
     }
 }

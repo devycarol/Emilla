@@ -77,7 +77,7 @@ public class DuplicateCommand extends EmillaCommand implements DataCmd {
             // Todo: whittle down when data is entered and some of the commands don't use data
         }
         mUsesData = usesData;
-        mBuilder = Dialogs.base(act, R.string.dialog_command);
+        mBuilder = Dialogs.listBase(act, R.string.dialog_command);
     }
 
     private void chooseCommand(DialogInterface.OnClickListener listener) {
@@ -92,7 +92,7 @@ public class DuplicateCommand extends EmillaCommand implements DataCmd {
 
     @Override
     public void execute(String data) {
-        chooseCommand((dialog, which) -> {
+        chooseCommand((dlg, which) -> {
             EmillaCommand cmd = mCommands[which];
             if (cmd.usesData()) ((DataCmd) cmd).execute(data);
             else { // TODO: handle this more gracefully

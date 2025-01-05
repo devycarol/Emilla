@@ -35,8 +35,8 @@ public class BugFailure implements Failure {
         mActivity = act;
         mDialog = Dialogs.dual(act, R.string.error_unknown, R.string.error_bug_report_please,
                 R.string.email_bug_report, android.R.string.cancel,
-                (dialog, which) -> emailBugReport())
-            .setNeutralButton(R.string.leave, (dialog, which) -> act.cancel()).create();
+                (dlg, which) -> emailBugReport())
+            .setNeutralButton(R.string.leave, (dlg, which) -> act.cancel()).create();
         mException = e;
     }
 

@@ -75,7 +75,7 @@ public class Pomodoro extends CoreDataCommand {
         if (isBreak) mIntent.putExtra(EXTRA_MESSAGE, string(R.string.memo_pomodoro_break));
         appSucceed(mIntent);
         toast(isBreak ? string(R.string.toast_pomodoro_break)
-                : string(R.string.toast_pomodoro), false);
+                : string(R.string.toast_pomodoro));
     }
 
     @Override
@@ -89,6 +89,6 @@ public class Pomodoro extends CoreDataCommand {
         mIntent.putExtra(EXTRA_MESSAGE, memo);
         appSucceed(mIntent);
         toast(isBreak ? string(R.string.toast_pomodoro_break)
-                : string(R.string.toast_pomodoro), false);
+                : string(R.string.toast_pomodoro));
     }
 }

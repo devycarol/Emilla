@@ -43,10 +43,10 @@ public class Bookmark extends CoreCommand {
             }
         }
         mHasBookmarks = idx != -1;
-        if (mHasBookmarks) mBookmarkChooser = Dialogs.withIntents(Dialogs.base(act, R.string.dialog_media), act, labels, intents);
+        if (mHasBookmarks) mBookmarkChooser = Dialogs.withIntents(Dialogs.listBase(act, R.string.dialog_media), act, labels, intents);
         else mBookmarkChooser = Dialogs.dual(act, R.string.dialog_no_bookmarks,
                 R.string.dlg_msg_choose_media, R.string.dlg_yes_add_bookmarks,
-                (dialog, id) -> act.succeed(new AppSuccess(act, Apps.meTask(act, ConfigActivity.class))));
+                (dlg, id) -> act.succeed(new AppSuccess(act, Apps.meTask(act, ConfigActivity.class))));
     }
 
     @Override @DrawableRes
@@ -69,7 +69,7 @@ public class Bookmark extends CoreCommand {
         Intent get = mBookmarkMap.get(bookmark.toLowerCase());
         if (get == null) {
             offerDialog(mBookmarkChooser);
-            if (mHasBookmarks) toast(string(R.string.dlg_msg_choose_media), false);
+            if (mHasBookmarks) toast(string(R.string.dlg_msg_choose_media));
             return;
         }
         appSucceed(get);
