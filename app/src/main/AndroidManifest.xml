@@ -13,6 +13,8 @@
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
     <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+    <!-- Todo: replace with queries declarations if possible. -->
 
     <queries>
         <package android:name="com.android.contacts" />
@@ -28,7 +30,6 @@
 
         <intent> <!-- Opening other apps -->
             <action android:name="android.intent.action.MAIN" />
-
             <category android:name="android.intent.category.LAUNCHER" />
         </intent>
         <intent> <!-- Phone dialing -->
@@ -36,22 +37,18 @@
         </intent>
         <intent> <!-- Text messaging -->
             <action android:name="android.intent.action.SENDTO" />
-
-            <data android:scheme="sms" />
+            <data android:scheme="smsto" android:host="*" />
         </intent>
         <intent> <!-- Creating calendar events -->
             <action android:name="android.intent.action.INSERT" />
-
             <data android:mimeType="vnd.android.cursor.item/event" />
         </intent>
         <intent> <!-- Creating contacts -->
             <action android:name="android.intent.action.INSERT" />
-
             <data android:mimeType="vnd.android.cursor.dir/contact" />
         </intent>
         <intent> <!-- Searching contacts -->
             <action android:name="android.intent.action.SEARCH" />
-
             <data android:mimeType="vnd.android.cursor.dir/contact" />
         </intent>
         <intent> <!-- Setting alarms -->

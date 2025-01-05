@@ -24,7 +24,7 @@ import java.util.HashMap;
 
 public class Sms extends CoreDataCommand {
 
-    private final Intent mIntent = new Intent(ACTION_SENDTO, Uri.parse("sms:"));
+    private final Intent mIntent = new Intent(ACTION_SENDTO, Uri.parse("smsto:"));
     private final HashMap<String, String> mPhoneMap;
     private FieldToggle mSubjectToggle;
 
@@ -90,7 +90,7 @@ public class Sms extends CoreDataCommand {
 
     @NonNull
     private Intent withRecipients(Intent intent, String recipients) {
-        return intent.setData(Uri.parse("sms:" + Contacts.namesToPhones(recipients, mPhoneMap)));
+        return intent.setData(Uri.parse("smsto:" + Contacts.namesToPhones(recipients, mPhoneMap)));
     }
 
     @Override
