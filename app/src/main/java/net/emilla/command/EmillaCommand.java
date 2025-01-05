@@ -1,5 +1,7 @@
 package net.emilla.command;
 
+import static net.emilla.chime.Chimer.RESUME;
+
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -229,9 +231,17 @@ public abstract class EmillaCommand {
         activity.onCloseDialog();
     }
 
+    protected void resume() {
+        chime(RESUME);
+    }
+
     /*======================================================================================*
      * IMPORTANT: One of the following methods should be called at the end of each command. *
      *======================================================================================*/
+
+    protected void succeed() {
+        activity.succeed(activity::suppressPendingChime);
+    }
 
     /**
      * Completes the work that the user wants from the assistant and closes it. Typically entails

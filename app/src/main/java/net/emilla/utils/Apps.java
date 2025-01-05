@@ -58,12 +58,16 @@ public class Apps {
         return new Intent(ACTION_MAIN).addCategory(CATEGORY_LAUNCHER).addCategory(category);
     }
 
-    public static Intent sendTask() {
-        return new Intent(ACTION_SEND).setType("text/plain");
+    public static Intent sendTask(String type) {
+        return new Intent(ACTION_SEND).setType(type);
     }
 
-    public static Intent sendTask(String pkg) {
-        return sendTask().setPackage(pkg);
+    public static Intent sendMultipleTask(String type) {
+        return new Intent(ACTION_SEND_MULTIPLE).setType(type);
+    }
+
+    public static Intent sendToApp(String pkg) {
+        return sendTask("text/plain").setPackage(pkg);
     }
 
     public static Intent searchTask(String pkg) {

@@ -130,6 +130,14 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/paths" />
         </provider>
+
+        <receiver
+            android:name=".content.AppChoiceRetriever"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.CHOOSER" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

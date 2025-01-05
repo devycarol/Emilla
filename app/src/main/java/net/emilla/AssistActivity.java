@@ -43,10 +43,12 @@ import net.emilla.command.CmdTree;
 import net.emilla.command.DataCmd;
 import net.emilla.command.EmillaCommand;
 import net.emilla.command.core.Bookmark;
-import net.emilla.content.AttachReceiver;
+import net.emilla.content.AppChoiceReceiver;
+import net.emilla.content.AppChooserContract;
 import net.emilla.content.ContactContract;
 import net.emilla.content.ContactReceiver;
 import net.emilla.content.FileContract;
+import net.emilla.content.FileReceiver;
 import net.emilla.content.MediaContract;
 import net.emilla.exception.EmillaException;
 import net.emilla.run.BugFailure;
@@ -88,6 +90,7 @@ public class AssistActivity extends EmillaActivity {
     private FileContract mFileContract;
     private MediaContract mMediaContract;
     private ContactContract mContactContract;
+    private AppChooserContract mAppChooserContract;
 
     private EmillaCommand mCommand;
 
@@ -187,6 +190,7 @@ public class AssistActivity extends EmillaActivity {
         mFileContract = new FileContract(this);
         mMediaContract = new MediaContract(this);
         mContactContract = new ContactContract(this);
+        mAppChooserContract = new AppChooserContract(this);
         // TODO: save state hell. rotation deletes attachments ughhhhh probably because the command
         //  tree is rebuilt.
     }
@@ -392,10 +396,7 @@ public class AssistActivity extends EmillaActivity {
         if (!(isChangingConfigurations() || isFinishing())) {
             if (shouldCancel()) cancel();
             // TODO: the launch fail bug is caused by focus stealing
-            else if (!mDialogOpen) {
-                if (mDontChimePend) mDontChimePend = false;
-                else chime(PEND);
-            }
+            else if (!mDialogOpen && askChimePend()) chime(PEND);
         }
     }
 
@@ -543,11 +544,18 @@ public class AssistActivity extends EmillaActivity {
         mChimer.chime(id);
     }
 
+    private boolean askChimePend() {
+        if (mDontChimePend) return mDontChimePend = false;
+        return true;
+    }
+
+    private boolean askChimeResume() {
+        if (mDontChimeResume) return mDontChimeResume = false;
+        return true;
+    }
+
     private void resume() {
-        if (!mDialogOpen) {
-            if (mDontChimeResume) mDontChimeResume = false;
-            else chime(RESUME);
-        }
+        if (!mDialogOpen && askChimeResume()) chime(RESUME);
     }
 
     public void restartInput() {
@@ -611,16 +619,22 @@ public class AssistActivity extends EmillaActivity {
         chime(PEND);
     }
 
-    public void offerFiles(AttachReceiver retriever, String mimeType) {
+    public void offerFiles(FileReceiver retriever, String mimeType) {
         mFileContract.retrieve(retriever, mimeType);
     }
 
-    public void offerMedia(AttachReceiver receiver) {
+    public void offerMedia(FileReceiver receiver) {
         mMediaContract.retrieve(receiver);
+        chime(PEND);
     }
 
     public void offerContacts(ContactReceiver receiver) {
         mContactContract.retrieve(receiver);
+    }
+
+    public void offerChooser(AppChoiceReceiver receiver, Intent target, @StringRes int title) {
+        mAppChooserContract.retrieve(receiver, target, title);
+        chime(PEND);
     }
 
     public void give(Gift gift) {
@@ -629,6 +643,7 @@ public class AssistActivity extends EmillaActivity {
     }
 
     public void succeed(Success success) {
+        finishAndRemoveTask();
         success.run();
         chime(SUCCEED);
     }

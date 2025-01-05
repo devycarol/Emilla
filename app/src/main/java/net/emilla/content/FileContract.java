@@ -18,14 +18,14 @@ public class FileContract {
 
     private final EmillaActivity mActivity;
     private final ActivityResultLauncher<String> mLauncher;
-    private AttachReceiver mReceiver;
+    private FileReceiver mReceiver;
 
     public FileContract(EmillaActivity act) {
         mActivity = act;
         mLauncher = act.registerForActivityResult(new GetMultipleContents(), new FileCallback());
     }
 
-    public void retrieve(AttachReceiver receiver, String mimeType) {
+    public void retrieve(FileReceiver receiver, String mimeType) {
         if (mReceiver != null) {
             Log.d(TAG, "retrieve: result launcher already engaged. Not launching again.");
             return;

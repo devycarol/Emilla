@@ -6,12 +6,12 @@ import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.content.AttachReceiver;
+import net.emilla.content.FileReceiver;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AttachCommand extends CoreDataCommand implements AttachReceiver {
+public abstract class AttachCommand extends CoreDataCommand implements FileReceiver {
 
     protected ArrayList<Uri> attachments;
 

@@ -18,7 +18,7 @@ public AppCmdInfo(ActivityInfo info, PackageManager pm, CharSequence appLabel) {
     label = appLabel;
     pkg = info.packageName;
     cls = info.name;
-    has_send = sendTask(pkg).resolveActivity(pm) != null;
+    has_send = sendToApp(pkg).resolveActivity(pm) != null;
     basic = switch (pkg) {
         case PKG_AOSP_CONTACTS, PKG_FIREFOX, PKG_YOUTUBE -> false;
         case PKG_TOR -> true; // Search/send intents are broken

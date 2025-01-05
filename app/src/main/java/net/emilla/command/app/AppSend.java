@@ -39,7 +39,7 @@ public class AppSend extends AppCommand {
     private AppSend(AssistActivity act, String instruct, AppCmdInfo info,
             CharSequence cmdTitle) {
         super(act, instruct, info, cmdTitle);
-        mSendIntent = Apps.sendTask(info.pkg);
+        mSendIntent = Apps.sendToApp(info.pkg);
     }
 
     public AppSend(AssistActivity act, String instruct, AppCmdInfo info) {

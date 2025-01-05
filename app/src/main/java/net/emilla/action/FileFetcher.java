@@ -8,20 +8,20 @@ import androidx.annotation.IdRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.content.AttachReceiver;
+import net.emilla.content.FileReceiver;
 
 import java.util.List;
 
-public class FileFetcher implements QuickAction, AttachReceiver {
+public class FileFetcher implements QuickAction, FileReceiver {
 
     public static final int ID = R.id.action_get_files;
 
     private final AssistActivity mActivity;
     private final Resources mRes;
-    private final AttachReceiver mReceiver;
+    private final FileReceiver mReceiver;
     private final String mMimeType;
 
-    public FileFetcher(AssistActivity act, AttachReceiver receiver, String mimeType) {
+    public FileFetcher(AssistActivity act, FileReceiver receiver, String mimeType) {
         mActivity = act;
         mRes = act.getResources();
         mReceiver = receiver;
