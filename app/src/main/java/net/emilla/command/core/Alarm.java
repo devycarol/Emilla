@@ -10,9 +10,9 @@ import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.utils.Time;
-
-import java.util.ArrayList;
+import net.emilla.lang.Lang;
+import net.emilla.lang.date.TimeParser;
+import net.emilla.lang.date.WeekdayParser;
 
 public class Alarm extends CoreDataCommand {
 
@@ -39,16 +39,16 @@ public class Alarm extends CoreDataCommand {
         return new Intent(ACTION_SHOW_ALARMS);
     }
 
-    private Intent makeIntent(String time) {
-        int[] units = Time.parseTime(time, activity);
-        ArrayList<Integer> weekdays = Time.parseWeekdays(time);
-        if (weekdays.isEmpty()) return makeIntent(units[0], units[1]);
-        return makeIntent(units[0], units[1]).putExtra(EXTRA_DAYS, weekdays);
+    private Intent makeIntent(String timeString) {
+        TimeParser time = Lang.timeParser(timeString);
+        WeekdayParser days = Lang.weekdayParser(timeString);
+        Intent in = makeIntent(time.hour24(), time.minute());
+        return days.noDays() ? in : in.putExtra(EXTRA_DAYS, days.days());
     }
 
-    private static Intent makeIntent(int hourOfDay, int minute) {
+    private static Intent makeIntent(int hour, int minute) {
         return new Intent(ACTION_SET_ALARM)
-                .putExtra(EXTRA_HOUR, hourOfDay)
+                .putExtra(EXTRA_HOUR, hour)
                 .putExtra(EXTRA_MINUTES, minute);
     }
 

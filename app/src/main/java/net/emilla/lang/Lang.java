@@ -1,4 +1,4 @@
-package net.emilla.utils;
+package net.emilla.lang;
 
 import android.content.res.Resources;
 
@@ -6,6 +6,10 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.command.CmdTokens;
+import net.emilla.lang.date.TimeParser;
+import net.emilla.lang.date.WeekdayParser;
+import net.emilla.lang.date.impl.TimeParserEN_US;
+import net.emilla.lang.date.impl.WeekdayParserEN_US;
 
 public final class Lang {
 
@@ -44,6 +48,18 @@ public final class Lang {
 
     public static String colonConcat(Resources res, @StringRes int a, @StringRes int b) {
         return res.getString(R.string.colon_concatenation, res.getString(a), res.getString(b));
+    }
+
+    public static TimeParser timeParser(String timeStr) {
+        return switch (-1) {
+            default -> TimeParserEN_US.instance(timeStr);
+        };
+    }
+
+    public static WeekdayParser weekdayParser(String timeStr) {
+        return switch (-1) {
+            default -> WeekdayParserEN_US.instance(timeStr);
+        };
     }
 
     private Lang() {}

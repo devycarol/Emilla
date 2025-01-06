@@ -30,6 +30,7 @@ public class SettingVals {
         case "sms" -> SMS;
         case "email" -> EMAIL;
         case "launch" -> LAUNCH;
+        case "copy" -> COPY;
         case "share" -> SHARE;
         case "settings" -> SETTINGS;
     //    case "note" -> NOTE;

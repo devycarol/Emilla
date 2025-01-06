@@ -6,7 +6,7 @@ import androidx.annotation.DrawableRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.utils.Lang;
+import net.emilla.lang.Lang;
 
 public class DefaultCommandWrapper extends EmillaCommand {
 

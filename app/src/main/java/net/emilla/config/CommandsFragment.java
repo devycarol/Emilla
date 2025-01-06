@@ -87,6 +87,7 @@ private void setupCores(EmillaActivity act, SharedPreferences prefs, Resources r
     setupCorePref("aliases_dial_text", listener, prefs, res, R.array.aliases_dial);
     setupCorePref("aliases_sms_text", listener, prefs, res, R.array.aliases_sms);
     setupCorePref("aliases_email_text", listener, prefs, res, R.array.aliases_email);
+    setupCorePref("aliases_copy_text", listener, prefs, res, R.array.aliases_copy);
     setupCorePref("aliases_share_text", listener, prefs, res, R.array.aliases_share);
     setupCorePref("aliases_launch_text", listener, prefs, res, R.array.aliases_launch);
     setupCorePref("aliases_settings_text", listener, prefs, res, R.array.aliases_settings);

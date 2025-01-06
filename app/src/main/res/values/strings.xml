@@ -36,7 +36,7 @@
     <string name="action_desc_flashlight">Toggle the flashlight</string>
     <string name="action_assistant_settings">Assistant settings</string>
     <string name="action_desc_assistant_settings">Open assistant settings</string>
-    <string name="action_select_all">Select all</string>
+    <string name="action_select_all">@android:string/selectAll</string>
     <!--TODO ACC: this is inaccurate if all text is already selected-->
     <string name="action_desc_select_all">Select all text</string>
     <string name="action_cursor_start">Cursor start</string>
@@ -53,7 +53,7 @@
     <string name="spoken_description_show_data">Show data field</string>
     <string name="spoken_description_hide_data">Hide data field</string>
     <string name="welcome_message">Hello there!</string>
-    <string name="welcome_instruction">To open the assistant, re-press the button below.</string>
+    <string name="welcome_instruction">To open the assistant, re-press the assistant button.</string>
 
     <!-- Setting category Titles -->
     <string name="header_general">General</string>
@@ -127,6 +127,7 @@
     <string name="command_calendar">Calendar</string>
     <string name="command_notify">Notify</string>
     <string name="command_settings">Settings</string>
+    <string name="command_copy">@android:string/copy</string>
     <string name="command_share">Share</string>
     <string name="command_torch">Torch</string>
     <string name="command_info">Info</string>
@@ -159,6 +160,7 @@
     <string name="summary_calendar">Create calendar events</string>
     <string name="summary_notify">Set notification reminders</string>
     <string name="summary_settings">Search and change system settings</string>
+    <string name="summary_copy">Copy text and files</string>
     <string name="summary_share">Send text, images, and files to your apps</string>
     <string name="summary_torch">Toggle flashlight</string>
     <string name="summary_info">View application details</string>
@@ -286,6 +288,7 @@
     <string name="error_unfinished_categorical_app_search">Sorry! I don\'t have categorical app search yet.</string>
     <string name="error_unfinished_timer_label">Sorry! I can\'t label the timer without a duration.</string>
     <string name="error_unfinished_clock_location_elapse">Sorry! No locations or elapse-time yet, working on it.</string>
+    <string name="error_unfinished_copy">Unfinished feature! The idea is to copy a file when text isn\'t provided.</string>
     <string name="error_unknown">Unknown error</string>
     <string name="error_bug_report_please">Please submit the bug report!</string>
     <string name="email_bug_report">Email report</string>

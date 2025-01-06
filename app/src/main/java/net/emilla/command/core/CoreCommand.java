@@ -4,8 +4,8 @@ import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.command.EmillaCommand;
+import net.emilla.lang.Lang;
 import net.emilla.run.MessageFailure;
-import net.emilla.utils.Lang;
 
 public abstract class CoreCommand extends EmillaCommand {
 

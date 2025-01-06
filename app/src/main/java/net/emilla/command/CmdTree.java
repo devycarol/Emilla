@@ -22,6 +22,7 @@ import net.emilla.command.core.CateNavigate;
 import net.emilla.command.core.CateWeather;
 import net.emilla.command.core.Clock;
 import net.emilla.command.core.Contact;
+import net.emilla.command.core.Copy;
 import net.emilla.command.core.Dial;
 import net.emilla.command.core.Email;
 import net.emilla.command.core.OpenInfo;
@@ -35,9 +36,9 @@ import net.emilla.command.core.Timer;
 import net.emilla.command.core.Toast;
 import net.emilla.command.core.Torch;
 import net.emilla.command.core.Web;
+import net.emilla.lang.Lang;
 import net.emilla.settings.SettingVals;
 import net.emilla.utils.Apps;
-import net.emilla.utils.Lang;
 
 import java.util.HashMap;
 
@@ -159,6 +160,7 @@ public class CmdTree {
             case EMAIL -> new Email(act, instruct);
             case NAVIGATE -> new CateNavigate(act, instruct);
             case LAUNCH -> new OpenLaunch(act, instruct);
+            case COPY -> new Copy(act, instruct);
             case SHARE -> new Share(act, instruct);
             case SETTINGS -> new Settings(act, instruct);
     //        case NOTE -> new CommandNote(act, instruct);

@@ -51,6 +51,7 @@ import net.emilla.content.retrieve.ContactRetriever;
 import net.emilla.content.retrieve.FileRetriever;
 import net.emilla.content.retrieve.MediaRetriever;
 import net.emilla.exception.EmillaException;
+import net.emilla.lang.Lang;
 import net.emilla.run.BugFailure;
 import net.emilla.run.DialogOffering;
 import net.emilla.run.Failure;
@@ -62,7 +63,6 @@ import net.emilla.settings.SettingVals;
 import net.emilla.system.EmillaForegroundService;
 import net.emilla.utils.Apps;
 import net.emilla.utils.Contacts;
-import net.emilla.utils.Lang;
 import net.emilla.view.ActionButton;
 
 import java.util.List;
@@ -558,7 +558,7 @@ public class AssistActivity extends EmillaActivity {
         if (!mDialogOpen && askChimeResume()) chime(RESUME);
     }
 
-    public void restartInput() {
+    private void restartInput() {
         focusedEditBox().selectAll();
     }
 
@@ -639,6 +639,7 @@ public class AssistActivity extends EmillaActivity {
     }
 
     public void give(Gift gift) {
+        restartInput();
         gift.run();
         chime(ACT);
     }

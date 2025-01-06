@@ -98,6 +98,11 @@
             android:summary="@string/summary_settings"
             android:title="@string/command_settings" />
         <EditTextPreference
+            android:icon="@drawable/ic_copy"
+            android:key="aliases_copy_text"
+            android:summary="@string/summary_copy"
+            android:title="@string/command_copy" />
+        <EditTextPreference
             android:icon="@drawable/ic_share"
             android:key="aliases_share_text"
             android:summary="@string/summary_share"

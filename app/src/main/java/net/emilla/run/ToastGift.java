@@ -17,6 +17,5 @@ public class ToastGift implements Gift {
     @Override
     public void run() {
         mActivity.toast(mMessage, mLong);
-        mActivity.restartInput();
     }
 }

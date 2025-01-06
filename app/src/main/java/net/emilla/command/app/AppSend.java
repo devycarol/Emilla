@@ -12,8 +12,8 @@ import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.lang.Lang;
 import net.emilla.utils.Apps;
-import net.emilla.utils.Lang;
 
 public class AppSend extends AppCommand {
 

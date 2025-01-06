@@ -110,7 +110,7 @@ public class Share extends AttachCommand implements AppChoiceReceiver {
 
     @Override
     public void provide(boolean chosen) {
-        if (chosen) succeed();
+        if (chosen) succeed(activity::suppressPendingChime);
         else resume();
     }
 }

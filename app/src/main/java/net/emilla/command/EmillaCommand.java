@@ -45,27 +45,28 @@ public abstract class EmillaCommand {
             EMAIL = 4,
             NAVIGATE = 5,
             LAUNCH = 6,
-            SHARE = 7,
-            SETTINGS = 8,
+            COPY = 7,
+            SHARE = 8,
+            SETTINGS = 9,
 //            NOTE = ,
 //            TODO = ,
-            WEB = 9,
+            WEB = 10,
 //            FIND = ,
-            CLOCK = 10,
-            ALARM = 11,
-            TIMER = 12,
-            POMODORO = 13,
-            CALENDAR = 14,
-            CONTACT = 15,
+            CLOCK = 11,
+            ALARM = 12,
+            TIMER = 13,
+            POMODORO = 14,
+            CALENDAR = 15,
+            CONTACT = 16,
 //            NOTIFY = ,
-            CALCULATE = 16,
-            WEATHER = 17,
-            BOOKMARK = 18,
-            TORCH = 19,
-            INFO = 20,
-            UNINSTALL = 21,
-            TOAST = 22,
-            DUPLICATE = 23;
+            CALCULATE = 17,
+            WEATHER = 18,
+            BOOKMARK = 19,
+            TORCH = 20,
+            INFO = 21,
+            UNINSTALL = 22,
+            TOAST = 23,
+            DUPLICATE = 24;
 
     private static final int[] NAMES = {
             R.string.command_call,
@@ -74,6 +75,7 @@ public abstract class EmillaCommand {
             R.string.command_email,
             R.string.command_navigate,
             R.string.command_launch,
+            R.string.command_copy,
             R.string.command_share,
             R.string.command_settings,
         //    R.string.command_note,
@@ -152,7 +154,7 @@ public abstract class EmillaCommand {
     @CallSuper
     public void clean() {}
 
-    protected void instruct(String instruction) {
+    protected final void instruct(String instruction) {
         mInstruction = instruction;
     }
 
@@ -226,8 +228,11 @@ public abstract class EmillaCommand {
      * IMPORTANT: One of the following methods should be called at the end of each command. *
      *======================================================================================*/
 
+    /**
+     * Simply close the assistant :)
+     */
     protected void succeed() {
-        activity.succeed(activity::suppressPendingChime);
+        activity.succeed(() -> {});
     }
 
     /**
