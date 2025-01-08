@@ -14,10 +14,9 @@ public class AppSearch extends AppCommand {
 
     private final Intent mSearchIntent;
 
-    public AppSearch(AssistActivity act, String instruct, AppCmdInfo info,
-            @StringRes int instructionId) {
-        super(act, instruct, info, specificTitle(act, info.label, instructionId));
-        mSearchIntent = Apps.searchTask(info.pkg);
+    public AppSearch(AssistActivity act, String instruct, AppParams params, @StringRes int instruction) {
+        super(act, instruct, params, specificTitle(act, params.label, instruction));
+        mSearchIntent = Apps.searchTask(params.pkg);
     }
 
     @Override

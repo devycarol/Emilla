@@ -36,19 +36,18 @@ public class AppSend extends AppCommand {
 
     private final Intent mSendIntent;
 
-    private AppSend(AssistActivity act, String instruct, AppCmdInfo info,
-            CharSequence cmdTitle) {
-        super(act, instruct, info, cmdTitle);
-        mSendIntent = Apps.sendToApp(info.pkg);
+    private AppSend(AssistActivity act, String instruct, AppParams params, CharSequence cmdTitle) {
+        super(act, instruct, params, cmdTitle);
+        mSendIntent = Apps.sendToApp(params.pkg);
     }
 
-    public AppSend(AssistActivity act, String instruct, AppCmdInfo info) {
-        this(act, instruct, info, genericTitle(act, info.label));
+    public AppSend(AssistActivity act, String instruct, AppParams params) {
+        this(act, instruct, params, genericTitle(act, params.label));
     }
 
-    public AppSend(AssistActivity act, String instruct, AppCmdInfo info,
+    public AppSend(AssistActivity act, String instruct, AppParams params,
             @StringRes int instructionId) {
-        this(act, instruct, info, specificTitle(act, info.label, instructionId));
+        this(act, instruct, params, specificTitle(act, params.label, instructionId));
     }
 
     @Override

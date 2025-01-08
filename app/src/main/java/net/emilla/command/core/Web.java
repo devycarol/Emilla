@@ -13,6 +13,8 @@ import net.emilla.R;
 
 public class Web extends CoreCommand {
 
+    public static final String ENTRY = "web";
+
     @Override @DrawableRes
     public int icon() {
         return R.drawable.ic_web;

@@ -26,6 +26,7 @@ public class Apps {
             MY_PKG = BuildConfig.APPLICATION_ID,
             PKG_AOSP_CONTACTS = "com.android.contacts",
             PKG_MARKOR = "net.gsantner.markor",
+            CLS_MARKOR_MAIN = PKG_MARKOR + ".activity.MainActivity",
             PKG_FIREFOX = "org.mozilla.firefox",
             PKG_TOR = "org.torproject.torbrowser",
             PKG_SIGNAL = "org.thoughtcrime.securesms",
@@ -72,10 +73,6 @@ public class Apps {
 
     public static Intent searchTask(String pkg) {
         return new Intent(ACTION_SEARCH).setPackage(pkg);
-    }
-
-    public static Intent viewTask() {
-        return new Intent(ACTION_VIEW);
     }
 
     public static Intent viewTask(Uri uri) {

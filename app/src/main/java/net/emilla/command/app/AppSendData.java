@@ -30,9 +30,8 @@ public int imeAction() {
     return EditorInfo.IME_ACTION_NEXT;
 }
 
-public AppSendData(AssistActivity act, String instruct, AppCmdInfo info,
-        @StringRes int instructionId) {
-    super(act, instruct, info, instructionId);
+public AppSendData(AssistActivity act, String instruct, AppParams params, @StringRes int instruction) {
+    super(act, instruct, params, instruction);
 }
 
 protected void runWithData(String message) {

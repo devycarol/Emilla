@@ -19,6 +19,8 @@ import net.emilla.utils.Files.MimeType;
 
 public class Share extends AttachCommand implements AppChoiceReceiver {
 
+    public static final String ENTRY = "share";
+
     private FileFetcher mFileFetcher;
     private MediaFetcher mMediaFetcher;
 

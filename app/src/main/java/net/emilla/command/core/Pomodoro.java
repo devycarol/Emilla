@@ -18,6 +18,8 @@ import java.util.regex.Matcher;
 
 public class Pomodoro extends CoreDataCommand {
 
+    public static final String ENTRY = "pomodoro";
+
     private final Intent mIntent = new Intent(ACTION_SET_TIMER)
             .putExtra(EXTRA_SKIP_UI, true)
             .putExtra(EXTRA_LENGTH, 1500 /*25m*/); // todo: make configurable

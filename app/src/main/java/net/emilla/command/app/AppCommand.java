@@ -1,7 +1,11 @@
 package net.emilla.command.app;
 
+import static net.emilla.utils.Apps.*;
+
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.DrawableRes;
@@ -29,34 +33,33 @@ public class AppCommand extends EmillaCommand {
 
     protected final Intent mLaunchIntent;
     private final CharSequence mTitle;
-    protected final AppCmdInfo mInfo;
+    protected final AppParams mParams;
 
-    protected AppCommand(AssistActivity act, String instruct, AppCmdInfo info,
-            CharSequence cmdTitle) {
+    protected AppCommand(AssistActivity act, String instruct, AppParams params, CharSequence title) {
         super(act, instruct);
 
-        mLaunchIntent = Apps.launchIntent(info.pkg, info.cls);
-        mTitle = cmdTitle;
-        mInfo = info;
+        mLaunchIntent = Apps.launchIntent(params.pkg, params.cls);
+        mTitle = title;
+        mParams = params;
     }
 
-    public AppCommand(AssistActivity act, String instruct, AppCmdInfo info) {
-        this(act, instruct, info, genericTitle(act, info.label));
+    public AppCommand(AssistActivity act, String instruct, AppParams params) {
+        this(act, instruct, params, genericTitle(act, params.label));
     }
 
     @Override
     public CharSequence name() {
-        return mInfo.label;
+        return mParams.label;
     }
 
     @Override
-    protected CharSequence dupeLabel() {
-        return mInfo.label + " (" + mInfo.pkg + ")";
+    protected String dupeLabel() {
+        return mParams.label + " (" + mParams.pkg + ")";
     }
 
     @Override
-    public CharSequence lcName() {
-        return mInfo.label; // Apps are proper names and shouldn't be lowercased
+    public CharSequence sentenceName() {
+        return mParams.label; // Apps are proper names and shouldn't be lowercased
     }
 
     @Override
@@ -82,5 +85,29 @@ public class AppCommand extends EmillaCommand {
     @Override
     protected void run(String ignored) {
         run(); // TODO: instead, this should revert to the default command
+    }
+
+    public static class AppParams {
+
+        public final CharSequence label;
+        public final String pkg;
+        public final String cls;
+        public final boolean has_send;
+        public final boolean basic;
+
+        public AppParams(ActivityInfo info, PackageManager pm, CharSequence appLabel) {
+            label = appLabel;
+            pkg = info.packageName;
+            cls = info.name;
+            has_send = sendToApp(pkg).resolveActivity(pm) != null;
+            basic = switch (pkg) {
+                case PKG_AOSP_CONTACTS, PKG_FIREFOX, PKG_YOUTUBE -> false;
+                case PKG_TOR -> true; // Search/send intents are broken
+                case PKG_MARKOR -> !cls.equals(Apps.CLS_MARKOR_MAIN);
+                // Markor can have multiple launchers. Only the main one should have the 'send' property.
+                default -> !has_send;
+            };
+            // TODO: just have a generic implementation of AppSearchCommand, this above is risky.
+        }
     }
 }

@@ -12,6 +12,8 @@ import net.emilla.utils.Calculator;
 
 public class CateCalculate extends CategoryCommand {
 
+    public static final String ENTRY = "calculate";
+
     @Override
     public int imeAction() {
         return EditorInfo.IME_ACTION_DONE;

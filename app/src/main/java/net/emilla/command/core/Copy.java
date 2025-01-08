@@ -11,6 +11,8 @@ import net.emilla.run.CopyGift;
 
 public class Copy extends CoreCommand {
 
+    public static final String ENTRY = "copy";
+
     private String mCopiedText;
 
     @Override @DrawableRes

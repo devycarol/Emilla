@@ -2,7 +2,6 @@ package net.emilla.command.core;
 
 import static android.content.Intent.CATEGORY_APP_MAPS;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.view.inputmethod.EditorInfo;
 
@@ -14,7 +13,7 @@ import net.emilla.utils.Apps;
 
 public class CateNavigate extends CategoryCommand {
 
-    private final Intent mIntent = Apps.viewTask();
+    public static final String ENTRY = "navigate";
 
     @Override @DrawableRes
     public int icon() {
@@ -33,6 +32,6 @@ public class CateNavigate extends CategoryCommand {
     @Override
     protected void run(String location) {
         // Todo: location bookmarks, navigate to contacts' addresses
-        appSucceed(mIntent.setData(Uri.parse("geo:0,0?q=" + location)));
+        appSucceed(Apps.viewTask(Uri.parse("geo:0,0?q=" + location)));
     }
 }

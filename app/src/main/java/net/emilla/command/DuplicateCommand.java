@@ -20,13 +20,15 @@ public class DuplicateCommand extends EmillaCommand implements DataCmd {
     }
 
     @Override
-    protected CharSequence dupeLabel() {
-        return "You shouldn't see this \uD83D\uDE43";
+    protected String dupeLabel() {
+        // Todo: exclude this from the interface for wrappers
+        return null;
     }
 
     @Override
-    public CharSequence lcName() {
-        return string(R.string.command_duplicate).toLowerCase();
+    public CharSequence sentenceName() {
+        // Todo: exclude this from the interface for wrappers
+        return null;
     }
 
     @Override
@@ -59,7 +61,7 @@ public class DuplicateCommand extends EmillaCommand implements DataCmd {
         return EditorInfo.IME_ACTION_NEXT;
     }
 
-    private final CharSequence[] mLabels;
+    private final String[] mLabels;
     private final EmillaCommand[] mCommands;
     private final AlertDialog.Builder mBuilder;
     private final boolean mUsesData;
@@ -68,7 +70,7 @@ public class DuplicateCommand extends EmillaCommand implements DataCmd {
         super(act, instruct);
 
         mCommands = cmds;
-        mLabels = new CharSequence[cmds.length];
+        mLabels = new String[cmds.length];
         boolean usesData = false;
         int i = -1;
         for (EmillaCommand cmd : cmds) {

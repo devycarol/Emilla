@@ -28,6 +28,8 @@ import java.io.InputStreamReader;
 
 public class Todo extends CoreDataCommand {
 
+    public static final String ENTRY = "todo";
+
     private final File mFile = new File(getExternalStoragePublicDirectory(DIRECTORY_DOCUMENTS), "todo.txt"); // TODO: allow configurable path and don't require all files permission
     private final Uri mUri = getUriForFile(activity, Apps.MY_PKG + ".fileprovider", mFile);
     private final Intent mViewIntent = new Intent(ACTION_VIEW).setDataAndType(mUri, "text/plain")

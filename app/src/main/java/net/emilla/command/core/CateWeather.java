@@ -13,6 +13,8 @@ import net.emilla.exception.EmlaBadCommandException;
 
 public class CateWeather extends CategoryCommand {
 
+    public static final String ENTRY = "weather";
+
     public CateWeather(AssistActivity act, String instruct) {
         super(act, instruct, CATEGORY_APP_WEATHER, R.string.command_weather, R.string.instruction_app);
     }

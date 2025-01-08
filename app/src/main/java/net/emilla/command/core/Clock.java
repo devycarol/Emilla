@@ -15,6 +15,8 @@ import java.text.Format;
 
 public class Clock extends CoreCommand {
 
+    public static final String ENTRY = "clock";
+
     public Clock(AssistActivity act, String instruct) {
         super(act, instruct, R.string.command_clock, R.string.instruction_location);
     }

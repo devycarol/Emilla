@@ -20,6 +20,8 @@ import java.util.HashMap;
 
 public class Email extends AttachCommand {
 
+    public static final String ENTRY = "email";
+
     private HashMap<String, String> mEmailMap;
     private FileFetcher mFileFetcher;
     private MediaFetcher mMediaFetcher;

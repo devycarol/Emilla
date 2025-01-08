@@ -20,6 +20,7 @@ import net.emilla.utils.Apps;
 
 public class Contact extends CoreDataCommand implements ContactReceiver {
 
+    public static final String ENTRY = "contact";
     private static final byte
             VIEW = 0,
             CREATE = 1,

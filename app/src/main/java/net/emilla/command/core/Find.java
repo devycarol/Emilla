@@ -10,6 +10,8 @@ import net.emilla.exception.EmlaBadCommandException;
 
 public class Find extends CoreCommand {
 
+    public static final String ENTRY = "find";
+
     public Find(AssistActivity act, String instruct) {
         super(act, instruct, R.string.command_find, R.string.instruction_find);
     }

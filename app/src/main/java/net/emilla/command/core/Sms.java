@@ -24,12 +24,14 @@ import java.util.HashMap;
 
 public class Sms extends CoreDataCommand {
 
+    public static final String ENTRY = "sms";
+
     private final Intent mIntent = new Intent(ACTION_SENDTO, Uri.parse("smsto:"));
     private final HashMap<String, String> mPhoneMap;
     private FieldToggle mSubjectToggle;
 
     @Override
-    public CharSequence lcName() { // The initialism "SMS" shouldn't be lowercased.
+    public CharSequence sentenceName() { // The initials "SMS" shouldn't be lowercased.
         return string(R.string.command_sms);
     }
 

@@ -10,6 +10,8 @@ import net.emilla.exception.EmlaBadCommandException;
 
 public class Note extends CoreDataCommand {
 
+    public static final String ENTRY = "note";
+
     @Override @ArrayRes
     public int details() {
         return R.array.details_note;

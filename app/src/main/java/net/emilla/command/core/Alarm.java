@@ -16,6 +16,8 @@ import net.emilla.lang.date.WeekdayParser;
 
 public class Alarm extends CoreDataCommand {
 
+    public static final String ENTRY = "alarm";
+
     @Override @ArrayRes
     public int details() {
         return R.array.details_alarm;

@@ -17,6 +17,7 @@ import java.util.HashMap;
 
 public class Bookmark extends CoreCommand {
 
+    public static final String ENTRY = "bookmark";
     public static final String DFLT_MEDIA = "Emilla GitHub, emla, https://github.com/devycarol/Emilla\n" +
             "Open-source software, OSS, https://en.wikipedia.org/wiki/Open_source_software\n" +
             "Rick, dQw, https://www.youtube.com/watch?v=dQw4w9WgXcQ";

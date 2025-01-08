@@ -22,6 +22,8 @@ import java.util.HashMap;
 
 public class Call extends CoreCommand implements ContactReceiver {
 
+    public static final String ENTRY = "call";
+
     private final HashMap<String, String> mPhoneMap;
 
     @Override @ArrayRes

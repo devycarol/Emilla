@@ -16,7 +16,6 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import net.emilla.EmillaActivity;
 import net.emilla.R;
-import net.emilla.command.app.AppCmdInfo;
 import net.emilla.settings.Aliases;
 import net.emilla.utils.Apps;
 
@@ -41,7 +40,7 @@ private void setupAppPref(String pkg, SharedPreferences prefs, Resources res,
         // this uses the application icon and doesn't account for multiple launcher icons yet
         Drawable appIcon = pm.getApplicationIcon(pkg);
         appCmdPref.setIcon(appIcon);
-        setupPref(appCmdPref, "aliases_" + pkg, listener, prefs, res, Aliases.appSetId(pkg, AppCmdInfo.CLS_MARKOR_MAIN /*Todo: procedurally generate these prefs*/));
+        setupPref(appCmdPref, "aliases_" + pkg, listener, prefs, res, Aliases.appSetId(pkg, Apps.CLS_MARKOR_MAIN /*Todo: procedurally generate these prefs*/));
     } catch (PackageManager.NameNotFoundException e) {
         appCmdPref.setVisible(false);
     }

@@ -18,6 +18,8 @@ import net.emilla.exception.EmlaBadCommandException;
 
 public class Torch extends CoreCommand {
 
+    public static final String ENTRY = "torch";
+
     private static boolean sTorching = false;
     // TODO: replace this with a query - this isn't fully reliable for detecting toggle state. e.g.
     //  what if the torch was turned on before the app was started?

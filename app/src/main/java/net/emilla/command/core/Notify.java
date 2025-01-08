@@ -9,6 +9,8 @@ import net.emilla.exception.EmlaBadCommandException;
 
 public class Notify extends CoreDataCommand {
 
+    public static final String ENTRY = "notify";
+
     public Notify(AssistActivity act, String instruct) {
         super(act, instruct, R.string.command_notify, R.string.instruction_notify);
     }

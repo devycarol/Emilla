@@ -21,7 +21,7 @@ import androidx.appcompat.app.AlertDialog;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.action.QuickAction;
-import net.emilla.command.app.AppCmdInfo;
+import net.emilla.command.app.AppCommand;
 import net.emilla.run.AppSuccess;
 import net.emilla.run.DialogOffering;
 import net.emilla.run.Failure;
@@ -118,9 +118,9 @@ public abstract class EmillaCommand {
             // TODO: there's the biggest performance bottleneck I've found thus far. Look into how the
             //  launcher caches labels for ideas on how to improve the performance of this critical
             //  onCreate task. That is, if they do to begin with (I can only assume..)
-            AppCmdInfo cmdInfo = new AppCmdInfo(actInfo, pm, label);
-            cmdTree.putApp(label, --i, cmdInfo, ~i);
-            Set<String> aliases = Aliases.appSet(prefs, res, cmdInfo.pkg, cmdInfo.cls);
+            AppCommand.AppParams appParams = new AppCommand.AppParams(actInfo, pm, label);
+            cmdTree.putApp(label, --i, appParams, ~i);
+            Set<String> aliases = Aliases.appSet(prefs, res, appParams.pkg, appParams.cls);
             if (aliases == null) continue;
             for (String alias : aliases) cmdTree.put(alias, i);
             // No need to pass app info again for aliases
@@ -317,8 +317,8 @@ public abstract class EmillaCommand {
     }
 
     public abstract CharSequence name();
-    protected abstract CharSequence dupeLabel(); // Todo: replace with icons
-    protected abstract CharSequence lcName();
+    protected abstract String dupeLabel(); // Todo: replace with icons
+    protected abstract CharSequence sentenceName();
     public abstract CharSequence title();
     @DrawableRes
     public abstract int icon();

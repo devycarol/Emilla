@@ -13,6 +13,8 @@ import net.emilla.R;
 
 public class Settings extends CoreCommand {
 
+    public static final String ENTRY = "settings";
+
     @Override @ArrayRes
     public int details() {
         return R.array.details_settings;

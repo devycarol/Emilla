@@ -14,7 +14,7 @@ import net.emilla.R;
 
 public class Dial extends CoreCommand {
 
-    private final Intent mIntent = new Intent(ACTION_DIAL);
+    public static final String ENTRY = "dial";
 
     @Override @ArrayRes
     public int details() {
@@ -37,11 +37,11 @@ public class Dial extends CoreCommand {
 
     @Override
     protected void run() {
-        appSucceed(mIntent);
+        appSucceed(new Intent(ACTION_DIAL));
     }
 
     @Override
-    protected void run(String nameOrNumber) {
-        appSucceed(mIntent.setData(parse("tel:" + nameOrNumber)));
+    protected void run(String numberOrPhoneword) {
+        appSucceed(new Intent(ACTION_DIAL).setData(parse("tel:" + numberOrPhoneword)));
     }
 }

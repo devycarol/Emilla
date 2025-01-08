@@ -18,20 +18,20 @@ public class DefaultCommandWrapper extends EmillaCommand {
     }
 
     @Override
-    protected CharSequence dupeLabel() {
+    protected String dupeLabel() {
         // Todo: exclude this from the interface for wrappers
         return null;
     }
 
     @Override
-    public CharSequence lcName() {
+    public CharSequence sentenceName() {
         // Todo: exclude this from the interface for wrappers
         return null;
     }
 
     @Override
     public CharSequence title() {
-        return Lang.colonConcat(resources, R.string.command_default, mCmd.lcName());
+        return Lang.colonConcat(resources, R.string.command_default, mCmd.sentenceName());
     }
 
     @Override @DrawableRes

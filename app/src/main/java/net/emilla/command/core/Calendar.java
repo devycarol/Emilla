@@ -29,6 +29,8 @@ import java.util.regex.Matcher;
 
 public class Calendar extends CoreDataCommand {
 
+    public static final String ENTRY = "calendar";
+
     @Override @ArrayRes
     public int details() {
         return R.array.details_calendar;

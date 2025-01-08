@@ -13,6 +13,8 @@ import net.emilla.utils.Dialogs;
 
 public class OpenInfo extends OpenCommand {
 
+    public static final String ENTRY = "info";
+
     @Override @DrawableRes
     public int icon() {
         return R.drawable.ic_info;

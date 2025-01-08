@@ -15,6 +15,29 @@ import net.emilla.action.NoAction;
 import net.emilla.action.QuickAction;
 import net.emilla.action.SelectAll;
 import net.emilla.chime.Chimer;
+import net.emilla.command.core.Alarm;
+import net.emilla.command.core.Bookmark;
+import net.emilla.command.core.Calendar;
+import net.emilla.command.core.Call;
+import net.emilla.command.core.CateCalculate;
+import net.emilla.command.core.CateNavigate;
+import net.emilla.command.core.CateWeather;
+import net.emilla.command.core.Clock;
+import net.emilla.command.core.Contact;
+import net.emilla.command.core.Copy;
+import net.emilla.command.core.Dial;
+import net.emilla.command.core.Email;
+import net.emilla.command.core.OpenInfo;
+import net.emilla.command.core.OpenLaunch;
+import net.emilla.command.core.OpenUninstall;
+import net.emilla.command.core.Pomodoro;
+import net.emilla.command.core.Settings;
+import net.emilla.command.core.Share;
+import net.emilla.command.core.Sms;
+import net.emilla.command.core.Timer;
+import net.emilla.command.core.Toast;
+import net.emilla.command.core.Torch;
+import net.emilla.command.core.Web;
 import net.emilla.utils.Features;
 
 public class SettingVals {
@@ -23,35 +46,36 @@ public class SettingVals {
         return prefs.getString(Chimer.SOUND_SET, Chimer.NEBULA);
     }
 
-    private static short cmdId(String s) {
-        return switch (s) {
-        case "call" -> CALL;
-        case "dial" -> DIAL;
-        case "sms" -> SMS;
-        case "email" -> EMAIL;
-        case "launch" -> LAUNCH;
-        case "copy" -> COPY;
-        case "share" -> SHARE;
-        case "settings" -> SETTINGS;
-    //    case "note" -> NOTE;
-    //    case "todo" -> TODO;
-        case "web" -> WEB;
-    //    case "find" -> FIND;
-        case "clock" -> CLOCK;
-        case "alarm" -> ALARM;
-        case "timer" -> TIMER;
-        case "pomodoro" -> POMODORO;
-        case "calendar" -> CALENDAR;
-        case "contact" -> CONTACT;
-    //    case "notify" -> NOTIFY;
-        case "calculate" -> CALCULATE;
-        case "weather" -> WEATHER;
-        case "bookmark" -> BOOKMARK;
-        case "torch" -> TORCH;
-        case "info" -> INFO;
-        case "uninstall" -> UNINSTALL;
-        case "toast" -> TOAST;
-        default -> 0;
+    private static short cmdId(String entry) {
+        return switch (entry) {
+            case Call.ENTRY -> CALL;
+            case Dial.ENTRY -> DIAL;
+            case Sms.ENTRY -> SMS;
+            case Email.ENTRY -> EMAIL;
+            case CateNavigate.ENTRY -> NAVIGATE;
+            case OpenLaunch.ENTRY -> LAUNCH;
+            case Copy.ENTRY -> COPY;
+            case Share.ENTRY -> SHARE;
+            case Settings.ENTRY -> SETTINGS;
+        //    case Note.ENTRY -> NOTE;
+        //    case Todo.ENTRY -> TODO;
+            case Web.ENTRY -> WEB;
+        //    case Find.ENTRY -> FIND;
+            case Clock.ENTRY -> CLOCK;
+            case Alarm.ENTRY -> ALARM;
+            case Timer.ENTRY -> TIMER;
+            case Pomodoro.ENTRY -> POMODORO;
+            case Calendar.ENTRY -> CALENDAR;
+            case Contact.ENTRY -> CONTACT;
+        //    case Notify.ENTRY -> NOTIFY;
+            case CateCalculate.ENTRY -> CALCULATE;
+            case CateWeather.ENTRY -> WEATHER;
+            case Bookmark.ENTRY -> BOOKMARK;
+            case Torch.ENTRY -> TORCH;
+            case OpenInfo.ENTRY -> INFO;
+            case OpenUninstall.ENTRY -> UNINSTALL;
+            case Toast.ENTRY -> TOAST;
+            default -> 0;
         };
     }
 

@@ -27,12 +27,12 @@ public abstract class CoreCommand extends EmillaCommand {
     }
 
     @Override
-    protected CharSequence dupeLabel() {
+    protected String dupeLabel() {
         return string(mName) + " (Emilla command)";
     }
 
     @Override
-    public CharSequence lcName() {
+    public CharSequence sentenceName() {
         return string(mName).toLowerCase();
     }
 

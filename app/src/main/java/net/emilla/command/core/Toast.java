@@ -10,6 +10,8 @@ import net.emilla.run.ToastGift;
 
 public class Toast extends CoreDataCommand {
 
+    public static final String ENTRY = "toast";
+
     @Override @ArrayRes
     public int details() {
         return R.array.details_toast;
