@@ -27,7 +27,6 @@ public abstract class FieldToggle implements QuickAction {
     private final int mIcon;
 
     private final AssistActivity mActivity;
-    private final Resources mRes;
 
     private boolean mActivated = false;
     private EditText mField;
@@ -40,7 +39,6 @@ public abstract class FieldToggle implements QuickAction {
         mIcon = icon;
 
         mActivity = act;
-        mRes = act.getResources();
     }
 
     public boolean activated() {
@@ -63,13 +61,13 @@ public abstract class FieldToggle implements QuickAction {
     }
 
     @Override
-    public String label() {
-        return mRes.getString(R.string.action_toggle_field, mRes.getString(mFieldName));
+    public String label(Resources res) {
+        return res.getString(R.string.action_toggle_field, res.getString(mFieldName));
     }
 
     @Override
-    public String description() {
-        return mRes.getString(R.string.action_desc_toggle_field, mRes.getString(mFieldName));
+    public String description(Resources res) {
+        return res.getString(R.string.action_desc_toggle_field, res.getString(mFieldName));
     }
 
     @Override

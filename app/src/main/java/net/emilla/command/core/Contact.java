@@ -26,7 +26,7 @@ public class Contact extends CoreDataCommand implements ContactReceiver {
             EDIT = 2;
 
     @Override @ArrayRes
-    public int detailsId() {
+    public int details() {
         return R.array.details_contact;
     }
 

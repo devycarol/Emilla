@@ -4,23 +4,21 @@ import static net.emilla.chime.Chimer.ACT;
 import static net.emilla.chime.Chimer.PEND;
 import static net.emilla.chime.Chimer.RESUME;
 
-import android.content.res.Resources;
 import android.widget.EditText;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
+import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
 
-public class SelectAll implements QuickAction {
+public class SelectAll implements LabeledQuickAction {
 
     private final AssistActivity mActivity;
-    private final Resources mRes;
 
     public SelectAll(AssistActivity act) {
         mActivity = act;
-        mRes = act.getResources();
     }
 
     @Override @IdRes
@@ -33,14 +31,14 @@ public class SelectAll implements QuickAction {
         return R.drawable.ic_select_all;
     }
 
-    @Override
-    public String label() {
-        return mRes.getString(R.string.action_select_all);
+    @Override @StringRes
+    public int label() {
+        return R.string.action_select_all;
     }
 
-    @Override
-    public String description() {
-        return mRes.getString(R.string.action_desc_select_all);
+    @Override @StringRes
+    public int description() {
+        return R.string.action_desc_select_all;
     }
 
     @Override

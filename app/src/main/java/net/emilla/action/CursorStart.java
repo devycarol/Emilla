@@ -5,20 +5,19 @@ import static net.emilla.chime.Chimer.PEND;
 import static net.emilla.chime.Chimer.RESUME;
 import static java.lang.Math.max;
 
-import android.content.res.Resources;
 import android.widget.EditText;
+
+import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
 
-public class CursorStart implements QuickAction {
+public class CursorStart implements LabeledQuickAction {
 
     private final AssistActivity mActivity;
-    private final Resources mRes;
 
     public CursorStart(AssistActivity act) {
         mActivity = act;
-        mRes = act.getResources();
     }
 
     @Override
@@ -31,14 +30,14 @@ public class CursorStart implements QuickAction {
         return R.drawable.ic_cursor_start;
     }
 
-    @Override
-    public String label() {
-        return mRes.getString(R.string.action_cursor_start);
+    @Override @StringRes
+    public int label() {
+        return R.string.action_cursor_start;
     }
 
-    @Override
-    public String description() {
-        return mRes.getString(R.string.action_desc_cursor_start);
+    @Override @StringRes
+    public int description() {
+        return R.string.action_desc_cursor_start;
     }
 
     @Override

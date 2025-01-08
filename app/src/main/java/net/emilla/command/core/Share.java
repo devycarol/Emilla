@@ -23,7 +23,7 @@ public class Share extends AttachCommand implements AppChoiceReceiver {
     private MediaFetcher mMediaFetcher;
 
     @Override @ArrayRes
-    public int detailsId() {
+    public int details() {
         return R.array.details_share;
     }
 

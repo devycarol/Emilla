@@ -32,6 +32,8 @@
     <string name="field_url">URL</string>
     <string name="action_none">No action</string>
     <string name="action_desc_none">Do nothing</string>
+    <string name="action_help">Help</string>
+    <string name="action_desc_help">View command manual</string>
     <string name="action_flashlight">Flashlight</string>
     <string name="action_desc_flashlight">Toggle the flashlight</string>
     <string name="action_assistant_settings">Assistant settings</string>
@@ -218,6 +220,8 @@
     <string name="instruction_message">message</string>
     <!-- Generic instruction for code issues -->
     <string name="instruction_issues">issue body</string>
+
+    <string name="manual_none">This command doesn\'t have a manual yet :(</string>
 
     <!-- Description for the ability to provide multiple recipients via delimiter separation -->
     <string name="detail_multiple_recipients">Multiple recipients can be separated by commas or ampersands.</string>

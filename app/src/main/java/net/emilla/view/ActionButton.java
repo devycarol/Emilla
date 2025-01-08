@@ -1,6 +1,7 @@
 package net.emilla.view;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -46,7 +47,7 @@ public class ActionButton extends AppCompatImageButton implements View.OnTouchLi
         setImageDrawable(mIcon = d);
     }
 
-    public void setLongPress(QuickAction action) {
+    public void setLongPress(QuickAction action, Resources res) {
         setOnLongClickListener(v -> {
             action.perform();
             return true;
@@ -55,7 +56,7 @@ public class ActionButton extends AppCompatImageButton implements View.OnTouchLi
         mLongIcon = AppCompatResources.getDrawable(getContext(), action.icon());
 
         ViewCompat.replaceAccessibilityAction(this, AccessibilityActionCompat.ACTION_LONG_CLICK,
-                action.description(), null);
+                action.description(res), null);
 
         mHasLongPress = true;
     }

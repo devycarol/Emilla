@@ -25,6 +25,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.ArrayRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
@@ -33,6 +34,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.preference.PreferenceManager;
 
 import net.emilla.action.CursorStart;
+import net.emilla.action.Help;
 import net.emilla.action.QuickAction;
 import net.emilla.chime.Chimer;
 import net.emilla.chime.Custom;
@@ -261,7 +263,7 @@ public class AssistActivity extends EmillaActivity {
         mSubmitButton.setIcon(mNoCommandAction.icon());
         mSubmitButton.setOnClickListener(v -> submitCommand());
 
-        mSubmitButton.setLongPress(SettingVals.longSubmit(mPrefs, this));
+        mSubmitButton.setLongPress(SettingVals.longSubmit(mPrefs, this), getResources());
     }
 
     private void showDataField(boolean focus) {
@@ -320,6 +322,7 @@ public class AssistActivity extends EmillaActivity {
         mInflater = LayoutInflater.from(this);
         mActionsContainer = findViewById(R.id.container_more_actions);
         addAction(new CursorStart(this));
+        addAction(new Help(this));
         mFieldsContainer = findViewById(R.id.container_more_fields);
     }
 
@@ -328,7 +331,7 @@ public class AssistActivity extends EmillaActivity {
                 mActionsContainer, false);
         button.setId(action.id());
         button.setIcon(action.icon());
-        button.setContentDescription(action.label());
+        button.setContentDescription(action.label(getResources()));
         button.setOnClickListener(v -> action.perform());
         mActionsContainer.addView(button);
     }
@@ -449,12 +452,12 @@ public class AssistActivity extends EmillaActivity {
         }
     }
 
-    public void updateDetails(int detailsId) {
-        String details = detailsId == -1 ? null : String.join("\n\n", getResources().getStringArray(detailsId));
-        if (details == null) mHelpBox.setVisibility(View.GONE);
+    public void updateDetails(@ArrayRes int details) {
+        String join = details == 0 ? null : String.join("\n\n", getResources().getStringArray(details));
+        if (join == null) mHelpBox.setVisibility(View.GONE);
         else {
             mHelpBox.setVisibility(View.VISIBLE);
-            mHelpBox.setText(details);
+            mHelpBox.setText(join);
         }
     }
 
@@ -520,6 +523,10 @@ public class AssistActivity extends EmillaActivity {
         mCommandField.requestFocus();
         return mCommandField;
         // default to the command field
+    }
+
+    public EmillaCommand command() {
+        return mCommand;
     }
 
     /*=========*

@@ -131,12 +131,12 @@ public abstract class EmillaCommand {
 
     protected final AssistActivity activity;
     protected final Resources resources;
-    protected String mInstruction;
+    protected String instruction;
 
     protected EmillaCommand(AssistActivity act, String instruct) {
         activity = act;
         resources = act.getResources();
-        mInstruction = instruct;
+        instruction = instruct;
     }
 
     @CallSuper
@@ -146,7 +146,7 @@ public abstract class EmillaCommand {
 
     public final void baseInit() {
         activity.updateLabel(title());
-        activity.updateDetails(detailsId());
+        activity.updateDetails(details());
         activity.updateDataHint();
         activity.setImeAction(imeAction());
     }
@@ -155,12 +155,12 @@ public abstract class EmillaCommand {
     public void clean() {}
 
     protected final void instruct(String instruction) {
-        mInstruction = instruction;
+        this.instruction = instruction;
     }
 
-    void instructAppend(String data) {
-        if (mInstruction == null) mInstruction = data;
-        else mInstruction += '\n' + data;
+    protected final void instructAppend(String data) {
+        if (instruction == null) instruction = data;
+        else instruction += '\n' + data;
     }
 
     protected String string(@StringRes int id) {
@@ -184,8 +184,8 @@ public abstract class EmillaCommand {
     }
 
     public void execute() {
-        if (mInstruction == null) run();
-        else run(mInstruction);
+        if (instruction == null) run();
+        else run(instruction);
     }
 
     /**
@@ -312,11 +312,6 @@ public abstract class EmillaCommand {
      * End of finisher methods. *
      *==========================*/
 
-    @ArrayRes
-    public int detailsId() {
-        return -1;
-    }
-
     public boolean usesData() {
         return false;
     }
@@ -324,13 +319,23 @@ public abstract class EmillaCommand {
     public abstract CharSequence name();
     protected abstract CharSequence dupeLabel(); // Todo: replace with icons
     protected abstract CharSequence lcName();
-    protected abstract CharSequence title();
+    public abstract CharSequence title();
     @DrawableRes
     public abstract int icon();
     public abstract int imeAction();
     // todo: you should be able to long-click the enter key in the command or data field to submit
     //  the command, using the action icon of one of the below.
     // requires changing the input method code directly
+
+    @StringRes @Deprecated
+    public int manual() {
+        return R.string.manual_none;
+    }
+
+    @ArrayRes
+    public int details() {
+        return 0;
+    }
 
     protected abstract void run();
     /**

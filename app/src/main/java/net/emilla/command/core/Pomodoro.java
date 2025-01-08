@@ -23,7 +23,7 @@ public class Pomodoro extends CoreDataCommand {
             .putExtra(EXTRA_LENGTH, 1500 /*25m*/); // todo: make configurable
 
     @Override @ArrayRes
-    public int detailsId() {
+    public int details() {
         return R.array.details_pomodoro;
     }
 

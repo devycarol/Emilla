@@ -35,7 +35,7 @@ public class DuplicateCommand extends EmillaCommand implements DataCmd {
     }
 
     @Override @ArrayRes
-    public int detailsId() {
+    public int details() {
         return R.array.details_duplicate;
     }
 

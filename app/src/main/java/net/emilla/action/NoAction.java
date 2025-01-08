@@ -2,22 +2,19 @@ package net.emilla.action;
 
 import static net.emilla.chime.Chimer.PEND;
 
-import android.content.res.Resources;
-
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
+import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
 
-public class NoAction implements QuickAction {
+public class NoAction implements LabeledQuickAction {
 
     private final AssistActivity mActivity;
-    private final Resources mRes;
 
     public NoAction(AssistActivity act) {
         mActivity = act;
-        mRes = act.getResources();
     }
 
     @Override @IdRes
@@ -30,14 +27,14 @@ public class NoAction implements QuickAction {
         return R.drawable.ic_assistant;
     }
 
-    @Override
-    public String label() {
-        return mRes.getString(R.string.action_none);
+    @Override @StringRes
+    public int label() {
+        return R.string.action_none;
     }
 
-    @Override
-    public String description() {
-        return mRes.getString(R.string.action_desc_none);
+    @Override @StringRes
+    public int description() {
+        return R.string.action_desc_none;
     }
 
     @Override

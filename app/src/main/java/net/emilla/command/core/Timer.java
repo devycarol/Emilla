@@ -18,7 +18,7 @@ import net.emilla.utils.Time;
 public class Timer extends CoreDataCommand {
 
     @Override @ArrayRes
-    public int detailsId() {
+    public int details() {
         return R.array.details_timer;
     }
 

@@ -11,7 +11,7 @@ import net.emilla.run.ToastGift;
 public class Toast extends CoreDataCommand {
 
     @Override @ArrayRes
-    public int detailsId() {
+    public int details() {
         return R.array.details_toast;
     }
 

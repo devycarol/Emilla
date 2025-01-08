@@ -25,7 +25,7 @@ public class Email extends AttachCommand {
     private MediaFetcher mMediaFetcher;
 
     @Override @ArrayRes
-    public int detailsId() {
+    public int details() {
         return R.array.details_email;
     }
 

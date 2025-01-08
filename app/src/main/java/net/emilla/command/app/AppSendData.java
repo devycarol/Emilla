@@ -11,7 +11,7 @@ import net.emilla.command.DataCmd;
 
 public class AppSendData extends AppSend implements DataCmd {
 @Override @ArrayRes
-public int detailsId() {
+public int details() {
     return R.array.details_app_send_data;
 }
 
@@ -45,7 +45,7 @@ protected void runWithData(String message, String cont) {
 
 @Override
 public void execute(String data) {
-    if (mInstruction == null) runWithData(data);
-    else runWithData(mInstruction, data);
+    if (instruction == null) runWithData(data);
+    else runWithData(instruction, data);
 }
 }

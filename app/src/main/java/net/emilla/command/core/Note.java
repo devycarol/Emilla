@@ -11,7 +11,7 @@ import net.emilla.exception.EmlaBadCommandException;
 public class Note extends CoreDataCommand {
 
     @Override @ArrayRes
-    public int detailsId() {
+    public int details() {
         return R.array.details_note;
     }
 

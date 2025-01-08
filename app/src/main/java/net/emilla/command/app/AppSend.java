@@ -23,7 +23,7 @@ public class AppSend extends AppCommand {
     }
 
     @Override @ArrayRes
-    public int detailsId() {
+    public int details() {
         // Todo: this shouldn't apply to newpipes
         return R.array.details_app_send;
     }

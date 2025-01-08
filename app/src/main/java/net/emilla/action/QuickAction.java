@@ -1,5 +1,7 @@
 package net.emilla.action;
 
+import android.content.res.Resources;
+
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
 
@@ -21,7 +23,7 @@ public interface QuickAction {
     int id();
     @DrawableRes
     int icon();
-    String label();
-    String description();
+    String label(Resources res);
+    String description(Resources res);
     void perform();
 }

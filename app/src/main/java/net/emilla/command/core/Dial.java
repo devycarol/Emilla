@@ -17,7 +17,7 @@ public class Dial extends CoreCommand {
     private final Intent mIntent = new Intent(ACTION_DIAL);
 
     @Override @ArrayRes
-    public int detailsId() {
+    public int details() {
         return R.array.details_call_phone;
     }
 

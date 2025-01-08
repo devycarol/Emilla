@@ -3,10 +3,10 @@ package net.emilla.action;
 import static net.emilla.chime.Chimer.ACT;
 
 import android.content.Intent;
-import android.content.res.Resources;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
+import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -14,14 +14,12 @@ import net.emilla.config.ConfigActivity;
 import net.emilla.run.AppSuccess;
 import net.emilla.utils.Apps;
 
-public class AssistantSettings implements QuickAction {
+public class AssistantSettings implements LabeledQuickAction {
 
     private final AssistActivity mActivity;
-    private final Resources mRes;
 
     public AssistantSettings(AssistActivity act) {
         mActivity = act;
-        mRes = act.getResources();
     }
 
     @Override @IdRes
@@ -34,14 +32,14 @@ public class AssistantSettings implements QuickAction {
         return R.drawable.ic_assistant;
     }
 
-    @Override
-    public String label() {
-        return mRes.getString(R.string.action_assistant_settings);
+    @Override @StringRes
+    public int label() {
+        return R.string.action_assistant_settings;
     }
 
-    @Override
-    public String description() {
-        return mRes.getString(R.string.action_desc_assistant_settings);
+    @Override @StringRes
+    public int description() {
+        return R.string.action_desc_assistant_settings;
     }
 
     @Override

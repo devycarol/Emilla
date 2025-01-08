@@ -14,7 +14,7 @@ import net.emilla.R;
 public class Settings extends CoreCommand {
 
     @Override @ArrayRes
-    public int detailsId() {
+    public int details() {
         return R.array.details_settings;
     }
 

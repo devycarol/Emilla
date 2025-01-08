@@ -18,21 +18,33 @@ import java.util.List;
 
 public final class Dialogs {
 
-    private static AlertDialog.Builder base(Context ctx, @StringRes int title) {
-        return new AlertDialog.Builder(ctx).setTitle(title);
+    private static AlertDialog.Builder base(Context ctx, CharSequence title, @StringRes int negLabel) {
+        return new AlertDialog.Builder(ctx).setTitle(title)
+                .setNegativeButton(negLabel, (dlg, which) -> dlg.cancel());
+        // Todo: don't require to call the cancel listener
     }
 
-    public static AlertDialog.Builder base(Context ctx, @StringRes int title,
-            @StringRes int msg, @StringRes int negLabel) {
-        return base(ctx, title).setMessage(msg).setNegativeButton(negLabel, (dlg, which) -> dlg.cancel());
+    private static AlertDialog.Builder base(Context ctx, @StringRes int title,
+            @StringRes int negLabel) {
+        return new AlertDialog.Builder(ctx).setTitle(title)
+                .setNegativeButton(negLabel, (dlg, which) -> dlg.cancel());
         // Todo: don't require to call the cancel listener
+    }
+
+    public static AlertDialog.Builder base(Context ctx, @StringRes int title, @StringRes int msg,
+            @StringRes int negLabel) {
+        return base(ctx, title, negLabel).setMessage(msg);
+    }
+
+    public static AlertDialog.Builder base(Context ctx, CharSequence title, @StringRes int msg,
+            @StringRes int negLabel) {
+        return base(ctx, title, negLabel).setMessage(msg);
     }
 
     public static AlertDialog.Builder listBase(Context ctx, @StringRes int title) {
-        return base(ctx, title).setNegativeButton(android.R.string.cancel, (dlg, which) -> dlg.cancel());
+        return base(ctx, title, android.R.string.cancel);
         // TODO ACC: the cancel button is destroyed when the list is bigger than the screen for some
         //  reason
-        // Todo: don't require to call the cancel listener
     }
 
     public static AlertDialog.Builder dual(Context ctx, @StringRes int title, @StringRes int msg,

@@ -25,7 +25,7 @@ public class Call extends CoreCommand implements ContactReceiver {
     private final HashMap<String, String> mPhoneMap;
 
     @Override @ArrayRes
-    public int detailsId() {
+    public int details() {
         return R.array.details_call_phone;
     }
 

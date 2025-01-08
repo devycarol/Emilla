@@ -1,26 +1,23 @@
 package net.emilla.action;
 
-import android.content.res.Resources;
-
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
+import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.content.receive.FileReceiver;
 
-public class FileFetcher implements QuickAction {
+public class FileFetcher implements LabeledQuickAction {
 
     public static final int ID = R.id.action_get_files;
 
     private final AssistActivity mActivity;
-    private final Resources mRes;
     private final FileReceiver mReceiver;
     private final String mMimeType;
 
     public FileFetcher(AssistActivity act, FileReceiver receiver, String mimeType) {
         mActivity = act;
-        mRes = act.getResources();
         mReceiver = receiver;
         mMimeType = mimeType;
     }
@@ -35,14 +32,14 @@ public class FileFetcher implements QuickAction {
         return R.drawable.ic_attach;
     }
 
-    @Override
-    public String label() {
-        return mRes.getString(R.string.action_attach_files);
+    @Override @StringRes
+    public int label() {
+        return R.string.action_attach_files;
     }
 
-    @Override
-    public String description() {
-        return mRes.getString(R.string.action_desc_attach_files);
+    @Override @StringRes
+    public int description() {
+        return R.string.action_desc_attach_files;
     }
 
     @Override

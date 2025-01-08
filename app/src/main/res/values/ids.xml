@@ -2,6 +2,7 @@
 <resources>
     <!-- Quick actions -->
     <item type="id" name="action_none" />
+    <item type="id" name="action_help" />
     <item type="id" name="action_flashlight" />
     <item type="id" name="action_assistant_settings" />
     <item type="id" name="action_select_all" />
