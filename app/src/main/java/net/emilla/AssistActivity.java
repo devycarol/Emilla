@@ -82,9 +82,9 @@ public class AssistActivity extends EmillaActivity {
     private TextView mHelpBox;
     private EditText mCommandField, mDataField;
     private ActionButton mSubmitButton;
-    private ActionButton mShowDataButton;
-    private LinearLayout mActionsContainer;
+    private ActionButton mShowDataButton, mHideDataButton;
     private LinearLayout mFieldsContainer;
+    private LinearLayout mActionsContainer;
 
     private QuickAction mNoCommandAction;
     private QuickAction mDoubleAssistAction;
@@ -98,9 +98,8 @@ public class AssistActivity extends EmillaActivity {
     private EmillaCommand mCommand;
 
     private boolean mNoCommand = true;
-    private boolean
-            mDataAvailable = true,
-            mDataVisible = false;
+    private boolean mDataAvailable = true;
+    private boolean mAlwaysShowData;
     private int mImeAction = IME_ACTION_NEXT;
     private boolean mLaunched = false;
     private boolean mFocused = false;
@@ -169,15 +168,17 @@ public class AssistActivity extends EmillaActivity {
         mHelpBox.setVisibility(View.GONE);
         mCommandField = findViewById(R.id.field_command);
         mDataField = findViewById(R.id.field_data);
-        mSubmitButton = findViewById(R.id.button_submit);
-        mShowDataButton = findViewById(R.id.button_show_data);
+        mSubmitButton = findViewById(R.id.btn_submit);
+        mShowDataButton = findViewById(R.id.btn_show_data);
+        mHideDataButton = findViewById(R.id.btn_hide_data);
 
         setupCommandField();
-        boolean alwaysShowData = SettingVals.alwaysShowData(mPrefs);
+        mAlwaysShowData = SettingVals.alwaysShowData(mPrefs);
         // TODO ACC: There's no reason for a hidden data field if a screen reader is in use.
-        mDataVisible = alwaysShowData
-                || savedInstanceState != null && savedInstanceState.getBoolean("dataFieldVisible");
-        setupDataField();
+        if (mAlwaysShowData
+                || savedInstanceState != null && savedInstanceState.getBoolean("dataFieldVisible")) {
+            showDataField();
+        }
 
         mEmptySpace.setOnClickListener(v -> cancelIfWarranted());
         mHelpBox.setOnClickListener(v -> cancelIfWarranted());
@@ -187,7 +188,7 @@ public class AssistActivity extends EmillaActivity {
         mMenuKeyAction = SettingVals.menuAction(mPrefs, this);
 
         setupSubmitButton();
-        setupShowDataButton(alwaysShowData);
+        setupDataButtons();
         setupMoreActions();
 
         mFileRetriever = new FileRetriever(this);
@@ -199,7 +200,7 @@ public class AssistActivity extends EmillaActivity {
     }
 
     @Override
-    protected void onNewIntent(Intent intent) {
+    protected void onNewIntent(@NonNull Intent intent) {
         super.onNewIntent(intent);
 
         String action = intent.getAction();
@@ -213,7 +214,7 @@ public class AssistActivity extends EmillaActivity {
     @Override // Todo: replace with view-model?
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean("dataFieldVisible", mDataVisible);
+        outState.putBoolean("dataFieldVisible", mDataField.getVisibility() == View.VISIBLE);
     }
 
     private void setupCommandField() {
@@ -237,7 +238,7 @@ public class AssistActivity extends EmillaActivity {
                 //  screen.
                 case IME_ACTION_NEXT:
                     if (mDataAvailable) {
-                        showDataField(true);
+                        focusDataField();
                         yield true;
                     }
                     // fall
@@ -256,10 +257,6 @@ public class AssistActivity extends EmillaActivity {
         mCommandField.requestFocus();
     }
 
-    private void setupDataField() {
-        if (mDataVisible) showDataField(false);
-    }
-
     private void setupSubmitButton() {
         mSubmitButton.setIcon(mNoCommandAction.icon());
         mSubmitButton.setOnClickListener(v -> submitCommand());
@@ -267,17 +264,25 @@ public class AssistActivity extends EmillaActivity {
         mSubmitButton.setLongPress(SettingVals.longSubmit(mPrefs, this), getResources());
     }
 
-    private void showDataField(boolean focus) {
-        mDataField.setVisibility(View.VISIBLE);
-        if (focus) mDataField.requestFocus();
-        mShowDataButton.setIcon(R.drawable.ic_hide_data);
-        mShowDataButton.setContentDescription(getString(R.string.spoken_description_hide_data));
-        mDataVisible = true;
+    private void setupDataButtons() {
+        if (mAlwaysShowData) mShowDataButton.setVisibility(View.GONE);
+        else {
+            mShowDataButton.setOnClickListener(v -> focusDataField());
+            mHideDataButton.setOnClickListener(v -> hideDataField());
+        }
     }
 
-    private void disableDataButton() {
-        mShowDataButton.setEnabled(false);
-        mShowDataButton.setAlpha(0.5f);
+    private void focusDataField() {
+        if (mDataField.hasFocus()) return;
+        if (mDataField.getVisibility() == View.GONE) showDataField();
+        mDataField.requestFocus();
+    }
+
+    private void showDataField() {
+        mDataField.setVisibility(View.VISIBLE);
+        if (mAlwaysShowData) return;
+        mHideDataButton.setVisibility(View.VISIBLE);
+        mShowDataButton.setVisibility(View.GONE);
     }
 
     private void hideDataField() {
@@ -303,19 +308,11 @@ public class AssistActivity extends EmillaActivity {
         int newLen = mCommandField.length();
         if (dataFocused) mCommandField.setSelection(newLen + start, newLen + end);
         else mCommandField.setSelection(start, end);
-        mDataField.setVisibility(View.GONE);
-        if (!mDataAvailable) disableDataButton();
-        mShowDataButton.setIcon(R.drawable.ic_show_data);
-        mShowDataButton.setContentDescription(getString(R.string.spoken_description_show_data));
-        mDataVisible = false;
-    }
 
-    private void setupShowDataButton(boolean disable) {
-        if (disable) mShowDataButton.setVisibility(View.GONE);
-        else mShowDataButton.setOnClickListener(v -> {
-            if (mDataVisible) hideDataField();
-            else showDataField(true);
-        });
+        mDataField.setVisibility(View.GONE);
+        mHideDataButton.setVisibility(View.GONE);
+        if (!mDataAvailable) disableDataButton();
+        mShowDataButton.setVisibility(View.VISIBLE);
     }
 
     private void setupMoreActions() {
@@ -334,7 +331,7 @@ public class AssistActivity extends EmillaActivity {
         button.setIcon(action.icon());
         button.setContentDescription(action.label(getResources()));
         button.setOnClickListener(v -> action.perform());
-        mActionsContainer.addView(button);
+        mActionsContainer.addView(button, 0);
     }
 
     public void removeAction(@IdRes int action) {
@@ -430,18 +427,24 @@ public class AssistActivity extends EmillaActivity {
         return true;
     }
 
+    private void updateDataAvailability(boolean available) {
+        if (available) {
+            if (!mAlwaysShowData) enableDataButton();
+            mDataField.setEnabled(true);
+        } else if (mDataField.getVisibility() == View.GONE) {
+            if (!mAlwaysShowData) disableDataButton();
+        } else mDataField.setEnabled(false);
+        mDataAvailable = available;
+    }
+
     private void enableDataButton() {
         mShowDataButton.setEnabled(true);
         mShowDataButton.setAlpha(1.0f);
     }
 
-    private void updateDataAvailability(boolean available) {
-        if (available) {
-            enableDataButton();
-            mDataField.setEnabled(true);
-        } else if (!mDataVisible) disableDataButton();
-        else mDataField.setEnabled(false);
-        mDataAvailable = available;
+    private void disableDataButton() {
+        mShowDataButton.setEnabled(false);
+        mShowDataButton.setAlpha(0.3f);
     }
 
     public void updateTitle(CharSequence title) {
@@ -463,16 +466,8 @@ public class AssistActivity extends EmillaActivity {
     }
 
     public void updateDataHint() {
-        if (mNoCommand) {
-            mDataField.setContentDescription(null);
-            mDataField.setHint(R.string.data_hint_default);
-        } else if (mCommand.usesData()) {
-            mDataField.setContentDescription(null);
-            mDataField.setHint(((DataCmd) mCommand).dataHint());
-        } else if (mDataField.getHint() != null) {
-            mDataField.setHint(null);
-            mDataField.setContentDescription(getString(R.string.data_hint_default));
-        }
+        if (mNoCommand || !mCommand.usesData()) mDataField.setHint(R.string.data_hint_default);
+        else mDataField.setHint(((DataCmd) mCommand).dataHint());
     }
 
     public void setSubmitIcon(Drawable icon, boolean isAppIcon) {

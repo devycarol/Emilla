@@ -36,7 +36,20 @@
         android:orientation="horizontal"
         android:paddingBottom="@dimen/margin_narrow"
         app:layout_constraintBottom_toTopOf="@id/container_assistant"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <net.emilla.view.ActionButton
+            android:id="@+id/btn_show_data"
+            android:layout_width="@dimen/width_action"
+            android:layout_height="@dimen/width_action"
+            android:layout_marginEnd="@dimen/margin_narrow"
+            android:background="@drawable/bg_action_button"
+            android:contentDescription="@string/spoken_description_show_data"
+            android:padding="@dimen/margin_narrow"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_show_data" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/container_assistant"
@@ -57,20 +70,40 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" />
 
-        <EditText
-            android:id="@+id/field_data"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_narrow"
-            android:background="@drawable/text_box"
-            android:hint="@string/data_hint_default"
-            android:imeOptions="flagNavigatePrevious"
-            android:importantForAutofill="no"
-            android:inputType="textMultiLine|textCapSentences"
-            android:minHeight="48dp"
-            android:textColorHint="?attr/colorControlNormal"
-            android:visibility="gone"
-            tools:ignore="VisualLintTextFieldSize" />
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/field_data"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_narrow"
+                android:layout_weight="1"
+                android:background="@drawable/text_box"
+                android:hint="@string/data_hint_default"
+                android:imeOptions="flagNavigatePrevious"
+                android:importantForAutofill="no"
+                android:inputType="textMultiLine|textCapSentences"
+                android:minHeight="@dimen/width_action"
+                android:textColorHint="?attr/colorControlNormal"
+                android:visibility="gone" />
+
+            <net.emilla.view.ActionButton
+                android:id="@+id/btn_hide_data"
+                android:layout_width="@dimen/width_action"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/margin_narrow"
+                android:layout_marginBottom="@dimen/margin_narrow"
+                android:background="@drawable/bg_action_button"
+                android:contentDescription="@string/spoken_description_hide_data"
+                android:padding="@dimen/margin_narrow"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_hide_data"
+                android:visibility="gone" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/container_command"
@@ -78,21 +111,9 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <net.emilla.view.ActionButton
-                android:id="@+id/button_show_data"
-                android:layout_width="@dimen/width_action"
-                android:layout_height="@dimen/width_action"
-                android:layout_marginEnd="@dimen/margin_narrow"
-                android:background="@drawable/bg_action_button"
-                android:contentDescription="@string/spoken_description_show_data"
-                android:padding="@dimen/margin_narrow"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_show_data"
-                app:elevation="0dp" />
-
             <EditText
                 android:id="@+id/field_command"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/text_box"
@@ -104,11 +125,10 @@
                 tools:ignore="VisualLintTextFieldSize" />
 
             <net.emilla.view.ActionButton
-                android:id="@+id/button_submit"
+                android:id="@+id/btn_submit"
                 android:layout_width="@dimen/width_action"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/margin_narrow"
-                android:layout_weight="0"
                 android:background="@drawable/bg_action_button"
                 android:contentDescription="@string/spoken_description_submit_command"
                 android:padding="@dimen/margin_narrow"
