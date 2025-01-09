@@ -6,8 +6,6 @@ import static android.content.Intent.EXTRA_TEXT;
 import android.content.Intent;
 
 import androidx.annotation.ArrayRes;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -21,6 +19,16 @@ public class Share extends AttachCommand implements AppChoiceReceiver {
 
     public static final String ENTRY = "share";
 
+    private static class ShareParams extends CoreDataParams {
+
+        private ShareParams() {
+            super(R.string.command_share,
+                  R.string.instruction_app,
+                  R.drawable.ic_share,
+                  R.string.data_hint_share);
+        }
+    }
+
     private FileFetcher mFileFetcher;
     private MediaFetcher mMediaFetcher;
 
@@ -29,23 +37,13 @@ public class Share extends AttachCommand implements AppChoiceReceiver {
         return R.array.details_share;
     }
 
-    @Override @StringRes
-    public int dataHint() {
-        return R.string.data_hint_share;
-    }
-
-    @Override @DrawableRes
-    public int icon() {
-        return R.drawable.ic_share;
-    }
-
     public Share(AssistActivity act, String instruct) {
-        super(act, instruct, R.string.command_share, R.string.instruction_app);
+        super(act, instruct, new ShareParams());
     }
 
     @Override
-    public void init() {
-        super.init();
+    public void init(boolean updateTitle) {
+        super.init(updateTitle);
 
         if (mFileFetcher == null) mFileFetcher = new FileFetcher(activity, this, "*/*");
         giveAction(mFileFetcher);

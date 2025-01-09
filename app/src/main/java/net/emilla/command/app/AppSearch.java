@@ -2,26 +2,20 @@ package net.emilla.command.app;
 
 import android.app.SearchManager;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.lang.Lang;
 import net.emilla.utils.Apps;
 
-public class AppSearch extends AppCommand {
+abstract class AppSearch extends AppCommand {
 
-    private final Intent mSearchIntent;
-
-    public AppSearch(AssistActivity act, String instruct, AppParams params, @StringRes int instruction) {
-        super(act, instruct, params, specificTitle(act, params.label, instruction));
-        mSearchIntent = Apps.searchTask(params.pkg);
-    }
-
-    @Override
-    public int imeAction() {
-        return EditorInfo.IME_ACTION_SEARCH;
+    AppSearch(AssistActivity act, String instruct, AppSearchParams params) {
+        super(act, instruct, params);
     }
 
     @Override
@@ -31,14 +25,33 @@ public class AppSearch extends AppCommand {
         //  bookmarks at the very least. Also, this command is broken for YouTube when a video is playing.
         String[] searchAliases = stringArray(R.array.subcmd_search);
         String lcQuery = query.toLowerCase();
-        for (String alias : searchAliases)
-        if (lcQuery.startsWith(alias)) {
-            // Todo livecmd: visual indication that this will be used
-            query = query.substring(alias.length()).trim();
-            if (!query.isEmpty()) mSearchIntent.putExtra(SearchManager.QUERY, query);
-            appSucceed(mSearchIntent);
-            return;
+        Intent in = Apps.searchTask(packageName);
+        for (String alias : searchAliases) {
+            if (lcQuery.startsWith(alias)) {
+                // Todo livecmd: visual indication that this will be used
+                query = query.substring(alias.length()).trim();
+                if (!query.isEmpty()) in.putExtra(SearchManager.QUERY, query);
+                appSucceed(in);
+                return;
+            }
         }
-        appSucceed(mSearchIntent.putExtra(SearchManager.QUERY, query));
+        appSucceed(in.putExtra(SearchManager.QUERY, query));
+    }
+
+    protected static abstract class AppSearchParams extends AppParams {
+
+        @StringRes
+        private final int mInstruction;
+
+        protected AppSearchParams(AppInfo info, @StringRes int instruction) {
+            super(info, EditorInfo.IME_ACTION_SEARCH);
+            // todo: the 'search' action shouldn't apply when just launching
+            mInstruction = instruction;
+        }
+
+        @Override
+        public final CharSequence title(Resources res) {
+            return Lang.colonConcat(res, name, mInstruction);
+        }
     }
 }

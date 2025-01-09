@@ -3,16 +3,17 @@ package net.emilla.command;
 import static net.emilla.chime.Chimer.RESUME;
 
 import android.app.TimePickerDialog.OnTimeSetListener;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 
 import androidx.annotation.ArrayRes;
 import androidx.annotation.CallSuper;
-import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.PluralsRes;
 import androidx.annotation.StringRes;
@@ -21,7 +22,7 @@ import androidx.appcompat.app.AlertDialog;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.action.QuickAction;
-import net.emilla.command.app.AppCommand;
+import net.emilla.command.app.AppCommand.AppInfo;
 import net.emilla.run.AppSuccess;
 import net.emilla.run.DialogOffering;
 import net.emilla.run.Failure;
@@ -98,8 +99,8 @@ public abstract class EmillaCommand {
             R.string.command_toast
     };
 
-    public static CmdTree tree(SharedPreferences prefs, Resources res,
-            PackageManager pm, List<ResolveInfo> appList) {
+    public static CmdTree tree(SharedPreferences prefs, Resources res, PackageManager pm,
+            List<ResolveInfo> appList) {
         // todo: configurable aliasing
         // todo: edge case where a mapped app is uninstalled during the activity lifecycle
         CmdTree cmdTree = new CmdTree(res, appList.size());
@@ -117,10 +118,10 @@ public abstract class EmillaCommand {
             CharSequence label = actInfo.loadLabel(pm);
             // TODO: there's the biggest performance bottleneck I've found thus far. Look into how the
             //  launcher caches labels for ideas on how to improve the performance of this critical
-            //  onCreate task. That is, if they do to begin with (I can only assume..)
-            AppCommand.AppParams appParams = new AppCommand.AppParams(actInfo, pm, label);
-            cmdTree.putApp(label, --i, appParams, ~i);
-            Set<String> aliases = Aliases.appSet(prefs, res, appParams.pkg, appParams.cls);
+            //  onCreate task. That is, if they do to begin with..
+            AppInfo info = new AppInfo(actInfo, pm, label);
+            cmdTree.putApp(label, --i, info, ~i);
+            Set<String> aliases = Aliases.appSet(prefs, res, info);
             if (aliases == null) continue;
             for (String alias : aliases) cmdTree.put(alias, i);
             // No need to pass app info again for aliases
@@ -132,20 +133,24 @@ public abstract class EmillaCommand {
     protected final AssistActivity activity;
     protected final Resources resources;
     protected String instruction;
+    private final Params mParams;
+    private Drawable mIcon;
 
-    protected EmillaCommand(AssistActivity act, String instruct) {
-        activity = act;
-        resources = act.getResources();
-        instruction = instruct;
+    protected EmillaCommand(AssistActivity act, String instruct, Params params) {
+        this.activity = act;
+        this.resources = act.getResources();
+        this.instruction = instruct;
+        mParams = params;
     }
 
     @CallSuper
-    public void init() {
-        baseInit();
+    public void init(boolean updateTitle) {
+        baseInit(updateTitle);
+        activity.setSubmitIcon(icon(), mParams.usesAppIcon());
     }
 
-    public final void baseInit() {
-        activity.updateLabel(title());
+    public final void baseInit(boolean updateTitle) {
+        if (updateTitle) activity.updateTitle(title());
         activity.updateDetails(details());
         activity.updateDataHint();
         activity.setImeAction(imeAction());
@@ -316,16 +321,24 @@ public abstract class EmillaCommand {
         return false;
     }
 
-    public abstract CharSequence name();
+    public final CharSequence name() {
+        return mParams.name(resources);
+    }
+
+    @Deprecated
     protected abstract String dupeLabel(); // Todo: replace with icons
-    protected abstract CharSequence sentenceName();
-    public abstract CharSequence title();
-    @DrawableRes
-    public abstract int icon();
-    public abstract int imeAction();
-    // todo: you should be able to long-click the enter key in the command or data field to submit
-    //  the command, using the action icon of one of the below.
-    // requires changing the input method code directly
+
+    protected final CharSequence sentenceName() {
+        return mParams.shouldLowercase() ? name().toString().toLowerCase() : name();
+    }
+
+    protected final CharSequence title() {
+        return mParams.title(resources);
+    }
+
+    protected final Drawable icon() {
+        return mIcon == null ? mIcon = mParams.icon(activity) : mIcon;
+    }
 
     @StringRes @Deprecated
     public int manual() {
@@ -335,6 +348,65 @@ public abstract class EmillaCommand {
     @ArrayRes
     public int details() {
         return 0;
+    }
+
+    protected final int imeAction() {
+        return mParams.imeAction();
+    }
+
+    protected interface Params {
+
+        /**
+         * The command's name in Title Case.
+         *
+         * @param res can be used to retrieve the name from string resources.
+         * @return the name of the command.
+         */
+        CharSequence name(Resources res);
+        /**
+         * Whether the command should be lowercased mid-sentence.
+         *
+         * @return true if the command is a common noun, false if the command is a proper noun.
+         */
+        boolean shouldLowercase();
+        /**
+         * The command's title as it should appear in the assistant's action-bar. Usually, this
+         * should be the command name followed by a brief description of what it takes as input.
+         *
+         * @param res can be used to retrieve the title from string resources.
+         * @return the command's slightly detailed title.
+         */
+        CharSequence title(Resources res);
+
+        /**
+         * The command's icon for the submit button
+         *
+         * @param ctx can be used to retrieve the icon from drawable resources.
+         * @return the command's icon drawable.
+         */
+        Drawable icon(Context ctx);
+
+        /**
+         * Whether the command's icon is an app icon.
+         *
+         * @return true if the command uses an app's icon, false if it just uses clip art.
+         */
+        boolean usesAppIcon();
+
+        /**
+         * The command's "IME action." This determines which icon is used for the soft keyboard's
+         * enter key. The options are GO, SEARCH, SEND, DONE, and NEXT. GO is usually a forward
+         * arrow, SEARCH is usually a magnifying glass, SEND is usually a paper airplane, and DONE
+         * is usually a checkmark. NEXT is the 'tab' function and should be used when the data field
+         * is available.
+         *
+         * @return the command's IME action ID.
+         */
+        int imeAction();
+        // todo: you should be able to long-click the enter key in the command or data field to submit
+        //  the command, using the action icon of one of the below.
+        // requires changing the input method code directly
+        // it's also proven cumbersome to get the key icon to actually update to begin with..
     }
 
     protected abstract void run();

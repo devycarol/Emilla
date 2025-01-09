@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 
 import androidx.annotation.ArrayRes;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -22,6 +20,16 @@ public class Email extends AttachCommand {
 
     public static final String ENTRY = "email";
 
+    private static class EmailParams extends CoreDataParams {
+
+        private EmailParams() {
+            super(R.string.command_email,
+                  R.string.instruction_email,
+                  R.drawable.ic_email,
+                  R.string.data_hint_email);
+        }
+    }
+
     private HashMap<String, String> mEmailMap;
     private FileFetcher mFileFetcher;
     private MediaFetcher mMediaFetcher;
@@ -31,23 +39,13 @@ public class Email extends AttachCommand {
         return R.array.details_email;
     }
 
-    @Override @StringRes
-    public int dataHint() {
-        return R.string.data_hint_email;
-    }
-
-    @Override @DrawableRes
-    public int icon() {
-        return R.drawable.ic_email;
-    }
-
     public Email(AssistActivity act, String instruct) {
-        super(act, instruct, R.string.command_email, R.string.instruction_email);
+        super(act, instruct, new EmailParams());
     }
 
     @Override
-    public void init() {
-        super.init();
+    public void init(boolean updateTitle) {
+        super.init(updateTitle);
 
         if (mFileFetcher == null) mFileFetcher = new FileFetcher(activity, this, "*/*");
         // TODO: Thunderbird doesn't like certain filetypes. See if you can find a type statement

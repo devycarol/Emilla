@@ -6,9 +6,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.AssistActivity;
@@ -23,20 +21,14 @@ public abstract class OpenCommand extends CoreCommand {
     protected final List<ResolveInfo> mAppList;
     protected final AlertDialog.Builder mAppChooser;
 
-    public OpenCommand(AssistActivity act, String instruct, @StringRes int nameId,
-            @StringRes int instructionId) {
-        super(act, instruct, nameId, instructionId);
+    protected OpenCommand(AssistActivity act, String instruct, CoreParams params) {
+        super(act, instruct, params);
 
         mAppList = act.appList();
         mAppChooser = getAppChooser(act);
     }
 
     protected abstract AlertDialog.Builder getAppChooser(AssistActivity act);
-
-    @Override
-    public int imeAction() {
-        return EditorInfo.IME_ACTION_GO;
-    }
 
     private AlertDialog.Builder getDialog(CharSequence[] prefLabels, int prefCount,
             Intent[] prefIntents) {

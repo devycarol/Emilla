@@ -1,8 +1,6 @@
 package net.emilla.command.core;
 
 import androidx.annotation.ArrayRes;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -12,23 +10,23 @@ public class Toast extends CoreDataCommand {
 
     public static final String ENTRY = "toast";
 
+    private static class ToastParams extends CoreDataParams {
+
+        private ToastParams() {
+            super(R.string.command_toast,
+                  R.string.instruction_text,
+                  R.drawable.ic_toast,
+                  R.string.data_hint_toast);
+        }
+    }
+
     @Override @ArrayRes
     public int details() {
         return R.array.details_toast;
     }
 
-    @Override @StringRes
-    public int dataHint() {
-        return R.string.data_hint_toast;
-    }
-
-    @Override @DrawableRes
-    public int icon() {
-        return R.drawable.ic_toast;
-    }
-
     public Toast(AssistActivity act, String instruct) {
-        super(act, instruct, R.string.command_toast, R.string.instruction_text);
+        super(act, instruct, new ToastParams());
     }
 
     private void toast(String message, boolean longToast) {

@@ -27,6 +27,7 @@
         <package android:name="com.github.android" />
         <package android:name="com.google.android.youtube" />
         <package android:name="com.discord" />
+        <package android:name="com.microsoft.office.outlook" />
 
         <intent> <!-- Opening other apps -->
             <action android:name="android.intent.action.MAIN" />

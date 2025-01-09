@@ -2,8 +2,8 @@ package net.emilla.command.core;
 
 import android.content.Intent;
 import android.provider.Settings;
+import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.DrawableRes;
 import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.AssistActivity;
@@ -15,13 +15,18 @@ public class OpenInfo extends OpenCommand {
 
     public static final String ENTRY = "info";
 
-    @Override @DrawableRes
-    public int icon() {
-        return R.drawable.ic_info;
+    private static class InfoParams extends CoreParams {
+
+        private InfoParams() {
+            super(R.string.command_info,
+                  R.string.instruction_app,
+                  R.drawable.ic_info,
+                  EditorInfo.IME_ACTION_GO);
+        }
     }
 
     public OpenInfo(AssistActivity act, String instruct) {
-        super(act, instruct, R.string.command_info, R.string.instruction_app);
+        super(act, instruct, new InfoParams());
     }
 
     @Override

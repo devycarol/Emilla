@@ -13,8 +13,6 @@ import android.content.Intent;
 import android.provider.CalendarContract.Events;
 
 import androidx.annotation.ArrayRes;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -31,19 +29,19 @@ public class Calendar extends CoreDataCommand {
 
     public static final String ENTRY = "calendar";
 
+    private static class CalendarParams extends CoreDataParams {
+
+        private CalendarParams() {
+            super(R.string.command_calendar,
+                  R.string.instruction_calendar,
+                  R.drawable.ic_calendar,
+                  R.string.data_hint_calendar);
+        }
+    }
+
     @Override @ArrayRes
     public int details() {
         return R.array.details_calendar;
-    }
-
-    @Override @StringRes
-    public int dataHint() {
-        return R.string.data_hint_calendar;
-    }
-
-    @Override @DrawableRes
-    public int icon() {
-        return R.drawable.ic_calendar;
     }
 
     // Todo: Etar is broken if already open. May be a flags issue?
@@ -51,12 +49,12 @@ public class Calendar extends CoreDataCommand {
     private FieldToggle mLocationToggle, mUrlToggle;
 
     public Calendar(AssistActivity act, String instruct) {
-        super(act, instruct, R.string.command_calendar, R.string.instruction_calendar);
+        super(act, instruct, new CalendarParams());
     }
 
     @Override
-    public void init() {
-        super.init();
+    public void init(boolean updateTitle) {
+        super.init(updateTitle);
 
         if (mLocationToggle == null) mLocationToggle = new LocationField(activity);
         else if (mLocationToggle.activated()) reshowField(LocationField.FIELD_ID);

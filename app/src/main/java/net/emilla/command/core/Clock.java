@@ -5,8 +5,6 @@ import android.icu.util.Calendar;
 import android.os.Build;
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.DrawableRes;
-
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exception.EmlaBadCommandException;
@@ -17,18 +15,18 @@ public class Clock extends CoreCommand {
 
     public static final String ENTRY = "clock";
 
+    private static class ClockParams extends CoreParams {
+
+        private ClockParams() {
+            super(R.string.command_clock,
+                  R.string.instruction_location,
+                  R.drawable.ic_clock,
+                  EditorInfo.IME_ACTION_DONE);
+        }
+    }
+
     public Clock(AssistActivity act, String instruct) {
-        super(act, instruct, R.string.command_clock, R.string.instruction_location);
-    }
-
-    @Override @DrawableRes
-    public int icon() {
-        return R.drawable.ic_clock;
-    }
-
-    @Override
-    public int imeAction() {
-        return EditorInfo.IME_ACTION_DONE;
+        super(act, instruct, new ClockParams());
     }
 
     @Override

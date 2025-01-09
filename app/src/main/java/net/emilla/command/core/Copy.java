@@ -2,8 +2,6 @@ package net.emilla.command.core;
 
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.DrawableRes;
-
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exception.EmlaBadCommandException;
@@ -13,20 +11,20 @@ public class Copy extends CoreCommand {
 
     public static final String ENTRY = "copy";
 
+    private static class CopyParams extends CoreParams {
+
+        private CopyParams() {
+            super(R.string.command_copy,
+                  R.string.instruction_text,
+                  R.drawable.ic_copy,
+                  EditorInfo.IME_ACTION_DONE);
+        }
+    }
+
     private String mCopiedText;
 
-    @Override @DrawableRes
-    public int icon() {
-        return R.drawable.ic_copy;
-    }
-
-    @Override
-    public int imeAction() {
-        return EditorInfo.IME_ACTION_DONE;
-    }
-
     public Copy(AssistActivity act, String instruct) {
-        super(act, instruct, R.string.command_copy, R.string.instruction_text);
+        super(act, instruct, new CopyParams());
     }
 
     @Override

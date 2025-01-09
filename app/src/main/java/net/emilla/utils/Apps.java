@@ -22,19 +22,7 @@ import java.util.List;
 
 public class Apps {
 
-    public static final String
-            MY_PKG = BuildConfig.APPLICATION_ID,
-            PKG_AOSP_CONTACTS = "com.android.contacts",
-            PKG_MARKOR = "net.gsantner.markor",
-            CLS_MARKOR_MAIN = PKG_MARKOR + ".activity.MainActivity",
-            PKG_FIREFOX = "org.mozilla.firefox",
-            PKG_TOR = "org.torproject.torbrowser",
-            PKG_SIGNAL = "org.thoughtcrime.securesms",
-            PKG_NEWPIPE = "org.schabi.newpipe",
-            PKG_TUBULAR = "org.polymorphicshade.tubular",
-            PKG_GITHUB = "com.github.android",
-            PKG_YOUTUBE = "com.google.android.youtube",
-            PKG_DISCORD = "com.discord";
+    public static final String MY_PKG = BuildConfig.APPLICATION_ID;
 
     @NonNull
     public static List<ResolveInfo> resolveList(PackageManager pm) {

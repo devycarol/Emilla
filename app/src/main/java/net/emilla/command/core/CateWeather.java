@@ -5,8 +5,6 @@ import static android.content.Intent.CATEGORY_APP_WEATHER;
 import android.os.Build;
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.DrawableRes;
-
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exception.EmlaBadCommandException;
@@ -15,18 +13,18 @@ public class CateWeather extends CategoryCommand {
 
     public static final String ENTRY = "weather";
 
+    private static class WeatherParams extends CoreParams {
+
+        private WeatherParams() {
+            super(R.string.command_weather,
+                  R.string.instruction_app,
+                  R.drawable.ic_weather,
+                  EditorInfo.IME_ACTION_GO);
+        }
+    }
+
     public CateWeather(AssistActivity act, String instruct) {
-        super(act, instruct, CATEGORY_APP_WEATHER, R.string.command_weather, R.string.instruction_app);
-    }
-
-    @Override @DrawableRes
-    public int icon() {
-        return R.drawable.ic_weather;
-    }
-
-    @Override
-    public int imeAction() {
-        return EditorInfo.IME_ACTION_GO;
+        super(act, instruct, new WeatherParams(), CATEGORY_APP_WEATHER);
     }
 
     @Override

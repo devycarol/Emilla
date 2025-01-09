@@ -9,42 +9,57 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.command.DataCmd;
 
-public class AppSendData extends AppSend implements DataCmd {
-@Override @ArrayRes
-public int details() {
-    return R.array.details_app_send_data;
-}
+class AppSendData extends AppSend implements DataCmd {
 
-@Override
-public boolean usesData() {
-    return true;
-}
+    private final AppSendDataParams mParams;
 
-@Override @StringRes
-public int dataHint() {
-    return R.string.data_hint_app_send_data;
-}
+    @Override @ArrayRes
+    public int details() {
+        return R.array.details_app_send_data;
+    }
 
-@Override
-public int imeAction() {
-    return EditorInfo.IME_ACTION_NEXT;
-}
+    @Override
+    public final boolean usesData() {
+        return true;
+    }
 
-public AppSendData(AssistActivity act, String instruct, AppParams params, @StringRes int instruction) {
-    super(act, instruct, params, instruction);
-}
+    @Override @StringRes
+    public final int dataHint() {
+        return mParams.hint();
+    }
 
-protected void runWithData(String message) {
-    run(message);
-}
+    AppSendData(AssistActivity act, String instruct, AppSendDataParams params) {
+        super(act, instruct, params);
+        mParams = params;
+    }
 
-protected void runWithData(String message, String cont) {
-    run(message + '\n' + cont);
-}
+    private void runWithData(String message) {
+        run(message);
+    }
 
-@Override
-public void execute(String data) {
-    if (instruction == null) runWithData(data);
-    else runWithData(instruction, data);
-}
+    private void runWithData(String message, String cont) {
+        run(message + '\n' + cont);
+    }
+
+    @Override
+    public void execute(String data) {
+        if (instruction == null) runWithData(data);
+        else runWithData(instruction, data);
+    }
+
+    protected static abstract class AppSendDataParams extends AppSendParams implements DataParams {
+
+        @StringRes
+        private final int mHint;
+
+        protected AppSendDataParams(AppInfo info, @StringRes int instruction, @StringRes int hint) {
+            super(info, instruction, EditorInfo.IME_ACTION_NEXT);
+            mHint = hint;
+        }
+
+        @Override @StringRes
+        public final int hint() {
+            return mHint;
+        }
+    }
 }

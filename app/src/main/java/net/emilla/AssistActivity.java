@@ -13,6 +13,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.text.Editable;
@@ -443,7 +444,7 @@ public class AssistActivity extends EmillaActivity {
         mDataAvailable = available;
     }
 
-    public void updateLabel(CharSequence title) {
+    public void updateTitle(CharSequence title) {
         if (mHasTitlebar) {
             ActionBar actionBar = getSupportActionBar();
             if (actionBar != null) actionBar.setTitle(mNoCommand ? mPrefs.getString("motd",
@@ -474,6 +475,10 @@ public class AssistActivity extends EmillaActivity {
         }
     }
 
+    public void setSubmitIcon(Drawable icon, boolean isAppIcon) {
+        mSubmitButton.setIcon(icon, isAppIcon);
+    }
+
     public void setImeAction(int action) {
         if (mNoCommand) action = IME_ACTION_NEXT;
         if (action != mImeAction) mCommandField.setImeOptions(mImeAction = action);
@@ -493,10 +498,11 @@ public class AssistActivity extends EmillaActivity {
             mCommand.clean();
             mCommand = cmd;
             mNoCommand = noCommand;
-            if (noCommand) cmd.baseInit();
-            else cmd.init();
+            if (noCommand) {
+                cmd.baseInit(true);
+                mSubmitButton.setIcon(mNoCommandAction.icon());
+            } else cmd.init(true);
 
-            mSubmitButton.setIcon(noCommand ? mNoCommandAction.icon() : mCommand.icon());
             boolean dataAvailable = noCommand || mCommand.usesData();
             if (dataAvailable != mDataAvailable) updateDataAvailability(dataAvailable);
         }

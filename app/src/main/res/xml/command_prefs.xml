@@ -154,6 +154,7 @@
         <EditTextPreference
             android:key="aliases_net.gsantner.markor_text"
             android:summary="@string/summary_note" />
+        <!-- TODO: this will break when generic aliasing is added! Must be activity-specific. -->
         <EditTextPreference
             android:key="aliases_org.mozilla.firefox_text"
             android:summary="@string/summary_web" />
@@ -178,5 +179,8 @@
         <EditTextPreference
             android:key="aliases_com.discord_text"
             android:summary="@string/summary_messaging" />
+        <EditTextPreference
+            android:key="aliases_com.microsoft.office.outlook_text"
+            android:summary="@string/summary_email" />
     </PreferenceCategory>
 </PreferenceScreen>

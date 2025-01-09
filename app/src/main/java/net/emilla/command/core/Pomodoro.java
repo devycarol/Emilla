@@ -7,8 +7,6 @@ import static java.util.regex.Pattern.compile;
 import android.content.Intent;
 
 import androidx.annotation.ArrayRes;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -20,6 +18,13 @@ public class Pomodoro extends CoreDataCommand {
 
     public static final String ENTRY = "pomodoro";
 
+    private static class PomodoroParams extends CoreDataParams {
+
+        private PomodoroParams() {
+            super(R.string.command_pomodoro, R.string.instruction_pomodoro, R.drawable.ic_pomodoro, R.string.data_hint_pomodoro);
+        }
+    }
+
     private final Intent mIntent = new Intent(ACTION_SET_TIMER)
             .putExtra(EXTRA_SKIP_UI, true)
             .putExtra(EXTRA_LENGTH, 1500 /*25m*/); // todo: make configurable
@@ -29,18 +34,8 @@ public class Pomodoro extends CoreDataCommand {
         return R.array.details_pomodoro;
     }
 
-    @Override @StringRes
-    public int dataHint() {
-        return R.string.data_hint_pomodoro;
-    }
-
-    @Override @DrawableRes
-    public int icon() {
-        return R.drawable.ic_pomodoro;
-    }
-
     public Pomodoro(AssistActivity act, String instruct) {
-        super(act, instruct, R.string.command_pomodoro, R.string.instruction_pomodoro);
+        super(act, instruct, new PomodoroParams());
         mIntent.putExtra(EXTRA_MESSAGE, string(R.string.command_pomodoro));
     }
 

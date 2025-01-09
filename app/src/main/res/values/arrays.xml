@@ -198,12 +198,7 @@
     <string-array name="aliases_weather">
         <item>wea</item>
     </string-array>
-    <string-array name="aliases_bookmark">
-        <item>look</item>
-        <item>see</item>
-        <item>bookmark</item>
-        <item>mrk</item>
-    </string-array>
+    <string-array name="aliases_bookmark" />
     <string-array name="aliases_torch" />
     <string-array name="aliases_info" />
     <string-array name="aliases_uninstall">
@@ -213,8 +208,7 @@
     <string-array name="aliases_toast" />
 
     <!-- App aliases -->
-    <string-array name="aliases_aosp_contacts">
-    </string-array>
+    <string-array name="aliases_aosp_contacts" />
     <string-array name="aliases_markor">
         <item>mark</item>
         <item>mkr</item>
@@ -245,6 +239,7 @@
     <string-array name="aliases_discord">
         <item>dsc</item>
     </string-array>
+    <string-array name="aliases_outlook" />
 
     <!-- More detailed instructions for commands. Details get more granular from bottom to top -->
     <string-array name="details_duplicate">

@@ -1,8 +1,8 @@
 package net.emilla.command.core;
 
 import android.content.Intent;
+import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.DrawableRes;
 import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.AssistActivity;
@@ -14,13 +14,18 @@ public class OpenUninstall extends OpenCommand {
 
     public static final String ENTRY = "uninstall";
 
-    @Override @DrawableRes
-    public int icon() {
-        return R.drawable.ic_uninstall;
+    private static class UninstallParams extends CoreParams {
+
+        private UninstallParams() {
+            super(R.string.command_uninstall,
+                  R.string.instruction_app,
+                  R.drawable.ic_uninstall,
+                  EditorInfo.IME_ACTION_GO);
+        }
     }
 
     public OpenUninstall(AssistActivity act, String instruct) {
-        super(act, instruct, R.string.command_uninstall, R.string.instruction_app);
+        super(act, instruct, new UninstallParams());
     }
 
     @Override

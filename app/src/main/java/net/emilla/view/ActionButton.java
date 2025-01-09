@@ -20,6 +20,7 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
 
+import net.emilla.R;
 import net.emilla.action.QuickAction;
 
 public class ActionButton extends AppCompatImageButton implements View.OnTouchListener {
@@ -28,11 +29,14 @@ public class ActionButton extends AppCompatImageButton implements View.OnTouchLi
     private boolean mLongTouching = false;
     private Drawable mIcon;
     private Drawable mLongIcon;
+    private boolean mHasAppIcon = false;
+    private final Drawable mBackground;
 
     private final Runnable onLongPress = () -> {
         mLongTouching = true;
         performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
         setImageDrawable(mLongIcon);
+        if (mHasAppIcon) applyNormalIconBackground(getResources());
     };
 
     public ActionButton(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -40,11 +44,21 @@ public class ActionButton extends AppCompatImageButton implements View.OnTouchLi
 
         setOnTouchListener(this);
         mIcon = getDrawable();
+        mBackground = getBackground();
     }
 
-    public void setIcon(@DrawableRes int resId) {
-        Drawable d = AppCompatResources.getDrawable(getContext(), resId);
-        setImageDrawable(mIcon = d);
+    public final void setIcon(@DrawableRes int icon) {
+        setIcon(AppCompatResources.getDrawable(getContext(), icon), false);
+    }
+
+    public final void setIcon(Drawable icon, boolean isAppIcon) {
+        setImageDrawable(mIcon = icon);
+        if (mHasAppIcon != isAppIcon) {
+            mHasAppIcon = isAppIcon;
+            Resources res = getResources();
+            if (isAppIcon) applyAppIconBackground(res);
+            else applyNormalIconBackground(res);
+        }
     }
 
     public void setLongPress(QuickAction action, Resources res) {
@@ -79,7 +93,7 @@ public class ActionButton extends AppCompatImageButton implements View.OnTouchLi
                     if (mLongTouching) {
                         performHapticFeedback(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
                                 ? HapticFeedbackConstants.GESTURE_END : HapticFeedbackConstants.KEYBOARD_TAP);
-                        setImageDrawable(mIcon);
+                        resetIcon();
                         mLongTouching = false;
                     } else if (mHasLongPress) getHandler().removeCallbacks(onLongPress);
                 }
@@ -90,7 +104,7 @@ public class ActionButton extends AppCompatImageButton implements View.OnTouchLi
                     setPressed(false);
                     if (mLongTouching) {
                         mLongTouching = false;
-                        setImageDrawable(mIcon);
+                        resetIcon();
                         performLongClick();
                     } else {
                         if (mHasLongPress) getHandler().removeCallbacks(onLongPress);
@@ -103,5 +117,22 @@ public class ActionButton extends AppCompatImageButton implements View.OnTouchLi
             }
         }
         return super.onTouchEvent(event);
+    }
+
+    private void resetIcon() {
+        setImageDrawable(mIcon);
+        if (mHasAppIcon) applyAppIconBackground(getResources());
+    }
+
+    private void applyAppIconBackground(Resources res) {
+        setBackgroundColor(res.getColor(android.R.color.transparent));
+        // Todo: make the app icon have a ripple highlight effect.
+        setPadding(0, 0, 0, 0);
+    }
+
+    private void applyNormalIconBackground(Resources res) {
+        setBackgroundDrawable(mBackground);
+        int pad = res.getDimensionPixelSize(R.dimen.margin_narrow);
+        setPadding(pad, pad, pad, pad);
     }
 }

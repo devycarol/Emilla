@@ -5,8 +5,6 @@ import static android.provider.AlarmClock.*;
 import android.content.Intent;
 
 import androidx.annotation.ArrayRes;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -18,23 +16,20 @@ public class Alarm extends CoreDataCommand {
 
     public static final String ENTRY = "alarm";
 
+    private static class AlarmParams extends CoreDataParams {
+
+        private AlarmParams() {
+            super(R.string.command_alarm, R.string.instruction_alarm, R.drawable.ic_alarm, R.string.data_hint_alarm);
+        }
+    }
+
     @Override @ArrayRes
     public int details() {
         return R.array.details_alarm;
     }
 
-    @Override @StringRes
-    public int dataHint() {
-        return R.string.data_hint_alarm;
-    }
-
-    @Override @DrawableRes
-    public int icon() {
-        return R.drawable.ic_alarm;
-    }
-
     public Alarm(AssistActivity act, String instruct) {
-        super(act, instruct, R.string.command_alarm, R.string.instruction_alarm);
+        super(act, instruct, new AlarmParams());
     }
 
     private Intent makeIntent() {

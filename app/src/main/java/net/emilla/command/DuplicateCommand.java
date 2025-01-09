@@ -4,36 +4,30 @@ import android.content.DialogInterface;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
-import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.command.core.CoreCommand;
 import net.emilla.utils.Dialogs;
 
 public class DuplicateCommand extends EmillaCommand implements DataCmd {
 
-    @Override
-    public CharSequence name() {
-        return string(R.string.command_duplicate);
+    private static class DuplicateParams extends CoreCommand.CoreParams {
+
+        private DuplicateParams() {
+            super(R.string.command_duplicate,
+                  R.string.instruction_duplicate,
+                  R.drawable.ic_command,
+                  EditorInfo.IME_ACTION_NEXT);
+        }
     }
 
-    @Override
+    @Override @Deprecated
     protected String dupeLabel() {
         // Todo: exclude this from the interface for wrappers
         return null;
-    }
-
-    @Override
-    public CharSequence sentenceName() {
-        // Todo: exclude this from the interface for wrappers
-        return null;
-    }
-
-    @Override
-    public CharSequence title() {
-        return string(R.string.command_duplicate);
     }
 
     @Override @ArrayRes
@@ -42,23 +36,13 @@ public class DuplicateCommand extends EmillaCommand implements DataCmd {
     }
 
     @Override @StringRes
-    public int dataHint() {
+    public final int dataHint() {
         return R.string.data_hint_default;
     }
 
     @Override
-    public boolean usesData() {
+    public final boolean usesData() {
         return mUsesData;
-    }
-
-    @Override @DrawableRes
-    public int icon() {
-        return R.drawable.ic_command;
-    }
-
-    @Override
-    public int imeAction() {
-        return EditorInfo.IME_ACTION_NEXT;
     }
 
     private final String[] mLabels;
@@ -67,7 +51,7 @@ public class DuplicateCommand extends EmillaCommand implements DataCmd {
     private final boolean mUsesData;
 
     public DuplicateCommand(AssistActivity act, String instruct, EmillaCommand[] cmds) {
-        super(act, instruct);
+        super(act, instruct, new DuplicateParams());
 
         mCommands = cmds;
         mLabels = new String[cmds.length];

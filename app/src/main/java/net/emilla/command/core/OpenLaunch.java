@@ -1,8 +1,8 @@
 package net.emilla.command.core;
 
 import android.content.Intent;
+import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.DrawableRes;
 import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.AssistActivity;
@@ -14,13 +14,18 @@ public class OpenLaunch extends OpenCommand {
 
     public static final String ENTRY = "launch";
 
-    @Override @DrawableRes
-    public int icon() {
-        return R.drawable.ic_launch;
+    private static class LaunchParams extends CoreParams {
+
+        private LaunchParams() {
+            super(R.string.command_launch,
+                  R.string.instruction_app,
+                  R.drawable.ic_launch,
+                  EditorInfo.IME_ACTION_GO);
+        }
     }
 
     public OpenLaunch(AssistActivity act, String instruct) {
-        super(act, instruct, R.string.command_launch, R.string.instruction_app);
+        super(act, instruct, new LaunchParams());
     }
 
     @Override

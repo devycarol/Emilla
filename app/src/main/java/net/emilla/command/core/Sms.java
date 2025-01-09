@@ -8,9 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 
 import androidx.annotation.ArrayRes;
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
-import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -26,38 +24,34 @@ public class Sms extends CoreDataCommand {
 
     public static final String ENTRY = "sms";
 
+    private static class SmsParams extends CoreDataParams {
+
+        private SmsParams() {
+            super(R.string.command_sms,
+                  R.string.instruction_phone,
+                  false, // the initials "SMS" shouldn't be lowercased
+                  R.drawable.ic_sms,
+                  R.string.data_hint_message);
+        }
+    }
+
     private final Intent mIntent = new Intent(ACTION_SENDTO, Uri.parse("smsto:"));
     private final HashMap<String, String> mPhoneMap;
     private FieldToggle mSubjectToggle;
-
-    @Override
-    public CharSequence sentenceName() { // The initials "SMS" shouldn't be lowercased.
-        return string(R.string.command_sms);
-    }
 
     @Override @ArrayRes
     public int details() {
         return R.array.details_sms;
     }
 
-    @Override @StringRes
-    public int dataHint() {
-        return R.string.data_hint_sms;
-    }
-
-    @Override @DrawableRes
-    public int icon() {
-        return R.drawable.ic_sms;
-    }
-
     public Sms(AssistActivity act, String instruct) {
-        super(act, instruct, R.string.command_sms, R.string.instruction_phone);
+        super(act, instruct, new SmsParams());
         mPhoneMap = Contacts.mapPhones(act.prefs());
     }
 
     @Override
-    public void init() {
-        super.init();
+    public void init(boolean updateTitle) {
+        super.init(updateTitle);
 
         if (mSubjectToggle == null) mSubjectToggle = new SubjectField(activity);
         else if (mSubjectToggle.activated()) reshowField(SubjectField.FIELD_ID);

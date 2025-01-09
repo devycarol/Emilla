@@ -14,18 +14,18 @@ public class CateCalculate extends CategoryCommand {
 
     public static final String ENTRY = "calculate";
 
-    @Override
-    public int imeAction() {
-        return EditorInfo.IME_ACTION_DONE;
-    }
+    private static class CalculateParams extends CoreParams {
 
-    @Override @DrawableRes
-    public int icon() {
-        return R.drawable.ic_calculate;
+        private CalculateParams() {
+            super(R.string.command_calculate,
+                  R.string.instruction_calculate,
+                  R.drawable.ic_calculate,
+                  EditorInfo.IME_ACTION_DONE);
+        }
     }
 
     public CateCalculate(AssistActivity act, String instruct) {
-        super(act, instruct, CATEGORY_APP_CALCULATOR, R.string.command_calculate, R.string.instruction_calculate);
+        super(act, instruct, new CalculateParams(), CATEGORY_APP_CALCULATOR);
     }
 
     @Override

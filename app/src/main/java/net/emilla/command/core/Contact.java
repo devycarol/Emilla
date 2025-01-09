@@ -26,25 +26,22 @@ public class Contact extends CoreDataCommand implements ContactReceiver {
             CREATE = 1,
             EDIT = 2;
 
+    private static class ContactParams extends CoreDataParams {
+
+        private ContactParams() {
+            super(R.string.command_contact, R.string.instruction_contact, R.drawable.ic_contact, R.string.data_hint_contact);
+        }
+    }
+
     @Override @ArrayRes
     public int details() {
         return R.array.details_contact;
     }
 
-    @Override @StringRes
-    public int dataHint() {
-        return R.string.data_hint_contact;
-    }
-
-    @Override @DrawableRes
-    public int icon() {
-        return R.drawable.ic_contact;
-    }
-
     private byte mAction;
 
     public Contact(AssistActivity act, String instruct) {
-        super(act, instruct, R.string.command_contact, R.string.instruction_contact);
+        super(act, instruct, new ContactParams());
     }
 
     private String extractAction(String person) {

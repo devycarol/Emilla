@@ -16,8 +16,18 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import net.emilla.EmillaActivity;
 import net.emilla.R;
+import net.emilla.command.app.AospContacts;
+import net.emilla.command.app.Discord;
+import net.emilla.command.app.Firefox;
+import net.emilla.command.app.Github;
+import net.emilla.command.app.Markor;
+import net.emilla.command.app.Newpipe;
+import net.emilla.command.app.Outlook;
+import net.emilla.command.app.Signal;
+import net.emilla.command.app.Tor;
+import net.emilla.command.app.Tubular;
+import net.emilla.command.app.Youtube;
 import net.emilla.settings.Aliases;
-import net.emilla.utils.Apps;
 
 import java.util.Set;
 
@@ -40,7 +50,7 @@ private void setupAppPref(String pkg, SharedPreferences prefs, Resources res,
         // this uses the application icon and doesn't account for multiple launcher icons yet
         Drawable appIcon = pm.getApplicationIcon(pkg);
         appCmdPref.setIcon(appIcon);
-        setupPref(appCmdPref, "aliases_" + pkg, listener, prefs, res, Aliases.appSetId(pkg, Apps.CLS_MARKOR_MAIN /*Todo: procedurally generate these prefs*/));
+        setupPref(appCmdPref, "aliases_" + pkg, listener, prefs, res, Aliases.appSetId(pkg, Markor.CLS_MAIN /*Todo: procedurally generate these prefs*/));
     } catch (PackageManager.NameNotFoundException e) {
         appCmdPref.setVisible(false);
     }
@@ -49,16 +59,17 @@ private void setupAppPref(String pkg, SharedPreferences prefs, Resources res,
 private void setupApps(EmillaActivity act, SharedPreferences prefs, Resources res,
         OnPreferenceChangeListener listener) {
     PackageManager pm = act.getPackageManager();
-    setupAppPref(Apps.PKG_AOSP_CONTACTS, prefs, res, pm, listener);
-    setupAppPref(Apps.PKG_MARKOR, prefs, res, pm, listener);
-    setupAppPref(Apps.PKG_FIREFOX, prefs, res, pm, listener);
-    setupAppPref(Apps.PKG_TOR, prefs, res, pm, listener);
-    setupAppPref(Apps.PKG_SIGNAL, prefs, res, pm, listener);
-    setupAppPref(Apps.PKG_NEWPIPE, prefs, res, pm, listener);
-    setupAppPref(Apps.PKG_TUBULAR, prefs, res, pm, listener);
-    setupAppPref(Apps.PKG_GITHUB, prefs, res, pm, listener);
-    setupAppPref(Apps.PKG_YOUTUBE, prefs, res, pm, listener);
-    setupAppPref(Apps.PKG_DISCORD, prefs, res, pm, listener);
+    setupAppPref(AospContacts.PKG, prefs, res, pm, listener);
+    setupAppPref(Markor.PKG, prefs, res, pm, listener);
+    setupAppPref(Firefox.PKG, prefs, res, pm, listener);
+    setupAppPref(Tor.PKG, prefs, res, pm, listener);
+    setupAppPref(Signal.PKG, prefs, res, pm, listener);
+    setupAppPref(Newpipe.PKG, prefs, res, pm, listener);
+    setupAppPref(Tubular.PKG, prefs, res, pm, listener);
+    setupAppPref(Github.PKG, prefs, res, pm, listener);
+    setupAppPref(Youtube.PKG, prefs, res, pm, listener);
+    setupAppPref(Discord.PKG, prefs, res, pm, listener);
+    setupAppPref(Outlook.PKG, prefs, res, pm, listener);
     // Todo: procedurally generate these
 }
 

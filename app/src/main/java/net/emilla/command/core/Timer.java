@@ -7,8 +7,6 @@ import static java.util.Locale.ROOT;
 import android.content.Intent;
 
 import androidx.annotation.ArrayRes;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -19,23 +17,23 @@ public class Timer extends CoreDataCommand {
 
     public static final String ENTRY = "timer";
 
+    private static class TimerParams extends CoreDataParams {
+
+        private TimerParams() {
+            super(R.string.command_timer,
+                  R.string.instruction_timer,
+                  R.drawable.ic_timer,
+                  R.string.data_hint_timer);
+        }
+    }
+
     @Override @ArrayRes
     public int details() {
         return R.array.details_timer;
     }
 
-    @Override @StringRes
-    public int dataHint() {
-        return R.string.data_hint_timer;
-    }
-
-    @Override @DrawableRes
-    public int icon() {
-        return R.drawable.ic_timer;
-    }
-
     public Timer(AssistActivity act, String instruct) {
-        super(act, instruct, R.string.command_timer, R.string.instruction_timer);
+        super(act, instruct, new TimerParams());
     }
 
     private Intent makeIntent() {

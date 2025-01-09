@@ -24,6 +24,16 @@ public class Call extends CoreCommand implements ContactReceiver {
 
     public static final String ENTRY = "call";
 
+    private static class CallParams extends CoreParams {
+
+        private CallParams() {
+            super(R.string.command_call,
+                  R.string.instruction_phone,
+                  R.drawable.ic_call,
+                  EditorInfo.IME_ACTION_GO);
+        }
+    }
+
     private final HashMap<String, String> mPhoneMap;
 
     @Override @ArrayRes
@@ -31,18 +41,8 @@ public class Call extends CoreCommand implements ContactReceiver {
         return R.array.details_call_phone;
     }
 
-    @Override @DrawableRes
-    public int icon() {
-        return R.drawable.ic_call;
-    }
-
-    @Override
-    public int imeAction() {
-        return EditorInfo.IME_ACTION_GO;
-    }
-
     public Call(AssistActivity act, String instruct) {
-        super(act, instruct, R.string.command_call, R.string.instruction_phone);
+        super(act, instruct, new CallParams());
         mPhoneMap = Contacts.mapPhones(act.prefs());
     }
 

@@ -2,12 +2,10 @@ package net.emilla.command.app;
 
 import static android.content.Intent.EXTRA_TEXT;
 
-import android.content.Context;
-import android.content.Intent;
+import android.content.res.Resources;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
-import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -17,9 +15,17 @@ import net.emilla.utils.Apps;
 
 public class AppSend extends AppCommand {
 
-    @NonNull
-    private static CharSequence genericTitle(Context ctxt, CharSequence appLabel) {
-        return Lang.colonConcat(ctxt.getResources(), R.string.command_app_send, appLabel);
+    private static class BasicAppSendParams extends AppParams {
+
+        private BasicAppSendParams(AppInfo info) {
+            super(info, EditorInfo.IME_ACTION_SEND);
+            // todo: the 'send' action shouldn't apply when just launching
+        }
+
+        @Override
+        public CharSequence title(Resources res) {
+            return Lang.colonConcat(res, R.string.command_app_send, name);
+        }
     }
 
     @Override @ArrayRes
@@ -28,31 +34,38 @@ public class AppSend extends AppCommand {
         return R.array.details_app_send;
     }
 
-    @Override
-    public int imeAction() {
-        // Todo: this shouldn't apply when just launching and also not to the newpipes
-        return EditorInfo.IME_ACTION_SEND;
+    public AppSend(AssistActivity act, String instruct, AppInfo info) {
+        this(act, instruct, new BasicAppSendParams(info));
     }
 
-    private final Intent mSendIntent;
-
-    private AppSend(AssistActivity act, String instruct, AppParams params, CharSequence cmdTitle) {
-        super(act, instruct, params, cmdTitle);
-        mSendIntent = Apps.sendToApp(params.pkg);
-    }
-
-    public AppSend(AssistActivity act, String instruct, AppParams params) {
-        this(act, instruct, params, genericTitle(act, params.label));
-    }
-
-    public AppSend(AssistActivity act, String instruct, AppParams params,
-            @StringRes int instructionId) {
-        this(act, instruct, params, specificTitle(act, params.label, instructionId));
+    protected AppSend(AssistActivity act, String instruct, AppParams params) {
+        super(act, instruct, params);
     }
 
     @Override
     protected void run(String message) {
         // todo: instantly pull up bookmarked videos for newpipe
-        appSucceed(mSendIntent.putExtra(EXTRA_TEXT, message));
+        appSucceed(Apps.sendToApp(packageName).putExtra(EXTRA_TEXT, message));
+    }
+
+    protected static abstract class AppSendParams extends AppParams {
+
+        @StringRes
+        private final int mInstruction;
+
+        protected AppSendParams(AppInfo info, int instruction) {
+            this(info, instruction, EditorInfo.IME_ACTION_SEND);
+            // todo: the 'send' action shouldn't apply when just launching
+        }
+
+        protected AppSendParams(AppInfo info, @StringRes int instruction, int imeAction) {
+            super(info, imeAction);
+            mInstruction = instruction;
+        }
+
+        @Override
+        public final CharSequence title(Resources res) {
+            return Lang.colonConcat(res, name, mInstruction);
+        }
     }
 }

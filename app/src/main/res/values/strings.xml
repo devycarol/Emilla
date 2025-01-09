@@ -187,11 +187,12 @@
 
     <!-- Descriptions for command arguments -->
     <string name="instruction">instruction</string>
+    <string name="instruction_duplicate">choose</string>
     <string name="instruction_web">search or URL</string>
-    <string name="instruction_bookmark">bookmark</string><!--todo: song, playlist, album, audiobook, podcast, etc.-->
+    <string name="instruction_bookmark">name</string><!--todo: song, playlist, album, audiobook, podcast, etc.-->
     <string name="instruction_find">file or folder</string>
     <string name="instruction_dial">number or phoneword</string>
-    <string name="instruction_contact">name</string>
+    <string name="instruction_contact">person</string>
     <string name="instruction_email">person or email address</string>
     <string name="instruction_calculate">expression (incomplete)</string><!--todo-->
     <string name="instruction_alarm">time and weekdays</string>
@@ -218,8 +219,10 @@
     <string name="instruction_text">text</string>
     <!-- Generic instruction for message text -->
     <string name="instruction_message">message</string>
+    <!-- Generic instruction for email apps -->
+    <string name="instruction_app_email">email body</string>
     <!-- Generic instruction for code issues -->
-    <string name="instruction_issues">issue body</string>
+    <string name="instruction_issue">issue body</string>
 
     <string name="manual_none">This command doesn\'t have a manual yet :(</string>
 
@@ -246,10 +249,10 @@
 
     <!-- Data field hints for various commands -->
     <string name="data_hint_default">Data</string>
-    <string name="data_hint_sms">Message body</string>
+    <string name="data_hint_message">Message body</string>
     <string name="data_hint_email">Email body</string>
     <string name="data_hint_share">Text</string>
-    <string name="data_hint_note">Notes</string>
+    <string name="data_hint_note">Note text</string>
     <string name="data_hint_todo">Additional tasks</string>
     <string name="data_hint_alarm">Title</string>
     <string name="data_hint_timer">Label</string>
@@ -258,7 +261,8 @@
     <string name="data_hint_contact">Contact info</string>
     <string name="data_hint_notify">Notification text</string>
     <string name="data_hint_toast">More text</string>
-    <string name="data_hint_app_send_data">Message (cont.)</string>
+    <string name="data_hint_issue">Issue body</string>
+    <string name="data_hint_message_cont">Message (cont.)</string>
 
     <!-- Error messages for failed commands -->
     <string name="error_bad_minutes">Invalid minute value.</string>
@@ -284,6 +288,7 @@
     <string name="error_feature_sms">Your device doesn\'t support SMS messaging.</string>
     <string name="error_unfinished_feature">Unfinished feature!</string>
     <string name="error_unfinished_reminders">Sorry! I don\'t know how to make reminders yet.</string>
+    <string name="error_unfinished_settings">Sorry! I don\'t know how to modify specific settings yet.</string>
     <string name="error_unfinished_notes">Sorry! I don\'t know how to write notes yet.</string>
     <string name="error_unfinished_version">Sorry! This command doesn\'t support your Android version yet.</string>
     <string name="error_unfinished_contact_search">Sorry! I don\'t know how to search through contacts yet.</string>

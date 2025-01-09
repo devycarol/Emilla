@@ -7,11 +7,20 @@ import android.content.res.Resources;
 import androidx.annotation.NonNull;
 
 import net.emilla.AssistActivity;
-import net.emilla.R;
+import net.emilla.command.app.AospContacts;
 import net.emilla.command.app.AppCommand;
-import net.emilla.command.app.AppSearch;
+import net.emilla.command.app.AppCommand.AppInfo;
 import net.emilla.command.app.AppSend;
-import net.emilla.command.app.AppSendData;
+import net.emilla.command.app.Discord;
+import net.emilla.command.app.Firefox;
+import net.emilla.command.app.Github;
+import net.emilla.command.app.Markor;
+import net.emilla.command.app.Newpipe;
+import net.emilla.command.app.Outlook;
+import net.emilla.command.app.Signal;
+import net.emilla.command.app.Tor;
+import net.emilla.command.app.Tubular;
+import net.emilla.command.app.Youtube;
 import net.emilla.command.core.Alarm;
 import net.emilla.command.core.Bookmark;
 import net.emilla.command.core.Calendar;
@@ -37,7 +46,6 @@ import net.emilla.command.core.Torch;
 import net.emilla.command.core.Web;
 import net.emilla.lang.Lang;
 import net.emilla.settings.SettingVals;
-import net.emilla.utils.Apps;
 
 import java.util.HashMap;
 
@@ -59,13 +67,13 @@ public class CmdTree {
     private final Resources mRes;
     private final CmdNode root = new CmdNode();
     private final EmillaCommand[] mCoreCmds = new EmillaCommand[DUPLICATE];
-    private final AppCommand.AppParams[] mAppParamSets;
+    private final AppInfo[] mAppInfos;
     private final AppCommand[] mAppCmds;
 
     public CmdTree(Resources res, int appCount) {
         mRes = res;
         root.map = new HashMap<>();
-        mAppParamSets = new AppCommand.AppParams[appCount];
+        mAppInfos = new AppInfo[appCount];
         mAppCmds = new AppCommand[appCount];
     }
 
@@ -107,12 +115,12 @@ public class CmdTree {
      *
      * @param label is the launcher shortcut title for the app command
      * @param id is a negative integer uniquely identifying this app command
-     * @param params is used to generate an AppCommand instance in
+     * @param info is used to generate an AppCommand instance in
      *               {@link this#singInstance(AssistActivity, short, String)}
-     * @param idx must be the bitwise NOT of `id`, used to store `params` in the
-     *            {@link this#mAppParamSets} array.
+     * @param idx must be the bitwise NOT of `id`, used to store `info` in the
+     *            {@link this#mAppInfos} array.
      */
-    public void putApp(CharSequence label, short id, AppCommand.AppParams params, int idx) {
+    public void putApp(CharSequence label, short id, AppInfo info, int idx) {
         CmdNode cur = root;
         for (String token : Lang.cmdTokens(mRes, label.toString())) {
             if (cur.map == null) cur.map = new HashMap<>();
@@ -125,7 +133,7 @@ public class CmdTree {
         }
         if (cur.cmd == DEFAULT) cur.cmd = id;
         else putDuplicate(cur, id);
-        mAppParamSets[idx] = params;
+        mAppInfos[idx] = info;
     }
 
     /**
@@ -187,24 +195,22 @@ public class CmdTree {
     }
 
     @NonNull
-    private static AppCommand newApp(AssistActivity act, AppCommand.AppParams params, String instruct) {
-        return switch (params.pkg) {
-        case Apps.PKG_AOSP_CONTACTS -> new AppSearch(act, instruct, params, R.string.instruction_contact);
-        case Apps.PKG_MARKOR -> params.cls.equals(Apps.CLS_MARKOR_MAIN)
-                ? new AppSendData(act, instruct, params, R.string.instruction_text)
-            : new AppCommand(act, instruct, params);
-        // Markor can have multiple launchers. Only the main one should have the 'send' property.
-        case Apps.PKG_FIREFOX -> new AppSearch(act, instruct, params, R.string.instruction_web);
-        case Apps.PKG_TOR -> new AppCommand(act, instruct, params);
-        // Tor search/send intents are broken.
-        case Apps.PKG_SIGNAL -> new AppSendData(act, instruct, params, R.string.instruction_message);
-        case Apps.PKG_NEWPIPE,
-             Apps.PKG_TUBULAR -> new AppSend(act, instruct, params, R.string.instruction_video);
-        case Apps.PKG_GITHUB -> new AppSendData(act, instruct, params, R.string.instruction_issues);
-        case Apps.PKG_YOUTUBE -> new AppSearch(act, instruct, params, R.string.instruction_video);
-        case Apps.PKG_DISCORD -> new AppSend(act, instruct, params, R.string.instruction_message);
-        default -> params.has_send ? new AppSend(act, instruct, params) : new AppCommand(act, instruct, params);
-        // Todo: generic AppSearchCommand in a way that handles conflicts with AppSendCommand
+    private static AppCommand newApp(AssistActivity act, String instruct, AppInfo info) {
+        return switch (info.pkg) {
+            case AospContacts.PKG -> new AospContacts(act, instruct, info);
+            case Markor.PKG -> Markor.instance(act, instruct, info);
+            case Firefox.PKG -> new Firefox(act, instruct, info);
+            case Tor.PKG -> new Tor(act, instruct, info);
+            case Signal.PKG -> new Signal(act, instruct, info);
+            case Newpipe.PKG -> new Newpipe(act, instruct, info);
+            case Tubular.PKG -> new Tubular(act, instruct, info);
+            case Github.PKG -> new Github(act, instruct, info);
+            case Youtube.PKG -> new Youtube(act, instruct, info);
+            case Discord.PKG -> new Discord(act, instruct, info);
+            case Outlook.PKG -> new Outlook(act, instruct, info);
+            default -> info.hasSend ? new AppSend(act, instruct, info)
+                    : new AppCommand(act, instruct, info);
+            // Todo: generic AppSearchCommand in a way that handles conflicts with AppSendCommand
         };
     }
 
@@ -215,7 +221,7 @@ public class CmdTree {
             return mCoreCmds[id];
         }
         int appId = ~id;
-        if (mAppCmds[appId] == null) return mAppCmds[appId] = newApp(act, mAppParamSets[appId], instruct);
+        if (mAppCmds[appId] == null) return mAppCmds[appId] = newApp(act, instruct, mAppInfos[appId]);
         mAppCmds[appId].instruct(instruct);
         return mAppCmds[appId];
     }
@@ -232,7 +238,7 @@ public class CmdTree {
     }
 
     private EmillaCommand restrainInstance(AssistActivity act, short id, CmdNode node, String instruct) {
-        return id < 0 && mAppParamSets[~id].basic ? instance(act, node, DEFAULT, instruct)
+        return id < 0 && mAppInfos[~id].basic ? instance(act, node, DEFAULT, instruct)
                 : instance(act, node, id, instruct);
     }
 
@@ -248,7 +254,7 @@ public class CmdTree {
         //  good chance you just want to traverse up the tree one step. I.e. a one-word subcommand that
         //  yields to the parent command if more instruction is provided.
         //  Would entail parent pointers for the nodes, and `cmd` of the root being set to the dfltCmd
-        return id < 0 && mAppParamSets[~id].basic ? DEFAULT : id;
+        return id < 0 && mAppInfos[~id].basic ? DEFAULT : id;
     }
 
     /**

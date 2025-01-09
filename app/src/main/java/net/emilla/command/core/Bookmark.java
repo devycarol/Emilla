@@ -22,12 +22,22 @@ public class Bookmark extends CoreCommand {
             "Open-source software, OSS, https://en.wikipedia.org/wiki/Open_source_software\n" +
             "Rick, dQw, https://www.youtube.com/watch?v=dQw4w9WgXcQ";
 
+    private static class BookmarkParams extends CoreParams {
+
+        private BookmarkParams() {
+            super(R.string.command_bookmark,
+                  R.string.instruction_bookmark,
+                  R.drawable.ic_bookmark,
+                  EditorInfo.IME_ACTION_GO);
+        }
+    }
+
     private final HashMap<String, Intent> mBookmarkMap = new HashMap<>();
     private final AlertDialog.Builder mBookmarkChooser;
     private final boolean mHasBookmarks; // Todo: remove once search is implemented
 
     public Bookmark(AssistActivity act, String instruct) {
-        super(act, instruct, R.string.command_bookmark, R.string.instruction_bookmark);
+        super(act, instruct, new BookmarkParams());
 
         String[] lines = act.mediaCsv().split("\\s*\n\\s*");
         String[] labels = new String[lines.length];
@@ -48,16 +58,6 @@ public class Bookmark extends CoreCommand {
         else mBookmarkChooser = Dialogs.dual(act, R.string.dialog_no_bookmarks,
                 R.string.dlg_msg_choose_media, R.string.dlg_yes_add_bookmarks,
                 (dlg, id) -> act.succeed(new AppSuccess(act, Apps.meTask(act, ConfigActivity.class))));
-    }
-
-    @Override @DrawableRes
-    public int icon() {
-        return R.drawable.ic_bookmark;
-    }
-
-    @Override
-    public int imeAction() {
-        return EditorInfo.IME_ACTION_GO;
     }
 
     @Override

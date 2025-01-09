@@ -15,9 +15,8 @@ public abstract class AttachCommand extends CoreDataCommand implements FileRecei
 
     protected ArrayList<Uri> attachments;
 
-    protected AttachCommand(AssistActivity act, String instruct, @StringRes int name,
-            @StringRes int instruction) {
-        super(act, instruct, name, instruction);
+    protected AttachCommand(AssistActivity act, String instruct, CoreDataParams params) {
+        super(act, instruct, params);
     }
 
     @Override

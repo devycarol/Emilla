@@ -10,8 +10,6 @@ import android.hardware.camera2.CameraManager;
 import android.os.Build;
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.DrawableRes;
-
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exception.EmlaBadCommandException;
@@ -19,6 +17,16 @@ import net.emilla.exception.EmlaBadCommandException;
 public class Torch extends CoreCommand {
 
     public static final String ENTRY = "torch";
+
+    private static class TorchParams extends CoreParams {
+
+        private TorchParams() {
+            super(R.string.command_torch,
+                  R.string.instruction_torch,
+                  R.drawable.ic_torch,
+                  EditorInfo.IME_ACTION_DONE);
+        }
+    }
 
     private static boolean sTorching = false;
     // TODO: replace this with a query - this isn't fully reliable for detecting toggle state. e.g.
@@ -39,18 +47,8 @@ public class Torch extends CoreCommand {
         // Todo: what if multiple torches?
     }
 
-    @Override @DrawableRes
-    public int icon() {
-        return R.drawable.ic_torch;
-    }
-
-    @Override
-    public int imeAction() {
-        return EditorInfo.IME_ACTION_DONE;
-    }
-
     public Torch(AssistActivity act, String instruct) {
-        super(act, instruct, R.string.command_torch, R.string.instruction_torch);
+        super(act, instruct, new TorchParams());
     }
 
     @Override

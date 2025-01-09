@@ -1,8 +1,5 @@
 package net.emilla.command.core;
 
-import androidx.annotation.DrawableRes;
-import androidx.annotation.StringRes;
-
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exception.EmlaBadCommandException;
@@ -11,18 +8,18 @@ public class Notify extends CoreDataCommand {
 
     public static final String ENTRY = "notify";
 
+    private static class NotifyParams extends CoreDataParams {
+
+        private NotifyParams() {
+            super(R.string.command_notify,
+                  R.string.instruction_notify,
+                  R.drawable.ic_notify,
+                  R.string.data_hint_notify);
+        }
+    }
+
     public Notify(AssistActivity act, String instruct) {
-        super(act, instruct, R.string.command_notify, R.string.instruction_notify);
-    }
-
-    @Override @StringRes
-    public int dataHint() {
-        return R.string.data_hint_notify;
-    }
-
-    @Override @DrawableRes
-    public int icon() {
-        return R.drawable.ic_notify;
+        super(act, instruct, new NotifyParams());
     }
 
     @Override
