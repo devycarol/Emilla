@@ -107,6 +107,7 @@ public class BugFailure implements Failure {
             case Build.VERSION_CODES.S_V2 -> "Snow Cone V2";
             case Build.VERSION_CODES.TIRAMISU -> "Tiramisu";
             case Build.VERSION_CODES.UPSIDE_DOWN_CAKE -> "Upside Down Cake";
+            case Build.VERSION_CODES.VANILLA_ICE_CREAM -> "Vanilla Ice Cream";
             default -> "API level " + Build.VERSION.SDK_INT;
         };
     }

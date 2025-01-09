@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Theme.Emilla.DayNight" parent="Theme.MaterialComponents" />
     <style name="Theme.Emilla.Base" parent="Theme.Emilla.DayNight">
+        <item name="android:windowOptOutEdgeToEdgeEnforcement" tools:targetApi="35">true</item>
+        <!--todo: deal with this nonsense..-->
         <item name="actionBarStyle">@style/ActionBarStyle</item>
         <item name="preferenceTheme">@style/SettingsTheme</item>
         <item name="android:statusBarColor">?attr/colorBackgroundFloating</item>
