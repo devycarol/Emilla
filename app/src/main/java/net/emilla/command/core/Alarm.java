@@ -11,10 +11,14 @@ import net.emilla.R;
 import net.emilla.lang.Lang;
 import net.emilla.lang.date.TimeParser;
 import net.emilla.lang.date.WeekdayParser;
+import net.emilla.settings.Aliases;
 
 public class Alarm extends CoreDataCommand {
 
     public static final String ENTRY = "alarm";
+    @ArrayRes
+    public static final int ALIASES = R.array.aliases_alarm;
+    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     private static class AlarmParams extends CoreDataParams {
 

@@ -11,6 +11,7 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.action.FileFetcher;
 import net.emilla.action.MediaFetcher;
+import net.emilla.settings.Aliases;
 import net.emilla.utils.Contacts;
 import net.emilla.utils.EmailTags;
 
@@ -19,6 +20,9 @@ import java.util.HashMap;
 public class Email extends AttachCommand {
 
     public static final String ENTRY = "email";
+    @ArrayRes
+    public static final int ALIASES = R.array.aliases_email;
+    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     private static class EmailParams extends CoreDataParams {
 

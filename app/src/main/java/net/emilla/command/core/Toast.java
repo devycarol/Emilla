@@ -5,10 +5,14 @@ import androidx.annotation.ArrayRes;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.run.ToastGift;
+import net.emilla.settings.Aliases;
 
 public class Toast extends CoreDataCommand {
 
     public static final String ENTRY = "toast";
+    @ArrayRes
+    public static final int ALIASES = R.array.aliases_toast;
+    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     private static class ToastParams extends CoreDataParams {
 

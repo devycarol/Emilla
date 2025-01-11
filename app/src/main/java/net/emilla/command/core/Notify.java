@@ -1,12 +1,18 @@
 package net.emilla.command.core;
 
+import androidx.annotation.ArrayRes;
+
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exception.EmlaBadCommandException;
+import net.emilla.settings.Aliases;
 
 public class Notify extends CoreDataCommand {
 
     public static final String ENTRY = "notify";
+    @ArrayRes
+    public static final int ALIASES = R.array.aliases_notify;
+    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     private static class NotifyParams extends CoreDataParams {
 

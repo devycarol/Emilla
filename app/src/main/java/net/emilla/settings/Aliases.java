@@ -19,70 +19,98 @@ import net.emilla.command.app.Signal;
 import net.emilla.command.app.Tor;
 import net.emilla.command.app.Tubular;
 import net.emilla.command.app.Youtube;
+import net.emilla.command.core.Alarm;
+import net.emilla.command.core.Bookmark;
+import net.emilla.command.core.Calculate;
+import net.emilla.command.core.Calendar;
+import net.emilla.command.core.Call;
+import net.emilla.command.core.Contact;
+import net.emilla.command.core.Copy;
+import net.emilla.command.core.Dial;
+import net.emilla.command.core.Email;
+import net.emilla.command.core.Info;
+import net.emilla.command.core.Launch;
+import net.emilla.command.core.Navigate;
+import net.emilla.command.core.Pomodoro;
+import net.emilla.command.core.Settings;
+import net.emilla.command.core.Share;
+import net.emilla.command.core.Sms;
+import net.emilla.command.core.Time;
+import net.emilla.command.core.Timer;
+import net.emilla.command.core.Toast;
+import net.emilla.command.core.Torch;
+import net.emilla.command.core.Uninstall;
+import net.emilla.command.core.Weather;
+import net.emilla.command.core.Web;
 
 import java.util.Set;
 
 public class Aliases {
 
+    @ArrayRes
     private static final int[] SETS = {
-        R.array.aliases_call,
-        R.array.aliases_dial,
-        R.array.aliases_sms,
-        R.array.aliases_email,
-        R.array.aliases_navigate,
-        R.array.aliases_launch,
-        R.array.aliases_copy,
-        R.array.aliases_share,
-        R.array.aliases_settings,
-    //    R.array.aliases_note,
-    //    R.array.aliases_todo,
-        R.array.aliases_web,
-    //    R.array.aliases_find,
-        R.array.aliases_clock,
-        R.array.aliases_alarm,
-        R.array.aliases_timer,
-        R.array.aliases_pomodoro,
-        R.array.aliases_calendar,
-        R.array.aliases_contact,
-    //    R.array.aliases_notify,
-        R.array.aliases_calculate,
-        R.array.aliases_weather,
-        R.array.aliases_bookmark,
-        R.array.aliases_torch,
-        R.array.aliases_info,
-        R.array.aliases_uninstall,
-        R.array.aliases_toast
+            Call.ALIASES,
+            Dial.ALIASES,
+            Sms.ALIASES,
+            Email.ALIASES,
+            Navigate.ALIASES,
+            Launch.ALIASES,
+            Copy.ALIASES,
+            Share.ALIASES,
+            Settings.ALIASES,
+//            Note.ALIASES,
+//            Todo.ALIASES,
+            Web.ALIASES,
+//            Find.ALIASES,
+            Time.ALIASES,
+            Alarm.ALIASES,
+            Timer.ALIASES,
+            Pomodoro.ALIASES,
+            Calendar.ALIASES,
+            Contact.ALIASES,
+//            Notify.ALIASES,
+            Calculate.ALIASES,
+            Weather.ALIASES,
+            Bookmark.ALIASES,
+            Torch.ALIASES,
+            Info.ALIASES,
+            Uninstall.ALIASES,
+            Toast.ALIASES,
     };
 
-    public static final String[] PREFS = {
-        "aliases_call",
-        "aliases_dial",
-        "aliases_sms",
-        "aliases_email",
-        "aliases_navigate",
-        "aliases_launch",
-        "aliases_copy",
-        "aliases_share",
-        "aliases_settings",
-    //    "aliases_note",
-    //    "aliases_todo",
-        "aliases_web",
-    //    "aliases_find",
-        "aliases_clock",
-        "aliases_alarm",
-        "aliases_timer",
-        "aliases_pomodoro",
-        "aliases_calendar",
-        "aliases_contact",
-    //    "aliases_notify",
-        "aliases_calculate",
-        "aliases_weather",
-        "aliases_bookmark",
-        "aliases_torch",
-        "aliases_info",
-        "aliases_uninstall",
-        "aliases_toast"
+    private static final String[] PREFS = {
+            "aliases_" + Call.ENTRY,
+            "aliases_" + Dial.ENTRY,
+            "aliases_" + Sms.ENTRY,
+            "aliases_" + Email.ENTRY,
+            "aliases_" + Navigate.ENTRY,
+            "aliases_" + Launch.ENTRY,
+            "aliases_" + Copy.ENTRY,
+            "aliases_" + Share.ENTRY,
+            "aliases_" + Settings.ENTRY,
+//            "aliases_" + Note.ENTRY,
+//            "aliases_" + Todo.ENTRY,
+            "aliases_" + Web.ENTRY,
+//            "aliases_" + Find.ENTRY,
+            "aliases_" + Time.ENTRY,
+            "aliases_" + Alarm.ENTRY,
+            "aliases_" + Timer.ENTRY,
+            "aliases_" + Pomodoro.ENTRY,
+            "aliases_" + Calendar.ENTRY,
+            "aliases_" + Contact.ENTRY,
+//            "aliases_" + Notify.ENTRY,
+            "aliases_" + Calculate.ENTRY,
+            "aliases_" + Weather.ENTRY,
+            "aliases_" + Bookmark.ENTRY,
+            "aliases_" + Torch.ENTRY,
+            "aliases_" + Info.ENTRY,
+            "aliases_" + Uninstall.ENTRY,
+            "aliases_" + Toast.ENTRY,
     };
+
+    public static String textKey(String entry) {
+        return "aliases_" + entry + "_text";
+    }
 
     public static Set<String> set(SharedPreferences prefs, Resources res, int idx) {
         return prefs.getStringSet(PREFS[idx], Set.of(res.getStringArray(SETS[idx])));
@@ -91,19 +119,19 @@ public class Aliases {
     @ArrayRes
     public static int appSetId(String pkg, String cls) {
         return switch (pkg) {
-        case AospContacts.PKG -> R.array.aliases_aosp_contacts;
-        case Markor.PKG -> cls.equals(Markor.CLS_MAIN) ? R.array.aliases_markor : 0;
-        // Markor can have multiple launchers, only the main one should have the aliases.
-        case Firefox.PKG -> R.array.aliases_firefox;
-        case Tor.PKG -> R.array.aliases_tor;
-        case Signal.PKG -> R.array.aliases_signal;
-        case Newpipe.PKG -> R.array.aliases_newpipe;
-        case Tubular.PKG -> R.array.aliases_tubular;
-        case Github.PKG -> R.array.aliases_github;
-        case Youtube.PKG -> R.array.aliases_youtube;
-        case Discord.PKG -> R.array.aliases_discord;
-        case Outlook.PKG -> R.array.aliases_outlook;
-        default -> 0;
+            case AospContacts.PKG -> R.array.aliases_aosp_contacts;
+            case Markor.PKG -> cls.equals(Markor.CLS_MAIN) ? R.array.aliases_markor : 0;
+            // Markor can have multiple launchers, only the main one should have the aliases.
+            case Firefox.PKG -> R.array.aliases_firefox;
+            case Tor.PKG -> R.array.aliases_tor;
+            case Signal.PKG -> R.array.aliases_signal;
+            case Newpipe.PKG -> R.array.aliases_newpipe;
+            case Tubular.PKG -> R.array.aliases_tubular;
+            case Github.PKG -> R.array.aliases_github;
+            case Youtube.PKG -> R.array.aliases_youtube;
+            case Discord.PKG -> R.array.aliases_discord;
+            case Outlook.PKG -> R.array.aliases_outlook;
+            default -> 0;
         };
     }
 

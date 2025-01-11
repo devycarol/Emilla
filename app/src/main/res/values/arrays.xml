@@ -73,7 +73,7 @@
         <item>@string/command_navigate</item>
         <item>@string/command_calculate</item>
         <item>@string/command_weather</item>
-        <item>@string/command_clock</item>
+        <item>@string/command_time</item>
         <item>@string/command_alarm</item>
         <item>@string/command_timer</item>
 <!--        <item>@string/command_note</item>-->
@@ -104,7 +104,7 @@
         <item>navigate</item>
         <item>calculate</item>
         <item>weather</item>
-        <item>clock</item>
+        <item>time</item>
         <item>alarm</item>
         <item>timer</item>
 <!--        <item>note</item>-->
@@ -167,9 +167,7 @@
         <item>search</item>
     </string-array>
     <string-array name="aliases_find" />
-    <string-array name="aliases_clock">
-        <item>time</item>
-    </string-array>
+    <string-array name="aliases_time" />
     <string-array name="aliases_alarm" />
     <string-array name="aliases_timer" />
     <string-array name="aliases_pomodoro">

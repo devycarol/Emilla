@@ -5,10 +5,14 @@ import androidx.annotation.ArrayRes;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exception.EmlaBadCommandException;
+import net.emilla.settings.Aliases;
 
 public class Note extends CoreDataCommand {
 
     public static final String ENTRY = "note";
+    @ArrayRes
+    public static final int ALIASES = R.array.aliases_note;
+    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     private static class NoteParams extends CoreDataParams {
 

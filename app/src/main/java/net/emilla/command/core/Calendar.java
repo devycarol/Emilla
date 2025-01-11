@@ -20,6 +20,7 @@ import net.emilla.action.field.FieldToggle;
 import net.emilla.action.field.LocationField;
 import net.emilla.action.field.UrlField;
 import net.emilla.exception.EmlaBadCommandException;
+import net.emilla.settings.Aliases;
 import net.emilla.utils.Apps;
 import net.emilla.utils.Time;
 
@@ -28,6 +29,9 @@ import java.util.regex.Matcher;
 public class Calendar extends CoreDataCommand {
 
     public static final String ENTRY = "calendar";
+    @ArrayRes
+    public static final int ALIASES = R.array.aliases_calendar;
+    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     private static class CalendarParams extends CoreDataParams {
 

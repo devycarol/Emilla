@@ -10,10 +10,14 @@ import androidx.annotation.ArrayRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.settings.Aliases;
 
 public class Dial extends CoreCommand {
 
     public static final String ENTRY = "dial";
+    @ArrayRes
+    public static final int ALIASES = R.array.aliases_dial;
+    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     private static class DialParams extends CoreParams {
 

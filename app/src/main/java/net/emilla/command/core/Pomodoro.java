@@ -11,12 +11,16 @@ import androidx.annotation.ArrayRes;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exception.EmlaBadCommandException;
+import net.emilla.settings.Aliases;
 
 import java.util.regex.Matcher;
 
 public class Pomodoro extends CoreDataCommand {
 
     public static final String ENTRY = "pomodoro";
+    @ArrayRes
+    public static final int ALIASES = R.array.aliases_pomodoro;
+    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     private static class PomodoroParams extends CoreDataParams {
 

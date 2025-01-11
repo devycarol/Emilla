@@ -5,13 +5,19 @@ import static android.content.Intent.CATEGORY_APP_WEATHER;
 import android.os.Build;
 import android.view.inputmethod.EditorInfo;
 
+import androidx.annotation.ArrayRes;
+
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exception.EmlaBadCommandException;
+import net.emilla.settings.Aliases;
 
-public class CateWeather extends CategoryCommand {
+public class Weather extends CategoryCommand {
 
     public static final String ENTRY = "weather";
+    @ArrayRes
+    public static final int ALIASES = R.array.aliases_weather;
+    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     private static class WeatherParams extends CoreParams {
 
@@ -23,7 +29,7 @@ public class CateWeather extends CategoryCommand {
         }
     }
 
-    public CateWeather(AssistActivity act, String instruct) {
+    public Weather(AssistActivity act, String instruct) {
         super(act, instruct, new WeatherParams(), CATEGORY_APP_WEATHER);
     }
 

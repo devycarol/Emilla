@@ -15,6 +15,7 @@ import net.emilla.R;
 import net.emilla.action.field.FieldToggle;
 import net.emilla.action.field.SubjectField;
 import net.emilla.exception.EmlaFeatureException;
+import net.emilla.settings.Aliases;
 import net.emilla.utils.Contacts;
 import net.emilla.utils.Features;
 
@@ -23,6 +24,9 @@ import java.util.HashMap;
 public class Sms extends CoreDataCommand {
 
     public static final String ENTRY = "sms";
+    @ArrayRes
+    public static final int ALIASES = R.array.aliases_sms;
+    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     private static class SmsParams extends CoreDataParams {
 

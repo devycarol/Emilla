@@ -11,7 +11,6 @@ import androidx.annotation.ArrayRes;
 import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
-import androidx.preference.Preference.OnPreferenceClickListener;
 import androidx.preference.PreferenceFragmentCompat;
 
 import net.emilla.EmillaActivity;
@@ -27,6 +26,31 @@ import net.emilla.command.app.Signal;
 import net.emilla.command.app.Tor;
 import net.emilla.command.app.Tubular;
 import net.emilla.command.app.Youtube;
+import net.emilla.command.core.Alarm;
+import net.emilla.command.core.Bookmark;
+import net.emilla.command.core.Calculate;
+import net.emilla.command.core.Calendar;
+import net.emilla.command.core.Call;
+import net.emilla.command.core.Contact;
+import net.emilla.command.core.Copy;
+import net.emilla.command.core.Dial;
+import net.emilla.command.core.Email;
+import net.emilla.command.core.Find;
+import net.emilla.command.core.Info;
+import net.emilla.command.core.Launch;
+import net.emilla.command.core.Note;
+import net.emilla.command.core.Notify;
+import net.emilla.command.core.Pomodoro;
+import net.emilla.command.core.Settings;
+import net.emilla.command.core.Share;
+import net.emilla.command.core.Sms;
+import net.emilla.command.core.Time;
+import net.emilla.command.core.Timer;
+import net.emilla.command.core.Toast;
+import net.emilla.command.core.Todo;
+import net.emilla.command.core.Torch;
+import net.emilla.command.core.Weather;
+import net.emilla.command.core.Web;
 import net.emilla.settings.Aliases;
 
 import java.util.Set;
@@ -81,44 +105,43 @@ private void setupCorePref(String textKey, OnPreferenceChangeListener listener,
     setupPref(cmdPref, setKey, listener, prefs, res, setId);
 }
 
-private void deactivate(String textKey, OnPreferenceClickListener listener) {
+private void deactivate(String textKey, EmillaActivity act) {
     Preference cmdPref = findPreference(textKey);
-    if (cmdPref != null) cmdPref.setOnPreferenceClickListener(listener);
+    if (cmdPref != null) cmdPref.setOnPreferenceClickListener(pref -> {
+        act.toast("Coming soon!");
+        return false;
+    });
 }
 
 private void setupCores(EmillaActivity act, SharedPreferences prefs, Resources res,
         OnPreferenceChangeListener listener) {
     if (prefs == null) return;
-    OnPreferenceClickListener dListener = pref -> {
-        act.toast("Coming soon!");
-        return false;
-    };
-    setupCorePref("aliases_call_text", listener, prefs, res, R.array.aliases_call);
-    setupCorePref("aliases_dial_text", listener, prefs, res, R.array.aliases_dial);
-    setupCorePref("aliases_sms_text", listener, prefs, res, R.array.aliases_sms);
-    setupCorePref("aliases_email_text", listener, prefs, res, R.array.aliases_email);
-    setupCorePref("aliases_copy_text", listener, prefs, res, R.array.aliases_copy);
-    setupCorePref("aliases_share_text", listener, prefs, res, R.array.aliases_share);
-    setupCorePref("aliases_launch_text", listener, prefs, res, R.array.aliases_launch);
-    setupCorePref("aliases_settings_text", listener, prefs, res, R.array.aliases_settings);
-    deactivate("aliases_note_text", dListener);
-    deactivate("aliases_todo_text", dListener);
-    setupCorePref("aliases_web_text", listener, prefs, res, R.array.aliases_web);
-    deactivate("aliases_find_text", dListener);
-    setupCorePref("aliases_clock_text", listener, prefs, res, R.array.aliases_clock);
-    setupCorePref("aliases_alarm_text", listener, prefs, res, R.array.aliases_alarm);
-    setupCorePref("aliases_timer_text", listener, prefs, res, R.array.aliases_timer);
-    setupCorePref("aliases_pomodoro_text", listener, prefs, res, R.array.aliases_pomodoro);
-    setupCorePref("aliases_calendar_text", listener, prefs, res, R.array.aliases_calendar);
-    setupCorePref("aliases_contact_text", listener, prefs, res, R.array.aliases_contact);
-    deactivate("aliases_notify_text", dListener);
-    setupCorePref("aliases_calculate_text", listener, prefs, res, R.array.aliases_calculate);
-    setupCorePref("aliases_weather_text", listener, prefs, res, R.array.aliases_weather);
-    setupCorePref("aliases_bookmark_text", listener, prefs, res, R.array.aliases_bookmark);
-    setupCorePref("aliases_torch_text", listener, prefs, res, R.array.aliases_torch);
-    setupCorePref("aliases_info_text", listener, prefs, res, R.array.aliases_info);
-    setupCorePref("aliases_toast_text", listener, prefs, res, R.array.aliases_toast);
-    deactivate("aliases_custom_text", dListener);
+    setupCorePref(Call.ALIAS_TEXT_KEY, listener, prefs, res, Call.ALIASES);
+    setupCorePref(Dial.ALIAS_TEXT_KEY, listener, prefs, res, Dial.ALIASES);
+    setupCorePref(Sms.ALIAS_TEXT_KEY, listener, prefs, res,  Sms.ALIASES);
+    setupCorePref(Email.ALIAS_TEXT_KEY, listener, prefs, res, Email.ALIASES);
+    setupCorePref(Copy.ALIAS_TEXT_KEY, listener, prefs, res, Copy.ALIASES);
+    setupCorePref(Share.ALIAS_TEXT_KEY, listener, prefs, res, Share.ALIASES);
+    setupCorePref(Launch.ALIAS_TEXT_KEY, listener, prefs, res, Launch.ALIASES);
+    setupCorePref(Settings.ALIAS_TEXT_KEY, listener, prefs, res,  Settings.ALIASES);
+    deactivate(Note.ALIAS_TEXT_KEY, act);
+    deactivate(Todo.ALIAS_TEXT_KEY, act);
+    setupCorePref(Web.ALIAS_TEXT_KEY, listener, prefs, res, Web.ALIASES);
+    deactivate(Find.ALIAS_TEXT_KEY, act);
+    setupCorePref(Time.ALIAS_TEXT_KEY, listener, prefs, res, Time.ALIASES);
+    setupCorePref(Alarm.ALIAS_TEXT_KEY, listener, prefs, res, Alarm.ALIASES);
+    setupCorePref(Timer.ALIAS_TEXT_KEY, listener, prefs, res, Timer.ALIASES);
+    setupCorePref(Pomodoro.ALIAS_TEXT_KEY, listener, prefs, res, Pomodoro.ALIASES);
+    setupCorePref(Calendar.ALIAS_TEXT_KEY, listener, prefs, res, Calendar.ALIASES);
+    setupCorePref(Contact.ALIAS_TEXT_KEY, listener, prefs, res, Contact.ALIASES);
+    deactivate(Notify.ALIAS_TEXT_KEY, act);
+    setupCorePref(Calculate.ALIAS_TEXT_KEY, listener, prefs, res, Calculate.ALIASES);
+    setupCorePref(Weather.ALIAS_TEXT_KEY, listener, prefs, res, Weather.ALIASES);
+    setupCorePref(Bookmark.ALIAS_TEXT_KEY, listener, prefs, res, Bookmark.ALIASES);
+    setupCorePref(Torch.ALIAS_TEXT_KEY, listener, prefs, res, Torch.ALIASES);
+    setupCorePref(Info.ALIAS_TEXT_KEY, listener, prefs, res, Info.ALIASES);
+    setupCorePref(Toast.ALIAS_TEXT_KEY, listener, prefs, res, Toast.ALIASES);
+    deactivate("aliases_custom_text", act);
 }
 
 @Override

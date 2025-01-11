@@ -64,9 +64,9 @@
             android:title="@string/command_weather" />
         <EditTextPreference
             android:icon="@drawable/ic_clock"
-            android:key="aliases_clock_text"
-            android:summary="@string/summary_clock"
-            android:title="@string/command_clock" />
+            android:key="aliases_time_text"
+            android:summary="@string/summary_time"
+            android:title="@string/command_time" />
         <EditTextPreference
             android:icon="@drawable/ic_alarm"
             android:key="aliases_alarm_text"

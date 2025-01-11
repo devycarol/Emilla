@@ -4,15 +4,19 @@ import static android.content.Intent.CATEGORY_APP_CALCULATOR;
 
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.DrawableRes;
+import androidx.annotation.ArrayRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.settings.Aliases;
 import net.emilla.utils.Calculator;
 
-public class CateCalculate extends CategoryCommand {
+public class Calculate extends CategoryCommand {
 
     public static final String ENTRY = "calculate";
+    @ArrayRes
+    public static final int ALIASES = R.array.aliases_calculate;
+    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     private static class CalculateParams extends CoreParams {
 
@@ -24,7 +28,7 @@ public class CateCalculate extends CategoryCommand {
         }
     }
 
-    public CateCalculate(AssistActivity act, String instruct) {
+    public Calculate(AssistActivity act, String instruct) {
         super(act, instruct, new CalculateParams(), CATEGORY_APP_CALCULATOR);
     }
 

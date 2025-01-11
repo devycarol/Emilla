@@ -11,11 +11,15 @@ import androidx.annotation.ArrayRes;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exception.EmlaBadCommandException;
+import net.emilla.settings.Aliases;
 import net.emilla.utils.Time;
 
 public class Timer extends CoreDataCommand {
 
     public static final String ENTRY = "timer";
+    @ArrayRes
+    public static final int ALIASES = R.array.aliases_timer;
+    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     private static class TimerParams extends CoreDataParams {
 

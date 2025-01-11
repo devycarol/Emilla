@@ -11,12 +11,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 
-import androidx.annotation.DrawableRes;
-import androidx.annotation.StringRes;
+import androidx.annotation.ArrayRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exception.EmlaBadCommandException;
+import net.emilla.settings.Aliases;
 import net.emilla.utils.Apps;
 
 import java.io.BufferedReader;
@@ -29,6 +29,9 @@ import java.io.InputStreamReader;
 public class Todo extends CoreDataCommand {
 
     public static final String ENTRY = "todo";
+    @ArrayRes
+    public static final int ALIASES = R.array.aliases_todo;
+    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     private static class TodoParams extends CoreDataParams {
 

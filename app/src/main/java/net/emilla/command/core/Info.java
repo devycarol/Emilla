@@ -4,16 +4,21 @@ import android.content.Intent;
 import android.provider.Settings;
 import android.view.inputmethod.EditorInfo;
 
+import androidx.annotation.ArrayRes;
 import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.settings.Aliases;
 import net.emilla.utils.Apps;
 import net.emilla.utils.Dialogs;
 
-public class OpenInfo extends OpenCommand {
+public class Info extends OpenCommand {
 
     public static final String ENTRY = "info";
+    @ArrayRes
+    public static final int ALIASES = R.array.aliases_info;
+    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     private static class InfoParams extends CoreParams {
 
@@ -25,7 +30,7 @@ public class OpenInfo extends OpenCommand {
         }
     }
 
-    public OpenInfo(AssistActivity act, String instruct) {
+    public Info(AssistActivity act, String instruct) {
         super(act, instruct, new InfoParams());
     }
 

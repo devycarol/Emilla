@@ -10,13 +10,19 @@ import android.hardware.camera2.CameraManager;
 import android.os.Build;
 import android.view.inputmethod.EditorInfo;
 
+import androidx.annotation.ArrayRes;
+
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exception.EmlaBadCommandException;
+import net.emilla.settings.Aliases;
 
 public class Torch extends CoreCommand {
 
     public static final String ENTRY = "torch";
+    @ArrayRes
+    public static final int ALIASES = R.array.aliases_torch;
+    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     private static class TorchParams extends CoreParams {
 

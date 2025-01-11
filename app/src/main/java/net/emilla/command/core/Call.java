@@ -8,12 +8,12 @@ import android.net.Uri;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
-import androidx.annotation.DrawableRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.content.receive.ContactReceiver;
 import net.emilla.exception.EmlaFeatureException;
+import net.emilla.settings.Aliases;
 import net.emilla.utils.Contacts;
 import net.emilla.utils.Features;
 import net.emilla.utils.Permissions;
@@ -23,6 +23,9 @@ import java.util.HashMap;
 public class Call extends CoreCommand implements ContactReceiver {
 
     public static final String ENTRY = "call";
+    @ArrayRes
+    public static final int ALIASES = R.array.aliases_call;
+    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     private static class CallParams extends CoreParams {
 

@@ -3,13 +3,14 @@ package net.emilla.command.core;
 import android.content.Intent;
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.DrawableRes;
+import androidx.annotation.ArrayRes;
 import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.config.ConfigActivity;
 import net.emilla.run.AppSuccess;
+import net.emilla.settings.Aliases;
 import net.emilla.utils.Apps;
 import net.emilla.utils.Dialogs;
 
@@ -18,6 +19,9 @@ import java.util.HashMap;
 public class Bookmark extends CoreCommand {
 
     public static final String ENTRY = "bookmark";
+    @ArrayRes
+    public static final int ALIASES = R.array.aliases_bookmark;
+    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
     public static final String DFLT_MEDIA = "Emilla GitHub, emla, https://github.com/devycarol/Emilla\n" +
             "Open-source software, OSS, https://en.wikipedia.org/wiki/Open_source_software\n" +
             "Rick, dQw, https://www.youtube.com/watch?v=dQw4w9WgXcQ";

@@ -9,18 +9,20 @@ import android.net.Uri;
 import android.provider.ContactsContract.Contacts;
 
 import androidx.annotation.ArrayRes;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.content.receive.ContactReceiver;
 import net.emilla.exception.EmlaBadCommandException;
+import net.emilla.settings.Aliases;
 import net.emilla.utils.Apps;
 
 public class Contact extends CoreDataCommand implements ContactReceiver {
 
     public static final String ENTRY = "contact";
+    @ArrayRes
+    public static final int ALIASES = R.array.aliases_contact;
+    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
     private static final byte
             VIEW = 0,
             CREATE = 1,

@@ -2,14 +2,20 @@ package net.emilla.command.core;
 
 import android.view.inputmethod.EditorInfo;
 
+import androidx.annotation.ArrayRes;
+
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exception.EmlaBadCommandException;
 import net.emilla.run.CopyGift;
+import net.emilla.settings.Aliases;
 
 public class Copy extends CoreCommand {
 
     public static final String ENTRY = "copy";
+    @ArrayRes
+    public static final int ALIASES = R.array.aliases_copy;
+    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     private static class CopyParams extends CoreParams {
 

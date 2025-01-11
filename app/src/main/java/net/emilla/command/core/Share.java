@@ -12,12 +12,16 @@ import net.emilla.R;
 import net.emilla.action.FileFetcher;
 import net.emilla.action.MediaFetcher;
 import net.emilla.content.receive.AppChoiceReceiver;
+import net.emilla.settings.Aliases;
 import net.emilla.utils.Apps;
 import net.emilla.utils.Files.MimeType;
 
 public class Share extends AttachCommand implements AppChoiceReceiver {
 
     public static final String ENTRY = "share";
+    @ArrayRes
+    public static final int ALIASES = R.array.aliases_share;
+    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     private static class ShareParams extends CoreDataParams {
 

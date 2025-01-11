@@ -122,7 +122,7 @@
     <string name="command_navigate">Navigate</string>
     <string name="command_calculate">Calculate</string>
     <string name="command_weather">Weather</string>
-    <string name="command_clock">Clock</string>
+    <string name="command_time">Time</string>
     <string name="command_alarm">Alarm</string>
     <string name="command_timer">Timer</string>
     <string name="command_note">Note</string>
@@ -155,7 +155,7 @@
     <string name="summary_navigate">Search and navigate to locations</string>
     <string name="summary_calculate">Compute math equations</string>
     <string name="summary_weather">Open a weather app</string>
-    <string name="summary_clock">Tell the time current, earlier, or later for various timezones</string>
+    <string name="summary_time">Tell the time current, earlier, or later for various timezones</string>
     <string name="summary_alarm">Set alarms</string>
     <string name="summary_timer">Set timers</string>
     <string name="summary_note">Add text to a file</string>
@@ -296,7 +296,7 @@
     <string name="error_unfinished_file_search">Sorry! I don\'t know how to search for files yet.</string>
     <string name="error_unfinished_categorical_app_search">Sorry! I don\'t have categorical app search yet.</string>
     <string name="error_unfinished_timer_label">Sorry! I can\'t label the timer without a duration.</string>
-    <string name="error_unfinished_clock_location_elapse">Sorry! No locations or elapse-time yet, working on it.</string>
+    <string name="error_unfinished_time_location_elapse">Sorry! No locations or elapse-time yet, working on it.</string>
     <string name="error_unfinished_copy">Unfinished feature! The idea is to copy a file when text isn\'t provided.</string>
     <string name="error_unknown">Unknown error</string>
     <string name="error_bug_report_please">Please submit the bug report!</string>
