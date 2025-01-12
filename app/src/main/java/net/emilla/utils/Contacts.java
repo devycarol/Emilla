@@ -27,8 +27,11 @@ public final class Contacts {
         for (String line : csv.split("\\s*\n\\s*")) {
             String[] vals = line.split("\\s*,\\s*");
             int lastIdx = vals.length - 1;
-            for (int i = 0; i < lastIdx; ++i)
-            if (contactMap.put(vals[i].toLowerCase(), vals[lastIdx]) != null) Log.d("Emilla Contacts", "Duplicate contact discarded. Sorry!"); // TODO
+            for (int i = 0; i < lastIdx; ++i) {
+                if (contactMap.put(vals[i].toLowerCase(), vals[lastIdx]) != null) {
+                    Log.d("Emilla Contacts", "Duplicate contact discarded. Sorry!"); // TODO
+                }
+            }
         }
         return contactMap;
     }

@@ -34,9 +34,6 @@ android {
         viewBinding = true
         buildConfig = true
     }
-    lint {
-        disable.add("SuspiciousIndentation")
-    }
 }
 
 dependencies {
