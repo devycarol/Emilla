@@ -36,10 +36,6 @@ import net.emilla.action.CursorStart;
 import net.emilla.action.Help;
 import net.emilla.action.QuickAction;
 import net.emilla.chime.Chimer;
-import net.emilla.chime.Custom;
-import net.emilla.chime.Nebula;
-import net.emilla.chime.Redial;
-import net.emilla.chime.Silence;
 import net.emilla.command.CmdTree;
 import net.emilla.command.DataCmd;
 import net.emilla.command.EmillaCommand;
@@ -128,13 +124,7 @@ public class AssistActivity extends EmillaActivity {
         setContentView(R.layout.activity_assist);
 
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        mChimer = switch (SettingVals.soundSet(mPrefs)) {
-            case Chimer.NONE -> new Silence();
-            case Chimer.NEBULA -> new Nebula(this);
-            case Chimer.VOICE_DIALER -> new Redial();
-            case Chimer.CUSTOM -> new Custom(this, mPrefs);
-            default -> throw new RuntimeException();
-        };
+        mChimer = SettingVals.chimer(this, mPrefs);
         if (savedInstanceState == null) chime(START);
 
         Resources res = getResources();

@@ -2,6 +2,7 @@ package net.emilla.settings;
 
 import static net.emilla.command.EmillaCommand.*;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -16,6 +17,10 @@ import net.emilla.action.NoAction;
 import net.emilla.action.QuickAction;
 import net.emilla.action.SelectAll;
 import net.emilla.chime.Chimer;
+import net.emilla.chime.Custom;
+import net.emilla.chime.Nebula;
+import net.emilla.chime.Redial;
+import net.emilla.chime.Silence;
 import net.emilla.command.core.Alarm;
 import net.emilla.command.core.Bookmark;
 import net.emilla.command.core.Calculate;
@@ -42,10 +47,6 @@ import net.emilla.command.core.Web;
 import net.emilla.utils.Features;
 
 public class SettingVals {
-
-    public static String soundSet(SharedPreferences prefs) {
-        return prefs.getString(Chimer.SOUND_SET, Chimer.NEBULA);
-    }
 
     private static short cmdId(String entry) {
         return switch (entry) {
@@ -139,5 +140,19 @@ public class SettingVals {
             case QuickAction.HELP -> new Help(act);
             default -> new NoAction(act);
         };
+    }
+
+    public static Chimer chimer(Context ctx, SharedPreferences prefs) {
+        return switch (soundSet(prefs)) {
+            case Chimer.NONE -> new Silence();
+            case Chimer.NEBULA -> new Nebula(ctx);
+            case Chimer.VOICE_DIALER -> new Redial();
+            case Chimer.CUSTOM -> new Custom(ctx, prefs);
+            default -> throw new RuntimeException("Not a chimer.");
+        };
+    }
+
+    public static String soundSet(SharedPreferences prefs) {
+        return prefs.getString(Chimer.SOUND_SET, Chimer.NEBULA);
     }
 }
