@@ -64,6 +64,7 @@ import net.emilla.settings.SettingVals;
 import net.emilla.system.EmillaForegroundService;
 import net.emilla.utils.Apps;
 import net.emilla.utils.Contacts;
+import net.emilla.utils.Dialogs;
 import net.emilla.view.ActionButton;
 
 import java.util.List;
@@ -101,9 +102,9 @@ public class AssistActivity extends EmillaActivity {
     private boolean mDataAvailable = true;
     private boolean mAlwaysShowData;
     private int mImeAction = IME_ACTION_NEXT;
-    private boolean mLaunched = false;
-    private boolean mFocused = false;
-    private boolean mPendingCancel = false;
+    private boolean
+            mLaunched = false,
+            mOpen = false;
     private boolean mDialogOpen = false;
     private boolean
             mDontChimePend = false,
@@ -201,7 +202,7 @@ public class AssistActivity extends EmillaActivity {
         super.onNewIntent(intent);
 
         String action = intent.getAction();
-        if (mFocused && action != null) switch (action) {
+        if (mOpen && action != null) switch (action) {
             case ACTION_ASSIST, ACTION_VOICE_COMMAND -> mDoubleAssistAction.perform();
             // Todo: this is broken for the corner gesture. Seems to be an Android bug (LineageOS 21,
             //  no animations, navbar hell).
@@ -380,10 +381,10 @@ public class AssistActivity extends EmillaActivity {
 
     protected void onResume() {
         super.onResume();
-        if (!mFocused) {
+        if (!mOpen) {
             if (mLaunched) resume();
             else mLaunched = true;
-            mFocused = true;
+            mOpen = true;
         }
     }
 
@@ -391,7 +392,7 @@ public class AssistActivity extends EmillaActivity {
     protected void onStop() {
         super.onStop();
 
-        mFocused = false;
+        mOpen = false;
         if (!(isChangingConfigurations() || isFinishing())) {
             if (shouldCancel()) cancel();
             // TODO: the launch fail bug is caused by focus stealing
@@ -407,19 +408,10 @@ public class AssistActivity extends EmillaActivity {
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        // todo: configurable action for second tap of the 'assist' key, could type/run a favorite command (like torch :), pull up a gadget of favorites, lots of possibilities.
-        // u could have the command chain into a second literal "cancel" command to just have a double-click action :)
-        // could have it open a new window or tab. tabs would be cool. anyways, assist key can't be captured here.
         switch (keyCode) {
-        case KEYCODE_BACK -> { // Todo config? command history?
-            if (mPendingCancel) cancel(); // todo: is this necessary, or is it already handled by the dialog's key event listener?
-            else cancelIfWarranted();
-        }
+        case KEYCODE_BACK -> cancelIfWarranted(); // todo config? command history?
         case KEYCODE_MENU -> mMenuKeyAction.perform();
-        case KEYCODE_SEARCH -> {
-            restartInput(); // Todo config
-            chime(ACT);
-        }
+        case KEYCODE_SEARCH -> give(() -> {}); // todo config
         default -> { return false; }
         }
         return true;
@@ -565,10 +557,6 @@ public class AssistActivity extends EmillaActivity {
         if (!mDialogOpen && askChimeResume()) chime(RESUME);
     }
 
-    private void restartInput() {
-        focusedEditBox().selectAll();
-    }
-
     public boolean shouldCancel() {
         return mCommandField.length() + mDataField.length() == 0;
     }
@@ -587,25 +575,14 @@ public class AssistActivity extends EmillaActivity {
         resume();
     }
 
-    private void declineCancel() {
-        mPendingCancel = false;
-        onCloseDialog();
-    }
-
     private void cancelIfWarranted() {
         if (shouldCancel()) cancel();
-        else {
-            mPendingCancel = true;
-            offer(new DialogOffering(this, cancelDialog(), dlg -> declineCancel()));
-        }
+        else offer(new DialogOffering(this, cancelDialog()));
     }
 
     private AlertDialog.Builder cancelDialog() {
-        return new AlertDialog.Builder(this)
-                .setTitle(R.string.exit)
-                .setMessage(R.string.dlg_msg_exit)
-                .setPositiveButton(R.string.leave, (dlg, id) -> cancel())
-                .setNegativeButton(android.R.string.cancel, (dlg, which) -> declineCancel())
+        return Dialogs.dual(this, R.string.exit, R.string.dlg_msg_exit, R.string.leave,
+                (dlg, which) -> cancel())
                 .setOnKeyListener((dlg, keyCode, event) -> {
             if (keyCode == KEYCODE_BACK && event.getAction() == ACTION_UP) {
                 cancel();
@@ -648,7 +625,7 @@ public class AssistActivity extends EmillaActivity {
     }
 
     public void give(Gift gift) {
-        restartInput();
+        focusedEditBox().selectAll();
         gift.run();
         chime(ACT);
     }
