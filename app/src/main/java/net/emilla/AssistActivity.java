@@ -107,6 +107,8 @@ public class AssistActivity extends EmillaActivity {
             mDontChimeResume = false;
     private boolean mHasTitlebar;
 
+    private long mLastAssistIntentTime;
+
 //    public static long nanosPlease(long prevTime, String label) {
 //        long curTime = System.nanoTime();
 //        String s = String.valueOf(curTime - prevTime);
@@ -122,6 +124,8 @@ public class AssistActivity extends EmillaActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_assist);
+
+        if (ACTION_ASSIST.equals(getIntent().getAction())) handleAssistIntent(false);
 
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         mChimer = SettingVals.chimer(this, mPrefs);
@@ -193,10 +197,18 @@ public class AssistActivity extends EmillaActivity {
 
         String action = intent.getAction();
         if (mOpen && action != null) switch (action) {
-            case ACTION_ASSIST, ACTION_VOICE_COMMAND -> mDoubleAssistAction.perform();
-            // Todo: this is broken for the corner gesture. Seems to be an Android bug (LineageOS 21,
-            //  no animations, navbar hell).
-        }
+            case ACTION_ASSIST -> handleAssistIntent(true);
+            case ACTION_VOICE_COMMAND -> mDoubleAssistAction.perform();
+        } else if (ACTION_ASSIST.equals(action)) handleAssistIntent(false);
+    }
+
+    private void handleAssistIntent(boolean performAction) {
+        // TODO: determine why the corner gesture sends the assist intent twice.
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - mLastAssistIntentTime > 150 /*ms*/) {
+            mLastAssistIntentTime = currentTime;
+            if (performAction) mDoubleAssistAction.perform();
+        } else mLastAssistIntentTime = 0;
     }
 
     @Override // Todo: replace with view-model?
