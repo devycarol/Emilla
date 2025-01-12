@@ -4,7 +4,7 @@ import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.utils.Dialogs;
+import net.emilla.util.Dialogs;
 
 public class MessageFailure extends DialogFailure {
 

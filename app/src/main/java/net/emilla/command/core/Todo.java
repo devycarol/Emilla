@@ -17,7 +17,7 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exception.EmlaBadCommandException;
 import net.emilla.settings.Aliases;
-import net.emilla.utils.Apps;
+import net.emilla.util.Apps;
 
 import java.io.BufferedReader;
 import java.io.File;

@@ -1,4 +1,4 @@
-package net.emilla.utils;
+package net.emilla.util;
 
 import static java.util.regex.Pattern.CASE_INSENSITIVE;
 import static java.util.regex.Pattern.compile;

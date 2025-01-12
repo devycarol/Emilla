@@ -11,8 +11,8 @@ import net.emilla.R;
 import net.emilla.config.ConfigActivity;
 import net.emilla.run.AppSuccess;
 import net.emilla.settings.Aliases;
-import net.emilla.utils.Apps;
-import net.emilla.utils.Dialogs;
+import net.emilla.util.Apps;
+import net.emilla.util.Dialogs;
 
 import java.util.HashMap;
 

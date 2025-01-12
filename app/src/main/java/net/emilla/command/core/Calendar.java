@@ -21,8 +21,8 @@ import net.emilla.action.field.LocationField;
 import net.emilla.action.field.UrlField;
 import net.emilla.exception.EmlaBadCommandException;
 import net.emilla.settings.Aliases;
-import net.emilla.utils.Apps;
-import net.emilla.utils.Time;
+import net.emilla.util.Apps;
+import net.emilla.util.Time;
 
 import java.util.regex.Matcher;
 

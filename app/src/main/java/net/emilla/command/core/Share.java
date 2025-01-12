@@ -13,8 +13,8 @@ import net.emilla.action.FileFetcher;
 import net.emilla.action.MediaFetcher;
 import net.emilla.content.receive.AppChoiceReceiver;
 import net.emilla.settings.Aliases;
-import net.emilla.utils.Apps;
-import net.emilla.utils.Files.MimeType;
+import net.emilla.util.Apps;
+import net.emilla.util.Files.MimeType;
 
 public class Share extends AttachCommand implements AppChoiceReceiver {
 

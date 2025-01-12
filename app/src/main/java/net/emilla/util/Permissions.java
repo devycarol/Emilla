@@ -1,4 +1,4 @@
-package net.emilla.utils;
+package net.emilla.util;
 
 import static android.Manifest.permission.CALL_PHONE;
 import static android.Manifest.permission.READ_CONTACTS;

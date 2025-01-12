@@ -1,4 +1,4 @@
-package net.emilla.utils;
+package net.emilla.util;
 
 import static java.lang.Long.parseLong;
 import static java.lang.Math.pow;

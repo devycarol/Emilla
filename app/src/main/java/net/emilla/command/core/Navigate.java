@@ -10,7 +10,7 @@ import androidx.annotation.ArrayRes;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.settings.Aliases;
-import net.emilla.utils.Apps;
+import net.emilla.util.Apps;
 
 public class Navigate extends CategoryCommand {
 

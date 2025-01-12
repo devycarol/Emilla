@@ -1,4 +1,4 @@
-package net.emilla.utils;
+package net.emilla.util;
 
 import net.emilla.R;
 import net.emilla.exception.EmlaBadCommandException;

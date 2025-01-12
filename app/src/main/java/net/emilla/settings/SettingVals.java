@@ -44,7 +44,7 @@ import net.emilla.command.core.Torch;
 import net.emilla.command.core.Uninstall;
 import net.emilla.command.core.Weather;
 import net.emilla.command.core.Web;
-import net.emilla.utils.Features;
+import net.emilla.util.Features;
 
 public class SettingVals {
 

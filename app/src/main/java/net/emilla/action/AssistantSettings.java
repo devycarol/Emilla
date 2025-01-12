@@ -12,7 +12,7 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.config.ConfigActivity;
 import net.emilla.run.AppSuccess;
-import net.emilla.utils.Apps;
+import net.emilla.util.Apps;
 
 public class AssistantSettings implements LabeledQuickAction {
 

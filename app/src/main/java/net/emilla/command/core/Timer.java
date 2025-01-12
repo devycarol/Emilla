@@ -12,7 +12,7 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exception.EmlaBadCommandException;
 import net.emilla.settings.Aliases;
-import net.emilla.utils.Time;
+import net.emilla.util.Time;
 
 public class Timer extends CoreDataCommand {
 

@@ -25,8 +25,8 @@ import net.emilla.R;
 import net.emilla.chime.Chimer;
 import net.emilla.settings.SettingVals;
 import net.emilla.system.EmillaAccessibilityService;
-import net.emilla.utils.Apps;
-import net.emilla.utils.Features;
+import net.emilla.util.Apps;
+import net.emilla.util.Features;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 private static final String

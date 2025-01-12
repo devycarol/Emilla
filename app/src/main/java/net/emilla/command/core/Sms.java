@@ -16,8 +16,8 @@ import net.emilla.action.field.FieldToggle;
 import net.emilla.action.field.SubjectField;
 import net.emilla.exception.EmlaFeatureException;
 import net.emilla.settings.Aliases;
-import net.emilla.utils.Contacts;
-import net.emilla.utils.Features;
+import net.emilla.util.Contacts;
+import net.emilla.util.Features;
 
 import java.util.HashMap;
 

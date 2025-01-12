@@ -15,7 +15,7 @@ import net.emilla.R;
 import net.emilla.content.receive.ContactReceiver;
 import net.emilla.exception.EmlaBadCommandException;
 import net.emilla.settings.Aliases;
-import net.emilla.utils.Apps;
+import net.emilla.util.Apps;
 
 public class Contact extends CoreDataCommand implements ContactReceiver {
 

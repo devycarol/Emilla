@@ -12,7 +12,7 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.command.EmillaCommand;
 import net.emilla.run.DialogOffering;
-import net.emilla.utils.Dialogs;
+import net.emilla.util.Dialogs;
 
 public class Help implements LabeledQuickAction {
 

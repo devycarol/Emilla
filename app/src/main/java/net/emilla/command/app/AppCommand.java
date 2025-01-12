@@ -1,6 +1,6 @@
 package net.emilla.command.app;
 
-import static net.emilla.utils.Apps.sendToApp;
+import static net.emilla.util.Apps.sendToApp;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -16,7 +16,7 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.command.EmillaCommand;
 import net.emilla.lang.Lang;
-import net.emilla.utils.Apps;
+import net.emilla.util.Apps;
 
 public class AppCommand extends EmillaCommand {
 

@@ -14,7 +14,7 @@ import androidx.core.app.NotificationCompat;
 
 import net.emilla.R;
 import net.emilla.config.ConfigActivity;
-import net.emilla.utils.Apps;
+import net.emilla.util.Apps;
 
 public class EmillaForegroundService extends Service {
     private static final String CHANNEL_ID = "foreground_service_channel";

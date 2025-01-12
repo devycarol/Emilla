@@ -12,7 +12,7 @@ import androidx.appcompat.app.AlertDialog;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exception.EmlaAppsException;
-import net.emilla.utils.Dialogs;
+import net.emilla.util.Dialogs;
 
 import java.util.List;
 

@@ -58,9 +58,9 @@ import net.emilla.run.Offering;
 import net.emilla.run.Success;
 import net.emilla.settings.SettingVals;
 import net.emilla.system.EmillaForegroundService;
-import net.emilla.utils.Apps;
-import net.emilla.utils.Contacts;
-import net.emilla.utils.Dialogs;
+import net.emilla.util.Apps;
+import net.emilla.util.Contacts;
+import net.emilla.util.Dialogs;
 import net.emilla.view.ActionButton;
 
 import java.util.List;

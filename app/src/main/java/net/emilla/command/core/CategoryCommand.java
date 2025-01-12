@@ -4,14 +4,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exception.EmlaAppsException;
-import net.emilla.utils.Apps;
-import net.emilla.utils.Dialogs;
+import net.emilla.util.Apps;
+import net.emilla.util.Dialogs;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package net.emilla.utils;
+package net.emilla.util;
 
 import android.content.pm.PackageManager;
 import android.os.Build;

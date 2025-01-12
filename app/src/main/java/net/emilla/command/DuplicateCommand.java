@@ -9,7 +9,7 @@ import androidx.appcompat.app.AlertDialog;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.command.core.CoreCommand;
-import net.emilla.utils.Dialogs;
+import net.emilla.util.Dialogs;
 
 public class DuplicateCommand extends EmillaCommand implements DataCmd {
 

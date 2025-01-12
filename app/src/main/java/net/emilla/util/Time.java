@@ -1,4 +1,4 @@
-package net.emilla.utils;
+package net.emilla.util;
 
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.max;

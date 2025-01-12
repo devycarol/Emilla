@@ -14,9 +14,9 @@ import net.emilla.R;
 import net.emilla.content.receive.ContactReceiver;
 import net.emilla.exception.EmlaFeatureException;
 import net.emilla.settings.Aliases;
-import net.emilla.utils.Contacts;
-import net.emilla.utils.Features;
-import net.emilla.utils.Permissions;
+import net.emilla.util.Contacts;
+import net.emilla.util.Features;
+import net.emilla.util.Permissions;
 
 import java.util.HashMap;
 

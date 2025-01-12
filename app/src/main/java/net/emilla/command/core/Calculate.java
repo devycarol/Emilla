@@ -9,7 +9,7 @@ import androidx.annotation.ArrayRes;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.settings.Aliases;
-import net.emilla.utils.Calculator;
+import net.emilla.util.Calculator;
 
 public class Calculate extends CategoryCommand {
 

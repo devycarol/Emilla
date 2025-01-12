@@ -1,4 +1,4 @@
-package net.emilla.utils;
+package net.emilla.util;
 
 import android.content.ContentResolver;
 import android.content.SharedPreferences;

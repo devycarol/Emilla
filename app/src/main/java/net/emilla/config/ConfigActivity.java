@@ -11,7 +11,7 @@ import net.emilla.AssistActivity;
 import net.emilla.EmillaActivity;
 import net.emilla.R;
 import net.emilla.databinding.ActivityConfigBinding;
-import net.emilla.utils.Apps;
+import net.emilla.util.Apps;
 
 public class ConfigActivity extends EmillaActivity {
 private ActivityConfigBinding binding;

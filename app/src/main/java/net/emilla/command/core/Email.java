@@ -12,8 +12,8 @@ import net.emilla.R;
 import net.emilla.action.FileFetcher;
 import net.emilla.action.MediaFetcher;
 import net.emilla.settings.Aliases;
-import net.emilla.utils.Contacts;
-import net.emilla.utils.EmailTags;
+import net.emilla.util.Contacts;
+import net.emilla.util.EmailTags;
 
 import java.util.HashMap;
 
