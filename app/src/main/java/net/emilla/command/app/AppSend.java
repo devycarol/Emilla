@@ -5,7 +5,6 @@ import static android.content.Intent.EXTRA_TEXT;
 import android.content.res.Resources;
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.ArrayRes;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -18,7 +17,10 @@ public class AppSend extends AppCommand {
     private static class BasicAppSendParams extends AppParams {
 
         private BasicAppSendParams(AppInfo info) {
-            super(info, EditorInfo.IME_ACTION_SEND);
+            super(info,
+                  EditorInfo.IME_ACTION_SEND,
+                  R.string.summary_app_send,
+                  R.string.manual_app_send);
             // todo: the 'send' action shouldn't apply when just launching
         }
 
@@ -26,12 +28,6 @@ public class AppSend extends AppCommand {
         public CharSequence title(Resources res) {
             return Lang.colonConcat(res, R.string.command_app_send, name);
         }
-    }
-
-    @Override @ArrayRes
-    public int details() {
-        // Todo: this shouldn't apply to newpipes
-        return R.array.details_app_send;
     }
 
     public AppSend(AssistActivity act, String instruct, AppInfo info) {
@@ -53,13 +49,15 @@ public class AppSend extends AppCommand {
         @StringRes
         private final int mInstruction;
 
-        protected AppSendParams(AppInfo info, int instruction) {
-            this(info, instruction, EditorInfo.IME_ACTION_SEND);
+        protected AppSendParams(AppInfo info, @StringRes int instruction, @StringRes int summary,
+                @StringRes int manual) {
+            this(info, instruction, EditorInfo.IME_ACTION_SEND, summary, manual);
             // todo: the 'send' action shouldn't apply when just launching
         }
 
-        protected AppSendParams(AppInfo info, @StringRes int instruction, int imeAction) {
-            super(info, imeAction);
+        protected AppSendParams(AppInfo info, @StringRes int instruction, int imeAction,
+                @StringRes int summary, @StringRes int manual) {
+            super(info, imeAction, summary, manual);
             mInstruction = instruction;
         }
 

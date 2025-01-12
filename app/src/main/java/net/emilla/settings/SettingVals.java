@@ -11,6 +11,7 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.action.AssistantSettings;
 import net.emilla.action.Flashlight;
+import net.emilla.action.Help;
 import net.emilla.action.NoAction;
 import net.emilla.action.QuickAction;
 import net.emilla.action.SelectAll;
@@ -100,6 +101,16 @@ public class SettingVals {
         return prefs.getBoolean("always_show_data", false);
     }
 
+    public static boolean showHelpButton(SharedPreferences prefs) {
+        return prefs.getBoolean("show_help_button", true);
+        // Todo: put these in an editor.
+    }
+
+    public static boolean showCursorStartButton(SharedPreferences prefs) {
+        return prefs.getBoolean("show_cursor_start_button", false);
+        // Todo: put these in an editor.
+    }
+
     public static QuickAction noCommand(SharedPreferences prefs, AssistActivity act) {
         return quickAction(prefs, QuickAction.PREF_NO_COMMAND, QuickAction.ASSISTANT_SETTINGS, act);
     }
@@ -115,8 +126,8 @@ public class SettingVals {
         return quickAction(prefs, QuickAction.PREF_DOUBLE_ASSIST, defaultAction, act);
     }
 
-    public static QuickAction menuAction(SharedPreferences prefs, AssistActivity act) {
-        return quickAction(prefs, QuickAction.PREF_MENU_KEY, QuickAction.ASSISTANT_SETTINGS, act);
+    public static QuickAction menuKey(SharedPreferences prefs, AssistActivity act) {
+        return quickAction(prefs, QuickAction.PREF_MENU_KEY, QuickAction.HELP, act);
     }
 
     private static QuickAction quickAction(SharedPreferences prefs, String actionPref,
@@ -125,6 +136,7 @@ public class SettingVals {
             case QuickAction.FLASHLIGHT -> new Flashlight(act);
             case QuickAction.ASSISTANT_SETTINGS -> new AssistantSettings(act);
             case QuickAction.SELECT_ALL -> new SelectAll(act);
+            case QuickAction.HELP -> new Help(act);
             default -> new NoAction(act);
         };
     }

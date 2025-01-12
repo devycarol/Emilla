@@ -1,15 +1,16 @@
 package net.emilla.lang;
 
+import android.content.Context;
 import android.content.res.Resources;
 
 import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.command.CmdTokens;
-import net.emilla.lang.date.TimeParser;
-import net.emilla.lang.date.WeekdayParser;
-import net.emilla.lang.date.impl.TimeParserEN_US;
-import net.emilla.lang.date.impl.WeekdayParserEN_US;
+import net.emilla.lang.date.HourMin;
+import net.emilla.lang.date.Weekdays;
+import net.emilla.lang.date.impl.HourMinEN_US;
+import net.emilla.lang.date.impl.WeekdaysEN_US;
 
 public final class Lang {
 
@@ -50,15 +51,15 @@ public final class Lang {
         return res.getString(R.string.colon_concatenation, res.getString(a), res.getString(b));
     }
 
-    public static TimeParser timeParser(String timeStr) {
+    public static HourMin time(String timeStr, Context ctx) {
         return switch (-1) {
-            default -> TimeParserEN_US.instance(timeStr);
+            default -> HourMinEN_US.instance(timeStr, ctx);
         };
     }
 
-    public static WeekdayParser weekdayParser(String timeStr) {
+    public static Weekdays weekdays(String timeStr) {
         return switch (-1) {
-            default -> WeekdayParserEN_US.instance(timeStr);
+            default -> WeekdaysEN_US.instance(timeStr);
         };
     }
 

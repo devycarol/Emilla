@@ -25,13 +25,10 @@ public class Settings extends CoreCommand {
             super(R.string.command_settings,
                   R.string.instruction_settings,
                   R.drawable.ic_settings,
-                  EditorInfo.IME_ACTION_DONE);
+                  EditorInfo.IME_ACTION_DONE,
+                  R.string.summary_settings,
+                  R.string.manual_settings);
         }
-    }
-
-    @Override @ArrayRes
-    public int details() {
-        return R.array.details_settings;
     }
 
     public Settings(AssistActivity act, String instruct) {

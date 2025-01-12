@@ -27,13 +27,10 @@ public class Timer extends CoreDataCommand {
             super(R.string.command_timer,
                   R.string.instruction_timer,
                   R.drawable.ic_timer,
-                  R.string.data_hint_timer);
+                  R.string.summary_timer,
+                  R.string.manual_timer,
+                  R.string.data_hint_label);
         }
-    }
-
-    @Override @ArrayRes
-    public int details() {
-        return R.array.details_timer;
     }
 
     public Timer(AssistActivity act, String instruct) {

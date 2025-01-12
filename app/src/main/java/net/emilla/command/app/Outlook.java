@@ -10,7 +10,10 @@ public class Outlook extends AppSendData {
     private static class OutlookParams extends AppSendDataParams {
 
         private OutlookParams(AppInfo info) {
-            super(info, R.string.instruction_app_email, R.string.data_hint_email);
+            super(info,
+                  R.string.instruction_app_email,
+                  R.string.summary_email,
+                  R.string.data_hint_email);
         }
     }
 

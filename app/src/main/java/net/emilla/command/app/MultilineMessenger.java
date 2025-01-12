@@ -8,7 +8,10 @@ abstract class MultilineMessenger extends AppSendData {
     private static class MultilineMessengerParams extends AppSendDataParams {
 
         private MultilineMessengerParams(AppInfo info) {
-            super(info, R.string.instruction_message, R.string.data_hint_message_cont);
+            super(info,
+                  R.string.instruction_message,
+                  R.string.summary_messaging,
+                  R.string.data_hint_message_cont);
         }
     }
 

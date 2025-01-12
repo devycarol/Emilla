@@ -22,7 +22,9 @@ public class Find extends CoreCommand {
             super(R.string.command_find,
                   R.string.instruction_find,
                   R.drawable.ic_find,
-                  EditorInfo.IME_ACTION_SEARCH);
+                  EditorInfo.IME_ACTION_SEARCH,
+                  R.string.summary_find,
+                  R.string.manual_find);
         }
     }
 

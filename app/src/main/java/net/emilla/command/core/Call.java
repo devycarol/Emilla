@@ -33,16 +33,13 @@ public class Call extends CoreCommand implements ContactReceiver {
             super(R.string.command_call,
                   R.string.instruction_phone,
                   R.drawable.ic_call,
-                  EditorInfo.IME_ACTION_GO);
+                  EditorInfo.IME_ACTION_GO,
+                  R.string.summary_call,
+                  R.string.manual_call);
         }
     }
 
     private final HashMap<String, String> mPhoneMap;
-
-    @Override @ArrayRes
-    public int details() {
-        return R.array.details_call_phone;
-    }
 
     public Call(AssistActivity act, String instruct) {
         super(act, instruct, new CallParams());

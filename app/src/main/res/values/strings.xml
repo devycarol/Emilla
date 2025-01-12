@@ -7,7 +7,7 @@
     <string name="settings">Settings</string>
     <!-- Generic error title. Should match @android:string/error_message_title -->
     <string name="error">Error</string>
-    <!-- Android system "App info" link. Should match @android:string/app_info -->
+    <!-- Android 'App info' link. Should match @android:string/app_info -->
     <string name="app_info">App info</string>
     <string name="always">Always</string>
     <string name="never">Never</string>
@@ -105,7 +105,7 @@
 
     <string name="command_enabled">Enabled</string>
 
-    <!-- Command names -->\
+    <!-- Command names -->
     <!-- These will be lowercased mid-sentence unless they're marked as proper nouns/initialisms in EmillaCommand.java -->
     <!-- If this should vary for your locale, please let me know. -->
     <string name="command_default">Default command</string>
@@ -142,52 +142,8 @@
     <string name="command_app_send">App Send</string>
     <string name="command_app_search">App Search</string>
 
-    <!-- Command summaries -->
-    <string name="summary_web">Search the internet</string>
-    <string name="summary_launch">Open other apps</string>
-    <string name="summary_bookmark">Open bookmarked URLs</string><!--todo: other url types. also "play"—music, audiobooks, and podcasts-->
-    <string name="summary_find">Locate files and folders</string>
-    <string name="summary_call">Make phone calls by name or number</string>
-    <string name="summary_dial">Make phone calls by number or phone-word</string>
-    <string name="summary_sms">Send text messages</string>
-    <string name="summary_contact">View, create, and edit contacts</string>
-    <string name="summary_email">Write emails</string>
-    <string name="summary_navigate">Search and navigate to locations</string>
-    <string name="summary_calculate">Compute math equations</string>
-    <string name="summary_weather">Open a weather app</string>
-    <string name="summary_time">Tell the time current, earlier, or later for various timezones</string>
-    <string name="summary_alarm">Set alarms</string>
-    <string name="summary_timer">Set timers</string>
-    <string name="summary_note">Add text to a file</string>
-    <string name="summary_calendar">Create calendar events</string>
-    <string name="summary_notify">Set notification reminders</string>
-    <string name="summary_settings">Search and change system settings</string>
-    <string name="summary_copy">Copy text and files</string>
-    <string name="summary_share">Send text, images, and files to your apps</string>
-    <string name="summary_torch">Toggle flashlight</string>
-    <string name="summary_info">View application details</string>
-    <string name="summary_uninstall">Remove installed apps</string>
-    <string name="summary_toast">Show a little message!</string>
-    <string name="summary_todo">Add tasks to a todo.txt file</string>
-    <string name="summary_pomodoro">Set timers for working and breaks</string>
-    <string name="summary_custom">Create your own commands!</string>
-    <!-- Generic summary for messenger app commands -->
-    <string name="summary_messaging">Send messages</string>
-    <!-- Generic summary for video app commands -->
-    <string name="summary_video">Find and play videos</string>
-    <!-- Generic summary for code issue app commands -->
-    <string name="summary_issues">Write code issues</string>
-    <string name="summary_app_aosp_contacts">Search contacts</string>
-
-    <!-- Locale-sensitive grammars. For instance, English words are space-separated but Chinese characters aren't. -->
-    <!-- Please let me know if your locale requires more nuance for this. -->
-    <string name="word_concatenation">%1$s %2$s</string>
-    <!-- Help text displayed when entering a command (command name, brief instruction) -->
-    <string name="colon_concatenation">%1$s: %2$s</string>
-
     <!-- Descriptions for command arguments -->
     <string name="instruction">instruction</string>
-    <string name="instruction_duplicate">choose</string>
     <string name="instruction_web">search or URL</string>
     <string name="instruction_bookmark">name</string><!--todo: song, playlist, album, audiobook, podcast, etc.-->
     <string name="instruction_find">file or folder</string>
@@ -198,12 +154,13 @@
     <string name="instruction_alarm">time and weekdays</string>
     <string name="instruction_timer">minutes, duration, or until-time</string>
     <string name="instruction_calendar">event name | DATETIME</string>
-    <!-- Todo: details page that specifies abbreviations, also simplify this text -->
+    <!-- Todo: manual page that specifies abbreviations, also simplify this text -->
     <string name="instruction_settings">name of setting</string>
     <string name="instruction_torch">toggle flashlight</string>
     <string name="instruction_todo">task</string>
     <string name="instruction_pomodoro">minutes</string>
     <string name="instruction_notify">notification title (doesn\'t work yet)</string><!--todo-->
+    <string name="instruction_duplicate">choose</string>
     <string name="instruction_custom">description of arguments</string>
     <!-- Generic instruction for contacting a person by name or phone number -->
     <string name="instruction_phone">person or number</string>
@@ -224,28 +181,340 @@
     <!-- Generic instruction for code issues -->
     <string name="instruction_issue">issue body</string>
 
-    <string name="manual_none">This command doesn\'t have a manual yet :(</string>
+    <!-- Command summaries -->
+    <string name="summary_web">Search the internet</string>
+    <string name="summary_launch">Open your apps</string>
+    <string name="summary_bookmark">Open bookmarked URLs</string><!--todo: other url types. also "play"—music, audiobooks, and podcasts-->
+    <string name="summary_find">Locate files and folders</string>
+    <string name="summary_call">Make calls by name or number</string>
+    <string name="summary_dial">Make calls by number or phoneword</string>
+    <string name="summary_sms">Send text messages</string>
+    <string name="summary_contact">View, create, and edit contacts</string>
+    <string name="summary_email">Write emails</string>
+    <string name="summary_navigate">Search and navigate to locations</string>
+    <string name="summary_calculate">Compute math equations</string>
+    <string name="summary_weather">Open a weather app</string>
+    <string name="summary_time">Tell the time</string>
+    <string name="summary_alarm">Set alarms</string>
+    <string name="summary_timer">Set timers</string>
+    <string name="summary_note">Add text to a file</string>
+    <string name="summary_calendar">Create calendar events</string>
+    <string name="summary_notify">Set notification reminders</string>
+    <string name="summary_settings">Search and change system settings</string>
+    <string name="summary_copy">Copy text and files</string>
+    <string name="summary_share">Send text, images, and files to your apps</string>
+    <string name="summary_torch">Toggle the flashlight</string>
+    <string name="summary_info">View application details</string>
+    <string name="summary_uninstall">Remove installed apps</string>
+    <string name="summary_toast">Show a little message!</string>
+    <string name="summary_todo">Add tasks to a todo.txt file</string>
+    <string name="summary_pomodoro">Set timers for work and breaks</string>
+    <string name="summary_duplicate">Select ambiguous command</string>
+    <string name="summary_custom">Create your own commands!</string>
+    <!-- Generic summary for basic apps -->
+    <string name="summary_app">Launch app</string>
+    <!-- Generic summary for app-send -->
+    <string name="summary_app_send">Send text to app</string>
+    <!-- Generic summary for messenger app commands -->
+    <string name="summary_messaging">Send messages</string>
+    <!-- Generic summary for video app commands -->
+    <string name="summary_video">Find and play videos</string>
+    <!-- Generic summary for code issue app commands -->
+    <string name="summary_issues">Write code issues</string>
+    <string name="summary_app_aosp_contacts">Search contacts</string>
 
-    <!-- Description for the ability to provide multiple recipients via delimiter separation -->
-    <string name="detail_multiple_recipients">Multiple recipients can be separated by commas or ampersands.</string>
-    <!-- Description for the inability to specify recipients (e.g. in instant messengers) -->
-    <string name="detail_attachments_unsupported">Attachments aren\'t supported yet :(.</string><!--todo-->
-    <string name="detail_recipients_unsupported">Unfortunately, it\'s not yet possible to select recipients outside of a share dialog.</string><!--todo-->
-    <string name="detail_fields_line_separated">Fields will be line-separated, if applicable.</string><!--todo: instead, the instruction should provide for note/contact names-->
-    <string name="detail_app_send_warning">The "send" action might not behave expectedly.</string><!--todo: instead, the instruction should provide for note/contact names-->
-    <string name="detail_app_send_launch">To simply launch the app, give no instruction.</string><!--todo: instead, the instruction should provide for note/contact names-->
+    <!-- Command manuals. These are typically presented with the command's respective 'summary'
+         string. -->
+    <!-- Todo: "(In\s+the\s+future|For\s+now)," are issues that needs to be resolved. -->
+    <!-- Todo: separate pages for unit formatting instructions. -->
+    <!-- "Search the internet" -->
+    <string name="manual_web">
+        The text you enter will be sent to a web browser for search. URLs are opened directly.
+    </string>
+    <!-- "Open your apps" -->
+    <string name="manual_launch">
+        You\'ll be presented with a list of apps matching your search. An exact match or single
+        result will launch immediately.
+    </string>
+    <!-- "Open bookmarked URLs" -->
+    <string name="manual_bookmark">
+        You\'ll be presented with a list of saved bookmarks. For now, you can save web URLs in
+        assistant settings. In the future, more link types and search will be supported.
+    </string>
+    <!-- "Locate files and folders" -->
+    <string name="manual_find">
+        In the future, this command will search your device for filenames matching your input.
+    </string>
+    <!-- "Make calls by name or number" -->
+    <string name="manual_call"><!--TODO: italics not working yet-->
+        The person or number you enter will be called immediately. If no contact match is found, the
+        text will be dialed as a <i>phoneword</i>—letters matched to numbers on a keypad. For now,
+        you can save phone numbers by name in assistant settings. In the future, the command will
+        search your system contacts with graphical selection.\n
+        \n
+        This command requires phone call permission.\n
+        \n
+        For non-immediate dialing, see the \'dial\' command.
+    </string><!--todo: manual page links would be nice-->
+    <!-- "Make calls by number or phoneword" -->
+    <string name="manual_dial">
+        The text you enter will be sent to your dialer app. Most dialers convert non-numeric text to
+        a phone number via the keypad-letter system. You can use this to search your contacts with
+        T9 dialing!\n
+        \n
+        In the AOSP dialer for example, submitting \"Dial Cameron\" will include any contacts named
+        Cameron in its search results for \"226-3766\".\n
+        \n
+        For immediate calls, see the \'call\' command.
+    </string><!--todo: manual page links would be nice-->
+    <!-- "Send text messages" -->
+    <string name="manual_sms">
+        You can provide recipients in the command instruction. Multiple recipients may be separated
+        with commas or ampersands. In the future, the word \"and\" will be usable.\n
+        \n
+        Recipients can be contacts or phone numbers. For now, you can save phone numbers by name in
+        assistant settings. In the future, the command will search your system contacts with
+        graphical selection.\n
+        \n
+        You can type a message in the data field. This may overwrite an existing SMS draft!\n
+        \n
+        You can provide a subject line using the \"subject field\" button. For now, this doesn\'t
+        seem to work..
+    </string>
+    <!-- "View, create, and edit contacts" -->
+    <string name="manual_contact">
+        This command has three actions: <b>view</b>, edit, and create.\n
+        \n
+        In view, you\'re presented with a list of contacts matching your input. You can select one
+        to view its details.\n
+        \n
+        In edit, you select a contact to edit it.\n
+        \n
+        The create action launches your device\'s \"new contact\" dialog. You can provide details
+        before and after submission.
+    </string>
+    <!-- "Write emails" -->
+    <string name="manual_email">
+        You can provide recipients as the command\'s instruction. Multiple recipients may be
+        separated by commas or ampersands. In the future, the word \"and\" will be usable.\n
+        \n
+        You can add CC or BCC recipients using their respective keywords, after which all contacts
+        listed will be in that category until another category is given. In the future, these will
+        be separate fields.\n
+        \n
+        Recipients can be contacts or email addresses. For now, you can save emails by name in
+        assistant settings. In the future, the command will search your system contacts with
+        graphical selection.\n
+        \n
+        In the future, you\'ll be able to provide a subject line.\n
+        \n
+        You can type a message body in the data field.\n
+        \n
+        You can provide files with the \'attach\' button and pictures &amp; videos with the \'media\'
+        button.
+    </string>
+    <!-- "Search and navigate to locations" -->
+    <string name="manual_navigate">
+        The text you enter will be sent to your maps app for search. In the future, you\'ll be able
+        to save locations and search contact addresses.
+    </string>
+    <!-- "Compute math equations" -->
+    <string name="manual_calculate">
+        The text you enter will be evaluated as a math expression. Computations can be done with
+        symbols as well as some words. In the future, these will be documented.
+    </string>
+    <!-- "Open a weather app" -->
+    <string name="manual_weather">
+        Simply opens your weather app.\n
+        \n
+        Not all weather apps are detected yet. In the future, this will be mitigated.
+    </string>
+    <!-- "Tell the time current, earlier, or later for various timezones" -->
+    <string name="manual_time">
+        Tells the local time.\n
+        \n
+        In the future, you\'ll be able to give a time zone or location to tell the time from.\n
+        \n
+        In the future, you\'ll be able to tell what time it was some duration ago or the time will
+        be after a certain duration has passed.
+    </string>
+    <!-- "Set alarms" -->
+    <string name="manual_alarm">
+        You can set alarm time and repeating weekdays in the command instruction.\n
+        \n
+        For time, minutes and the colon are optional. You can abbreviate AM and PM as \'a\' and
+        \'p\'. If AM/PM isn\'t specified, either 24-hour time or the soonest occurrence of the time
+        label will be used depending on locale and system preferences.\n
+        \n
+        Example valid times: 10:30 PM, 4:00a, 1120, 159AM, 2p.\n
+        \n
+        For weekdays, you can use their names—full or abbreviated separated by spaces—or a simple
+        string in the form \"UMTWRFS\". Order and capitalization never matter.\n
+        \n
+        You can label the alarm in the data field.
+    </string>
+    <!-- "Set timers" -->
+    <string name="manual_timer">
+        You can set timer duration in the command instruction.\n
+        \n
+        If the duration is just a number, that will be the length in minutes. Duration can be given
+        as HH:MM or HH:MM:SS. It can also be given as numbers and time units in any order. Time
+        units can be abbreviated and decimal values may be used.\n
+        \n
+        Example valid durations: 3.5, 2:30, 1.5 hrs 10 min, 2 minutes, 1h2m7s, 4:30:27.\n
+        \n
+        Duration can also be given as an until-time. Start your instruction with \"until\", \"till\",
+        or \"til\" and provide a clock time and the timer will go off at that time. This follows the
+        same time formatting rules as the \'alarm\' command except seconds are also allowed.\n
+        \n
+        You can label the timer in the data field.
+    </string>
+    <!-- "Add text to a file" -->
+    <string name="manual_note">
+        You can set the note file in the command instruction or with the \'attach\' button.\n
+        \n
+        You can provide note text in the data field. Otherwise, the file will be opened in an editor
+        as normal.
+    </string>
+    <!-- "Create calendar events" -->
+    <string name="manual_calendar">
+        The details you enter will be sent to your calendar app. You can label the event in the
+        command instruction. You can also set the date and time.\n
+        \n
+        To do so, separate the event title with the pipe \'|\' character and provide DATE @ TIME,
+        which can also be separated by the words \'at\' and \'from\'\n
+        \n
+        For now, date is formatted as a month name, day number, and/or year in any order. Months may
+        be abbreviated. Whole years can be given, or the shorthand \'YY with the apostrophe will
+        default to the current century.\n
+        \n
+        \'Tomorrow\' is also a valid date. In the future, more shorthands such as weekdays will be
+        supported.\n
+        \n
+        The time can be just the start time or START-END. The words \'until\', \'till\', \'til\',
+        and \'to\' can also be used to split start and end time. Times can include seconds, see the
+        \'alarm\' command for format instructions.\n
+        \n
+        In the future, these will all be separate fields. Example command: Calendar Tennis match |
+        tomorrow from 3 to 5.\n
+        \n
+        You can add a location or URL to your event by using their respective field-toggle buttons.
+        In the future, more details such as confidentiality and repetition pattern will be
+        supported.\n
+        \n
+        You can use /allday to make it a whole-day event, where time-of-day info is ignored. In the
+        future, this will be a toggle button.
+    </string>
+    <!-- "Set notification reminders" -->
+    <string name="manual_notify">
+        In the future, this command will work.
+    </string>
+    <!-- "Search and change system settings" -->
+    <string name="manual_settings">
+        This command opens your settings app. In the future, you\'ll be able to save and set
+        specific settings at will.
+    </string>
+    <!-- "Copy text and files" -->
+    <string name="manual_copy">
+        The text you enter will be copied to your clipboard.\n
+        \n
+        Pressing the submit button a second time with the same text will close the assistant and get
+        it out of your way.
+    </string>
+    <!-- "Send text, images, and files to your apps" -->
+    <string name="manual_share">
+        The text you enter will be sent to your device\'s \'share\' dialog. In the future, you\'ll
+        be able to use the command instruction to search for a specific app.\n
+        \n
+        You can provide text in the data field.\n
+        \n
+        You can provide files with the \'attach\' button and pictures &amp; videos with the \'media\'
+        button.\n
+        \n
+        Some apps don\'t support multi-line text.
+    </string>
+    <!-- "Toggle the flashlight" -->
+    <string name="manual_torch">
+        Submitting this command toggles your device\'s flashlight.\n
+        \n
+        For now, it takes no input. In the future, you\'ll be able to give a strobing pattern.
+    </string>
+    <!-- "View application details" -->
+    <string name="manual_info">
+        This opens an app\'s \"App info\" page. If no input is given, Emilla\'s will open.\n
+        \n
+        Otherwise, you\'ll be presented with a list of apps matching your search. An exact match or
+        single result will be opened immediately.
+    </string>
+    <!-- "Remove installed apps" -->
+    <string name="manual_uninstall">
+        You\'ll be presented with a list of apps matching your search. The uninstall prompt will
+        show immediately for an exact match or single result.
+    </string>
+    <!-- "Show a little message!" -->
+    <string name="manual_toast">
+        The text you enter will be shown in a short pop-up message. The command instruction and data
+        field will be line-separated if applicable.\n
+        \n
+        More than 2 lines of text are usually ellipsized.
+    </string>
+    <!-- "Add tasks to a todo.txt file" -->
+    <string name="manual_todo">
+        The text you enter will be appended to a todo.txt file.\n
+        \n
+        You can write multiple tasks in the data field.
+    </string>
+    <!-- "Set timers for work and breaks" -->
+    <string name="manual_pomodoro">
+        You can specify a minute duration in the command instruction. You can make it a break by
+        including \'break\' or \'b\'.\n
+        \n
+        If you don\'t specify a duration, the default work is 25 minutes and the default break is 5.\n
+        \n
+        In the future, a gentler notification will be used.
+    </string>
+    <!-- "Select ambiguous command" -->
+    <string name="manual_duplicate">
+        You\'ll be prompted to select a command, after which you can proceed with instruction as
+        normal. In the future, this will work properly.
+    </string>
+    <!-- Generic manual for basic apps -->
+    <string name="manual_app">
+        The app will be launched by this command.
+    </string>
+    <!-- Generic manual for app-send -->
+    <string name="manual_app_send">
+        The text you enter will go to the app\'s \'share\' function.\n
+        \n
+        In the future, some apps will let you specify recipients in the command instruction.\n
+        \n
+        In the future, you\'ll be able to add file attachments for apps that support them.\n
+        \n
+        Submitting without instruction will launch the app normally.
+    </string>
+    <!-- Generic manual for multiline app-send -->
+    <string name="manual_app_send_data">
+        The text you enter will go to the app\'s \'share\' function.\n
+        \n
+        For now, the command instruction and data field will be line-separated when applicable. In
+        the future, some apps will let you specify recipients in the instruction.\n
+        \n
+        In the future, you\'ll be able to add file attachments for apps that support them.\n
+        \n
+        Submitting without instruction will launch the app normally.
+    </string>
+    <!-- Generic manual for app-search -->
+    <string name="manual_app_search">
+        The text you enter will go to the app\'s search function.\n
+        \n
+        Submitting without instruction will launch the app normally.
+    </string>
 
-    <!-- Formatting instructions for various provisions of time. If the formatting conventions don't make sense for your locale, please let me know. -->
-    <!--todo: make these more concise and in a dedicated manual section-->
-    <string name="format_weekdays">WEEKDAYS: space-separated in their full or abbreviated names, or provided as a simple string in the form "UMTWRFS". Order does not matter.</string>
-    <string name="format_time_clock">TIME: hh|mm(A/P|M) case-insensitive. If AM/PM is not specified, 24-hour time will be used—which is AM for hours less than 12. Colons or spaces are allowed, but not necessary.</string>
-    <string name="format_time_clock_seconds">TIME: hh|mm|ss(A/P|M) case-insensitive. If AM/PM is not specified, 24-hour time will be used—which is AM for hours less than 12. Colons or spaces are allowed, but not necessary.</string>
-    <string name="format_time_until">UNTIL: "until/til(l)/to TIME", where time is formatted as hh|mm|ss(A/P|M) case-insensitive. If AM/PM is not specified, the timer will be set for the next occurrence of that time—within 12 hours. Colons and spaces are allowed, but not necessary.</string>
-    <string name="format_time_units">Time units:\nHour(s), hr(s), h\nMinute(s), min(s), m\nSecond(s), sec(s), s</string>
-    <string name="format_time_duration">DURATION: either H:M(:S) or numbers followed by time units, where order doesn\'t matter and spaces are optional.</string>
-    <string name="format_time_minutes">MINUTES: a single number, which can have a decimal point.</string>
-    <string name="format_date_calendar">"DATE: a month name (may be abbreviated), day number, and/or YEAR in any order; or simply 'tomorrow'—still working on weekdays."</string><!--todo-->
-    <string name="format_date_year">YEAR: yyyy or \'yy (current century).</string>
+    <!-- Locale-sensitive grammars. For instance, English words are space-separated but Chinese characters aren't. -->
+    <!-- Please let me know if your locale requires more nuance for this. -->
+    <string name="word_concatenation">%1$s %2$s</string>
+    <!-- Help text displayed when entering a command (command name, brief instruction) -->
+    <string name="colon_concatenation">%1$s: %2$s</string>
 
     <!-- Data field hints for various commands -->
     <string name="data_hint_default">Data</string>
@@ -254,13 +523,14 @@
     <string name="data_hint_share">Text</string>
     <string name="data_hint_note">Note text</string>
     <string name="data_hint_todo">Additional tasks</string>
-    <string name="data_hint_alarm">Title</string>
-    <string name="data_hint_timer">Label</string>
     <string name="data_hint_pomodoro">Memo</string>
     <string name="data_hint_calendar">Event details</string>
     <string name="data_hint_contact">Contact info</string>
     <string name="data_hint_notify">Notification text</string>
     <string name="data_hint_toast">More text</string>
+    <!-- Generic hint for "label" -->
+    <string name="data_hint_label">Label</string>
+    <!-- Generic hint for issue reports -->
     <string name="data_hint_issue">Issue body</string>
     <string name="data_hint_message_cont">Message (cont.)</string>
 

@@ -31,13 +31,13 @@ public class Contact extends CoreDataCommand implements ContactReceiver {
     private static class ContactParams extends CoreDataParams {
 
         private ContactParams() {
-            super(R.string.command_contact, R.string.instruction_contact, R.drawable.ic_contact, R.string.data_hint_contact);
+            super(R.string.command_contact,
+                  R.string.instruction_contact,
+                  R.drawable.ic_contact,
+                  R.string.summary_contact,
+                  R.string.manual_contact,
+                  R.string.data_hint_contact);
         }
-    }
-
-    @Override @ArrayRes
-    public int details() {
-        return R.array.details_contact;
     }
 
     private byte mAction;

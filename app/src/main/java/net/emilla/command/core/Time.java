@@ -27,7 +27,9 @@ public class Time extends CoreCommand {
             super(R.string.command_time,
                   R.string.instruction_location,
                   R.drawable.ic_clock,
-                  EditorInfo.IME_ACTION_DONE);
+                  EditorInfo.IME_ACTION_DONE,
+                  R.string.summary_time,
+                  R.string.manual_time);
         }
     }
 

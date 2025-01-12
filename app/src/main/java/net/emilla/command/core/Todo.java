@@ -39,6 +39,8 @@ public class Todo extends CoreDataCommand {
             super(R.string.command_todo,
                   R.string.instruction_todo,
                   R.drawable.ic_todo,
+                  R.string.summary_todo,
+                  R.string.manual_todo,
                   R.string.data_hint_todo);
         }
     }

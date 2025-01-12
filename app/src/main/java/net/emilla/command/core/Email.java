@@ -30,6 +30,8 @@ public class Email extends AttachCommand {
             super(R.string.command_email,
                   R.string.instruction_email,
                   R.drawable.ic_email,
+                  R.string.summary_email,
+                  R.string.manual_email,
                   R.string.data_hint_email);
         }
     }
@@ -37,11 +39,6 @@ public class Email extends AttachCommand {
     private HashMap<String, String> mEmailMap;
     private FileFetcher mFileFetcher;
     private MediaFetcher mMediaFetcher;
-
-    @Override @ArrayRes
-    public int details() {
-        return R.array.details_email;
-    }
 
     public Email(AssistActivity act, String instruct) {
         super(act, instruct, new EmailParams());

@@ -2,31 +2,26 @@ package net.emilla.lang.date.impl;
 
 import net.emilla.R;
 import net.emilla.exception.EmlaBadCommandException;
-import net.emilla.lang.date.WeekdayParser;
+import net.emilla.lang.date.Weekdays;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public record WeekdayParserEN_US(ArrayList<Integer> days, boolean noDays) implements WeekdayParser {
+public record WeekdaysEN_US(ArrayList<Integer> days, boolean empty) implements Weekdays {
 
-    public static WeekdayParserEN_US instance(String timeStr) {
-        ArrayList<Integer> days = parseWeekdays(timeStr);
-        return new WeekdayParserEN_US(days, days.isEmpty());
-    }
+    public static WeekdaysEN_US instance(String timeStr) {
+        timeStr = timeStr.toLowerCase().replaceFirst(HourMinEN_US.REGEX, "").trim();
+        if (timeStr.isEmpty()) return new WeekdaysEN_US(new ArrayList<>(), true);
 
-    private static ArrayList<Integer> parseWeekdays(String s) {
-        s = s.toLowerCase().replaceAll("\\d?\\d *[ap]m?|[^\\w, ]+|\\d+", "").trim();
-        if (s.isEmpty()) return new ArrayList<>();
-        if (!s.matches("\\w+( +\\w+){0,6}")) throw new EmlaBadCommandException(R.string.command_alarm, R.string.error_invalid_weekday_format);
+        if (!timeStr.matches("\\w+( +\\w+){0,6}")) throw new EmlaBadCommandException(R.string.command_alarm, R.string.error_invalid_weekday_format);
+        if (!timeStr.matches("[umtwrfs]{1,7}")) timeStr = letterString(timeStr);
 
-        if (!s.matches("[umtwrfs]{1,7}")) s = letterString(s);
-
-        ArrayList<Integer> weekdays = new ArrayList<>(s.length());
+        ArrayList<Integer> weekdays = new ArrayList<>(timeStr.length());
         do {
-            char c = s.charAt(0);
-            s = s.substring(1);
+            char c = timeStr.charAt(0);
+            timeStr = timeStr.substring(1);
 
-            if (s.indexOf(c) == -1) {
+            if (timeStr.indexOf(c) == -1) {
                 switch (c) {
                 case 'u' -> weekdays.add(Calendar.SUNDAY);
                 case 'm' -> weekdays.add(Calendar.MONDAY);
@@ -37,9 +32,9 @@ public record WeekdayParserEN_US(ArrayList<Integer> days, boolean noDays) implem
                 case 's' -> weekdays.add(Calendar.SATURDAY);
                 }
             } else throw new EmlaBadCommandException(R.string.command_alarm, R.string.error_excess_weekdays);
-        } while (!s.isEmpty());
+        } while (!timeStr.isEmpty());
 
-        return weekdays;
+        return new WeekdaysEN_US(weekdays, false);
     }
 
     /**

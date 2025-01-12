@@ -39,13 +39,10 @@ public class Calendar extends CoreDataCommand {
             super(R.string.command_calendar,
                   R.string.instruction_calendar,
                   R.drawable.ic_calendar,
+                  R.string.summary_calendar,
+                  R.string.manual_calendar,
                   R.string.data_hint_calendar);
         }
-    }
-
-    @Override @ArrayRes
-    public int details() {
-        return R.array.details_calendar;
     }
 
     // Todo: Etar is broken if already open. May be a flags issue?

@@ -30,7 +30,9 @@ public class Torch extends CoreCommand {
             super(R.string.command_torch,
                   R.string.instruction_torch,
                   R.drawable.ic_torch,
-                  EditorInfo.IME_ACTION_DONE);
+                  EditorInfo.IME_ACTION_DONE,
+                  R.string.summary_torch,
+                  R.string.manual_torch);
         }
     }
 

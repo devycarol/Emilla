@@ -32,7 +32,9 @@ public class Bookmark extends CoreCommand {
             super(R.string.command_bookmark,
                   R.string.instruction_bookmark,
                   R.drawable.ic_bookmark,
-                  EditorInfo.IME_ACTION_GO);
+                  EditorInfo.IME_ACTION_GO,
+                  R.string.summary_bookmark,
+                  R.string.manual_bookmark);
         }
     }
 

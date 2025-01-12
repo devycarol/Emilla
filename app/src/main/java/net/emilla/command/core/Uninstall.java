@@ -25,7 +25,9 @@ public class Uninstall extends OpenCommand {
             super(R.string.command_uninstall,
                   R.string.instruction_app,
                   R.drawable.ic_uninstall,
-                  EditorInfo.IME_ACTION_GO);
+                  EditorInfo.IME_ACTION_GO,
+                  R.string.summary_uninstall,
+                  R.string.manual_uninstall);
         }
     }
 

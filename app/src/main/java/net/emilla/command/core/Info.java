@@ -26,7 +26,9 @@ public class Info extends OpenCommand {
             super(R.string.command_info,
                   R.string.instruction_app,
                   R.drawable.ic_info,
-                  EditorInfo.IME_ACTION_GO);
+                  EditorInfo.IME_ACTION_GO,
+                  R.string.summary_info,
+                  R.string.manual_info);
         }
     }
 

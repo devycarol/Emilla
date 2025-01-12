@@ -43,8 +43,11 @@ abstract class AppSearch extends AppCommand {
         @StringRes
         private final int mInstruction;
 
-        protected AppSearchParams(AppInfo info, @StringRes int instruction) {
-            super(info, EditorInfo.IME_ACTION_SEARCH);
+        protected AppSearchParams(AppInfo info, @StringRes int instruction, @StringRes int summary) {
+            super(info,
+                  EditorInfo.IME_ACTION_SEARCH,
+                  summary,
+                  R.string.manual_app_search);
             // todo: the 'search' action shouldn't apply when just launching
             mInstruction = instruction;
         }

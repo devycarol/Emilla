@@ -17,7 +17,10 @@ public class Markor extends AppSendData {
     private static class MarkorParams extends AppSendDataParams {
 
         private MarkorParams(AppInfo info) {
-            super(info, R.string.instruction_text, R.string.data_hint_note);
+            super(info,
+                  R.string.instruction_text,
+                  R.string.summary_note,
+                  R.string.data_hint_note);
         }
     }
 

@@ -25,7 +25,9 @@ public class Launch extends OpenCommand {
             super(R.string.command_launch,
                   R.string.instruction_app,
                   R.drawable.ic_launch,
-                  EditorInfo.IME_ACTION_GO);
+                  EditorInfo.IME_ACTION_GO,
+                  R.string.summary_launch,
+                  R.string.manual_launch);
         }
     }
 

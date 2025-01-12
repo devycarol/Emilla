@@ -20,6 +20,8 @@ public class Notify extends CoreDataCommand {
             super(R.string.command_notify,
                   R.string.instruction_notify,
                   R.drawable.ic_notify,
+                  R.string.summary_notify,
+                  R.string.manual_notify,
                   R.string.data_hint_notify);
         }
     }

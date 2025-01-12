@@ -25,13 +25,10 @@ public class Dial extends CoreCommand {
             super(R.string.command_dial,
                   R.string.instruction_dial,
                   R.drawable.ic_dial,
-                  EditorInfo.IME_ACTION_GO);
+                  EditorInfo.IME_ACTION_GO,
+                  R.string.summary_dial,
+                  R.string.manual_dial);
         }
-    }
-
-    @Override @ArrayRes
-    public int details() {
-        return R.array.details_call_phone;
     }
 
     public Dial(AssistActivity act, String instruct) {

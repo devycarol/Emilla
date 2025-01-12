@@ -25,7 +25,9 @@ public class Weather extends CategoryCommand {
             super(R.string.command_weather,
                   R.string.instruction_app,
                   R.drawable.ic_weather,
-                  EditorInfo.IME_ACTION_GO);
+                  EditorInfo.IME_ACTION_GO,
+                  R.string.summary_weather,
+                  R.string.manual_weather);
         }
     }
 

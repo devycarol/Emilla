@@ -17,7 +17,8 @@ public interface QuickAction {
            NONE = "none",
            FLASHLIGHT = "torch",
            ASSISTANT_SETTINGS = "config",
-           SELECT_ALL = "select_all";
+           SELECT_ALL = "select_all",
+           HELP = "help";
 
     @IdRes
     int id();

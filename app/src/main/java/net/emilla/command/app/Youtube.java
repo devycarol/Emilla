@@ -10,7 +10,7 @@ public class Youtube extends AppSearch {
     private static class YoutubeParams extends AppSearchParams {
 
         private YoutubeParams(AppInfo info) {
-            super(info, R.string.instruction_video);
+            super(info, R.string.instruction_video, R.string.summary_video);
         }
     }
 

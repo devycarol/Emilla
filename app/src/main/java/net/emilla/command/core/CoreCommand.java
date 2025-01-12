@@ -39,19 +39,24 @@ public abstract class CoreCommand extends EmillaCommand {
         @DrawableRes
         private final int mIcon;
         private final int mImeAction;
+        @StringRes
+        private final int mSummary, mManual;
 
         protected CoreParams(@StringRes int name, @StringRes int instruction, @DrawableRes int icon,
-                int imeAction) {
-            this(name, instruction, true, icon, imeAction);
+                int imeAction, @StringRes int summary, @StringRes int manual) {
+            this(name, instruction, true, icon, imeAction, summary, manual);
         }
 
         protected CoreParams(@StringRes int name, @StringRes int instruction,
-                boolean shouldLowercase, @DrawableRes int icon, int imeAction) {
+                boolean shouldLowercase, @DrawableRes int icon, int imeAction,
+                @StringRes int summary, @StringRes int manual) {
             mName = name;
             mInstruction = instruction;
             mShouldLowercase = shouldLowercase;
             mIcon = icon;
             mImeAction = imeAction;
+            mSummary = summary;
+            mManual = manual;
         }
 
         @Override
@@ -82,6 +87,16 @@ public abstract class CoreCommand extends EmillaCommand {
         @Override
         public final int imeAction() {
             return mImeAction;
+        }
+
+        @Override
+        public int summary() {
+            return mSummary;
+        }
+
+        @Override
+        public int manual() {
+            return mManual;
         }
     }
 }

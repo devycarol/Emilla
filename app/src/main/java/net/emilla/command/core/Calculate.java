@@ -24,7 +24,9 @@ public class Calculate extends CategoryCommand {
             super(R.string.command_calculate,
                   R.string.instruction_calculate,
                   R.drawable.ic_calculate,
-                  EditorInfo.IME_ACTION_DONE);
+                  EditorInfo.IME_ACTION_DONE,
+                  R.string.summary_calculate,
+                  R.string.manual_calculate);
         }
     }
 

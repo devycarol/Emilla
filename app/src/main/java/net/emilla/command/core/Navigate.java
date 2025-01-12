@@ -25,7 +25,9 @@ public class Navigate extends CategoryCommand {
             super(R.string.command_navigate,
                   R.string.instruction_location,
                   R.drawable.ic_navigate,
-                  EditorInfo.IME_ACTION_GO);
+                  EditorInfo.IME_ACTION_GO,
+                  R.string.summary_navigate,
+                  R.string.manual_navigate);
         }
     }
 

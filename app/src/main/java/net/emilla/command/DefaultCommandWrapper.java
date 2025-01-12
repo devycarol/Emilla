@@ -51,6 +51,16 @@ public class DefaultCommandWrapper extends EmillaCommand {
         public int imeAction() {
             return mCmd.imeAction();
         }
+
+        @Override
+        public int summary() {
+            return mCmd.summary();
+        }
+
+        @Override
+        public int manual() {
+            return mCmd.manual();
+        }
     }
 
     @Override @Deprecated

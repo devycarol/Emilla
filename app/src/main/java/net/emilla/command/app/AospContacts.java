@@ -10,7 +10,7 @@ public class AospContacts extends AppSearch {
     private static class ContactsParams extends AppSearchParams {
 
         private ContactsParams(AppInfo info) {
-            super(info, R.string.instruction_contact);
+            super(info, R.string.instruction_contact, R.string.summary_app_aosp_contacts);
         }
     }
 

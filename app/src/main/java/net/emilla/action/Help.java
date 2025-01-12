@@ -1,5 +1,10 @@
 package net.emilla.action;
 
+import static android.view.KeyEvent.ACTION_UP;
+import static android.view.KeyEvent.KEYCODE_MENU;
+
+import android.content.res.Resources;
+
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
@@ -39,10 +44,23 @@ public class Help implements LabeledQuickAction {
 
     @Override
     public void perform() {
-        // Todo: be able to include app-specific information
+        if (mActivity.cancelManualIfShowing()) return;
+        // it's the double assist action and the manual is already open
         EmillaCommand cmd = mActivity.command();
-        AlertDialog.Builder manual = Dialogs.base(mActivity, cmd.name(), cmd.manual(),
-                android.R.string.ok);
+        // Todo: pull up a general manual when no command.
+        Resources res = mActivity.getResources();
+        CharSequence msg = res.getText(cmd.summary()) + "\n\n" + res.getText(cmd.manual());
+        // TODO: resolve weird whitespace parsing.
+        AlertDialog manual = Dialogs.base(mActivity, cmd.name(), msg, android.R.string.ok)
+                .setOnDismissListener(dlg -> mActivity.setManual(null))
+                .setOnKeyListener((dlg, keyCode, event) -> {
+                    if (keyCode == KEYCODE_MENU && event.getAction() == ACTION_UP) {
+                        dlg.cancel();
+                        return true;
+                    }
+                    return false;
+                }).create();
+        mActivity.setManual(manual);
         mActivity.offer(new DialogOffering(mActivity, manual));
     }
 }

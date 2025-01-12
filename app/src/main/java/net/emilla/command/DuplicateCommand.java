@@ -3,7 +3,6 @@ package net.emilla.command;
 import android.content.DialogInterface;
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.ArrayRes;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
@@ -20,7 +19,9 @@ public class DuplicateCommand extends EmillaCommand implements DataCmd {
             super(R.string.command_duplicate,
                   R.string.instruction_duplicate,
                   R.drawable.ic_command,
-                  EditorInfo.IME_ACTION_NEXT);
+                  EditorInfo.IME_ACTION_NEXT,
+                  R.string.summary_duplicate,
+                  R.string.manual_duplicate);
         }
     }
 
@@ -28,11 +29,6 @@ public class DuplicateCommand extends EmillaCommand implements DataCmd {
     protected String dupeLabel() {
         // Todo: exclude this from the interface for wrappers
         return null;
-    }
-
-    @Override @ArrayRes
-    public int details() {
-        return R.array.details_duplicate;
     }
 
     @Override @StringRes

@@ -20,13 +20,10 @@ public class Note extends CoreDataCommand {
             super(R.string.command_note,
                   R.string.instruction_file,
                   R.drawable.ic_note,
+                  R.string.summary_note,
+                  R.string.manual_note,
                   R.string.data_hint_note);
         }
-    }
-
-    @Override @ArrayRes
-    public int details() {
-        return R.array.details_note;
     }
 
     public Note(AssistActivity act, String instruct) {

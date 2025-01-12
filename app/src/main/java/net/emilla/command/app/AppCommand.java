@@ -1,6 +1,6 @@
 package net.emilla.command.app;
 
-import static net.emilla.utils.Apps.*;
+import static net.emilla.utils.Apps.sendToApp;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -9,6 +9,8 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.view.inputmethod.EditorInfo;
+
+import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -21,7 +23,10 @@ public class AppCommand extends EmillaCommand {
     private static class BasicAppParams extends AppParams {
 
         private BasicAppParams(AppInfo info) {
-            super(info, EditorInfo.IME_ACTION_GO);
+            super(info,
+                  EditorInfo.IME_ACTION_GO,
+                  R.string.summary_app,
+                  R.string.manual_app);
         }
 
         @Override
@@ -89,11 +94,16 @@ public class AppCommand extends EmillaCommand {
         private final AppInfo mInfo;
         private final int mImeAction;
         protected final CharSequence name;
+        @StringRes
+        private final int mSummary, mManual;
 
-        protected AppParams(AppInfo info, int imeAction) {
+        protected AppParams(AppInfo info, int imeAction, @StringRes int summary,
+                @StringRes int manual) {
             mInfo = info;
             mImeAction = imeAction;
             name = info.mName;
+            mSummary = summary;
+            mManual = manual;
         }
 
         @Override
@@ -121,6 +131,16 @@ public class AppCommand extends EmillaCommand {
         @Override
         public final int imeAction() {
             return mImeAction;
+        }
+
+        @Override
+        public int summary() {
+            return mSummary;
+        }
+
+        @Override
+        public int manual() {
+            return mManual;
         }
     }
 }

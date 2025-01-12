@@ -41,6 +41,11 @@ public final class Dialogs {
         return base(ctx, title, negLabel).setMessage(msg);
     }
 
+    public static AlertDialog.Builder base(Context ctx, CharSequence title, CharSequence msg,
+            @StringRes int negLabel) {
+        return base(ctx, title, negLabel).setMessage(msg);
+    }
+
     public static AlertDialog.Builder listBase(Context ctx, @StringRes int title) {
         return base(ctx, title, android.R.string.cancel);
         // TODO ACC: the cancel button is destroyed when the list is bigger than the screen for some

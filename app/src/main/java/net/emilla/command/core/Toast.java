@@ -20,13 +20,10 @@ public class Toast extends CoreDataCommand {
             super(R.string.command_toast,
                   R.string.instruction_text,
                   R.drawable.ic_toast,
+                  R.string.summary_toast,
+                  R.string.manual_toast,
                   R.string.data_hint_toast);
         }
-    }
-
-    @Override @ArrayRes
-    public int details() {
-        return R.array.details_toast;
     }
 
     public Toast(AssistActivity act, String instruct) {

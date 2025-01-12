@@ -151,7 +151,6 @@ public abstract class EmillaCommand {
 
     public final void baseInit(boolean updateTitle) {
         if (updateTitle) activity.updateTitle(title());
-        activity.updateDetails(details());
         activity.updateDataHint();
         activity.setImeAction(imeAction());
     }
@@ -340,14 +339,14 @@ public abstract class EmillaCommand {
         return mIcon == null ? mIcon = mParams.icon(activity) : mIcon;
     }
 
-    @StringRes @Deprecated
-    public int manual() {
-        return R.string.manual_none;
+    @StringRes
+    public int summary() {
+        return mParams.summary();
     }
 
-    @ArrayRes
-    public int details() {
-        return 0;
+    @StringRes
+    public int manual() {
+        return mParams.manual();
     }
 
     protected final int imeAction() {
@@ -407,6 +406,23 @@ public abstract class EmillaCommand {
         //  the command, using the action icon of one of the below.
         // requires changing the input method code directly
         // it's also proven cumbersome to get the key icon to actually update to begin with..
+
+        /**
+         * A brief description of what the command does
+         *
+         * @return the resource ID for the command's summary
+         */
+        @StringRes
+        int summary();
+
+        /**
+         * The command's manual page, used in the 'help' button dialog. This is a detailed
+         * description of what the command does and how to use it
+         *
+         * @return the resource ID for the command's manual page
+         */
+        @StringRes
+        int manual();
     }
 
     protected abstract void run();

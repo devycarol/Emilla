@@ -23,7 +23,9 @@ public class Copy extends CoreCommand {
             super(R.string.command_copy,
                   R.string.instruction_text,
                   R.drawable.ic_copy,
-                  EditorInfo.IME_ACTION_DONE);
+                  EditorInfo.IME_ACTION_DONE,
+                  R.string.summary_copy,
+                  R.string.manual_copy);
         }
     }
 

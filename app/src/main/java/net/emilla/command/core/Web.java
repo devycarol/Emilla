@@ -25,7 +25,9 @@ public class Web extends CoreCommand {
             super(R.string.command_web,
                   R.string.instruction_web,
                   R.drawable.ic_web,
-                  EditorInfo.IME_ACTION_SEARCH);
+                  EditorInfo.IME_ACTION_SEARCH,
+                  R.string.summary_web,
+                  R.string.manual_web);
         }
     }
 

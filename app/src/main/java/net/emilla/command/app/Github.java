@@ -10,7 +10,10 @@ public class Github extends AppSendData {
     private static class GithubParams extends AppSendDataParams {
 
         private GithubParams(AppInfo info) {
-            super(info, R.string.instruction_issue, R.string.data_hint_issue);
+            super(info,
+                  R.string.instruction_issue,
+                  R.string.summary_issues,
+                  R.string.data_hint_issue);
         }
     }
 

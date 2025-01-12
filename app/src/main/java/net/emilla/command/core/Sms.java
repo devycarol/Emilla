@@ -35,6 +35,8 @@ public class Sms extends CoreDataCommand {
                   R.string.instruction_phone,
                   false, // the initials "SMS" shouldn't be lowercased
                   R.drawable.ic_sms,
+                  R.string.summary_sms,
+                  R.string.manual_sms,
                   R.string.data_hint_message);
         }
     }
@@ -42,11 +44,6 @@ public class Sms extends CoreDataCommand {
     private final Intent mIntent = new Intent(ACTION_SENDTO, Uri.parse("smsto:"));
     private final HashMap<String, String> mPhoneMap;
     private FieldToggle mSubjectToggle;
-
-    @Override @ArrayRes
-    public int details() {
-        return R.array.details_sms;
-    }
 
     public Sms(AssistActivity act, String instruct) {
         super(act, instruct, new SmsParams());

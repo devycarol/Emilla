@@ -35,7 +35,7 @@
         <SwitchPreference
             app:defaultValue="false"
             app:key="always_show_data"
-            app:title="@string/pref_always_show_data"/>
+            app:title="@string/pref_always_show_data" />
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/header_customization">
@@ -88,6 +88,15 @@
             app:key="favorite_commands"
             app:summary="@string/smry_favorites"
             app:title="@string/pref_favorites" />
+        <!--Todo: editor UI for any number of these-->
+        <SwitchPreference
+            app:defaultValue="true"
+            app:key="show_help_button"
+            app:title="@string/action_help"/>
+        <SwitchPreference
+            app:defaultValue="false"
+            app:key="show_cursor_start_button"
+            app:title="@string/action_cursor_start"/>
         <ListPreference
             app:defaultValue="config"
             app:entries="@array/no_command_action_entries"
@@ -110,7 +119,7 @@
             app:title="@string/pref_action_long_submit"
             app:useSimpleSummaryProvider="true" />
         <ListPreference
-            app:defaultValue="config"
+            app:defaultValue="help"
             app:entries="@array/action_entries"
             app:entryValues="@array/action_values"
             app:key="action_menu"

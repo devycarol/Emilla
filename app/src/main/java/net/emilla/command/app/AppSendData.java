@@ -2,7 +2,6 @@ package net.emilla.command.app;
 
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.ArrayRes;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -12,11 +11,6 @@ import net.emilla.command.DataCmd;
 class AppSendData extends AppSend implements DataCmd {
 
     private final AppSendDataParams mParams;
-
-    @Override @ArrayRes
-    public int details() {
-        return R.array.details_app_send_data;
-    }
 
     @Override
     public final boolean usesData() {
@@ -52,8 +46,13 @@ class AppSendData extends AppSend implements DataCmd {
         @StringRes
         private final int mHint;
 
-        protected AppSendDataParams(AppInfo info, @StringRes int instruction, @StringRes int hint) {
-            super(info, instruction, EditorInfo.IME_ACTION_NEXT);
+        protected AppSendDataParams(AppInfo info, @StringRes int instruction, @StringRes int summary,
+                @StringRes int hint) {
+            super(info,
+                  instruction,
+                  EditorInfo.IME_ACTION_NEXT,
+                  summary,
+                  R.string.manual_app_send_data);
             mHint = hint;
         }
 

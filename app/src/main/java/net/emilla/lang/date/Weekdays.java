@@ -2,8 +2,8 @@ package net.emilla.lang.date;
 
 import java.util.ArrayList;
 
-public interface WeekdayParser {
+public interface Weekdays {
 
-    boolean noDays();
+    boolean empty();
     ArrayList<Integer> days();
 }

@@ -24,9 +24,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import androidx.annotation.ArrayRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
@@ -79,7 +77,6 @@ public class AssistActivity extends EmillaActivity {
 
     private LayoutInflater mInflater;
     private FrameLayout mEmptySpace;
-    private TextView mHelpBox;
     private EditText mCommandField, mDataField;
     private ActionButton mSubmitButton;
     private ActionButton mShowDataButton, mHideDataButton;
@@ -89,6 +86,9 @@ public class AssistActivity extends EmillaActivity {
     private QuickAction mNoCommandAction;
     private QuickAction mDoubleAssistAction;
     private QuickAction mMenuKeyAction;
+
+    private AlertDialog mManual;
+    // todo: please handle this another way..
 
     private FileRetriever mFileRetriever;
     private MediaRetriever mMediaRetriever;
@@ -164,8 +164,6 @@ public class AssistActivity extends EmillaActivity {
         mCmdTree = EmillaCommand.tree(mPrefs, res, pm, mAppList);
 
         mEmptySpace = findViewById(R.id.empty_space);
-        mHelpBox = findViewById(R.id.help_text_box);
-        mHelpBox.setVisibility(View.GONE);
         mCommandField = findViewById(R.id.field_command);
         mDataField = findViewById(R.id.field_data);
         mSubmitButton = findViewById(R.id.btn_submit);
@@ -181,11 +179,10 @@ public class AssistActivity extends EmillaActivity {
         }
 
         mEmptySpace.setOnClickListener(v -> cancelIfWarranted());
-        mHelpBox.setOnClickListener(v -> cancelIfWarranted());
 
         mNoCommandAction = SettingVals.noCommand(mPrefs, this);
         mDoubleAssistAction = SettingVals.doubleAssist(mPrefs, this, pm);
-        mMenuKeyAction = SettingVals.menuAction(mPrefs, this);
+        mMenuKeyAction = SettingVals.menuKey(mPrefs, this);
 
         setupSubmitButton();
         setupDataButtons();
@@ -319,8 +316,9 @@ public class AssistActivity extends EmillaActivity {
         // TODO: save state hell
         mInflater = LayoutInflater.from(this);
         mActionsContainer = findViewById(R.id.container_more_actions);
-        addAction(new CursorStart(this));
-        addAction(new Help(this));
+        // Todo: put these in an editor.
+        if (SettingVals.showCursorStartButton(mPrefs)) addAction(new CursorStart(this));
+        if (SettingVals.showHelpButton(mPrefs)) addAction(new Help(this));
         mFieldsContainer = findViewById(R.id.container_more_fields);
     }
 
@@ -456,15 +454,6 @@ public class AssistActivity extends EmillaActivity {
         }
     }
 
-    public void updateDetails(@ArrayRes int details) {
-        String join = details == 0 ? null : String.join("\n\n", getResources().getStringArray(details));
-        if (join == null) mHelpBox.setVisibility(View.GONE);
-        else {
-            mHelpBox.setVisibility(View.VISIBLE);
-            mHelpBox.setText(join);
-        }
-    }
-
     public void updateDataHint() {
         if (mNoCommand || !mCommand.usesData()) mDataField.setHint(R.string.data_hint_default);
         else mDataField.setHint(((DataCmd) mCommand).dataHint());
@@ -542,6 +531,16 @@ public class AssistActivity extends EmillaActivity {
         mDontChimeResume = true;
     }
 
+    public void setManual(AlertDialog manual) {
+        mManual = manual;
+    }
+
+    public boolean cancelManualIfShowing() {
+        if (mManual == null || !mManual.isShowing()) return false;
+        mManual.cancel();
+        return true;
+    }
+
     /*====================*
      * Command Processing *
      *====================*/
@@ -597,21 +596,23 @@ public class AssistActivity extends EmillaActivity {
         if (shouldCancel()) cancel();
         else {
             mPendingCancel = true;
-            AlertDialog.Builder cancelDialog = new AlertDialog.Builder(this)
-                    .setTitle(R.string.exit)
-                    .setMessage(R.string.dlg_msg_exit)
-                    .setPositiveButton(R.string.leave, (dlg, id) -> cancel())
-                    .setNegativeButton(android.R.string.cancel, (dlg, which) -> declineCancel())
-                    .setOnCancelListener(dlg -> declineCancel())
-                    .setOnKeyListener((dlg, keyCode, keyEvent) -> {
-                if (keyCode == KEYCODE_BACK && keyEvent.getAction() == ACTION_UP) {
-                    cancel();
-                    return true;
-                }
-                return false;
-            });
-            offer(new DialogOffering(this, cancelDialog));
+            offer(new DialogOffering(this, cancelDialog(), dlg -> declineCancel()));
         }
+    }
+
+    private AlertDialog.Builder cancelDialog() {
+        return new AlertDialog.Builder(this)
+                .setTitle(R.string.exit)
+                .setMessage(R.string.dlg_msg_exit)
+                .setPositiveButton(R.string.leave, (dlg, id) -> cancel())
+                .setNegativeButton(android.R.string.cancel, (dlg, which) -> declineCancel())
+                .setOnKeyListener((dlg, keyCode, event) -> {
+            if (keyCode == KEYCODE_BACK && event.getAction() == ACTION_UP) {
+                cancel();
+                return true;
+            }
+            return false;
+        });
     }
 
     public void prepareForDialog() {

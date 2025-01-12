@@ -9,8 +9,8 @@ import androidx.annotation.ArrayRes;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.lang.Lang;
-import net.emilla.lang.date.TimeParser;
-import net.emilla.lang.date.WeekdayParser;
+import net.emilla.lang.date.HourMin;
+import net.emilla.lang.date.Weekdays;
 import net.emilla.settings.Aliases;
 
 public class Alarm extends CoreDataCommand {
@@ -23,13 +23,13 @@ public class Alarm extends CoreDataCommand {
     private static class AlarmParams extends CoreDataParams {
 
         private AlarmParams() {
-            super(R.string.command_alarm, R.string.instruction_alarm, R.drawable.ic_alarm, R.string.data_hint_alarm);
+            super(R.string.command_alarm,
+                  R.string.instruction_alarm,
+                  R.drawable.ic_alarm,
+                  R.string.summary_alarm,
+                  R.string.manual_alarm,
+                  R.string.data_hint_label);
         }
-    }
-
-    @Override @ArrayRes
-    public int details() {
-        return R.array.details_alarm;
     }
 
     public Alarm(AssistActivity act, String instruct) {
@@ -41,10 +41,10 @@ public class Alarm extends CoreDataCommand {
     }
 
     private Intent makeIntent(String timeString) {
-        TimeParser time = Lang.timeParser(timeString);
-        WeekdayParser days = Lang.weekdayParser(timeString);
+        HourMin time = Lang.time(timeString, activity);
+        Weekdays days = Lang.weekdays(timeString);
         Intent in = makeIntent(time.hour24(), time.minute());
-        return days.noDays() ? in : in.putExtra(EXTRA_DAYS, days.days());
+        return days.empty() ? in : in.putExtra(EXTRA_DAYS, days.days());
     }
 
     private static Intent makeIntent(int hour, int minute) {

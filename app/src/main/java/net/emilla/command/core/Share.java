@@ -29,17 +29,14 @@ public class Share extends AttachCommand implements AppChoiceReceiver {
             super(R.string.command_share,
                   R.string.instruction_app,
                   R.drawable.ic_share,
+                  R.string.summary_share,
+                  R.string.manual_share,
                   R.string.data_hint_share);
         }
     }
 
     private FileFetcher mFileFetcher;
     private MediaFetcher mMediaFetcher;
-
-    @Override @ArrayRes
-    public int details() {
-        return R.array.details_share;
-    }
 
     public Share(AssistActivity act, String instruct) {
         super(act, instruct, new ShareParams());

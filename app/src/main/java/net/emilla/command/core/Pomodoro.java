@@ -25,18 +25,18 @@ public class Pomodoro extends CoreDataCommand {
     private static class PomodoroParams extends CoreDataParams {
 
         private PomodoroParams() {
-            super(R.string.command_pomodoro, R.string.instruction_pomodoro, R.drawable.ic_pomodoro, R.string.data_hint_pomodoro);
+            super(R.string.command_pomodoro,
+                  R.string.instruction_pomodoro,
+                  R.drawable.ic_pomodoro,
+                  R.string.summary_pomodoro,
+                  R.string.manual_pomodoro,
+                  R.string.data_hint_pomodoro);
         }
     }
 
     private final Intent mIntent = new Intent(ACTION_SET_TIMER)
             .putExtra(EXTRA_SKIP_UI, true)
             .putExtra(EXTRA_LENGTH, 1500 /*25m*/); // todo: make configurable
-
-    @Override @ArrayRes
-    public int details() {
-        return R.array.details_pomodoro;
-    }
 
     public Pomodoro(AssistActivity act, String instruct) {
         super(act, instruct, new PomodoroParams());

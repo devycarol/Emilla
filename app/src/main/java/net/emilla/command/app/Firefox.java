@@ -10,7 +10,7 @@ public class Firefox extends AppSearch {
     private static class FirefoxParams extends AppSearchParams {
 
         private FirefoxParams(AppInfo info) {
-            super(info, R.string.instruction_web);
+            super(info, R.string.instruction_web, R.string.summary_web);
         }
     }
 

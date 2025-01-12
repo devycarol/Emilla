@@ -10,7 +10,11 @@ abstract class VideoSearchBySend extends AppSend {
     private static class VideoSearchBySendParams extends AppSendParams{
 
         private VideoSearchBySendParams(AppInfo info) {
-            super(info, R.string.instruction_video, EditorInfo.IME_ACTION_SEARCH);
+            super(info,
+                  R.string.instruction_video,
+                  EditorInfo.IME_ACTION_SEARCH,
+                  R.string.summary_video,
+                  R.string.manual_app_send);
         }
     }
 

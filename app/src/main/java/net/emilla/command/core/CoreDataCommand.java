@@ -22,13 +22,23 @@ public abstract class CoreDataCommand extends CoreCommand implements DataCmd {
         private final int mHint;
 
         protected CoreDataParams(@StringRes int name, @StringRes int instruction,
-                @DrawableRes int icon, @StringRes int hint) {
-            this(name, instruction, true, icon, hint);
+                @DrawableRes int icon, @StringRes int summary, @StringRes int manual,
+                @StringRes int hint) {
+            this(name, instruction,
+                 true,
+                 icon,
+                 summary, manual,
+                 hint);
         }
 
         protected CoreDataParams(@StringRes int name, @StringRes int instruction,
-                boolean shouldLowercase, @DrawableRes int icon, @StringRes int hint) {
-            super(name, instruction, shouldLowercase, icon, EditorInfo.IME_ACTION_NEXT);
+                boolean shouldLowercase, @DrawableRes int icon, @StringRes int summary,
+                @StringRes int manual, @StringRes int hint) {
+            super(name, instruction,
+                  shouldLowercase,
+                  icon,
+                  EditorInfo.IME_ACTION_NEXT,
+                  summary, manual);
             mHint = hint;
         }
 

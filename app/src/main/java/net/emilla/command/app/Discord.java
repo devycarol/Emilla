@@ -10,7 +10,10 @@ public class Discord extends AppSend {
     private static class DiscordParams extends AppSendParams {
 
         protected DiscordParams(AppInfo info) {
-            super(info, R.string.instruction_message);
+            super(info,
+                  R.string.instruction_message,
+                  R.string.summary_messaging,
+                  R.string.manual_app_send);
         }
     }
 
