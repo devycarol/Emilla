@@ -39,7 +39,6 @@ import net.emilla.chime.Chimer;
 import net.emilla.command.CmdTree;
 import net.emilla.command.DataCmd;
 import net.emilla.command.EmillaCommand;
-import net.emilla.command.core.Bookmark;
 import net.emilla.content.receive.AppChoiceReceiver;
 import net.emilla.content.receive.ContactReceiver;
 import net.emilla.content.receive.FileReceiver;
@@ -496,10 +495,6 @@ public class AssistActivity extends EmillaActivity {
 
     public List<ResolveInfo> appList() {
         return mAppList;
-    }
-
-    public String mediaCsv() {
-        return mPrefs.getString("medias", Bookmark.DFLT_MEDIA);
     }
 
     public EditText focusedEditBox() {

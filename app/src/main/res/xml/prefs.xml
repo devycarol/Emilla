@@ -19,6 +19,11 @@
             app:summary="Contact names are always case-insensitive"
             app:title="Contact emails" />
         <EditTextPreference
+            app:defaultValue="Wikipedia, wiki, w, https://wikipedia.org/wiki/%s\nGoogle, g, https://www.google.com/search?q=%s\nGoogle Images, gimages, gimage, gimg, gi, https://www.google.com/search?q=%s&amp;udm=2\nYouTube, yt, y, https://www.youtube.com/results?search_query=%s\nDuckDuckGo, ddg, dd, d, https://duckduckgo.com/?q=%s\nDuckDuckGo Images, duckimages, duckimage, duckimg, ddgimages, ddgimage, ddgimg, ddgi, ddimages, ddimage, ddimg, ddi, dimages, dimage, dimg, https://duckduckgo.com/?q=%s&amp;ia=images&amp;iax=images"
+            app:key="search_engines"
+            app:summary="Replace the query with '%s'"
+            app:title="Web search engines" />
+        <EditTextPreference
             app:defaultValue="Emilla GitHub, emla, https://github.com/devycarol/Emilla\nOpen-source software, OSS, https://en.wikipedia.org/wiki/Open_source_software\nRick, dQw, https://www.youtube.com/watch?v=dQw4w9WgXcQ"
             app:key="medias"
             app:summary="Used in the 'bookmark' command; only supports web URLs for now"

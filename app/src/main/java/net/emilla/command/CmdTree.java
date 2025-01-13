@@ -139,10 +139,8 @@ public class CmdTree {
     /**
      * Inserts a command into the first level of the tree. Must not be used for multi-word commands.
      *
-     * @param lcName the command name. Must not contain whitespace for latin langs. Must not span more
-     *                than one codepoint for character langs.
-     *                Todo: could use int as token for codepoints, probably useless without a custom
-     *                 hash-map though. Maybe in a C++ rewrite :P
+     * @param lcName the command name. Must not contain whitespace for latin langs. Must not span
+     *               more than one codepoint for glyph langs.
      * @param id the command to map the token to
      */
     public void putSingle(String lcName, short id) {

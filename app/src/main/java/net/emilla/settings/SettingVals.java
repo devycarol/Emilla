@@ -155,4 +155,12 @@ public class SettingVals {
     public static String soundSet(SharedPreferences prefs) {
         return prefs.getString(Chimer.SOUND_SET, Chimer.NEBULA);
     }
+
+    public static String bookmarkCsv(SharedPreferences prefs) {
+        return prefs.getString("medias", Bookmark.DFLT_BOOKMARKS);
+    }
+
+    public static String searchEngineCsv(SharedPreferences prefs) {
+        return prefs.getString("search_engines", Web.DFLT_SEARCH_ENGINES);
+    }
 }

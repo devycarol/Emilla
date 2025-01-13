@@ -11,7 +11,10 @@ import java.util.Iterator;
  * This class tokenizes command strings, making them iterable. The `Latin` version is for languages
  * with space-separated words, and the `Glyph` version is used for character languages that don't
  * regularly use space characters.
+ *
+ * @deprecated use {@link net.emilla.lang.Words}
  */
+@Deprecated(forRemoval = true)
 public abstract class CmdTokens implements Iterable<String>, Iterator<String> {
 private final String mCommand;
 protected final String mLcCommand;

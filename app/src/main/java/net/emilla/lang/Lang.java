@@ -51,6 +51,12 @@ public final class Lang {
         return res.getString(R.string.colon_concatenation, res.getString(a), res.getString(b));
     }
 
+    public static Words words(String phrase) {
+        return switch (-1) {
+            default -> new Words.Latin(phrase);
+        };
+    }
+
     public static HourMin time(String timeStr, Context ctx) {
         return switch (-1) {
             default -> HourMinEN_US.instance(timeStr, ctx);

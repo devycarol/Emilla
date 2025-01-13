@@ -183,6 +183,10 @@ public abstract class EmillaCommand {
         return resources.getStringArray(id);
     }
 
+    protected SharedPreferences prefs() {
+        return activity.prefs();
+    }
+
     protected PackageManager pm() {
         return activity.getPackageManager();
     }

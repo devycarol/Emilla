@@ -11,6 +11,7 @@ import net.emilla.R;
 import net.emilla.config.ConfigActivity;
 import net.emilla.run.AppSuccess;
 import net.emilla.settings.Aliases;
+import net.emilla.settings.SettingVals;
 import net.emilla.util.Apps;
 import net.emilla.util.Dialogs;
 
@@ -22,9 +23,11 @@ public class Bookmark extends CoreCommand {
     @ArrayRes
     public static final int ALIASES = R.array.aliases_bookmark;
     public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
-    public static final String DFLT_MEDIA = "Emilla GitHub, emla, https://github.com/devycarol/Emilla\n" +
-            "Open-source software, OSS, https://en.wikipedia.org/wiki/Open_source_software\n" +
-            "Rick, dQw, https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+
+    public static final String DFLT_BOOKMARKS = """
+            Emilla GitHub, emla, https://github.com/devycarol/Emilla
+            Open-source software, OSS, https://en.wikipedia.org/wiki/Open_source_software
+            Rick, dQw, https://www.youtube.com/watch?v=dQw4w9WgXcQ""";
 
     private static class BookmarkParams extends CoreParams {
 
@@ -45,7 +48,7 @@ public class Bookmark extends CoreCommand {
     public Bookmark(AssistActivity act, String instruct) {
         super(act, instruct, new BookmarkParams());
 
-        String[] lines = act.mediaCsv().split("\\s*\n\\s*");
+        String[] lines = SettingVals.bookmarkCsv(prefs()).split("\\s*\n\\s*");
         String[] labels = new String[lines.length];
         Intent[] intents = new Intent[lines.length];
         int idx = -1;

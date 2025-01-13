@@ -229,7 +229,12 @@
     <!-- Todo: separate pages for unit formatting instructions. -->
     <!-- "Search the internet" -->
     <string name="manual_web">
-        The text you enter will be sent to a web browser for search. URLs are opened directly.
+        The text you enter will be sent to a web browser for search. URLs are opened directly.\n
+        \n
+        If the text matches one of your bookmark keywords, the bookmark will be directly opened.\n
+        \n
+        If the text starts with one of your search engine keywords, that site will be searched for
+        the rest of your query.
     </string>
     <!-- "Open your apps" -->
     <string name="manual_launch">
