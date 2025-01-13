@@ -55,7 +55,7 @@ import java.util.HashMap;
  * todo: upward & stateful traversals ^ some sort of mechanism for detecting token depth of the
  *  beginning char span
  */
-public class CmdTree {
+public class CommandMap {
 
     private static class CmdNode {
 
@@ -70,7 +70,7 @@ public class CmdTree {
     private final AppInfo[] mAppInfos;
     private final AppCommand[] mAppCmds;
 
-    public CmdTree(Resources res, int appCount) {
+    public CommandMap(Resources res, int appCount) {
         mRes = res;
         root.map = new HashMap<>();
         mAppInfos = new AppInfo[appCount];

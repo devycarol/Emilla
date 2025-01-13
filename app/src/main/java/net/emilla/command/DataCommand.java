@@ -2,7 +2,7 @@ package net.emilla.command;
 
 import androidx.annotation.StringRes;
 
-public interface DataCmd {
+public interface DataCommand {
 
     @StringRes
     int dataHint();

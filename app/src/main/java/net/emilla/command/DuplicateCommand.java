@@ -11,7 +11,7 @@ import net.emilla.R;
 import net.emilla.command.core.CoreCommand;
 import net.emilla.util.Dialogs;
 
-public class DuplicateCommand extends EmillaCommand implements DataCmd {
+public class DuplicateCommand extends EmillaCommand implements DataCommand {
 
     private static class DuplicateParams extends CoreCommand.CoreParams {
 
@@ -76,7 +76,7 @@ public class DuplicateCommand extends EmillaCommand implements DataCmd {
     public void execute(String data) {
         chooseCommand((dlg, which) -> {
             EmillaCommand cmd = mCommands[which];
-            if (cmd.usesData()) ((DataCmd) cmd).execute(data);
+            if (cmd.usesData()) ((DataCommand) cmd).execute(data);
             else { // TODO: handle this more gracefully
                 cmd.instructAppend(data);
                 cmd.execute();

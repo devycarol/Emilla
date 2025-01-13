@@ -36,8 +36,8 @@ import net.emilla.action.CursorStart;
 import net.emilla.action.Help;
 import net.emilla.action.QuickAction;
 import net.emilla.chime.Chimer;
-import net.emilla.command.CmdTree;
-import net.emilla.command.DataCmd;
+import net.emilla.command.CommandMap;
+import net.emilla.command.DataCommand;
 import net.emilla.command.EmillaCommand;
 import net.emilla.content.receive.AppChoiceReceiver;
 import net.emilla.content.receive.ContactReceiver;
@@ -67,7 +67,7 @@ import java.util.List;
 public class AssistActivity extends EmillaActivity {
 
     private SharedPreferences mPrefs;
-    private CmdTree mCmdTree;
+    private CommandMap mCommandMap;
     private List<ResolveInfo> mAppList;
     private Chimer mChimer;
 
@@ -155,7 +155,7 @@ public class AssistActivity extends EmillaActivity {
 
         PackageManager pm = getPackageManager();
         mAppList = Apps.resolveList(pm);
-        mCmdTree = EmillaCommand.tree(mPrefs, res, pm, mAppList);
+        mCommandMap = EmillaCommand.map(mPrefs, res, pm, mAppList);
 
         mEmptySpace = findViewById(R.id.empty_space);
         mCommandField = findViewById(R.id.field_command);
@@ -249,7 +249,7 @@ public class AssistActivity extends EmillaActivity {
             };
         });
 
-        mCommand = mCmdTree.newCore(this, EmillaCommand.DEFAULT, null);
+        mCommand = mCommandMap.newCore(this, EmillaCommand.DEFAULT, null);
 
         mCommandField.setHorizontallyScrolling(false);
         mCommandField.setMaxLines(8);
@@ -449,7 +449,7 @@ public class AssistActivity extends EmillaActivity {
 
     public void updateDataHint() {
         if (mNoCommand || !mCommand.usesData()) mDataField.setHint(R.string.data_hint_default);
-        else mDataField.setHint(((DataCmd) mCommand).dataHint());
+        else mDataField.setHint(((DataCommand) mCommand).dataHint());
     }
 
     public void setSubmitIcon(Drawable icon, boolean isAppIcon) {
@@ -469,7 +469,7 @@ public class AssistActivity extends EmillaActivity {
             command = command.substring(nonSpace, len);
         }
 
-        EmillaCommand cmd = mCmdTree.get(this, command);
+        EmillaCommand cmd = mCommandMap.get(this, command);
         boolean noCommand = command.isEmpty();
         if (cmd != mCommand || noCommand != mNoCommand) {
             mCommand.clean();
@@ -646,7 +646,7 @@ public class AssistActivity extends EmillaActivity {
         }
     try {
         if (mCommand.usesData() && mDataField.length() > 0) {
-            ((DataCmd) mCommand).execute(mDataField.getText().toString());
+            ((DataCommand) mCommand).execute(mDataField.getText().toString());
         } else mCommand.execute();
     } catch (EmillaException e) {
         fail(new MessageFailure(this, e.title(), e.message()));

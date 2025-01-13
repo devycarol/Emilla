@@ -7,9 +7,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
-import net.emilla.command.DataCmd;
+import net.emilla.command.DataCommand;
 
-public abstract class CoreDataCommand extends CoreCommand implements DataCmd {
+public abstract class CoreDataCommand extends CoreCommand implements DataCommand {
 
     @Override
     public final boolean usesData() {

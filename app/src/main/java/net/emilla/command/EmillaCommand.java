@@ -99,17 +99,17 @@ public abstract class EmillaCommand {
             R.string.command_toast
     };
 
-    public static CmdTree tree(SharedPreferences prefs, Resources res, PackageManager pm,
+    public static CommandMap map(SharedPreferences prefs, Resources res, PackageManager pm,
             List<ResolveInfo> appList) {
         // todo: configurable aliasing
         // todo: edge case where a mapped app is uninstalled during the activity lifecycle
-        CmdTree cmdTree = new CmdTree(res, appList.size());
+        CommandMap commandMap = new CommandMap(res, appList.size());
         short i = 0;
         while (i < DUPLICATE - 1) {
             String lcName = res.getString(NAMES[i]).toLowerCase();
             Set<String> aliases = Aliases.set(prefs, res, i);
-            cmdTree.putSingle(lcName, ++i);
-            for (String alias : aliases) cmdTree.put(alias, i);
+            commandMap.putSingle(lcName, ++i);
+            for (String alias : aliases) commandMap.put(alias, i);
             // Todo: have separate set for multi-word aliases and use putSingle for the rest
         }
         i = 0;
@@ -120,14 +120,14 @@ public abstract class EmillaCommand {
             //  launcher caches labels for ideas on how to improve the performance of this critical
             //  onCreate task. That is, if they do to begin with..
             AppInfo info = new AppInfo(actInfo, pm, label);
-            cmdTree.putApp(label, --i, info, ~i);
+            commandMap.putApp(label, --i, info, ~i);
             Set<String> aliases = Aliases.appSet(prefs, res, info);
             if (aliases == null) continue;
-            for (String alias : aliases) cmdTree.put(alias, i);
+            for (String alias : aliases) commandMap.put(alias, i);
             // No need to pass app info again for aliases
             // Todo: have separate set for multi-word aliases and use putSingle for the rest
         }
-        return cmdTree;
+        return commandMap;
     }
 
     protected final AssistActivity activity;

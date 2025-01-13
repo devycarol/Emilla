@@ -6,9 +6,9 @@ import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.command.DataCmd;
+import net.emilla.command.DataCommand;
 
-class AppSendData extends AppSend implements DataCmd {
+class AppSendData extends AppSend implements DataCommand {
 
     private final AppSendDataParams mParams;
 
