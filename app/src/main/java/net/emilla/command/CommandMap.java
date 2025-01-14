@@ -3,11 +3,12 @@ package net.emilla.command;
 import net.emilla.AssistActivity;
 import net.emilla.lang.Lang;
 import net.emilla.lang.Words;
+import net.emilla.util.trie.HashTrieMap;
 import net.emilla.util.trie.TrieMap;
 
 public class CommandMap {
 
-    private final TrieMap<String, CommandYielder> mTrieMap = new TrieMap<>();
+    private final TrieMap<String, CommandYielder> mTrieMap = new HashTrieMap<>();
     private final DefaultCommandWrapper.Yielder mDefaultYielder;
 
     CommandMap(DefaultCommandWrapper.Yielder defaultYielder) {

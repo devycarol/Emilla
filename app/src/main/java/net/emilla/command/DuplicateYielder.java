@@ -1,9 +1,12 @@
 package net.emilla.command;
 
+import androidx.annotation.NonNull;
+
 import net.emilla.AssistActivity;
 import net.emilla.util.trie.TrieMap;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class DuplicateYielder extends CommandYielder implements TrieMap.Duplicate<CommandYielder> {
 
@@ -62,5 +65,10 @@ public class DuplicateYielder extends CommandYielder implements TrieMap.Duplicat
             mCommand = new DuplicateCommand(act, cmds);
         }
         return mCommand;
+    }
+
+    @Override @NonNull
+    public Iterator<CommandYielder> iterator() {
+        return mYielders.iterator();
     }
 }

@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 
 import net.emilla.lang.Lang;
 import net.emilla.lang.Words;
+import net.emilla.util.trie.HashTrieMap;
 import net.emilla.util.trie.TrieMap;
 
 import java.util.Arrays;
@@ -36,7 +37,7 @@ public class SearchEngineParser {
         }
     }
 
-    private final TrieMap<String, Website> mEngineMap = new TrieMap<>();
+    private final TrieMap<String, Website> mEngineMap = new HashTrieMap<>();
 
     @Deprecated
     public SearchEngineParser(String engineCsv) {
