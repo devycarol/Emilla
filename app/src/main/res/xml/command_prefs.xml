@@ -94,9 +94,9 @@
             android:title="@string/command_notify" />
         <EditTextPreference
             android:icon="@drawable/ic_settings"
-            android:key="aliases_settings_text"
-            android:summary="@string/summary_settings"
-            android:title="@string/command_settings" />
+            android:key="aliases_setting_text"
+            android:summary="@string/summary_setting"
+            android:title="@string/command_setting" />
         <EditTextPreference
             android:icon="@drawable/ic_copy"
             android:key="aliases_copy_text"

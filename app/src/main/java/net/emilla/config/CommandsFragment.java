@@ -42,7 +42,7 @@ import net.emilla.command.core.Launch;
 import net.emilla.command.core.Note;
 import net.emilla.command.core.Notify;
 import net.emilla.command.core.Pomodoro;
-import net.emilla.command.core.Settings;
+import net.emilla.command.core.Setting;
 import net.emilla.command.core.Share;
 import net.emilla.command.core.Sms;
 import net.emilla.command.core.Time;
@@ -90,7 +90,7 @@ public class CommandsFragment extends PreferenceFragmentCompat {
         setupCorePref(Copy.ALIAS_TEXT_KEY, listener, prefs, res, Copy.ALIASES);
         setupCorePref(Share.ALIAS_TEXT_KEY, listener, prefs, res, Share.ALIASES);
         setupCorePref(Launch.ALIAS_TEXT_KEY, listener, prefs, res, Launch.ALIASES);
-        setupCorePref(Settings.ALIAS_TEXT_KEY, listener, prefs, res,  Settings.ALIASES);
+        deactivate(Setting.ALIAS_TEXT_KEY, act);
         deactivate(Note.ALIAS_TEXT_KEY, act);
         deactivate(Todo.ALIAS_TEXT_KEY, act);
         setupCorePref(Web.ALIAS_TEXT_KEY, listener, prefs, res, Web.ALIASES);

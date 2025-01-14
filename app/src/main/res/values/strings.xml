@@ -128,7 +128,7 @@
     <string name="command_note">Note</string>
     <string name="command_calendar">Calendar</string>
     <string name="command_notify">Notify</string>
-    <string name="command_settings">Settings</string>
+    <string name="command_setting">Setting</string>
     <string name="command_copy">@android:string/copy</string>
     <string name="command_share">Share</string>
     <string name="command_torch">Torch</string>
@@ -155,7 +155,7 @@
     <string name="instruction_timer">minutes, duration, or until-time</string>
     <string name="instruction_calendar">event name | DATETIME</string>
     <!-- Todo: manual page that specifies abbreviations, also simplify this text -->
-    <string name="instruction_settings">name of setting</string>
+    <string name="instruction_setting">name of setting</string>
     <string name="instruction_torch">toggle flashlight</string>
     <string name="instruction_todo">task</string>
     <string name="instruction_pomodoro">minutes</string>
@@ -200,7 +200,7 @@
     <string name="summary_note">Add text to a file</string>
     <string name="summary_calendar">Create calendar events</string>
     <string name="summary_notify">Set notification reminders</string>
-    <string name="summary_settings">Search and change system settings</string>
+    <string name="summary_setting">Search and change system settings</string>
     <string name="summary_copy">Copy text and files</string>
     <string name="summary_share">Send text, images, and files to your apps</string>
     <string name="summary_torch">Toggle the flashlight</string>
@@ -415,7 +415,7 @@
         In the future, this command will work.
     </string>
     <!-- "Search and change system settings" -->
-    <string name="manual_settings">
+    <string name="manual_setting">
         This command opens your settings app. In the future, you\'ll be able to save and set
         specific settings at will.
     </string>
@@ -563,7 +563,7 @@
     <string name="error_feature_sms">Your device doesn\'t support SMS messaging.</string>
     <string name="error_unfinished_feature">Unfinished feature!</string>
     <string name="error_unfinished_reminders">Sorry! I don\'t know how to make reminders yet.</string>
-    <string name="error_unfinished_settings">Sorry! I don\'t know how to modify specific settings yet.</string>
+    <string name="error_unfinished_setting">Sorry! I don\'t know how to modify specific settings yet.</string>
     <string name="error_unfinished_notes">Sorry! I don\'t know how to write notes yet.</string>
     <string name="error_unfinished_version">Sorry! This command doesn\'t support your Android version yet.</string>
     <string name="error_unfinished_contact_search">Sorry! I don\'t know how to search through contacts yet.</string>

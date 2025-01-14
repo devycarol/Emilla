@@ -82,7 +82,7 @@
 <!--        <item>@string/command_note</item>-->
         <item>@string/command_calendar</item>
 <!--        <item>@string/command_notify</item>-->
-        <item>@string/command_settings</item>
+        <item>@string/command_setting</item>
         <item>@string/command_copy</item>
         <item>@string/command_share</item>
         <item>@string/command_torch</item>
@@ -113,7 +113,7 @@
 <!--        <item>note</item>-->
         <item>calendar</item>
 <!--        <item>notify</item>-->
-        <item>settings</item>
+        <item>setting</item>
         <item>copy</item>
         <item>share</item>
         <item>torch</item>
@@ -156,8 +156,7 @@
     <string-array name="aliases_share">
         <item>send</item>
     </string-array>
-    <string-array name="aliases_settings">
-        <item>setting</item>
+    <string-array name="aliases_setting">
         <item>set</item>
     </string-array>
     <string-array name="aliases_note" />
