@@ -19,53 +19,38 @@ import net.emilla.util.Dialogs;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-public class BugFailure implements Failure {
+public class BugFailure extends DialogFailure {
 
     private static final String TAG = BugFailure.class.getSimpleName();
 
-    private final String mErrorHeader;
-    private final AssistActivity mActivity;
-    private final AlertDialog mDialog;
-    private final RuntimeException mException;
-
-    public BugFailure(AssistActivity act, RuntimeException e, CharSequence commandName) {
-        mErrorHeader = "unknown error in the " + commandName + " command";
-        Log.e(TAG, mErrorHeader, e);
-
-        mActivity = act;
-        mDialog = Dialogs.dual(act, R.string.error_unknown, R.string.error_bug_report_please,
-                R.string.email_bug_report, android.R.string.cancel,
-                (dlg, which) -> emailBugReport())
-            .setNeutralButton(R.string.leave, (dlg, which) -> act.cancel()).create();
-        mException = e;
+    private static AlertDialog.Builder makeDialog(AssistActivity act, RuntimeException e,
+            CharSequence commandName) {
+        return Dialogs.dual(act, R.string.error_unknown, R.string.error_bug_report_please,
+                R.string.email_bug_report, android.R.string.cancel, (dlg, which) -> {
+                    emailBugReport(act, e, "unknown error in the " + commandName + " command");
+                }).setNeutralButton(R.string.leave, (dlg, which) -> act.cancel());
     }
 
-    @Override
-    public void run() {
-        mActivity.prepareForDialog();
-        mDialog.show();
-    }
-
-    private void emailBugReport() {
-        String message = mException.getMessage();
+    private static void emailBugReport(AssistActivity act, RuntimeException e, String errorHeader) {
+        String message = e.getMessage();
 
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
-        mException.printStackTrace(pw);
+        e.printStackTrace(pw);
         String stackTrace = sw.toString();
 
         String body = "Feel free to describe what was happening when the error occurred:\n\n\n\n"
-                    + "======== exception details ========\n\n";
+                + "======== exception details ========\n\n";
         if (message != null && !message.isEmpty()) body += message + "\n";
         body += stackTrace + "\n"
-              + "======== more helpful stuff ========\n\n"
-              + deviceInfo();
+                + "======== more helpful stuff ========\n\n"
+                + deviceInfo();
 
         Intent email = new Intent(ACTION_SENDTO, Uri.parse("mailto:bugs@emilla.net"))
-        // TODO: open an actual email account
-                .putExtra(EXTRA_SUBJECT, "[Android bug] " + mErrorHeader)
+                // TODO: open an actual email account
+                .putExtra(EXTRA_SUBJECT, "[Android bug] " + errorHeader)
                 .putExtra(EXTRA_TEXT, body);
-        mActivity.succeed(new AppSuccess(mActivity, email));
+        act.succeed(new AppSuccess(act, email));
     }
 
     private static String deviceInfo() {
@@ -110,5 +95,10 @@ public class BugFailure implements Failure {
             case Build.VERSION_CODES.VANILLA_ICE_CREAM -> "Vanilla Ice Cream";
             default -> "API level " + Build.VERSION.SDK_INT;
         };
+    }
+
+    public BugFailure(AssistActivity act, RuntimeException e, CharSequence commandName) {
+        super(act, makeDialog(act, e, commandName));
+        Log.e(TAG, "unknown error in the " + commandName + " command", e);
     }
 }
