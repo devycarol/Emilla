@@ -18,7 +18,7 @@ public class FileRetriever extends ResultRetriever<String, List<Uri>, FileReceiv
 
     public void retrieve(FileReceiver receiver, String mimeType) {
         if (alreadyHas(receiver)) return;
-        launcher.launch(mimeType);
+        launch(mimeType);
     }
 
     @Override

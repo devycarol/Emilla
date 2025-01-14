@@ -21,7 +21,7 @@ public class AppChoiceRetriever extends ResultRetriever<Intent, ActivityResult, 
     public void retrieve(AppChoiceReceiver receiver, Intent target, @StringRes int title) {
         if (alreadyHas(receiver)) return;
 
-        AppChoiceBroadcastReceiver.setRetriever(this);
+        AppChooserBroadcastReceiver.setRetriever(this);
 
         target.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
@@ -29,12 +29,12 @@ public class AppChoiceRetriever extends ResultRetriever<Intent, ActivityResult, 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             int flags = PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_UPDATE_CURRENT;
             IntentSender sender = PendingIntent.getBroadcast(activity, 0,
-                    new Intent(activity, AppChoiceBroadcastReceiver.class), flags).getIntentSender();
+                    new Intent(activity, AppChooserBroadcastReceiver.class), flags).getIntentSender();
 
             chooser = Intent.createChooser(target, activity.getString(title), sender);
         } else chooser = Intent.createChooser(target, activity.getString(title));
 
-        launcher.launch(chooser);
+        launch(chooser);
     }
 
     @Deprecated
@@ -58,7 +58,7 @@ public class AppChoiceRetriever extends ResultRetriever<Intent, ActivityResult, 
         protected void onActivityResult(ActivityResult output, AppChoiceReceiver receiver) {
             if (receiver == null) return;
             receiver.provide(false);
-            AppChoiceBroadcastReceiver.deleteRetriever();
+            AppChooserBroadcastReceiver.deleteRetriever();
         }
     }
 }

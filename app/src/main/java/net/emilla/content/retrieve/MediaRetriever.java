@@ -22,7 +22,7 @@ public class MediaRetriever extends ResultRetriever<PickVisualMediaRequest, List
 
     public void retrieve(FileReceiver receiver) {
         if (alreadyHas(receiver)) return;
-        launcher.launch(new PickVisualMediaRequest.Builder()
+        launch(new PickVisualMediaRequest.Builder()
                 .setMediaType(PickVisualMedia.ImageAndVideo.INSTANCE)
                 .build());
     }

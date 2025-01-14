@@ -129,7 +129,7 @@
         </provider>
 
         <receiver
-            android:name=".content.retrieve.AppChoiceBroadcastReceiver"
+            android:name=".content.retrieve.AppChooserBroadcastReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.CHOOSER" />

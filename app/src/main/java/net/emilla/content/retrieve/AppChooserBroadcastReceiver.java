@@ -6,7 +6,7 @@ import android.content.Intent;
 
 import net.emilla.content.receive.AppChoiceReceiver;
 
-public class AppChoiceBroadcastReceiver extends BroadcastReceiver {
+public class AppChooserBroadcastReceiver extends BroadcastReceiver {
 
     @Deprecated
     private static AppChoiceRetriever sRetriever;

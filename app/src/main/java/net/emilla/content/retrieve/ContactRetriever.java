@@ -16,7 +16,7 @@ public class ContactRetriever extends ResultRetriever<Void, Uri, ContactReceiver
 
     public void retrieve(ContactReceiver receiver) {
         if (alreadyHas(receiver)) return;
-        launcher.launch(null);
+        launch(null);
     }
 
     @Override
