@@ -7,6 +7,7 @@ import static java.util.regex.Pattern.compile;
 import android.content.Intent;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -18,14 +19,20 @@ import java.util.regex.Matcher;
 public class Pomodoro extends CoreDataCommand {
 
     public static final String ENTRY = "pomodoro";
+    @StringRes
+    public static final int NAME = R.string.command_pomodoro;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_pomodoro;
     public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
+    public static Yielder yielder() {
+        return new Yielder(true, Pomodoro::new, ENTRY, NAME, ALIASES);
+    }
+
     private static class PomodoroParams extends CoreDataParams {
 
         private PomodoroParams() {
-            super(R.string.command_pomodoro,
+            super(NAME,
                   R.string.instruction_pomodoro,
                   R.drawable.ic_pomodoro,
                   R.string.summary_pomodoro,
@@ -38,9 +45,9 @@ public class Pomodoro extends CoreDataCommand {
             .putExtra(EXTRA_SKIP_UI, true)
             .putExtra(EXTRA_LENGTH, 1500 /*25m*/); // todo: make configurable
 
-    public Pomodoro(AssistActivity act, String instruct) {
-        super(act, instruct, new PomodoroParams());
-        mIntent.putExtra(EXTRA_MESSAGE, string(R.string.command_pomodoro));
+    public Pomodoro(AssistActivity act) {
+        super(act, new PomodoroParams());
+        mIntent.putExtra(EXTRA_MESSAGE, string(NAME));
     }
 
     /**
@@ -57,10 +64,10 @@ public class Pomodoro extends CoreDataCommand {
             float dur = parseFloat(duration);
             // todo: I need to learn more about float errors..
             //  and this function... ion wanna worry about hexadecimal :sob:
-            if (dur <= 0.0f) throw new EmlaBadCommandException(R.string.command_pomodoro, R.string.error_bad_minutes);
+            if (dur <= 0.0f) throw new EmlaBadCommandException(NAME, R.string.error_bad_minutes);
             mIntent.putExtra(EXTRA_LENGTH, (int) (dur * 60.0f));
         } catch (NumberFormatException e) {
-            throw new EmlaBadCommandException(R.string.command_pomodoro, R.string.error_bad_minutes);
+            throw new EmlaBadCommandException(NAME, R.string.error_bad_minutes);
         }
         return isBreak;
     }

@@ -21,8 +21,8 @@ public abstract class OpenCommand extends CoreCommand {
     protected final List<ResolveInfo> mAppList;
     protected final AlertDialog.Builder mAppChooser;
 
-    protected OpenCommand(AssistActivity act, String instruct, CoreParams params) {
-        super(act, instruct, params);
+    protected OpenCommand(AssistActivity act, CoreParams params) {
+        super(act, params);
 
         mAppList = act.appList();
         mAppChooser = getAppChooser(act);

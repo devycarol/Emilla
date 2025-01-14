@@ -2,8 +2,6 @@ package net.emilla.command.core;
 
 import android.net.Uri;
 
-import androidx.annotation.StringRes;
-
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.content.receive.FileReceiver;
@@ -15,8 +13,8 @@ public abstract class AttachCommand extends CoreDataCommand implements FileRecei
 
     protected ArrayList<Uri> attachments;
 
-    protected AttachCommand(AssistActivity act, String instruct, CoreDataParams params) {
-        super(act, instruct, params);
+    protected AttachCommand(AssistActivity act, CoreDataParams params) {
+        super(act, params);
     }
 
     @Override

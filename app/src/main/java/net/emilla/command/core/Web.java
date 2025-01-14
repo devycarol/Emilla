@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -16,9 +17,15 @@ import net.emilla.util.SearchEngineParser;
 public class Web extends CoreCommand {
 
     public static final String ENTRY = "web";
+    @StringRes
+    public static final int NAME = R.string.command_web;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_web;
     public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
+
+    public static Yielder yielder() {
+        return new Yielder(true, Web::new, ENTRY, NAME, ALIASES);
+    }
 
     public static final String DFLT_SEARCH_ENGINES = """
             Wikipedia, wiki, w, https://wikipedia.org/wiki/%s
@@ -31,7 +38,7 @@ public class Web extends CoreCommand {
     private static class WebParams extends CoreParams {
 
         private WebParams() {
-            super(R.string.command_web,
+            super(NAME,
                   R.string.instruction_web,
                   R.drawable.ic_web,
                   EditorInfo.IME_ACTION_SEARCH,
@@ -42,13 +49,13 @@ public class Web extends CoreCommand {
 
     private SearchEngineParser mSearchEngineMap;
 
-    public Web(AssistActivity act, String instruct) {
-        super(act, instruct, new WebParams());
+    public Web(AssistActivity act) {
+        super(act, new WebParams());
     }
 
     @Override
-    public void init(boolean updateTitle) {
-        super.init(updateTitle);
+    public void init() {
+        super.init();
 
         if (mSearchEngineMap == null) {
             mSearchEngineMap = new SearchEngineParser(SettingVals.searchEngineCsv(prefs()));

@@ -7,7 +7,7 @@ abstract class MultilineMessenger extends AppSendData {
 
     private static class MultilineMessengerParams extends AppSendDataParams {
 
-        private MultilineMessengerParams(AppInfo info) {
+        private MultilineMessengerParams(Yielder info) {
             super(info,
                   R.string.instruction_message,
                   R.string.summary_messaging,
@@ -15,7 +15,7 @@ abstract class MultilineMessenger extends AppSendData {
         }
     }
 
-    MultilineMessenger(AssistActivity act, String instruct, AppInfo info) {
-        super(act, instruct, new MultilineMessengerParams(info));
+    MultilineMessenger(AssistActivity act, Yielder info) {
+        super(act, new MultilineMessengerParams(info));
     }
 }

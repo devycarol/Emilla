@@ -1,15 +1,19 @@
 package net.emilla.command.app;
 
+import androidx.annotation.ArrayRes;
+
 import net.emilla.AssistActivity;
 import net.emilla.R;
 
 public class Github extends AppSendData {
 
     public static final String PKG = "com.github.android";
+    @ArrayRes
+    public static final int ALIASES = R.array.aliases_github;
 
     private static class GithubParams extends AppSendDataParams {
 
-        private GithubParams(AppInfo info) {
+        private GithubParams(Yielder info) {
             super(info,
                   R.string.instruction_issue,
                   R.string.summary_issues,
@@ -17,7 +21,7 @@ public class Github extends AppSendData {
         }
     }
 
-    public Github(AssistActivity act, String instruct, AppInfo info) {
-        super(act, instruct, new GithubParams(info));
+    public Github(AssistActivity act, Yielder info) {
+        super(act, new GithubParams(info));
     }
 }

@@ -6,6 +6,7 @@ import static android.content.Intent.EXTRA_TEXT;
 import android.content.Intent;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -19,14 +20,20 @@ import net.emilla.util.Files.MimeType;
 public class Share extends AttachCommand implements AppChoiceReceiver {
 
     public static final String ENTRY = "share";
+    @StringRes
+    public static final int NAME = R.string.command_share;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_share;
     public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
+    public static Yielder yielder() {
+        return new Yielder(true, Share::new, ENTRY, NAME, ALIASES);
+    }
+
     private static class ShareParams extends CoreDataParams {
 
         private ShareParams() {
-            super(R.string.command_share,
+            super(NAME,
                   R.string.instruction_app,
                   R.drawable.ic_share,
                   R.string.summary_share,
@@ -38,13 +45,13 @@ public class Share extends AttachCommand implements AppChoiceReceiver {
     private FileFetcher mFileFetcher;
     private MediaFetcher mMediaFetcher;
 
-    public Share(AssistActivity act, String instruct) {
-        super(act, instruct, new ShareParams());
+    public Share(AssistActivity act) {
+        super(act, new ShareParams());
     }
 
     @Override
-    public void init(boolean updateTitle) {
-        super.init(updateTitle);
+    public void init() {
+        super.init();
 
         if (mFileFetcher == null) mFileFetcher = new FileFetcher(activity, this, "*/*");
         giveAction(mFileFetcher);
@@ -91,7 +98,7 @@ public class Share extends AttachCommand implements AppChoiceReceiver {
 
     @Override
     protected void run() {
-        activity.offerChooser(this, makeIntent(), R.string.command_share);
+        activity.offerChooser(this, makeIntent(), NAME);
     }
 
     @Override
@@ -101,7 +108,7 @@ public class Share extends AttachCommand implements AppChoiceReceiver {
 
     @Override
     protected void runWithData(String text) {
-        activity.offerChooser(this, makeIntent(text), R.string.command_share);
+        activity.offerChooser(this, makeIntent(text), NAME);
     }
 
     @Override

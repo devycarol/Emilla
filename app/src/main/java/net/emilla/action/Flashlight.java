@@ -13,7 +13,7 @@ public class Flashlight implements LabeledQuickAction {
     private final Torch mTorch;
 
     public Flashlight(AssistActivity act) {
-        mTorch = new Torch(act, null);
+        mTorch = new Torch(act);
     }
 
     @Override @IdRes

@@ -6,6 +6,7 @@ import android.os.Build;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -15,14 +16,20 @@ import net.emilla.settings.Aliases;
 public class Weather extends CategoryCommand {
 
     public static final String ENTRY = "weather";
+    @StringRes
+    public static final int NAME = R.string.command_weather;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_weather;
     public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
+    public static Yielder yielder() {
+        return new Yielder(true, Weather::new, ENTRY, NAME, ALIASES);
+    }
+
     private static class WeatherParams extends CoreParams {
 
         private WeatherParams() {
-            super(R.string.command_weather,
+            super(NAME,
                   R.string.instruction_app,
                   R.drawable.ic_weather,
                   EditorInfo.IME_ACTION_GO,
@@ -31,18 +38,18 @@ public class Weather extends CategoryCommand {
         }
     }
 
-    public Weather(AssistActivity act, String instruct) {
-        super(act, instruct, new WeatherParams(), CATEGORY_APP_WEATHER);
+    public Weather(AssistActivity act) {
+        super(act, new WeatherParams(), CATEGORY_APP_WEATHER);
     }
 
     @Override
     protected void run() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) throw new EmlaBadCommandException(R.string.command_weather, R.string.error_unfinished_version); // Todo
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) throw new EmlaBadCommandException(NAME, R.string.error_unfinished_version); // TODO
         super.run();
     }
 
     @Override
     protected void run(String expression) {
-        throw new EmlaBadCommandException(R.string.command_weather, R.string.error_unfinished_categorical_app_search); // Todo
+        throw new EmlaBadCommandException(NAME, R.string.error_unfinished_categorical_app_search); // Todo
     }
 }

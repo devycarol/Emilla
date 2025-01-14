@@ -9,6 +9,7 @@ import android.os.Build;
 
 import androidx.annotation.ArrayRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -24,14 +25,20 @@ import java.util.HashMap;
 public class Sms extends CoreDataCommand {
 
     public static final String ENTRY = "sms";
+    @StringRes
+    public static final int NAME = R.string.command_sms;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_sms;
     public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
+    public static Yielder yielder() {
+        return new Yielder(true, Sms::new, ENTRY, NAME, ALIASES);
+    }
+
     private static class SmsParams extends CoreDataParams {
 
         private SmsParams() {
-            super(R.string.command_sms,
+            super(NAME,
                   R.string.instruction_phone,
                   false, // the initials "SMS" shouldn't be lowercased
                   R.drawable.ic_sms,
@@ -45,14 +52,14 @@ public class Sms extends CoreDataCommand {
     private final HashMap<String, String> mPhoneMap;
     private FieldToggle mSubjectToggle;
 
-    public Sms(AssistActivity act, String instruct) {
-        super(act, instruct, new SmsParams());
+    public Sms(AssistActivity act) {
+        super(act, new SmsParams());
         mPhoneMap = Contacts.mapPhones(act.prefs());
     }
 
     @Override
-    public void init(boolean updateTitle) {
-        super.init(updateTitle);
+    public void init() {
+        super.init();
 
         if (mSubjectToggle == null) mSubjectToggle = new SubjectField(activity);
         else if (mSubjectToggle.activated()) reshowField(SubjectField.FIELD_ID);
@@ -70,7 +77,7 @@ public class Sms extends CoreDataCommand {
 
     private void launchMessenger(Intent intent) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !Features.sms(pm())) {
-            throw new EmlaFeatureException(R.string.command_sms, R.string.error_feature_sms);
+            throw new EmlaFeatureException(NAME, R.string.error_feature_sms);
             // TODO: handle at install—don't store in sharedprefs in case of settings sync/transfer
             //  It's also possible that this check isn't necessary.
         }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.AssistActivity;
@@ -15,14 +16,20 @@ import net.emilla.util.Dialogs;
 public class Uninstall extends OpenCommand {
 
     public static final String ENTRY = "uninstall";
+    @StringRes
+    public static final int NAME = R.string.command_uninstall;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_uninstall;
     public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
+    public static Yielder yielder() {
+        return new Yielder(true, Uninstall::new, ENTRY, NAME, ALIASES);
+    }
+
     private static class UninstallParams extends CoreParams {
 
         private UninstallParams() {
-            super(R.string.command_uninstall,
+            super(NAME,
                   R.string.instruction_app,
                   R.drawable.ic_uninstall,
                   EditorInfo.IME_ACTION_GO,
@@ -31,8 +38,8 @@ public class Uninstall extends OpenCommand {
         }
     }
 
-    public Uninstall(AssistActivity act, String instruct) {
-        super(act, instruct, new UninstallParams());
+    public Uninstall(AssistActivity act) {
+        super(act, new UninstallParams());
     }
 
     @Override

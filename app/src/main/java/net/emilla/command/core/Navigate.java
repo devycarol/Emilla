@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -15,14 +16,20 @@ import net.emilla.util.Apps;
 public class Navigate extends CategoryCommand {
 
     public static final String ENTRY = "navigate";
+    @StringRes
+    public static final int NAME = R.string.command_navigate;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_navigate;
     public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
+    public static Yielder yielder() {
+        return new Yielder(true, Navigate::new, ENTRY, NAME, ALIASES);
+    }
+
     private static class NavigateParams extends CoreParams {
 
         private NavigateParams() {
-            super(R.string.command_navigate,
+            super(NAME,
                   R.string.instruction_location,
                   R.drawable.ic_navigate,
                   EditorInfo.IME_ACTION_GO,
@@ -31,8 +38,8 @@ public class Navigate extends CategoryCommand {
         }
     }
 
-    public Navigate(AssistActivity act, String instruct) {
-        super(act, instruct, new NavigateParams(), CATEGORY_APP_MAPS);
+    public Navigate(AssistActivity act) {
+        super(act, new NavigateParams(), CATEGORY_APP_MAPS);
     }
 
     @Override

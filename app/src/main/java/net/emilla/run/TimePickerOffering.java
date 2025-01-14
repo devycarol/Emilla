@@ -14,12 +14,12 @@ public class TimePickerOffering implements Offering {
     public TimePickerOffering(AssistActivity act, OnTimeSetListener timeSet) {
         mActivity = act;
         mDialog = new TimePickerDialog(act, 0, timeSet, 12, 0, DateFormat.is24HourFormat(act));
-        // TODO: this isn't respecting the LineageOS system 24-hour setting
+        // TODO: this isn't respecting the LineageOS system 24-hour setting.
         // should there be an option for default time to be noon vs. the current time? noon seems
         // much more reasonable in all cases tbh. infinitely more predictable—who the heck wants to
         // set a timer for right now?!
-        mDialog.setOnCancelListener(dlg -> mActivity.onCloseDialog());
-        // Todo: don't require this
+        mDialog.setOnCancelListener(dlg -> mActivity.onCloseDialog(true));
+        // Todo: don't require this.
     }
 
     @Override

@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.provider.CalendarContract.Events;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -29,14 +30,20 @@ import java.util.regex.Matcher;
 public class Calendar extends CoreDataCommand {
 
     public static final String ENTRY = "calendar";
+    @StringRes
+    public static final int NAME = R.string.command_calendar;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_calendar;
     public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
+    public static Yielder yielder() {
+        return new Yielder(true, Calendar::new, ENTRY, NAME, ALIASES);
+    }
+
     private static class CalendarParams extends CoreDataParams {
 
         private CalendarParams() {
-            super(R.string.command_calendar,
+            super(NAME,
                   R.string.instruction_calendar,
                   R.drawable.ic_calendar,
                   R.string.summary_calendar,
@@ -49,13 +56,13 @@ public class Calendar extends CoreDataCommand {
     private final Intent mIntent = Apps.insertTask(Events.CONTENT_URI, "vnd.android.cursor.dir/event");
     private FieldToggle mLocationToggle, mUrlToggle;
 
-    public Calendar(AssistActivity act, String instruct) {
-        super(act, instruct, new CalendarParams());
+    public Calendar(AssistActivity act) {
+        super(act, new CalendarParams());
     }
 
     @Override
-    public void init(boolean updateTitle) {
-        super.init(updateTitle);
+    public void init() {
+        super.init();
 
         if (mLocationToggle == null) mLocationToggle = new LocationField(activity);
         else if (mLocationToggle.activated()) reshowField(LocationField.FIELD_ID);
@@ -91,7 +98,7 @@ public class Calendar extends CoreDataCommand {
             mIntent.putExtra(EXTRA_EVENT_BEGIN_TIME, times[0]);
             if (times[1] != 0) mIntent.putExtra(EXTRA_EVENT_END_TIME, times[1]);
         }
-        default -> throw new EmlaBadCommandException(R.string.command_calendar, R.string.error_multiple_dates);
+        default -> throw new EmlaBadCommandException(NAME, R.string.error_multiple_dates);
         }
         if (!title.isEmpty()) mIntent.putExtra(TITLE, title);
     }

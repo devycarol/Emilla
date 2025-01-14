@@ -1,15 +1,19 @@
 package net.emilla.command.app;
 
+import androidx.annotation.ArrayRes;
+
 import net.emilla.AssistActivity;
 import net.emilla.R;
 
 public class Outlook extends AppSendData {
 
     public static final String PKG = "com.microsoft.office.outlook";
+    @ArrayRes
+    public static final int ALIASES = R.array.aliases_outlook;
 
     private static class OutlookParams extends AppSendDataParams {
 
-        private OutlookParams(AppInfo info) {
+        private OutlookParams(Yielder info) {
             super(info,
                   R.string.instruction_app_email,
                   R.string.summary_email,
@@ -17,7 +21,7 @@ public class Outlook extends AppSendData {
         }
     }
 
-    public Outlook(AssistActivity act, String instruct, AppInfo info) {
-        super(act, instruct, new OutlookParams(info));
+    public Outlook(AssistActivity act, Yielder info) {
+        super(act, new OutlookParams(info));
     }
 }

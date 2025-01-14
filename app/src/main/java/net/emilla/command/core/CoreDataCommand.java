@@ -50,8 +50,8 @@ public abstract class CoreDataCommand extends CoreCommand implements DataCommand
 
     private final CoreDataParams mParams;
 
-    protected CoreDataCommand(AssistActivity act, String instruct, CoreDataParams params) {
-        super(act, instruct, params);
+    protected CoreDataCommand(AssistActivity act, CoreDataParams params) {
+        super(act, params);
         mParams = params;
     }
 

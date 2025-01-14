@@ -34,13 +34,17 @@ public class Apps {
         return pm.queryIntentActivities(categoryIntent(category), 0);
     }
 
-    public static Intent launchIntent(String pkg, String cls) {
-        ComponentName cn = new ComponentName(pkg, cls);
-        return new Intent(ACTION_MAIN).addCategory(CATEGORY_LAUNCHER).setPackage(pkg).setComponent(cn);
-    }
-
     public static Intent launchIntent(ActivityInfo info) {
         return launchIntent(info.packageName, info.name);
+    }
+
+    public static Intent launchIntent(String pkg, String cls) {
+        return launchIntent(new ComponentName(pkg, cls));
+    }
+
+    public static Intent launchIntent(ComponentName cn) {
+        return new Intent(ACTION_MAIN).addCategory(CATEGORY_LAUNCHER)
+                .setPackage(cn.getPackageName()).setComponent(cn);
     }
 
     public static Intent categoryIntent(String category) {

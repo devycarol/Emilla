@@ -1,7 +1,5 @@
 package net.emilla.settings;
 
-import static net.emilla.command.EmillaCommand.*;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -21,6 +19,7 @@ import net.emilla.chime.Custom;
 import net.emilla.chime.Nebula;
 import net.emilla.chime.Redial;
 import net.emilla.chime.Silence;
+import net.emilla.command.DefaultCommandWrapper;
 import net.emilla.command.core.Alarm;
 import net.emilla.command.core.Bookmark;
 import net.emilla.command.core.Calculate;
@@ -28,6 +27,7 @@ import net.emilla.command.core.Calendar;
 import net.emilla.command.core.Call;
 import net.emilla.command.core.Contact;
 import net.emilla.command.core.Copy;
+import net.emilla.command.core.CoreCommand;
 import net.emilla.command.core.Dial;
 import net.emilla.command.core.Email;
 import net.emilla.command.core.Info;
@@ -48,41 +48,41 @@ import net.emilla.util.Features;
 
 public class SettingVals {
 
-    private static short cmdId(String entry) {
-        return switch (entry) {
-            case Call.ENTRY -> CALL;
-            case Dial.ENTRY -> DIAL;
-            case Sms.ENTRY -> SMS;
-            case Email.ENTRY -> EMAIL;
-            case Navigate.ENTRY -> NAVIGATE;
-            case Launch.ENTRY -> LAUNCH;
-            case Copy.ENTRY -> COPY;
-            case Share.ENTRY -> SHARE;
-            case Settings.ENTRY -> SETTINGS;
-        //    case Note.ENTRY -> NOTE;
-        //    case Todo.ENTRY -> TODO;
-            case Web.ENTRY -> WEB;
-        //    case Find.ENTRY -> FIND;
-            case Time.ENTRY -> TIME;
-            case Alarm.ENTRY -> ALARM;
-            case Timer.ENTRY -> TIMER;
-            case Pomodoro.ENTRY -> POMODORO;
-            case Calendar.ENTRY -> CALENDAR;
-            case Contact.ENTRY -> CONTACT;
-        //    case Notify.ENTRY -> NOTIFY;
-            case Calculate.ENTRY -> CALCULATE;
-            case Weather.ENTRY -> WEATHER;
-            case Bookmark.ENTRY -> BOOKMARK;
-            case Torch.ENTRY -> TORCH;
-            case Info.ENTRY -> INFO;
-            case Uninstall.ENTRY -> UNINSTALL;
-            case Toast.ENTRY -> TOAST;
-            default -> 0;
-        };
-    }
-
-    public static short defaultCommand(SharedPreferences prefs) {
-        return cmdId(prefs.getString("default_command", "web"));
+    public static DefaultCommandWrapper.Yielder defaultCommand(SharedPreferences prefs,
+            CoreCommand.Yielder[] coreYielders) {
+        // Todo: allow apps and customs. Make sure to fall back to a core if the app is uninstalled
+        //  or the custom is deleted.
+        String entry = prefs.getString("default_command", "web");
+        return new DefaultCommandWrapper.Yielder(switch (entry) {
+            case Call.ENTRY -> coreYielders[0];
+            case Dial.ENTRY -> coreYielders[1];
+            case Sms.ENTRY -> coreYielders[2];
+            case Email.ENTRY -> coreYielders[3];
+            case Navigate.ENTRY -> coreYielders[4];
+            case Launch.ENTRY -> coreYielders[5];
+            case Copy.ENTRY -> coreYielders[6];
+            case Share.ENTRY -> coreYielders[7];
+            case Settings.ENTRY -> coreYielders[8];
+//            case Note.ENTRY -> coreYielders[];
+//            case Todo.ENTRY -> coreYielders[];
+            case Web.ENTRY -> coreYielders[9];
+//            case Find.ENTRY -> coreYielders[];
+            case Time.ENTRY -> coreYielders[10];
+            case Alarm.ENTRY -> coreYielders[11];
+            case Timer.ENTRY -> coreYielders[12];
+            case Pomodoro.ENTRY -> coreYielders[13];
+            case Calendar.ENTRY -> coreYielders[14];
+            case Contact.ENTRY -> coreYielders[15];
+//            case Notify.ENTRY -> coreYielders[];
+            case Calculate.ENTRY -> coreYielders[16];
+            case Weather.ENTRY -> coreYielders[17];
+            case Bookmark.ENTRY -> coreYielders[18];
+            case Torch.ENTRY -> coreYielders[19];
+            case Info.ENTRY -> coreYielders[20];
+            case Uninstall.ENTRY -> coreYielders[21];
+            case Toast.ENTRY -> coreYielders[22];
+            default -> throw new IllegalArgumentException("No such command \"" + entry + "\".");
+        });
     }
 
     public static boolean showTitleBar(SharedPreferences prefs, Resources res) {

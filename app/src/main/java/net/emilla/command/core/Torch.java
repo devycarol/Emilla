@@ -11,6 +11,7 @@ import android.os.Build;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -20,14 +21,20 @@ import net.emilla.settings.Aliases;
 public class Torch extends CoreCommand {
 
     public static final String ENTRY = "torch";
+    @StringRes
+    public static final int NAME = R.string.command_torch;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_torch;
     public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
+    public static Yielder yielder() {
+        return new Yielder(false, Torch::new, ENTRY, NAME, ALIASES);
+    }
+
     private static class TorchParams extends CoreParams {
 
         private TorchParams() {
-            super(R.string.command_torch,
+            super(NAME,
                   R.string.instruction_torch,
                   R.drawable.ic_torch,
                   EditorInfo.IME_ACTION_DONE,
@@ -55,13 +62,13 @@ public class Torch extends CoreCommand {
         // Todo: what if multiple torches?
     }
 
-    public Torch(AssistActivity act, String instruct) {
-        super(act, instruct, new TorchParams());
+    public Torch(AssistActivity act) {
+        super(act, new TorchParams());
     }
 
     @Override
     protected void run() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) throw new EmlaBadCommandException(R.string.command_torch, R.string.error_unfinished_version);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) throw new EmlaBadCommandException(NAME, R.string.error_unfinished_version);
         // TODO: https://github.com/LineageOS/android_packages_apps_Torch
         CameraManager camMgr = (CameraManager) activity.getSystemService(Context.CAMERA_SERVICE);
         try {
@@ -83,6 +90,6 @@ public class Torch extends CoreCommand {
 
     @Override
     protected void run(String ignored) {
-        run(); // TODO: instead, this should revert to the default command
+        run(); // Todo: remove this from the interface for non-instructables.
     }
 }

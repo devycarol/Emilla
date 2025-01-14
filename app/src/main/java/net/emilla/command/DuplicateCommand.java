@@ -27,7 +27,6 @@ public class DuplicateCommand extends EmillaCommand implements DataCommand {
 
     @Override @Deprecated
     protected String dupeLabel() {
-        // Todo: exclude this from the interface for wrappers
         return null;
     }
 
@@ -43,44 +42,61 @@ public class DuplicateCommand extends EmillaCommand implements DataCommand {
 
     private final String[] mLabels;
     private final EmillaCommand[] mCommands;
-    private final AlertDialog.Builder mBuilder;
+    private final AlertDialog.Builder mChooser;
     private final boolean mUsesData;
 
-    public DuplicateCommand(AssistActivity act, String instruct, EmillaCommand[] cmds) {
-        super(act, instruct, new DuplicateParams());
+    public DuplicateCommand(AssistActivity act, EmillaCommand[] cmds) {
+        super(act, new DuplicateParams());
 
-        mCommands = cmds;
         mLabels = new String[cmds.length];
+        mCommands = cmds;
         boolean usesData = false;
-        int i = -1;
-        for (EmillaCommand cmd : cmds) {
-            if (!usesData && cmd.usesData()) usesData = true;
-            mLabels[++i] = cmd.dupeLabel();
-            // Todo: whittle down when data is entered and some of the commands don't use data
+        for (int i = 0; i < cmds.length; ++i) {
+            if (!usesData && cmds[i].usesData()) usesData = true;
+            mLabels[i] = cmds[i].dupeLabel();
         }
+        mChooser = Dialogs.listBase(act, R.string.dialog_command);
         mUsesData = usesData;
-        mBuilder = Dialogs.listBase(act, R.string.dialog_command);
     }
 
-    private void chooseCommand(DialogInterface.OnClickListener listener) {
-        offerDialog(mBuilder.setItems(mLabels, listener));
+    @Override
+    protected void run() {
+        chooseCommand((dlg, which) -> {
+            mCommands[which].init();
+            mCommands[which].execute();
+            mCommands[which].clean();
+            activity.onCloseDialog(false); // Todo: don't require this.
+        });
     }
 
-    // Todo: restructure inherits to remove these stubs
     @Override
-    protected void run() {}
-    @Override
-    protected void run(String instruction) {}
+    protected void run(String instruction) {
+        chooseCommand((dlg, which) -> {
+            mCommands[which].instruct(instruction);
+            mCommands[which].init();
+            mCommands[which].execute();
+            mCommands[which].clean();
+            activity.onCloseDialog(false); // Todo: don't require this.
+        });
+    }
 
     @Override
     public void execute(String data) {
         chooseCommand((dlg, which) -> {
-            EmillaCommand cmd = mCommands[which];
-            if (cmd.usesData()) ((DataCommand) cmd).execute(data);
-            else { // TODO: handle this more gracefully
-                cmd.instructAppend(data);
-                cmd.execute();
+            mCommands[which].init();
+            // Todo: this surely looks janky and will behave as such. Don't execute dupe commands
+            //  immediately, disambiguate prior to execution.
+            if (mCommands[which].usesData()) ((DataCommand) mCommands[which]).execute(data);
+            else { // Todo: disambiguate when data is used.
+                mCommands[which].instructAppend(data);
+                mCommands[which].execute();
             }
+            mCommands[which].clean();
+            activity.onCloseDialog(false); // Todo: don't require this.
         });
+    }
+
+    private void chooseCommand(DialogInterface.OnClickListener listener) {
+        offerDialog(mChooser.setItems(mLabels, listener));
     }
 }

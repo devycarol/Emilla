@@ -1,6 +1,5 @@
 package net.emilla.command;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
@@ -11,6 +10,25 @@ import net.emilla.command.app.AppCommand;
 import net.emilla.lang.Lang;
 
 public class DefaultCommandWrapper extends EmillaCommand {
+
+    public static class Yielder extends CommandYielder {
+
+        private final CommandYielder mYielder;
+
+        public Yielder(CommandYielder yielder) {
+            mYielder = yielder;
+        }
+
+        @Override
+        public boolean isPrefixable() {
+            return mYielder.isPrefixable();
+        }
+
+        @Override
+        protected EmillaCommand makeCommand(AssistActivity act) {
+            return new DefaultCommandWrapper(act, mYielder.command(act));
+        }
+    }
 
     private final EmillaCommand mCmd; // Todo: allow app commands
 
@@ -69,19 +87,20 @@ public class DefaultCommandWrapper extends EmillaCommand {
         return null;
     }
 
-    protected DefaultCommandWrapper(AssistActivity act, String instruct, EmillaCommand cmd) {
-        super(act, instruct, new DefaultWrapperParams(cmd));
+    protected DefaultCommandWrapper(AssistActivity act, EmillaCommand cmd) {
+        super(act, new DefaultWrapperParams(cmd));
         mCmd = cmd;
     }
 
-    @Override @SuppressLint("MissingSuperCall")
-    public void init(boolean updateTitle) {
-        activity.updateTitle(title());
-        mCmd.init(false);
+    @Override
+    public void init() {
+        super.init();
+        mCmd.init();
     }
 
-    @Override @SuppressLint("MissingSuperCall")
+    @Override
     public void clean() {
+        super.clean();
         mCmd.clean();
     }
 

@@ -14,8 +14,8 @@ import net.emilla.util.Apps;
 
 abstract class AppSearch extends AppCommand {
 
-    AppSearch(AssistActivity act, String instruct, AppSearchParams params) {
-        super(act, instruct, params);
+    AppSearch(AssistActivity act, AppSearchParams params) {
+        super(act, params);
     }
 
     @Override
@@ -43,7 +43,7 @@ abstract class AppSearch extends AppCommand {
         @StringRes
         private final int mInstruction;
 
-        protected AppSearchParams(AppInfo info, @StringRes int instruction, @StringRes int summary) {
+        protected AppSearchParams(Yielder info, @StringRes int instruction, @StringRes int summary) {
             super(info,
                   EditorInfo.IME_ACTION_SEARCH,
                   summary,

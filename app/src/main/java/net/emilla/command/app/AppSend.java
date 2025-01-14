@@ -16,7 +16,7 @@ public class AppSend extends AppCommand {
 
     private static class BasicAppSendParams extends AppParams {
 
-        private BasicAppSendParams(AppInfo info) {
+        private BasicAppSendParams(Yielder info) {
             super(info,
                   EditorInfo.IME_ACTION_SEND,
                   R.string.summary_app_send,
@@ -30,12 +30,12 @@ public class AppSend extends AppCommand {
         }
     }
 
-    public AppSend(AssistActivity act, String instruct, AppInfo info) {
-        this(act, instruct, new BasicAppSendParams(info));
+    public AppSend(AssistActivity act, Yielder info) {
+        this(act, new BasicAppSendParams(info));
     }
 
-    protected AppSend(AssistActivity act, String instruct, AppParams params) {
-        super(act, instruct, params);
+    protected AppSend(AssistActivity act, AppParams params) {
+        super(act, params);
     }
 
     @Override
@@ -49,13 +49,13 @@ public class AppSend extends AppCommand {
         @StringRes
         private final int mInstruction;
 
-        protected AppSendParams(AppInfo info, @StringRes int instruction, @StringRes int summary,
+        protected AppSendParams(Yielder info, @StringRes int instruction, @StringRes int summary,
                 @StringRes int manual) {
             this(info, instruction, EditorInfo.IME_ACTION_SEND, summary, manual);
             // todo: the 'send' action shouldn't apply when just launching
         }
 
-        protected AppSendParams(AppInfo info, @StringRes int instruction, int imeAction,
+        protected AppSendParams(Yielder info, @StringRes int instruction, int imeAction,
                 @StringRes int summary, @StringRes int manual) {
             super(info, imeAction, summary, manual);
             mInstruction = instruction;

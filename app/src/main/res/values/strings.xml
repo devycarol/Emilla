@@ -481,7 +481,7 @@
     <!-- "Select ambiguous command" -->
     <string name="manual_duplicate">
         You\'ll be prompted to select a command, after which you can proceed with instruction as
-        normal. In the future, this will work properly.
+        normal. In the future, the dialog won\'t immediately submit the command.
     </string>
     <!-- Generic manual for basic apps -->
     <string name="manual_app">

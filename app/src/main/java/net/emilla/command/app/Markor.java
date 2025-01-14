@@ -1,22 +1,26 @@
 package net.emilla.command.app;
 
+import androidx.annotation.ArrayRes;
+
 import net.emilla.AssistActivity;
 import net.emilla.R;
 
 public class Markor extends AppSendData {
 
     public static final String PKG = "net.gsantner.markor";
-    public static final String CLS_MAIN = Markor.PKG + ".activity.MainActivity";
+    public static final String CLS_MAIN = PKG + ".activity.MainActivity";
+    @ArrayRes
+    public static final int ALIASES = R.array.aliases_markor;
 
-    public static AppCommand instance(AssistActivity act, String instruct, AppInfo info) {
-        return info.cls.equals(CLS_MAIN) ? new Markor(act, instruct, info)
-                : new AppCommand(act, instruct, info);
+    public static AppCommand instance(AssistActivity act, Yielder info) {
+        return info.cls.equals(CLS_MAIN) ? new Markor(act, info)
+                : new AppCommand(act, info);
         // Markor can have multiple launchers, only the main should have the 'send' property.
     }
 
     private static class MarkorParams extends AppSendDataParams {
 
-        private MarkorParams(AppInfo info) {
+        private MarkorParams(Yielder info) {
             super(info,
                   R.string.instruction_text,
                   R.string.summary_note,
@@ -24,7 +28,7 @@ public class Markor extends AppSendData {
         }
     }
 
-    private Markor(AssistActivity act, String instruct, AppInfo info) {
-        super(act, instruct, new MarkorParams(info));
+    private Markor(AssistActivity act, Yielder info) {
+        super(act, new MarkorParams(info));
     }
 }

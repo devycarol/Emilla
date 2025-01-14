@@ -9,7 +9,7 @@ abstract class VideoSearchBySend extends AppSend {
 
     private static class VideoSearchBySendParams extends AppSendParams{
 
-        private VideoSearchBySendParams(AppInfo info) {
+        private VideoSearchBySendParams(Yielder info) {
             super(info,
                   R.string.instruction_video,
                   EditorInfo.IME_ACTION_SEARCH,
@@ -18,7 +18,7 @@ abstract class VideoSearchBySend extends AppSend {
         }
     }
 
-    VideoSearchBySend(AssistActivity act, String instruct, AppInfo info) {
-        super(act, instruct, new VideoSearchBySendParams(info));
+    VideoSearchBySend(AssistActivity act, Yielder info) {
+        super(act, new VideoSearchBySendParams(info));
     }
 }

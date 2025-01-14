@@ -22,8 +22,8 @@ class AppSendData extends AppSend implements DataCommand {
         return mParams.hint();
     }
 
-    AppSendData(AssistActivity act, String instruct, AppSendDataParams params) {
-        super(act, instruct, params);
+    AppSendData(AssistActivity act, AppSendDataParams params) {
+        super(act, params);
         mParams = params;
     }
 
@@ -46,7 +46,7 @@ class AppSendData extends AppSend implements DataCommand {
         @StringRes
         private final int mHint;
 
-        protected AppSendDataParams(AppInfo info, @StringRes int instruction, @StringRes int summary,
+        protected AppSendDataParams(Yielder info, @StringRes int instruction, @StringRes int summary,
                 @StringRes int hint) {
             super(info,
                   instruction,

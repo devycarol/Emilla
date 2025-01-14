@@ -3,6 +3,7 @@ package net.emilla.command.core;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -13,14 +14,20 @@ import net.emilla.settings.Aliases;
 public class Copy extends CoreCommand {
 
     public static final String ENTRY = "copy";
+    @StringRes
+    public static final int NAME = R.string.command_copy;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_copy;
     public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
+    public static Yielder yielder() {
+        return new Yielder(true, Copy::new, ENTRY, NAME, ALIASES);
+    }
+
     private static class CopyParams extends CoreParams {
 
         private CopyParams() {
-            super(R.string.command_copy,
+            super(NAME,
                   R.string.instruction_text,
                   R.drawable.ic_copy,
                   EditorInfo.IME_ACTION_DONE,
@@ -31,8 +38,8 @@ public class Copy extends CoreCommand {
 
     private String mCopiedText;
 
-    public Copy(AssistActivity act, String instruct) {
-        super(act, instruct, new CopyParams());
+    public Copy(AssistActivity act) {
+        super(act, new CopyParams());
     }
 
     @Override
@@ -44,7 +51,7 @@ public class Copy extends CoreCommand {
 
     @Override
     protected void run() {
-        throw new EmlaBadCommandException(R.string.command_copy, R.string.error_unfinished_copy);
+        throw new EmlaBadCommandException(NAME, R.string.error_unfinished_copy);
         // Todo
     }
 

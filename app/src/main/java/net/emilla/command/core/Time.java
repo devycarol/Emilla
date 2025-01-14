@@ -6,6 +6,7 @@ import android.os.Build;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -17,14 +18,20 @@ import java.text.Format;
 public class Time extends CoreCommand {
 
     public static final String ENTRY = "time";
+    @StringRes
+    public static final int NAME = R.string.command_time;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_time;
     public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
+    public static Yielder yielder() {
+        return new Yielder(true, Time::new, ENTRY, NAME, ALIASES);
+    }
+
     private static class TimeParams extends CoreParams {
 
         private TimeParams() {
-            super(R.string.command_time,
+            super(NAME,
                   R.string.instruction_location,
                   R.drawable.ic_clock,
                   EditorInfo.IME_ACTION_DONE,
@@ -33,8 +40,8 @@ public class Time extends CoreCommand {
         }
     }
 
-    public Time(AssistActivity act, String instruct) {
-        super(act, instruct, new TimeParams());
+    public Time(AssistActivity act) {
+        super(act, new TimeParams());
     }
 
     @Override
@@ -58,6 +65,6 @@ public class Time extends CoreCommand {
 
     @Override
     protected void run(String location) {
-        throw new EmlaBadCommandException(R.string.command_time, R.string.error_unfinished_time_location_elapse); // TODO
+        throw new EmlaBadCommandException(NAME, R.string.error_unfinished_time_location_elapse); // TODO
     }
 }

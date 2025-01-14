@@ -7,6 +7,7 @@ import static java.util.Locale.ROOT;
 import android.content.Intent;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -17,14 +18,20 @@ import net.emilla.util.Time;
 public class Timer extends CoreDataCommand {
 
     public static final String ENTRY = "timer";
+    @StringRes
+    public static final int NAME = R.string.command_timer;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_timer;
     public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
+    public static Yielder yielder() {
+        return new Yielder(true, Timer::new, ENTRY, NAME, ALIASES);
+    }
+
     private static class TimerParams extends CoreDataParams {
 
         private TimerParams() {
-            super(R.string.command_timer,
+            super(NAME,
                   R.string.instruction_timer,
                   R.drawable.ic_timer,
                   R.string.summary_timer,
@@ -33,8 +40,8 @@ public class Timer extends CoreDataCommand {
         }
     }
 
-    public Timer(AssistActivity act, String instruct) {
-        super(act, instruct, new TimerParams());
+    public Timer(AssistActivity act) {
+        super(act, new TimerParams());
     }
 
     private Intent makeIntent() {
@@ -79,7 +86,7 @@ public class Timer extends CoreDataCommand {
 
     @Override
     protected void runWithData(String title) {
-        throw new EmlaBadCommandException(R.string.command_timer, R.string.error_unfinished_timer_label);
+        throw new EmlaBadCommandException(NAME, R.string.error_unfinished_timer_label);
         // TODO: is this always the case? I'd strongly prefer to defer to the user's app's UI. At
         //  the least, this failure should be replaced with an input dialog for com.android.deskclock
         //  in the *current* android version (previous ones may have been more functional, as we

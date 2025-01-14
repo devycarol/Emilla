@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.AssistActivity;
@@ -15,14 +16,20 @@ import net.emilla.util.Dialogs;
 public class Launch extends OpenCommand {
 
     public static final String ENTRY = "launch";
+    @StringRes
+    public static final int NAME = R.string.command_launch;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_launch;
     public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
+    public static Yielder yielder() {
+        return new Yielder(true, Launch::new, ENTRY, NAME, ALIASES);
+    }
+
     private static class LaunchParams extends CoreParams {
 
         private LaunchParams() {
-            super(R.string.command_launch,
+            super(NAME,
                   R.string.instruction_app,
                   R.drawable.ic_launch,
                   EditorInfo.IME_ACTION_GO,
@@ -31,8 +38,8 @@ public class Launch extends OpenCommand {
         }
     }
 
-    public Launch(AssistActivity act, String instruct) {
-        super(act, instruct, new LaunchParams());
+    public Launch(AssistActivity act) {
+        super(act, new LaunchParams());
     }
 
     @Override

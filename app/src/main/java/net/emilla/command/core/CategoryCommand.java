@@ -20,9 +20,9 @@ public abstract class CategoryCommand extends CoreCommand {
     private Intent mLaunchIntent;
     private AlertDialog.Builder mAppChooser;
 
-    protected CategoryCommand(AssistActivity act, String instruct, CoreParams params,
+    protected CategoryCommand(AssistActivity act, CoreParams params,
             String category) {
-        super(act, instruct, params);
+        super(act, params);
 
         PackageManager pm = act.getPackageManager();
         List<ResolveInfo> appList = Apps.resolveList(pm, category);

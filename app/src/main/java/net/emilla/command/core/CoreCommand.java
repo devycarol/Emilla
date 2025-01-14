@@ -1,24 +1,30 @@
 package net.emilla.command.core;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 
+import androidx.annotation.ArrayRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
 import androidx.appcompat.content.res.AppCompatResources;
 
 import net.emilla.AssistActivity;
+import net.emilla.command.CommandYielder;
 import net.emilla.command.EmillaCommand;
 import net.emilla.lang.Lang;
 import net.emilla.run.MessageFailure;
+import net.emilla.settings.Aliases;
+
+import java.util.Set;
 
 public abstract class CoreCommand extends EmillaCommand {
 
     private final CoreParams mParams;
 
-    protected CoreCommand(AssistActivity act, String instruct, CoreParams params) {
-        super(act, instruct, params);
+    protected CoreCommand(AssistActivity act, CoreParams params) {
+        super(act, params);
         mParams = params;
     }
 
@@ -29,6 +35,49 @@ public abstract class CoreCommand extends EmillaCommand {
 
     protected void fail(@StringRes int msg) {
         fail(new MessageFailure(activity, mParams.mName, msg));
+    }
+
+    public static class Yielder extends CommandYielder {
+
+        private final boolean mUsesInstruction;
+        private final Maker mMaker;
+        @StringRes
+        private final int mName;
+        private final String mPrefsEntry;
+        @ArrayRes
+        private final int mAliases;
+
+        public Yielder(boolean usesInstruction, Maker maker, String prefsEntry, @StringRes int name,
+                @ArrayRes int aliases) {
+            mUsesInstruction = usesInstruction;
+            mMaker = maker;
+            mName = name;
+            mPrefsEntry = prefsEntry;
+            mAliases = aliases;
+        }
+
+        @Override
+        public final boolean isPrefixable() {
+            return mUsesInstruction;
+        }
+
+        @Override
+        protected final EmillaCommand makeCommand(AssistActivity act) {
+            return mMaker.make(act);
+        }
+
+        public final String name(Resources res) {
+            return res.getString(mName);
+        }
+
+        public final Set<String> aliases(SharedPreferences prefs, Resources res) {
+            return Aliases.coreSet(prefs, res, mPrefsEntry, mAliases);
+        }
+    }
+
+    public interface Maker {
+
+        CoreCommand make(AssistActivity act);
     }
 
     public static abstract class CoreParams implements Params {

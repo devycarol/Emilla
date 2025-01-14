@@ -249,7 +249,7 @@ public class AssistActivity extends EmillaActivity {
             };
         });
 
-        mCommand = mCommandMap.newCore(this, EmillaCommand.DEFAULT, null);
+        mCommand = mCommandMap.get(this, "");
 
         mCommandField.setHorizontallyScrolling(false);
         mCommandField.setMaxLines(8);
@@ -476,9 +476,12 @@ public class AssistActivity extends EmillaActivity {
             mCommand = cmd;
             mNoCommand = noCommand;
             if (noCommand) {
-                cmd.baseInit(true);
+                cmd.decorate(false);
                 mSubmitButton.setIcon(mNoCommandAction.icon());
-            } else cmd.init(true);
+            } else {
+                cmd.decorate(true);
+                cmd.init();
+            }
 
             boolean dataAvailable = noCommand || mCommand.usesData();
             if (dataAvailable != mDataAvailable) updateDataAvailability(dataAvailable);
@@ -564,12 +567,12 @@ public class AssistActivity extends EmillaActivity {
     }
 
     @Deprecated
-    public void onCloseDialog() {
+    public void onCloseDialog(boolean chime) {
         mEmptySpace.setEnabled(true);
         mSubmitButton.setEnabled(true);
         mDialogOpen = false;
 
-        resume();
+        if (chime) resume();
     }
 
     private void cancelIfWarranted() {

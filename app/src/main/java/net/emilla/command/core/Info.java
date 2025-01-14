@@ -5,6 +5,7 @@ import android.provider.Settings;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.AssistActivity;
@@ -16,14 +17,20 @@ import net.emilla.util.Dialogs;
 public class Info extends OpenCommand {
 
     public static final String ENTRY = "info";
+    @StringRes
+    public static final int NAME = R.string.command_info;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_info;
     public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
+    public static Yielder yielder() {
+        return new Yielder(true, Info::new, ENTRY, NAME, ALIASES);
+    }
+
     private static class InfoParams extends CoreParams {
 
         private InfoParams() {
-            super(R.string.command_info,
+            super(NAME,
                   R.string.instruction_app,
                   R.drawable.ic_info,
                   EditorInfo.IME_ACTION_GO,
@@ -32,8 +39,8 @@ public class Info extends OpenCommand {
         }
     }
 
-    public Info(AssistActivity act, String instruct) {
-        super(act, instruct, new InfoParams());
+    public Info(AssistActivity act) {
+        super(act, new InfoParams());
     }
 
     @Override

@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -29,14 +30,20 @@ import java.io.InputStreamReader;
 public class Todo extends CoreDataCommand {
 
     public static final String ENTRY = "todo";
+    @StringRes
+    public static final int NAME = R.string.command_todo;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_todo;
     public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
+    public static Yielder yielder() {
+        return new Yielder(true, Todo::new, ENTRY, NAME, ALIASES);
+    }
+
     private static class TodoParams extends CoreDataParams {
 
         private TodoParams() {
-            super(R.string.command_todo,
+            super(NAME,
                   R.string.instruction_todo,
                   R.drawable.ic_todo,
                   R.string.summary_todo,
@@ -52,8 +59,8 @@ public class Todo extends CoreDataCommand {
             .putExtra(EXTRA_STREAM, mUri)
             .putExtra("EXTRA_FILEPATH", mFile.getAbsolutePath());
 
-    public Todo(AssistActivity act, String instruct) {
-        super(act, instruct, new TodoParams());
+    public Todo(AssistActivity act) {
+        super(act, new TodoParams());
     }
 
     private void todo(String task) /* todo FRICK + filenotfound */ {
@@ -73,7 +80,7 @@ public class Todo extends CoreDataCommand {
         fos.close();
         pfd.close();
     } catch (IOException e) {
-        throw new EmlaBadCommandException(R.string.command_todo, R.string.error_lmao); // TODO LMAO
+        throw new EmlaBadCommandException(NAME, R.string.error_lmao); // TODO LMAO
     }}
 
     @Override

@@ -6,18 +6,12 @@ import android.content.res.Resources;
 import androidx.annotation.StringRes;
 
 import net.emilla.R;
-import net.emilla.command.CmdTokens;
 import net.emilla.lang.date.HourMin;
 import net.emilla.lang.date.Weekdays;
 import net.emilla.lang.date.impl.HourMinEN_US;
 import net.emilla.lang.date.impl.WeekdaysEN_US;
 
 public final class Lang {
-
-    public static CmdTokens cmdTokens(Resources res, String command) {
-        return res.getBoolean(R.bool.conf_lang_spaces) ? new CmdTokens.Latin(command)
-                : new CmdTokens.Glyph(command);
-    }
 
     public static String wordConcat(Resources res, Object a, Object b) {
         return res.getString(R.string.word_concatenation, a, b);

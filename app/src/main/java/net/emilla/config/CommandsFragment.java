@@ -16,6 +16,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import net.emilla.EmillaActivity;
 import net.emilla.R;
 import net.emilla.command.app.AospContacts;
+import net.emilla.command.app.AppCommand;
 import net.emilla.command.app.Discord;
 import net.emilla.command.app.Firefox;
 import net.emilla.command.app.Github;
@@ -51,7 +52,6 @@ import net.emilla.command.core.Todo;
 import net.emilla.command.core.Torch;
 import net.emilla.command.core.Weather;
 import net.emilla.command.core.Web;
-import net.emilla.settings.Aliases;
 
 import java.util.Set;
 
@@ -162,7 +162,7 @@ public class CommandsFragment extends PreferenceFragmentCompat {
             // this uses the application icon and doesn't account for multiple launcher icons yet
             Drawable appIcon = pm.getApplicationIcon(pkg);
             appCmdPref.setIcon(appIcon);
-            setupPref(appCmdPref, "aliases_" + pkg, listener, prefs, res, Aliases.appSetId(pkg, Markor.CLS_MAIN /*Todo: procedurally generate these prefs*/));
+            setupPref(appCmdPref, "aliases_" + pkg, listener, prefs, res, AppCommand.aliasId(pkg, Markor.CLS_MAIN /*Todo: procedurally generate these prefs*/));
         } catch (PackageManager.NameNotFoundException e) {
             appCmdPref.setVisible(false);
         }

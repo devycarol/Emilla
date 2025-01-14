@@ -6,7 +6,6 @@ import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
@@ -20,9 +19,32 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.AssistActivity;
-import net.emilla.R;
 import net.emilla.action.QuickAction;
-import net.emilla.command.app.AppCommand.AppInfo;
+import net.emilla.command.app.AppCommand;
+import net.emilla.command.core.Alarm;
+import net.emilla.command.core.Bookmark;
+import net.emilla.command.core.Calculate;
+import net.emilla.command.core.Calendar;
+import net.emilla.command.core.Call;
+import net.emilla.command.core.Contact;
+import net.emilla.command.core.Copy;
+import net.emilla.command.core.CoreCommand;
+import net.emilla.command.core.Dial;
+import net.emilla.command.core.Email;
+import net.emilla.command.core.Info;
+import net.emilla.command.core.Launch;
+import net.emilla.command.core.Navigate;
+import net.emilla.command.core.Pomodoro;
+import net.emilla.command.core.Settings;
+import net.emilla.command.core.Share;
+import net.emilla.command.core.Sms;
+import net.emilla.command.core.Time;
+import net.emilla.command.core.Timer;
+import net.emilla.command.core.Toast;
+import net.emilla.command.core.Torch;
+import net.emilla.command.core.Uninstall;
+import net.emilla.command.core.Weather;
+import net.emilla.command.core.Web;
 import net.emilla.run.AppSuccess;
 import net.emilla.run.DialogOffering;
 import net.emilla.run.Failure;
@@ -31,103 +53,67 @@ import net.emilla.run.Offering;
 import net.emilla.run.Success;
 import net.emilla.run.TimePickerOffering;
 import net.emilla.run.ToastGift;
-import net.emilla.settings.Aliases;
+import net.emilla.settings.SettingVals;
 
 import java.util.List;
 import java.util.Set;
 
 public abstract class EmillaCommand {
 
-    public static final short
-            DEFAULT = 0,
-            CALL = 1,
-            DIAL = 2,
-            SMS = 3,
-            EMAIL = 4,
-            NAVIGATE = 5,
-            LAUNCH = 6,
-            COPY = 7,
-            SHARE = 8,
-            SETTINGS = 9,
-//            NOTE = ,
-//            TODO = ,
-            WEB = 10,
-//            FIND = ,
-            TIME = 11,
-            ALARM = 12,
-            TIMER = 13,
-            POMODORO = 14,
-            CALENDAR = 15,
-            CONTACT = 16,
-//            NOTIFY = ,
-            CALCULATE = 17,
-            WEATHER = 18,
-            BOOKMARK = 19,
-            TORCH = 20,
-            INFO = 21,
-            UNINSTALL = 22,
-            TOAST = 23,
-            DUPLICATE = 24;
-
-    private static final int[] NAMES = {
-            R.string.command_call,
-            R.string.command_dial,
-            R.string.command_sms,
-            R.string.command_email,
-            R.string.command_navigate,
-            R.string.command_launch,
-            R.string.command_copy,
-            R.string.command_share,
-            R.string.command_settings,
-        //    R.string.command_note,
-        //    R.string.command_todo,
-            R.string.command_web,
-        //    R.string.command_find,
-            R.string.command_time,
-            R.string.command_alarm,
-            R.string.command_timer,
-            R.string.command_pomodoro,
-            R.string.command_calendar,
-            R.string.command_contact,
-        //    R.string.command_notify,
-            R.string.command_calculate,
-            R.string.command_weather,
-            R.string.command_bookmark,
-            R.string.command_torch,
-            R.string.command_info,
-            R.string.command_uninstall,
-            R.string.command_toast
-    };
+    private static CoreCommand.Yielder[] coreYielders() {
+        return new CoreCommand.Yielder[] {
+                Call.yielder(),
+                Dial.yielder(),
+                Sms.yielder(),
+                Email.yielder(),
+                Navigate.yielder(),
+                Launch.yielder(),
+                Copy.yielder(),
+                Share.yielder(),
+                Settings.yielder(),
+//                Note.yielder(),
+//                Todo.yielder(),
+                Web.yielder(),
+//                Find.yielder(),
+                Time.yielder(),
+                Alarm.yielder(),
+                Timer.yielder(),
+                Pomodoro.yielder(),
+                Calendar.yielder(),
+                Contact.yielder(),
+//                Notify.yielder(),
+                Calculate.yielder(),
+                Weather.yielder(),
+                Bookmark.yielder(),
+                Torch.yielder(),
+                Info.yielder(),
+                Uninstall.yielder(),
+                Toast.yielder(),
+        };
+    }
 
     public static CommandMap map(SharedPreferences prefs, Resources res, PackageManager pm,
             List<ResolveInfo> appList) {
-        // todo: configurable aliasing
-        // todo: edge case where a mapped app is uninstalled during the activity lifecycle
-        CommandMap commandMap = new CommandMap(res, appList.size());
-        short i = 0;
-        while (i < DUPLICATE - 1) {
-            String lcName = res.getString(NAMES[i]).toLowerCase();
-            Set<String> aliases = Aliases.set(prefs, res, i);
-            commandMap.putSingle(lcName, ++i);
-            for (String alias : aliases) commandMap.put(alias, i);
-            // Todo: have separate set for multi-word aliases and use putSingle for the rest
+        CoreCommand.Yielder[] coreYielders = coreYielders();
+
+        CommandMap map = new CommandMap(SettingVals.defaultCommand(prefs, coreYielders));
+
+        for (CoreCommand.Yielder yielder : coreYielders) {
+            map.put(yielder.name(res), yielder);
+            for (String alias : yielder.aliases(prefs, res)) map.put(alias, yielder);
         }
-        i = 0;
+
         for (ResolveInfo ri : appList) {
-            ActivityInfo actInfo = ri.activityInfo;
-            CharSequence label = actInfo.loadLabel(pm);
-            // TODO: there's the biggest performance bottleneck I've found thus far. Look into how the
-            //  launcher caches labels for ideas on how to improve the performance of this critical
-            //  onCreate task. That is, if they do to begin with..
-            AppInfo info = new AppInfo(actInfo, pm, label);
-            commandMap.putApp(label, --i, info, ~i);
-            Set<String> aliases = Aliases.appSet(prefs, res, info);
-            if (aliases == null) continue;
-            for (String alias : aliases) commandMap.put(alias, i);
-            // No need to pass app info again for aliases
-            // Todo: have separate set for multi-word aliases and use putSingle for the rest
+            // todo: edge case where a mapped app is uninstalled during the activity lifecycle
+            AppCommand.Yielder yielder = new AppCommand.Yielder(ri.activityInfo, pm);
+
+            map.put(yielder.name(), yielder);
+            Set<String> aliases = yielder.aliases(prefs, res);
+            if (aliases == null) continue; // Todo: alias config for all apps.
+            for (String alias : aliases) map.put(alias, yielder);
         }
-        return commandMap;
+
+        return map;
     }
 
     protected final AssistActivity activity;
@@ -136,32 +122,31 @@ public abstract class EmillaCommand {
     private final Params mParams;
     private Drawable mIcon;
 
-    protected EmillaCommand(AssistActivity act, String instruct, Params params) {
+    protected EmillaCommand(AssistActivity act, Params params) {
         this.activity = act;
         this.resources = act.getResources();
-        this.instruction = instruct;
         mParams = params;
     }
 
-    @CallSuper
-    public void init(boolean updateTitle) {
-        baseInit(updateTitle);
-        activity.setSubmitIcon(icon(), mParams.usesAppIcon());
-    }
-
-    public final void baseInit(boolean updateTitle) {
-        if (updateTitle) activity.updateTitle(title());
+    public final void decorate(boolean setIcon) {
+        activity.updateTitle(title());
         activity.updateDataHint();
         activity.setImeAction(imeAction());
+        if (setIcon) activity.setSubmitIcon(icon(), mParams.usesAppIcon());
     }
+
+    @CallSuper
+    public void init() {}
 
     @CallSuper
     public void clean() {}
 
-    protected final void instruct(String instruction) {
+    final EmillaCommand instruct(String instruction) {
         this.instruction = instruction;
+        return this;
     }
 
+    @Deprecated
     protected final void instructAppend(String data) {
         if (instruction == null) instruction = data;
         else instruction += '\n' + data;
