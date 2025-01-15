@@ -28,10 +28,13 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
 
 import net.emilla.action.CursorStart;
@@ -85,6 +88,9 @@ public class AssistActivity extends EmillaActivity {
     private QuickAction mNoCommandAction;
     private QuickAction mDoubleAssistAction;
     private QuickAction mMenuKeyAction;
+
+    @Nullable
+    private Fragment mDefaultActionBox;
 
     private AlertDialog mManual;
     // todo: please handle this another way..
@@ -383,6 +389,21 @@ public class AssistActivity extends EmillaActivity {
             if (box.hasFocus()) mCommandField.requestFocus();
             box.setVisibility(View.GONE);
         }
+    }
+
+    public void giveActionBox(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.action_box, fragment)
+                .commit();
+    }
+
+    public void removeActionBox(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        if (mDefaultActionBox == null) transaction.remove(fragment);
+        else transaction.replace(R.id.action_box, mDefaultActionBox);
+
+        transaction.commit();
     }
 
     protected void onResume() {
