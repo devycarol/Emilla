@@ -43,24 +43,25 @@ public class Torch extends CoreCommand {
         }
     }
 
-    private static boolean sTorching = false;
-    // TODO: replace this with a query - this isn't fully reliable for detecting toggle state. e.g.
-    //  what if the torch was turned on before the app was started?
-
-    private static String cameraId(CameraManager camMgr) throws CameraAccessException {
+    private static String flashCameraId(CameraManager camMgr) throws CameraAccessException {
         String[] ids = camMgr.getCameraIdList();
         for (String id : ids) {
             CameraCharacteristics c = camMgr.getCameraCharacteristics(id);
             Boolean flashAvailable = c.get(CameraCharacteristics.FLASH_INFO_AVAILABLE);
-            Integer lensFacing = c.get(CameraCharacteristics.LENS_FACING);
-            if (flashAvailable != null && flashAvailable
-                    && lensFacing != null && lensFacing == CameraCharacteristics.LENS_FACING_BACK) {
-                return id;
+            if (Boolean.TRUE.equals(flashAvailable)) {
+                Integer lensFacing = c.get(CameraCharacteristics.LENS_FACING);
+                if (lensFacing != null && lensFacing == CameraCharacteristics.LENS_FACING_BACK) {
+                    return id;
+                }
             }
         }
         return null;
         // Todo: what if multiple torches?
     }
+
+    private static boolean sTorching = false;
+    // TODO: replace this with a query - this isn't fully reliable for detecting toggle state. e.g.
+    //  what if the torch was turned on before the app was started?
 
     public Torch(AssistActivity act) {
         super(act, new TorchParams());
@@ -71,21 +72,21 @@ public class Torch extends CoreCommand {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) throw new EmlaBadCommandException(NAME, R.string.error_unfinished_version);
         // TODO: https://github.com/LineageOS/android_packages_apps_Torch
         CameraManager camMgr = (CameraManager) activity.getSystemService(Context.CAMERA_SERVICE);
-        try {
-            String camId = cameraId(camMgr);
-            if (camId == null) return;
-            if (sTorching) {
-                camMgr.setTorchMode(camId, false);
-                chime(RESUME);
-                // TODO ACC: if you can't see the torch, this feedback is critically insufficient.
-                sTorching = false;
-            } else {
-                camMgr.setTorchMode(camId, true);
-                chime(ACT);
-                // TODO ACC: if you can't see the torch, this feedback is critically insufficient.
-                sTorching = true;
-            }
-        } catch (CameraAccessException ignored) {} // Torch not toggled, nothing to do.
+    try {
+        String camId = flashCameraId(camMgr);
+        if (camId == null) return;
+        if (sTorching) {
+            camMgr.setTorchMode(camId, false);
+            chime(RESUME);
+            // TODO ACC: if you can't see the torch, this feedback is critically insufficient.
+            sTorching = false;
+        } else {
+            camMgr.setTorchMode(camId, true);
+            chime(ACT);
+            // TODO ACC: if you can't see the torch, this feedback is critically insufficient.
+            sTorching = true;
+        }
+    } catch (CameraAccessException ignored) {} // Torch not toggled, nothing to do.
     }
 
     @Override
