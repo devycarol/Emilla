@@ -13,7 +13,6 @@
         <item name="colorBackgroundFloating">@color/secn_background_light</item>
         <item name="android:textColor">#000</item>
         <item name="android:windowBackground">@color/main_background_light</item>
-        <item name="listDividerAlertDialog">@drawable/list_divider_emilla_light</item>
     </style>
 
     <style name="Theme.Assistant" parent="Theme.Assistant.Base">
