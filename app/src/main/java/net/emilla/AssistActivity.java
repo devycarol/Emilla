@@ -405,6 +405,7 @@ public class AssistActivity extends EmillaActivity {
     protected void onDestroy() {
         super.onDestroy();
         Contacts.clean();
+        AppChoiceRetriever.AppChooserBroadcastReceiver.deleteRetriever();
     }
 
     @Override
