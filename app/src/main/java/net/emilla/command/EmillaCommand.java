@@ -224,7 +224,7 @@ public abstract class EmillaCommand {
      * Simply close the assistant :)
      */
     protected void succeed() {
-        activity.succeed(() -> {});
+        activity.succeed(activity::finishAndRemoveTask);
     }
 
     /**

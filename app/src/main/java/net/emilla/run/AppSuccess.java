@@ -32,6 +32,7 @@ public class AppSuccess implements Success {
     @Override
     public void run() {
         if (mIntent.resolveActivity(mActivity.getPackageManager()) != null) {
+            mActivity.finishAndRemoveTask();
             mActivity.startActivity(mIntent.addFlags(FLAG_ACTIVITY_NEW_TASK));
         } else throw new EmlaAppsException(R.string.error, R.string.error_no_app);
         // Todo: handle these at mapping time. Be mindful of commands with multiple intents.

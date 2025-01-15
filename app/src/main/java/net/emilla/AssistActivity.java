@@ -631,7 +631,6 @@ public class AssistActivity extends EmillaActivity {
     }
 
     public void succeed(Success success) {
-        finishAndRemoveTask();
         success.run();
         chime(SUCCEED);
     }
