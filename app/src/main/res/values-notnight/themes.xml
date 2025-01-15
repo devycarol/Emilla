@@ -18,7 +18,5 @@
     <style name="Theme.Assistant" parent="Theme.Assistant.Base">
         <item name="colorBackgroundFloating">@color/main_background_light</item>
         <item name="colorSucceed">@color/main_200</item>
-        <item name="android:windowBackground">@color/trans_background_light</item>
-        <item name="android:navigationBarColor">@color/trans_background_light</item>
     </style>
 </resources>

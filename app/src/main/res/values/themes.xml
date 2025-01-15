@@ -7,7 +7,6 @@
         <item name="actionBarStyle">@style/ActionBarStyle</item>
         <item name="preferenceTheme">@style/SettingsTheme</item>
         <item name="android:statusBarColor">?attr/colorBackgroundFloating</item>
-        <!--Todo: this is frugly for the assistant when no action bar-->
         <item name="android:navigationBarColor">#000</item>
 
         <item name="alertDialogStyle">@style/AlertDialog.Emilla</item>
@@ -35,12 +34,12 @@
 
     <style name="Theme.Assistant.Base" parent="Theme.Emilla">
         <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/bg_assistant</item>
+        <item name="android:navigationBarColor">@color/bg_assistant</item>
     </style>
 
     <style name="Theme.Assistant" parent="Theme.Assistant.Base">
         <item name="colorBackgroundFloating">@color/main_background_dark</item>
         <item name="colorSucceed">@color/main_400</item>
-        <item name="android:windowBackground">@color/trans_background_dark</item>
-        <item name="android:navigationBarColor">@color/trans_background_dark</item>
     </style>
 </resources>

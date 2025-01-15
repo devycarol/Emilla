@@ -7,13 +7,11 @@
     <color name="secn_200">#03DAC5</color>
     <color name="secn_500">#008B79</color>
     <color name="secn_700">#018786</color>
-    <color name="main_background_dark">#191C1E</color>
-    <color name="secn_background_dark">#2E3133</color>
-    <color name="main_background_light">#F0F0F3</color>
-    <color name="secn_background_light">#E1E3E5</color>
+    <color name="main_background_dark">#1A1B20</color>
+    <color name="secn_background_dark">#2F3036</color>
+    <color name="main_background_light">#F1F0F7</color>
+    <color name="secn_background_light">#E2E2E9</color>
 
     <!-- Local colors -->
-    <color name="trans_background_dark">#2FFF</color>
-    <color name="trans_background_light">#2000</color>
     <color name="icons">?attr/colorOnSurface</color><!--Todo KitKat-->
 </resources>

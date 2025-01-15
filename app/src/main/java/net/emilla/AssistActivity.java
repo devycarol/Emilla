@@ -30,6 +30,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
 import net.emilla.action.CursorStart;
@@ -139,7 +140,10 @@ public class AssistActivity extends EmillaActivity {
             String dfltTitle = res.getString(R.string.activity_assistant);
             String title = mPrefs.getString("motd", dfltTitle);
             if (!title.equals(dfltTitle)) actionBar.setTitle(title);
-        } else actionBar.hide();
+        } else {
+            actionBar.hide();
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.bg_assistant));
+        }
 
         if (savedInstanceState == null) switch (mPrefs.getString("run_in_background", "follow_system")) {
             case "follow_system":
