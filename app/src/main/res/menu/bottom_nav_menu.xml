@@ -2,17 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_commands"
+        android:id="@+id/nav_commands"
         android:icon="@drawable/ic_command"
         android:title="@string/title_commands" />
 
     <item
-        android:id="@+id/navigation_assistant"
+        android:id="@+id/nav_assistant"
         android:icon="@drawable/ic_assistant"
         android:title="@string/title_assistant" />
 
     <item
-        android:id="@+id/navigation_settings"
+        android:id="@+id/nav_settings"
         android:icon="@drawable/ic_settings"
         android:title="@string/settings" />
 
