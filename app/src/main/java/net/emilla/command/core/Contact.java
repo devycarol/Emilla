@@ -9,16 +9,17 @@ import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents.Insert;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.content.receive.ContactReceiver;
+import net.emilla.content.receive.ContactCardReceiver;
 import net.emilla.exception.EmlaBadCommandException;
 import net.emilla.settings.Aliases;
 import net.emilla.util.Apps;
 
-public class Contact extends CoreDataCommand implements ContactReceiver {
+public class Contact extends CoreDataCommand implements ContactCardReceiver {
 
     public static final String ENTRY = "contact";
     @StringRes
@@ -74,7 +75,7 @@ public class Contact extends CoreDataCommand implements ContactReceiver {
 
     @Override
     protected void run() {
-        activity.offerContacts(this);
+        activity.offerContactCards(this);
     }
 
     @Override
@@ -96,7 +97,7 @@ public class Contact extends CoreDataCommand implements ContactReceiver {
             appSucceed(in);
         }
         case EDIT -> {
-            if (person.isEmpty()) activity.offerContacts(this);
+            if (person.isEmpty()) activity.offerContactCards(this);
             else throw new EmlaBadCommandException(NAME, R.string.error_unfinished_contact_search);
             // Todo: search contacts
             //  no matches: offer to create a contact with the provided details
@@ -121,7 +122,7 @@ public class Contact extends CoreDataCommand implements ContactReceiver {
     }
 
     @Override
-    public void provide(Uri contact) {
+    public void provide(@NonNull Uri contact) {
         appSucceed(mAction == EDIT ? Apps.editTask(contact) : Apps.viewTask(contact));
     }
 }

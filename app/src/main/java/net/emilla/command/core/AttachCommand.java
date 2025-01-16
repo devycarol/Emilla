@@ -2,6 +2,8 @@ package net.emilla.command.core;
 
 import android.net.Uri;
 
+import androidx.annotation.NonNull;
+
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.content.receive.FileReceiver;
@@ -18,7 +20,7 @@ public abstract class AttachCommand extends CoreDataCommand implements FileRecei
     }
 
     @Override
-    public void provide(List<Uri> attachments) {
+    public void provide(@NonNull List<Uri> attachments) {
         if (attachments.isEmpty()) return;
         if (this.attachments == null) this.attachments = new ArrayList<>(attachments);
         else for (Uri attachment : attachments) {

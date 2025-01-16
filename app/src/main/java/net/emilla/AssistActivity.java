@@ -45,10 +45,14 @@ import net.emilla.command.CommandMap;
 import net.emilla.command.DataCommand;
 import net.emilla.command.EmillaCommand;
 import net.emilla.content.receive.AppChoiceReceiver;
-import net.emilla.content.receive.ContactReceiver;
+import net.emilla.content.receive.ContactCardReceiver;
+import net.emilla.content.receive.EmailReceiver;
 import net.emilla.content.receive.FileReceiver;
+import net.emilla.content.receive.PhoneReceiver;
 import net.emilla.content.retrieve.AppChoiceRetriever;
-import net.emilla.content.retrieve.ContactRetriever;
+import net.emilla.content.retrieve.ContactCardRetriever;
+import net.emilla.content.retrieve.ContactEmailRetriever;
+import net.emilla.content.retrieve.ContactPhoneRetriever;
 import net.emilla.content.retrieve.FileRetriever;
 import net.emilla.content.retrieve.MediaRetriever;
 import net.emilla.exception.EmillaException;
@@ -97,7 +101,9 @@ public class AssistActivity extends EmillaActivity {
 
     private final FileRetriever mFileRetriever = new FileRetriever(this);
     private final MediaRetriever mMediaRetriever = new MediaRetriever(this);
-    private final ContactRetriever mContactRetriever = new ContactRetriever(this);
+    private final ContactCardRetriever mContactCardRetriever = new ContactCardRetriever(this);
+    private final ContactPhoneRetriever mContactPhoneRetriever = new ContactPhoneRetriever(this);
+    private final ContactEmailRetriever mContactEmailRetriever = new ContactEmailRetriever(this);
     private final AppChoiceRetriever mAppChoiceRetriever = new AppChoiceRetriever(this);
     // TODO: save state hell. rotation deletes attachments ughhhhh probably because the command
     //  tree is rebuilt.
@@ -651,8 +657,16 @@ public class AssistActivity extends EmillaActivity {
         chime(PEND);
     }
 
-    public void offerContacts(ContactReceiver receiver) {
-        mContactRetriever.retrieve(receiver);
+    public void offerContactCards(ContactCardReceiver receiver) {
+        mContactCardRetriever.retrieve(receiver);
+    }
+
+    public void offerContactPhones(PhoneReceiver receiver) {
+        mContactPhoneRetriever.retrieve(receiver);
+    }
+
+    public void offerContactEmails(EmailReceiver receiver) {
+        mContactEmailRetriever.retrieve(receiver);
     }
 
     public void offerChooser(AppChoiceReceiver receiver, Intent target, @StringRes int title) {

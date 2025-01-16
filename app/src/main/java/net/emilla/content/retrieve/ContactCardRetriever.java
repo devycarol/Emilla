@@ -6,15 +6,15 @@ import androidx.activity.result.contract.ActivityResultContracts.PickContact;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.content.receive.ContactReceiver;
+import net.emilla.content.receive.ContactCardReceiver;
 
-public class ContactRetriever extends ResultRetriever<Void, Uri, ContactReceiver> {
+public class ContactCardRetriever extends ResultRetriever<Void, Uri, ContactCardReceiver> {
 
-    public ContactRetriever(AssistActivity act) {
+    public ContactCardRetriever(AssistActivity act) {
         super(act, new PickContact());
     }
 
-    public void retrieve(ContactReceiver receiver) {
+    public void retrieve(ContactCardReceiver receiver) {
         if (alreadyHas(receiver)) return;
         launch(null);
     }
@@ -27,7 +27,7 @@ public class ContactRetriever extends ResultRetriever<Void, Uri, ContactReceiver
     private class ContactCallback extends ResultCallback {
 
         @Override
-        protected void onActivityResult(Uri contact, ContactReceiver receiver) {
+        protected void onActivityResult(Uri contact, ContactCardReceiver receiver) {
             if (contact != null) receiver.provide(contact);
             else activity.toast(R.string.toast_contact_not_selected);
         }

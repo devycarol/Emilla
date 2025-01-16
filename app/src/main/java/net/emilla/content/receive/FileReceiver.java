@@ -2,6 +2,8 @@ package net.emilla.content.receive;
 
 import android.net.Uri;
 
+import androidx.annotation.NonNull;
+
 import java.util.List;
 
 public interface FileReceiver extends ResultReceiver {
@@ -11,5 +13,5 @@ public interface FileReceiver extends ResultReceiver {
      *
      * @param attachments attachment set to give to the receiver.
      */
-    void provide(List<Uri> attachments);
+    void provide(@NonNull List<Uri> attachments);
 }

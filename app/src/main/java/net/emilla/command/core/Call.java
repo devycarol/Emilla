@@ -8,12 +8,13 @@ import android.os.Build;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.content.receive.ContactReceiver;
+import net.emilla.content.receive.PhoneReceiver;
 import net.emilla.exception.EmlaFeatureException;
 import net.emilla.permission.PermissionReceiver;
 import net.emilla.settings.Aliases;
@@ -23,7 +24,7 @@ import net.emilla.util.Permissions;
 
 import java.util.HashMap;
 
-public class Call extends CoreCommand implements ContactReceiver, PermissionReceiver {
+public class Call extends CoreCommand implements PhoneReceiver, PermissionReceiver {
 
     public static final String ENTRY = "call";
     @StringRes
@@ -49,7 +50,6 @@ public class Call extends CoreCommand implements ContactReceiver, PermissionRece
     }
 
     private final HashMap<String, String> mPhoneMap;
-    private String mNameOrNumber;
 
     public Call(AssistActivity act) {
         super(act, new CallParams());
@@ -66,7 +66,7 @@ public class Call extends CoreCommand implements ContactReceiver, PermissionRece
 
     @Override
     protected void run() {
-        if (Permissions.contactsFlow(activity, null)) activity.offerContacts(this);
+        if (Permissions.contactsFlow(activity, null)) activity.offerContactPhones(this);
     }
 
     @Override
@@ -85,15 +85,11 @@ public class Call extends CoreCommand implements ContactReceiver, PermissionRece
     }
 
     @Override
-    public void provide(Uri contact) {
-        String number = Contacts.phoneNumber(contact, activity.getContentResolver());
-        if (number != null) {
-            if (Permissions.callFlow(activity, this)) appSucceed(makeIntent(number));
-        } else {
-            activity.suppressResumeChime();
-            fail(R.string.error_no_contact_phone);
-            // Todo: exclude these from selection
-        }
+    public void provide(@NonNull String phoneNumber) {
+        if (Permissions.callFlow(activity, this)) {
+            activity.suppressSuccessChime();
+            appSucceed(makeIntent(phoneNumber));
+        } else setInstruction(phoneNumber);
     }
 
     @Override @RequiresApi(api = Build.VERSION_CODES.M)

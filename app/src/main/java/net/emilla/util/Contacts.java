@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.provider.ContactsContract.CommonDataKinds.Email;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.util.Log;
 
@@ -93,6 +94,18 @@ public final class Contacts {
         String[] selectionArgs = {contact.getLastPathSegment()};
         try (Cursor cur = resolver.query(contentUri, projection, selection, selectionArgs, null)) {
             if (cur != null && cur.moveToFirst()) return cur.getString(IDX_NUMBER);
+        }
+        return null;
+    }
+
+    public static String emailAddress(Uri contact, ContentResolver resolver) {
+        Uri contentUri = Email.CONTENT_URI;
+        String[] projection = {Email.ADDRESS};
+        int IDX_ADDRESS = 0;
+        String selection = Email.CONTACT_ID + " = ?";
+        String[] selectionArgs = {contact.getLastPathSegment()};
+        try (Cursor cur = resolver.query(contentUri, projection, selection, selectionArgs, null)) {
+            if (cur != null && cur.moveToFirst()) return cur.getString(IDX_ADDRESS);
         }
         return null;
     }
