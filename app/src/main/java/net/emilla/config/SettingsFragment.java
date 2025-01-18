@@ -244,8 +244,7 @@ private void setupAccessibilityButtonPref(PackageManager pm) {
 
 private void setupAppInfoPref(PackageManager pm) {
     Preference systemAppInfo = requireNonNull(findPreference("app_info"));
-    Intent in = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-            Apps.pkgUri(Apps.MY_PKG));
+    Intent in = Apps.infoTask();
     if (in.resolveActivity(pm) != null) systemAppInfo.setIntent(in);
     else systemAppInfo.setVisible(false);
 }

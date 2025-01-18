@@ -1,7 +1,6 @@
 package net.emilla.command.core;
 
 import android.content.Intent;
-import android.provider.Settings;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
@@ -50,13 +49,13 @@ public class Info extends OpenCommand {
 
     @Override
     protected Intent makeIntent(String pkg, String cls) {
-        return new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Apps.pkgUri(pkg));
+        return Apps.infoTask(pkg);
     }
 
     @Override
     protected void run() {
         // Todo: it may be useful to include listings beyond those in the launcher icons, or be able to
         //  search by package name.
-        appSucceed(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Apps.pkgUri(Apps.MY_PKG)));
+        appSucceed(Apps.infoTask());
     }
 }

@@ -87,6 +87,14 @@ public class Apps {
         return new Intent(ACTION_INSERT).setDataAndType(data, type);
     }
 
+    public static Intent infoTask() {
+        return infoTask(MY_PKG);
+    }
+
+    public static Intent infoTask(String pkg) {
+        return new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, pkgUri(pkg));
+    }
+
     public static Intent meTask(Context ctx, Class<? extends EmillaActivity> cls) {
         return new Intent(ctx, cls);
     }
@@ -120,8 +128,7 @@ public class Apps {
         boolean uninstallable = (info.flags & ApplicationInfo.FLAG_SYSTEM) == 0;
         if (uninstallable) return new Intent(ACTION_UNINSTALL_PACKAGE, pkgUri(pkg));
         // Todo: ACTION_UNINSTALL_PACKAGE is deprecated.
-        Uri data = pkgUri(pkg);
-        Intent appInfo = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, data);
+        Intent appInfo = infoTask(pkg);
         if (appInfo.resolveActivity(pm) != null) return appInfo;
         Intent settings = new Intent(Settings.ACTION_SETTINGS);
         if (appInfo.resolveActivity(pm) != null) return settings;

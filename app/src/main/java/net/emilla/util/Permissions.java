@@ -7,7 +7,6 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.provider.Settings;
 
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
@@ -35,20 +34,17 @@ public final class Permissions {
     }
 
     private static AlertDialog.Builder permissionDialog(AssistActivity act, PackageManager pm,
-            @StringRes int permission) {
-        Intent settings = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                Apps.pkgUri(act.getPackageName()));
-        boolean noAppInfo = settings.resolveActivity(pm) == null;
-        if (noAppInfo) settings.setAction(Settings.ACTION_SETTINGS).setData(null)
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        if (settings.resolveActivity(pm) == null) return Dialogs.base(act, permission,
-                R.string.dlg_msg_perm_denial, android.R.string.ok);
-        int posLabel = noAppInfo ? R.string.settings : R.string.app_info;
-        return Dialogs.dual(act, permission, R.string.dlg_msg_perm_denial, posLabel, (dlg, which) -> {
-            act.startActivity(settings);
+            @StringRes int permissionName) {
+        Intent appInfo = Apps.infoTask();
+        if (appInfo.resolveActivity(pm) != null) return Dialogs.dual(act, permissionName,
+                R.string.dlg_msg_perm_denial, R.string.app_info, (dlg, which) -> {
+            act.startActivity(appInfo);
             act.suppressResumeChime();
             dlg.cancel(); // Todo: don't require this
         });
+
+        return Dialogs.base(act, permissionName, R.string.dlg_msg_perm_denial, android.R.string.ok);
+        // this should pretty much never happen.
     }
 
     private static boolean permission(AssistActivity act, PackageManager pm, String permissionId,
