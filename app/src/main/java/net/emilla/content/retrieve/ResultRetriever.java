@@ -14,7 +14,7 @@ import net.emilla.run.MessageFailure;
 
 abstract class ResultRetriever<I, O, C extends ResultReceiver> {
 
-    private static final String TAG = FileRetriever.class.getSimpleName();
+    private static final String TAG = ResultRetriever.class.getSimpleName();
 
     protected final AssistActivity activity;
     private final ActivityResultLauncher<I> mLauncher;
