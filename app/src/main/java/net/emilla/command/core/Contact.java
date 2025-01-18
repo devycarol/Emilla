@@ -66,7 +66,7 @@ public class Contact extends CoreDataCommand implements ContactReceiver {
         }
         if (person.startsWith("edit")) {
             mAction = EDIT;
-            return person.substring(5).trim();
+            return person.substring(4).trim();
         }
         mAction = VIEW;
         return person;
