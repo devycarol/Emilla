@@ -5,7 +5,9 @@ import static android.Manifest.permission.READ_CONTACTS;
 import static android.Manifest.permission.WRITE_CONTACTS;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.os.Build;
 
 import androidx.annotation.Nullable;
@@ -20,69 +22,176 @@ import net.emilla.run.PermissionOffering;
 
 public final class Permissions {
 
+    public static final String[] CONTACTS = {READ_CONTACTS, WRITE_CONTACTS};
+
     /**
      * <p>
-     * Queries if phone permission has been granted and initiates permission request flow if it
-     * hasn't.</p>
+     * Queries whether phone call permission is granted and initiates request flow if it's not.</p>
      * <p>
      * If the system permission request is suppressed, a fail dialog will link the user to the app
      * info screen where they can manually grant permission.</p>
      *
      * @param act is used to perform permission checks and construct dialogs as needed.
-     * @param receiver handler object for permission retrieval.
-     * @return true if calling permission is granted, false if it's not.
+     * @param receiver handler for permission retrieval.
+     * @return true if calling permission is granted, false if not.
      */
-    public static boolean phone(AssistActivity act, PermissionReceiver receiver) {
-        return permissionFlow(act, CALL_PHONE, receiver, R.string.perm_calling);
+    public static boolean callFlow(AssistActivity act, PermissionReceiver receiver) {
+        return flow(act, CALL_PHONE, receiver, R.string.perm_calling);
     }
 
     /**
      * <p>
-     * Queries if contacts permission has been granted and initiates permission request flow if it
-     * hasn't.</p>
+     * Queries whether phone call permission is granted and initiates request flow if it's not.</p>
+     * <p>
+     * If permission is denied and the request dialog suppressed, the {@code onNoPrompt} function
+     * will run.</p>
+     *
+     * @param act is used to perform permission checks and requests as needed.
+     * @param receiver handler for permission retrieval.
+     * @param onNoPrompt action to perform if permission is denied and can't be requested.
+     * @return true if calling permission is granted, false if not.
+     */
+    public static boolean callFlow(AssistActivity act, @Nullable PermissionReceiver receiver,
+            Runnable onNoPrompt) {
+        return flow(act, CALL_PHONE, receiver, onNoPrompt);
+    }
+
+    /**
+     * Queries whether phone call permission is granted.
+     *
+     * @param ctx is used to perform permission checks.
+     * @return true if calling permission is granted, false if not.
+     * @see Permissions#callFlow(AssistActivity, PermissionReceiver)
+     */
+    public static boolean call(Context ctx) {
+        return has(ctx, CONTACTS);
+    }
+
+    /**
+     * <p>
+     * Queries whether the phone call permission prompt is available.</p>
+     * <p>
+     * This should only be used when permission isn't granted.</p>
+     *
+     * @param act is used to perform permission checks.
+     * @return true if the call prompt is available, false otherwise.
+     */
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public static boolean callPrompt(Activity act) {
+        return prompt(act, CALL_PHONE);
+    }
+
+    /**
+     * <p>
+     * Queries whether read/write contacts permission is granted and initiates request flow if it's
+     * not.</p>
      * <p>
      * If the system permission request is suppressed, a fail dialog will link the user to the app
      * info screen where they can manually grant permission.</p>
      *
      * @param act is used to perform permission checks and construct dialogs as needed.
-     * @param receiver handler object for permission retrieval.
-     * @return true if read/write contacts permission is granted, false if it's not.
+     * @param receiver handler for permission retrieval.
+     * @return true if contacts permission is granted, false if not.
      */
-    public static boolean contacts(AssistActivity act, @Nullable PermissionReceiver receiver) {
-        String[] readWriteContacts = {READ_CONTACTS, WRITE_CONTACTS};
-        return permissionFlow(act, readWriteContacts, receiver, R.string.perm_contacts);
+    public static boolean contactsFlow(AssistActivity act, @Nullable PermissionReceiver receiver) {
+        return flow(act, CONTACTS, receiver, R.string.perm_contacts);
     }
 
-    private static boolean permissionFlow(AssistActivity act, String permission,
-            @Nullable PermissionReceiver receiver, @StringRes int permissionName) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return true;
+    /**
+     * <p>
+     * Queries whether read/write contacts permission is granted and initiates request flow if it's
+     * not.</p>
+     * <p>
+     * If permission is denied and the request dialog suppressed, the {@code onNoPrompt} function
+     * will run.</p>
+     *
+     * @param act is used to perform permission checks and requests as needed.
+     * @param receiver handler for permission retrieval.
+     * @param onNoPrompt action to perform if permission is denied and can't be requested.
+     * @return true if contacts permission is granted, false if not.
+     */
+    public static boolean contactsFlow(AssistActivity act, @Nullable PermissionReceiver receiver,
+            Runnable onNoPrompt) {
+        return flow(act, CONTACTS, receiver, onNoPrompt);
+    }
 
-        if (act.checkSelfPermission(permission) == PERMISSION_GRANTED) return true;
+    /**
+     * Queries whether read/write contacts permission is granted.
+     *
+     * @param ctx is used to perform permission checks.
+     * @return true if contacts permission is granted, false if not.
+     * @see Permissions#contactsFlow(AssistActivity, PermissionReceiver)
+     */
+    public static boolean contacts(Context ctx) {
+        return has(ctx, CONTACTS);
+    }
 
-        if (act.shouldShowRequestPermissionRationale(permission)) {
-            act.offer(new PermissionOffering(act, permission, receiver));
-        } else act.fail(new PermissionFailure(act, permissionName));
+    /**
+     * <p>
+     * Queries whether the read/write contacts permission prompt is available.</p>
+     * <p>
+     * This should only be used when permission isn't granted.</p>
+     *
+     * @param act is used to perform permission checks.
+     * @return true if the contacts prompt is available, false otherwise.
+     */
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public static boolean contactsPrompt(Activity act) {
+        return prompt(act, CONTACTS);
+    }
+
+    private static boolean flow(AssistActivity act, String permission,
+            @Nullable PermissionReceiver receiver, @StringRes int name) {
+        return flow(act, permission, receiver, () -> act.fail(new PermissionFailure(act, name)));
+    }
+
+    @SuppressLint("NewApi")
+    private static boolean flow(AssistActivity act, String permission,
+            @Nullable PermissionReceiver receiver, Runnable onNoPrompt) {
+        if (has(act, permission)) return true;
+
+        if (prompt(act, permission)) act.offer(new PermissionOffering(act, permission, receiver));
+        else onNoPrompt.run();
 
         return false;
     }
 
-    private static boolean permissionFlow(AssistActivity act, String[] permissions,
-            @Nullable PermissionReceiver receiver, @StringRes int permissionName) {
+    private static boolean has(Context ctx, String permission) {
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.M
+            || ctx.checkSelfPermission(permission) == PERMISSION_GRANTED;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private static boolean prompt(Activity act, String permission) {
+        return act.shouldShowRequestPermissionRationale(permission);
+    }
+
+    private static boolean flow(AssistActivity act, String[] permissions,
+            @Nullable PermissionReceiver receiver, @StringRes int name) {
+        return flow(act, permissions, receiver, () -> act.fail(new PermissionFailure(act, name)));
+    }
+
+    @SuppressLint("NewApi")
+    private static boolean flow(AssistActivity act, String[] permissions,
+            @Nullable PermissionReceiver receiver, Runnable onNoPrompt) {
+        if (has(act, permissions)) return true;
+
+        if (prompt(act, permissions)) act.offer(new PermissionOffering(act, permissions, receiver));
+        else onNoPrompt.run();
+
+        return false;
+    }
+
+    private static boolean has(Context ctx, String[] permissions) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return true;
-
-        for (String perm : permissions) if (act.checkSelfPermission(perm) != PERMISSION_GRANTED) {
-            if (canShowPrompt(act, permissions)) {
-                act.offer(new PermissionOffering(act, permissions, receiver));
-            } else act.fail(new PermissionFailure(act, permissionName));
-
-            return false;
+        for (String perm : permissions) {
+            if (ctx.checkSelfPermission(perm) != PERMISSION_GRANTED) return false;
         }
-
         return true;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    private static boolean canShowPrompt(Activity act, String[] permissions) {
+    private static boolean prompt(Activity act, String[] permissions) {
         for (String perm : permissions) {
             if (!act.shouldShowRequestPermissionRationale(perm)) return false;
         }

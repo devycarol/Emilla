@@ -49,6 +49,7 @@ public class Call extends CoreCommand implements ContactReceiver, PermissionRece
     }
 
     private final HashMap<String, String> mPhoneMap;
+    private String mNameOrNumber;
 
     public Call(AssistActivity act) {
         super(act, new CallParams());
@@ -65,7 +66,7 @@ public class Call extends CoreCommand implements ContactReceiver, PermissionRece
 
     @Override
     protected void run() {
-        if (Permissions.contacts(activity, null)) activity.offerContacts(this);
+        if (Permissions.contactsFlow(activity, null)) activity.offerContacts(this);
     }
 
     @Override
@@ -77,7 +78,7 @@ public class Call extends CoreCommand implements ContactReceiver, PermissionRece
         //  transfer. it shouldn't disable the "command enabled" pref, it should just be its own
         //  element of an "is the command enabled" check similar to HeliBoard's handling in its
         //  "SettingsValues" class.
-        if (Permissions.phone(activity, this)) {
+        if (Permissions.callFlow(activity, this)) {
             activity.suppressSuccessChime();
             appSucceed(convertNameIntent(nameOrNumber));
         }
@@ -87,7 +88,7 @@ public class Call extends CoreCommand implements ContactReceiver, PermissionRece
     public void provide(Uri contact) {
         String number = Contacts.phoneNumber(contact, activity.getContentResolver());
         if (number != null) {
-            if (Permissions.phone(activity, this)) appSucceed(makeIntent(number));
+            if (Permissions.callFlow(activity, this)) appSucceed(makeIntent(number));
         } else {
             activity.suppressResumeChime();
             fail(R.string.error_no_contact_phone);
