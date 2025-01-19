@@ -10,6 +10,8 @@ import net.emilla.lang.date.HourMin;
 import net.emilla.lang.date.Weekdays;
 import net.emilla.lang.date.impl.HourMinEN_US;
 import net.emilla.lang.date.impl.WeekdaysEN_US;
+import net.emilla.lang.grammar.ListPhrase;
+import net.emilla.lang.grammar.impl.ListPhraseEN_US;
 
 public final class Lang {
 
@@ -48,6 +50,12 @@ public final class Lang {
     public static Words words(String phrase) {
         return switch (-1) {
             default -> new Words.Latin(phrase);
+        };
+    }
+
+    public static ListPhrase list(String phrase) {
+        return switch (-1) {
+            default -> new ListPhraseEN_US(phrase);
         };
     }
 
