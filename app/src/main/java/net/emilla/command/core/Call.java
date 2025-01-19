@@ -3,7 +3,6 @@ package net.emilla.command.core;
 import static android.content.Intent.ACTION_CALL;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.view.inputmethod.EditorInfo;
 
@@ -70,14 +69,15 @@ public class Call extends CoreCommand implements ContactReceiver {
     protected void run(String nameOrNumber) {
         // todo: conference calls?
         // todo: immediate calls to phonewords
-        PackageManager pm = pm();
-        if (!Features.phone(pm)) throw new EmlaFeatureException(NAME, R.string.error_feature_phone);
+        if (!Features.phone(pm())) throw new EmlaFeatureException(NAME, R.string.error_feature_phone);
         // TODO: handle at install - make sure it's not 'sticky' in sharedprefs in case of data
         //  transfer. it shouldn't disable the "command enabled" pref, it should just be its own
         //  element of an "is the command enabled" check similar to HeliBoard's handling in its
         //  "SettingsValues" class.
-        if (Permissions.phone(activity, pm)) appSucceed(convertNameIntent(nameOrNumber));
-        // todo: success chime is cut off by phone call
+        if (Permissions.phone(activity, pm())) {
+            activity.suppressSuccessChime();
+            appSucceed(convertNameIntent(nameOrNumber));
+        }
     }
 
     @Override

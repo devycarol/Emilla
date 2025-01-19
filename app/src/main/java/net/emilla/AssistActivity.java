@@ -104,7 +104,8 @@ public class AssistActivity extends EmillaActivity {
     private boolean mDialogOpen = false;
     private boolean
             mDontChimePend = false,
-            mDontChimeResume = false;
+            mDontChimeResume = false,
+            mDontChimeSuccess = false;
     private boolean mHasTitlebar;
 
     private long mLastAssistIntentTime;
@@ -528,6 +529,10 @@ public class AssistActivity extends EmillaActivity {
         mDontChimeResume = true;
     }
 
+    public void suppressSuccessChime() {
+        mDontChimeSuccess = true;
+    }
+
     public void setManual(AlertDialog manual) {
         mManual = manual;
     }
@@ -555,6 +560,11 @@ public class AssistActivity extends EmillaActivity {
 
     private boolean askChimeResume() {
         if (mDontChimeResume) return mDontChimeResume = false;
+        return true;
+    }
+
+    private boolean askChimeSuccess() {
+        if (mDontChimeSuccess) return mDontChimeSuccess = false;
         return true;
     }
 
@@ -637,7 +647,7 @@ public class AssistActivity extends EmillaActivity {
 
     public void succeed(Success success) {
         success.run();
-        chime(SUCCEED);
+        if (askChimeSuccess()) chime(SUCCEED);
     }
 
     public void fail(Failure failure) {
