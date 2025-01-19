@@ -4,15 +4,18 @@ import static android.content.Intent.ACTION_CALL;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.content.receive.ContactReceiver;
 import net.emilla.exception.EmlaFeatureException;
+import net.emilla.permission.PermissionReceiver;
 import net.emilla.settings.Aliases;
 import net.emilla.util.Contacts;
 import net.emilla.util.Features;
@@ -20,7 +23,7 @@ import net.emilla.util.Permissions;
 
 import java.util.HashMap;
 
-public class Call extends CoreCommand implements ContactReceiver {
+public class Call extends CoreCommand implements ContactReceiver, PermissionReceiver {
 
     public static final String ENTRY = "call";
     @StringRes
@@ -62,7 +65,7 @@ public class Call extends CoreCommand implements ContactReceiver {
 
     @Override
     protected void run() {
-        if (Permissions.readContacts(activity, pm())) activity.offerContacts(this);
+        if (Permissions.contacts(activity, null)) activity.offerContacts(this);
     }
 
     @Override
@@ -74,7 +77,7 @@ public class Call extends CoreCommand implements ContactReceiver {
         //  transfer. it shouldn't disable the "command enabled" pref, it should just be its own
         //  element of an "is the command enabled" check similar to HeliBoard's handling in its
         //  "SettingsValues" class.
-        if (Permissions.phone(activity, pm())) {
+        if (Permissions.phone(activity, this)) {
             activity.suppressSuccessChime();
             appSucceed(convertNameIntent(nameOrNumber));
         }
@@ -84,12 +87,17 @@ public class Call extends CoreCommand implements ContactReceiver {
     public void provide(Uri contact) {
         String number = Contacts.phoneNumber(contact, activity.getContentResolver());
         if (number != null) {
-            if (Permissions.phone(activity, pm())) appSucceed(makeIntent(number));
-            // TODO: queue the retrieved phone number to call if permission is granted
+            if (Permissions.phone(activity, this)) appSucceed(makeIntent(number));
         } else {
             activity.suppressResumeChime();
             fail(R.string.error_no_contact_phone);
             // Todo: exclude these from selection
         }
+    }
+
+    @Override @RequiresApi(api = Build.VERSION_CODES.M)
+    public void onGrant() {
+        activity.suppressSuccessChime();
+        appSucceed(convertNameIntent(instruction));
     }
 }

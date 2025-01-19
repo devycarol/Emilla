@@ -594,9 +594,7 @@
 
     <!-- Permission labels  -->
     <string name="perm_calling">Calling</string>
-    <string name="perm_consent_call">Is it okay to make immediate phone calls?</string>
     <string name="perm_contacts">Contacts</string>
-    <string name="perm_consent_contacts">Is it okay to read device contacts?</string>
 
     <string name="memo_pomodoro_break">Pomodoro break</string>
 

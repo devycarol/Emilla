@@ -2,76 +2,91 @@ package net.emilla.util;
 
 import static android.Manifest.permission.CALL_PHONE;
 import static android.Manifest.permission.READ_CONTACTS;
+import static android.Manifest.permission.WRITE_CONTACTS;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
-import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.app.Activity;
 import android.os.Build;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
-import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.run.DialogFailure;
-import net.emilla.run.DialogOffering;
+import net.emilla.permission.PermissionReceiver;
+import net.emilla.run.PermissionFailure;
 import net.emilla.run.PermissionOffering;
 
 public final class Permissions {
 
-    private static final int
-            REQUEST_PHONE = 1,
-            REQUEST_CONTACTS = 2;
-
-    private static AlertDialog.Builder courtesyDialog(AssistActivity act, String permissionId,
-            @StringRes int permissionName, @StringRes int consentMessage) {
-        return Dialogs.yesNo(act, permissionName, consentMessage, (dlg, which) -> {
-            act.prefs().edit().putBoolean(permissionId, true).apply();
-            dlg.cancel(); // Todo: don't require this
-        });
-        // Should there be a settings page to revoke these? It's just courtesy, but it could be
-        // respectful to have a setting that withdraws all of these
+    /**
+     * <p>
+     * Queries if phone permission has been granted and initiates permission request flow if it
+     * hasn't.</p>
+     * <p>
+     * If the system permission request is suppressed, a fail dialog will link the user to the app
+     * info screen where they can manually grant permission.</p>
+     *
+     * @param act is used to perform permission checks and construct dialogs as needed.
+     * @param receiver handler object for permission retrieval.
+     * @return true if calling permission is granted, false if it's not.
+     */
+    public static boolean phone(AssistActivity act, PermissionReceiver receiver) {
+        return permissionFlow(act, CALL_PHONE, receiver, R.string.perm_calling);
     }
 
-    private static AlertDialog.Builder permissionDialog(AssistActivity act, PackageManager pm,
-            @StringRes int permissionName) {
-        Intent appInfo = Apps.infoTask();
-        if (appInfo.resolveActivity(pm) != null) return Dialogs.dual(act, permissionName,
-                R.string.dlg_msg_perm_denial, R.string.app_info, (dlg, which) -> {
-            act.startActivity(appInfo);
-            act.suppressResumeChime();
-            dlg.cancel(); // Todo: don't require this
-        });
-
-        return Dialogs.base(act, permissionName, R.string.dlg_msg_perm_denial, android.R.string.ok);
-        // this should pretty much never happen.
+    /**
+     * <p>
+     * Queries if contacts permission has been granted and initiates permission request flow if it
+     * hasn't.</p>
+     * <p>
+     * If the system permission request is suppressed, a fail dialog will link the user to the app
+     * info screen where they can manually grant permission.</p>
+     *
+     * @param act is used to perform permission checks and construct dialogs as needed.
+     * @param receiver handler object for permission retrieval.
+     * @return true if read/write contacts permission is granted, false if it's not.
+     */
+    public static boolean contacts(AssistActivity act, @Nullable PermissionReceiver receiver) {
+        String[] readWriteContacts = {READ_CONTACTS, WRITE_CONTACTS};
+        return permissionFlow(act, readWriteContacts, receiver, R.string.perm_contacts);
     }
 
-    private static boolean permission(AssistActivity act, PackageManager pm, String permissionId,
-            int requestCode, @StringRes int permissionName, @StringRes int consentMessage) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (act.checkSelfPermission(permissionId) == PERMISSION_GRANTED) return true;
-            boolean prompt = act.shouldShowRequestPermissionRationale(permissionId);
-            if (prompt) act.offer(new PermissionOffering(act, permissionId, requestCode));
-            else act.fail(new DialogFailure(act, permissionDialog(act, pm, permissionName)));
-            return false;
-        }
-        if (act.prefs().getBoolean(permissionId, false)) return true;
-        // A courtesy dialog is offered for pre-Marshmallow users, even if permissions are granted at
-        // install.
-        act.offer(new DialogOffering(act, courtesyDialog(act, permissionId, permissionName,
-                consentMessage)));
+    private static boolean permissionFlow(AssistActivity act, String permission,
+            @Nullable PermissionReceiver receiver, @StringRes int permissionName) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return true;
+
+        if (act.checkSelfPermission(permission) == PERMISSION_GRANTED) return true;
+
+        if (act.shouldShowRequestPermissionRationale(permission)) {
+            act.offer(new PermissionOffering(act, permission, receiver));
+        } else act.fail(new PermissionFailure(act, permissionName));
+
         return false;
     }
 
-    public static boolean phone(AssistActivity act, PackageManager pm) {
-        return permission(act, pm, CALL_PHONE, REQUEST_PHONE, R.string.perm_calling,
-                R.string.perm_consent_call);
+    private static boolean permissionFlow(AssistActivity act, String[] permissions,
+            @Nullable PermissionReceiver receiver, @StringRes int permissionName) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return true;
+
+        for (String perm : permissions) if (act.checkSelfPermission(perm) != PERMISSION_GRANTED) {
+            if (canShowPrompt(act, permissions)) {
+                act.offer(new PermissionOffering(act, permissions, receiver));
+            } else act.fail(new PermissionFailure(act, permissionName));
+
+            return false;
+        }
+
+        return true;
     }
 
-    public static boolean readContacts(AssistActivity act, PackageManager pm) {
-        return permission(act, pm, READ_CONTACTS, REQUEST_CONTACTS, R.string.perm_contacts,
-                R.string.perm_consent_contacts);
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private static boolean canShowPrompt(Activity act, String[] permissions) {
+        for (String perm : permissions) {
+            if (!act.shouldShowRequestPermissionRationale(perm)) return false;
+        }
+        return true;
     }
 
     private Permissions() {}

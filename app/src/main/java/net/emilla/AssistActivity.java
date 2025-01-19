@@ -14,6 +14,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.text.Editable;
@@ -49,6 +50,7 @@ import net.emilla.content.retrieve.FileRetriever;
 import net.emilla.content.retrieve.MediaRetriever;
 import net.emilla.exception.EmillaException;
 import net.emilla.lang.Lang;
+import net.emilla.permission.PermissionRetriever;
 import net.emilla.run.BugFailure;
 import net.emilla.run.DialogOffering;
 import net.emilla.run.Failure;
@@ -87,10 +89,15 @@ public class AssistActivity extends EmillaActivity {
     private AlertDialog mManual;
     // todo: please handle this another way..
 
-    private FileRetriever mFileRetriever;
-    private MediaRetriever mMediaRetriever;
-    private ContactRetriever mContactRetriever;
-    private AppChoiceRetriever mAppChoiceRetriever;
+    private final FileRetriever mFileRetriever = new FileRetriever(this);
+    private final MediaRetriever mMediaRetriever = new MediaRetriever(this);
+    private final ContactRetriever mContactRetriever = new ContactRetriever(this);
+    private final AppChoiceRetriever mAppChoiceRetriever = new AppChoiceRetriever(this);
+    // TODO: save state hell. rotation deletes attachments ughhhhh probably because the command
+    //  tree is rebuilt.
+
+    public final PermissionRetriever permissionRetriever =
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? new PermissionRetriever(this) : null;
 
     private EmillaCommand mCommand;
 
@@ -186,13 +193,6 @@ public class AssistActivity extends EmillaActivity {
         setupSubmitButton();
         setupDataButtons();
         setupMoreActions();
-
-        mFileRetriever = new FileRetriever(this);
-        mMediaRetriever = new MediaRetriever(this);
-        mContactRetriever = new ContactRetriever(this);
-        mAppChoiceRetriever = new AppChoiceRetriever(this);
-        // TODO: save state hell. rotation deletes attachments ughhhhh probably because the command
-        //  tree is rebuilt.
     }
 
     @Override
