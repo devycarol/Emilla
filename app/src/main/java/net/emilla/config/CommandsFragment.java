@@ -1,5 +1,7 @@
 package net.emilla.config;
 
+import static java.util.Objects.requireNonNull;
+
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -8,10 +10,12 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.NonNull;
 import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
 
 import net.emilla.EmillaActivity;
 import net.emilla.R;
@@ -55,14 +59,29 @@ import net.emilla.command.core.Web;
 
 import java.util.Set;
 
-public class CommandsFragment extends PreferenceFragmentCompat {
+public final class CommandsFragment extends PreferenceFragmentCompat {
+
+    private EmillaActivity mActivity;
+    private PreferenceManager mPrefManager;
+    private SharedPreferences mPrefs;
+    private Resources mRes;
+    private PackageManager mPm;
+
+    @NonNull
+    private <T extends Preference> T preferenceOf(@NonNull String key) {
+        return requireNonNull(mPrefManager.findPreference(key));
+    }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.command_prefs, rootKey);
-        EmillaActivity act = (EmillaActivity) requireActivity();
-        SharedPreferences prefs = getPreferenceManager().getSharedPreferences();
-        Resources res = getResources();
+
+        mActivity = (EmillaActivity) requireActivity();
+        mPrefManager = getPreferenceManager();
+        mPrefs = mPrefManager.getSharedPreferences();
+        mRes = getResources();
+        mPm = mActivity.getPackageManager();
+
         OnPreferenceChangeListener listener = (pref, newVal) -> {
             String textKey = pref.getKey();
             String setKey = textKey.substring(0, textKey.length() - 5);
@@ -71,100 +90,94 @@ public class CommandsFragment extends PreferenceFragmentCompat {
             Set<String> aliases = Set.of(vals);
             String joined = String.join(", ", aliases);
             ((EditTextPreference) pref).setText(joined);
-            prefs.edit()
-                    .putString(textKey, joined)
-                    .putStringSet(setKey, aliases).apply();
+            mPrefs.edit()
+                  .putString(textKey, joined)
+                  .putStringSet(setKey, aliases)
+                  .apply();
             return false;
         };
-        setupCores(act, prefs, res, listener);
-        setupApps(act, prefs, res, listener);
+
+        setupCores(listener);
+        setupApps(listener);
     }
 
-    private void setupCores(EmillaActivity act, SharedPreferences prefs, Resources res,
-            OnPreferenceChangeListener listener) {
-        if (prefs == null) return;
-        setupCorePref(Call.ALIAS_TEXT_KEY, listener, prefs, res, Call.ALIASES);
-        setupCorePref(Dial.ALIAS_TEXT_KEY, listener, prefs, res, Dial.ALIASES);
-        setupCorePref(Sms.ALIAS_TEXT_KEY, listener, prefs, res,  Sms.ALIASES);
-        setupCorePref(Email.ALIAS_TEXT_KEY, listener, prefs, res, Email.ALIASES);
-        setupCorePref(Copy.ALIAS_TEXT_KEY, listener, prefs, res, Copy.ALIASES);
-        setupCorePref(Share.ALIAS_TEXT_KEY, listener, prefs, res, Share.ALIASES);
-        setupCorePref(Launch.ALIAS_TEXT_KEY, listener, prefs, res, Launch.ALIASES);
-        deactivate(Setting.ALIAS_TEXT_KEY, act);
-        deactivate(Note.ALIAS_TEXT_KEY, act);
-        deactivate(Todo.ALIAS_TEXT_KEY, act);
-        setupCorePref(Web.ALIAS_TEXT_KEY, listener, prefs, res, Web.ALIASES);
-        deactivate(Find.ALIAS_TEXT_KEY, act);
-        setupCorePref(Time.ALIAS_TEXT_KEY, listener, prefs, res, Time.ALIASES);
-        setupCorePref(Alarm.ALIAS_TEXT_KEY, listener, prefs, res, Alarm.ALIASES);
-        setupCorePref(Timer.ALIAS_TEXT_KEY, listener, prefs, res, Timer.ALIASES);
-        setupCorePref(Pomodoro.ALIAS_TEXT_KEY, listener, prefs, res, Pomodoro.ALIASES);
-        setupCorePref(Calendar.ALIAS_TEXT_KEY, listener, prefs, res, Calendar.ALIASES);
-        setupCorePref(Contact.ALIAS_TEXT_KEY, listener, prefs, res, Contact.ALIASES);
-        deactivate(Notify.ALIAS_TEXT_KEY, act);
-        setupCorePref(Calculate.ALIAS_TEXT_KEY, listener, prefs, res, Calculate.ALIASES);
-        setupCorePref(Weather.ALIAS_TEXT_KEY, listener, prefs, res, Weather.ALIASES);
-        setupCorePref(Bookmark.ALIAS_TEXT_KEY, listener, prefs, res, Bookmark.ALIASES);
-        setupCorePref(Torch.ALIAS_TEXT_KEY, listener, prefs, res, Torch.ALIASES);
-        setupCorePref(Info.ALIAS_TEXT_KEY, listener, prefs, res, Info.ALIASES);
-        setupCorePref(Toast.ALIAS_TEXT_KEY, listener, prefs, res, Toast.ALIASES);
-        deactivate("aliases_custom_text", act);
+    private void setupCores(OnPreferenceChangeListener listener) {
+        setupCorePref(Call.ALIAS_TEXT_KEY, listener, Call.ALIASES);
+        setupCorePref(Dial.ALIAS_TEXT_KEY, listener, Dial.ALIASES);
+        setupCorePref(Sms.ALIAS_TEXT_KEY, listener, Sms.ALIASES);
+        setupCorePref(Email.ALIAS_TEXT_KEY, listener, Email.ALIASES);
+        setupCorePref(Copy.ALIAS_TEXT_KEY, listener, Copy.ALIASES);
+        setupCorePref(Share.ALIAS_TEXT_KEY, listener, Share.ALIASES);
+        setupCorePref(Launch.ALIAS_TEXT_KEY, listener, Launch.ALIASES);
+        deactivate(Setting.ALIAS_TEXT_KEY);
+        deactivate(Note.ALIAS_TEXT_KEY);
+        deactivate(Todo.ALIAS_TEXT_KEY);
+        setupCorePref(Web.ALIAS_TEXT_KEY, listener, Web.ALIASES);
+        deactivate(Find.ALIAS_TEXT_KEY);
+        setupCorePref(Time.ALIAS_TEXT_KEY, listener, Time.ALIASES);
+        setupCorePref(Alarm.ALIAS_TEXT_KEY, listener, Alarm.ALIASES);
+        setupCorePref(Timer.ALIAS_TEXT_KEY, listener, Timer.ALIASES);
+        setupCorePref(Pomodoro.ALIAS_TEXT_KEY, listener, Pomodoro.ALIASES);
+        setupCorePref(Calendar.ALIAS_TEXT_KEY, listener, Calendar.ALIASES);
+        setupCorePref(Contact.ALIAS_TEXT_KEY, listener, Contact.ALIASES);
+        deactivate(Notify.ALIAS_TEXT_KEY);
+        setupCorePref(Calculate.ALIAS_TEXT_KEY, listener, Calculate.ALIASES);
+        setupCorePref(Weather.ALIAS_TEXT_KEY, listener, Weather.ALIASES);
+        setupCorePref(Bookmark.ALIAS_TEXT_KEY, listener, Bookmark.ALIASES);
+        setupCorePref(Torch.ALIAS_TEXT_KEY, listener, Torch.ALIASES);
+        setupCorePref(Info.ALIAS_TEXT_KEY, listener, Info.ALIASES);
+        setupCorePref(Toast.ALIAS_TEXT_KEY, listener, Toast.ALIASES);
+        deactivate("aliases_custom_text");
     }
 
     private void setupCorePref(String textKey, OnPreferenceChangeListener listener,
-            SharedPreferences prefs, Resources res, @ArrayRes int setId) {
-        EditTextPreference cmdPref = findPreference(textKey);
-        if (cmdPref == null) return;
+            @ArrayRes int aliases) {
+        EditTextPreference cmdPref = preferenceOf(textKey);
         String setKey = textKey.substring(0, textKey.length() - 5);
-        setupPref(cmdPref, setKey, listener, prefs, res, setId);
+        setupPref(cmdPref, setKey, listener, mRes, aliases);
     }
 
     private void setupPref(EditTextPreference cmdPref, String setKey,
-            OnPreferenceChangeListener listener, SharedPreferences prefs,
-            Resources res, @ArrayRes int setId) {
-        Set<String> aliases = prefs.getStringSet(setKey,  Set.of(res.getStringArray(setId)));
-        cmdPref.setText(String.join(", ", aliases));
+            OnPreferenceChangeListener listener, Resources res, @ArrayRes int aliases) {
+        Set<String> aliasSet = mPrefs.getStringSet(setKey, Set.of(res.getStringArray(aliases)));
+        cmdPref.setText(String.join(", ", aliasSet));
         cmdPref.setOnPreferenceChangeListener(listener);
     }
 
-    private void deactivate(String textKey, EmillaActivity act) {
-        Preference cmdPref = findPreference(textKey);
-        if (cmdPref != null) cmdPref.setOnPreferenceClickListener(pref -> {
-            act.toast("Coming soon!");
+    private void deactivate(String textKey) {
+        Preference cmdPref = preferenceOf(textKey);
+        cmdPref.setOnPreferenceClickListener(pref -> {
+            mActivity.toast("Coming soon!");
             return false;
         });
     }
 
-    private void setupApps(EmillaActivity act, SharedPreferences prefs, Resources res,
-            OnPreferenceChangeListener listener) {
-        PackageManager pm = act.getPackageManager();
-        setupAppPref(AospContacts.PKG, prefs, res, pm, listener);
-        setupAppPref(Markor.PKG, prefs, res, pm, listener);
-        setupAppPref(Firefox.PKG, prefs, res, pm, listener);
-        setupAppPref(Tor.PKG, prefs, res, pm, listener);
-        setupAppPref(Signal.PKG, prefs, res, pm, listener);
-        setupAppPref(Newpipe.PKG, prefs, res, pm, listener);
-        setupAppPref(Tubular.PKG, prefs, res, pm, listener);
-        setupAppPref(Github.PKG, prefs, res, pm, listener);
-        setupAppPref(Youtube.PKG, prefs, res, pm, listener);
-        setupAppPref(Discord.PKG, prefs, res, pm, listener);
-        setupAppPref(Outlook.PKG, prefs, res, pm, listener);
+    private void setupApps(OnPreferenceChangeListener listener) {
+        setupAppPref(AospContacts.PKG, listener);
+        setupAppPref(Markor.PKG, listener);
+        setupAppPref(Firefox.PKG, listener);
+        setupAppPref(Tor.PKG, listener);
+        setupAppPref(Signal.PKG, listener);
+        setupAppPref(Newpipe.PKG, listener);
+        setupAppPref(Tubular.PKG, listener);
+        setupAppPref(Github.PKG, listener);
+        setupAppPref(Youtube.PKG, listener);
+        setupAppPref(Discord.PKG, listener);
+        setupAppPref(Outlook.PKG, listener);
         // Todo: procedurally generate these
     }
 
-    private void setupAppPref(String pkg, SharedPreferences prefs, Resources res,
-            PackageManager pm, OnPreferenceChangeListener listener) {
-        EditTextPreference appCmdPref = findPreference("aliases_" + pkg + "_text");
-        if (appCmdPref != null) try {
-            ApplicationInfo info = pm.getApplicationInfo(pkg, 0);
-            CharSequence label = pm.getApplicationLabel(info);
-            appCmdPref.setTitle(label);
-            // this uses the application icon and doesn't account for multiple launcher icons yet
-            Drawable appIcon = pm.getApplicationIcon(pkg);
-            appCmdPref.setIcon(appIcon);
-            setupPref(appCmdPref, "aliases_" + pkg, listener, prefs, res, AppCommand.aliasId(pkg, Markor.CLS_MAIN /*Todo: procedurally generate these prefs*/));
-        } catch (PackageManager.NameNotFoundException e) {
-            appCmdPref.setVisible(false);
-        }
-    }
+    private void setupAppPref(String pkg, OnPreferenceChangeListener listener) {
+        EditTextPreference appCmdPref = preferenceOf("aliases_" + pkg + "_text");
+    try {
+        ApplicationInfo info = mPm.getApplicationInfo(pkg, 0);
+        CharSequence label = mPm.getApplicationLabel(info);
+        appCmdPref.setTitle(label);
+        // this uses the application icon and doesn't account for multiple launcher icons yet
+        Drawable appIcon = mPm.getApplicationIcon(pkg);
+        appCmdPref.setIcon(appIcon);
+        setupPref(appCmdPref, "aliases_" + pkg, listener, mRes, AppCommand.aliasId(pkg, Markor.CLS_MAIN /*Todo: procedurally generate these prefs*/));
+    } catch (PackageManager.NameNotFoundException e) {
+        appCmdPref.setVisible(false);
+    }}
 }

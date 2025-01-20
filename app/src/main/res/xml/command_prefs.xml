@@ -17,6 +17,11 @@
             android:key="aliases_bookmark_text"
             android:summary="@string/summary_bookmark"
             android:title="@string/command_bookmark" />
+        <EditTextPreference
+            android:icon="@drawable/ic_torch"
+            android:key="aliases_torch_text"
+            android:summary="@string/summary_torch"
+            android:title="@string/command_torch" />
         <Preference
             android:icon="@drawable/ic_find"
             android:key="aliases_find_text"
@@ -92,7 +97,7 @@
             android:key="aliases_notify_text"
             android:summary="@string/summary_notify"
             android:title="@string/command_notify" />
-        <EditTextPreference
+        <Preference
             android:icon="@drawable/ic_settings"
             android:key="aliases_setting_text"
             android:summary="@string/summary_setting"
