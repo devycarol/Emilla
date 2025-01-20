@@ -7,6 +7,7 @@ import static java.util.regex.Pattern.compile;
 import android.content.Intent;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -78,7 +79,7 @@ public class Pomodoro extends CoreDataCommand {
     }
 
     @Override
-    protected void run(String duration) throws EmlaBadCommandException {
+    protected void run(@NonNull String duration) throws EmlaBadCommandException {
         boolean isBreak = putDuration(duration);
         if (isBreak) mIntent.putExtra(EXTRA_MESSAGE, string(R.string.memo_pomodoro_break));
         appSucceed(mIntent);
@@ -87,12 +88,12 @@ public class Pomodoro extends CoreDataCommand {
     }
 
     @Override
-    protected void runWithData(String memo) {
+    protected void runWithData(@NonNull String memo) {
         appSucceed(mIntent.putExtra(EXTRA_MESSAGE, memo));
     }
 
     @Override
-    protected void runWithData(String duration, String memo) throws EmlaBadCommandException {
+    protected void runWithData(@NonNull String duration, @NonNull String memo) throws EmlaBadCommandException {
         boolean isBreak = putDuration(duration);
         mIntent.putExtra(EXTRA_MESSAGE, memo);
         appSucceed(mIntent);

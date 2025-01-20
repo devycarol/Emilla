@@ -14,6 +14,7 @@ import android.graphics.drawable.Drawable;
 import androidx.annotation.ArrayRes;
 import androidx.annotation.CallSuper;
 import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.PluralsRes;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
@@ -463,5 +464,5 @@ public abstract class EmillaCommand {
      * @param instruction is provided after in the command field after the command's name. It's always
      *                    space-trimmed should remain as such.
      */
-    protected abstract void run(String instruction);
+    protected abstract void run(@NonNull String instruction);
 }

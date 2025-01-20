@@ -6,6 +6,7 @@ import static android.content.Intent.EXTRA_TEXT;
 import android.content.Intent;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -102,17 +103,17 @@ public class Share extends AttachCommand implements AppChoiceReceiver {
     }
 
     @Override
-    protected void run(String app) {
+    protected void run(@NonNull String app) {
         runWithData(app); // TODO: allow to specify app, conversation, and (ideally) person
     }
 
     @Override
-    protected void runWithData(String text) {
+    protected void runWithData(@NonNull String text) {
         activity.offerChooser(this, makeIntent(text), NAME);
     }
 
     @Override
-    protected void runWithData(String app, String text) {
+    protected void runWithData(@NonNull String app, @NonNull String text) {
         runWithData(app + '\n' + text);
     }
 

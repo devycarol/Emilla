@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.view.inputmethod.EditorInfo;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -19,7 +20,7 @@ abstract class AppSearch extends AppCommand {
     }
 
     @Override
-    protected void run(String query) {
+    protected void run(@NonNull String query) {
         // Todo YouTube: instantly pull up bookmarked videos, specialized search for channels, playlists,
         //  etc. I assume the G assistant has similar functionality. If requires internet, could use
         //  bookmarks at the very least. Also, this command is broken for YouTube when a video is playing.

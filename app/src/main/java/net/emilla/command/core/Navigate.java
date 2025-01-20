@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -47,7 +48,7 @@ public class Navigate extends CategoryCommand {
     }
 
     @Override
-    protected void run(String location) {
+    protected void run(@NonNull String location) {
         // Todo: location bookmarks, navigate to contacts' addresses
         appSucceed(Apps.viewTask(Uri.parse("geo:0,0?q=" + location)));
     }

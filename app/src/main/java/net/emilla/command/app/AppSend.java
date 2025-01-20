@@ -5,6 +5,7 @@ import static android.content.Intent.EXTRA_TEXT;
 import android.content.res.Resources;
 import android.view.inputmethod.EditorInfo;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -39,7 +40,7 @@ public class AppSend extends AppCommand {
     }
 
     @Override
-    protected void run(String message) {
+    protected void run(@NonNull String message) {
         // todo: instantly pull up bookmarked videos for newpipe
         appSucceed(Apps.sendToApp(packageName).putExtra(EXTRA_TEXT, message));
     }

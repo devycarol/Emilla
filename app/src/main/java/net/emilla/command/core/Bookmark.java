@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
@@ -82,7 +83,7 @@ public class Bookmark extends CoreCommand {
     }
 
     @Override
-    protected void run(String bookmark) {
+    protected void run(@NonNull String bookmark) {
         Intent get = mBookmarkMap.get(bookmark.toLowerCase());
         if (get == null) {
             offerDialog(mBookmarkChooser);

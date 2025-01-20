@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -49,7 +50,7 @@ public class Calculate extends CategoryCommand {
     }
 
     @Override
-    protected void run(String expression) {
+    protected void run(@NonNull String expression) {
         giveText(String.valueOf(Calculator.compute(expression)), true);
     }
 }

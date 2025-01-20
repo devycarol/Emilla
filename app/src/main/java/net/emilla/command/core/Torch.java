@@ -11,6 +11,7 @@ import android.os.Build;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -90,7 +91,7 @@ public class Torch extends CoreCommand {
     }
 
     @Override
-    protected void run(String ignored) {
+    protected void run(@NonNull String ignored) {
         run(); // Todo: remove this from the interface for non-instructables.
     }
 }

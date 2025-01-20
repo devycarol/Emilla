@@ -103,17 +103,17 @@ public class Sms extends CoreDataCommand {
     }
 
     @Override
-    protected void run(String recipients) {
+    protected void run(@NonNull String recipients) {
         launchMessenger(withRecipients(mIntent, recipients));
     }
 
     @Override
-    protected void runWithData(String message) {
+    protected void runWithData(@NonNull String message) {
         launchMessenger(withMsg(mIntent, message));
     }
 
     @Override
-    protected void runWithData(String recipients, String message) {
+    protected void runWithData(@NonNull String recipients, @NonNull String message) {
         launchMessenger(withMsg(withRecipients(mIntent, recipients), message));
     }
 }

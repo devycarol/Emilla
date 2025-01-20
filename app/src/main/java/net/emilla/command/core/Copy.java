@@ -3,6 +3,7 @@ package net.emilla.command.core;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -56,7 +57,7 @@ public class Copy extends CoreCommand {
     }
 
     @Override
-    protected void run(String text) {
+    protected void run(@NonNull String text) {
         if (text.equals(mCopiedText)) {
             // todo: you could change the submit icon to indicate this behavior. it would require
             //  monitoring text changes and updating the icon each time the user types. if the

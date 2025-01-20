@@ -1,6 +1,7 @@
 package net.emilla.command.core;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -43,17 +44,17 @@ public class Notify extends CoreDataCommand {
     }
 
     @Override
-    protected void run(String text) {
+    protected void run(@NonNull String text) {
         throw new EmlaBadCommandException(NAME, R.string.error_unfinished_reminders); // Todo
     }
 
     @Override
-    protected void runWithData(String data) {
+    protected void runWithData(@NonNull String data) {
         throw new EmlaBadCommandException(NAME, R.string.error_unfinished_reminders); // Todo
     }
 
     @Override
-    protected void runWithData(String instruction, String data) {
+    protected void runWithData(@NonNull String instruction, @NonNull String data) {
         throw new EmlaBadCommandException(NAME, R.string.error_unfinished_reminders); // Todo
     }
 }

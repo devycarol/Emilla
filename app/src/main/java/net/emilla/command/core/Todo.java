@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -89,14 +90,14 @@ public class Todo extends CoreDataCommand {
     }
 
     @Override
-    protected void run(String task) {
+    protected void run(@NonNull String task) {
         // todo: newline handling unnecessary in this case
         todo(task); // TODO
         giveText(quantityString(R.plurals.toast_tasks_created, 1), false);
     }
 
     @Override
-    protected void runWithData(String tasks) {
+    protected void runWithData(@NonNull String tasks) {
         todo(tasks); // TODO
 
         int taskCount = 0;
@@ -105,7 +106,7 @@ public class Todo extends CoreDataCommand {
     }
 
     @Override
-    protected void runWithData(String task, String moreTasks) {
+    protected void runWithData(@NonNull String task, @NonNull String moreTasks) {
         todo(task + '\n' + moreTasks); // TODO
 
         int taskCount = 0;

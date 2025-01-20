@@ -3,6 +3,7 @@ package net.emilla.command;
 import android.content.DialogInterface;
 import android.view.inputmethod.EditorInfo;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
@@ -70,7 +71,7 @@ public class DuplicateCommand extends EmillaCommand implements DataCommand {
     }
 
     @Override
-    protected void run(String instruction) {
+    protected void run(@NonNull String instruction) {
         chooseCommand((dlg, which) -> {
             mCommands[which].setInstruction(instruction);
             mCommands[which].init();
@@ -81,7 +82,7 @@ public class DuplicateCommand extends EmillaCommand implements DataCommand {
     }
 
     @Override
-    public void execute(String data) {
+    public void execute(@NonNull String data) {
         chooseCommand((dlg, which) -> {
             mCommands[which].init();
             // Todo: this surely looks janky and will behave as such. Don't execute dupe commands

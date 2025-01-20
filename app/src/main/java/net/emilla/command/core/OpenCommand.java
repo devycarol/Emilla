@@ -7,6 +7,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.AssistActivity;
@@ -36,7 +37,7 @@ public abstract class OpenCommand extends CoreCommand {
     }
 
     @Override
-    protected void run(String app) {
+    protected void run(@NonNull String app) {
         // todo: optimized pre-processed search
         int appCount = mAppList.size();
 

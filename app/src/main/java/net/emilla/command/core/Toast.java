@@ -1,6 +1,7 @@
 package net.emilla.command.core;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -47,7 +48,7 @@ public class Toast extends CoreDataCommand {
     }
 
     @Override
-    protected void run(String message) {
+    protected void run(@NonNull String message) {
         String longTag = string(R.string.tag_toast_long); // todo: change this to a button
         if (message.toLowerCase().endsWith(longTag)) {
             message = message.substring(0, message.length() - longTag.length()).trim();
@@ -56,7 +57,7 @@ public class Toast extends CoreDataCommand {
     }
 
     @Override
-    protected void runWithData(String message) {
+    protected void runWithData(@NonNull String message) {
         String longTag = string(R.string.tag_toast_long); // todo way later make configurable
         if (message.toLowerCase().endsWith(longTag)) {
             message = message.substring(0, message.length() - longTag.length()).trim();
@@ -65,7 +66,7 @@ public class Toast extends CoreDataCommand {
     }
 
     @Override
-    protected void runWithData(String message, String cont) {
+    protected void runWithData(@NonNull String message, @NonNull String cont) {
         String longTag = string(R.string.tag_toast_long); // todo way later make configurable
         if (message.toLowerCase().endsWith(longTag)) {
             message = message.substring(0, message.length() - longTag.length()).trim() + '\n' + cont;

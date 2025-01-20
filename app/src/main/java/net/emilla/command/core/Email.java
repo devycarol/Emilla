@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -109,17 +110,17 @@ public class Email extends AttachCommand {
     }
 
     @Override
-    protected void run(String recipients) {
+    protected void run(@NonNull String recipients) {
         appSucceed(makeIntent(recipients));
     }
 
     @Override
-    protected void runWithData(String body) {
+    protected void runWithData(@NonNull String body) {
         appSucceed(makeIntent().putExtra(EXTRA_TEXT, body));
     }
 
     @Override
-    protected void runWithData(String recipients, String body) {
+    protected void runWithData(@NonNull String recipients, @NonNull String body) {
         appSucceed(makeIntent(recipients).putExtra(EXTRA_TEXT, body));
     }
 }

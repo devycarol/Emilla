@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -48,7 +49,7 @@ public class Dial extends CoreCommand {
     }
 
     @Override
-    protected void run(String numberOrPhoneword) {
+    protected void run(@NonNull String numberOrPhoneword) {
         appSucceed(new Intent(ACTION_DIAL).setData(parse("tel:" + numberOrPhoneword)));
     }
 }

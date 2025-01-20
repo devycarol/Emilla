@@ -6,6 +6,7 @@ import android.os.Build;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -64,7 +65,7 @@ public class Time extends CoreCommand {
     }
 
     @Override
-    protected void run(String location) {
+    protected void run(@NonNull String location) {
         throw new EmlaBadCommandException(NAME, R.string.error_unfinished_time_location_elapse); // TODO
     }
 }

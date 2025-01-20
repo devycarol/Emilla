@@ -79,7 +79,7 @@ public class Contact extends CoreDataCommand implements ContactCardReceiver {
     }
 
     @Override
-    protected void run(String person) {
+    protected void run(@NonNull String person) {
         person = extractAction(person);
         switch (mAction) {
         case VIEW -> {
@@ -112,12 +112,12 @@ public class Contact extends CoreDataCommand implements ContactCardReceiver {
     }
 
     @Override
-    protected void runWithData(String details) {
+    protected void runWithData(@NonNull String details) {
         throw new EmlaBadCommandException(NAME, R.string.error_unfinished_contact_details); // TODO
     }
 
     @Override
-    protected void runWithData(String person, String details) {
+    protected void runWithData(@NonNull String person, @NonNull String details) {
         throw new EmlaBadCommandException(NAME, R.string.error_unfinished_contact_details); // TODO
     }
 

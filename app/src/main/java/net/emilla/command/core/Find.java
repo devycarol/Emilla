@@ -3,6 +3,7 @@ package net.emilla.command.core;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -46,7 +47,7 @@ public class Find extends CoreCommand {
     }
 
     @Override
-    protected void run(String fileOrFolder) {
+    protected void run(@NonNull String fileOrFolder) {
         throw new EmlaBadCommandException(NAME, R.string.error_unfinished_file_search);
         // where all should I be searching for files? shared storage? external drives?
     }

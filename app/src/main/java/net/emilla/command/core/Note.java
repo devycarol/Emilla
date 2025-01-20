@@ -1,6 +1,7 @@
 package net.emilla.command.core;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -43,17 +44,17 @@ public class Note extends CoreDataCommand {
     }
 
     @Override
-    protected void run(String title) {
+    protected void run(@NonNull String title) {
         throw new EmlaBadCommandException(NAME, R.string.error_unfinished_notes);
     }
 
     @Override
-    protected void runWithData(String text) {
+    protected void runWithData(@NonNull String text) {
         throw new EmlaBadCommandException(NAME, R.string.error_unfinished_notes);
     }
 
     @Override
-    protected void runWithData(String title, String text) {
+    protected void runWithData(@NonNull String title, @NonNull String text) {
         throw new EmlaBadCommandException(NAME, R.string.error_unfinished_notes);
     }
 }

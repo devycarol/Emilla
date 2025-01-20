@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 
+import androidx.annotation.NonNull;
+
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.command.app.AppCommand;
@@ -110,7 +112,7 @@ public class DefaultCommandWrapper extends EmillaCommand {
     }
 
     @Override
-    protected void run(String instruction) {
+    protected void run(@NonNull String instruction) {
         mCmd.run(instruction);
     }
 }

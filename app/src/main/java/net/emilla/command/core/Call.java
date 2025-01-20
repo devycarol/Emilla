@@ -70,7 +70,7 @@ public class Call extends CoreCommand implements PhoneReceiver, PermissionReceiv
     }
 
     @Override
-    protected void run(String nameOrNumber) {
+    protected void run(@NonNull String nameOrNumber) {
         // todo: conference calls?
         // todo: immediate calls to phonewords
         if (!Features.phone(pm())) throw new EmlaFeatureException(NAME, R.string.error_feature_phone);

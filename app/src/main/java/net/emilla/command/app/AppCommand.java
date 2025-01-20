@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
@@ -68,7 +69,7 @@ public class AppCommand extends EmillaCommand {
     }
 
     @Override
-    protected void run(String ignored) {
+    protected void run(@NonNull String ignored) {
         run(); // Todo: remove this from the interface for non-instructables.
     }
 

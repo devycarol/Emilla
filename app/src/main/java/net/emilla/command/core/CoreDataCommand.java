@@ -71,6 +71,6 @@ public abstract class CoreDataCommand extends CoreCommand implements DataCommand
         else runWithData(instruction, data);
     }
 
-    protected abstract void runWithData(String data);
-    protected abstract void runWithData(String instruction, String data);
+    protected abstract void runWithData(@NonNull String data);
+    protected abstract void runWithData(@NonNull String instruction, @NonNull String data);
 }

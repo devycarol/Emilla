@@ -5,6 +5,7 @@ import static android.provider.AlarmClock.*;
 import android.content.Intent;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -68,19 +69,19 @@ public class Alarm extends CoreDataCommand {
     }
 
     @Override
-    protected void run(String time) {
+    protected void run(@NonNull String time) {
         appSucceed(makeIntent(time));
     }
 
     @Override
-    protected void runWithData(String label) {
+    protected void runWithData(@NonNull String label) {
         offerTimePicker((picker, hourOfDay, minute) -> appSucceed(makeIntent(hourOfDay, minute)
                 .putExtra(EXTRA_MESSAGE, label)));
         // todo: weekday widget
     }
 
     @Override
-    protected void runWithData(String time, String label) {
+    protected void runWithData(@NonNull String time, @NonNull String label) {
         appSucceed(makeIntent(time).putExtra(EXTRA_MESSAGE, label));
     }
 }

@@ -3,6 +3,7 @@ package net.emilla.command.core;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -45,7 +46,7 @@ public class Setting extends CoreCommand {
     }
 
     @Override
-    protected void run(String query) {
+    protected void run(@NonNull String query) {
         throw new EmlaBadCommandException(NAME, R.string.error_unfinished_setting);
     }
 }
