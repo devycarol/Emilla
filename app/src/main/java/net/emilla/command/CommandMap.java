@@ -19,6 +19,20 @@ public class CommandMap {
         mTrieMap.put(Lang.words(command), yielder);
     }
 
+    /**
+     * <p>
+     * Tries to map {@code alias} to a command associated with {@code commandName}.</p>
+     * <p>
+     * If no such command is in the map, the alias is discarded.</p>
+     *
+     * @param alias name for the custom command.
+     * @param commandName exact name of command to map {@code alias} to.
+     */
+    void putCustom(String alias, String commandName) {
+        CommandYielder exact = mTrieMap.getExact(Lang.words(commandName));
+        if (exact != null) mTrieMap.put(Lang.words(alias), exact);
+    }
+
     public EmillaCommand get(AssistActivity act, String fullCommand) {
         // TODO: why is this called twice sometimes? Is it because of rich input stuff?
         Words words = Lang.words(fullCommand);

@@ -11,6 +11,7 @@ import android.os.Bundle;
 
 import androidx.annotation.ArrayRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
@@ -56,7 +57,11 @@ import net.emilla.command.core.Todo;
 import net.emilla.command.core.Torch;
 import net.emilla.command.core.Weather;
 import net.emilla.command.core.Web;
+import net.emilla.settings.SettingVals;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public final class CommandsFragment extends PreferenceFragmentCompat {
@@ -99,6 +104,7 @@ public final class CommandsFragment extends PreferenceFragmentCompat {
 
         setupCores(listener);
         setupApps(listener);
+        setupCustoms();
     }
 
     private void setupCores(OnPreferenceChangeListener listener) {
@@ -127,7 +133,6 @@ public final class CommandsFragment extends PreferenceFragmentCompat {
         setupCorePref(Torch.ALIAS_TEXT_KEY, listener, Torch.ALIASES);
         setupCorePref(Info.ALIAS_TEXT_KEY, listener, Info.ALIASES);
         setupCorePref(Toast.ALIAS_TEXT_KEY, listener, Toast.ALIASES);
-        deactivate("aliases_custom_text");
     }
 
     private void setupCorePref(String textKey, OnPreferenceChangeListener listener,
@@ -180,4 +185,54 @@ public final class CommandsFragment extends PreferenceFragmentCompat {
     } catch (PackageManager.NameNotFoundException e) {
         appCmdPref.setVisible(false);
     }}
+
+    private void setupCustoms() {
+        EditTextPreference customCommands = preferenceOf(SettingVals.ALIASES_CUSTOM_TEXT);
+        customCommands.setOnPreferenceChangeListener((pref, newVal) -> {
+            // self-evident Todo.
+            String newText = (String) newVal;
+
+            StringBuilder reviseBldr = new StringBuilder();
+            Set<String> customEntries = new HashSet<>();
+            for (String entry : newText.split(" *\n *")) {
+                String revisedEntry = cleanCommaList(entry);
+                if (revisedEntry != null) {
+                    reviseBldr.append(revisedEntry).append('\n');
+                    customEntries.add(revisedEntry);
+                }
+                else reviseBldr.append('\n');
+            }
+
+            int len = reviseBldr.length();
+            if (len > 0) reviseBldr.setLength(len - 1);
+            // snip trailing newline
+
+            String revisedText = reviseBldr.toString();
+            ((EditTextPreference) pref).setText(revisedText);
+
+            mPrefs.edit()
+                  .putString(SettingVals.ALIASES_CUSTOM_TEXT, revisedText)
+                  .putStringSet(SettingVals.ALIASES_CUSTOM, customEntries)
+                  .apply();
+
+            return false;
+        });
+    }
+
+    @Nullable
+    private static String cleanCommaList(String entry) {
+        String[] split = entry.split("( *, *)+");
+        int len = split.length;
+        if (len >= 2) {
+            List<String> items = new ArrayList<>(len);
+
+            int i = 0;
+            do if (!split[i].isEmpty()) items.add(split[i]);
+            while (++i < len);
+
+            if (items.size() >= 2) return String.join(", ", items);
+        }
+
+        return null;
+    }
 }

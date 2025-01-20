@@ -145,7 +145,7 @@
             android:key="aliases_pomodoro_text"
             android:summary="@string/summary_pomodoro"
             android:title="@string/command_pomodoro" />
-        <Preference
+        <EditTextPreference
             android:icon="@drawable/ic_command"
             android:key="aliases_custom_text"
             android:summary="@string/summary_custom"

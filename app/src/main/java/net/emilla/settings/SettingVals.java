@@ -45,7 +45,13 @@ import net.emilla.command.core.Weather;
 import net.emilla.command.core.Web;
 import net.emilla.util.Features;
 
+import java.util.Set;
+
 public class SettingVals {
+
+    public static final String
+            ALIASES_CUSTOM = "aliases_custom",
+            ALIASES_CUSTOM_TEXT = "aliases_custom_text";
 
     public static DefaultCommandWrapper.Yielder defaultCommand(SharedPreferences prefs,
             CoreCommand.Yielder[] coreYielders) {
@@ -82,6 +88,10 @@ public class SettingVals {
             case Toast.ENTRY -> coreYielders[21];
             default -> throw new IllegalArgumentException("No such command \"" + entry + "\".");
         });
+    }
+
+    public static Set<String> customCommands(SharedPreferences prefs) {
+        return prefs.getStringSet(ALIASES_CUSTOM, Set.of());
     }
 
     public static boolean showTitleBar(SharedPreferences prefs, Resources res) {

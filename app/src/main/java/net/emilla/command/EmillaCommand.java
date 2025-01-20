@@ -112,6 +112,18 @@ public abstract class EmillaCommand {
             for (String alias : aliases) map.put(alias, yielder);
         }
 
+        Set<String> customs = SettingVals.customCommands(prefs);
+        // Todo: custom commands with preset instructions.
+        // Todo: the current string-set approach means it's anyone's guess whether custom aliases
+        //  can *successfully* map to one another at mapping time, and it guarantees they can't be
+        //  reciprocally used. that's good for now since that'd be infinite recursion, but this
+        //  should be borne in mind when creating a more robust custom command system.
+        for (String customEntry : customs) {
+            String[] split = customEntry.split(", *");
+            int lastIdx = split.length - 1;
+            for (int i = 0; i < lastIdx; ++i) map.putCustom(split[i], split[lastIdx]);
+        }
+
         return map;
     }
 
