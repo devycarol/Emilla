@@ -20,16 +20,17 @@ public abstract class CategoryCommand extends CoreCommand {
     private Intent mLaunchIntent;
     private AlertDialog.Builder mAppChooser;
 
-    protected CategoryCommand(AssistActivity act, CoreParams params,
-            String category) {
+    protected CategoryCommand(AssistActivity act, CoreParams params) {
         super(act, params);
 
         PackageManager pm = act.getPackageManager();
-        List<ResolveInfo> appList = Apps.resolveList(pm, category);
+        List<ResolveInfo> appList = Apps.resolveList(pm, makeFilter());
         mAppCount = appList.size();
         if (mAppCount == 1) mLaunchIntent = Apps.launchIntent(appList.get(0).activityInfo);
         else if (mAppCount > 1) mAppChooser = Dialogs.appChooser(act, pm, appList);
     }
+
+    protected abstract Intent makeFilter();
 
     @Override
     protected void run() {

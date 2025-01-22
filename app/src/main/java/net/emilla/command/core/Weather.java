@@ -2,6 +2,7 @@ package net.emilla.command.core;
 
 import static android.content.Intent.CATEGORY_APP_WEATHER;
 
+import android.content.Intent;
 import android.os.Build;
 import android.view.inputmethod.EditorInfo;
 
@@ -12,6 +13,7 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exception.EmlaBadCommandException;
 import net.emilla.settings.Aliases;
+import net.emilla.util.Apps;
 
 public class Weather extends CategoryCommand {
 
@@ -39,7 +41,12 @@ public class Weather extends CategoryCommand {
     }
 
     public Weather(AssistActivity act) {
-        super(act, new WeatherParams(), CATEGORY_APP_WEATHER);
+        super(act, new WeatherParams());
+    }
+
+    @Override
+    protected Intent makeFilter() {
+        return Apps.categoryTask(CATEGORY_APP_WEATHER);
     }
 
     @Override

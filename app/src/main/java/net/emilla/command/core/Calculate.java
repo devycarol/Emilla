@@ -2,6 +2,7 @@ package net.emilla.command.core;
 
 import static android.content.Intent.CATEGORY_APP_CALCULATOR;
 
+import android.content.Intent;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
@@ -10,6 +11,7 @@ import androidx.annotation.StringRes;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.settings.Aliases;
+import net.emilla.util.Apps;
 import net.emilla.util.Calculator;
 
 public class Calculate extends CategoryCommand {
@@ -38,7 +40,12 @@ public class Calculate extends CategoryCommand {
     }
 
     public Calculate(AssistActivity act) {
-        super(act, new CalculateParams(), CATEGORY_APP_CALCULATOR);
+        super(act, new CalculateParams());
+    }
+
+    @Override
+    protected Intent makeFilter() {
+        return Apps.categoryTask(CATEGORY_APP_CALCULATOR);
     }
 
     @Override

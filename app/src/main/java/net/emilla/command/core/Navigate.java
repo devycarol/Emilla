@@ -1,7 +1,6 @@
 package net.emilla.command.core;
 
-import static android.content.Intent.CATEGORY_APP_MAPS;
-
+import android.content.Intent;
 import android.net.Uri;
 import android.view.inputmethod.EditorInfo;
 
@@ -39,7 +38,12 @@ public class Navigate extends CategoryCommand {
     }
 
     public Navigate(AssistActivity act) {
-        super(act, new NavigateParams(), CATEGORY_APP_MAPS);
+        super(act, new NavigateParams());
+    }
+
+    @Override
+    protected Intent makeFilter() {
+        return Apps.viewTask(Uri.parse("geo:"));
     }
 
     @Override

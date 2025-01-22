@@ -30,8 +30,8 @@ public class Apps {
     }
 
     @NonNull
-    public static List<ResolveInfo> resolveList(PackageManager pm, String category) {
-        return pm.queryIntentActivities(categoryIntent(category), 0);
+    public static List<ResolveInfo> resolveList(PackageManager pm, Intent filter) {
+        return pm.queryIntentActivities(filter, 0);
     }
 
     public static Intent launchIntent(ActivityInfo info) {
@@ -47,7 +47,7 @@ public class Apps {
                 .setPackage(cn.getPackageName()).setComponent(cn);
     }
 
-    public static Intent categoryIntent(String category) {
+    public static Intent categoryTask(String category) {
         return new Intent(ACTION_MAIN).addCategory(CATEGORY_LAUNCHER).addCategory(category);
     }
 
