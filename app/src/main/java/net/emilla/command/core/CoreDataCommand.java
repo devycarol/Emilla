@@ -66,6 +66,7 @@ public abstract class CoreDataCommand extends CoreCommand implements DataCommand
      */
     @Override
     public final void execute(@NonNull String data) {
+        String instruction = instruction();
         if (instruction == null) runWithData(data);
         else runWithData(instruction, data);
     }

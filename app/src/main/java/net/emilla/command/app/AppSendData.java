@@ -37,6 +37,7 @@ class AppSendData extends AppSend implements DataCommand {
 
     @Override
     public void execute(String data) {
+        String instruction = instruction();
         if (instruction == null) runWithData(data);
         else runWithData(instruction, data);
     }

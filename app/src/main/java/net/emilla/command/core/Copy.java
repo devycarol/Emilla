@@ -43,8 +43,8 @@ public class Copy extends CoreCommand {
     }
 
     @Override
-    public void clean() {
-        super.clean();
+    protected void onClean() {
+        super.onClean();
         mCopiedText = null;
         // forget the copied text
     }

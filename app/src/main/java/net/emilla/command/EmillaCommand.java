@@ -55,6 +55,7 @@ import net.emilla.run.ToastGift;
 import net.emilla.settings.SettingVals;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public abstract class EmillaCommand {
@@ -129,14 +130,37 @@ public abstract class EmillaCommand {
 
     protected final AssistActivity activity;
     protected final Resources resources;
-    protected String instruction;
     private final Params mParams;
+
+    private String mInstruction;
+    private boolean mInitialized;
     private Drawable mIcon;
 
     protected EmillaCommand(AssistActivity act, Params params) {
         this.activity = act;
         this.resources = act.getResources();
         mParams = params;
+    }
+
+    final EmillaCommand instruct(String instruction) {
+        if (!Objects.equals(mInstruction, instruction)) {
+            // we don't assume this is true because input editor bugs may cause onTextChanged() to
+            // be called repeatedly for the same text.
+            mInstruction = instruction;
+            if (mInitialized) onInstruct(instruction);
+        }
+
+        return this;
+    }
+
+    protected final void setInstruction(String instruction) {
+        mInstruction = instruction;
+    }
+
+    @Deprecated
+    protected final void instructAppend(String data) {
+        if (mInstruction == null) mInstruction = data;
+        else mInstruction += '\n' + data;
     }
 
     public final void decorate(boolean setIcon) {
@@ -146,21 +170,28 @@ public abstract class EmillaCommand {
         if (setIcon) activity.setSubmitIcon(icon(), mParams.usesAppIcon());
     }
 
-    @CallSuper
-    public void init() {}
-
-    @CallSuper
-    public void clean() {}
-
-    final EmillaCommand instruct(String instruction) {
-        this.instruction = instruction;
-        return this;
+    public final void init() {
+        onInit();
+        mInitialized = true;
+        onInstruct(mInstruction);
     }
 
-    @Deprecated
-    protected final void instructAppend(String data) {
-        if (instruction == null) instruction = data;
-        else instruction += '\n' + data;
+    public final void clean() {
+        onClean();
+        mInitialized = false;
+    }
+
+    @CallSuper
+    protected void onInit() {}
+
+    @CallSuper
+    protected void onInstruct(String instruction) {}
+
+    @CallSuper
+    protected void onClean() {}
+
+    protected String instruction() {
+        return mInstruction;
     }
 
     protected String string(@StringRes int id) {
@@ -188,8 +219,8 @@ public abstract class EmillaCommand {
     }
 
     public void execute() {
-        if (instruction == null) run();
-        else run(instruction);
+        if (mInstruction == null) run();
+        else run(mInstruction);
     }
 
     /**

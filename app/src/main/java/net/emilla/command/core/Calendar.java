@@ -61,8 +61,8 @@ public class Calendar extends CoreDataCommand {
     }
 
     @Override
-    public void init() {
-        super.init();
+    protected void onInit() {
+        super.onInit();
 
         if (mLocationToggle == null) mLocationToggle = new LocationField(activity);
         else if (mLocationToggle.activated()) reshowField(LocationField.FIELD_ID);
@@ -73,8 +73,8 @@ public class Calendar extends CoreDataCommand {
     }
 
     @Override
-    public void clean() {
-        super.clean();
+    protected void onClean() {
+        super.onClean();
 
         removeAction(LocationField.ACTION_ID);
         hideField(LocationField.FIELD_ID);

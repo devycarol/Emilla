@@ -72,7 +72,7 @@ public class DuplicateCommand extends EmillaCommand implements DataCommand {
     @Override
     protected void run(String instruction) {
         chooseCommand((dlg, which) -> {
-            mCommands[which].instruct(instruction);
+            mCommands[which].setInstruction(instruction);
             mCommands[which].init();
             mCommands[which].execute();
             mCommands[which].clean();

@@ -50,8 +50,8 @@ public class Share extends AttachCommand implements AppChoiceReceiver {
     }
 
     @Override
-    public void init() {
-        super.init();
+    protected void onInit() {
+        super.onInit();
 
         if (mFileFetcher == null) mFileFetcher = new FileFetcher(activity, this, "*/*");
         giveAction(mFileFetcher);
@@ -60,8 +60,8 @@ public class Share extends AttachCommand implements AppChoiceReceiver {
     }
 
     @Override
-    public void clean() {
-        super.clean();
+    protected void onClean() {
+        super.onClean();
 
         removeAction(FileFetcher.ID);
         removeAction(MediaFetcher.ID);

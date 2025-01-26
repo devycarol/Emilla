@@ -34,7 +34,6 @@ public class CommandMap {
     }
 
     public EmillaCommand get(AssistActivity act, String fullCommand) {
-        // TODO: why is this called twice sometimes? Is it because of rich input stuff?
         Words words = Lang.words(fullCommand);
         CommandYielder get = mTrieMap.get(words);
         return get == null ? mDefaultYielder.command(act, words) : get.command(act, words);

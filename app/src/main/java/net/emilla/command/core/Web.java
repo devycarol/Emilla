@@ -54,8 +54,8 @@ public class Web extends CoreCommand {
     }
 
     @Override
-    public void init() {
-        super.init();
+    protected void onInit() {
+        super.onInit();
 
         if (mSearchEngineMap == null) {
             mSearchEngineMap = new SearchEngineParser(SettingVals.searchEngineCsv(prefs()));
@@ -63,8 +63,8 @@ public class Web extends CoreCommand {
     }
 
     @Override
-    public void clean() {
-        super.clean();
+    protected void onClean() {
+        super.onClean();
     }
 
     @Override

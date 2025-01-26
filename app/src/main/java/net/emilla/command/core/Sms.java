@@ -58,8 +58,8 @@ public class Sms extends CoreDataCommand {
     }
 
     @Override
-    public void init() {
-        super.init();
+    protected void onInit() {
+        super.onInit();
 
         if (mSubjectToggle == null) mSubjectToggle = new SubjectField(activity);
         else if (mSubjectToggle.activated()) reshowField(SubjectField.FIELD_ID);
@@ -68,8 +68,8 @@ public class Sms extends CoreDataCommand {
     }
 
     @Override
-    public void clean() {
-        super.clean();
+    protected void onClean() {
+        super.onClean();
 
         removeAction(SubjectField.ACTION_ID);
         hideField(SubjectField.FIELD_ID);

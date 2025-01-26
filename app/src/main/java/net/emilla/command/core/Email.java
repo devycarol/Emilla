@@ -52,8 +52,8 @@ public class Email extends AttachCommand {
     }
 
     @Override
-    public void init() {
-        super.init();
+    protected void onInit() {
+        super.onInit();
 
         if (mFileFetcher == null) mFileFetcher = new FileFetcher(activity, this, "*/*");
         // TODO: Thunderbird doesn't like certain filetypes. See if you can find a type statement
@@ -66,8 +66,8 @@ public class Email extends AttachCommand {
     }
 
     @Override
-    public void clean() {
-        super.clean();
+    protected void onClean() {
+        super.onClean();
 
         removeAction(FileFetcher.ID);
         removeAction(MediaFetcher.ID);

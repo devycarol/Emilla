@@ -93,15 +93,15 @@ public class DefaultCommandWrapper extends EmillaCommand {
     }
 
     @Override
-    public void init() {
-        super.init();
-        mCmd.init();
+    protected void onInit() {
+        super.onInit();
+        mCmd.onInit();
     }
 
     @Override
-    public void clean() {
-        super.clean();
-        mCmd.clean();
+    protected void onClean() {
+        super.onClean();
+        mCmd.onClean();
     }
 
     @Override

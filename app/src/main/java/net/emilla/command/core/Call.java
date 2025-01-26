@@ -98,6 +98,6 @@ public class Call extends CoreCommand implements ContactReceiver, PermissionRece
     @Override @RequiresApi(api = Build.VERSION_CODES.M)
     public void onGrant() {
         activity.suppressSuccessChime();
-        appSucceed(convertNameIntent(instruction));
+        appSucceed(convertNameIntent(instruction()));
     }
 }
