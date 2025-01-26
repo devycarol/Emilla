@@ -10,6 +10,7 @@ import android.provider.ContactsContract.Intents.Insert;
 
 import androidx.annotation.ArrayRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -55,22 +56,24 @@ public class Contact extends CoreDataCommand implements ContactCardReceiver {
         super(act, new ContactParams());
     }
 
+    @Nullable
     private String extractAction(String person) {
         // TODO LANG: replace with tri-state button
-        if (person.startsWith("create")) {
+        if (person == null) return null;
+
+        String lcPerson = person.toLowerCase();
+        if (lcPerson.startsWith("create")) {
             mAction = CREATE;
-            return person.substring(6).trim();
-        }
-        if (person.startsWith("new")) {
+            person = person.substring(6).trim();
+        } else if (lcPerson.startsWith("new")) {
             mAction = CREATE;
-            return person.substring(3).trim();
-        }
-        if (person.startsWith("edit")) {
+            person = person.substring(3).trim();
+        } else if (lcPerson.startsWith("edit")) {
             mAction = EDIT;
-            return person.substring(4).trim();
-        }
-        mAction = VIEW;
-        return person;
+            person = person.substring(4).trim();
+        } else mAction = VIEW;
+
+        return person.isEmpty() ? null : person;
     }
 
     @Override
