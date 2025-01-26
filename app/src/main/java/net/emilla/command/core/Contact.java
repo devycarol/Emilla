@@ -1,5 +1,9 @@
 package net.emilla.command.core;
 
+import static android.content.Intent.EXTRA_STREAM;
+import static android.content.Intent.EXTRA_TEXT;
+import static android.content.Intent.createChooser;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.ContactsContract.Contacts;
@@ -17,6 +21,8 @@ import net.emilla.settings.Aliases;
 import net.emilla.util.Apps;
 import net.emilla.util.Dialogs;
 
+import java.util.List;
+
 public class Contact extends CoreDataCommand implements ContactCardReceiver {
 
     public static final String ENTRY = "contact";
@@ -32,8 +38,9 @@ public class Contact extends CoreDataCommand implements ContactCardReceiver {
 
     private static final byte
             VIEW = 0,
-            CREATE = 1,
-            EDIT = 2;
+            EDIT = 1,
+            SEND = 2,
+            CREATE = 4;
 
     private static class ContactParams extends CoreDataParams {
 
@@ -53,6 +60,32 @@ public class Contact extends CoreDataCommand implements ContactCardReceiver {
         super(act, new ContactParams());
     }
 
+    @Nullable
+    private String extractAction(String person) {
+        // TODO LANG: replace with tri-state button
+        if (person == null) return null;
+
+        String lcPerson = person.toLowerCase();
+        if (lcPerson.startsWith("edit")) {
+            mAction = EDIT;
+            person = person.substring(4).trim();
+        } else if (lcPerson.startsWith("send")) {
+            mAction = SEND;
+            person = person.substring(4).trim();
+        } else if (lcPerson.startsWith("share")) {
+            mAction = SEND;
+            person = person.substring(5).trim();
+        } else if (lcPerson.startsWith("new")) {
+            mAction = CREATE;
+            person = person.substring(3).trim();
+        } else if (lcPerson.startsWith("create")) {
+            mAction = CREATE;
+            person = person.substring(6).trim();
+        } else mAction = VIEW;
+
+        return person.isEmpty() ? null : person;
+    }
+
     @Override
     protected void run() {
         activity.offerContactCards(this);
@@ -63,42 +96,10 @@ public class Contact extends CoreDataCommand implements ContactCardReceiver {
         contact(extractAction(person));
     }
 
-    @Override
-    protected void runWithData(@NonNull String details) {
-        // TODO LANG: only show data field in 'create' mode.
-        create(null, details);
-    }
-
-    @Override
-    protected void runWithData(@NonNull String person, @NonNull String details) {
-        // TODO LANG: only show data field in 'create' mode.
-        create(person, details);
-    }
-
-    @Nullable
-    private String extractAction(String person) {
-        // TODO LANG: replace with tri-state button
-        if (person == null) return null;
-
-        String lcPerson = person.toLowerCase();
-        if (lcPerson.startsWith("create")) {
-            mAction = CREATE;
-            person = person.substring(6).trim();
-        } else if (lcPerson.startsWith("new")) {
-            mAction = CREATE;
-            person = person.substring(3).trim();
-        } else if (lcPerson.startsWith("edit")) {
-            mAction = EDIT;
-            person = person.substring(4).trim();
-        } else mAction = VIEW;
-
-        return person.isEmpty() ? null : person;
-    }
-
     private void contact(@Nullable String person) {
         switch (mAction) {
-        case VIEW, EDIT -> {
-            if (person != null) offerCreate(person);
+        case VIEW, EDIT, SEND -> {
+            if (person != null) offerCreate(person, null);
             // TODO: search contacts
             //  no matches: offer to create a contact with the provided details
             //      if declined, return to the command prompt
@@ -113,6 +114,26 @@ public class Contact extends CoreDataCommand implements ContactCardReceiver {
         }
     }
 
+    @Override
+    protected void runWithData(@NonNull String details) {
+        // TODO LANG: only show data field in 'create' or 'send' mode.
+        contact(null, details);
+    }
+
+    @Override
+    protected void runWithData(@NonNull String person, @NonNull String details) {
+        // TODO LANG: only show data field in 'create' or 'send' mode.
+        contact(person, details);
+    }
+
+    private void contact(@Nullable String person, @NonNull String details) {
+        // Todo: dynamic data hint
+        if (mAction != SEND) create(person, details);
+        else if (person != null) offerCreate(person, details);
+        // TODO: search contacts
+        else activity.offerContactCards(this);
+    }
+
     private void view(@NonNull Uri contact) {
         appSucceed(Apps.viewTask(contact));
     }
@@ -121,10 +142,25 @@ public class Contact extends CoreDataCommand implements ContactCardReceiver {
         appSucceed(Apps.editTask(contact));
     }
 
-    private void offerCreate(@NonNull String person) {
+    private void send(@NonNull Uri contact, @Nullable String message) {
+        // todo: multi-selection for this particular case..
+        Intent send = Apps.sendTask(Contacts.CONTENT_VCARD_TYPE);
+
+        List<String> segments = contact.getPathSegments();
+        String lookupKey = segments.get(segments.size() - 2);
+        Uri vcard = Uri.withAppendedPath(Contacts.CONTENT_VCARD_URI, lookupKey);
+        send.putExtra(EXTRA_STREAM, vcard);
+
+        if (message != null) send.putExtra(EXTRA_TEXT, message);
+        // todo: see if it's possible to detect when apps won't accept this.
+
+        appSucceed(createChooser(send, string(NAME)));
+    }
+
+    private void offerCreate(@NonNull String person, @Nullable String details) {
         String msg = string(R.string.notice_contact_no_match, person);
         offerDialog(Dialogs.dual(activity, NAME, msg, R.string.create,
-                (dlg, which) -> create(person, null)));
+                (dlg, which) -> create(person, details)));
     }
 
     private void create(@Nullable String person, @Nullable String phoneNumber) {
@@ -139,6 +175,7 @@ public class Contact extends CoreDataCommand implements ContactCardReceiver {
     public void provide(@NonNull Uri contact) {
         switch (mAction) {
         case EDIT -> edit(contact);
+        case SEND -> send(contact, activity.dataText());
         default -> view(contact);
         }
     }
