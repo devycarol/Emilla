@@ -1,8 +1,5 @@
 package net.emilla.command.core;
 
-import static android.content.Intent.ACTION_SEARCH;
-
-import android.app.SearchManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.ContactsContract.Contacts;
@@ -16,9 +13,9 @@ import androidx.annotation.StringRes;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.content.receive.ContactCardReceiver;
-import net.emilla.exception.EmlaBadCommandException;
 import net.emilla.settings.Aliases;
 import net.emilla.util.Apps;
+import net.emilla.util.Dialogs;
 
 public class Contact extends CoreDataCommand implements ContactCardReceiver {
 
@@ -56,6 +53,28 @@ public class Contact extends CoreDataCommand implements ContactCardReceiver {
         super(act, new ContactParams());
     }
 
+    @Override
+    protected void run() {
+        activity.offerContactCards(this);
+    }
+
+    @Override
+    protected void run(@NonNull String person) {
+        contact(extractAction(person));
+    }
+
+    @Override
+    protected void runWithData(@NonNull String details) {
+        // TODO LANG: only show data field in 'create' mode.
+        create(null, details);
+    }
+
+    @Override
+    protected void runWithData(@NonNull String person, @NonNull String details) {
+        // TODO LANG: only show data field in 'create' mode.
+        create(person, details);
+    }
+
     @Nullable
     private String extractAction(String person) {
         // TODO LANG: replace with tri-state button
@@ -76,56 +95,51 @@ public class Contact extends CoreDataCommand implements ContactCardReceiver {
         return person.isEmpty() ? null : person;
     }
 
-    @Override
-    protected void run() {
-        activity.offerContactCards(this);
-    }
-
-    @Override
-    protected void run(@NonNull String person) {
-        person = extractAction(person);
+    private void contact(@Nullable String person) {
         switch (mAction) {
-        case VIEW -> {
-            appSucceed(new Intent(ACTION_SEARCH).setType(Contacts.CONTENT_TYPE)
-                    .putExtra(SearchManager.QUERY, person));
-            // Todo: fall back to the search interface if there's no ACTION_SEARCH app.
-        }
-        case CREATE -> {
-            Intent in = Apps.insertTask(Contacts.CONTENT_TYPE);
-            if (!person.isEmpty()) in.putExtra(Insert.NAME, person);
-            // Todo: further details
-            //  flexibility in where they're put, i.e. "contact new 555-9879"
-            //  different phone number types (cell, work, home, etc.)
-
-            appSucceed(in);
-        }
-        case EDIT -> {
-            if (person.isEmpty()) activity.offerContactCards(this);
-            else throw new EmlaBadCommandException(NAME, R.string.error_unfinished_contact_search);
-            // Todo: search contacts
+        case VIEW, EDIT -> {
+            if (person != null) offerCreate(person);
+            // TODO: search contacts
             //  no matches: offer to create a contact with the provided details
             //      if declined, return to the command prompt
             //  perfect match: pull up that contact
             //  multiple matches: show a selection dialog
             //  question: how specific to be?
             //      you may or may not want to match against phone numbers 'n stuff.
-            //      Searching for a card? Yes. Phone dialer or SMS? No.
             //  special case: me—maybe they want to share their own contact card
-        }}
+            else activity.offerContactCards(this);
+        }
+        case CREATE -> create(person, null);
+        }
     }
 
-    @Override
-    protected void runWithData(@NonNull String details) {
-        throw new EmlaBadCommandException(NAME, R.string.error_unfinished_contact_details); // TODO
+    private void view(@NonNull Uri contact) {
+        appSucceed(Apps.viewTask(contact));
     }
 
-    @Override
-    protected void runWithData(@NonNull String person, @NonNull String details) {
-        throw new EmlaBadCommandException(NAME, R.string.error_unfinished_contact_details); // TODO
+    private void edit(@NonNull Uri contact) {
+        appSucceed(Apps.editTask(contact));
+    }
+
+    private void offerCreate(@NonNull String person) {
+        String msg = string(R.string.notice_contact_no_match, person);
+        offerDialog(Dialogs.dual(activity, NAME, msg, R.string.create,
+                (dlg, which) -> create(person, null)));
+    }
+
+    private void create(@Nullable String person, @Nullable String phoneNumber) {
+        Intent insert = Apps.insertTask(Contacts.CONTENT_TYPE);
+        if (person != null) insert.putExtra(Insert.NAME, person);
+        if (phoneNumber != null) insert.putExtra(Insert.PHONE, phoneNumber);
+        // todo: further details. a lot of them..
+        appSucceed(insert);
     }
 
     @Override
     public void provide(@NonNull Uri contact) {
-        appSucceed(mAction == EDIT ? Apps.editTask(contact) : Apps.viewTask(contact));
+        switch (mAction) {
+        case EDIT -> edit(contact);
+        default -> view(contact);
+        }
     }
 }

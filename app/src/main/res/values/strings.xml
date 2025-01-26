@@ -10,6 +10,7 @@
     <!-- Android 'App info' link. Should match @android:string/app_info -->
     <string name="app_info">App info</string>
     <string name="call_directly">Call directly</string>
+    <string name="create">Create</string>
     <string name="always">Always</string>
     <string name="never">Never</string>
     <string name="none">None</string>
@@ -563,6 +564,8 @@
     <!-- Notice messages for unusual but tenable circumstances. -->
     <string name="notice_call_not_number">\"%1$s\" doesn\'t appear to be a phone contact, but you
         may call it as \"%2$s\".</string>
+    <string name="notice_contact_no_match">\"%s\" doesn\'t appear to be a contact, but you can make
+        one.</string>
 
     <!-- Error messages for failed commands -->
     <string name="error_bad_minutes">Invalid minute value.</string>
@@ -594,7 +597,6 @@
     <string name="error_unfinished_notes">Sorry! I don\'t know how to write notes yet.</string>
     <string name="error_unfinished_version">Sorry! This command doesn\'t support your Android version yet.</string>
     <string name="error_unfinished_contact_search">Sorry! I don\'t know how to search through contacts yet.</string>
-    <string name="error_unfinished_contact_details">Sorry! I can\'t parse contact info yet.</string>
     <string name="error_unfinished_file_search">Sorry! I don\'t know how to search for files yet.</string>
     <string name="error_unfinished_categorical_app_search">Sorry! I don\'t have categorical app search yet.</string>
     <string name="error_unfinished_timer_label">Sorry! I can\'t label the timer without a duration.</string>
