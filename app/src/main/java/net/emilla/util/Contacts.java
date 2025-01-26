@@ -8,9 +8,60 @@ import android.provider.ContactsContract.CommonDataKinds.Email;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 public final class Contacts {
+
+    private static final Pattern PHONE_NUMBERS = Pattern.compile("\\+?[0-9*#][0-9*#() \\-./,;]*");
+
+    public static boolean isPhoneNumbers(String s) {
+        return PHONE_NUMBERS.matcher(s).matches();
+    }
+
+    public static String phonewordsToNumbers(@NonNull String namesOrNumbers) {
+        // Todo: change this function to "nicely formatted number" like (208) 555-1234.
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < namesOrNumbers.length(); ++i) {
+            char c = namesOrNumbers.charAt(i);
+            if (isAcceptablePhoneChar(c)) sb.append(c);
+            else {
+                int letterDigit = keypadNumber(c);
+                if (letterDigit != -1) sb.append(letterDigit);
+                else if (sb.length() == 0 && c == '+') sb.append('+');
+            }
+        }
+        return sb.toString();
+    }
+
+    private static boolean isAcceptablePhoneChar(char c) {
+        return switch (c) {
+            case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                 '#', '*', '(', ')', ' ', '-', '.', '/', ',', ';' -> true;
+            default -> false;
+        };
+    }
+
+    private static int keypadNumber(char letter) {
+        if ('A' <= letter && letter <= 'Z') return letterDigit(letter);
+        return letterDigit((char) (letter - 'a' + 'A'));
+    }
+
+    private static int letterDigit(char uppercaseLetter) {
+        return switch (uppercaseLetter) {
+            case 'A', 'B', 'C' -> 2;
+            case 'D', 'E', 'F' -> 3;
+            case 'G', 'H', 'I' -> 4;
+            case 'J', 'K', 'L' -> 5;
+            case 'M', 'N', 'O' -> 6;
+            case 'P', 'Q', 'R', 'S' -> 7;
+            case 'T', 'U', 'V' -> 8;
+            case 'W', 'X', 'Y', 'Z' -> 9;
+            default -> -1;
+        };
+    }
 
     private static final String
         DFLT_PHONES = "Cameron, (208) 555-1234\n" +

@@ -9,6 +9,7 @@
     <string name="error">Error</string>
     <!-- Android 'App info' link. Should match @android:string/app_info -->
     <string name="app_info">App info</string>
+    <string name="call_directly">Call directly</string>
     <string name="always">Always</string>
     <string name="never">Never</string>
     <string name="none">None</string>
@@ -558,6 +559,10 @@
     <!-- Generic hint for issue reports -->
     <string name="data_hint_issue">Issue body</string>
     <string name="data_hint_message_cont">Message (cont.)</string>
+
+    <!-- Notice messages for unusual but tenable circumstances. -->
+    <string name="notice_call_not_number">\"%1$s\" doesn\'t appear to be a phone contact, but you
+        may call it as \"%2$s\".</string>
 
     <!-- Error messages for failed commands -->
     <string name="error_bad_minutes">Invalid minute value.</string>

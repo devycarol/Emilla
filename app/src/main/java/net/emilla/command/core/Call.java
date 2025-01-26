@@ -19,6 +19,7 @@ import net.emilla.exception.EmlaFeatureException;
 import net.emilla.permission.PermissionReceiver;
 import net.emilla.settings.Aliases;
 import net.emilla.util.Contacts;
+import net.emilla.util.Dialogs;
 import net.emilla.util.Features;
 import net.emilla.util.Permissions;
 
@@ -56,45 +57,58 @@ public class Call extends CoreCommand implements PhoneReceiver, PermissionReceiv
         mPhoneMap = Contacts.mapPhones(act.prefs());
     }
 
-    private static Intent makeIntent(String number) {
-        return new Intent(ACTION_CALL, Uri.parse("tel:" + number));
-    }
-
-    private Intent convertNameIntent(String nameOrNumber) {
-        return makeIntent(Contacts.fromName(nameOrNumber, mPhoneMap));
-    }
-
     @Override
     protected void run() {
-        if (Permissions.contactsFlow(activity, null)) activity.offerContactPhones(this);
+        if (Permissions.contactsFlow(activity, null)) tryCall();
+    }
+
+    private void tryCall() {
+        activity.offerContactPhones(this);
     }
 
     @Override
     protected void run(@NonNull String nameOrNumber) {
         // todo: conference calls?
-        // todo: immediate calls to phonewords
         if (!Features.phone(pm())) throw new EmlaFeatureException(NAME, R.string.error_feature_phone);
-        // TODO: handle at install - make sure it's not 'sticky' in sharedprefs in case of data
+        // todo: handle at install - make sure it's not 'sticky' in sharedprefs in case of data
         //  transfer. it shouldn't disable the "command enabled" pref, it should just be its own
         //  element of an "is the command enabled" check similar to HeliBoard's handling in its
         //  "SettingsValues" class.
-        if (Permissions.callFlow(activity, this)) {
-            activity.suppressSuccessChime();
-            appSucceed(convertNameIntent(nameOrNumber));
+        if (Permissions.callFlow(activity, this)) tryCall(nameOrNumber);
+    }
+
+    private void tryCall(@NonNull String nameOrNumber) {
+        String number = mPhoneMap.get(nameOrNumber.toLowerCase());
+        if (number == null && Contacts.isPhoneNumbers(nameOrNumber)) number = nameOrNumber;
+
+        if (number != null) call(number);
+        else {
+            String msg = string(R.string.notice_call_not_number, nameOrNumber,
+                    Contacts.phonewordsToNumbers(nameOrNumber));
+            offerDialog(Dialogs.dual(activity, NAME, msg, R.string.call_directly,
+                    (dlg, which) -> call(nameOrNumber)));
         }
+    }
+
+    private void call(String nameOrNumber) {
+        activity.suppressSuccessChime();
+        appSucceed(makeIntent(nameOrNumber));
+    }
+
+    private static Intent makeIntent(String number) {
+        return new Intent(ACTION_CALL, Uri.parse("tel:" + number));
     }
 
     @Override
     public void provide(@NonNull String phoneNumber) {
-        if (Permissions.callFlow(activity, this)) {
-            activity.suppressSuccessChime();
-            appSucceed(makeIntent(phoneNumber));
-        } else setInstruction(phoneNumber);
+        if (Permissions.callFlow(activity, this)) call(phoneNumber);
+        else setInstruction(phoneNumber);
     }
 
     @Override @RequiresApi(api = Build.VERSION_CODES.M)
     public void onGrant() {
-        activity.suppressSuccessChime();
-        appSucceed(convertNameIntent(instruction()));
+        String nameOrNumber = instruction();
+        if (nameOrNumber == null) tryCall();
+        else tryCall(nameOrNumber);
     }
 }
