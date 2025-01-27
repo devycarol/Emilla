@@ -540,6 +540,11 @@ public class AssistActivity extends EmillaActivity {
         // default to the command field
     }
 
+    @Nullable
+    public String dataText() {
+        return mDataField.length() == 0 ? null : mDataField.getText().toString();
+    }
+
     public EmillaCommand command() {
         return mCommand;
     }

@@ -10,6 +10,7 @@
     <!-- Android 'App info' link. Should match @android:string/app_info -->
     <string name="app_info">App info</string>
     <string name="call_directly">Call directly</string>
+    <string name="message_directly">Message directly</string>
     <string name="create">Create</string>
     <string name="always">Always</string>
     <string name="never">Never</string>
@@ -564,6 +565,8 @@
     <!-- Notice messages for unusual but tenable circumstances. -->
     <string name="notice_call_not_number">\"%1$s\" doesn\'t appear to be a phone contact, but you
         may call it as \"%2$s\".</string>
+    <string name="notice_sms_not_numbers">\"%1$s\" doesn\'t appear to be phone contacts, but you may
+        message \"%2$s\".</string>
     <string name="notice_contact_no_match">\"%s\" doesn\'t appear to be a contact, but you can make
         one.</string>
 

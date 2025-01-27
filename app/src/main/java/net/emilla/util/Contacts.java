@@ -9,6 +9,7 @@ import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.HashMap;
 import java.util.regex.Pattern;
@@ -103,31 +104,29 @@ public final class Contacts {
         sEmails = null;
     }
 
-    public static String fromName(String name, HashMap<String, String> contactMap) {
-        // TODO: need to warn about phonewords when using 'call' and no contact has been found
-        // When you implement this for system contacts, you'll need to allow for distinguishing between "home", "mobile", etc.
-        // when you do, make sure you allow for spaces in contact names and all that delightfully overcomplicated stuffstuff.
-        // even harder: commas/ampersands in contact names, splitting by 'and' while still allowing that word in contact names
+    private static String fromName(String name, HashMap<String, String> contactMap) {
         String get = contactMap.get(name.toLowerCase());
         return get == null ? name : get;
-        // if a word is provided with no matching contact, it's returned unedited. this is a phoneword hazard ^
     }
 
     /**
      * @param names comma-separated list of names and/or phone numbers
      * @return comma-separated list of phone numbers (or just the one if only one was provided)
      */
+    @Nullable
     public static String namesToPhones(String names, HashMap<String, String> phoneMap) {
-        // test if is valid phone number: if ya, carry on; if na, search contacts for that string.
-        // pull up best match, prompt w/ selection dialog if there are multiple good results
         if (names.contains(",") || names.contains("&")) {
             StringBuilder sb = new StringBuilder();
             String[] people = names.split(" *[,&] *");
-            for (String name : people) sb.append(fromName(name, phoneMap)).append(", ");
+            for (String name : people) {
+                String phone = phoneMap.get(name.toLowerCase());
+                if (phone == null) return null;
+                else sb.append(phone).append(", ");
+            }
             sb.setLength(sb.length() - 2);
             return sb.toString();
         }
-        return fromName(names, phoneMap);
+        return phoneMap.get(names.toLowerCase());
     }
 
     public static String[] namesToEmails(String names, HashMap<String, String> emailMap) {

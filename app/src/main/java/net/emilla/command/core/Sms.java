@@ -5,24 +5,24 @@ import static android.content.Intent.EXTRA_SUBJECT;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 
 import androidx.annotation.ArrayRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.action.field.FieldToggle;
 import net.emilla.action.field.SubjectField;
-import net.emilla.exception.EmlaFeatureException;
+import net.emilla.content.receive.PhoneReceiver;
 import net.emilla.settings.Aliases;
 import net.emilla.util.Contacts;
-import net.emilla.util.Features;
+import net.emilla.util.Dialogs;
 
 import java.util.HashMap;
 
-public class Sms extends CoreDataCommand {
+public class Sms extends CoreDataCommand implements PhoneReceiver {
 
     public static final String ENTRY = "sms";
     @StringRes
@@ -75,45 +75,62 @@ public class Sms extends CoreDataCommand {
         hideField(SubjectField.FIELD_ID);
     }
 
-    private void launchMessenger(Intent intent) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !Features.sms(pm())) {
-            throw new EmlaFeatureException(NAME, R.string.error_feature_sms);
-            // TODO: handle at install—don't store in sharedprefs in case of settings sync/transfer
-            //  It's also possible that this check isn't necessary.
-        }
-        String subject = mSubjectToggle.fieldText();
-        appSucceed(subject == null ? intent : intent.putExtra(EXTRA_SUBJECT, subject));
-        // TODO: I've not gotten this to work yet
-    }
-
-    @NonNull
-    private Intent withMsg(Intent intent, String message) {
-        return intent.putExtra("sms_body", message);
-        // overwrites any existing draft to the recipient TODO: detect, warn, confirm.
-    }
-
-    @NonNull
-    private Intent withRecipients(Intent intent, String recipients) {
-        return intent.setData(Uri.parse("smsto:" + Contacts.namesToPhones(recipients, mPhoneMap)));
-    }
-
     @Override
     protected void run() {
-        launchMessenger(mIntent);
+        tryMessage(null);
     }
 
     @Override
     protected void run(@NonNull String recipients) {
-        launchMessenger(withRecipients(mIntent, recipients));
+        tryMessage(recipients, null);
+    }
+
+    private void tryMessage(@Nullable String message) {
+        message("", message);
     }
 
     @Override
     protected void runWithData(@NonNull String message) {
-        launchMessenger(withMsg(mIntent, message));
+        tryMessage(message);
     }
 
     @Override
     protected void runWithData(@NonNull String recipients, @NonNull String message) {
-        launchMessenger(withMsg(withRecipients(mIntent, recipients), message));
+        // todo: immediate texting. likely requires a feature check and special permissions.
+        //  attachments, feedback for delivered/not delivered..
+        tryMessage(recipients, message);
+    }
+
+    private void tryMessage(@NonNull String recipients, @Nullable String message) {
+        String numbers = Contacts.namesToPhones(recipients, mPhoneMap);
+        if (numbers == null && Contacts.isPhoneNumbers(recipients)) numbers = recipients;
+
+        if (numbers != null) message(numbers, message);
+        else {
+            String toNumbers = Contacts.phonewordsToNumbers(recipients);
+            String msg = string(R.string.notice_sms_not_numbers, recipients, toNumbers);
+            // todo: better message.
+            offerDialog(Dialogs.dual(activity, NAME, msg, R.string.message_directly,
+                    (dlg, which) -> message(toNumbers, message)));
+        }
+    }
+
+    private void message(@NonNull String numbers, @Nullable String message) {
+        Intent sendTo = new Intent(ACTION_SENDTO, Uri.parse("smsto:" + numbers));
+
+        if (message != null) sendTo.putExtra("sms_body", message);
+        // overwrites any existing draft to the recipient
+        // Todo: detect, warn, confirm.
+
+        String subject = mSubjectToggle.fieldText();
+        if (subject != null) sendTo.putExtra(EXTRA_SUBJECT, subject);
+        // TODO: I've not gotten this to work yet
+
+        appSucceed(sendTo);
+    }
+
+    @Override
+    public void provide(@NonNull String phoneNumber) {
+        message(phoneNumber, activity.dataText());
     }
 }
