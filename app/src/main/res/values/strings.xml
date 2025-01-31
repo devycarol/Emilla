@@ -546,7 +546,7 @@
     <!-- Data field hints for various commands -->
     <string name="data_hint_default">Data</string>
     <string name="data_hint_message">Message body</string>
-    <string name="data_hint_email">Email body</string>
+    <string name="data_hint_email">Body</string>
     <string name="data_hint_note">Note text</string>
     <string name="data_hint_todo">Additional tasks</string>
     <string name="data_hint_pomodoro">Memo</string>
@@ -564,13 +564,13 @@
 
     <!-- Notice messages for unusual but tenable circumstances. -->
     <string name="notice_call_not_number">\"%1$s\" doesn\'t appear to be a phone contact, but you
-        may call it as \"%2$s\".</string>
-    <string name="notice_sms_not_numbers">\"%1$s\" doesn\'t appear to be phone contacts, but you may
+        can call it as \"%2$s\".</string>
+    <string name="notice_sms_not_numbers">\"%1$s\" doesn\'t appear to be phone contacts, but you can
         message \"%2$s\".</string>
     <string name="notice_contact_no_match">\"%s\" doesn\'t appear to be a contact, but you can make
         one.</string>
 
-    <!-- Error messages for failed commands -->
+    <!-- Error messages for failed commands. -->
     <string name="error_bad_minutes">Invalid minute value.</string>
     <string name="error_invalid_time">Invalid time!</string>
     <string name="error_excess_time_units">Too many time units!</string>

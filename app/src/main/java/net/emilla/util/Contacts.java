@@ -129,11 +129,13 @@ public final class Contacts {
         return phoneMap.get(names.toLowerCase());
     }
 
-    public static String[] namesToEmails(String names, HashMap<String, String> emailMap) {
+    public static String namesToEmails(String names, HashMap<String, String> emailMap) {
         String[] emails = names.replaceAll(",(\\s*,)+", ",").split("\\s*[,&]\\s*");
-        int i = -1;
-        for (String name : emails) emails[++i] = fromName(name, emailMap);
-        return emails;
+
+        StringBuilder sb = new StringBuilder(emails[0]);
+        for (int i = 1; i < emails.length; ++i) sb.append(',').append(fromName(emails[i], emailMap));
+
+        return sb.toString();
     }
 
     public static String phoneNumber(Uri contact, ContentResolver resolver) {

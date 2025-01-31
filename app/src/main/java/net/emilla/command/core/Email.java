@@ -7,15 +7,17 @@ import android.net.Uri;
 
 import androidx.annotation.ArrayRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.action.FileFetcher;
 import net.emilla.action.MediaFetcher;
+import net.emilla.action.field.FieldToggle;
+import net.emilla.action.field.SubjectField;
 import net.emilla.settings.Aliases;
 import net.emilla.util.Contacts;
-import net.emilla.util.EmailTags;
 
 import java.util.HashMap;
 
@@ -44,6 +46,7 @@ public class Email extends AttachCommand {
         }
     }
 
+    private FieldToggle mSubjectToggle;
     private HashMap<String, String> mEmailMap;
     private FileFetcher mFileFetcher;
     private MediaFetcher mMediaFetcher;
@@ -55,6 +58,10 @@ public class Email extends AttachCommand {
     @Override
     protected void onInit() {
         super.onInit();
+
+        if (mSubjectToggle == null) mSubjectToggle = new SubjectField(activity);
+        else if (mSubjectToggle.activated()) reshowField(SubjectField.FIELD_ID);
+        giveAction(mSubjectToggle);
 
         if (mFileFetcher == null) mFileFetcher = new FileFetcher(activity, this, "*/*");
         // TODO: Thunderbird doesn't like certain filetypes. See if you can find a type statement
@@ -74,53 +81,47 @@ public class Email extends AttachCommand {
         removeAction(MediaFetcher.ID);
     }
 
-    private Intent makeIntent() {
-        Intent sendTo = new Intent(ACTION_SENDTO, Uri.parse("mailto:"));
-        if (attachments == null) return sendTo;
-        Intent sendMultiple = new Intent(ACTION_SEND_MULTIPLE).putExtra(EXTRA_STREAM, attachments);
-        // TODO: should this have "mailto:"?
-        sendMultiple.setSelector(sendTo);
-        return sendMultiple;
-    }
-
-    private Intent makeIntent(String recipients) {
-        Intent intent = makeIntent();
-        String[] peopleAndSubject = recipients.split(" *\\| *", 2);
-        String people = peopleAndSubject[0];
-        // todo: validate the emails
-        people = EmailTags.putEmailsIfPresent(people, EmailTags.CC, intent, EXTRA_CC, EmailTags.EMAIL_TAGS, mEmailMap);
-        people = EmailTags.putEmailsIfPresent(people, EmailTags.BCC, intent, EXTRA_BCC, EmailTags.EMAIL_TAGS, mEmailMap);
-        if (EmailTags.itHas(people, EmailTags.TO)) {
-            String to = EmailTags.getFrom(people, EmailTags.TO, EmailTags.EMAIL_TAGS);
-            people = EmailTags.strip(people, EmailTags.TO, to);
-            if (people.isEmpty()) people = to;
-            else people = people + ',' + to;
-            intent.putExtra(EXTRA_EMAIL, Contacts.namesToEmails(people, mEmailMap));
-        } else if (!people.isEmpty()) intent.putExtra(EXTRA_EMAIL, Contacts.namesToEmails(people, mEmailMap));
-        if (peopleAndSubject.length > 1) {
-            String subject = peopleAndSubject[1];
-            if (!subject.isEmpty()) intent.putExtra(EXTRA_SUBJECT, subject);
-        }
-        return intent;
-    }
-
     @Override
     protected void run() {
-        appSucceed(makeIntent());
+        tryEmail("", null);
     }
 
     @Override
     protected void run(@NonNull String recipients) {
-        appSucceed(makeIntent(recipients));
+        tryEmail(recipients, null);
     }
 
     @Override
     protected void runWithData(@NonNull String body) {
-        appSucceed(makeIntent().putExtra(EXTRA_TEXT, body));
+        tryEmail("", body);
     }
 
     @Override
     protected void runWithData(@NonNull String recipients, @NonNull String body) {
-        appSucceed(makeIntent(recipients).putExtra(EXTRA_TEXT, body));
+        tryEmail(recipients, body);
+    }
+
+    private void tryEmail(@NonNull String recipients, @Nullable String body) {
+        email(Contacts.namesToEmails(recipients, mEmailMap), body);
+        // todo: validate the raw recipients
+    }
+
+    private void email(@NonNull String addresses, @Nullable String body) {
+        Intent email;
+        Intent sendTo = new Intent(ACTION_SENDTO, Uri.parse("mailto:"));
+        if (attachments == null) email = sendTo;
+        else {
+            email = new Intent(ACTION_SEND_MULTIPLE).putExtra(EXTRA_STREAM, attachments);
+            email.setSelector(sendTo);
+        }
+        email.putExtra(EXTRA_EMAIL, addresses.split(", *"));
+        // TODO DONTMERGE: CC and BCC fields
+
+        if (body != null) email.putExtra(EXTRA_TEXT, body);
+
+        String subject = mSubjectToggle.fieldText();
+        if (subject != null) email.putExtra(EXTRA_SUBJECT, subject);
+
+        appSucceed(email);
     }
 }
