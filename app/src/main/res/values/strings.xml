@@ -631,6 +631,21 @@
     <string name="perm_calling">Calling</string>
     <string name="perm_contacts">Contacts</string>
 
+    <!-- Contact list actions -->
+    <string name="select">Select</string>
+    <string name="deselect">Deselect</string>
+    <string name="contact_view">View details</string>
+    <string name="contact_star">Star</string>
+    <string name="contact_unstar">Unstar</string>
+
+    <string name="selected">Selected</string>
+    <string name="starred">Starred</string>
+    <string name="selected_and_starred">Selected, starred</string>
+
+    <string name="contacts_permission_required">Permission is needed to read device contacts.</string>
+    <string name="contacts_permission_button">Get permission</string>
+
+    <!-- Memos -->
     <string name="memo_pomodoro_break">Pomodoro break</string>
 
     <!-- Toast messages -->

@@ -15,12 +15,11 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.action.field.FieldToggle;
 import net.emilla.action.field.SubjectField;
+import net.emilla.contact.fragment.ContactPhonesFragment;
 import net.emilla.content.receive.PhoneReceiver;
 import net.emilla.settings.Aliases;
 import net.emilla.util.Contacts;
 import net.emilla.util.Dialogs;
-
-import java.util.HashMap;
 
 public class Sms extends CoreDataCommand implements PhoneReceiver {
 
@@ -48,18 +47,19 @@ public class Sms extends CoreDataCommand implements PhoneReceiver {
         }
     }
 
-    private final Intent mIntent = new Intent(ACTION_SENDTO, Uri.parse("smsto:"));
-    private final HashMap<String, String> mPhoneMap;
     private FieldToggle mSubjectToggle;
+    private ContactPhonesFragment mContactsFragment;
 
     public Sms(AssistActivity act) {
         super(act, new SmsParams());
-        mPhoneMap = Contacts.mapPhones(act.prefs());
     }
 
     @Override
     protected void onInit() {
         super.onInit();
+
+        if (mContactsFragment == null) mContactsFragment = ContactPhonesFragment.newInstance(true);
+        activity.giveActionBox(mContactsFragment);
 
         if (mSubjectToggle == null) mSubjectToggle = new SubjectField(activity);
         else if (mSubjectToggle.activated()) reshowField(SubjectField.FIELD_ID);
@@ -68,8 +68,16 @@ public class Sms extends CoreDataCommand implements PhoneReceiver {
     }
 
     @Override
+    protected void onInstruct(String instruction) {
+        super.onInstruct(instruction);
+        if (mContactsFragment != null) mContactsFragment.search(instruction);
+    }
+
+    @Override
     protected void onClean() {
         super.onClean();
+
+        activity.removeActionBox(mContactsFragment);
 
         removeAction(SubjectField.ACTION_ID);
         hideField(SubjectField.FIELD_ID);
@@ -86,7 +94,9 @@ public class Sms extends CoreDataCommand implements PhoneReceiver {
     }
 
     private void tryMessage(@Nullable String message) {
-        message("", message);
+        String numbers = mContactsFragment.selectedContacts();
+        if (numbers != null) message(numbers, message);
+        else message("", message);
     }
 
     @Override
@@ -102,7 +112,7 @@ public class Sms extends CoreDataCommand implements PhoneReceiver {
     }
 
     private void tryMessage(@NonNull String recipients, @Nullable String message) {
-        String numbers = Contacts.namesToPhones(recipients, mPhoneMap);
+        String numbers = mContactsFragment.selectedContacts();
         if (numbers == null && Contacts.isPhoneNumbers(recipients)) numbers = recipients;
 
         if (numbers != null) message(numbers, message);

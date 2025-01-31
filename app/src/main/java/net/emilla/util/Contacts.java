@@ -1,17 +1,13 @@
 package net.emilla.util;
 
 import android.content.ContentResolver;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract.CommonDataKinds.Email;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
-import java.util.HashMap;
 import java.util.regex.Pattern;
 
 public final class Contacts {
@@ -64,99 +60,25 @@ public final class Contacts {
         };
     }
 
-    private static final String
-        DFLT_PHONES = "Cameron, (208) 555-1234\n" +
-            "John, Johnny, (208) 555-6789\n" +
-            "Susan cell, (970) 123-4567\n" +
-            "Susan home, (970) 345-6789",
-        DFLT_EMAILS = "Devy, devydev@example.com\n" +
-            "Bugs, bugs@emilla.net";
-
-    private static HashMap<String, String> sPhones;
-    private static HashMap<String, String> sEmails;
-
-    private static HashMap<String, String> mapContacts(String csv) {
-        HashMap<String, String> contactMap = new HashMap<>();
-        for (String line : csv.split("\\s*\n\\s*")) {
-            String[] vals = line.split("\\s*,\\s*");
-            int lastIdx = vals.length - 1;
-            for (int i = 0; i < lastIdx; ++i) {
-                if (contactMap.put(vals[i].toLowerCase(), vals[lastIdx]) != null) {
-                    Log.d("Emilla Contacts", "Duplicate contact discarded. Sorry!"); // TODO
-                }
-            }
-        }
-        return contactMap;
-    }
-
-    public static HashMap<String, String> mapPhones(SharedPreferences prefs) {
-        return sPhones == null ? sPhones = mapContacts(prefs.getString("phones", DFLT_PHONES).trim())
-                : sPhones;
-    }
-
-    public static HashMap<String, String> mapEmails(SharedPreferences prefs) {
-        return sEmails == null ? sEmails = mapContacts(prefs.getString("emails", DFLT_EMAILS).trim())
-                : sEmails;
-    }
-
-    public static void clean() {
-        sPhones = null;
-        sEmails = null;
-    }
-
-    private static String fromName(String name, HashMap<String, String> contactMap) {
-        String get = contactMap.get(name.toLowerCase());
-        return get == null ? name : get;
-    }
-
-    /**
-     * @param names comma-separated list of names and/or phone numbers
-     * @return comma-separated list of phone numbers (or just the one if only one was provided)
-     */
-    @Nullable
-    public static String namesToPhones(String names, HashMap<String, String> phoneMap) {
-        if (names.contains(",") || names.contains("&")) {
-            StringBuilder sb = new StringBuilder();
-            String[] people = names.split(" *[,&] *");
-            for (String name : people) {
-                String phone = phoneMap.get(name.toLowerCase());
-                if (phone == null) return null;
-                else sb.append(phone).append(", ");
-            }
-            sb.setLength(sb.length() - 2);
-            return sb.toString();
-        }
-        return phoneMap.get(names.toLowerCase());
-    }
-
-    public static String namesToEmails(String names, HashMap<String, String> emailMap) {
-        String[] emails = names.replaceAll(",(\\s*,)+", ",").split("\\s*[,&]\\s*");
-
-        StringBuilder sb = new StringBuilder(emails[0]);
-        for (int i = 1; i < emails.length; ++i) sb.append(',').append(fromName(emails[i], emailMap));
-
-        return sb.toString();
-    }
-
-    public static String phoneNumber(Uri contact, ContentResolver resolver) {
+    public static String phoneNumber(Uri contact, ContentResolver cr) {
         Uri contentUri = Phone.CONTENT_URI;
         String[] projection = {Phone.NUMBER};
         int IDX_NUMBER = 0;
         String selection = Phone.CONTACT_ID + " = ?";
         String[] selectionArgs = {contact.getLastPathSegment()};
-        try (Cursor cur = resolver.query(contentUri, projection, selection, selectionArgs, null)) {
+        try (Cursor cur = cr.query(contentUri, projection, selection, selectionArgs, null)) {
             if (cur != null && cur.moveToFirst()) return cur.getString(IDX_NUMBER);
         }
         return null;
     }
 
-    public static String emailAddress(Uri contact, ContentResolver resolver) {
+    public static String emailAddress(Uri contact, ContentResolver cr) {
         Uri contentUri = Email.CONTENT_URI;
         String[] projection = {Email.ADDRESS};
         int IDX_ADDRESS = 0;
         String selection = Email.CONTACT_ID + " = ?";
         String[] selectionArgs = {contact.getLastPathSegment()};
-        try (Cursor cur = resolver.query(contentUri, projection, selection, selectionArgs, null)) {
+        try (Cursor cur = cr.query(contentUri, projection, selection, selectionArgs, null)) {
             if (cur != null && cur.moveToFirst()) return cur.getString(IDX_ADDRESS);
         }
         return null;

@@ -68,7 +68,6 @@ import net.emilla.run.Success;
 import net.emilla.settings.SettingVals;
 import net.emilla.system.EmillaForegroundService;
 import net.emilla.util.Apps;
-import net.emilla.util.Contacts;
 import net.emilla.util.Dialogs;
 import net.emilla.view.ActionButton;
 
@@ -436,7 +435,6 @@ public class AssistActivity extends EmillaActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Contacts.clean();
         AppChoiceRetriever.AppChooserBroadcastReceiver.deleteRetriever();
     }
 

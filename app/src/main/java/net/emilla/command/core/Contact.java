@@ -16,6 +16,7 @@ import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.contact.fragment.ContactCardsFragment;
 import net.emilla.content.receive.ContactCardReceiver;
 import net.emilla.settings.Aliases;
 import net.emilla.util.Apps;
@@ -55,9 +56,33 @@ public class Contact extends CoreDataCommand implements ContactCardReceiver {
     }
 
     private byte mAction;
+    private ContactCardsFragment mContactsFragment;
 
     public Contact(AssistActivity act) {
         super(act, new ContactParams());
+    }
+
+    @Override
+    protected void onInit() {
+        super.onInit();
+
+        if (mContactsFragment == null) mContactsFragment = ContactCardsFragment.newInstance();
+        activity.giveActionBox(mContactsFragment);
+    }
+
+    @Override
+    protected void onInstruct(String instruction) {
+        super.onInstruct(instruction);
+        mContactsFragment.search(mAction == CREATE ? null : extractAction(instruction));
+        // Todo: maybe don't show contacts for the 'create' subcommand
+    }
+
+    @Override
+    protected void onClean() {
+        super.onClean();
+
+        activity.removeActionBox(mContactsFragment);
+        mContactsFragment = null;
     }
 
     @Nullable
@@ -97,17 +122,20 @@ public class Contact extends CoreDataCommand implements ContactCardReceiver {
     }
 
     private void contact(@Nullable String person) {
+        // todo: search by other details as well? nicknames certainly. phones, addresses, phone
+        //  types (cell, work, ..) probably, depending on the command.
+        //  special cases:
+        //  - me: share your own contact card
+        //  - emergency/sos: contact emergency numbers (SOS could be its own command, "panic button")
+        //    - see calyx's panic button functionality
         switch (mAction) {
         case VIEW, EDIT, SEND -> {
-            if (person != null) offerCreate(person, null);
-            // TODO: search contacts
-            //  no matches: offer to create a contact with the provided details
-            //      if declined, return to the command prompt
-            //  perfect match: pull up that contact
-            //  multiple matches: show a selection dialog
-            //  question: how specific to be?
-            //      you may or may not want to match against phone numbers 'n stuff.
-            //  special case: me—maybe they want to share their own contact card
+            Uri contact = mContactsFragment.selectedContacts();
+            if (contact != null) switch (mAction) {
+                case VIEW -> view(contact);
+                case EDIT -> edit(contact);
+                case SEND -> send(contact, null);
+            } else if (person != null) offerCreate(person, null);
             else activity.offerContactCards(this);
         }
         case CREATE -> create(person, null);
@@ -130,7 +158,6 @@ public class Contact extends CoreDataCommand implements ContactCardReceiver {
         // Todo: dynamic data hint
         if (mAction != SEND) create(person, details);
         else if (person != null) offerCreate(person, details);
-        // TODO: search contacts
         else activity.offerContactCards(this);
     }
 

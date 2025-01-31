@@ -14,6 +14,7 @@ import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.contact.fragment.ContactPhonesFragment;
 import net.emilla.content.receive.PhoneReceiver;
 import net.emilla.exception.EmlaFeatureException;
 import net.emilla.permission.PermissionReceiver;
@@ -22,8 +23,6 @@ import net.emilla.util.Contacts;
 import net.emilla.util.Dialogs;
 import net.emilla.util.Features;
 import net.emilla.util.Permissions;
-
-import java.util.HashMap;
 
 public class Call extends CoreCommand implements PhoneReceiver, PermissionReceiver {
 
@@ -50,11 +49,32 @@ public class Call extends CoreCommand implements PhoneReceiver, PermissionReceiv
         }
     }
 
-    private final HashMap<String, String> mPhoneMap;
+    private ContactPhonesFragment mContactsFragment;
 
     public Call(AssistActivity act) {
         super(act, new CallParams());
-        mPhoneMap = Contacts.mapPhones(act.prefs());
+    }
+
+    @Override
+    protected void onInit() {
+        super.onInit();
+
+        if (mContactsFragment == null) mContactsFragment = ContactPhonesFragment.newInstance(false);
+        activity.giveActionBox(mContactsFragment);
+    }
+
+    @Override
+    protected void onInstruct(String instruction) {
+        super.onInstruct(instruction);
+        mContactsFragment.search(instruction);
+    }
+
+    @Override
+    protected void onClean() {
+        super.onClean();
+
+        activity.removeActionBox(mContactsFragment);
+        mContactsFragment = null;
     }
 
     @Override
@@ -63,14 +83,16 @@ public class Call extends CoreCommand implements PhoneReceiver, PermissionReceiv
     }
 
     private void tryCall() {
-        activity.offerContactPhones(this);
+        String number = mContactsFragment.selectedContacts();
+        if (number != null) call(number);
+        else activity.offerContactPhones(this);
     }
 
     @Override
     protected void run(@NonNull String nameOrNumber) {
         // todo: conference calls?
         if (!Features.phone(pm())) throw new EmlaFeatureException(NAME, R.string.error_feature_phone);
-        // todo: handle at install - make sure it's not 'sticky' in sharedprefs in case of data
+        // Todo: handle at install - make sure it's not 'sticky' in sharedprefs in case of data
         //  transfer. it shouldn't disable the "command enabled" pref, it should just be its own
         //  element of an "is the command enabled" check similar to HeliBoard's handling in its
         //  "SettingsValues" class.
@@ -78,7 +100,7 @@ public class Call extends CoreCommand implements PhoneReceiver, PermissionReceiv
     }
 
     private void tryCall(@NonNull String nameOrNumber) {
-        String number = mPhoneMap.get(nameOrNumber.toLowerCase());
+        String number = mContactsFragment.selectedContacts();
         if (number == null && Contacts.isPhoneNumbers(nameOrNumber)) number = nameOrNumber;
 
         if (number != null) call(number);

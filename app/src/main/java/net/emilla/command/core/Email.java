@@ -16,12 +16,11 @@ import net.emilla.action.FileFetcher;
 import net.emilla.action.MediaFetcher;
 import net.emilla.action.field.FieldToggle;
 import net.emilla.action.field.SubjectField;
+import net.emilla.contact.fragment.ContactEmailsFragment;
+import net.emilla.content.receive.EmailReceiver;
 import net.emilla.settings.Aliases;
-import net.emilla.util.Contacts;
 
-import java.util.HashMap;
-
-public class Email extends AttachCommand {
+public class Email extends AttachCommand implements EmailReceiver {
 
     public static final String ENTRY = "email";
     @StringRes
@@ -47,9 +46,9 @@ public class Email extends AttachCommand {
     }
 
     private FieldToggle mSubjectToggle;
-    private HashMap<String, String> mEmailMap;
     private FileFetcher mFileFetcher;
     private MediaFetcher mMediaFetcher;
+    private ContactEmailsFragment mContactsFragment;
 
     public Email(AssistActivity act) {
         super(act, new EmailParams());
@@ -58,6 +57,9 @@ public class Email extends AttachCommand {
     @Override
     protected void onInit() {
         super.onInit();
+
+        if (mContactsFragment == null) mContactsFragment = ContactEmailsFragment.newInstance(true);
+        activity.giveActionBox(mContactsFragment);
 
         if (mSubjectToggle == null) mSubjectToggle = new SubjectField(activity);
         else if (mSubjectToggle.activated()) reshowField(SubjectField.FIELD_ID);
@@ -69,13 +71,20 @@ public class Email extends AttachCommand {
         giveAction(mFileFetcher);
         if (mMediaFetcher == null) mMediaFetcher = new MediaFetcher(activity, this);
         giveAction(mMediaFetcher);
+    }
 
-        mEmailMap = Contacts.mapEmails(activity.prefs());
+    @Override
+    protected void onInstruct(String instruction) {
+        super.onInstruct(instruction);
+        mContactsFragment.search(instruction);
     }
 
     @Override
     protected void onClean() {
         super.onClean();
+
+        activity.removeActionBox(mContactsFragment);
+        mContactsFragment = null;
 
         removeAction(FileFetcher.ID);
         removeAction(MediaFetcher.ID);
@@ -102,7 +111,9 @@ public class Email extends AttachCommand {
     }
 
     private void tryEmail(@NonNull String recipients, @Nullable String body) {
-        email(Contacts.namesToEmails(recipients, mEmailMap), body);
+        String addresses = mContactsFragment.selectedContacts();
+        if (addresses != null) email(addresses, body);
+        else email(recipients, body);
         // todo: validate the raw recipients
     }
 
@@ -123,5 +134,10 @@ public class Email extends AttachCommand {
         if (subject != null) email.putExtra(EXTRA_SUBJECT, subject);
 
         appSucceed(email);
+    }
+
+    @Override
+    public void provide(@NonNull String emailAddress) {
+        email(emailAddress, activity.dataText());
     }
 }

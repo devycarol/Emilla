@@ -13,6 +13,7 @@
         <item name="android:buttonBarButtonStyle">@style/Widget.Emilla.Button.TextButton</item>
         <item name="textAppearanceButton">@style/TextAppearance.Emilla.Button</item>
         <item name="listDividerAlertDialog">@drawable/list_divider_emilla</item>
+        <item name="selectableItemBackground">@drawable/bg_selectable_item</item>
     </style>
 
     <style name="ActionBarStyle" parent="Widget.AppCompat.ActionBar">

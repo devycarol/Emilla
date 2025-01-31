@@ -9,16 +9,6 @@
             app:title="@string/command_default"
             app:useSimpleSummaryProvider="true" />
         <EditTextPreference
-            app:defaultValue="Cameron, (208) 555-1234\nJohn, Johnny, (208) 555-6789\nSusan mobile, (970) 123-4567\nSusan cell, (970) 345-6789"
-            app:key="phones"
-            app:summary="For now, you can provide contacts by comma-separation"
-            app:title="Contact phones" />
-        <EditTextPreference
-            app:defaultValue="Devy, devydev@example.com\nBugs, bugs@emilla.net"
-            app:key="emails"
-            app:summary="Contact names are always case-insensitive"
-            app:title="Contact emails" />
-        <EditTextPreference
             app:defaultValue="Wikipedia, wiki, w, https://wikipedia.org/wiki/%s\nGoogle, g, https://www.google.com/search?q=%s\nGoogle Images, gimages, gimage, gimg, gi, https://www.google.com/search?q=%s&amp;udm=2\nYouTube, yt, y, https://www.youtube.com/results?search_query=%s\nDuckDuckGo, ddg, dd, d, https://duckduckgo.com/?q=%s\nDuckDuckGo Images, duckimages, duckimage, duckimg, ddgimages, ddgimage, ddgimg, ddgi, ddimages, ddimage, ddimg, ddi, dimages, dimage, dimg, https://duckduckgo.com/?q=%s&amp;ia=images&amp;iax=images"
             app:key="search_engines"
             app:summary="Replace the query with '%s'"

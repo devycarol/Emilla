@@ -1,3 +1,8 @@
 package net.emilla.content.receive;
 
-public interface ContactReceiver extends ResultReceiver {}
+import android.database.Cursor;
+
+public interface ContactReceiver extends ResultReceiver {
+
+    void useContact(Cursor cur);
+}

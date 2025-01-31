@@ -20,4 +20,7 @@
     <item type="id" name="field_subject" />
     <item type="id" name="field_location" />
     <item type="id" name="field_url" />
+
+    <!-- Contacts list actions -->
+    <item type="id" name="action_toggle_star" />
 </resources>

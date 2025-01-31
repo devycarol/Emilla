@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<net.emilla.contact.ContactItemView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <FrameLayout
+        android:id="@+id/ctct_photo_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:importantForAccessibility="no"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp">
+
+        <ImageView
+            android:id="@+id/ctct_photo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:importantForAccessibility="no" />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/ctct_texts_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <!-- Todo: why doesn't applying an 'ellipsize' property work? 'marquee' is probably preferred. -->
+
+        <TextView
+            android:id="@+id/ctct_name_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textSize="16sp" />
+
+        <!-- This text can show a detail about the contact, such as phone number or email address. -->
+        <TextView
+            android:id="@+id/ctct_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:singleLine="true"
+            android:textColor="?android:attr/textColorHint"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/ctct_star"
+        android:layout_width="72dp"
+        android:layout_height="56dp"
+        android:button="@drawable/btn_star"
+        android:focusable="false"
+        android:importantForAccessibility="no" />
+
+</net.emilla.contact.ContactItemView>
