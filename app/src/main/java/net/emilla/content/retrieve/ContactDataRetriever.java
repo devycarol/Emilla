@@ -61,8 +61,10 @@ public class ContactDataRetriever extends ResultRetriever<Void, String, ContactD
 
         @Override
         protected void onActivityResult(String data, ContactDataReceiver receiver) {
-            if (data != null) receiver.provide(data);
-            else activity.toast(R.string.toast_contact_not_selected);
+            if (data != null) {
+                activity.suppressResumeChime();
+                receiver.provide(data);
+            } else activity.toast(R.string.toast_contact_not_selected);
         }
     }
 }

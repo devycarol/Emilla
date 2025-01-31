@@ -28,8 +28,10 @@ public class ContactCardRetriever extends ResultRetriever<Void, Uri, ContactCard
 
         @Override
         protected void onActivityResult(Uri contact, ContactCardReceiver receiver) {
-            if (contact != null) receiver.provide(contact);
-            else activity.toast(R.string.toast_contact_not_selected);
+            if (contact != null) {
+                activity.suppressResumeChime();
+                receiver.provide(contact);
+            } else activity.toast(R.string.toast_contact_not_selected);
         }
     }
 }
