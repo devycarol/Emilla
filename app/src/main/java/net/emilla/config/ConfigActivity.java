@@ -15,16 +15,16 @@ import net.emilla.util.Apps;
 
 public class ConfigActivity extends EmillaActivity {
 
-    private ActivityConfigBinding binding;
+    private ActivityConfigBinding mBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityConfigBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        mBinding = ActivityConfigBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
 
-        binding.navView.setOnItemReselectedListener(item -> {
+        mBinding.navView.setOnItemReselectedListener(item -> {
             boolean assistantItem = item.getItemId() == R.id.nav_assistant;
             if (assistantItem) startActivity(Apps.meTask(this, AssistActivity.class));
         });
@@ -36,6 +36,6 @@ public class ConfigActivity extends EmillaActivity {
                 R.id.nav_commands, R.id.nav_assistant, R.id.nav_settings)
                 .build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(binding.navView, navController);
+        NavigationUI.setupWithNavController(mBinding.navView, navController);
     }
 }

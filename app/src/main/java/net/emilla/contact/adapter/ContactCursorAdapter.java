@@ -60,7 +60,7 @@ public abstract class ContactCursorAdapter extends CursorAdapter {
         super(ctx, null, 0);
 
         this.resources = ctx.getResources();
-        mInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mInflater = LayoutInflater.from(ctx);
     }
 
     public abstract Uri contentUri();

@@ -12,17 +12,16 @@ import net.emilla.databinding.FragmentAssistantBinding;
 
 public class AssistantFragment extends Fragment {
 
-    private FragmentAssistantBinding binding;
+    private FragmentAssistantBinding mBinding;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentAssistantBinding.inflate(inflater, container, false);
-
-        return binding.getRoot();
+        mBinding = FragmentAssistantBinding.inflate(inflater, container, false);
+        return mBinding.getRoot();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null;
+        mBinding = null;
     }
 }
