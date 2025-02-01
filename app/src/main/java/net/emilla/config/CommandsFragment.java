@@ -1,7 +1,5 @@
 package net.emilla.config;
 
-import static java.util.Objects.requireNonNull;
-
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -10,13 +8,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.ArrayRes;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
-import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceManager;
 
 import net.emilla.EmillaActivity;
 import net.emilla.R;
@@ -65,26 +60,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public final class CommandsFragment extends PreferenceFragmentCompat {
+public final class CommandsFragment extends EmillaPreferenceFragment {
 
     private EmillaActivity mActivity;
-    private PreferenceManager mPrefManager;
     private SharedPreferences mPrefs;
     private Resources mRes;
     private PackageManager mPm;
-
-    @NonNull
-    private <T extends Preference> T preferenceOf(@NonNull String key) {
-        return requireNonNull(mPrefManager.findPreference(key));
-    }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.command_prefs, rootKey);
 
-        mActivity = (EmillaActivity) requireActivity();
-        mPrefManager = getPreferenceManager();
-        mPrefs = mPrefManager.getSharedPreferences();
+        mActivity = emillaActivity();
+        mPrefs = prefs();
         mRes = getResources();
         mPm = mActivity.getPackageManager();
 
