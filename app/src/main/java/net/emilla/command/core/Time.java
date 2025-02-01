@@ -46,7 +46,7 @@ public class Time extends CoreCommand {
 
     @Override
     protected void run() {
-        // TODO: show a widget dialog with copy button and other useful stuff
+        // Todo: show a widget dialog with copy button and other useful stuff
         // you could also show date information and call this command "date"
         String localTime;
         Format time;
