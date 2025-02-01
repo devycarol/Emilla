@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/margin_narrow"
-    android:background="@drawable/text_box"
+    android:background="@drawable/bg_edit_box"
     android:imeOptions="flagNavigatePrevious"
     android:importantForAutofill="no"
     android:inputType="textMultiLine|textCapSentences"
