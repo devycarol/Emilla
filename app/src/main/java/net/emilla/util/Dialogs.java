@@ -36,6 +36,11 @@ public final class Dialogs {
         return base(ctx, title, negLabel).setMessage(msg);
     }
 
+    public static AlertDialog.Builder base(Context ctx, @StringRes int title, CharSequence msg,
+            @StringRes int negLabel) {
+        return base(ctx, title, negLabel).setMessage(msg);
+    }
+
     public static AlertDialog.Builder base(Context ctx, CharSequence title, @StringRes int msg,
             @StringRes int negLabel) {
         return base(ctx, title, negLabel).setMessage(msg);
@@ -57,7 +62,18 @@ public final class Dialogs {
         return dual(ctx, title, msg, posLabel, android.R.string.cancel, yesClick);
     }
 
+    public static AlertDialog.Builder dual(Context ctx, @StringRes int title, CharSequence msg,
+            @StringRes int posLabel, DialogInterface.OnClickListener yesClick) {
+        return dual(ctx, title, msg, posLabel, android.R.string.cancel, yesClick);
+    }
+
     public static AlertDialog.Builder dual(Context ctx, @StringRes int title, @StringRes int msg,
+            @StringRes int posLabel, @StringRes int negLabel,
+            DialogInterface.OnClickListener yesClick) {
+        return base(ctx, title, msg, negLabel).setPositiveButton(posLabel, yesClick);
+    }
+
+    public static AlertDialog.Builder dual(Context ctx, @StringRes int title, CharSequence msg,
             @StringRes int posLabel, @StringRes int negLabel,
             DialogInterface.OnClickListener yesClick) {
         return base(ctx, title, msg, negLabel).setPositiveButton(posLabel, yesClick);

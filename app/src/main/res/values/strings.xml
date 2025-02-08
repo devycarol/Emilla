@@ -12,6 +12,7 @@
     <string name="always">Always</string>
     <string name="never">Never</string>
     <string name="none">None</string>
+    <string name="overwrite">Overwrite</string>
 
     <string name="app_name">Emilla</string>
     <string name="activity_assistant">Emilla Assistant</string>
@@ -129,7 +130,8 @@
     <string name="command_calendar">Calendar</string>
     <string name="command_notify">Notify</string>
     <string name="command_setting">Setting</string>
-    <string name="command_copy">@android:string/copy</string>
+    <string name="command_copy" translatable="false">@android:string/copy</string>
+    <string name="command_snippets">Snippets</string>
     <string name="command_share">Share</string>
     <string name="command_torch">Torch</string>
     <string name="command_info">Info</string>
@@ -174,6 +176,8 @@
     <string name="instruction_video">video title</string>
     <!-- Generic instruction for text -->
     <string name="instruction_text">text</string>
+    <!-- Generic instruction for named things -->
+    <string name="instruction_name_label">name</string>
     <!-- Generic instruction for message text -->
     <string name="instruction_message">message</string>
     <!-- Generic instruction for email apps -->
@@ -202,6 +206,7 @@
     <string name="summary_notify">Set notification reminders</string>
     <string name="summary_setting">Search and change system settings</string>
     <string name="summary_copy">Copy text and files</string>
+    <string name="summary_snippets">Stash text for later use</string>
     <string name="summary_share">Send text, images, and files to your apps</string>
     <string name="summary_torch">Toggle the flashlight</string>
     <string name="summary_info">View application details</string>
@@ -426,6 +431,20 @@
         Pressing the submit button a second time with the same text will close the assistant and get
         it out of your way.
     </string>
+    <!-- "Stash text for later use" -->
+    <string name="manual_snippets">
+        Snippet text will be copied to your clipboard. You can specify a snippet by name in the
+        instruction.\n
+        \n
+        To create a snippet, name it with the instruction and provide text in the data field.\n
+        \n
+        To remove a snippet, use the \'remove\' subcommand.\n
+        \n
+        To copy and remove a snippet, use the \'pop\' subcommand.\n
+        \n
+        Pressing the submit button a second time with the same text will close the assistant and get
+        it out of your way.
+    </string>
     <!-- "Send text, images, and files to your apps" -->
     <string name="manual_share">
         The text you enter will be sent to your device\'s \'share\' dialog. In the future, you\'ll
@@ -525,7 +544,6 @@
     <string name="data_hint_default">Data</string>
     <string name="data_hint_message">Message body</string>
     <string name="data_hint_email">Email body</string>
-    <string name="data_hint_share">Text</string>
     <string name="data_hint_note">Note text</string>
     <string name="data_hint_todo">Additional tasks</string>
     <string name="data_hint_pomodoro">Memo</string>
@@ -533,7 +551,9 @@
     <string name="data_hint_contact">Contact info</string>
     <string name="data_hint_notify">Notification text</string>
     <string name="data_hint_toast">More text</string>
-    <!-- Generic hint for "label" -->
+    <!-- Generic hint for text -->
+    <string name="data_hint_text">Text</string>
+    <!-- Generic hint for labels -->
     <string name="data_hint_label">Label</string>
     <!-- Generic hint for issue reports -->
     <string name="data_hint_issue">Issue body</string>
@@ -557,6 +577,8 @@
     <!-- Should match @android:string/noApplications. -->
     <string name="error_no_app">No apps can perform this action.</string>
     <string name="error_apps_not_found">Apps weren\'t found.</string>
+    <string name="error_no_snippet">Snippet \"%s\" doesn\'t exist, but you can make it with the data field.</string>
+    <string name="error_no_snippets">You don\'t have any saved snippets.</string>
     <string name="error_cant_uninstall">Failed to uninstall the app.</string>
     <string name="error_lmao">This is really really bad!</string>
     <string name="error_feature_phone">Your device doesn\'t support phone calls.</string>
@@ -584,6 +606,9 @@
     <string name="dialog_no_bookmarks">No bookmarks</string>
     <string name="dlg_msg_choose_media">Search will improve in future releases.</string>
     <string name="dlg_yes_add_bookmarks">Add more</string>
+
+    <string name="dialog_overwrite_snippet">Overwrite snippet</string>
+    <string name="dlg_msg_overwrite_snippet">Snippet \"%s\" already exists.</string>
 
     <string name="dialog_command">Select command</string>
 
@@ -614,6 +639,8 @@
         <item quantity="other">%d files attached.</item>
     </plurals>
     <string name="toast_contact_not_selected">A contact wasn\'t selected.</string>
+    <string name="toast_saved">Saved!</string>
+    <string name="toast_snippet_deleted">Deleted \"%s\".</string>
 
     <string name="tag_toast_long">/long</string>
 </resources>

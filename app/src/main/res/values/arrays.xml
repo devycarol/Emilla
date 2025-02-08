@@ -84,6 +84,7 @@
 <!--        <item>@string/command_notify</item>-->
         <item>@string/command_setting</item>
         <item>@string/command_copy</item>
+        <item>@string/command_snippets</item>
         <item>@string/command_share</item>
         <item>@string/command_torch</item>
         <item>@string/command_info</item>
@@ -115,6 +116,7 @@
 <!--        <item>notify</item>-->
         <item>setting</item>
         <item>copy</item>
+        <item>snippets</item>
         <item>share</item>
         <item>torch</item>
         <item>info</item>
@@ -152,6 +154,11 @@
     <string-array name="aliases_copy">
         <item>clip</item>
         <item>cp</item>
+    </string-array>
+    <string-array name="aliases_snippets">
+        <item>snippet</item>
+        <item>snip</item>
+        <item>stash</item>
     </string-array>
     <string-array name="aliases_share">
         <item>send</item>

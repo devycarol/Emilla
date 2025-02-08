@@ -50,6 +50,7 @@ import net.emilla.command.core.Pomodoro;
 import net.emilla.command.core.Setting;
 import net.emilla.command.core.Share;
 import net.emilla.command.core.Sms;
+import net.emilla.command.core.Snippets;
 import net.emilla.command.core.Time;
 import net.emilla.command.core.Timer;
 import net.emilla.command.core.Toast;
@@ -113,6 +114,7 @@ public final class CommandsFragment extends PreferenceFragmentCompat {
         setupCorePref(Sms.ALIAS_TEXT_KEY, listener, Sms.ALIASES);
         setupCorePref(Email.ALIAS_TEXT_KEY, listener, Email.ALIASES);
         setupCorePref(Copy.ALIAS_TEXT_KEY, listener, Copy.ALIASES);
+        setupCorePref(Snippets.ALIAS_TEXT_KEY, listener, Snippets.ALIASES);
         setupCorePref(Share.ALIAS_TEXT_KEY, listener, Share.ALIASES);
         setupCorePref(Launch.ALIAS_TEXT_KEY, listener, Launch.ALIASES);
         deactivate(Setting.ALIAS_TEXT_KEY);

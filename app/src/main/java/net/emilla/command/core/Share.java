@@ -38,7 +38,7 @@ public class Share extends AttachCommand implements AppChoiceReceiver {
                   R.drawable.ic_share,
                   R.string.summary_share,
                   R.string.manual_share,
-                  R.string.data_hint_share);
+                  R.string.data_hint_text);
         }
     }
 

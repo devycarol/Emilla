@@ -12,4 +12,9 @@ public class MessageFailure extends DialogFailure {
         super(act, Dialogs.base(act, title, msg, android.R.string.ok)
                 .setNeutralButton(R.string.leave, (dlg, which) -> act.cancel()));
     }
+
+    public MessageFailure(AssistActivity act, @StringRes int title, CharSequence msg) {
+        super(act, Dialogs.base(act, title, msg, android.R.string.ok)
+                .setNeutralButton(R.string.leave, (dlg, which) -> act.cancel()));
+    }
 }

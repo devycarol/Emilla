@@ -36,6 +36,7 @@ import net.emilla.command.core.Navigate;
 import net.emilla.command.core.Pomodoro;
 import net.emilla.command.core.Share;
 import net.emilla.command.core.Sms;
+import net.emilla.command.core.Snippets;
 import net.emilla.command.core.Time;
 import net.emilla.command.core.Timer;
 import net.emilla.command.core.Toast;
@@ -45,6 +46,7 @@ import net.emilla.command.core.Weather;
 import net.emilla.command.core.Web;
 import net.emilla.util.Features;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class SettingVals {
@@ -66,26 +68,27 @@ public class SettingVals {
             case Navigate.ENTRY -> coreYielders[4];
             case Launch.ENTRY -> coreYielders[5];
             case Copy.ENTRY -> coreYielders[6];
-            case Share.ENTRY -> coreYielders[7];
+            case Snippets.ENTRY -> coreYielders[7];
+            case Share.ENTRY -> coreYielders[8];
 //            case Setting.ENTRY -> coreYielders[];
 //            case Note.ENTRY -> coreYielders[];
 //            case Todo.ENTRY -> coreYielders[];
-            case Web.ENTRY -> coreYielders[8];
+            case Web.ENTRY -> coreYielders[9];
 //            case Find.ENTRY -> coreYielders[];
-            case Time.ENTRY -> coreYielders[9];
-            case Alarm.ENTRY -> coreYielders[10];
-            case Timer.ENTRY -> coreYielders[11];
-            case Pomodoro.ENTRY -> coreYielders[12];
-            case Calendar.ENTRY -> coreYielders[13];
-            case Contact.ENTRY -> coreYielders[14];
+            case Time.ENTRY -> coreYielders[10];
+            case Alarm.ENTRY -> coreYielders[11];
+            case Timer.ENTRY -> coreYielders[12];
+            case Pomodoro.ENTRY -> coreYielders[13];
+            case Calendar.ENTRY -> coreYielders[14];
+            case Contact.ENTRY -> coreYielders[15];
 //            case Notify.ENTRY -> coreYielders[];
-            case Calculate.ENTRY -> coreYielders[15];
-            case Weather.ENTRY -> coreYielders[16];
-            case Bookmark.ENTRY -> coreYielders[17];
-            case Torch.ENTRY -> coreYielders[18];
-            case Info.ENTRY -> coreYielders[19];
-            case Uninstall.ENTRY -> coreYielders[20];
-            case Toast.ENTRY -> coreYielders[21];
+            case Calculate.ENTRY -> coreYielders[16];
+            case Weather.ENTRY -> coreYielders[17];
+            case Bookmark.ENTRY -> coreYielders[18];
+            case Torch.ENTRY -> coreYielders[19];
+            case Info.ENTRY -> coreYielders[20];
+            case Uninstall.ENTRY -> coreYielders[21];
+            case Toast.ENTRY -> coreYielders[22];
             default -> throw new IllegalArgumentException("No such command \"" + entry + "\".");
         });
     }
@@ -171,5 +174,39 @@ public class SettingVals {
 
     public static String searchEngineCsv(SharedPreferences prefs) {
         return prefs.getString("search_engines", Web.DFLT_SEARCH_ENGINES);
+    }
+
+    public static Set<String> snippets(SharedPreferences prefs) {
+        return prefs.getStringSet("snippets", Snippets.DFLT_SNIPPETS);
+    }
+
+    public static String snippet(SharedPreferences prefs, String label) {
+        return prefs.getString(snippetPref(label), "");
+    }
+
+    public static Set<String> addSnippet(SharedPreferences prefs, String label, String text) {
+        Set<String> snippets = new HashSet<>(prefs.getStringSet("snippets", Snippets.DFLT_SNIPPETS));
+        snippets.add(label);
+
+        prefs.edit().putString(snippetPref(label), text)
+                    .putStringSet("snippets", snippets)
+                    .apply();
+
+        return snippets;
+    }
+
+    public static Set<String> removeSnippet(SharedPreferences prefs, String label) {
+        Set<String> snippets = new HashSet<>(prefs.getStringSet("snippets", Snippets.DFLT_SNIPPETS));
+        snippets.remove(label);
+
+        prefs.edit().remove(snippetPref(label))
+                    .putStringSet("snippets", snippets)
+                    .apply();
+
+        return snippets;
+    }
+
+    private static String snippetPref(String label) {
+        return "snippet_" + label;
     }
 }

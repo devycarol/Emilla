@@ -37,6 +37,7 @@ import net.emilla.command.core.Navigate;
 import net.emilla.command.core.Pomodoro;
 import net.emilla.command.core.Share;
 import net.emilla.command.core.Sms;
+import net.emilla.command.core.Snippets;
 import net.emilla.command.core.Time;
 import net.emilla.command.core.Timer;
 import net.emilla.command.core.Toast;
@@ -69,6 +70,7 @@ public abstract class EmillaCommand {
                 Navigate.yielder(),
                 Launch.yielder(),
                 Copy.yielder(),
+                Snippets.yielder(),
                 Share.yielder(),
 //                Setting.yielder(),
 //                Note.yielder(),
