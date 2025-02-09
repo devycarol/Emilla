@@ -123,7 +123,8 @@ public class AssistActivity extends EmillaActivity {
     private boolean
             mDontChimePend = false,
             mDontChimeResume = false,
-            mDontChimeSuccess = false;
+            mDontChimeSuccess = false,
+            mDontTryCancel = false;
     private boolean mHasTitlebar;
 
     private long mLastAssistIntentTime;
@@ -563,6 +564,13 @@ public class AssistActivity extends EmillaActivity {
         mDontChimeSuccess = true;
     }
 
+    @Deprecated
+    public void suppressBackCancellation() {
+        // Todo: don't have this. use what the 'modern' navigation system wants instead of
+        //  KEYCODE_BACK.
+        mDontTryCancel = true;
+    }
+
     public void setManual(AlertDialog manual) {
         mManual = manual;
     }
@@ -621,8 +629,16 @@ public class AssistActivity extends EmillaActivity {
     }
 
     private void cancelIfWarranted() {
+        if (!askTryCancel()) return;
+
         if (shouldCancel()) cancel();
         else offer(new DialogOffering(this, cancelDialog()));
+    }
+
+    @Deprecated
+    private boolean askTryCancel() {
+        if (mDontTryCancel) return mDontTryCancel = false;
+        return true;
     }
 
     private AlertDialog.Builder cancelDialog() {

@@ -1,5 +1,6 @@
 package net.emilla.command;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static net.emilla.chime.Chimer.RESUME;
 
 import android.app.TimePickerDialog.OnTimeSetListener;
@@ -47,6 +48,7 @@ import net.emilla.command.core.Uninstall;
 import net.emilla.command.core.Weather;
 import net.emilla.command.core.Web;
 import net.emilla.run.AppSuccess;
+import net.emilla.run.BroadcastGift;
 import net.emilla.run.DialogOffering;
 import net.emilla.run.Failure;
 import net.emilla.run.Gift;
@@ -304,6 +306,10 @@ public abstract class EmillaCommand {
         activity.give(gift);
     }
 
+    protected void giveBroadcast(Intent intent) {
+        give(new BroadcastGift(activity, intent));
+    }
+
     /**
      * Todo: these toast messages should generally be replaced with widget dialogs (which would have
      *  their own "here you go" chime). Text displayed in toasts can't be copied, and excessive
@@ -334,6 +340,12 @@ public abstract class EmillaCommand {
 
     protected void offerTimePicker(OnTimeSetListener timeSet) {
         offer(new TimePickerOffering(activity, timeSet));
+    }
+
+    protected void offerApp(Intent intent, boolean newTask) {
+        if (newTask) intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+        else activity.suppressBackCancellation();
+        activity.startActivity(intent);
     }
 
     /**

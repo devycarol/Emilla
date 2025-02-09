@@ -19,10 +19,12 @@ import net.emilla.R;
 import net.emilla.permission.PermissionReceiver;
 import net.emilla.run.PermissionFailure;
 import net.emilla.run.PermissionOffering;
+import net.emilla.util.app.TaskerIntent;
 
 public final class Permissions {
 
     public static final String[] CONTACTS = {READ_CONTACTS, WRITE_CONTACTS};
+    public static final String TASKER = TaskerIntent.PERMISSION_RUN_TASKS;
 
     /**
      * <p>
@@ -138,6 +140,63 @@ public final class Permissions {
     @RequiresApi(api = Build.VERSION_CODES.M)
     public static boolean contactsPrompt(Activity act) {
         return prompt(act, CONTACTS);
+    }
+
+    /**
+     * <p>
+     * Queries whether run Tasker tasks permission is granted and initiates request flow if it's not.</p>
+     * <p>
+     * If the system permission request is suppressed, a fail dialog will link the user to the app
+     * info screen where they can manually grant permission.</p>
+     *
+     * @param act is used to perform permission checks and construct dialogs as needed.
+     * @param receiver handler for permission retrieval.
+     * @return true if Tasker permission is granted, false if not.
+     */
+    public static boolean taskerFlow(AssistActivity act, @Nullable PermissionReceiver receiver) {
+        return flow(act, TASKER, receiver, R.string.perm_tasker);
+    }
+
+    /**
+     * <p>
+     * Queries whether run Tasker tasks permission is granted and initiates request flow if it's not.</p>
+     * <p>
+     * If permission is denied and the request dialog suppressed, the {@code onNoPrompt} function
+     * will run.</p>
+     *
+     * @param act is used to perform permission checks and requests as needed.
+     * @param receiver handler for permission retrieval.
+     * @param onNoPrompt action to perform if permission is denied and can't be requested.
+     * @return true if Tasker permission is granted, false if not.
+     */
+    public static boolean taskerFlow(AssistActivity act, @Nullable PermissionReceiver receiver,
+            Runnable onNoPrompt) {
+        return flow(act, TASKER, receiver, onNoPrompt);
+    }
+
+    /**
+     * Queries whether run Tasker tasks permission is granted.
+     *
+     * @param ctx is used to perform permission checks.
+     * @return true if Tasker permission is granted, false if not.
+     * @see Permissions#contactsFlow(AssistActivity, PermissionReceiver)
+     */
+    public static boolean tasker(Context ctx) {
+        return has(ctx, TASKER);
+    }
+
+    /**
+     * <p>
+     * Queries whether the run Tasker tasks permission prompt is available.</p>
+     * <p>
+     * This should only be used when permission isn't granted.</p>
+     *
+     * @param act is used to perform permission checks.
+     * @return true if the Tasker prompt is available, false otherwise.
+     */
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public static boolean taskerPrompt(Activity act) {
+        return prompt(act, TASKER);
     }
 
     private static boolean flow(AssistActivity act, String permission,

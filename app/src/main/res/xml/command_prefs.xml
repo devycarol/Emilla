@@ -181,6 +181,9 @@
             android:key="aliases_org.polymorphicshade.tubular_text"
             android:summary="@string/summary_video" />
         <EditTextPreference
+            android:key="aliases_net.dinglisch.android.taskerm_text"
+            android:summary="@string/summary_app_tasker" />
+        <EditTextPreference
             android:key="aliases_com.github.android_text"
             android:summary="@string/summary_issues" />
         <EditTextPreference

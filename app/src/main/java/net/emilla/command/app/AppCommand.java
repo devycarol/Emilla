@@ -4,6 +4,7 @@ import static net.emilla.util.Apps.sendToApp;
 
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -65,7 +66,11 @@ public class AppCommand extends EmillaCommand {
 
     @Override
     protected final void run() {
-        appSucceed(Apps.launchIntent(mComponentName));
+        appSucceed(launchIntent());
+    }
+
+    protected final Intent launchIntent() {
+        return Apps.launchIntent(mComponentName);
     }
 
     @Override
@@ -87,7 +92,8 @@ public class AppCommand extends EmillaCommand {
             mHasSend = sendToApp(mPkg).resolveActivity(pm) != null;
 
             mUsesInstruction = switch (mPkg) {
-                case AospContacts.PKG, Firefox.PKG, Youtube.PKG -> true; // search commands
+                case AospContacts.PKG, Firefox.PKG, Youtube.PKG, // search commands
+                     Tasker.PKG -> true;
                 case Tor.PKG -> false; // search/send intents are broken
                 case Markor.PKG -> cls.equals(Markor.CLS_MAIN);
                 // Markor can have multiple launchers, only the main should have the 'send' property.
@@ -115,6 +121,7 @@ public class AppCommand extends EmillaCommand {
                 case Signal.PKG -> new Signal(act, this);
                 case Newpipe.PKG -> new Newpipe(act, this);
                 case Tubular.PKG -> new Tubular(act, this);
+                case Tasker.PKG -> new Tasker(act, this);
                 case Github.PKG -> new Github(act, this);
                 case Youtube.PKG -> new Youtube(act, this);
                 case Discord.PKG -> new Discord(act, this);
@@ -150,6 +157,7 @@ public class AppCommand extends EmillaCommand {
             case Signal.PKG -> Signal.ALIASES;
             case Newpipe.PKG -> Newpipe.ALIASES;
             case Tubular.PKG -> Tubular.ALIASES;
+            case Tasker.PKG -> Tasker.ALIASES;
             case Github.PKG -> Github.ALIASES;
             case Youtube.PKG -> Youtube.ALIASES;
             case Discord.PKG -> Discord.ALIASES;

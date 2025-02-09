@@ -237,6 +237,9 @@
     <string-array name="aliases_tubular">
         <item>tub</item>
     </string-array>
+    <string-array name="aliases_tasker">
+        <item>tsk</item>
+    </string-array>
     <string-array name="aliases_github">
         <item>git</item>
     </string-array>

@@ -24,6 +24,7 @@ import net.emilla.command.app.Markor;
 import net.emilla.command.app.Newpipe;
 import net.emilla.command.app.Outlook;
 import net.emilla.command.app.Signal;
+import net.emilla.command.app.Tasker;
 import net.emilla.command.app.Tor;
 import net.emilla.command.app.Tubular;
 import net.emilla.command.app.Youtube;
@@ -155,6 +156,7 @@ public final class CommandsFragment extends EmillaPreferenceFragment {
         setupAppPref(Signal.PKG, listener);
         setupAppPref(Newpipe.PKG, listener);
         setupAppPref(Tubular.PKG, listener);
+        setupAppPref(Tasker.PKG, listener);
         setupAppPref(Github.PKG, listener);
         setupAppPref(Youtube.PKG, listener);
         setupAppPref(Discord.PKG, listener);

@@ -187,6 +187,7 @@
     <string name="instruction_app_email">email body</string>
     <!-- Generic instruction for code issues -->
     <string name="instruction_issue">issue body</string>
+    <string name="instruction_app_tasker">task name</string>
 
     <!-- Command summaries -->
     <string name="summary_web">Search the internet</string>
@@ -230,6 +231,7 @@
     <!-- Generic summary for code issue app commands -->
     <string name="summary_issues">Write code issues</string>
     <string name="summary_app_aosp_contacts">Search contacts</string>
+    <string name="summary_app_tasker">Run tasks</string>
 
     <!-- Command manuals. These are typically presented with the command's respective 'summary'
          string. -->
@@ -536,6 +538,17 @@
         \n
         Submitting without instruction will launch the app normally.
     </string>
+    <!-- "Run tasks" -->
+    <string name="manual_app_tasker">
+        Your instruction will search for a task to run. An exact match will run immediately.\n
+        \n
+        Any lines in the data field will be sent as parameters.\n
+        \n
+        To simply show a list of tasks, use the \'list\'/\'run\' subcommand with no further search
+        terms.\n
+        \n
+        Tasker\'s Misc &gt; Allow External Access setting is required.
+    </string>
 
     <!-- Locale-sensitive grammars. For instance, English words are space-separated but Chinese characters aren't. -->
     <!-- Please let me know if your locale requires more nuance for this. -->
@@ -561,6 +574,7 @@
     <!-- Generic hint for issue reports -->
     <string name="data_hint_issue">Issue body</string>
     <string name="data_hint_message_cont">Message (cont.)</string>
+    <string name="data_hint_app_tasker">Parameters</string>
 
     <!-- Notice messages for unusual but tenable circumstances. -->
     <string name="notice_call_not_number">\"%1$s\" doesn\'t appear to be a phone contact, but you
@@ -608,6 +622,12 @@
     <string name="error_unknown">Unknown error</string>
     <string name="error_bug_report_please">Please submit the bug report!</string>
     <string name="email_bug_report">Email report</string>
+    <!-- App-specific errors -->
+    <string name="error_tasker_not_enabled">Tasker isn\'t enabled.</string>
+    <string name="error_tasker_blocked">External access isn\'t enabled in Tasker.</string>
+    <string name="error_tasker_no_permission">Tasker hasn\'t granted permission to run tasks.</string>
+    <string name="error_tasker_no_receiver">Tasker receive tasks. This is probably a Tasker bug.</string>
+    <string name="error_tasker_no_tasks">No tasks matching \"%s\" were found.</string>
 
     <!-- Alert dialogs -->
     <string name="dialog_app">Select application</string>
@@ -620,6 +640,10 @@
     <string name="dialog_overwrite_snippet">Overwrite snippet</string>
     <string name="dlg_msg_overwrite_snippet">Snippet \"%s\" already exists.</string>
 
+    <string name="dialog_tasker_select_task">Select task</string>
+    <string name="dlg_yes_tasker_open">Open Tasker</string>
+    <string name="dlg_yes_tasker_external_access_settings">Tasker settings</string>
+
     <string name="dialog_command">Select command</string>
 
     <!-- The user may use the back button or gesture to confirm the exit dialog. -->
@@ -630,6 +654,7 @@
     <!-- Permission labels  -->
     <string name="perm_calling">Calling</string>
     <string name="perm_contacts">Contacts</string>
+    <string name="perm_tasker">Tasker</string>
 
     <!-- Contact list actions -->
     <string name="select">Select</string>
