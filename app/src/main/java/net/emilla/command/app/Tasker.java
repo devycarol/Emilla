@@ -15,6 +15,7 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.command.DataCommand;
 import net.emilla.lang.Lang;
+import net.emilla.lang.Lines;
 import net.emilla.run.DialogFailure;
 import net.emilla.run.MessageFailure;
 import net.emilla.util.Dialogs;
@@ -197,11 +198,7 @@ public final class Tasker extends AppCommand implements DataCommand {
     private void runTask(@NonNull String taskName, @Nullable String params) {
         TaskerIntent in = new TaskerIntent(taskName);
         if (params != null) {
-            for (String param : params.split("\n")) if (!param.isBlank()) {
-                // todo: Tasker allows multiline params.. could have an encoded line iterator
-                //  similar to the CsvLine construct.
-                in.addParameter(param);
-            }
+            for (String param : new Lines(params, false)) in.addParameter(param);
         }
         giveBroadcast(in);
     }

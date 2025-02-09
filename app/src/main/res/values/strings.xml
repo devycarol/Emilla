@@ -542,7 +542,9 @@
     <string name="manual_app_tasker">
         Your instruction will search for a task to run. An exact match will run immediately.\n
         \n
-        Any lines in the data field will be sent as parameters.\n
+        Any lines in the data field will be sent as parameters. To have multiple lines in a
+        parameter, put a \'\\\' character at the end of the line. To have backslashes, double them
+        \'\\\\\'.\n
         \n
         To simply show a list of tasks, use the \'list\'/\'run\' subcommand with no further search
         terms.\n

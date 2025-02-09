@@ -143,7 +143,6 @@ public final class CsvLine implements Iterable<String> {
                         sb.append('\\');
                         escape = false;
                     } else escape = true;
-                    ++pos;
                 }
                 case ',' -> {
                     if (!escape) {
@@ -153,13 +152,12 @@ public final class CsvLine implements Iterable<String> {
 
                     sb.append(',');
                     escape = false;
-                    ++pos;
                 }
                 default -> {
                     sb.append(c);
                     escape = false;
-                    ++pos;
                 }}
+                ++pos;
             }
 
             // End of line reached
