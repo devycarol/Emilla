@@ -65,8 +65,8 @@ public class Todo extends CoreDataCommand {
     }
 
     private void todo(String task) /* todo FRICK + filenotfound */ {
-        ContentResolver cr = activity.getContentResolver();
     try {
+        ContentResolver cr = contentResolver();
         InputStream is = requireNonNull(cr.openInputStream(mUri)); // todo null safety ???
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 

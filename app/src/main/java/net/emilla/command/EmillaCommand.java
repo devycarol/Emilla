@@ -3,6 +3,7 @@ package net.emilla.command;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 import android.app.TimePickerDialog.OnTimeSetListener;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -224,6 +225,10 @@ public abstract class EmillaCommand {
 
     protected final PackageManager pm() {
         return activity.getPackageManager();
+    }
+
+    protected final ContentResolver contentResolver() {
+        return activity.getContentResolver();
     }
 
     public final void execute() {

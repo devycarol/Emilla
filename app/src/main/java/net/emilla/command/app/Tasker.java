@@ -1,6 +1,5 @@
 package net.emilla.command.app;
 
-import android.content.ContentResolver;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
@@ -106,9 +105,8 @@ public final class Tasker extends AppCommand implements DataCommand {
     }
 
     private void searchRun(@NonNull String task, @Nullable String params) {
-        ContentResolver cr = activity.getContentResolver();
         String[] projection = {COL_TASK_NAME, COL_PROJECT_NAME};
-        Cursor cur = cr.query(CONTENT_URI, projection, null, null, null);
+        Cursor cur = contentResolver().query(CONTENT_URI, projection, null, null, null);
 
         if (cur == null) {
             failMessage(string(R.string.error_tasker_no_tasks, task));
