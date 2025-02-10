@@ -18,37 +18,37 @@ import java.util.List;
 
 public final class Dialogs {
 
-    private static AlertDialog.Builder base(Context ctx, CharSequence title, @StringRes int negLabel) {
+    private static AlertDialog.Builder base(Context ctx, CharSequence title, @StringRes int noLabel) {
         return new AlertDialog.Builder(ctx).setTitle(title)
-                .setNegativeButton(negLabel, (dlg, which) -> dlg.cancel());
+                .setNegativeButton(noLabel, (dlg, which) -> dlg.cancel());
         // Todo: don't require to call the cancel listener.
     }
 
     private static AlertDialog.Builder base(Context ctx, @StringRes int title,
-            @StringRes int negLabel) {
+            @StringRes int noLabel) {
         return new AlertDialog.Builder(ctx).setTitle(title)
-                .setNegativeButton(negLabel, (dlg, which) -> dlg.cancel());
+                .setNegativeButton(noLabel, (dlg, which) -> dlg.cancel());
         // Todo: don't require to call the cancel listener.
     }
 
     public static AlertDialog.Builder base(Context ctx, @StringRes int title, @StringRes int msg,
-            @StringRes int negLabel) {
-        return base(ctx, title, negLabel).setMessage(msg);
+            @StringRes int noLabel) {
+        return base(ctx, title, noLabel).setMessage(msg);
     }
 
     public static AlertDialog.Builder base(Context ctx, @StringRes int title, CharSequence msg,
-            @StringRes int negLabel) {
-        return base(ctx, title, negLabel).setMessage(msg);
+            @StringRes int noLabel) {
+        return base(ctx, title, noLabel).setMessage(msg);
     }
 
     public static AlertDialog.Builder base(Context ctx, CharSequence title, @StringRes int msg,
-            @StringRes int negLabel) {
-        return base(ctx, title, negLabel).setMessage(msg);
+            @StringRes int noLabel) {
+        return base(ctx, title, noLabel).setMessage(msg);
     }
 
     public static AlertDialog.Builder base(Context ctx, CharSequence title, CharSequence msg,
-            @StringRes int negLabel) {
-        return base(ctx, title, negLabel).setMessage(msg);
+            @StringRes int noLabel) {
+        return base(ctx, title, noLabel).setMessage(msg);
     }
 
     public static AlertDialog.Builder list(AssistActivity act, @StringRes int title,
@@ -62,30 +62,29 @@ public final class Dialogs {
     }
 
     public static AlertDialog.Builder dual(AssistActivity act, @StringRes int title,
-            @StringRes int msg, @StringRes int posLabel, DialogInterface.OnClickListener yesClick) {
-        return dual(act, title, msg, posLabel, android.R.string.cancel, yesClick);
-    }
-
-    public static AlertDialog.Builder dual(AssistActivity act, @StringRes int title,
-            CharSequence msg, @StringRes int posLabel, DialogInterface.OnClickListener yesClick) {
-        return dual(act, title, msg, posLabel, android.R.string.cancel, yesClick);
-    }
-
-    public static AlertDialog.Builder dual(AssistActivity act, @StringRes int title,
-            @StringRes int msg, @StringRes int posLabel, @StringRes int negLabel,
-            DialogInterface.OnClickListener yesClick) {
-        return base(act, title, msg, negLabel).setPositiveButton(posLabel, (dlg, which) -> {
+            @StringRes int msg, @StringRes int yesLabel, DialogInterface.OnClickListener yesClick) {
+        return base(act, title, msg, android.R.string.cancel)
+                .setPositiveButton(yesLabel, (dlg, which) -> {
             yesClick.onClick(dlg, which);
-            act.onCloseDialog();
+            act.onCloseDialog(); // Todo: don't require this.
         });
     }
 
     public static AlertDialog.Builder dual(AssistActivity act, @StringRes int title,
-            CharSequence msg, @StringRes int posLabel, @StringRes int negLabel,
-            DialogInterface.OnClickListener yesClick) {
-        return base(act, title, msg, negLabel).setPositiveButton(posLabel, (dlg, which) -> {
+            CharSequence msg, @StringRes int yesLabel, DialogInterface.OnClickListener yesClick) {
+        return base(act, title, msg, android.R.string.cancel)
+                .setPositiveButton(yesLabel, (dlg, which) -> {
             yesClick.onClick(dlg, which);
-            act.onCloseDialog();
+            act.onCloseDialog(); // Todo: don't require this.
+        });
+    }
+
+    public static AlertDialog.Builder dual(AssistActivity act, CharSequence title,
+            @StringRes int msg, @StringRes int yesLabel, DialogInterface.OnClickListener yesClick) {
+        return base(act, title, msg, android.R.string.cancel)
+                .setPositiveButton(yesLabel, (dlg, which) -> {
+            yesClick.onClick(dlg, which);
+            act.onCloseDialog(); // Todo: don't require this.
         });
     }
 

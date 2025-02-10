@@ -8,7 +8,6 @@ import androidx.annotation.StringRes;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.run.CopyGift;
-import net.emilla.run.MessageFailure;
 import net.emilla.settings.Aliases;
 import net.emilla.settings.SettingVals;
 import net.emilla.util.Dialogs;
@@ -142,10 +141,9 @@ public class Snippets extends CoreDataCommand {
 
                 mUsedSnippet = label;
                 snippetAction(label, lcLabel);
-            } else fail(new MessageFailure(activity, NAME, string(R.string.error_no_snippet, label)));
-        } else if (mSnippetNames.isEmpty()) {
-            fail(new MessageFailure(activity, NAME, R.string.error_no_snippets));
-        } else {
+            } else failMessage(string(R.string.error_no_snippet, label));
+        } else if (mSnippetNames.isEmpty()) failMessage(R.string.error_no_snippets);
+        else {
             String[] items = mSnippetNames.toArray(new String[0]);
             offerDialog(Dialogs.list(activity, NAME, items,
                     (dlg, which) -> snippetAction(items[which], items[which])));
@@ -171,7 +169,7 @@ public class Snippets extends CoreDataCommand {
     @Override
     protected void runWithData(@NonNull String text) {
         if (mSnippetNames.isEmpty()) {
-            fail(new MessageFailure(activity, NAME, R.string.error_no_snippets));
+            failMessage(R.string.error_no_snippets);
             return;
         }
 

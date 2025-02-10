@@ -5,6 +5,7 @@ import static net.emilla.chime.Chimer.RESUME;
 
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -49,14 +50,17 @@ import net.emilla.command.core.Weather;
 import net.emilla.command.core.Web;
 import net.emilla.run.AppSuccess;
 import net.emilla.run.BroadcastGift;
+import net.emilla.run.DialogFailure;
 import net.emilla.run.DialogOffering;
 import net.emilla.run.Failure;
 import net.emilla.run.Gift;
+import net.emilla.run.MessageFailure;
 import net.emilla.run.Offering;
 import net.emilla.run.Success;
 import net.emilla.run.TimePickerOffering;
 import net.emilla.run.ToastGift;
 import net.emilla.settings.SettingVals;
+import net.emilla.util.Dialogs;
 
 import java.util.List;
 import java.util.Objects;
@@ -356,6 +360,19 @@ public abstract class EmillaCommand {
      */
     protected void fail(Failure failure) {
         activity.fail(failure);
+    }
+
+    protected void failDialog(@StringRes int msg, @StringRes int yesLabel,
+            DialogInterface.OnClickListener yesClick) {
+        fail(new DialogFailure(activity, Dialogs.dual(activity, name(), msg, yesLabel, yesClick)));
+    }
+
+    protected void failMessage(@StringRes int msg) {
+        fail(new MessageFailure(activity, name(), msg));
+    }
+
+    protected void failMessage(CharSequence msg) {
+        fail(new MessageFailure(activity, name(), msg));
     }
 
     /*==========================*

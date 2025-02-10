@@ -16,8 +16,6 @@ import net.emilla.R;
 import net.emilla.command.DataCommand;
 import net.emilla.lang.Lang;
 import net.emilla.lang.Lines;
-import net.emilla.run.DialogFailure;
-import net.emilla.run.MessageFailure;
 import net.emilla.util.Dialogs;
 import net.emilla.util.Permissions;
 import net.emilla.util.app.TaskerIntent;
@@ -97,14 +95,13 @@ public final class Tasker extends AppCommand implements DataCommand {
     private void trySearchRun(@NonNull String task, @Nullable String params) {
         switch (TaskerIntent.testStatus(activity)) {
         case OK -> searchRun(task, params);
-        case NOT_ENABLED -> fail(new DialogFailure(activity, Dialogs.dual(activity, R.string.error,
-                R.string.error_tasker_not_enabled, R.string.dlg_yes_tasker_open,
-                (dlg, which) -> offerApp(launchIntent(), true))));
-        case NO_ACCESS -> fail(new DialogFailure(activity, Dialogs.dual(activity, R.string.error,
-                R.string.error_tasker_blocked, R.string.dlg_yes_tasker_external_access_settings,
-                (dlg, which) -> offerApp(TaskerIntent.getExternalAccessPrefsIntent(), false), false)));
+        case NOT_ENABLED -> failDialog(R.string.error_tasker_not_enabled,
+                R.string.dlg_yes_tasker_open, (dlg, which) -> offerApp(launchIntent(), true));
+        case NO_ACCESS -> failDialog(R.string.error_tasker_blocked,
+                R.string.dlg_yes_tasker_external_access_settings,
+                (dlg, which) -> offerApp(TaskerIntent.getExternalAccessPrefsIntent(), false));
         case NO_PERMISSION -> Permissions.taskerFlow(activity, () -> trySearchRun(task, params));
-        case NO_RECEIVER -> fail(new MessageFailure(activity, R.string.error, R.string.error_tasker_no_receiver));
+        case NO_RECEIVER -> failMessage(R.string.error_tasker_no_receiver);
         }
     }
 
@@ -114,8 +111,7 @@ public final class Tasker extends AppCommand implements DataCommand {
         Cursor cur = cr.query(CONTENT_URI, projection, null, null, null);
 
         if (cur == null) {
-            String msg = string(R.string.error_tasker_no_tasks, task);
-            fail(new MessageFailure(activity, R.string.error, msg));
+            failMessage(string(R.string.error_tasker_no_tasks, task));
             return;
         }
 
@@ -135,8 +131,7 @@ public final class Tasker extends AppCommand implements DataCommand {
         cur.close();
 
         if (tasks.isEmpty()) {
-            String msg = string(R.string.error_tasker_no_tasks, task);
-            fail(new MessageFailure(activity, R.string.error, msg));
+            failMessage(string(R.string.error_tasker_no_tasks, task));
             return;
         }
 

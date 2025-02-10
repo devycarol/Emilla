@@ -91,7 +91,7 @@ public class DuplicateCommand extends EmillaCommand implements DataCommand {
         });
     }
 
-    private void chooseCommand(DialogInterface.OnClickListener listener) {
-        offerDialog(Dialogs.list(activity, R.string.dialog_command, mLabels, listener));
+    private void chooseCommand(DialogInterface.OnClickListener onChoose) {
+        offerDialog(Dialogs.list(activity, R.string.dialog_command, mLabels, onChoose));
     }
 }

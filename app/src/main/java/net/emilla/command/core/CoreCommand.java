@@ -14,7 +14,6 @@ import net.emilla.AssistActivity;
 import net.emilla.command.CommandYielder;
 import net.emilla.command.EmillaCommand;
 import net.emilla.lang.Lang;
-import net.emilla.run.MessageFailure;
 import net.emilla.settings.Aliases;
 
 import java.util.Set;
@@ -31,10 +30,6 @@ public abstract class CoreCommand extends EmillaCommand {
     @Override @Deprecated
     protected String dupeLabel() {
         return string(mParams.mName) + " (Emilla command)";
-    }
-
-    protected void fail(@StringRes int msg) {
-        fail(new MessageFailure(activity, mParams.mName, msg));
     }
 
     public static class Yielder extends CommandYielder {

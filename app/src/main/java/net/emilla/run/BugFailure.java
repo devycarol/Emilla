@@ -26,7 +26,7 @@ public class BugFailure extends DialogFailure {
     private static AlertDialog.Builder makeDialog(AssistActivity act, RuntimeException e,
             CharSequence commandName) {
         return Dialogs.dual(act, R.string.error_unknown, R.string.error_bug_report_please,
-                R.string.email_bug_report, android.R.string.cancel, (dlg, which) -> {
+                R.string.email_bug_report, (dlg, which) -> {
                     emailBugReport(act, e, "unknown error in the " + commandName + " command");
                 }).setNeutralButton(R.string.leave, (dlg, which) -> act.cancel());
     }
