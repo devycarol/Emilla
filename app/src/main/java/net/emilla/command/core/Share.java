@@ -2,6 +2,7 @@ package net.emilla.command.core;
 
 import static android.content.Intent.EXTRA_STREAM;
 import static android.content.Intent.EXTRA_TEXT;
+import static net.emilla.chime.Chimer.RESUME;
 
 import android.content.Intent;
 
@@ -123,6 +124,6 @@ public class Share extends AttachCommand implements AppChoiceReceiver {
             activity.finishAndRemoveTask();
             activity.suppressPendingChime();
         });
-        else resume();
+        else chime(RESUME);
     }
 }

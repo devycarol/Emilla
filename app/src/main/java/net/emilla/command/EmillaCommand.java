@@ -1,7 +1,6 @@
 package net.emilla.command;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static net.emilla.chime.Chimer.RESUME;
 
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
@@ -199,35 +198,35 @@ public abstract class EmillaCommand {
     @CallSuper
     protected void onClean() {}
 
-    protected String instruction() {
+    protected final String instruction() {
         return mInstruction;
     }
 
-    protected String string(@StringRes int id) {
+    protected final String string(@StringRes int id) {
         return resources.getString(id);
     }
 
-    protected String string(@StringRes int id, Object ... formatArgs) {
+    protected final String string(@StringRes int id, Object ... formatArgs) {
         return resources.getString(id, formatArgs);
     }
 
-    protected String quantityString(@PluralsRes int id, int quantity) {
+    protected final String quantityString(@PluralsRes int id, int quantity) {
         return resources.getQuantityString(id, quantity, quantity);
     }
 
-    protected String[] stringArray(@ArrayRes int id) {
+    protected final String[] stringArray(@ArrayRes int id) {
         return resources.getStringArray(id);
     }
 
-    protected SharedPreferences prefs() {
+    protected final SharedPreferences prefs() {
         return activity.prefs();
     }
 
-    protected PackageManager pm() {
+    protected final PackageManager pm() {
         return activity.getPackageManager();
     }
 
-    public void execute() {
+    public final void execute() {
         if (mInstruction == null) run();
         else run(mInstruction);
     }
@@ -240,32 +239,28 @@ public abstract class EmillaCommand {
      * @param text is shown as a toast notification at the bottom of the screen. Don't use
      *             hard-coded text.
      */
-    protected void toast(CharSequence text) {
+    protected final void toast(CharSequence text) {
         activity.toast(text);
     }
 
-    protected void chime(byte id) {
+    protected final void chime(byte id) {
         activity.chime(id);
     }
 
-    protected void giveAction(QuickAction action) {
+    protected final void giveAction(QuickAction action) {
         activity.addAction(action);
     }
 
-    protected void reshowField(@IdRes int id) {
+    protected final void reshowField(@IdRes int id) {
         activity.reshowField(id);
     }
 
-    protected void hideField(@IdRes int id) {
+    protected final void hideField(@IdRes int id) {
         activity.hideField(id);
     }
 
-    protected void removeAction(@IdRes int id) {
+    protected final void removeAction(@IdRes int id) {
         activity.removeAction(id);
-    }
-
-    protected void resume() {
-        chime(RESUME);
     }
 
     /*======================================================================================*
@@ -275,7 +270,7 @@ public abstract class EmillaCommand {
     /**
      * Simply close the assistant :)
      */
-    protected void succeed() {
+    protected final void succeed() {
         activity.succeed(activity::finishAndRemoveTask);
     }
 
@@ -285,7 +280,7 @@ public abstract class EmillaCommand {
      *
      * @param success finishes the work of the assistant.
      */
-    protected void succeed(Success success) {
+    protected final void succeed(Success success) {
         activity.succeed(success);
     }
 
@@ -296,7 +291,7 @@ public abstract class EmillaCommand {
      * @param intent is launched after the assistant closes. It's very important that this is
      *               resolvable, else an ANF exception will occur.
      */
-    protected void appSucceed(Intent intent) {
+    protected final void appSucceed(Intent intent) {
         succeed(new AppSuccess(activity, intent));
     }
 
@@ -306,11 +301,11 @@ public abstract class EmillaCommand {
      *
      * @param gift gadget for the user.
      */
-    protected void give(Gift gift) {
+    protected final void give(Gift gift) {
         activity.give(gift);
     }
 
-    protected void giveBroadcast(Intent intent) {
+    protected final void giveBroadcast(Intent intent) {
         give(new BroadcastGift(activity, intent));
     }
 
@@ -323,7 +318,7 @@ public abstract class EmillaCommand {
      * @param longToast whether to use Toast.LENGTH_LONG. Use this sparingly, for reasons above.
      */
     @Deprecated
-    protected void giveText(CharSequence text, boolean longToast) {
+    protected final void giveText(CharSequence text, boolean longToast) {
         give(new ToastGift(activity, text, longToast));
     }
 
@@ -334,19 +329,19 @@ public abstract class EmillaCommand {
      *
      * @param offering tool for the user.
      */
-    protected void offer(Offering offering) {
+    protected final void offer(Offering offering) {
         activity.offer(offering);
     }
 
-    protected void offerDialog(AlertDialog.Builder builder) {
+    protected final void offerDialog(AlertDialog.Builder builder) {
         offer(new DialogOffering(activity, builder));
     }
 
-    protected void offerTimePicker(OnTimeSetListener timeSet) {
+    protected final void offerTimePicker(OnTimeSetListener timeSet) {
         offer(new TimePickerOffering(activity, timeSet));
     }
 
-    protected void offerApp(Intent intent, boolean newTask) {
+    protected final void offerApp(Intent intent, boolean newTask) {
         if (newTask) intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
         else activity.suppressBackCancellation();
         activity.startActivity(intent);
@@ -358,20 +353,20 @@ public abstract class EmillaCommand {
      *
      * @param failure tool for the user to resolve the issue.
      */
-    protected void fail(Failure failure) {
+    protected final void fail(Failure failure) {
         activity.fail(failure);
     }
 
-    protected void failDialog(@StringRes int msg, @StringRes int yesLabel,
+    protected final void failDialog(@StringRes int msg, @StringRes int yesLabel,
             DialogInterface.OnClickListener yesClick) {
         fail(new DialogFailure(activity, Dialogs.dual(activity, name(), msg, yesLabel, yesClick)));
     }
 
-    protected void failMessage(@StringRes int msg) {
+    protected final void failMessage(@StringRes int msg) {
         fail(new MessageFailure(activity, name(), msg));
     }
 
-    protected void failMessage(CharSequence msg) {
+    protected final void failMessage(CharSequence msg) {
         fail(new MessageFailure(activity, name(), msg));
     }
 
@@ -403,12 +398,12 @@ public abstract class EmillaCommand {
     }
 
     @StringRes
-    public int summary() {
+    public final int summary() {
         return mParams.summary();
     }
 
     @StringRes
-    public int manual() {
+    public final int manual() {
         return mParams.manual();
     }
 
