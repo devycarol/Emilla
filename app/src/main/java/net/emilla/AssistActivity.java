@@ -441,6 +441,8 @@ public class AssistActivity extends EmillaActivity {
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (event.isCanceled()) return false;
+
         switch (keyCode) {
         case KEYCODE_BACK -> cancelIfWarranted(); // todo config? command history?
         case KEYCODE_MENU -> mMenuKeyAction.perform();
