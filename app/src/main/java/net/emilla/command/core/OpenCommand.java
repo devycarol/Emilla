@@ -1,7 +1,5 @@
 package net.emilla.command.core;
 
-import static java.util.Arrays.copyOfRange;
-
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -15,31 +13,27 @@ import net.emilla.R;
 import net.emilla.exception.EmlaAppsException;
 import net.emilla.util.Dialogs;
 
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class OpenCommand extends CoreCommand {
 
-    protected final List<ResolveInfo> mAppList;
-    protected final AlertDialog.Builder mAppChooser;
+    protected final List<ResolveInfo> appList;
+    protected final AlertDialog.Builder appChooser;
 
     protected OpenCommand(AssistActivity act, CoreParams params) {
         super(act, params);
 
-        mAppList = act.appList();
-        mAppChooser = getAppChooser(act);
+        appList = act.appList();
+        appChooser = makeChooser();
     }
 
-    protected abstract AlertDialog.Builder getAppChooser(AssistActivity act);
-
-    private AlertDialog.Builder getDialog(CharSequence[] prefLabels, int prefCount,
-            Intent[] prefIntents) {
-        return Dialogs.withIntents(mAppChooser, activity, copyOfRange(prefLabels, 0, prefCount), prefIntents);
-    }
+    protected abstract AlertDialog.Builder makeChooser();
 
     @Override
     protected void run(@NonNull String app) {
         // todo: optimized pre-processed search
-        int appCount = mAppList.size();
+        int appCount = appList.size();
 
         CharSequence[] prefLabels = new CharSequence[appCount];
         CharSequence[] otherLabels = new CharSequence[appCount];
@@ -52,7 +46,7 @@ public abstract class OpenCommand extends CoreCommand {
         boolean exactMatch = false;
 
         for (int i = 0; i < appCount; ++i) {
-            ActivityInfo info = mAppList.get(i).activityInfo;
+            ActivityInfo info = appList.get(i).activityInfo;
 
             PackageManager pm = pm();
             CharSequence label = info.loadLabel(pm);
@@ -69,7 +63,7 @@ public abstract class OpenCommand extends CoreCommand {
                 prefCount = 1;
 
                 for (++i; i < appCount; ++i) { // continue searching for duplicates only
-                    info = mAppList.get(i).activityInfo;
+                    info = appList.get(i).activityInfo;
                     label = info.loadLabel(pm);
                     lcLabel = label.toString().toLowerCase();
 
@@ -112,8 +106,15 @@ public abstract class OpenCommand extends CoreCommand {
         case 0 -> throw new EmlaAppsException(R.string.error, R.string.error_apps_not_found);
         // Todo: offer to search app store
         case 1 -> appSucceed(prefIntents[0]);
-        default -> offerDialog(getDialog(prefLabels, prefCount, prefIntents));
+        default -> offerDialog(makeDialog(prefLabels, prefCount, prefIntents));
     }}
 
     protected abstract Intent makeIntent(String pkg, String cls);
+
+    private AlertDialog.Builder makeDialog(CharSequence[] prefLabels, int prefCount,
+            Intent[] prefIntents) {
+        CharSequence[] labels = Arrays.copyOfRange(prefLabels, 0, prefCount);
+        return Dialogs.list(activity, R.string.dialog_app, labels,
+                (dlg, which) -> appSucceed(prefIntents[which]));
+    }
 }

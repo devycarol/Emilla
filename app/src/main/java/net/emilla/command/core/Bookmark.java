@@ -11,7 +11,6 @@ import androidx.appcompat.app.AlertDialog;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.config.ConfigActivity;
-import net.emilla.run.AppSuccess;
 import net.emilla.settings.Aliases;
 import net.emilla.settings.SettingVals;
 import net.emilla.util.Apps;
@@ -71,10 +70,11 @@ public class Bookmark extends CoreCommand {
             }
         }
         mHasBookmarks = idx != -1;
-        if (mHasBookmarks) mBookmarkChooser = Dialogs.withIntents(Dialogs.listBase(act, R.string.dialog_media), act, labels, intents);
+        if (mHasBookmarks) mBookmarkChooser = Dialogs.list(act, R.string.dialog_media, labels,
+                (dlg, which) -> appSucceed(intents[which]));
         else mBookmarkChooser = Dialogs.dual(act, R.string.dialog_no_bookmarks,
                 R.string.dlg_msg_choose_media, R.string.dlg_yes_add_bookmarks,
-                (dlg, id) -> act.succeed(new AppSuccess(act, Apps.meTask(act, ConfigActivity.class))));
+                (dlg, id) -> appSucceed(Apps.meTask(act, ConfigActivity.class)));
     }
 
     @Override

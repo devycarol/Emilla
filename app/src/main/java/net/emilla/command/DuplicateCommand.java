@@ -5,7 +5,6 @@ import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
-import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -43,7 +42,6 @@ public class DuplicateCommand extends EmillaCommand implements DataCommand {
 
     private final String[] mLabels;
     private final EmillaCommand[] mCommands;
-    private final AlertDialog.Builder mChooser;
     private final boolean mUsesData;
 
     public DuplicateCommand(AssistActivity act, EmillaCommand[] cmds) {
@@ -56,7 +54,6 @@ public class DuplicateCommand extends EmillaCommand implements DataCommand {
             if (!usesData && cmds[i].usesData()) usesData = true;
             mLabels[i] = cmds[i].dupeLabel();
         }
-        mChooser = Dialogs.listBase(act, R.string.dialog_command);
         mUsesData = usesData;
     }
 
@@ -98,6 +95,6 @@ public class DuplicateCommand extends EmillaCommand implements DataCommand {
     }
 
     private void chooseCommand(DialogInterface.OnClickListener listener) {
-        offerDialog(mChooser.setItems(mLabels, listener));
+        offerDialog(Dialogs.list(activity, R.string.dialog_command, mLabels, listener));
     }
 }

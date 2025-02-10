@@ -147,7 +147,7 @@ public class Snippets extends CoreDataCommand {
             fail(new MessageFailure(activity, NAME, R.string.error_no_snippets));
         } else {
             String[] items = mSnippetNames.toArray(new String[0]);
-            offerDialog(Dialogs.listBase(activity, NAME).setItems(items, (dlg, which) -> {
+            offerDialog(Dialogs.list(activity, NAME, items, (dlg, which) -> {
                 snippetAction(items[which], items[which]);
                 activity.onCloseDialog(false); // Todo: don't require this.
             }));
@@ -178,8 +178,7 @@ public class Snippets extends CoreDataCommand {
         }
 
         String[] items = mSnippetNames.toArray(new String[0]);
-        offerDialog(Dialogs.listBase(activity, R.string.dialog_overwrite_snippet)
-                .setItems(items, (dlg, which) -> {
+        offerDialog(Dialogs.list(activity, R.string.dialog_overwrite_snippet, items, (dlg, which) -> {
             addSnippet(items[which], text);
             activity.onCloseDialog(false); // Todo: don't require this.
         }));

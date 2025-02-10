@@ -161,8 +161,8 @@ public final class Tasker extends AppCommand implements DataCommand {
             taskLabels[i] = tsk.toString();
         }
 
-        offerDialog(Dialogs.listBase(activity, R.string.dialog_tasker_select_task)
-                .setItems(taskLabels, (dlg, which) -> {
+        offerDialog(Dialogs.list(activity, R.string.dialog_tasker_select_task, taskLabels,
+                (dlg, which) -> {
             runTask(taskNames[which], params);
             activity.onCloseDialog(false); // Todo: don't require this.
         }));

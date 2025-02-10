@@ -27,7 +27,7 @@ public abstract class CategoryCommand extends CoreCommand {
         List<ResolveInfo> appList = Apps.resolveList(pm, makeFilter());
         mAppCount = appList.size();
         if (mAppCount == 1) mLaunchIntent = Apps.launchIntent(appList.get(0).activityInfo);
-        else if (mAppCount > 1) mAppChooser = Dialogs.appChooser(act, pm, appList);
+        else if (mAppCount > 1) mAppChooser = Dialogs.appLaunches(act, pm, appList);
     }
 
     protected abstract Intent makeFilter();

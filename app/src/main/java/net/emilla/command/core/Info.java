@@ -43,8 +43,10 @@ public class Info extends OpenCommand {
     }
 
     @Override
-    protected AlertDialog.Builder getAppChooser(AssistActivity act) {
-        return Dialogs.appChooser(act, act.getPackageManager(), mAppList);
+    protected void run() {
+        // Todo: it may be useful to include listings beyond those in the launcher icons, or be able to
+        //  search by package name.
+        appSucceed(Apps.infoTask());
     }
 
     @Override
@@ -53,9 +55,7 @@ public class Info extends OpenCommand {
     }
 
     @Override
-    protected void run() {
-        // Todo: it may be useful to include listings beyond those in the launcher icons, or be able to
-        //  search by package name.
-        appSucceed(Apps.infoTask());
+    protected AlertDialog.Builder makeChooser() {
+        return Dialogs.appLaunches(activity, pm(), appList);
     }
 }

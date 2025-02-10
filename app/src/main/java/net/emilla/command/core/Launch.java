@@ -43,8 +43,8 @@ public class Launch extends OpenCommand {
     }
 
     @Override
-    protected AlertDialog.Builder getAppChooser(AssistActivity act) {
-        return Dialogs.appChooser(act, act.getPackageManager(), mAppList);
+    protected void run() {
+        offerDialog(appChooser);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class Launch extends OpenCommand {
     }
 
     @Override
-    protected void run() {
-        offerDialog(mAppChooser);
+    protected AlertDialog.Builder makeChooser() {
+        return Dialogs.appLaunches(activity, pm(), appList);
     }
 }

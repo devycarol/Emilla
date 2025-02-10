@@ -108,7 +108,7 @@ public class Apps {
         return labels;
     }
 
-    public static Intent[] intents(List<ResolveInfo> appList) {
+    public static Intent[] launches(List<ResolveInfo> appList) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) return appList.parallelStream()
                 .map(ri -> launchIntent(ri.activityInfo)).toArray(Intent[]::new);
         Intent[] intents = new Intent[appList.size()];

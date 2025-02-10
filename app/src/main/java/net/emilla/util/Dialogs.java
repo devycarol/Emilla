@@ -51,8 +51,9 @@ public final class Dialogs {
         return base(ctx, title, negLabel).setMessage(msg);
     }
 
-    public static AlertDialog.Builder listBase(Context ctx, @StringRes int title) {
-        return base(ctx, title, android.R.string.cancel);
+    public static AlertDialog.Builder list(Context ctx, @StringRes int title, CharSequence[] labels,
+            DialogInterface.OnClickListener onChoose) {
+        return base(ctx, title, android.R.string.cancel).setItems(labels, onChoose);
         // TODO ACC: the cancel button is destroyed when the list is bigger than the screen for some
         //  reason
     }
@@ -84,43 +85,29 @@ public final class Dialogs {
         return dual(ctx, title, msg, R.string.yes, R.string.no, yesClick);
     }
 
-    public static AlertDialog.Builder withIntents(AlertDialog.Builder builder, AssistActivity act,
-            CharSequence[] labels, Intent[] intents) {
-        return builder.setItems(labels, (dlg, which) -> act.succeed(new AppSuccess(act, intents[which])));
-    }
-
-    private static AlertDialog.Builder withApps(AlertDialog.Builder builder, AssistActivity act,
-            PackageManager pm, List<ResolveInfo> appList) {
-        return withIntents(builder, act, Apps.labels(appList, pm), Apps.intents(appList));
-    }
-
-    public static AlertDialog.Builder appChooser(AssistActivity act, PackageManager pm,
+    public static AlertDialog.Builder appLaunches(AssistActivity act, PackageManager pm,
             List<ResolveInfo> appList) {
-        // TODO: due to duplicate app labels, it's important to eventually include app icons in this dialog
-        // TODO: allow for alpha sort. important for screen readers (it should be on by default in that case)
-        //  only reason not to is i kind of like the random order. makes my phone feel less cramped.
-        //  on the accessibility topic, being able to speak/type a (nato?) letter would be helpful for everyone.
-        //  basically: very accessible search interface
+        // TODO: due to duplicate app labels, it's important to eventually include app icons in this
+        //  dialog
+        // TODO: allow for alpha sort. important for screen readers (it should be on by default in
+        //  that case) only reason not to is i kind of like the random order. makes my phone feel
+        //  less cramped. on the accessibility topic, being able to speak/type a (nato?) letter
+        //  would be helpful for everyone. basically: very accessible search interface
         // a choice between list and grid layout would be cool
-        AlertDialog.Builder base = listBase(act, R.string.dialog_app);
-        return withApps(base, act, pm, appList);
+        Intent[] intents = Apps.launches(appList);
+        return list(act, R.string.dialog_app, Apps.labels(appList, pm),
+                (dlg, which) -> act.succeed(new AppSuccess(act, intents[which])));
     }
 
-    private static AlertDialog.Builder withUninstalls(AlertDialog.Builder builder,
-            AssistActivity act, PackageManager pm, List<ResolveInfo> appList) {
-        CharSequence[] labels = Apps.labels(appList, pm);
+    public static AlertDialog.Builder appUninstalls(AssistActivity act, List<ResolveInfo> appList) {
+        PackageManager pm = act.getPackageManager();
         Intent[] intents = Apps.uninstalls(appList, pm);
-        return builder.setItems(labels, (dlg, which) -> {
+        return list(act, R.string.dialog_app, Apps.labels(appList, pm), (dlg, which) -> {
             if (intents[which] == null) act.fail(new MessageFailure(act, R.string.command_uninstall,
                     R.string.error_cant_uninstall));
             // Todo: instead handle at mapping somehow
             else act.succeed(new AppSuccess(act, intents[which]));
         });
-    }
-
-    public static AlertDialog.Builder appUninstaller(AssistActivity act, List<ResolveInfo> appList) {
-        AlertDialog.Builder base = listBase(act, R.string.dialog_app);
-        return withUninstalls(base, act, act.getPackageManager(), appList);
     }
 
     private Dialogs() {}
