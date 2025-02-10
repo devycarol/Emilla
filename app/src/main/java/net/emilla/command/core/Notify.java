@@ -6,7 +6,6 @@ import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.exception.EmlaBadCommandException;
 import net.emilla.settings.Aliases;
 
 public class Notify extends CoreDataCommand {
@@ -40,21 +39,21 @@ public class Notify extends CoreDataCommand {
 
     @Override
     protected void run() {
-        throw new EmlaBadCommandException(NAME, R.string.error_unfinished_reminders); // Todo
+        throw badCommand(R.string.error_unfinished_reminders); // Todo
     }
 
     @Override
     protected void run(@NonNull String text) {
-        throw new EmlaBadCommandException(NAME, R.string.error_unfinished_reminders); // Todo
+        throw badCommand(R.string.error_unfinished_reminders); // Todo
     }
 
     @Override
     protected void runWithData(@NonNull String data) {
-        throw new EmlaBadCommandException(NAME, R.string.error_unfinished_reminders); // Todo
+        throw badCommand(R.string.error_unfinished_reminders); // Todo
     }
 
     @Override
     protected void runWithData(@NonNull String instruction, @NonNull String data) {
-        throw new EmlaBadCommandException(NAME, R.string.error_unfinished_reminders); // Todo
+        throw badCommand(R.string.error_unfinished_reminders); // Todo
     }
 }

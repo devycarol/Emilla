@@ -12,7 +12,6 @@ import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.exception.EmlaBadCommandException;
 import net.emilla.settings.Aliases;
 import net.emilla.util.Apps;
 
@@ -52,12 +51,12 @@ public class Weather extends CategoryCommand {
 
     @Override
     protected void run() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) throw new EmlaBadCommandException(NAME, R.string.error_unfinished_version); // TODO
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) throw badCommand(R.string.error_unfinished_version); // TODO
         super.run();
     }
 
     @Override
     protected void run(@NonNull String expression) {
-        throw new EmlaBadCommandException(NAME, R.string.error_unfinished_categorical_app_search); // Todo
+        throw badCommand(R.string.error_unfinished_categorical_app_search); // Todo
     }
 }

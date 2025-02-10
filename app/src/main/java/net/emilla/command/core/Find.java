@@ -8,7 +8,6 @@ import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.exception.EmlaBadCommandException;
 import net.emilla.settings.Aliases;
 
 public class Find extends CoreCommand {
@@ -43,12 +42,12 @@ public class Find extends CoreCommand {
     @Override
     protected void run() {
         // todo: select file manager?
-        throw new EmlaBadCommandException(NAME, R.string.error_unfinished_file_search);
+        throw badCommand(R.string.error_unfinished_file_search);
     }
 
     @Override
     protected void run(@NonNull String fileOrFolder) {
-        throw new EmlaBadCommandException(NAME, R.string.error_unfinished_file_search);
+        throw badCommand(R.string.error_unfinished_file_search);
         // where all should I be searching for files? shared storage? external drives?
     }
 }

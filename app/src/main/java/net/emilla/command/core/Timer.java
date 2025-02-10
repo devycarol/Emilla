@@ -14,7 +14,6 @@ import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.exception.EmlaBadCommandException;
 import net.emilla.settings.Aliases;
 import net.emilla.util.Time;
 
@@ -90,7 +89,7 @@ public class Timer extends CoreDataCommand {
 
     @Override
     protected void runWithData(@NonNull String title) {
-        throw new EmlaBadCommandException(NAME, R.string.error_unfinished_timer_label);
+        throw badCommand(R.string.error_unfinished_timer_label);
         // TODO: is this always the case? I'd strongly prefer to defer to the user's app's UI. At
         //  the least, this failure should be replaced with an input dialog for com.android.deskclock
         //  in the *current* android version (previous ones may have been more functional, as we

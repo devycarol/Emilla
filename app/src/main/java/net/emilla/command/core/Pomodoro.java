@@ -67,10 +67,10 @@ public class Pomodoro extends CoreDataCommand {
             float dur = parseFloat(duration);
             // todo: I need to learn more about float errors..
             //  and this function... ion wanna worry about hexadecimal :sob:
-            if (dur <= 0.0f) throw new EmlaBadCommandException(NAME, R.string.error_bad_minutes);
+            if (dur <= 0.0f) throw badCommand(R.string.error_bad_minutes);
             mIntent.putExtra(EXTRA_LENGTH, (int) (dur * 60.0f));
         } catch (NumberFormatException e) {
-            throw new EmlaBadCommandException(NAME, R.string.error_bad_minutes);
+            throw badCommand(R.string.error_bad_minutes);
         }
         return isBreak;
     }

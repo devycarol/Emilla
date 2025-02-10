@@ -18,7 +18,6 @@ import androidx.core.content.FileProvider;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.exception.EmlaBadCommandException;
 import net.emilla.settings.Aliases;
 import net.emilla.util.Apps;
 import net.emilla.util.Files;
@@ -108,8 +107,8 @@ public class Todo extends CoreDataCommand {
         fos.close();
         pfd.close();
     } catch (FileNotFoundException e) {
-        throw new EmlaBadCommandException(NAME, R.string.error_cant_find_file);
+        throw badCommand(R.string.error_cant_find_file);
     } catch (IOException e) {
-        throw new EmlaBadCommandException(NAME, R.string.error_cant_use_file);
+        throw badCommand(R.string.error_cant_use_file);
     }}
 }

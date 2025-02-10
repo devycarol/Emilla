@@ -16,7 +16,6 @@ import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.exception.EmlaBadCommandException;
 import net.emilla.settings.Aliases;
 
 public class Torch extends CoreCommand {
@@ -70,7 +69,7 @@ public class Torch extends CoreCommand {
 
     @Override
     protected void run() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) throw new EmlaBadCommandException(NAME, R.string.error_unfinished_version);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) throw badCommand(R.string.error_unfinished_version);
         // TODO: https://github.com/LineageOS/android_packages_apps_Torch
         final var camMgr = (CameraManager) activity.getSystemService(Context.CAMERA_SERVICE);
     try {

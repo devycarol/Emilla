@@ -8,7 +8,6 @@ import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.exception.EmlaBadCommandException;
 import net.emilla.run.CopyGift;
 import net.emilla.settings.Aliases;
 
@@ -52,7 +51,7 @@ public class Copy extends CoreCommand {
 
     @Override
     protected void run() {
-        throw new EmlaBadCommandException(NAME, R.string.error_unfinished_copy);
+        throw badCommand(R.string.error_unfinished_copy);
         // Todo
     }
 

@@ -11,7 +11,6 @@ import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.exception.EmlaBadCommandException;
 import net.emilla.settings.Aliases;
 
 import java.text.Format;
@@ -66,6 +65,6 @@ public class Time extends CoreCommand {
 
     @Override
     protected void run(@NonNull String location) {
-        throw new EmlaBadCommandException(NAME, R.string.error_unfinished_time_location_elapse); // TODO
+        throw badCommand(R.string.error_unfinished_time_location_elapse); // TODO
     }
 }

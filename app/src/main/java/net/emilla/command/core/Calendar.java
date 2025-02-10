@@ -98,7 +98,7 @@ public class Calendar extends CoreDataCommand {
             mIntent.putExtra(EXTRA_EVENT_BEGIN_TIME, times[0]);
             if (times[1] != 0) mIntent.putExtra(EXTRA_EVENT_END_TIME, times[1]);
         }
-        default -> throw new EmlaBadCommandException(NAME, R.string.error_multiple_dates);
+        default -> throw badCommand(R.string.error_multiple_dates);
         }
         if (!title.isEmpty()) mIntent.putExtra(TITLE, title);
     }
