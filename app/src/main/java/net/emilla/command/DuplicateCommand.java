@@ -63,7 +63,6 @@ public class DuplicateCommand extends EmillaCommand implements DataCommand {
             mCommands[which].init();
             mCommands[which].execute();
             mCommands[which].clean();
-            activity.onCloseDialog(false); // Todo: don't require this.
         });
     }
 
@@ -74,7 +73,6 @@ public class DuplicateCommand extends EmillaCommand implements DataCommand {
             mCommands[which].init();
             mCommands[which].execute();
             mCommands[which].clean();
-            activity.onCloseDialog(false); // Todo: don't require this.
         });
     }
 
@@ -90,7 +88,6 @@ public class DuplicateCommand extends EmillaCommand implements DataCommand {
                 mCommands[which].execute();
             }
             mCommands[which].clean();
-            activity.onCloseDialog(false); // Todo: don't require this.
         });
     }
 

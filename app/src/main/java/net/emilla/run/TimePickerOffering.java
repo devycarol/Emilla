@@ -18,7 +18,10 @@ public class TimePickerOffering implements Offering {
         // should there be an option for default time to be noon vs. the current time? noon seems
         // much more reasonable in all cases tbh. infinitely more predictable—who the heck wants to
         // set a timer for right now?!
-        mDialog.setOnCancelListener(dlg -> mActivity.onCloseDialog(true));
+        mDialog.setOnCancelListener(dlg -> {
+            mActivity.onCloseDialog();
+            mActivity.resume();
+        });
         // Todo: don't require this.
     }
 

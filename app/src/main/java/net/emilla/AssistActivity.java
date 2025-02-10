@@ -606,7 +606,7 @@ public class AssistActivity extends EmillaActivity {
         return true;
     }
 
-    private void resume() {
+    public void resume() {
         if (!mDialogOpen && askChimeResume()) chime(RESUME);
     }
 
@@ -620,12 +620,10 @@ public class AssistActivity extends EmillaActivity {
     }
 
     @Deprecated
-    public void onCloseDialog(boolean chime) {
+    public void onCloseDialog() {
         mEmptySpace.setEnabled(true);
         mSubmitButton.setEnabled(true);
         mDialogOpen = false;
-
-        if (chime) resume();
     }
 
     private void cancelIfWarranted() {

@@ -98,15 +98,11 @@ public final class Tasker extends AppCommand implements DataCommand {
         switch (TaskerIntent.testStatus(activity)) {
         case OK -> searchRun(task, params);
         case NOT_ENABLED -> fail(new DialogFailure(activity, Dialogs.dual(activity, R.string.error,
-                R.string.error_tasker_not_enabled, R.string.dlg_yes_tasker_open, (dlg, which) -> {
-            offerApp(launchIntent(), true);
-            activity.onCloseDialog(false); // Todo: don't require this.
-        })));
+                R.string.error_tasker_not_enabled, R.string.dlg_yes_tasker_open,
+                (dlg, which) -> offerApp(launchIntent(), true))));
         case NO_ACCESS -> fail(new DialogFailure(activity, Dialogs.dual(activity, R.string.error,
-                R.string.error_tasker_blocked, R.string.dlg_yes_tasker_external_access_settings, (dlg, which) -> {
-            offerApp(TaskerIntent.getExternalAccessPrefsIntent(), false);
-            activity.onCloseDialog(false); // Todo: don't require this.
-        })));
+                R.string.error_tasker_blocked, R.string.dlg_yes_tasker_external_access_settings,
+                (dlg, which) -> offerApp(TaskerIntent.getExternalAccessPrefsIntent(), false), false)));
         case NO_PERMISSION -> Permissions.taskerFlow(activity, () -> trySearchRun(task, params));
         case NO_RECEIVER -> fail(new MessageFailure(activity, R.string.error, R.string.error_tasker_no_receiver));
         }
@@ -162,10 +158,7 @@ public final class Tasker extends AppCommand implements DataCommand {
         }
 
         offerDialog(Dialogs.list(activity, R.string.dialog_tasker_select_task, taskLabels,
-                (dlg, which) -> {
-            runTask(taskNames[which], params);
-            activity.onCloseDialog(false); // Todo: don't require this.
-        }));
+                (dlg, which) -> runTask(taskNames[which], params)));
         // todo: see if it's possible to display task/project icons
     }
 

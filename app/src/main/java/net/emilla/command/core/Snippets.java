@@ -147,10 +147,8 @@ public class Snippets extends CoreDataCommand {
             fail(new MessageFailure(activity, NAME, R.string.error_no_snippets));
         } else {
             String[] items = mSnippetNames.toArray(new String[0]);
-            offerDialog(Dialogs.list(activity, NAME, items, (dlg, which) -> {
-                snippetAction(items[which], items[which]);
-                activity.onCloseDialog(false); // Todo: don't require this.
-            }));
+            offerDialog(Dialogs.list(activity, NAME, items,
+                    (dlg, which) -> snippetAction(items[which], items[which])));
             // TODO: use the case that the user used for the labels while
             //  - must retain case-insensitivity
             //  - would require a 'rename' subcmd
@@ -178,10 +176,8 @@ public class Snippets extends CoreDataCommand {
         }
 
         String[] items = mSnippetNames.toArray(new String[0]);
-        offerDialog(Dialogs.list(activity, R.string.dialog_overwrite_snippet, items, (dlg, which) -> {
-            addSnippet(items[which], text);
-            activity.onCloseDialog(false); // Todo: don't require this.
-        }));
+        offerDialog(Dialogs.list(activity, R.string.dialog_overwrite_snippet, items,
+                (dlg, which) -> addSnippet(items[which], text)));
     }
 
     @Override
@@ -206,10 +202,7 @@ public class Snippets extends CoreDataCommand {
 
             String msg = string(R.string.dlg_msg_overwrite_snippet, label);
             offerDialog(Dialogs.dual(activity, R.string.dialog_overwrite_snippet, msg,
-                    R.string.overwrite, (dlg, which) -> {
-                addSnippet(lcLabel, text);
-                activity.onCloseDialog(false); // Todo: don't require this.
-            }));
+                    R.string.overwrite, (dlg, which) -> addSnippet(lcLabel, text)));
             return;
         }
 

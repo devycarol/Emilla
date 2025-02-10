@@ -1,7 +1,5 @@
 <resources>
     <!-- Common strings -->
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
     <string name="exit">Exit</string>
     <string name="leave">Leave</string>
     <string name="settings">Settings</string>

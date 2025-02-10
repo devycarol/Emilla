@@ -20,11 +20,8 @@ public class PermissionFailure extends DialogFailure {
         Intent appInfo = Apps.infoTask();
         PackageManager pm = act.getPackageManager();
         if (appInfo.resolveActivity(pm) != null) return Dialogs.dual(act, permissionName,
-                R.string.dlg_msg_perm_denial, R.string.app_info, (dlg, which) -> {
-            act.startActivity(appInfo);
-            act.suppressResumeChime();
-            dlg.cancel(); // Todo: don't require this
-        });
+                R.string.dlg_msg_perm_denial, R.string.app_info,
+                (dlg, which) -> act.startActivity(appInfo));
 
         return Dialogs.base(act, permissionName, R.string.dlg_msg_perm_denial, android.R.string.ok);
         // this should pretty much never happen.

@@ -15,7 +15,10 @@ public abstract class DialogRun implements CommandRun {
 
     public DialogRun(AssistActivity act, AlertDialog dialog) {
         mActivity = act;
-        dialog.setOnCancelListener(dlg -> mActivity.onCloseDialog(true));
+        dialog.setOnCancelListener(dlg -> {
+            mActivity.onCloseDialog();
+            mActivity.resume();
+        });
         // Todo: don't require this
         mDialog = dialog;
     }
