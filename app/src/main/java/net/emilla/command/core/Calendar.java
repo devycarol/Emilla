@@ -26,8 +26,6 @@ import net.emilla.settings.Aliases;
 import net.emilla.util.Apps;
 import net.emilla.util.Time;
 
-import java.util.regex.Matcher;
-
 public class Calendar extends CoreDataCommand {
 
     public static final String ENTRY = "calendar";
@@ -85,12 +83,12 @@ public class Calendar extends CoreDataCommand {
 
     private void putTitleAndDate(String title) throws EmlaBadCommandException {
         // todo: clean this up
-        Matcher m = compile(" */all(day)?", CASE_INSENSITIVE).matcher(title);
+        final var m = compile(" */all(day)?", CASE_INSENSITIVE).matcher(title);
         if (m.find()) {
             title = m.replaceFirst("");
             mIntent.putExtra(EXTRA_EVENT_ALL_DAY, true);
         }
-        String[] nameAndTime = title.split(" *\\| *");
+        final var nameAndTime = title.split(" *\\| *");
         switch (nameAndTime.length) {
         case 1 -> {}
         case 2 -> {

@@ -60,7 +60,7 @@ public class DuplicateYielder extends CommandYielder implements TrieMap.Duplicat
     protected EmillaCommand makeCommand(AssistActivity act) {
         if (mCommand == null) {
             int dupeCount = mYielders.size();
-            EmillaCommand[] cmds = new EmillaCommand[dupeCount];
+            final var cmds = new EmillaCommand[dupeCount];
             for (int i = 0; i < dupeCount; ++i) cmds[i] = mYielders.get(i).makeCommand(act);
             mCommand = new DuplicateCommand(act, cmds);
         }

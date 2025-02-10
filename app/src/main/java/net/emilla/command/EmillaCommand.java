@@ -105,7 +105,7 @@ public abstract class EmillaCommand {
             List<ResolveInfo> appList) {
         CoreCommand.Yielder[] coreYielders = coreYielders();
 
-        CommandMap map = new CommandMap(SettingVals.defaultCommand(prefs, coreYielders));
+        final var map = new CommandMap(SettingVals.defaultCommand(prefs, coreYielders));
 
         for (CoreCommand.Yielder yielder : coreYielders) {
             map.put(yielder.name(res), yielder);
@@ -114,7 +114,7 @@ public abstract class EmillaCommand {
 
         for (ResolveInfo ri : appList) {
             // todo: edge case where a mapped app is uninstalled during the activity lifecycle
-            AppCommand.Yielder yielder = new AppCommand.Yielder(ri.activityInfo, pm);
+            final var yielder = new AppCommand.Yielder(ri.activityInfo, pm);
 
             map.put(yielder.name(), yielder);
             Set<String> aliases = yielder.aliases(prefs, res);
@@ -129,7 +129,7 @@ public abstract class EmillaCommand {
         //  reciprocally used. that's good for now since that'd be infinite recursion, but this
         //  should be borne in mind when creating a more robust custom command system.
         for (String customEntry : customs) {
-            String[] split = customEntry.split(", *");
+            final var split = customEntry.split(", *");
             int lastIdx = split.length - 1;
             for (int i = 0; i < lastIdx; ++i) map.putCustom(split[i], split[lastIdx]);
         }

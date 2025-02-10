@@ -15,7 +15,7 @@ public final class CsvLine implements Iterable<String> {
 //        if (!itr.hasNext()) return null;
 //
 //        Object next = itr.next();
-//        StringBuilder sb = next != null ? new StringBuilder(encodeVal(next)) : new StringBuilder();
+//        final var sb = next != null ? new StringBuilder(encodeVal(next)) : new StringBuilder();
 //        while (itr.hasNext()) {
 //            sb.append(',');
 //            next = itr.next();
@@ -31,7 +31,7 @@ public final class CsvLine implements Iterable<String> {
         if (!itr.hasNext()) return null;
 
         String next = itr.next();
-        StringBuilder sb = next != null ? new StringBuilder(encodeVal(next)) : new StringBuilder();
+        final var sb = next != null ? new StringBuilder(encodeVal(next)) : new StringBuilder();
         while (itr.hasNext()) {
             if (useSpaces) sb.append(", ");
             else sb.append(',');
@@ -49,7 +49,7 @@ public final class CsvLine implements Iterable<String> {
 //        if (!itr.hasNext()) return null;
 //
 //        CharSequence next = itr.next();
-//        StringBuilder sb = next != null ? new StringBuilder(encodeVal(next)) : new StringBuilder();
+//        final var sb = next != null ? new StringBuilder(encodeVal(next)) : new StringBuilder();
 //        while (itr.hasNext()) {
 //            sb.append(',');
 //            next = itr.next();
@@ -64,14 +64,14 @@ public final class CsvLine implements Iterable<String> {
 //    }
 
     public static String encodeVal(String s) {
-        StringBuilder sb = new StringBuilder(s.length());
+        final var sb = new StringBuilder(s.length());
         for (char c : s.toCharArray()) appendEscape(sb, c);
         return sb.toString();
     }
 
 //    public static String encodeVal(CharSequence text) {
 //        int len = text.length();
-//        StringBuilder sb = new StringBuilder(len);
+//        final var sb = new StringBuilder(len);
 //
 //        for (int i = 0; i < len; ++i) appendEscape(sb, text.charAt(i));
 //
@@ -88,7 +88,7 @@ public final class CsvLine implements Iterable<String> {
 
     @Nullable
     public static String trim(String line) {
-        StringBuilder sb = new StringBuilder(line.length());
+        final var sb = new StringBuilder(line.length());
 
         final var itr = new CsvLine(line, true).iterator();
         if (!itr.hasNext()) return null;
@@ -132,7 +132,7 @@ public final class CsvLine implements Iterable<String> {
 
         @Override @Nullable
         public final String next() {
-            StringBuilder sb = new StringBuilder();
+            final var sb = new StringBuilder();
             boolean escape = false;
 
             char c;

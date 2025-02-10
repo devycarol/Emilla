@@ -56,11 +56,11 @@ public class Bookmark extends CoreCommand {
         super(act, new BookmarkParams());
 
         String[] lines = SettingVals.bookmarkCsv(prefs()).split("\\s*\n\\s*");
-        String[] labels = new String[lines.length];
-        Intent[] intents = new Intent[lines.length];
+        final var labels = new String[lines.length];
+        final var intents = new Intent[lines.length];
         int idx = -1;
         for (String line : lines) {
-            String[] vals = line.split("\\s*,\\s*");
+            final var vals = line.split("\\s*,\\s*");
             if (vals.length > 1) {
                 int lastIdx = vals.length - 1;
                 Intent view = Apps.viewTask(vals[lastIdx]);

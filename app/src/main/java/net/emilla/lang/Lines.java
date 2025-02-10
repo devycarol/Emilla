@@ -15,7 +15,7 @@ public final class Lines implements Iterable<String> {
 //        if (!itr.hasNext()) return null;
 //
 //        Object next = itr.next();
-//        StringBuilder sb = next != null ? new StringBuilder(encodeLine(next)) : new StringBuilder();
+//        final var sb = next != null ? new StringBuilder(encodeLine(next)) : new StringBuilder();
 //        while (itr.hasNext()) {
 //            sb.append('\n');
 //
@@ -34,7 +34,7 @@ public final class Lines implements Iterable<String> {
         if (!itr.hasNext()) return null;
 
         String next = itr.next();
-        StringBuilder sb = next != null ? new StringBuilder(encodeLine(next)) : new StringBuilder();
+        final var sb = next != null ? new StringBuilder(encodeLine(next)) : new StringBuilder();
         while (itr.hasNext()) {
             sb.append('\n');
 
@@ -53,7 +53,7 @@ public final class Lines implements Iterable<String> {
 //        if (!itr.hasNext()) return null;
 //
 //        CharSequence next = itr.next();
-//        StringBuilder sb = next != null ? new StringBuilder(encodeLine(next)) : new StringBuilder();
+//        final var sb = next != null ? new StringBuilder(encodeLine(next)) : new StringBuilder();
 //        while (itr.hasNext()) {
 //            sb.append('\n');
 //
@@ -71,14 +71,14 @@ public final class Lines implements Iterable<String> {
 //    }
 
     public static String encodeLine(String s) {
-        StringBuilder sb = new StringBuilder(s.length());
+        final var sb = new StringBuilder(s.length());
         for (char c : s.toCharArray()) appendEscape(sb, c);
         return sb.toString();
     }
 
 //    public static String encodeLine(CharSequence text) {
 //        int len = text.length();
-//        StringBuilder sb = new StringBuilder(len);
+//        final var sb = new StringBuilder(len);
 //
 //        for (int i = 0; i < len; ++i) appendEscape(sb, text.charAt(i));
 //
@@ -95,7 +95,7 @@ public final class Lines implements Iterable<String> {
 
     @Nullable
     public static String trim(String text) {
-        StringBuilder sb = new StringBuilder(text.length());
+        final var sb = new StringBuilder(text.length());
 
         final var itr = new Lines(text, true).iterator();
         if (!itr.hasNext()) return null;
@@ -146,7 +146,7 @@ public final class Lines implements Iterable<String> {
 
         @Override @NonNull
         public final String next() {
-            StringBuilder sb = new StringBuilder();
+            final var sb = new StringBuilder();
             boolean escape = false;
 
             char c;

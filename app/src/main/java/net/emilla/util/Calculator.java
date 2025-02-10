@@ -8,7 +8,7 @@ import static java.util.regex.Pattern.compile;
 import net.emilla.R;
 import net.emilla.exception.EmlaBadCommandException;
 
-import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class Calculator { // i should definitely be using an expression tree LOL
 
@@ -28,14 +28,14 @@ public final class Calculator { // i should definitely be using an expression tr
             MATH_WORDS = {ADDITION, SUBTRACTION, DIVISION, MULTIPLICATION, EXPONENTIATION, DECIMAL, START_PAREN, END_PAREN},
             MATH_SYMBOLS = {"+", "-", "/", "*", "^", ".", "(", ")"};
 
-    private static final String
-            EXP = "(\\d+)\\^-?(\\d+)",
-            PROD = "(\\d+)[ */]-?(\\d+)",
-            SUM = "(-?\\d+)[+-](\\d+)";
+    private static final Pattern
+            EXP = compile("(\\d+)\\^-?(\\d+)"),
+            PROD = compile("(\\d+)[ */]-?(\\d+)"),
+            SUM = compile("(-?\\d+)[+-](\\d+)");
 
     private static long evaluate(CharSequence expr) { // It's trim-safe as a one-time method, but not for text-watching
-        StringBuilder solBuilder = new StringBuilder(expr);
-        Matcher m = compile(EXP).matcher(solBuilder);
+        final var solBuilder = new StringBuilder(expr);
+        final var m = EXP.matcher(solBuilder);
         while (m.find()) {
             int lastStart = m.start(), lastEnd = m.end();
             String lastGroup1 = m.group(1), lastGroup2 = m.group(2);
@@ -56,7 +56,7 @@ public final class Calculator { // i should definitely be using an expression tr
             m.reset(solBuilder);
         }
 
-        m.reset(solBuilder).usePattern(compile(PROD));
+        m.reset(solBuilder).usePattern(PROD);
         while (m.find()) {
             CharSequence before = solBuilder.subSequence(0, m.start()), after = solBuilder.subSequence(m.end(), solBuilder.length());
             solBuilder.setLength(0);
@@ -69,7 +69,7 @@ public final class Calculator { // i should definitely be using an expression tr
             m.reset(solBuilder);
         }
 
-        m.usePattern(compile(SUM));
+        m.usePattern(SUM);
         while (m.find()) {
             CharSequence before = solBuilder.subSequence(0, m.start()), after = solBuilder.subSequence(m.end(), solBuilder.length());
             solBuilder.setLength(0);
@@ -88,7 +88,7 @@ public final class Calculator { // i should definitely be using an expression tr
     private static CharSequence cleanup(CharSequence expr) { // TODO parens - "all of" must be parsed before "all"
         int i = 0;
         for (String phrase : MATH_WORDS) {
-            Matcher m = compile(phrase, CASE_INSENSITIVE).matcher(expr);
+            final var m = compile(phrase, CASE_INSENSITIVE).matcher(expr);
             if (m.find()) expr = m.replaceAll(MATH_SYMBOLS[i]);
             ++i;
         }
@@ -96,7 +96,7 @@ public final class Calculator { // i should definitely be using an expression tr
         // replace numeral space-juxtaposition with stars - could cause issues with pasted/formmatted numbers: 2 345 692
         // will need to be reworked if you add log_2 34 ability. parse functions beforehand, adding explicit parens?
             // ambiguity: log2 3 - log_2(3) or log(2) * 3?
-        Matcher m = compile("(\\d*\\.?\\d+) +(\\d*\\.?\\d+)").matcher(expr);
+        final var m = compile("(\\d*\\.?\\d+) +(\\d*\\.?\\d+)").matcher(expr);
         boolean hit = false;
         while (m.find()) {
             expr = m.replaceFirst("$1*$2");

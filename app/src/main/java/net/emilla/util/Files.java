@@ -80,8 +80,8 @@ public final class Files {
 
         @Deprecated
         private static String union(String type1, String type2) {
-            String[] parts1 = type1.split("/");
-            String[] parts2 = type2.split("/");
+            final var parts1 = type1.split("/");
+            final var parts2 = type2.split("/");
             return partUnion(parts1[0], parts2[0]) + "/" + partUnion(parts1[1], parts2[1]);
         }
 

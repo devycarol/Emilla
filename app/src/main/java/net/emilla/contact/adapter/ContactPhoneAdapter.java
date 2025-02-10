@@ -51,15 +51,15 @@ public class ContactPhoneAdapter extends ContactCursorAdapter {
 
     @Override
     public void bindView(View view, Context ctx, Cursor cur) {
-        ContactItemView item = (ContactItemView) view;
+        final var item = (ContactItemView) view;
         item.setContactInfo(cur.getLong(IDX_CONTACT_ID), cur.getString(IDX_KEY),
                 cur.getString(IDX_NAME), cur.getString(IDX_PHOTO), cur.getInt(IDX_STARRED) != 0);
 
         int type = cur.getInt(IDX_TYPE);
-        String customLabel = cur.getString(IDX_LABEL);
+        final var customLabel = cur.getString(IDX_LABEL);
 
         CharSequence typeText = Phone.getTypeLabel(resources, type, customLabel);
-        String number = cur.getString(IDX_NUMBER);
+        final var number = cur.getString(IDX_NUMBER);
 
         item.setContactDetail(Lang.colonConcat(resources, typeText, number));
     }

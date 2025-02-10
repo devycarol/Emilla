@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -131,8 +130,8 @@ public class AssistActivity extends EmillaActivity {
 
 //    public static long nanosPlease(long prevTime, String label) {
 //        long curTime = System.nanoTime();
-//        String s = String.valueOf(curTime - prevTime);
-//        StringBuilder sb = new StringBuilder(label).append(": ");
+//        final var s = String.valueOf(curTime - prevTime);
+//        final var sb = new StringBuilder(label).append(": ");
 //        int start = sb.length();
 //        for (int i = sb.append(s).length() - 3; i > start; i -= 3) sb.insert(i, ',');
 //        Log.d("nanosPlease", sb.append(" nanoseconds").toString());
@@ -151,14 +150,14 @@ public class AssistActivity extends EmillaActivity {
         mChimer = SettingVals.chimer(this, mPrefs);
         if (savedInstanceState == null) chime(START);
 
-        Resources res = getResources();
+        final var res = getResources();
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar == null) throw new NullPointerException();
         mHasTitlebar = SettingVals.showTitleBar(mPrefs, res);
         if (mHasTitlebar) {
-            String dfltTitle = res.getString(R.string.activity_assistant);
-            String title = mPrefs.getString("motd", dfltTitle);
+            final var dfltTitle = res.getString(R.string.activity_assistant);
+            final var title = mPrefs.getString("motd", dfltTitle);
             if (!title.equals(dfltTitle)) actionBar.setTitle(title);
         } else {
             actionBar.hide();
@@ -170,7 +169,7 @@ public class AssistActivity extends EmillaActivity {
                 // TODO: have listener to turn off the service when power save mode or the accessibility
                 //  service is activated
                 // also ensure "always on" works as intended
-                PowerManager pwrMgr = (PowerManager) getSystemService(Context.POWER_SERVICE);
+                final var pwrMgr = (PowerManager) getSystemService(Context.POWER_SERVICE);
                 if (pwrMgr.isPowerSaveMode()) break;
                 // fall
             case "always":
@@ -342,8 +341,8 @@ public class AssistActivity extends EmillaActivity {
     }
 
     public void addAction(QuickAction action) {
-        ActionButton button = (ActionButton) mInflater.inflate(R.layout.btn_action,
-                mActionsContainer, false);
+        final var button = (ActionButton) mInflater.inflate(R.layout.btn_action, mActionsContainer,
+                false);
         button.setId(action.id());
         button.setIcon(action.icon());
         button.setContentDescription(action.label(getResources()));
@@ -356,7 +355,7 @@ public class AssistActivity extends EmillaActivity {
     }
 
     public EditText createField(@IdRes int id, @StringRes int hint) {
-        EditText box = (EditText) mInflater.inflate(R.layout.field_extra, mFieldsContainer, false);
+        final var box = (EditText) mInflater.inflate(R.layout.field_extra, mFieldsContainer, false);
         box.setId(id);
         box.setHint(hint);
         mFieldsContainer.addView(box);
@@ -710,7 +709,7 @@ public class AssistActivity extends EmillaActivity {
     }
 
     private void submitCommand() {
-        String fullCommand = mCommandField.getText().toString().trim();
+        final var fullCommand = mCommandField.getText().toString().trim();
         if (fullCommand.isEmpty()) {
             mNoCommandAction.perform();
             return;

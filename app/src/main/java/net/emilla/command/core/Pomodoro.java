@@ -15,8 +15,6 @@ import net.emilla.R;
 import net.emilla.exception.EmlaBadCommandException;
 import net.emilla.settings.Aliases;
 
-import java.util.regex.Matcher;
-
 public class Pomodoro extends CoreDataCommand {
 
     public static final String ENTRY = "pomodoro";
@@ -55,7 +53,7 @@ public class Pomodoro extends CoreDataCommand {
      * @return true if this is a break timer
      */
     private boolean putDuration(String duration) throws EmlaBadCommandException {
-        Matcher m = compile(" *b(reak)? *").matcher(duration); // TODO LANG
+        final var m = compile(" *b(reak)? *").matcher(duration); // TODO LANG
         boolean isBreak = m.find();
         if (isBreak) duration = m.replaceFirst("");
 

@@ -72,7 +72,7 @@ public class Torch extends CoreCommand {
     protected void run() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) throw new EmlaBadCommandException(NAME, R.string.error_unfinished_version);
         // TODO: https://github.com/LineageOS/android_packages_apps_Torch
-        CameraManager camMgr = (CameraManager) activity.getSystemService(Context.CAMERA_SERVICE);
+        final var camMgr = (CameraManager) activity.getSystemService(Context.CAMERA_SERVICE);
     try {
         String camId = flashCameraId(camMgr);
         if (camId == null) return;

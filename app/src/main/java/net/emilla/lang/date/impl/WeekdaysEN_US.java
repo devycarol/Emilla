@@ -41,8 +41,8 @@ public record WeekdaysEN_US(ArrayList<Integer> days, boolean empty) implements W
      * @return the weekday set in "umtwrfs" format.
      */
     private static String letterString(String s) {
-        String[] words = s.split(", *| +");
-        StringBuilder sb = new StringBuilder();
+        final var words = s.split(", *| +");
+        final var sb = new StringBuilder();
         for (String word : words) sb.append(dayLetter(word));
         return sb.toString();
     }

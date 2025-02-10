@@ -1,19 +1,25 @@
 package net.emilla.util;
 
 import static java.lang.Double.parseDouble;
-import static java.lang.Integer.max;
 import static java.lang.Integer.parseInt;
-import static java.lang.String.format;
-import static java.util.Calendar.*;
+import static java.lang.Math.max;
+import static java.util.Calendar.AM;
+import static java.util.Calendar.DAY_OF_MONTH;
+import static java.util.Calendar.HOUR_OF_DAY;
+import static java.util.Calendar.MILLISECOND;
+import static java.util.Calendar.MINUTE;
+import static java.util.Calendar.MONTH;
+import static java.util.Calendar.PM;
+import static java.util.Calendar.SECOND;
+import static java.util.Calendar.YEAR;
 import static java.util.regex.Pattern.CASE_INSENSITIVE;
-import static java.util.regex.Pattern.compile;
 
 import net.emilla.EmillaActivity;
 import net.emilla.R;
 import net.emilla.exception.EmlaBadCommandException;
 
 import java.util.Calendar;
-import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 // Todo: this class is utterly unreadable
 public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
@@ -22,20 +28,21 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
     private static final String APR = "apr(il)?", MAY = "may", JUN = "june?";
     private static final String JUL = "july?", AUG = "aug(ust)?", SEP = "sep(t(ember)?)?";
     private static final String OCT = "oct(ober)?", NOV = "nov(ember)?", DEC = "dec(ember)?";
-    private static final String MONTH_RGX = format("(%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s)",
-            JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC);
-    private static final String DAY_RGX = "(^| +)\\d?\\d( +|$)";
-    private static final String YEAR_RGX = "(\\d\\d|')\\d\\d";
+    private static final Pattern MONTH_RGX = Pattern.compile(
+            String.format("(?i)(%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s)",
+            JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC));
+    private static final Pattern DAY_RGX = Pattern.compile("(^| +)\\d?\\d( +|$)");
+    private static final Pattern YEAR_RGX = Pattern.compile("(\\d\\d|')\\d\\d");
 
     private static final String SUN = "(u|sun(day)?)", MON = "m(on(day)?)?";
     private static final String TUE = "t(ue(s(day)?)?)?", WED = "w(ed(nesday)?)?";
     private static final String THU = "(h|th(u(r(s(day)?)?)?)?)";
     private static final String FRI = "f(ri(day)?)?", SAT = "s(at(urday)?)?";
-    private static final String WEEKDAY_RGX = format("(%s|%s|%s|%s|%s|%s|%s)",
+    private static final String WEEKDAY_RGX = String.format("(%s|%s|%s|%s|%s|%s|%s)",
             SUN, MON, TUE, WED, THU, FRI, SAT);
 
     private static boolean containsRgxIgnoreCase(String s, String rgx) {
-        return compile(rgx, CASE_INSENSITIVE).matcher(s).find();
+        return Pattern.compile(rgx, CASE_INSENSITIVE).matcher(s).find();
     }
 
     private static int[] timeUnits(String time) {
@@ -88,7 +95,7 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         int[] endUnits = parseTime(until, null);
         int endHour = endUnits[0], endMin = endUnits[1], endSec = endUnits[2];
 
-        Calendar cal = getInstance();
+        final var cal = Calendar.getInstance();
         int curHour = cal.get(HOUR_OF_DAY), curMin = cal.get(MINUTE), curSec = cal.get(SECOND);
 
         int h = 0, m = 0, s = 0, warn = 0;
@@ -117,7 +124,7 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
     }
 
     private static int[] splitDurationString (String dur) {
-        String[] units = dur.split(" *: *| +");
+        final var units = dur.split(" *: *| +");
 
         double h = 0.0, m = 0.0, s = 0.0;
         switch (units.length) {
@@ -141,7 +148,7 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
     public static int[] parseDuration(String dur) { // TODO: handle 24h time properly
         if (dur.matches("(until|t(ill?|o)) .*")) return parseDurationUntil(dur);
         else {
-            double[] timeUnits = new double[4];
+            final var timeUnits = new double[4];
             String[] patterns = {
                     "\\d*\\.?\\d+ *h((ou)?rs?)?",
                     "\\d*\\.?\\d+ *m(in(ute)?s?)?",
@@ -154,7 +161,7 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
                 if (containsRgxIgnoreCase(dur, rgx)) {
                     hit = true;
 
-                    String[] sansHrs = dur.split(rgx);
+                    final var sansHrs = dur.split(rgx);
                     if (sansHrs.length > 2) throw new EmlaBadCommandException(R.string.command_timer, R.string.error_invalid_duration);
 
                     String before = "", after = "";
@@ -207,7 +214,7 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
     }
 
     private static Calendar parseDate(String s) { // TODO more formats but dear god locales ughhhhh
-        Calendar cal = getInstance();
+        final var cal = Calendar.getInstance();
         cal.set(MILLISECOND, 0);
         cal.set(SECOND, 0);
         cal.add(MINUTE, -cal.get(MINUTE) % 30 + 30);
@@ -217,19 +224,19 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
             return cal;
         }
 
-        Matcher m = compile("(?i)" + MONTH_RGX).matcher(s);
+        var m = MONTH_RGX.matcher(s);
         if (m.find()) {
             cal.set(MONTH, parseMonth(m.group()));
             if (m.find()) throw new EmlaBadCommandException(R.string.command_calendar, R.string.error_excess_time_units);
         }
 
-        m = compile(DAY_RGX).matcher(s);
+        m = DAY_RGX.matcher(s);
         if (m.find()) {
             cal.set(DAY_OF_MONTH, parseInt(m.group().trim()));
             if (m.find()) throw new EmlaBadCommandException(R.string.command_calendar, R.string.error_excess_time_units);
         }
 
-        m = compile(YEAR_RGX).matcher(s);
+        m = YEAR_RGX.matcher(s);
         if (m.find()) {
             String y = m.group();
             if (m.find()) throw new EmlaBadCommandException(R.string.command_calendar, R.string.error_excess_time_units);
@@ -243,14 +250,14 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
     }
 
     public static long[] parseDateAndTimes(String date) {
-        String[] dateTime = date.split(" *@ *|(^| +)(at|from) +");
+        final var dateTime = date.split(" *@ *|(^| +)(at|from) +");
 
         int[] startTime = null, endTime = null;
         boolean endTomorrow = false; // TODO
         int len = dateTime.length;
         if (len == 2) {
             date = dateTime[0];
-            String[] times = dateTime[1].split(" *(-|t(o|ill?)|until) *");
+            final var times = dateTime[1].split(" *(-|t(o|ill?)|until) *");
 
             switch (times.length) {
             case 2:

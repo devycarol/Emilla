@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.util.DisplayMetrics;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -59,7 +58,7 @@ public class SettingVals {
             CoreCommand.Yielder[] coreYielders) {
         // Todo: allow apps and customs. Make sure to fall back to a core if the app is uninstalled
         //  or the custom is deleted.
-        String entry = prefs.getString("default_command", "web");
+        final var entry = prefs.getString("default_command", "web");
         return new DefaultCommandWrapper.Yielder(switch (entry) {
             case Call.ENTRY -> coreYielders[0];
             case Dial.ENTRY -> coreYielders[1];
@@ -103,8 +102,8 @@ public class SettingVals {
             //  should change if it's still default. back:prefs.xml
             case "never" -> false;
             case "portrait" -> {
-                DisplayMetrics dm = res.getDisplayMetrics();
-                yield dm.widthPixels < dm.heightPixels;
+                final var metrics = res.getDisplayMetrics();
+                yield metrics.widthPixels < metrics.heightPixels;
             }
             default /*"always"*/ -> true;
         };

@@ -129,7 +129,7 @@ public final class TaskerIntent extends Intent {
     // Check if Tasker installed
 
     public static IntentFilter getCompletionFilter(String taskName) {
-        IntentFilter filter = new IntentFilter(ACTION_TASK_COMPLETE);
+        final var filter = new IntentFilter(ACTION_TASK_COMPLETE);
 
         filter.addDataScheme(TASK_NAME_DATA_SCHEME);
         filter.addDataPath(taskName, PatternMatcher.PATTERN_LITERAL);
@@ -220,7 +220,7 @@ public final class TaskerIntent extends Intent {
         mActionCount++;
         mArgCount = 1;
 
-        Bundle actionBundle = new Bundle();
+        final var actionBundle = new Bundle();
 
         actionBundle.putInt(ACTION_CODE, code);
 

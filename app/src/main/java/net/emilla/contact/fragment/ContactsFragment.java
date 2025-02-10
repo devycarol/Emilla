@@ -55,7 +55,7 @@ public abstract class ContactsFragment<T> extends Fragment
     }
 
     protected static <F extends ContactsFragment<?>> F newInstance(F base, boolean multiSelect) {
-        Bundle args = new Bundle();
+        final var args = new Bundle();
         args.putBoolean("multiSelect", multiSelect);
         base.setArguments(args);
 
@@ -131,9 +131,9 @@ public abstract class ContactsFragment<T> extends Fragment
         String selection;
         String[] selectionArgs;
         if (mSearchString != null) {
-            String baseSelection = Contacts.DISPLAY_NAME_PRIMARY + " LIKE ?";
+            final var baseSelection = Contacts.DISPLAY_NAME_PRIMARY + " LIKE ?";
             if (mHasMultiSelect) {
-                MultiSearch ms = MultiSearch.instance(baseSelection, mSearchString);
+                final var ms = MultiSearch.instance(baseSelection, mSearchString);
                 if (ms.hasMultipleTerms()) {
                     return makeLoader(mCursorAdapter.contentUri(), ms.selection(), ms.selectionArgs());
                 }
@@ -171,14 +171,15 @@ public abstract class ContactsFragment<T> extends Fragment
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
-        ContactItemView item = (ContactItemView) view;
+        final var item = (ContactItemView) view;
         if (item.isDoubleTap() && (!mHasMultiSelect || mContactList.getCheckedItemCount() == 0)) {
             // TODO ACC DONTMERGE: replace double-tap with accessibility action when a service is in
             //  use.
-            Cursor cur = ((CursorAdapter) parent.getAdapter()).getCursor();
+            final var adapter = (CursorAdapter) parent.getAdapter();
+            final var cur = adapter.getCursor();
             cur.moveToPosition(pos);
 
-            ContactReceiver receiver = (ContactReceiver) mActivity.command();
+            final var receiver = (ContactReceiver) mActivity.command();
             receiver.useContact(cur);
         } else if (mHasMultiSelect) item.markSelected(mContactList.isItemChecked(pos));
         // TODO ACC DONTMERGE: have this feedback for single-selection as well.
@@ -188,7 +189,7 @@ public abstract class ContactsFragment<T> extends Fragment
     public boolean onItemLongClick(AdapterView<?> parent, View view, int pos, long id) {
         if (!mContactList.isItemChecked(pos)) return false;
         mContactList.setItemChecked(pos, false);
-        ContactItemView item = (ContactItemView) view;
+        final var item = (ContactItemView) view;
         item.markSelected(false);
         return true;
     }
@@ -199,7 +200,7 @@ public abstract class ContactsFragment<T> extends Fragment
         // TODO ACC DONTMERGE: have a more available feedback for users to know which contacts are
         //  selected without having to scour the whole list.
         if (Permissions.contacts(requireContext())) {
-            CursorAdapter adapter = (CursorAdapter) mContactList.getAdapter();
+            final var adapter = (CursorAdapter) mContactList.getAdapter();
             return selectedContactsInternal(mContactList, adapter.getCursor());
         }
         return null;
@@ -224,10 +225,10 @@ public abstract class ContactsFragment<T> extends Fragment
                 if (selectedCount == 0) return null;
                 int firstPos = selecteds.keyAt(0);
                 cur.moveToPosition(firstPos);
-                String firstContact = cur.getString(colIndex);
+                final var firstContact = cur.getString(colIndex);
 
                 if (selectedCount == 1) return firstContact;
-                StringBuilder contacts = new StringBuilder(firstContact);
+                final var contacts = new StringBuilder(firstContact);
 
                 for (int i = 1; i < selectedCount; ++i) {
                     int pos = selecteds.keyAt(i);

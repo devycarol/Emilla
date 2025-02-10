@@ -24,8 +24,8 @@ abstract class AppSearch extends AppCommand {
         // Todo YouTube: instantly pull up bookmarked videos, specialized search for channels, playlists,
         //  etc. I assume the G assistant has similar functionality. If requires internet, could use
         //  bookmarks at the very least. Also, this command is broken for YouTube when a video is playing.
-        String[] searchAliases = stringArray(R.array.subcmd_search);
-        String lcQuery = query.toLowerCase();
+        final var searchAliases = stringArray(R.array.subcmd_search);
+        final var lcQuery = query.toLowerCase();
         Intent in = Apps.searchTask(packageName);
         for (String alias : searchAliases) {
             if (lcQuery.startsWith(alias)) {

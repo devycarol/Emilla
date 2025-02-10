@@ -35,14 +35,14 @@ public abstract class OpenCommand extends CoreCommand {
         // todo: optimized pre-processed search
         int appCount = appList.size();
 
-        CharSequence[] prefLabels = new CharSequence[appCount];
-        CharSequence[] otherLabels = new CharSequence[appCount];
-        Intent[] prefIntents = new Intent[appCount];
-        Intent[] otherIntents = new Intent[appCount];
+        var prefLabels = new CharSequence[appCount];
+        var otherLabels = new CharSequence[appCount];
+        var prefIntents = new Intent[appCount];
+        var otherIntents = new Intent[appCount];
         int prefCount = 0;
         int otherCount = 0;
 
-        String lcQuery = app.toLowerCase();
+        final var lcQuery = app.toLowerCase();
         boolean exactMatch = false;
 
         for (int i = 0; i < appCount; ++i) {
@@ -50,7 +50,7 @@ public abstract class OpenCommand extends CoreCommand {
 
             PackageManager pm = pm();
             CharSequence label = info.loadLabel(pm);
-            String lcLabel = label.toString().toLowerCase();
+            var lcLabel = label.toString().toLowerCase();
 
             if (lcLabel.equals(lcQuery)) { // an exact match will drop all other results
                 prefLabels = new CharSequence[appCount];

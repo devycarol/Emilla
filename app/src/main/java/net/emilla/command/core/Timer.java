@@ -1,7 +1,6 @@
 package net.emilla.command.core;
 
 import static android.provider.AlarmClock.*;
-import static java.lang.String.format;
 import static java.util.Locale.ROOT;
 
 import android.content.Intent;
@@ -68,8 +67,9 @@ public class Timer extends CoreDataCommand {
                 nextPeriod = "PM";
                 curPeriod = "AM";
             }
-            String endTime = format(ROOT, "%d:%02d%s", timeUnits[4], timeUnits[5], nextPeriod);
-            toast(format(ROOT, "Warning! Timer set for %s, not %s.", endTime, curPeriod)); // not good...
+            final var endTime = String.format(ROOT, "%d:%02d%s", timeUnits[4], timeUnits[5], nextPeriod);
+            toast(String.format(ROOT, "Warning! Timer set for %s, not %s.", endTime, curPeriod));
+            // TODO: not good...
         }
         int offset = timeUnits.length == 6 ? 1 : 0; // remind me what this means??
         return timeUnits[0] * 60 * 60 + timeUnits[1] * 60 + timeUnits[2] - offset;

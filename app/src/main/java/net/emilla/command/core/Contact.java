@@ -90,7 +90,7 @@ public class Contact extends CoreDataCommand implements ContactCardReceiver {
         // TODO LANG: replace with tri-state button
         if (person == null) return null;
 
-        String lcPerson = person.toLowerCase();
+        final var lcPerson = person.toLowerCase();
         if (lcPerson.startsWith("edit")) {
             mAction = EDIT;
             person = person.substring(4).trim();
@@ -185,7 +185,7 @@ public class Contact extends CoreDataCommand implements ContactCardReceiver {
     }
 
     private void offerCreate(@NonNull String person, @Nullable String details) {
-        String msg = string(R.string.notice_contact_no_match, person);
+        final var msg = string(R.string.notice_contact_no_match, person);
         offerDialog(Dialogs.dual(activity, NAME, msg, R.string.create,
                 (dlg, which) -> create(person, details)));
     }

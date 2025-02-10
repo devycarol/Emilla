@@ -5,7 +5,6 @@ import static android.os.Environment.DIRECTORY_DOCUMENTS;
 import static android.os.Environment.getExternalStoragePublicDirectory;
 import static androidx.core.content.FileProvider.getUriForFile;
 
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
@@ -93,14 +92,14 @@ public class Todo extends CoreDataCommand {
     }
 
     private void todo(String task) { try {
-        ContentResolver cr = contentResolver();
+        final var cr = contentResolver();
 
         if (Files.endsWithNewline(cr, mUri)) task = "\n" + task + "\n";
         else task = task + "\n";
 
         ParcelFileDescriptor pfd = cr.openFileDescriptor(mUri, "wa");
         if (pfd == null) throw new FileNotFoundException();
-        FileOutputStream fos = new FileOutputStream(pfd.getFileDescriptor());
+        final var fos = new FileOutputStream(pfd.getFileDescriptor());
 
         fos.write(task.getBytes());
         fos.close();

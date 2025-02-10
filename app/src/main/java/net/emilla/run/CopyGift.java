@@ -18,7 +18,7 @@ public class CopyGift implements Gift {
 
     @Override
     public void run() {
-        ClipboardManager mgr = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
+        final var mgr = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
         mgr.setPrimaryClip(ClipData.newPlainText(null, mText));
     }
 }

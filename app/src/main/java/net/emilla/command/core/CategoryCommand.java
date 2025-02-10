@@ -1,7 +1,6 @@
 package net.emilla.command.core;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
 import androidx.appcompat.app.AlertDialog;
@@ -23,7 +22,7 @@ public abstract class CategoryCommand extends CoreCommand {
     protected CategoryCommand(AssistActivity act, CoreParams params) {
         super(act, params);
 
-        PackageManager pm = act.getPackageManager();
+        final var pm = act.getPackageManager();
         List<ResolveInfo> appList = Apps.resolveList(pm, makeFilter());
         mAppCount = appList.size();
         if (mAppCount == 1) mLaunchIntent = Apps.launchIntent(appList.get(0).activityInfo);

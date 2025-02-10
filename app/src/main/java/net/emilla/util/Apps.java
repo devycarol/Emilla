@@ -102,7 +102,7 @@ public class Apps {
     public static CharSequence[] labels(List<ResolveInfo> appList, PackageManager pm) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) return appList.parallelStream()
                 .map(ri -> ri.activityInfo.loadLabel(pm)).toArray(CharSequence[]::new);
-        CharSequence[] labels = new CharSequence[appList.size()];
+        final var labels = new CharSequence[appList.size()];
         int i = -1;
         for (ResolveInfo ri : appList) labels[++i] = ri.activityInfo.packageName;
         return labels;
@@ -111,7 +111,7 @@ public class Apps {
     public static Intent[] launches(List<ResolveInfo> appList) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) return appList.parallelStream()
                 .map(ri -> launchIntent(ri.activityInfo)).toArray(Intent[]::new);
-        Intent[] intents = new Intent[appList.size()];
+        final var intents = new Intent[appList.size()];
         int i = -1;
         for (ResolveInfo ri : appList) intents[++i] = launchIntent(ri.activityInfo);
         return intents;
@@ -122,15 +122,14 @@ public class Apps {
     }
 
     public static Intent uninstallIntent(String pkg, PackageManager pm) {
-        ApplicationInfo info;
     try {
-        info = pm.getApplicationInfo(pkg, 0);
+        final var info = pm.getApplicationInfo(pkg, 0);
         boolean uninstallable = (info.flags & ApplicationInfo.FLAG_SYSTEM) == 0;
         if (uninstallable) return new Intent(ACTION_UNINSTALL_PACKAGE, pkgUri(pkg));
         // Todo: ACTION_UNINSTALL_PACKAGE is deprecated.
         Intent appInfo = infoTask(pkg);
         if (appInfo.resolveActivity(pm) != null) return appInfo;
-        Intent settings = new Intent(Settings.ACTION_SETTINGS);
+        final var settings = new Intent(Settings.ACTION_SETTINGS);
         if (appInfo.resolveActivity(pm) != null) return settings;
     } catch (PackageManager.NameNotFoundException ignored) {}
         return null;
@@ -139,7 +138,7 @@ public class Apps {
     public static Intent[] uninstalls(List<ResolveInfo> appList, PackageManager pm) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) return appList.parallelStream()
                 .map(ri -> uninstallIntent(ri.activityInfo.packageName, pm)).toArray(Intent[]::new);
-        Intent[] intents = new Intent[appList.size()];
+        final var intents = new Intent[appList.size()];
         int i = -1;
         for (ResolveInfo ri : appList) intents[++i] = uninstallIntent(ri.activityInfo.packageName, pm);
         return intents;

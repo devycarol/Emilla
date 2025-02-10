@@ -29,23 +29,23 @@ public class EmillaForegroundService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (sRunning) return START_STICKY;
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+        final var builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_assistant) // TODO: un-break the icons
                 .setContentTitle(getString(R.string.notif_foreground_title))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setAutoCancel(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationManager nm = getSystemService(NotificationManager.class);
-            if (nm.getNotificationChannel(CHANNEL_ID) == null) {
-                NotificationChannel channel = new NotificationChannel(
+            final var notifManager = getSystemService(NotificationManager.class);
+            if (notifManager.getNotificationChannel(CHANNEL_ID) == null) {
+                final var channel = new NotificationChannel(
                         CHANNEL_ID,
                         getString(R.string.channel_foreground),
                         NotificationManager.IMPORTANCE_DEFAULT);
                 channel.setDescription(getString(R.string.dscript_foreground));
-                nm.createNotificationChannel(channel);
+                notifManager.createNotificationChannel(channel);
             }
             builder.setContentText(getString(R.string.notif_foreground_text)); // "tap to disable" text
-            Intent notifIntent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS)
+            final var notifIntent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS)
                     .putExtra(Settings.EXTRA_APP_PACKAGE, Apps.MY_PKG)
                     .putExtra(Settings.EXTRA_CHANNEL_ID, CHANNEL_ID);
             notifIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -54,7 +54,7 @@ public class EmillaForegroundService extends Service {
         }
         Intent configIntent = Apps.meTask(this, ConfigActivity.class); // TODO: actually take to the settings fragment with notbroken navigation state
         PendingIntent configPend = PendingIntent.getActivity(this, 0, configIntent, PendingIntent.FLAG_IMMUTABLE);
-        NotificationCompat.Action serviceConfigAction = new NotificationCompat.Action.Builder(
+        final var serviceConfigAction = new NotificationCompat.Action.Builder(
                 R.drawable.ic_settings, // TODO: un-break the icons
                 getString(R.string.notif_action_foreground_config),
                 configPend).build();
