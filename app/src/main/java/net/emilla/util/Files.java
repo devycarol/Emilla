@@ -5,10 +5,29 @@ import android.content.Context;
 import android.net.Uri;
 import android.webkit.MimeTypeMap;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.List;
 
 public final class Files {
+
+    public static boolean endsWithNewline(ContentResolver cr, Uri fileUri) throws IOException {
+        InputStream is = cr.openInputStream(fileUri);
+        if (is == null) throw new FileNotFoundException();
+        final var reader = new BufferedReader(new InputStreamReader(is));
+        // todo: what.
+
+        int c, lastChar = '\n';
+        while ((c = reader.read()) != -1) lastChar = c;
+        // todo: don't loop through each char.
+        reader.close();
+        is.close();
+        return lastChar == '\n';
+    }
 
     public static final class MimeType {
 

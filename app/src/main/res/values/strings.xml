@@ -605,7 +605,8 @@
     <string name="error_no_snippet">Snippet \"%s\" doesn\'t exist, but you can make it with the data field.</string>
     <string name="error_no_snippets">You don\'t have any saved snippets.</string>
     <string name="error_cant_uninstall">Failed to uninstall the app.</string>
-    <string name="error_lmao">This is really really bad!</string>
+    <string name="error_cant_find_file">Can\'t find the file.</string>
+    <string name="error_cant_use_file">A file error occurred.</string>
     <string name="error_feature_phone">Your device doesn\'t support phone calls.</string>
     <string name="error_feature_sms">Your device doesn\'t support SMS messaging.</string>
     <string name="error_unfinished_feature">Unfinished feature!</string>

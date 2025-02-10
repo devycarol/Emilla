@@ -4,7 +4,6 @@ import static android.content.Intent.*;
 import static android.os.Environment.DIRECTORY_DOCUMENTS;
 import static android.os.Environment.getExternalStoragePublicDirectory;
 import static androidx.core.content.FileProvider.getUriForFile;
-import static java.util.Objects.requireNonNull;
 
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -20,13 +19,12 @@ import net.emilla.R;
 import net.emilla.exception.EmlaBadCommandException;
 import net.emilla.settings.Aliases;
 import net.emilla.util.Apps;
+import net.emilla.util.Files;
 
-import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 public class Todo extends CoreDataCommand {
 
@@ -64,26 +62,6 @@ public class Todo extends CoreDataCommand {
         super(act, new TodoParams());
     }
 
-    private void todo(String task) /* todo FRICK + filenotfound */ {
-    try {
-        ContentResolver cr = contentResolver();
-        InputStream is = requireNonNull(cr.openInputStream(mUri)); // todo null safety ???
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-
-        int c, lastChar = '\n';
-        while ((c = reader.read()) != -1) lastChar = c;
-        reader.close();
-        is.close();
-
-        ParcelFileDescriptor pfd = requireNonNull(cr.openFileDescriptor(mUri, "wa")); // todo null safety ???
-        FileOutputStream fos = new FileOutputStream(pfd.getFileDescriptor());
-        fos.write(((lastChar == '\n' ? "" : '\n') + task + '\n').getBytes());
-        fos.close();
-        pfd.close();
-    } catch (IOException e) {
-        throw new EmlaBadCommandException(NAME, R.string.error_lmao); // TODO LMAO
-    }}
-
     @Override
     protected void run() {
         appSucceed(mViewIntent);
@@ -113,4 +91,23 @@ public class Todo extends CoreDataCommand {
         for (String t : task.split("\n")) if (!t.isBlank()) ++taskCount;
         giveText(quantityString(R.plurals.toast_tasks_created, taskCount), false);
     }
+
+    private void todo(String task) { try {
+        ContentResolver cr = contentResolver();
+
+        if (Files.endsWithNewline(cr, mUri)) task = "\n" + task + "\n";
+        else task = task + "\n";
+
+        ParcelFileDescriptor pfd = cr.openFileDescriptor(mUri, "wa");
+        if (pfd == null) throw new FileNotFoundException();
+        FileOutputStream fos = new FileOutputStream(pfd.getFileDescriptor());
+
+        fos.write(task.getBytes());
+        fos.close();
+        pfd.close();
+    } catch (FileNotFoundException e) {
+        throw new EmlaBadCommandException(NAME, R.string.error_cant_find_file);
+    } catch (IOException e) {
+        throw new EmlaBadCommandException(NAME, R.string.error_cant_use_file);
+    }}
 }
