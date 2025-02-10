@@ -2,7 +2,6 @@ package net.emilla.command.core;
 
 import static android.content.Intent.EXTRA_STREAM;
 import static android.content.Intent.EXTRA_TEXT;
-import static android.content.Intent.createChooser;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -181,7 +180,7 @@ public class Contact extends CoreDataCommand implements ContactCardReceiver {
         if (message != null) send.putExtra(EXTRA_TEXT, message);
         // todo: see if it's possible to detect when apps won't accept this.
 
-        appSucceed(createChooser(send, string(NAME)));
+        appSucceed(Intent.createChooser(send, string(NAME)));
     }
 
     private void offerCreate(@NonNull String person, @Nullable String details) {

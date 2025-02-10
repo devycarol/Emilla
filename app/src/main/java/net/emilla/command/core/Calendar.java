@@ -7,7 +7,6 @@ import static android.provider.CalendarContract.Events.DESCRIPTION;
 import static android.provider.CalendarContract.Events.EVENT_LOCATION;
 import static android.provider.CalendarContract.Events.TITLE;
 import static java.util.regex.Pattern.CASE_INSENSITIVE;
-import static java.util.regex.Pattern.compile;
 
 import android.content.Intent;
 import android.provider.CalendarContract.Events;
@@ -25,6 +24,8 @@ import net.emilla.exception.EmlaBadCommandException;
 import net.emilla.settings.Aliases;
 import net.emilla.util.Apps;
 import net.emilla.util.Time;
+
+import java.util.regex.Pattern;
 
 public class Calendar extends CoreDataCommand {
 
@@ -83,7 +84,7 @@ public class Calendar extends CoreDataCommand {
 
     private void putTitleAndDate(String title) throws EmlaBadCommandException {
         // todo: clean this up
-        final var m = compile(" */all(day)?", CASE_INSENSITIVE).matcher(title);
+        final var m = Pattern.compile(" */all(day)?", CASE_INSENSITIVE).matcher(title);
         if (m.find()) {
             title = m.replaceFirst("");
             mIntent.putExtra(EXTRA_EVENT_ALL_DAY, true);

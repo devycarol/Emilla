@@ -1,6 +1,9 @@
 package net.emilla.command.core;
 
-import static android.provider.AlarmClock.*;
+import static android.provider.AlarmClock.ACTION_SET_TIMER;
+import static android.provider.AlarmClock.EXTRA_LENGTH;
+import static android.provider.AlarmClock.EXTRA_MESSAGE;
+import static android.provider.AlarmClock.EXTRA_SKIP_UI;
 import static java.util.Locale.ROOT;
 
 import android.content.Intent;

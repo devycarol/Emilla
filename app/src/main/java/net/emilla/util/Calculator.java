@@ -3,7 +3,6 @@ package net.emilla.util;
 import static java.lang.Long.parseLong;
 import static java.lang.Math.pow;
 import static java.util.regex.Pattern.CASE_INSENSITIVE;
-import static java.util.regex.Pattern.compile;
 
 import net.emilla.R;
 import net.emilla.exception.EmlaBadCommandException;
@@ -29,9 +28,9 @@ public final class Calculator { // i should definitely be using an expression tr
             MATH_SYMBOLS = {"+", "-", "/", "*", "^", ".", "(", ")"};
 
     private static final Pattern
-            EXP = compile("(\\d+)\\^-?(\\d+)"),
-            PROD = compile("(\\d+)[ */]-?(\\d+)"),
-            SUM = compile("(-?\\d+)[+-](\\d+)");
+            EXP = Pattern.compile("(\\d+)\\^-?(\\d+)"),
+            PROD = Pattern.compile("(\\d+)[ */]-?(\\d+)"),
+            SUM = Pattern.compile("(-?\\d+)[+-](\\d+)");
 
     private static long evaluate(CharSequence expr) { // It's trim-safe as a one-time method, but not for text-watching
         final var solBuilder = new StringBuilder(expr);
@@ -88,7 +87,7 @@ public final class Calculator { // i should definitely be using an expression tr
     private static CharSequence cleanup(CharSequence expr) { // TODO parens - "all of" must be parsed before "all"
         int i = 0;
         for (String phrase : MATH_WORDS) {
-            final var m = compile(phrase, CASE_INSENSITIVE).matcher(expr);
+            final var m = Pattern.compile(phrase, CASE_INSENSITIVE).matcher(expr);
             if (m.find()) expr = m.replaceAll(MATH_SYMBOLS[i]);
             ++i;
         }
@@ -96,7 +95,7 @@ public final class Calculator { // i should definitely be using an expression tr
         // replace numeral space-juxtaposition with stars - could cause issues with pasted/formmatted numbers: 2 345 692
         // will need to be reworked if you add log_2 34 ability. parse functions beforehand, adding explicit parens?
             // ambiguity: log2 3 - log_2(3) or log(2) * 3?
-        final var m = compile("(\\d*\\.?\\d+) +(\\d*\\.?\\d+)").matcher(expr);
+        final var m = Pattern.compile("(\\d*\\.?\\d+) +(\\d*\\.?\\d+)").matcher(expr);
         boolean hit = false;
         while (m.find()) {
             expr = m.replaceFirst("$1*$2");
@@ -106,37 +105,37 @@ public final class Calculator { // i should definitely be using an expression tr
         if (!hit) m.reset();
 
         // remove spaces and commas - could cause locale issues with decimal comma: 10,45
-        m.usePattern(compile("[ ,]"));
+        m.usePattern(Pattern.compile("[ ,]"));
         if (m.find()) {
             expr = m.replaceAll("");
             m.reset(expr);
         } else m.reset();
 
         // simplify negative positives
-        m.usePattern(compile("\\+-|-\\+"));
+        m.usePattern(Pattern.compile("\\+-|-\\+"));
         if (m.find()) {
-            m.usePattern(compile("\\+*-\\+*"));
+            m.usePattern(Pattern.compile("\\+*-\\+*"));
             expr = m.replaceAll("-");
             m.reset(expr);
         } else m.reset();
 
         // simplify double negatives
-        m.usePattern(compile("--"));
+        m.usePattern(Pattern.compile("--"));
         if (m.find()) {
             expr = m.replaceAll("+");
             m.reset(expr);
         } else m.reset();
 
         // simplify negative positives again
-        m.usePattern(compile("\\+-|-\\+"));
+        m.usePattern(Pattern.compile("\\+-|-\\+"));
         if (m.find()) {
-            m.usePattern(compile("\\+*-\\+*"));
+            m.usePattern(Pattern.compile("\\+*-\\+*"));
             expr = m.replaceAll("-");
             m.reset(expr);
         } else m.reset();
 
         // remove unary/double positives
-        m.usePattern(compile("(^|[+*/^])\\++"));
+        m.usePattern(Pattern.compile("(^|[+*/^])\\++"));
         if (m.find()) expr = m.replaceAll("$1");
 
         return expr;

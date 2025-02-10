@@ -1,17 +1,20 @@
 package net.emilla.command.core;
 
-import static android.content.Intent.*;
+import static android.content.Intent.ACTION_VIEW;
+import static android.content.Intent.EXTRA_STREAM;
+import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
+import static android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
 import static android.os.Environment.DIRECTORY_DOCUMENTS;
-import static android.os.Environment.getExternalStoragePublicDirectory;
-import static androidx.core.content.FileProvider.getUriForFile;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 
 import androidx.annotation.ArrayRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
+import androidx.core.content.FileProvider;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -50,8 +53,8 @@ public class Todo extends CoreDataCommand {
         }
     }
 
-    private final File mFile = new File(getExternalStoragePublicDirectory(DIRECTORY_DOCUMENTS), "todo.txt"); // TODO: allow configurable path and don't require all files permission
-    private final Uri mUri = getUriForFile(activity, Apps.MY_PKG + ".fileprovider", mFile);
+    private final File mFile = new File(Environment.getExternalStoragePublicDirectory(DIRECTORY_DOCUMENTS), "todo.txt"); // TODO: allow configurable path and don't require all files permission
+    private final Uri mUri = FileProvider.getUriForFile(activity, Apps.MY_PKG + ".fileprovider", mFile);
     private final Intent mViewIntent = new Intent(ACTION_VIEW).setDataAndType(mUri, "text/plain")
             .addFlags(FLAG_GRANT_READ_URI_PERMISSION | FLAG_GRANT_WRITE_URI_PERMISSION)
             .putExtra(EXTRA_STREAM, mUri)

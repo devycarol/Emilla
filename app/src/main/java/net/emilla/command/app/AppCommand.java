@@ -1,7 +1,5 @@
 package net.emilla.command.app;
 
-import static net.emilla.util.Apps.sendToApp;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -89,7 +87,7 @@ public class AppCommand extends EmillaCommand {
         public Yielder(ActivityInfo info, PackageManager pm) {
             mPkg = info.packageName;
             cls = info.name;
-            mHasSend = sendToApp(mPkg).resolveActivity(pm) != null;
+            mHasSend = Apps.sendToApp(mPkg).resolveActivity(pm) != null;
 
             mUsesInstruction = switch (mPkg) {
                 case AospContacts.PKG, Firefox.PKG, Youtube.PKG, // search commands

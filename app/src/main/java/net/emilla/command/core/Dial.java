@@ -1,9 +1,9 @@
 package net.emilla.command.core;
 
 import static android.content.Intent.ACTION_DIAL;
-import static android.net.Uri.parse;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
@@ -50,6 +50,6 @@ public class Dial extends CoreCommand {
 
     @Override
     protected void run(@NonNull String numberOrPhoneword) {
-        appSucceed(new Intent(ACTION_DIAL).setData(parse("tel:" + numberOrPhoneword)));
+        appSucceed(new Intent(ACTION_DIAL).setData(Uri.parse("tel:" + numberOrPhoneword)));
     }
 }

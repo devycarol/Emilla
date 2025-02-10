@@ -1,8 +1,10 @@
 package net.emilla.command.core;
 
-import static android.provider.AlarmClock.*;
+import static android.provider.AlarmClock.ACTION_SET_TIMER;
+import static android.provider.AlarmClock.EXTRA_LENGTH;
+import static android.provider.AlarmClock.EXTRA_MESSAGE;
+import static android.provider.AlarmClock.EXTRA_SKIP_UI;
 import static java.lang.Float.parseFloat;
-import static java.util.regex.Pattern.compile;
 
 import android.content.Intent;
 
@@ -14,6 +16,8 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.exception.EmlaBadCommandException;
 import net.emilla.settings.Aliases;
+
+import java.util.regex.Pattern;
 
 public class Pomodoro extends CoreDataCommand {
 
@@ -53,7 +57,7 @@ public class Pomodoro extends CoreDataCommand {
      * @return true if this is a break timer
      */
     private boolean putDuration(String duration) throws EmlaBadCommandException {
-        final var m = compile(" *b(reak)? *").matcher(duration); // TODO LANG
+        final var m = Pattern.compile(" *b(reak)? *").matcher(duration); // TODO LANG
         boolean isBreak = m.find();
         if (isBreak) duration = m.replaceFirst("");
 

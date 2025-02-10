@@ -1,6 +1,14 @@
 package net.emilla.util;
 
-import static android.content.Intent.*;
+import static android.content.Intent.ACTION_EDIT;
+import static android.content.Intent.ACTION_INSERT;
+import static android.content.Intent.ACTION_MAIN;
+import static android.content.Intent.ACTION_SEARCH;
+import static android.content.Intent.ACTION_SEND;
+import static android.content.Intent.ACTION_SEND_MULTIPLE;
+import static android.content.Intent.ACTION_UNINSTALL_PACKAGE;
+import static android.content.Intent.ACTION_VIEW;
+import static android.content.Intent.CATEGORY_LAUNCHER;
 
 import android.content.ComponentName;
 import android.content.Context;

@@ -3,7 +3,11 @@
 
 package net.emilla.util.app;
 
-import static net.emilla.util.app.TaskerIntent.Status.*;
+import static net.emilla.util.app.TaskerIntent.Status.NOT_ENABLED;
+import static net.emilla.util.app.TaskerIntent.Status.NO_ACCESS;
+import static net.emilla.util.app.TaskerIntent.Status.NO_PERMISSION;
+import static net.emilla.util.app.TaskerIntent.Status.NO_RECEIVER;
+import static net.emilla.util.app.TaskerIntent.Status.OK;
 
 import android.content.Context;
 import android.content.Intent;

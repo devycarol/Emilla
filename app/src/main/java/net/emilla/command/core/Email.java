@@ -1,6 +1,11 @@
 package net.emilla.command.core;
 
-import static android.content.Intent.*;
+import static android.content.Intent.ACTION_SENDTO;
+import static android.content.Intent.ACTION_SEND_MULTIPLE;
+import static android.content.Intent.EXTRA_EMAIL;
+import static android.content.Intent.EXTRA_STREAM;
+import static android.content.Intent.EXTRA_SUBJECT;
+import static android.content.Intent.EXTRA_TEXT;
 
 import android.content.Intent;
 import android.net.Uri;

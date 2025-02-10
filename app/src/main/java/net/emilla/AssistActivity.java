@@ -2,9 +2,25 @@ package net.emilla;
 
 import static android.content.Intent.ACTION_ASSIST;
 import static android.content.Intent.ACTION_VOICE_COMMAND;
-import static android.view.KeyEvent.*;
-import static android.view.inputmethod.EditorInfo.*;
-import static net.emilla.chime.Chimer.*;
+import static android.view.KeyEvent.ACTION_UP;
+import static android.view.KeyEvent.KEYCODE_BACK;
+import static android.view.KeyEvent.KEYCODE_MENU;
+import static android.view.KeyEvent.KEYCODE_SEARCH;
+import static android.view.inputmethod.EditorInfo.IME_ACTION_DONE;
+import static android.view.inputmethod.EditorInfo.IME_ACTION_GO;
+import static android.view.inputmethod.EditorInfo.IME_ACTION_NEXT;
+import static android.view.inputmethod.EditorInfo.IME_ACTION_NONE;
+import static android.view.inputmethod.EditorInfo.IME_ACTION_PREVIOUS;
+import static android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH;
+import static android.view.inputmethod.EditorInfo.IME_ACTION_SEND;
+import static android.view.inputmethod.EditorInfo.IME_ACTION_UNSPECIFIED;
+import static net.emilla.chime.Chimer.ACT;
+import static net.emilla.chime.Chimer.EXIT;
+import static net.emilla.chime.Chimer.FAIL;
+import static net.emilla.chime.Chimer.PEND;
+import static net.emilla.chime.Chimer.RESUME;
+import static net.emilla.chime.Chimer.START;
+import static net.emilla.chime.Chimer.SUCCEED;
 import static java.lang.Character.isWhitespace;
 
 import android.content.Context;
