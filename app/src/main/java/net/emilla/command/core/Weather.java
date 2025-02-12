@@ -15,7 +15,7 @@ import net.emilla.R;
 import net.emilla.settings.Aliases;
 import net.emilla.util.Apps;
 
-public class Weather extends CategoryCommand {
+public final class Weather extends CategoryCommand {
 
     public static final String ENTRY = "weather";
     @StringRes
@@ -28,7 +28,7 @@ public class Weather extends CategoryCommand {
         return new Yielder(true, Weather::new, ENTRY, NAME, ALIASES);
     }
 
-    private static class WeatherParams extends CoreParams {
+    private static final class WeatherParams extends CoreParams {
 
         private WeatherParams() {
             super(NAME,

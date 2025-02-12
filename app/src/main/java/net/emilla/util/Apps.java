@@ -28,7 +28,7 @@ import net.emilla.EmillaActivity;
 
 import java.util.List;
 
-public class Apps {
+public final class Apps {
 
     public static final String MY_PKG = BuildConfig.APPLICATION_ID;
 

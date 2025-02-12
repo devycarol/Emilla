@@ -11,7 +11,7 @@ import net.emilla.R;
 import net.emilla.run.CopyGift;
 import net.emilla.settings.Aliases;
 
-public class Copy extends CoreCommand {
+public final class Copy extends CoreCommand {
 
     public static final String ENTRY = "copy";
     @StringRes
@@ -24,7 +24,7 @@ public class Copy extends CoreCommand {
         return new Yielder(true, Copy::new, ENTRY, NAME, ALIASES);
     }
 
-    private static class CopyParams extends CoreParams {
+    private static final class CopyParams extends CoreParams {
 
         private CopyParams() {
             super(NAME,

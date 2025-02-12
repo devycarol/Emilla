@@ -48,7 +48,7 @@ import net.emilla.util.Features;
 import java.util.HashSet;
 import java.util.Set;
 
-public class SettingVals {
+public final class SettingVals {
 
     public static final String
             ALIASES_CUSTOM = "aliases_custom",
@@ -208,4 +208,6 @@ public class SettingVals {
     private static String snippetPref(String label) {
         return "snippet_" + label;
     }
+
+    private SettingVals() {}
 }

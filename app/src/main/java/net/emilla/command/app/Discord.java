@@ -5,15 +5,15 @@ import androidx.annotation.ArrayRes;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 
-public class Discord extends AppSend {
+public final class Discord extends AppSend {
 
     public static final String PKG = "com.discord";
     @ArrayRes
     public static final int ALIASES = R.array.aliases_discord;
 
-    private static class DiscordParams extends AppSendParams {
+    private static final class DiscordParams extends AppSendParams {
 
-        protected DiscordParams(Yielder info) {
+        private DiscordParams(Yielder info) {
             super(info,
                   R.string.instruction_message,
                   R.string.summary_messaging,

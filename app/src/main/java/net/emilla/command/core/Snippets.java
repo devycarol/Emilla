@@ -14,7 +14,7 @@ import net.emilla.util.Dialogs;
 
 import java.util.Set;
 
-public class Snippets extends CoreDataCommand {
+public final class Snippets extends CoreDataCommand {
 
     public static final String ENTRY = "snippets";
     @StringRes
@@ -29,7 +29,7 @@ public class Snippets extends CoreDataCommand {
         return new Yielder(true, Snippets::new, ENTRY, NAME, ALIASES);
     }
 
-    private static class SnippetsParams extends CoreDataParams {
+    private static final class SnippetsParams extends CoreDataParams {
 
         private SnippetsParams() {
             super(NAME,

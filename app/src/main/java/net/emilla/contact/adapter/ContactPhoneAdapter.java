@@ -11,7 +11,7 @@ import android.view.View;
 import net.emilla.contact.ContactItemView;
 import net.emilla.lang.Lang;
 
-public class ContactPhoneAdapter extends ContactCursorAdapter {
+public final class ContactPhoneAdapter extends ContactCursorAdapter {
 
     private static final String[] ADD_COLS = {
             RawContacts.CONTACT_ID,

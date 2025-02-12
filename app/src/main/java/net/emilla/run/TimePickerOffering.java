@@ -6,7 +6,7 @@ import android.text.format.DateFormat;
 
 import net.emilla.AssistActivity;
 
-public class TimePickerOffering implements Offering {
+public final class TimePickerOffering implements Offering {
 
     private final AssistActivity mActivity;
     private final TimePickerDialog mDialog;

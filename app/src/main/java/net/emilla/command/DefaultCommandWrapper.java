@@ -11,9 +11,9 @@ import net.emilla.R;
 import net.emilla.command.app.AppCommand;
 import net.emilla.lang.Lang;
 
-public class DefaultCommandWrapper extends EmillaCommand {
+public final class DefaultCommandWrapper extends EmillaCommand {
 
-    public static class Yielder extends CommandYielder {
+    public static final class Yielder extends CommandYielder {
 
         private final CommandYielder mYielder;
 
@@ -34,7 +34,7 @@ public class DefaultCommandWrapper extends EmillaCommand {
 
     private final EmillaCommand mCmd; // Todo: allow app commands
 
-    private static class DefaultWrapperParams implements Params {
+    private static final class DefaultWrapperParams implements Params {
 
         private final EmillaCommand mCmd;
 

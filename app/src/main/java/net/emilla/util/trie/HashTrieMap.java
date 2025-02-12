@@ -5,7 +5,7 @@ import java.util.Map;
 
 public final class HashTrieMap<K, V extends TrieMap.Value<V>> extends TrieMap<K, V> {
 
-    private static class HashTrieNode<K, V extends TrieMap.Value<V>> extends TrieNode<K, V> {
+    private static final class HashTrieNode<K, V extends TrieMap.Value<V>> extends TrieNode<K, V> {
 
         @Override
         Map<K, TrieNode<K, V>> newMap() {

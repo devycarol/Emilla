@@ -21,7 +21,7 @@ import net.emilla.settings.Aliases;
 import net.emilla.util.Contacts;
 import net.emilla.util.Dialogs;
 
-public class Sms extends CoreDataCommand implements PhoneReceiver {
+public final class Sms extends CoreDataCommand implements PhoneReceiver {
 
     public static final String ENTRY = "sms";
     @StringRes
@@ -34,7 +34,7 @@ public class Sms extends CoreDataCommand implements PhoneReceiver {
         return new Yielder(true, Sms::new, ENTRY, NAME, ALIASES);
     }
 
-    private static class SmsParams extends CoreDataParams {
+    private static final class SmsParams extends CoreDataParams {
 
         private SmsParams() {
             super(NAME,

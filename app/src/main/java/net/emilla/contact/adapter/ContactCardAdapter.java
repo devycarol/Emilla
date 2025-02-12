@@ -8,7 +8,7 @@ import android.view.View;
 
 import net.emilla.contact.ContactItemView;
 
-public class ContactCardAdapter extends ContactCursorAdapter {
+public final class ContactCardAdapter extends ContactCursorAdapter {
 
     public ContactCardAdapter(Context ctx) {
         super(ctx);

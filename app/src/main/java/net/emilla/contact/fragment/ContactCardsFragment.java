@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import net.emilla.contact.adapter.ContactCardAdapter;
 import net.emilla.contact.adapter.ContactCursorAdapter;
 
-public class ContactCardsFragment extends ContactsFragment<Uri> {
+public final class ContactCardsFragment extends ContactsFragment<Uri> {
 
     public static ContactCardsFragment newInstance() {
         return newInstance(new ContactCardsFragment(), false);

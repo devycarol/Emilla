@@ -14,12 +14,12 @@ class AppSendData extends AppSend implements DataCommand {
     private final AppSendDataParams mParams;
 
     @Override
-    public final boolean usesData() {
+    public boolean usesData() {
         return true;
     }
 
     @Override @StringRes
-    public final int dataHint() {
+    public int dataHint() {
         return mParams.hint();
     }
 

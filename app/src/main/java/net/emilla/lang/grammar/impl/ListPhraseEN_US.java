@@ -4,7 +4,7 @@ import net.emilla.lang.grammar.ListPhrase;
 
 import java.util.regex.Pattern;
 
-public class ListPhraseEN_US implements ListPhrase {
+public final class ListPhraseEN_US implements ListPhrase {
 
     private static final String
             CONJUNCTION = "(?i)(?<=[^\\s,])\\s+(and|&)\\s+(?=[^\\s,])",

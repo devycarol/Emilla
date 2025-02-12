@@ -5,7 +5,7 @@ import androidx.annotation.ArrayRes;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 
-public class Newpipe extends VideoSearchBySend {
+public final class Newpipe extends VideoSearchBySend {
 
     public static final String PKG = "org.schabi.newpipe";
     @ArrayRes

@@ -16,7 +16,7 @@ import net.emilla.AssistActivity;
 import java.util.Map;
 
 @RequiresApi(api = Build.VERSION_CODES.M)
-public class PermissionRetriever {
+public final class PermissionRetriever {
 
     private static final String TAG = PermissionRetriever.class.getSimpleName();
 
@@ -40,7 +40,7 @@ public class PermissionRetriever {
         mLauncher.launch(permissions);
     }
 
-    private class PermissionCallback implements ActivityResultCallback<Map<String, Boolean>> {
+    private final class PermissionCallback implements ActivityResultCallback<Map<String, Boolean>> {
 
         @Override
         public void onActivityResult(Map<String, Boolean> grants) {

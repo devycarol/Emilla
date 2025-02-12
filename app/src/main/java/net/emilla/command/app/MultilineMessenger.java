@@ -5,7 +5,7 @@ import net.emilla.R;
 
 abstract class MultilineMessenger extends AppSendData {
 
-    private static class MultilineMessengerParams extends AppSendDataParams {
+    private static final class MultilineMessengerParams extends AppSendDataParams {
 
         private MultilineMessengerParams(Yielder info) {
             super(info,

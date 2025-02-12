@@ -14,7 +14,7 @@ import net.emilla.config.ConfigActivity;
 import net.emilla.run.AppSuccess;
 import net.emilla.util.Apps;
 
-public class AssistantSettings implements LabeledQuickAction {
+public final class AssistantSettings implements LabeledQuickAction {
 
     private final AssistActivity mActivity;
 

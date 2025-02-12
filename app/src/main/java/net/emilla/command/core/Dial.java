@@ -14,7 +14,7 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.settings.Aliases;
 
-public class Dial extends CoreCommand {
+public final class Dial extends CoreCommand {
 
     public static final String ENTRY = "dial";
     @StringRes
@@ -27,7 +27,7 @@ public class Dial extends CoreCommand {
         return new Yielder(true, Dial::new, ENTRY, NAME, ALIASES);
     }
 
-    private static class DialParams extends CoreParams {
+    private static final class DialParams extends CoreParams {
 
         private DialParams() {
             super(NAME,

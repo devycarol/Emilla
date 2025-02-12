@@ -14,7 +14,7 @@ import net.emilla.util.trie.TrieMap;
 
 import java.util.Arrays;
 
-public class SearchEngineParser {
+public final class SearchEngineParser {
 
     /**
      * A record for a website's site URL and, if applicable, its search URL.

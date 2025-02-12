@@ -5,7 +5,7 @@ import androidx.annotation.ArrayRes;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 
-public class Tubular extends VideoSearchBySend {
+public final class Tubular extends VideoSearchBySend {
 
     public static final String PKG = "org.polymorphicshade.tubular";
     @ArrayRes

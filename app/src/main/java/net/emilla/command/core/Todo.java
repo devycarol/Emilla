@@ -27,7 +27,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class Todo extends CoreDataCommand {
+public final class Todo extends CoreDataCommand {
 
     public static final String ENTRY = "todo";
     @StringRes
@@ -40,7 +40,7 @@ public class Todo extends CoreDataCommand {
         return new Yielder(true, Todo::new, ENTRY, NAME, ALIASES);
     }
 
-    private static class TodoParams extends CoreDataParams {
+    private static final class TodoParams extends CoreDataParams {
 
         private TodoParams() {
             super(NAME,

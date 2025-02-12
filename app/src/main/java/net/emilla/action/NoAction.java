@@ -9,7 +9,7 @@ import androidx.annotation.StringRes;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 
-public class NoAction implements LabeledQuickAction {
+public final class NoAction implements LabeledQuickAction {
 
     private final AssistActivity mActivity;
 

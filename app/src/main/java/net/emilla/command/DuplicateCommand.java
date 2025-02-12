@@ -11,9 +11,9 @@ import net.emilla.R;
 import net.emilla.command.core.CoreCommand;
 import net.emilla.util.Dialogs;
 
-public class DuplicateCommand extends EmillaCommand implements DataCommand {
+public final class DuplicateCommand extends EmillaCommand implements DataCommand {
 
-    private static class DuplicateParams extends CoreCommand.CoreParams {
+    private static final class DuplicateParams extends CoreCommand.CoreParams {
 
         private DuplicateParams() {
             super(R.string.command_duplicate,

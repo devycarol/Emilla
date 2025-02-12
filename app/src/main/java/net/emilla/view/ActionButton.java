@@ -23,7 +23,7 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.Accessibilit
 import net.emilla.R;
 import net.emilla.action.QuickAction;
 
-public class ActionButton extends AppCompatImageButton implements View.OnTouchListener {
+public final class ActionButton extends AppCompatImageButton implements View.OnTouchListener {
 
     private boolean mHasLongPress = false;
     private boolean mLongTouching = false;
@@ -47,11 +47,11 @@ public class ActionButton extends AppCompatImageButton implements View.OnTouchLi
         mBackground = getBackground();
     }
 
-    public final void setIcon(@DrawableRes int icon) {
+    public void setIcon(@DrawableRes int icon) {
         setIcon(AppCompatResources.getDrawable(getContext(), icon), false);
     }
 
-    public final void setIcon(Drawable icon, boolean isAppIcon) {
+    public void setIcon(Drawable icon, boolean isAppIcon) {
         setImageDrawable(mIcon = icon);
         if (mHasAppIcon != isAppIcon) {
             mHasAppIcon = isAppIcon;

@@ -6,7 +6,7 @@ import android.content.Context;
 
 import net.emilla.AssistActivity;
 
-public class CopyGift implements Gift {
+public final class CopyGift implements Gift {
 
     private final AssistActivity mActivity;
     private final String mText;

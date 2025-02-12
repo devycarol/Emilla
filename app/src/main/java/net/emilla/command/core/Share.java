@@ -19,7 +19,7 @@ import net.emilla.settings.Aliases;
 import net.emilla.util.Apps;
 import net.emilla.util.Files.MimeType;
 
-public class Share extends AttachCommand implements AppChoiceReceiver {
+public final class Share extends AttachCommand implements AppChoiceReceiver {
 
     public static final String ENTRY = "share";
     @StringRes
@@ -32,7 +32,7 @@ public class Share extends AttachCommand implements AppChoiceReceiver {
         return new Yielder(true, Share::new, ENTRY, NAME, ALIASES);
     }
 
-    private static class ShareParams extends CoreDataParams {
+    private static final class ShareParams extends CoreDataParams {
 
         private ShareParams() {
             super(NAME,

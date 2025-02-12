@@ -16,7 +16,8 @@ import net.emilla.R;
 import net.emilla.config.ConfigActivity;
 import net.emilla.util.Apps;
 
-public class EmillaForegroundService extends Service {
+public final class EmillaForegroundService extends Service {
+
     private static final String CHANNEL_ID = "foreground_service_channel";
     private static boolean sRunning = false;
 

@@ -8,7 +8,7 @@ import net.emilla.util.trie.TrieMap;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class DuplicateYielder extends CommandYielder implements TrieMap.Duplicate<CommandYielder> {
+public final class DuplicateYielder extends CommandYielder implements TrieMap.Duplicate<CommandYielder> {
 
     private final ArrayList<CommandYielder> mYielders = new ArrayList<>(2);
     private boolean mUsesInstruction = false;

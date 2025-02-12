@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import net.emilla.contact.adapter.ContactCursorAdapter;
 import net.emilla.contact.adapter.ContactPhoneAdapter;
 
-public class ContactPhonesFragment extends ContactsFragment<String> {
+public final class ContactPhonesFragment extends ContactsFragment<String> {
 
     public static ContactPhonesFragment newInstance(boolean multiSelect) {
         return newInstance(new ContactPhonesFragment(), multiSelect);

@@ -27,7 +27,7 @@ import java.util.Set;
 
 public class AppCommand extends EmillaCommand {
 
-    private static class BasicAppParams extends AppParams {
+    private static final class BasicAppParams extends AppParams {
 
         private BasicAppParams(Yielder info) {
             super(info,
@@ -76,7 +76,7 @@ public class AppCommand extends EmillaCommand {
         run(); // Todo: remove this from the interface for non-instructables.
     }
 
-    public static class Yielder extends CommandYielder {
+    public static final class Yielder extends CommandYielder {
 
         private final String mPkg;
         public final String cls;
@@ -130,16 +130,16 @@ public class AppCommand extends EmillaCommand {
             };
         }
 
-        public final String name() {
+        public String name() {
             return mName.toString();
         }
 
-        public final ComponentName componentName() {
+        public ComponentName componentName() {
             return new ComponentName(mPkg, cls);
         }
 
         @Nullable
-        public final Set<String> aliases(SharedPreferences prefs, Resources res) {
+        public Set<String> aliases(SharedPreferences prefs, Resources res) {
             return Aliases.appSet(prefs, res, mPkg, aliasId(mPkg, cls));
         }
     }

@@ -12,7 +12,7 @@ import androidx.annotation.StringRes;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 
-public class CursorStart implements LabeledQuickAction {
+public final class CursorStart implements LabeledQuickAction {
 
     private final AssistActivity mActivity;
 

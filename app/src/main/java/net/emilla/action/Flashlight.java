@@ -8,7 +8,7 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.command.core.Torch;
 
-public class Flashlight implements LabeledQuickAction {
+public final class Flashlight implements LabeledQuickAction {
 
     private final Torch mTorch;
 

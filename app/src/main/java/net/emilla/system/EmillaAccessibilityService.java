@@ -12,7 +12,7 @@ import android.view.accessibility.AccessibilityEvent;
 
 import androidx.annotation.RequiresApi;
 
-public class EmillaAccessibilityService extends AccessibilityService {
+public final class EmillaAccessibilityService extends AccessibilityService {
 
     // TODO: google assistant changes the accessibility menu icon for "assistant," so we should also do this.
     //  I wonder if you can add items to that menu..

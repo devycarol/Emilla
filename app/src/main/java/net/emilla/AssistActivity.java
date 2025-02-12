@@ -88,7 +88,7 @@ import net.emilla.view.ActionButton;
 
 import java.util.List;
 
-public class AssistActivity extends EmillaActivity {
+public final class AssistActivity extends EmillaActivity {
 
     private SharedPreferences mPrefs;
     private CommandMap mCommandMap;

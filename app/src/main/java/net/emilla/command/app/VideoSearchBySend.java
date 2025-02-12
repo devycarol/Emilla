@@ -7,7 +7,7 @@ import net.emilla.R;
 
 abstract class VideoSearchBySend extends AppSend {
 
-    private static class VideoSearchBySendParams extends AppSendParams{
+    private static final class VideoSearchBySendParams extends AppSendParams{
 
         private VideoSearchBySendParams(Yielder info) {
             super(info,

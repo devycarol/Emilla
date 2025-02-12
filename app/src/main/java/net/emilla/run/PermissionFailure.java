@@ -11,7 +11,7 @@ import net.emilla.R;
 import net.emilla.util.Apps;
 import net.emilla.util.Dialogs;
 
-public class PermissionFailure extends DialogFailure {
+public final class PermissionFailure extends DialogFailure {
 
     private static AlertDialog.Builder permissionDialog(AssistActivity act,
             @StringRes int permissionName) {

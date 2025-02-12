@@ -18,7 +18,7 @@ import net.emilla.util.Dialogs;
 
 import java.util.HashMap;
 
-public class Bookmark extends CoreCommand {
+public final class Bookmark extends CoreCommand {
 
     public static final String ENTRY = "bookmark";
     @StringRes
@@ -36,7 +36,7 @@ public class Bookmark extends CoreCommand {
             Open-source software, OSS, https://en.wikipedia.org/wiki/Open_source_software
             Rick, dQw, https://www.youtube.com/watch?v=dQw4w9WgXcQ""";
 
-    private static class BookmarkParams extends CoreParams {
+    private static final class BookmarkParams extends CoreParams {
 
         private BookmarkParams() {
             super(NAME,

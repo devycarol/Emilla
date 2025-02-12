@@ -25,7 +25,7 @@ import net.emilla.contact.fragment.ContactEmailsFragment;
 import net.emilla.content.receive.EmailReceiver;
 import net.emilla.settings.Aliases;
 
-public class Email extends AttachCommand implements EmailReceiver {
+public final class Email extends AttachCommand implements EmailReceiver {
 
     public static final String ENTRY = "email";
     @StringRes
@@ -38,7 +38,7 @@ public class Email extends AttachCommand implements EmailReceiver {
         return new Yielder(true, Email::new, ENTRY, NAME, ALIASES);
     }
 
-    private static class EmailParams extends CoreDataParams {
+    private static final class EmailParams extends CoreDataParams {
 
         private EmailParams() {
             super(NAME,

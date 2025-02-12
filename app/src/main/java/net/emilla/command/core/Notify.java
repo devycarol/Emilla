@@ -8,7 +8,7 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.settings.Aliases;
 
-public class Notify extends CoreDataCommand {
+public final class Notify extends CoreDataCommand {
 
     public static final String ENTRY = "notify";
     @StringRes
@@ -21,7 +21,7 @@ public class Notify extends CoreDataCommand {
         return new Yielder(true, Notify::new, ENTRY, NAME, ALIASES);
     }
 
-    private static class NotifyParams extends CoreDataParams {
+    private static final class NotifyParams extends CoreDataParams {
 
         private NotifyParams() {
             super(NAME,

@@ -5,7 +5,7 @@ import androidx.annotation.ArrayRes;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 
-public class Markor extends AppSendData {
+public final class Markor extends AppSendData {
 
     public static final String PKG = "net.gsantner.markor";
     public static final String CLS_MAIN = PKG + ".activity.MainActivity";
@@ -18,7 +18,7 @@ public class Markor extends AppSendData {
         // Markor can have multiple launchers, only the main should have the 'send' property.
     }
 
-    private static class MarkorParams extends AppSendDataParams {
+    private static final class MarkorParams extends AppSendDataParams {
 
         private MarkorParams(Yielder info) {
             super(info,

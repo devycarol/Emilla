@@ -9,7 +9,7 @@ import java.util.TreeMap;
 public final class SortedTrieMap<K extends Comparable<K>, V extends TrieMap.Value<V>>
         extends TrieMap<K, V> {
 
-    private static class SortedTrieNode<K extends Comparable<K>, V extends Value<V>>
+    private static final class SortedTrieNode<K extends Comparable<K>, V extends Value<V>>
             extends TrieNode<K, V> {
 
         @Override

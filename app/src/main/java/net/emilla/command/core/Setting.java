@@ -10,7 +10,7 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.settings.Aliases;
 
-public class Setting extends CoreCommand {
+public final class Setting extends CoreCommand {
 
     public static final String ENTRY = "setting";
     @StringRes
@@ -23,7 +23,7 @@ public class Setting extends CoreCommand {
         return new Yielder(true, Setting::new, ENTRY, NAME, ALIASES);
     }
 
-    private static class SettingParams extends CoreParams {
+    private static final class SettingParams extends CoreParams {
 
         private SettingParams() {
             super(NAME,

@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment;
 
 import net.emilla.databinding.FragmentAssistantBinding;
 
-public class AssistantFragment extends Fragment {
+public final class AssistantFragment extends Fragment {
 
     private FragmentAssistantBinding mBinding;
 

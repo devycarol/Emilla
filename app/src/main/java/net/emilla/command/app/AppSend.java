@@ -15,7 +15,7 @@ import net.emilla.util.Apps;
 
 public class AppSend extends AppCommand {
 
-    private static class BasicAppSendParams extends AppParams {
+    private static final class BasicAppSendParams extends AppParams {
 
         private BasicAppSendParams(Yielder info) {
             super(info,
@@ -35,7 +35,7 @@ public class AppSend extends AppCommand {
         this(act, new BasicAppSendParams(info));
     }
 
-    protected AppSend(AssistActivity act, AppParams params) {
+    AppSend(AssistActivity act, AppParams params) {
         super(act, params);
     }
 

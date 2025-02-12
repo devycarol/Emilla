@@ -12,7 +12,7 @@ import net.emilla.R;
 import net.emilla.databinding.ActivityConfigBinding;
 import net.emilla.util.Apps;
 
-public class ConfigActivity extends EmillaActivity {
+public final class ConfigActivity extends EmillaActivity {
 
     private ActivityConfigBinding mBinding;
 

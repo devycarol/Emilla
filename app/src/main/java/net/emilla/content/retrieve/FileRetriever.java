@@ -10,7 +10,7 @@ import net.emilla.content.receive.FileReceiver;
 
 import java.util.List;
 
-public class FileRetriever extends ResultRetriever<String, List<Uri>, FileReceiver> {
+public final class FileRetriever extends ResultRetriever<String, List<Uri>, FileReceiver> {
 
     public FileRetriever(AssistActivity act) {
         super(act, new GetMultipleContents());
@@ -26,7 +26,7 @@ public class FileRetriever extends ResultRetriever<String, List<Uri>, FileReceiv
         return new FileCallback();
     }
 
-    private class FileCallback extends ResultCallback {
+    private final class FileCallback extends ResultCallback {
 
         @Override
         protected void onActivityResult(List<Uri> files, FileReceiver receiver) {

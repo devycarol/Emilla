@@ -13,7 +13,7 @@ import androidx.annotation.StringRes;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 
-public class SelectAll implements LabeledQuickAction {
+public final class SelectAll implements LabeledQuickAction {
 
     private final AssistActivity mActivity;
 

@@ -20,7 +20,7 @@ import net.emilla.lang.date.HourMin;
 import net.emilla.lang.date.Weekdays;
 import net.emilla.settings.Aliases;
 
-public class Alarm extends CoreDataCommand {
+public final class Alarm extends CoreDataCommand {
 
     public static final String ENTRY = "alarm";
     @StringRes
@@ -33,7 +33,7 @@ public class Alarm extends CoreDataCommand {
         return new Yielder(true, Alarm::new, ENTRY, NAME, ALIASES);
     }
 
-    private static class AlarmParams extends CoreDataParams {
+    private static final class AlarmParams extends CoreDataParams {
 
         private AlarmParams() {
             super(NAME,

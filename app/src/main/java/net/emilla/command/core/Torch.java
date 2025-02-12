@@ -18,7 +18,7 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.settings.Aliases;
 
-public class Torch extends CoreCommand {
+public final class Torch extends CoreCommand {
 
     public static final String ENTRY = "torch";
     @StringRes
@@ -31,7 +31,7 @@ public class Torch extends CoreCommand {
         return new Yielder(false, Torch::new, ENTRY, NAME, ALIASES);
     }
 
-    private static class TorchParams extends CoreParams {
+    private static final class TorchParams extends CoreParams {
 
         private TorchParams() {
             super(NAME,

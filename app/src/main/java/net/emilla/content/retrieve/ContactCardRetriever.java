@@ -8,7 +8,7 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.content.receive.ContactCardReceiver;
 
-public class ContactCardRetriever extends ResultRetriever<Void, Uri, ContactCardReceiver> {
+public final class ContactCardRetriever extends ResultRetriever<Void, Uri, ContactCardReceiver> {
 
     public ContactCardRetriever(AssistActivity act) {
         super(act, new PickContact());
@@ -24,7 +24,7 @@ public class ContactCardRetriever extends ResultRetriever<Void, Uri, ContactCard
         return new ContactCallback();
     }
 
-    private class ContactCallback extends ResultCallback {
+    private final class ContactCallback extends ResultCallback {
 
         @Override
         protected void onActivityResult(Uri contact, ContactCardReceiver receiver) {

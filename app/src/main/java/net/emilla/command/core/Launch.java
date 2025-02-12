@@ -13,7 +13,7 @@ import net.emilla.settings.Aliases;
 import net.emilla.util.Apps;
 import net.emilla.util.Dialogs;
 
-public class Launch extends OpenCommand {
+public final class Launch extends OpenCommand {
 
     public static final String ENTRY = "launch";
     @StringRes
@@ -26,7 +26,7 @@ public class Launch extends OpenCommand {
         return new Yielder(true, Launch::new, ENTRY, NAME, ALIASES);
     }
 
-    private static class LaunchParams extends CoreParams {
+    private static final class LaunchParams extends CoreParams {
 
         private LaunchParams() {
             super(NAME,

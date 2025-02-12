@@ -24,7 +24,7 @@ import net.emilla.util.Dialogs;
 import net.emilla.util.Features;
 import net.emilla.util.Permissions;
 
-public class Call extends CoreCommand implements PhoneReceiver, PermissionReceiver {
+public final class Call extends CoreCommand implements PhoneReceiver, PermissionReceiver {
 
     public static final String ENTRY = "call";
     @StringRes
@@ -37,7 +37,7 @@ public class Call extends CoreCommand implements PhoneReceiver, PermissionReceiv
         return new Yielder(true, Call::new, ENTRY, NAME, ALIASES);
     }
 
-    private static class CallParams extends CoreParams {
+    private static final class CallParams extends CoreParams {
 
         private CallParams() {
             super(NAME,

@@ -13,7 +13,7 @@ import net.emilla.settings.Aliases;
 import net.emilla.util.Apps;
 import net.emilla.util.Dialogs;
 
-public class Uninstall extends OpenCommand {
+public final class Uninstall extends OpenCommand {
 
     public static final String ENTRY = "uninstall";
     @StringRes
@@ -26,7 +26,7 @@ public class Uninstall extends OpenCommand {
         return new Yielder(true, Uninstall::new, ENTRY, NAME, ALIASES);
     }
 
-    private static class UninstallParams extends CoreParams {
+    private static final class UninstallParams extends CoreParams {
 
         private UninstallParams() {
             super(NAME,

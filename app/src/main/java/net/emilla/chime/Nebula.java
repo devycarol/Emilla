@@ -7,7 +7,8 @@ import androidx.annotation.RawRes;
 
 import net.emilla.R;
 
-public class Nebula implements Chimer {
+public final class Nebula implements Chimer {
+
     @RawRes
     static int sound(byte chime) {
         return switch (chime) {

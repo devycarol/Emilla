@@ -8,7 +8,7 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.content.receive.FileReceiver;
 
-public class MediaFetcher implements LabeledQuickAction {
+public final class MediaFetcher implements LabeledQuickAction {
 
     public static final int ID = R.id.action_get_media;
 

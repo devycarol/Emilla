@@ -5,7 +5,7 @@ import androidx.annotation.ArrayRes;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 
-public class Signal extends MultilineMessenger {
+public final class Signal extends MultilineMessenger {
 
     public static final String PKG = "org.thoughtcrime.securesms";
     @ArrayRes

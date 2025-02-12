@@ -9,7 +9,7 @@ import net.emilla.R;
 import net.emilla.run.ToastGift;
 import net.emilla.settings.Aliases;
 
-public class Toast extends CoreDataCommand {
+public final class Toast extends CoreDataCommand {
 
     public static final String ENTRY = "toast";
     @StringRes
@@ -22,7 +22,7 @@ public class Toast extends CoreDataCommand {
         return new Yielder(true, Toast::new, ENTRY, NAME, ALIASES);
     }
 
-    private static class ToastParams extends CoreDataParams {
+    private static final class ToastParams extends CoreDataParams {
 
         private ToastParams() {
             super(NAME,

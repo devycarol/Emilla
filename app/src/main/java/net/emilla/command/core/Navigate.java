@@ -13,7 +13,7 @@ import net.emilla.R;
 import net.emilla.settings.Aliases;
 import net.emilla.util.Apps;
 
-public class Navigate extends CategoryCommand {
+public final class Navigate extends CategoryCommand {
 
     public static final String ENTRY = "navigate";
     @StringRes
@@ -26,7 +26,7 @@ public class Navigate extends CategoryCommand {
         return new Yielder(true, Navigate::new, ENTRY, NAME, ALIASES);
     }
 
-    private static class NavigateParams extends CoreParams {
+    private static final class NavigateParams extends CoreParams {
 
         private NavigateParams() {
             super(NAME,

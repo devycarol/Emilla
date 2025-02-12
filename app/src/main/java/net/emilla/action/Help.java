@@ -14,7 +14,7 @@ import net.emilla.command.EmillaCommand;
 import net.emilla.run.DialogOffering;
 import net.emilla.util.Dialogs;
 
-public class Help implements LabeledQuickAction {
+public final class Help implements LabeledQuickAction {
 
     private final AssistActivity mActivity;
 

@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 
 import java.util.Set;
 
-public class Aliases {
+public final class Aliases {
 
     public static String textKey(String entry) {
         return "aliases_" + entry + "_text";

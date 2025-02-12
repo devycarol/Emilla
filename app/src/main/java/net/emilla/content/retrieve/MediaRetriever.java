@@ -14,7 +14,7 @@ import net.emilla.content.receive.FileReceiver;
 
 import java.util.List;
 
-public class MediaRetriever extends ResultRetriever<PickVisualMediaRequest, List<Uri>, FileReceiver> {
+public final class MediaRetriever extends ResultRetriever<PickVisualMediaRequest, List<Uri>, FileReceiver> {
 
     public MediaRetriever(AssistActivity act) {
         super(act, new PickMultipleVisualMedia());
@@ -32,7 +32,7 @@ public class MediaRetriever extends ResultRetriever<PickVisualMediaRequest, List
         return new MediaCallback();
     }
 
-    private class MediaCallback extends ResultCallback {
+    private final class MediaCallback extends ResultCallback {
 
         @Override
         protected void onActivityResult(List<Uri> media, FileReceiver receiver) {

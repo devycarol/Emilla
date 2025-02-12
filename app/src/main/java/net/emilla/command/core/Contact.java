@@ -23,7 +23,7 @@ import net.emilla.util.Dialogs;
 
 import java.util.List;
 
-public class Contact extends CoreDataCommand implements ContactCardReceiver {
+public final class Contact extends CoreDataCommand implements ContactCardReceiver {
 
     public static final String ENTRY = "contact";
     @StringRes
@@ -42,7 +42,7 @@ public class Contact extends CoreDataCommand implements ContactCardReceiver {
             SEND = 2,
             CREATE = 4;
 
-    private static class ContactParams extends CoreDataParams {
+    private static final class ContactParams extends CoreDataParams {
 
         private ContactParams() {
             super(NAME,

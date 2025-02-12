@@ -17,7 +17,7 @@ import net.emilla.R;
 import net.emilla.settings.Aliases;
 import net.emilla.util.Time;
 
-public class Timer extends CoreDataCommand {
+public final class Timer extends CoreDataCommand {
 
     public static final String ENTRY = "timer";
     @StringRes
@@ -30,7 +30,7 @@ public class Timer extends CoreDataCommand {
         return new Yielder(true, Timer::new, ENTRY, NAME, ALIASES);
     }
 
-    private static class TimerParams extends CoreDataParams {
+    private static final class TimerParams extends CoreDataParams {
 
         private TimerParams() {
             super(NAME,

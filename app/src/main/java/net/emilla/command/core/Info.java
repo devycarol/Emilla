@@ -13,7 +13,7 @@ import net.emilla.settings.Aliases;
 import net.emilla.util.Apps;
 import net.emilla.util.Dialogs;
 
-public class Info extends OpenCommand {
+public final class Info extends OpenCommand {
 
     public static final String ENTRY = "info";
     @StringRes
@@ -26,7 +26,7 @@ public class Info extends OpenCommand {
         return new Yielder(true, Info::new, ENTRY, NAME, ALIASES);
     }
 
-    private static class InfoParams extends CoreParams {
+    private static final class InfoParams extends CoreParams {
 
         private InfoParams() {
             super(NAME,

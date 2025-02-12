@@ -19,7 +19,7 @@ import net.emilla.settings.Aliases;
 
 import java.util.regex.Pattern;
 
-public class Pomodoro extends CoreDataCommand {
+public final class Pomodoro extends CoreDataCommand {
 
     public static final String ENTRY = "pomodoro";
     @StringRes
@@ -32,7 +32,7 @@ public class Pomodoro extends CoreDataCommand {
         return new Yielder(true, Pomodoro::new, ENTRY, NAME, ALIASES);
     }
 
-    private static class PomodoroParams extends CoreDataParams {
+    private static final class PomodoroParams extends CoreDataParams {
 
         private PomodoroParams() {
             super(NAME,

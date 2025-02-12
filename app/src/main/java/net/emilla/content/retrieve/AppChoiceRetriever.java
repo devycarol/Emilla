@@ -13,7 +13,7 @@ import androidx.annotation.StringRes;
 import net.emilla.AssistActivity;
 import net.emilla.content.receive.AppChoiceReceiver;
 
-public class AppChoiceRetriever extends ResultRetriever<Intent, ActivityResult, AppChoiceReceiver> {
+public final class AppChoiceRetriever extends ResultRetriever<Intent, ActivityResult, AppChoiceReceiver> {
 
     public AppChoiceRetriever(AssistActivity act) {
         super(act, new StartActivityForResult());
@@ -39,12 +39,12 @@ public class AppChoiceRetriever extends ResultRetriever<Intent, ActivityResult, 
     }
 
     @Deprecated
-    public final AppChoiceReceiver receiver() {
+    public AppChoiceReceiver receiver() {
         return super.receiver();
     }
 
     @Deprecated
-    public final void deleteReceiver() {
+    public void deleteReceiver() {
         super.deleteReceiver();
     }
 
@@ -53,7 +53,7 @@ public class AppChoiceRetriever extends ResultRetriever<Intent, ActivityResult, 
         return new AppCallback();
     }
 
-    private class AppCallback extends ResultCallback {
+    private final class AppCallback extends ResultCallback {
 
         @Override
         protected void onActivityResult(ActivityResult output, AppChoiceReceiver receiver) {
@@ -64,7 +64,7 @@ public class AppChoiceRetriever extends ResultRetriever<Intent, ActivityResult, 
     }
 
     @Deprecated
-    public static class AppChooserBroadcastReceiver extends BroadcastReceiver {
+    public static final class AppChooserBroadcastReceiver extends BroadcastReceiver {
 
         @Deprecated
         private static AppChoiceRetriever sRetriever = null;

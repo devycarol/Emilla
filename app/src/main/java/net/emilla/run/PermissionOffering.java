@@ -17,7 +17,7 @@ import net.emilla.permission.PermissionReceiver;
  * permission(s) being requested.</p>
  */
 @RequiresApi(api = Build.VERSION_CODES.M)
-public class PermissionOffering implements Offering {
+public final class PermissionOffering implements Offering {
 
     private final AssistActivity mActivity;
     private final String[] mPermissions;

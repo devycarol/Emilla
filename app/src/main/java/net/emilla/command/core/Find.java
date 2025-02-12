@@ -10,7 +10,7 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.settings.Aliases;
 
-public class Find extends CoreCommand {
+public final class Find extends CoreCommand {
 
     public static final String ENTRY = "find";
     @StringRes
@@ -23,7 +23,7 @@ public class Find extends CoreCommand {
         return new Yielder(true, Find::new, ENTRY, NAME, ALIASES);
     }
 
-    private static class FindParams extends CoreParams {
+    private static final class FindParams extends CoreParams {
 
         private FindParams() {
             super(NAME,

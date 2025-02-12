@@ -8,9 +8,9 @@ import android.provider.ContactsContract.CommonDataKinds.Email;
 import net.emilla.AssistActivity;
 import net.emilla.util.Contacts;
 
-public class ContactEmailRetriever extends ContactDataRetriever {
+public final class ContactEmailRetriever extends ContactDataRetriever {
 
-    private static class PickContactEmail extends PickContactData {
+    private static final class PickContactEmail extends PickContactData {
 
         public PickContactEmail(Context ctx) {
             super(ctx);

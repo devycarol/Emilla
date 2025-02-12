@@ -25,7 +25,7 @@ import androidx.core.view.accessibility.AccessibilityViewCommand;
 
 import net.emilla.R;
 
-public class ContactItemView extends LinearLayout {
+public final class ContactItemView extends LinearLayout {
 
     private long mContactId;
     private String mLookupKey;

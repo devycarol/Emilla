@@ -27,7 +27,7 @@ import net.emilla.util.Time;
 
 import java.util.regex.Pattern;
 
-public class Calendar extends CoreDataCommand {
+public final class Calendar extends CoreDataCommand {
 
     public static final String ENTRY = "calendar";
     @StringRes
@@ -40,7 +40,7 @@ public class Calendar extends CoreDataCommand {
         return new Yielder(true, Calendar::new, ENTRY, NAME, ALIASES);
     }
 
-    private static class CalendarParams extends CoreDataParams {
+    private static final class CalendarParams extends CoreDataParams {
 
         private CalendarParams() {
             super(NAME,

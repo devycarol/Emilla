@@ -15,7 +15,7 @@ import net.emilla.settings.Aliases;
 
 import java.text.Format;
 
-public class Time extends CoreCommand {
+public final class Time extends CoreCommand {
 
     public static final String ENTRY = "time";
     @StringRes
@@ -28,7 +28,7 @@ public class Time extends CoreCommand {
         return new Yielder(true, Time::new, ENTRY, NAME, ALIASES);
     }
 
-    private static class TimeParams extends CoreParams {
+    private static final class TimeParams extends CoreParams {
 
         private TimeParams() {
             super(NAME,

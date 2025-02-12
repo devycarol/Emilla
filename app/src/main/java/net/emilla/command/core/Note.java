@@ -8,7 +8,7 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.settings.Aliases;
 
-public class Note extends CoreDataCommand {
+public final class Note extends CoreDataCommand {
 
     public static final String ENTRY = "note";
     @StringRes
@@ -21,7 +21,7 @@ public class Note extends CoreDataCommand {
         return new Yielder(true, Note::new, ENTRY, NAME, ALIASES);
     }
 
-    private static class NoteParams extends CoreDataParams {
+    private static final class NoteParams extends CoreDataParams {
 
         private NoteParams() {
             super(NAME,

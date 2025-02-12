@@ -16,11 +16,10 @@ import org.junit.runner.RunWith;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
-public class ExampleInstrumentedTest
-{
+public final class ExampleInstrumentedTest {
+
     @Test
-    public void useAppContext()
-    {
+    public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("net.emilla.nebula", appContext.getPackageName());

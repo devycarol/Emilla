@@ -15,7 +15,7 @@ import net.emilla.settings.Aliases;
 import net.emilla.settings.SettingVals;
 import net.emilla.util.SearchEngineParser;
 
-public class Web extends CoreCommand {
+public final class Web extends CoreCommand {
 
     public static final String ENTRY = "web";
     @StringRes
@@ -36,7 +36,7 @@ public class Web extends CoreCommand {
             DuckDuckGo, ddg, dd, d, https://duckduckgo.com/?q=%s
             DuckDuckGo Images, duckimages, duckimage, duckimg, ddgimages, ddgimage, ddgimg, ddgi, ddimages, ddimage, ddimg, ddi, dimages, dimage, dimg, https://duckduckgo.com/?q=%s&ia=images&iax=images""";
 
-    private static class WebParams extends CoreParams {
+    private static final class WebParams extends CoreParams {
 
         private WebParams() {
             super(NAME,

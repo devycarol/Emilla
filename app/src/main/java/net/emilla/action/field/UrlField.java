@@ -5,7 +5,7 @@ import androidx.annotation.IdRes;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 
-public class UrlField extends FieldToggle {
+public final class UrlField extends FieldToggle {
 
     @IdRes
     public static final int ACTION_ID = R.id.action_field_url;

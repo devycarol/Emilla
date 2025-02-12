@@ -6,7 +6,7 @@ import net.emilla.lang.Words;
 import net.emilla.util.trie.HashTrieMap;
 import net.emilla.util.trie.TrieMap;
 
-public class CommandMap {
+public final class CommandMap {
 
     private final TrieMap<String, CommandYielder> mTrieMap = new HashTrieMap<>();
     private final DefaultCommandWrapper.Yielder mDefaultYielder;

@@ -5,13 +5,13 @@ import androidx.annotation.ArrayRes;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 
-public class Github extends AppSendData {
+public final class Github extends AppSendData {
 
     public static final String PKG = "com.github.android";
     @ArrayRes
     public static final int ALIASES = R.array.aliases_github;
 
-    private static class GithubParams extends AppSendDataParams {
+    private static final class GithubParams extends AppSendDataParams {
 
         private GithubParams(Yielder info) {
             super(info,

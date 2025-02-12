@@ -63,7 +63,7 @@ public abstract class Words implements TrieMap.Phrase<String, String> {
         }
     }
 
-    static class Latin extends Words {
+    static final class Latin extends Words {
 
         Latin(String phrase) {
             super(phrase);
@@ -74,7 +74,7 @@ public abstract class Words implements TrieMap.Phrase<String, String> {
             return new LatinIterator();
         }
 
-        private class LatinIterator extends WordIterator {
+        private final class LatinIterator extends WordIterator {
 
             private static int firstIndexOfNonSpace(String s) {
                 if (s.isEmpty() || !Character.isWhitespace(s.charAt(0))) return 0;
@@ -111,7 +111,7 @@ public abstract class Words implements TrieMap.Phrase<String, String> {
         }
     }
 
-    static class Glyph extends Words {
+    static final class Glyph extends Words {
 
         Glyph(String phrase) {
             super(phrase);
@@ -122,7 +122,7 @@ public abstract class Words implements TrieMap.Phrase<String, String> {
             return new GlyphIterator();
         }
 
-        private class GlyphIterator extends WordIterator {
+        private final class GlyphIterator extends WordIterator {
 
             private GlyphIterator() {
                 super(0);

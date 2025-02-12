@@ -19,7 +19,7 @@ import net.emilla.util.Dialogs;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-public class BugFailure extends DialogFailure {
+public final class BugFailure extends DialogFailure {
 
     private static final String TAG = BugFailure.class.getSimpleName();
 

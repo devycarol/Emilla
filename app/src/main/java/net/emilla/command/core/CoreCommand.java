@@ -33,7 +33,7 @@ public abstract class CoreCommand extends EmillaCommand {
         return string(mParams.mName) + " (Emilla command)";
     }
 
-    public static class Yielder extends CommandYielder {
+    public static final class Yielder extends CommandYielder {
 
         private final boolean mUsesInstruction;
         private final Maker mMaker;
@@ -53,20 +53,20 @@ public abstract class CoreCommand extends EmillaCommand {
         }
 
         @Override
-        public final boolean isPrefixable() {
+        public boolean isPrefixable() {
             return mUsesInstruction;
         }
 
         @Override
-        protected final EmillaCommand makeCommand(AssistActivity act) {
+        protected EmillaCommand makeCommand(AssistActivity act) {
             return mMaker.make(act);
         }
 
-        public final String name(Resources res) {
+        public String name(Resources res) {
             return res.getString(mName);
         }
 
-        public final Set<String> aliases(SharedPreferences prefs, Resources res) {
+        public Set<String> aliases(SharedPreferences prefs, Resources res) {
             return Aliases.coreSet(prefs, res, mPrefsEntry, mAliases);
         }
     }

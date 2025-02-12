@@ -5,13 +5,13 @@ import androidx.annotation.ArrayRes;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 
-public class Outlook extends AppSendData {
+public final class Outlook extends AppSendData {
 
     public static final String PKG = "com.microsoft.office.outlook";
     @ArrayRes
     public static final int ALIASES = R.array.aliases_outlook;
 
-    private static class OutlookParams extends AppSendDataParams {
+    private static final class OutlookParams extends AppSendDataParams {
 
         private OutlookParams(Yielder info) {
             super(info,

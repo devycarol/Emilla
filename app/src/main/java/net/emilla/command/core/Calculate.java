@@ -15,7 +15,7 @@ import net.emilla.settings.Aliases;
 import net.emilla.util.Apps;
 import net.emilla.util.Calculator;
 
-public class Calculate extends CategoryCommand {
+public final class Calculate extends CategoryCommand {
 
     public static final String ENTRY = "calculate";
     @StringRes
@@ -28,7 +28,7 @@ public class Calculate extends CategoryCommand {
         return new Yielder(true, Calculate::new, ENTRY, NAME, ALIASES);
     }
 
-    private static class CalculateParams extends CoreParams {
+    private static final class CalculateParams extends CoreParams {
 
         private CalculateParams() {
             super(NAME,
