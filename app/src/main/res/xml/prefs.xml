@@ -18,15 +18,6 @@
             app:key="medias"
             app:summary="Used in the 'bookmark' command; only supports web URLs for now"
             app:title="Bookmarks" />
-        <ListPreference
-            app:defaultValue="follow_system"
-            app:entries="@array/run_in_background_entries"
-            app:entryValues="@array/run_in_background_values"
-            app:key="run_in_background"
-            app:title="@string/pref_run_in_background"
-            app:useSimpleSummaryProvider="true" />
-        <!--Todo: this seems irrelavant when the accessibility service is running. This should be
-             communicated, and the dummy service should be stopped & disabled.-->
         <SwitchPreference
             app:defaultValue="false"
             app:key="always_show_data"

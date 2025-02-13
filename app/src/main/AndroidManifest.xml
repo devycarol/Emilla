@@ -6,9 +6,6 @@
         android:name="android.hardware.telephony"
         android:required="false" />
 
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -99,10 +96,6 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name="net.emilla.system.EmillaForegroundService"
-            android:foregroundServiceType="dataSync"
-            tools:node="merge" />
         <service
             android:name="net.emilla.system.EmillaAccessibilityService"
             android:exported="true"

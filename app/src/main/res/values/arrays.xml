@@ -1,15 +1,4 @@
 <resources>
-    <!-- Background service preference -->
-    <string-array name="run_in_background_entries">
-        <item>@string/always</item>
-        <item>Respect Battery Saver</item>
-        <item>@string/never</item>
-    </string-array>
-    <string-array name="run_in_background_values" translatable="false">
-        <item>always</item>
-        <item>follow_system</item>
-        <item>never</item>
-    </string-array>
     <!-- Title bar preference -->
     <string-array name="show_titlebar_entries" translatable="false">
         <item>@string/always</item>

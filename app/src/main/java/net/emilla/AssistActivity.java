@@ -23,7 +23,6 @@ import static net.emilla.chime.Chimer.START;
 import static net.emilla.chime.Chimer.SUCCEED;
 import static java.lang.Character.isWhitespace;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -31,7 +30,6 @@ import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -81,7 +79,6 @@ import net.emilla.run.MessageFailure;
 import net.emilla.run.Offering;
 import net.emilla.run.Success;
 import net.emilla.settings.SettingVals;
-import net.emilla.system.EmillaForegroundService;
 import net.emilla.util.Apps;
 import net.emilla.util.Dialogs;
 import net.emilla.view.ActionButton;
@@ -178,18 +175,6 @@ public final class AssistActivity extends EmillaActivity {
         } else {
             actionBar.hide();
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.bg_assistant));
-        }
-
-        if (savedInstanceState == null) switch (mPrefs.getString("run_in_background", "follow_system")) {
-            case "follow_system":
-                // TODO: have listener to turn off the service when power save mode or the accessibility
-                //  service is activated
-                // also ensure "always on" works as intended
-                final var pwrMgr = (PowerManager) getSystemService(Context.POWER_SERVICE);
-                if (pwrMgr.isPowerSaveMode()) break;
-                // fall
-            case "always":
-                startService(new Intent(this, EmillaForegroundService.class));
         }
 
         PackageManager pm = getPackageManager();

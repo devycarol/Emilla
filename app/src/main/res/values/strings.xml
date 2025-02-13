@@ -20,13 +20,6 @@
     <string name="title_assistant">Assistant</string>
     <string name="title_commands">Commands</string>
 
-    <string name="channel_foreground">Background service</string>
-    <string name="dscript_foreground">Running in the background helps the assistant launch faster</string>
-
-    <string name="notif_foreground_title">Running in background</string>
-    <string name="notif_foreground_text">Press to disable notification</string>
-    <string name="notif_action_foreground_config">Change background behavior</string>
-
     <!-- UI Components -->
     <string name="field_command">Command</string>
     <string name="field_subject">Subject</string>
@@ -68,7 +61,6 @@
     <!-- General settings -->
     <string name="pref_favorites">Favorite commands</string>
     <string name="smry_favorites">Shortcuts for your favorite actions</string>
-    <string name="pref_run_in_background">Run in background</string>
     <string name="pref_always_show_data">Always show data field</string>
 
     <!-- Customization settings -->
