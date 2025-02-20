@@ -84,12 +84,12 @@ public final class Calendar extends CoreDataCommand {
 
     private void putTitleAndDate(String title) throws EmlaBadCommandException {
         // todo: clean this up
-        final var m = Pattern.compile(" */all(day)?", CASE_INSENSITIVE).matcher(title);
+        var m = Pattern.compile(" */all(day)?", CASE_INSENSITIVE).matcher(title);
         if (m.find()) {
             title = m.replaceFirst("");
             mIntent.putExtra(EXTRA_EVENT_ALL_DAY, true);
         }
-        final var nameAndTime = title.split(" *\\| *");
+        var nameAndTime = title.split(" *\\| *");
         switch (nameAndTime.length) {
         case 1 -> {}
         case 2 -> {

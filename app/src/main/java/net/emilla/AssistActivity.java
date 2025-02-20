@@ -143,8 +143,8 @@ public final class AssistActivity extends EmillaActivity {
 
 //    public static long nanosPlease(long prevTime, String label) {
 //        long curTime = System.nanoTime();
-//        final var s = String.valueOf(curTime - prevTime);
-//        final var sb = new StringBuilder(label).append(": ");
+//        var s = String.valueOf(curTime - prevTime);
+//        var sb = new StringBuilder(label).append(": ");
 //        int start = sb.length();
 //        for (int i = sb.append(s).length() - 3; i > start; i -= 3) sb.insert(i, ',');
 //        Log.d("nanosPlease", sb.append(" nanoseconds").toString());
@@ -163,14 +163,14 @@ public final class AssistActivity extends EmillaActivity {
         mChimer = SettingVals.chimer(this, mPrefs);
         if (savedInstanceState == null) chime(START);
 
-        final var res = getResources();
+        var res = getResources();
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar == null) throw new NullPointerException();
         mHasTitlebar = SettingVals.showTitleBar(mPrefs, res);
         if (mHasTitlebar) {
-            final var dfltTitle = res.getString(R.string.activity_assistant);
-            final var title = mPrefs.getString("motd", dfltTitle);
+            var dfltTitle = res.getString(R.string.activity_assistant);
+            var title = mPrefs.getString("motd", dfltTitle);
             if (!title.equals(dfltTitle)) actionBar.setTitle(title);
         } else {
             actionBar.hide();
@@ -342,7 +342,7 @@ public final class AssistActivity extends EmillaActivity {
     }
 
     public void addAction(QuickAction action) {
-        final var button = (ActionButton) mInflater.inflate(R.layout.btn_action, mActionsContainer,
+        var button = (ActionButton) mInflater.inflate(R.layout.btn_action, mActionsContainer,
                 false);
         button.setId(action.id());
         button.setIcon(action.icon());
@@ -356,7 +356,7 @@ public final class AssistActivity extends EmillaActivity {
     }
 
     public EditText createField(@IdRes int id, @StringRes int hint) {
-        final var box = (EditText) mInflater.inflate(R.layout.field_extra, mFieldsContainer, false);
+        var box = (EditText) mInflater.inflate(R.layout.field_extra, mFieldsContainer, false);
         box.setId(id);
         box.setHint(hint);
         mFieldsContainer.addView(box);
@@ -710,7 +710,7 @@ public final class AssistActivity extends EmillaActivity {
     }
 
     private void submitCommand() {
-        final var fullCommand = mCommandField.getText().toString().trim();
+        var fullCommand = mCommandField.getText().toString().trim();
         if (fullCommand.isEmpty()) {
             mNoCommandAction.perform();
             return;

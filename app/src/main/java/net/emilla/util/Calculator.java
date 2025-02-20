@@ -33,8 +33,8 @@ public final class Calculator { // i should definitely be using an expression tr
             SUM = Pattern.compile("(-?\\d+)[+-](\\d+)");
 
     private static long evaluate(CharSequence expr) { // It's trim-safe as a one-time method, but not for text-watching
-        final var solBuilder = new StringBuilder(expr);
-        final var m = EXP.matcher(solBuilder);
+        var solBuilder = new StringBuilder(expr);
+        var m = EXP.matcher(solBuilder);
         while (m.find()) {
             int lastStart = m.start(), lastEnd = m.end();
             String lastGroup1 = m.group(1), lastGroup2 = m.group(2);
@@ -87,7 +87,7 @@ public final class Calculator { // i should definitely be using an expression tr
     private static CharSequence cleanup(CharSequence expr) { // TODO parens - "all of" must be parsed before "all"
         int i = 0;
         for (String phrase : MATH_WORDS) {
-            final var m = Pattern.compile(phrase, CASE_INSENSITIVE).matcher(expr);
+            var m = Pattern.compile(phrase, CASE_INSENSITIVE).matcher(expr);
             if (m.find()) expr = m.replaceAll(MATH_SYMBOLS[i]);
             ++i;
         }
@@ -95,7 +95,7 @@ public final class Calculator { // i should definitely be using an expression tr
         // replace numeral space-juxtaposition with stars - could cause issues with pasted/formmatted numbers: 2 345 692
         // will need to be reworked if you add log_2 34 ability. parse functions beforehand, adding explicit parens?
             // ambiguity: log2 3 - log_2(3) or log(2) * 3?
-        final var m = Pattern.compile("(\\d*\\.?\\d+) +(\\d*\\.?\\d+)").matcher(expr);
+        var m = Pattern.compile("(\\d*\\.?\\d+) +(\\d*\\.?\\d+)").matcher(expr);
         boolean hit = false;
         while (m.find()) {
             expr = m.replaceFirst("$1*$2");

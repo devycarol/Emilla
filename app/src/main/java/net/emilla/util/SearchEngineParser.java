@@ -42,14 +42,14 @@ public final class SearchEngineParser {
     @Deprecated
     public SearchEngineParser(String engineCsv) {
         for (String entry : engineCsv.split("\\s*\n\\s*")) {
-            final var split = entry.split("\\s*,\\s*");
+            var split = entry.split("\\s*,\\s*");
             if (split.length < 2) continue;
 
             int lastIdx = split.length - 1;
             String[] aliases = Arrays.copyOf(split, lastIdx);
             String url = split[lastIdx];
 
-            final var engine = url.contains("%s") ? new Website(url.replaceFirst("%s", ""), url)
+            var engine = url.contains("%s") ? new Website(url.replaceFirst("%s", ""), url)
                     : new Website(url, null);
 
             for (String alias : aliases) mEngineMap.put(Lang.words(alias), engine);

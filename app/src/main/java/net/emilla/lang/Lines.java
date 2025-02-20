@@ -11,11 +11,11 @@ public final class Lines implements Iterable<String> {
 
 //    @Nullable
 //    public static String of(Iterable<Object> iterable, boolean haveTrailing) {
-//        final var itr = iterable.iterator();
+//        var itr = iterable.iterator();
 //        if (!itr.hasNext()) return null;
 //
 //        Object next = itr.next();
-//        final var sb = next != null ? new StringBuilder(encodeLine(next)) : new StringBuilder();
+//        var sb = next != null ? new StringBuilder(encodeLine(next)) : new StringBuilder();
 //        while (itr.hasNext()) {
 //            sb.append('\n');
 //
@@ -30,11 +30,11 @@ public final class Lines implements Iterable<String> {
 
     @Nullable
     public static String of(Iterable<String> iterable, boolean haveTrailing) {
-        final var itr = iterable.iterator();
+        var itr = iterable.iterator();
         if (!itr.hasNext()) return null;
 
         String next = itr.next();
-        final var sb = next != null ? new StringBuilder(encodeLine(next)) : new StringBuilder();
+        var sb = next != null ? new StringBuilder(encodeLine(next)) : new StringBuilder();
         while (itr.hasNext()) {
             sb.append('\n');
 
@@ -49,11 +49,11 @@ public final class Lines implements Iterable<String> {
 
 //    @Nullable
 //    public static String of(Iterable<CharSequence> iterable, boolean haveTrailing) {
-//        final var itr = iterable.iterator();
+//        var itr = iterable.iterator();
 //        if (!itr.hasNext()) return null;
 //
 //        CharSequence next = itr.next();
-//        final var sb = next != null ? new StringBuilder(encodeLine(next)) : new StringBuilder();
+//        var sb = next != null ? new StringBuilder(encodeLine(next)) : new StringBuilder();
 //        while (itr.hasNext()) {
 //            sb.append('\n');
 //
@@ -71,14 +71,14 @@ public final class Lines implements Iterable<String> {
 //    }
 
     public static String encodeLine(String s) {
-        final var sb = new StringBuilder(s.length());
+        var sb = new StringBuilder(s.length());
         for (char c : s.toCharArray()) appendEscape(sb, c);
         return sb.toString();
     }
 
 //    public static String encodeLine(CharSequence text) {
 //        int len = text.length();
-//        final var sb = new StringBuilder(len);
+//        var sb = new StringBuilder(len);
 //
 //        for (int i = 0; i < len; ++i) appendEscape(sb, text.charAt(i));
 //
@@ -95,9 +95,9 @@ public final class Lines implements Iterable<String> {
 
     @Nullable
     public static String trim(String text) {
-        final var sb = new StringBuilder(text.length());
+        var sb = new StringBuilder(text.length());
 
-        final var itr = new Lines(text, true).iterator();
+        var itr = new Lines(text, true).iterator();
         if (!itr.hasNext()) return null;
 
         sb.append(itr.next());
@@ -146,7 +146,7 @@ public final class Lines implements Iterable<String> {
 
         @Override @NonNull
         public final String next() {
-            final var sb = new StringBuilder();
+            var sb = new StringBuilder();
             boolean escape = false;
 
             char c;

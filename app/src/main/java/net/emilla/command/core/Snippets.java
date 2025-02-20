@@ -88,7 +88,7 @@ public final class Snippets extends CoreDataCommand {
     }
 
     private String extractAction(String label) {
-        final var lcLabel = label.toLowerCase();
+        var lcLabel = label.toLowerCase();
         byte action;
         if (lcLabel.startsWith("get")) {
             action = GET;
@@ -126,7 +126,7 @@ public final class Snippets extends CoreDataCommand {
 
     private void snippet(@Nullable String label) {
         if (label != null) {
-            final var lcLabel = label.toLowerCase();
+            var lcLabel = label.toLowerCase();
             if (mSnippetNames.contains(lcLabel)) {
                 if (label.equals(mUsedSnippet)) {
                     // todo: you could change the submit icon to indicate this behavior. it would
@@ -144,7 +144,7 @@ public final class Snippets extends CoreDataCommand {
             } else failMessage(string(R.string.error_no_snippet, label));
         } else if (mSnippetNames.isEmpty()) failMessage(R.string.error_no_snippets);
         else {
-            final var items = mSnippetNames.toArray(new String[0]);
+            var items = mSnippetNames.toArray(new String[0]);
             offerDialog(Dialogs.list(activity, NAME, items,
                     (dlg, which) -> snippetAction(items[which], items[which])));
             // TODO: use the case that the user used for the labels while
@@ -173,7 +173,7 @@ public final class Snippets extends CoreDataCommand {
             return;
         }
 
-        final var items = mSnippetNames.toArray(new String[0]);
+        var items = mSnippetNames.toArray(new String[0]);
         offerDialog(Dialogs.list(activity, R.string.dialog_overwrite_snippet, items,
                 (dlg, which) -> addSnippet(items[which], text)));
     }
@@ -182,7 +182,7 @@ public final class Snippets extends CoreDataCommand {
     protected void runWithData(@NonNull String label, @NonNull String text) {
         mAction = ADD;
 
-        final var lcLabel = label.toLowerCase();
+        var lcLabel = label.toLowerCase();
         if (mSnippetNames.contains(lcLabel)) {
             if (label.equals(mUsedSnippet) && text.equals(mUsedText)) {
                 // todo: you could change the submit icon to indicate this behavior. it would
@@ -198,7 +198,7 @@ public final class Snippets extends CoreDataCommand {
             mUsedSnippet = label;
             mUsedText = text;
 
-            final var msg = string(R.string.dlg_msg_overwrite_snippet, label);
+            var msg = string(R.string.dlg_msg_overwrite_snippet, label);
             offerDialog(Dialogs.dual(activity, R.string.dialog_overwrite_snippet, msg,
                     R.string.overwrite, (dlg, which) -> addSnippet(lcLabel, text)));
             return;

@@ -27,11 +27,11 @@ public final class ConfigActivity extends EmillaActivity {
             boolean assistantItem = item.getItemId() == R.id.nav_assistant;
             if (assistantItem) startActivity(Apps.meTask(this, AssistActivity.class));
         });
-        final var navHostFragment = (NavHostFragment) getSupportFragmentManager()
+        var navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host_fragment_activity_config);
         if (navHostFragment == null) return;
-        final var navController = navHostFragment.getNavController();
-        final var appBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_commands,
+        var navController = navHostFragment.getNavController();
+        var appBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_commands,
                 R.id.nav_assistant, R.id.nav_settings).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(mBinding.navView, navController);

@@ -78,11 +78,11 @@ public final class CommandsFragment extends EmillaPreferenceFragment {
 
         OnPreferenceChangeListener listener = (pref, newVal) -> {
             String textKey = pref.getKey();
-            final var setKey = textKey.substring(0, textKey.length() - 5);
-            final var correctedText = ((String) newVal).trim().toLowerCase();
-            final var vals = correctedText.split(" *, *");
+            var setKey = textKey.substring(0, textKey.length() - 5);
+            var correctedText = ((String) newVal).trim().toLowerCase();
+            var vals = correctedText.split(" *, *");
             Set<String> aliases = Set.of(vals);
-            final var joined = String.join(", ", aliases);
+            var joined = String.join(", ", aliases);
             ((EditTextPreference) pref).setText(joined);
             mPrefs.edit()
                   .putString(textKey, joined)
@@ -128,13 +128,13 @@ public final class CommandsFragment extends EmillaPreferenceFragment {
     private void setupCorePref(String textKey, OnPreferenceChangeListener listener,
             @ArrayRes int aliases) {
         EditTextPreference cmdPref = preferenceOf(textKey);
-        final var setKey = textKey.substring(0, textKey.length() - 5);
+        var setKey = textKey.substring(0, textKey.length() - 5);
         setupPref(cmdPref, setKey, listener, mRes, aliases);
     }
 
     private void setupPref(EditTextPreference cmdPref, String setKey,
             OnPreferenceChangeListener listener, Resources res, @ArrayRes int aliases) {
-        final var aliasSet = mPrefs.getStringSet(setKey, Set.of(res.getStringArray(aliases)));
+        var aliasSet = mPrefs.getStringSet(setKey, Set.of(res.getStringArray(aliases)));
         cmdPref.setText(String.join(", ", aliasSet));
         cmdPref.setOnPreferenceChangeListener(listener);
     }
@@ -166,7 +166,7 @@ public final class CommandsFragment extends EmillaPreferenceFragment {
     private void setupAppPref(String pkg, OnPreferenceChangeListener listener) {
         EditTextPreference appCmdPref = preferenceOf("aliases_" + pkg + "_text");
     try {
-        final var info = mPm.getApplicationInfo(pkg, 0);
+        var info = mPm.getApplicationInfo(pkg, 0);
         CharSequence label = mPm.getApplicationLabel(info);
         appCmdPref.setTitle(label);
         // this uses the application icon and doesn't account for multiple launcher icons yet
@@ -181,9 +181,9 @@ public final class CommandsFragment extends EmillaPreferenceFragment {
         EditTextPreference customCommands = preferenceOf(SettingVals.ALIASES_CUSTOM_TEXT);
         customCommands.setOnPreferenceChangeListener((pref, newVal) -> {
             // self-evident Todo.
-            final var newText = (String) newVal;
+            var newText = (String) newVal;
 
-            final var reviseBldr = new StringBuilder();
+            var reviseBldr = new StringBuilder();
             Set<String> customEntries = new HashSet<>();
             for (String entry : newText.split(" *\n *")) {
                 String revisedEntry = cleanCommaList(entry);
@@ -198,7 +198,7 @@ public final class CommandsFragment extends EmillaPreferenceFragment {
             if (len > 0) reviseBldr.setLength(len - 1);
             // snip trailing newline
 
-            final var revisedText = reviseBldr.toString();
+            var revisedText = reviseBldr.toString();
             ((EditTextPreference) pref).setText(revisedText);
 
             mPrefs.edit()
@@ -212,7 +212,7 @@ public final class CommandsFragment extends EmillaPreferenceFragment {
 
     @Nullable
     private static String cleanCommaList(String entry) {
-        final var split = entry.split("( *, *)+");
+        var split = entry.split("( *, *)+");
         int len = split.length;
         if (len >= 2) {
             List<String> items = new ArrayList<>(len);

@@ -117,9 +117,9 @@ public final class SettingsFragment extends EmillaPreferenceFragment {
     //    soundPref.setSummaryProvider(new Preference.SummaryProvider<>() {
     //        @Nullable @Override
     //        public CharSequence provideSummary(@NonNull Preference pref) {
-    //            final var uriStr = mPrefs.getString(prefKey, null);
+    //            var uriStr = mPrefs.getString(prefKey, null);
     //            if (uriStr != null) {
-    //                final var ringtone = RingtoneManager.getRingtone(mActivity, Uri.parse(uriStr));
+    //                var ringtone = RingtoneManager.getRingtone(mActivity, Uri.parse(uriStr));
     //                if (ringtone != null) return ringtone.getTitle(mActivity);
     //            }
     //            return Lang.wordConcat(mRes, R.string.sound_set_nebula, resId);
@@ -129,11 +129,11 @@ public final class SettingsFragment extends EmillaPreferenceFragment {
     }
 
     private boolean onClickCustomSoundPref(String prefKey) {
-        final var soundPicker = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER)
+        var soundPicker = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER)
                 .putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION)
                 .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true)
                 .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, false);
-        final var uriStr = mPrefs.getString(prefKey, null);
+        var uriStr = mPrefs.getString(prefKey, null);
         soundPicker.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI,
                 uriStr != null ? Uri.parse(uriStr) : null);
         mPrefKey = prefKey;
@@ -164,7 +164,7 @@ public final class SettingsFragment extends EmillaPreferenceFragment {
     private boolean mShouldToast = true;
     private boolean setupActionPref(ListPreference actionPref, boolean noTorch, boolean noSelectAll) {
         if (noTorch) {
-            final var entries = noSelectAll ? new CharSequence[]{"None", "These settings"}
+            var entries = noSelectAll ? new CharSequence[]{"None", "These settings"}
                     : new CharSequence[]{"None", "These settings", "Select whole command"}; // TODO LANG: remove
             actionPref.setEntries(entries);
             CharSequence[] values = {"none", "config", "select_all"};
@@ -188,7 +188,7 @@ public final class SettingsFragment extends EmillaPreferenceFragment {
     private void setupDefaultAssistantPref() {
         // todo: whatever sneaky nonsense the g assistant uses to highlight system settings should also be used here
         Preference systemDefaultAssistant = preferenceOf("default_assistant");
-        final var assistantSettings = new Intent(Settings.ACTION_VOICE_INPUT_SETTINGS);
+        var assistantSettings = new Intent(Settings.ACTION_VOICE_INPUT_SETTINGS);
         if (assistantSettings.resolveActivity(mPm) != null) {
             systemDefaultAssistant.setIntent(assistantSettings);
             return;
@@ -199,7 +199,7 @@ public final class SettingsFragment extends EmillaPreferenceFragment {
     private void setupNotificationsPref() {
         Preference appNotifications = preferenceOf("notifications");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            final var notifSettings = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+            var notifSettings = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
                     .putExtra(Settings.EXTRA_APP_PACKAGE, Apps.MY_PKG);
             if (notifSettings.resolveActivity(mPm) != null) {
                 appNotifications.setIntent(notifSettings);
@@ -212,10 +212,10 @@ public final class SettingsFragment extends EmillaPreferenceFragment {
     private void setupAccessibilityButtonPref() {
         Preference accessibilityButton = preferenceOf("accessibility_button");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            final var showArgs = Apps.MY_PKG + "/" + EmillaAccessibilityService.class.getName();
-            final var bundle = new Bundle();
+            var showArgs = Apps.MY_PKG + "/" + EmillaAccessibilityService.class.getName();
+            var bundle = new Bundle();
             bundle.putString(EXTRA_FRAGMENT_ARG_KEY, showArgs);
-            final var in = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+            var in = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
                     .putExtra(Settings.EXTRA_APP_PACKAGE, Apps.MY_PKG)
                     .putExtra(EXTRA_FRAGMENT_ARG_KEY, showArgs)
                     .putExtra(EXTRA_SHOW_FRAGMENT_ARGUMENTS, bundle);

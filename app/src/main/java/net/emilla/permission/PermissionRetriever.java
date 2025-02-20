@@ -27,7 +27,7 @@ public final class PermissionRetriever {
 
     public PermissionRetriever(AssistActivity act) {
         mActivity = act;
-        final var contract = new RequestMultiplePermissions();
+        var contract = new RequestMultiplePermissions();
         mLauncher = act.registerForActivityResult(contract, new PermissionCallback());
     }
 

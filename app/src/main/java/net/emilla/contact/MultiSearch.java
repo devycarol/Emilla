@@ -9,7 +9,7 @@ public record MultiSearch(String selection, String[] selectionArgs, boolean hasM
     public static MultiSearch instance(@NonNull String baseSelection, @NonNull String search) {
         String[] terms = Lang.list(search).items();
 
-        final var selection = new StringBuilder(baseSelection);
+        var selection = new StringBuilder(baseSelection);
         terms[0] = "%" + terms[0] + "%";
         for (int i = 1; i < terms.length; i++) {
             terms[i] = "%" + terms[i] + "%";

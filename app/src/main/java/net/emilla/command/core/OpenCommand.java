@@ -42,7 +42,7 @@ public abstract class OpenCommand extends CoreCommand {
         int prefCount = 0;
         int otherCount = 0;
 
-        final var lcQuery = app.toLowerCase();
+        var lcQuery = app.toLowerCase();
         boolean exactMatch = false;
 
         for (int i = 0; i < appCount; ++i) {

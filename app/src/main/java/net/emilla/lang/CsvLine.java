@@ -11,11 +11,11 @@ public final class CsvLine implements Iterable<String> {
 
 //    @Nullable
 //    public static String ofObjects(Iterable<Object> iterable) {
-//        final var itr = iterable.iterator();
+//        var itr = iterable.iterator();
 //        if (!itr.hasNext()) return null;
 //
 //        Object next = itr.next();
-//        final var sb = next != null ? new StringBuilder(encodeVal(next)) : new StringBuilder();
+//        var sb = next != null ? new StringBuilder(encodeVal(next)) : new StringBuilder();
 //        while (itr.hasNext()) {
 //            sb.append(',');
 //            next = itr.next();
@@ -27,11 +27,11 @@ public final class CsvLine implements Iterable<String> {
 
     @Nullable
     public static String of(Iterable<String> iterable, boolean useSpaces) {
-        final var itr = iterable.iterator();
+        var itr = iterable.iterator();
         if (!itr.hasNext()) return null;
 
         String next = itr.next();
-        final var sb = next != null ? new StringBuilder(encodeVal(next)) : new StringBuilder();
+        var sb = next != null ? new StringBuilder(encodeVal(next)) : new StringBuilder();
         while (itr.hasNext()) {
             if (useSpaces) sb.append(", ");
             else sb.append(',');
@@ -45,11 +45,11 @@ public final class CsvLine implements Iterable<String> {
 
 //    @Nullable
 //    public static String ofSequences(Iterable<CharSequence> iterable) {
-//        final var itr = iterable.iterator();
+//        var itr = iterable.iterator();
 //        if (!itr.hasNext()) return null;
 //
 //        CharSequence next = itr.next();
-//        final var sb = next != null ? new StringBuilder(encodeVal(next)) : new StringBuilder();
+//        var sb = next != null ? new StringBuilder(encodeVal(next)) : new StringBuilder();
 //        while (itr.hasNext()) {
 //            sb.append(',');
 //            next = itr.next();
@@ -64,14 +64,14 @@ public final class CsvLine implements Iterable<String> {
 //    }
 
     public static String encodeVal(String s) {
-        final var sb = new StringBuilder(s.length());
+        var sb = new StringBuilder(s.length());
         for (char c : s.toCharArray()) appendEscape(sb, c);
         return sb.toString();
     }
 
 //    public static String encodeVal(CharSequence text) {
 //        int len = text.length();
-//        final var sb = new StringBuilder(len);
+//        var sb = new StringBuilder(len);
 //
 //        for (int i = 0; i < len; ++i) appendEscape(sb, text.charAt(i));
 //
@@ -88,9 +88,9 @@ public final class CsvLine implements Iterable<String> {
 
     @Nullable
     public static String trim(String line) {
-        final var sb = new StringBuilder(line.length());
+        var sb = new StringBuilder(line.length());
 
-        final var itr = new CsvLine(line, true).iterator();
+        var itr = new CsvLine(line, true).iterator();
         if (!itr.hasNext()) return null;
 
         sb.append(itr.next());
@@ -132,7 +132,7 @@ public final class CsvLine implements Iterable<String> {
 
         @Override @Nullable
         public final String next() {
-            final var sb = new StringBuilder();
+            var sb = new StringBuilder();
             boolean escape = false;
 
             char c;

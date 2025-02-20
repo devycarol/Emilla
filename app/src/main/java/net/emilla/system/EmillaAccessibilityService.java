@@ -24,7 +24,7 @@ public final class EmillaAccessibilityService extends AccessibilityService {
 
     @Override @RequiresApi(api = Build.VERSION_CODES.O)
     public void onCreate() {
-        final var controller = getAccessibilityButtonController();
+        var controller = getAccessibilityButtonController();
         controller.registerAccessibilityButtonCallback(new AccessibilityButtonCallback() {
             @Override
             public void onClicked(AccessibilityButtonController controller) {

@@ -19,13 +19,13 @@ public final class ListPhraseEN_US implements ListPhrase {
         //  "items with commas", but it will suffice for now.
         // don't put commas in your contact names u jackal :P
 
-        final var coordination = Pattern.compile(COORDINATION);
+        var coordination = Pattern.compile(COORDINATION);
         if (coordination.matcher(phrase).find()) {
             mItems = phrase.split(SERIAL + "|" + COORDINATION);
             return;
         }
 
-        final var conjunction = Pattern.compile(CONJUNCTION);
+        var conjunction = Pattern.compile(CONJUNCTION);
         if (conjunction.matcher(phrase).find()) {
             mItems = conjunction.split(phrase);
             return;

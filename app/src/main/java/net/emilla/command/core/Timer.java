@@ -69,7 +69,7 @@ public final class Timer extends CoreDataCommand {
                 nextPeriod = "PM";
                 curPeriod = "AM";
             }
-            final var endTime = String.format(ROOT, "%d:%02d%s", timeUnits[4], timeUnits[5], nextPeriod);
+            var endTime = String.format(ROOT, "%d:%02d%s", timeUnits[4], timeUnits[5], nextPeriod);
             toast(String.format(ROOT, "Warning! Timer set for %s, not %s.", endTime, curPeriod));
             // TODO: not good...
         }

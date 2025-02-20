@@ -115,13 +115,13 @@ public final class Tasker extends AppCommand implements DataCommand {
 
         int nameCol = 0, projectCol = 1;
 
-        final var lcTask = task.toLowerCase();
+        var lcTask = task.toLowerCase();
         SortedSet<Task> tasks = new TreeSet<>(taskComparator(lcTask));
 
         while (cur.moveToNext()) {
-            final var taskName = cur.getString(nameCol);
+            var taskName = cur.getString(nameCol);
             if (taskName.toLowerCase().contains(task.toLowerCase())) {
-                final var projectName = cur.getString(projectCol);
+                var projectName = cur.getString(projectCol);
                 tasks.add(new Task(projectName, taskName));
             }
         }
@@ -142,8 +142,8 @@ public final class Tasker extends AppCommand implements DataCommand {
             }
         }
 
-        final var taskNames = new String[size];
-        final var taskLabels = new String[size];
+        var taskNames = new String[size];
+        var taskLabels = new String[size];
         int i = -1;
         for (Task tsk : tasks) {
             taskNames[++i] = tsk.taskName;
@@ -178,7 +178,7 @@ public final class Tasker extends AppCommand implements DataCommand {
     }
 
     private void runTask(@NonNull String taskName, @Nullable String params) {
-        final var in = new TaskerIntent(taskName);
+        var in = new TaskerIntent(taskName);
         if (params != null) {
             for (String param : new Lines(params, false)) in.addParameter(param);
         }

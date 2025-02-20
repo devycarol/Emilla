@@ -58,7 +58,7 @@ public final class SettingVals {
             CoreCommand.Yielder[] coreYielders) {
         // Todo: allow apps and customs. Make sure to fall back to a core if the app is uninstalled
         //  or the custom is deleted.
-        final var entry = prefs.getString("default_command", "web");
+        var entry = prefs.getString("default_command", "web");
         return new DefaultCommandWrapper.Yielder(switch (entry) {
             case Call.ENTRY -> coreYielders[0];
             case Dial.ENTRY -> coreYielders[1];
@@ -102,7 +102,7 @@ public final class SettingVals {
             //  should change if it's still default. back:prefs.xml
             case "never" -> false;
             case "portrait" -> {
-                final var metrics = res.getDisplayMetrics();
+                var metrics = res.getDisplayMetrics();
                 yield metrics.widthPixels < metrics.heightPixels;
             }
             default /*"always"*/ -> true;

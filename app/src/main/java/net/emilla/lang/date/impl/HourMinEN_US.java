@@ -58,7 +58,7 @@ public record HourMinEN_US(int hour24, int minute) implements HourMin {
     }
 
     private static boolean isFlip(int hour, int minute) {
-        final var cal = Calendar.getInstance();
+        var cal = Calendar.getInstance();
         int currentHour = cal.get(Calendar.HOUR_OF_DAY);
         if (currentHour == 0) currentHour = 24;
         // handle 12am as "24pm"

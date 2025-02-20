@@ -81,8 +81,8 @@ public final class ContactItemView extends LinearLayout {
     }
 
     private void viewContactDetails() {
-        final var uri = Contacts.getLookupUri(mContactId, mLookupKey);
-        final var viewContact = new Intent(Intent.ACTION_VIEW, uri);
+        var uri = Contacts.getLookupUri(mContactId, mLookupKey);
+        var viewContact = new Intent(Intent.ACTION_VIEW, uri);
         getContext().startActivity(viewContact);
     }
 
@@ -117,7 +117,7 @@ public final class ContactItemView extends LinearLayout {
     private void onStarChanged(boolean starred) {
         mStarred = starred;
 
-        final var values = new ContentValues();
+        var values = new ContentValues();
         values.put(Contacts.STARRED, starred ? 1 : 0);
 
         ContentResolver cr = getContext().getContentResolver();
@@ -158,7 +158,7 @@ public final class ContactItemView extends LinearLayout {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) setStateDesc();
 
-        final var desc = getResources().getString(selected ? R.string.deselect : R.string.select);
+        var desc = getResources().getString(selected ? R.string.deselect : R.string.select);
         ViewCompat.replaceAccessibilityAction(this, ACTION_CLICK, desc, null);
     }
 }

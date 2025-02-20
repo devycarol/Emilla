@@ -34,10 +34,10 @@ public final class BugFailure extends DialogFailure {
     private static void emailBugReport(AssistActivity act, RuntimeException e, String errorHeader) {
         String message = e.getMessage();
 
-        final var sw = new StringWriter();
-        final var pw = new PrintWriter(sw);
+        var sw = new StringWriter();
+        var pw = new PrintWriter(sw);
         e.printStackTrace(pw);
-        final var stackTrace = sw.toString();
+        var stackTrace = sw.toString();
 
         var body = "Feel free to describe what was happening when the error occurred:\n\n\n\n"
                 + "======== exception details ========\n\n";
@@ -46,7 +46,7 @@ public final class BugFailure extends DialogFailure {
                 + "======== more helpful stuff ========\n\n"
                 + deviceInfo();
 
-        final var email = new Intent(ACTION_SENDTO, Uri.parse("mailto:bugs@emilla.net"))
+        var email = new Intent(ACTION_SENDTO, Uri.parse("mailto:bugs@emilla.net"))
                 // TODO: open an actual email account
                 .putExtra(EXTRA_SUBJECT, "[Android bug] " + errorHeader)
                 .putExtra(EXTRA_TEXT, body);
@@ -54,7 +54,7 @@ public final class BugFailure extends DialogFailure {
     }
 
     private static String deviceInfo() {
-        final var device = new StringBuilder(Build.MODEL.isEmpty() ? "Unknown" : Build.MODEL);
+        var device = new StringBuilder(Build.MODEL.isEmpty() ? "Unknown" : Build.MODEL);
         if (!Build.DEVICE.isEmpty()) device.append(" (").append(Build.DEVICE).append(')');
 
         String baseOs;
@@ -62,11 +62,11 @@ public final class BugFailure extends DialogFailure {
             baseOs = Build.VERSION.BASE_OS;
         } else baseOs = "Android";
 
-        final var os = new StringBuilder(baseOs).append(' ');
+        var os = new StringBuilder(baseOs).append(' ');
         if (!Build.VERSION.RELEASE.isEmpty()) os.append(Build.VERSION.RELEASE).append(' ');
         os.append(versionCodename());
 
-        final var app = new StringBuilder(BuildConfig.APPLICATION_NAME).append(' ')
+        var app = new StringBuilder(BuildConfig.APPLICATION_NAME).append(' ')
                 .append(BuildConfig.VERSION_NAME).append(' ')
                 .append(BuildConfig.VERSION_CODENAME);
         if (BuildConfig.DEBUG) app.append(" (debug)");

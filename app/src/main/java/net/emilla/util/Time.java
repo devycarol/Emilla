@@ -95,7 +95,7 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         int[] endUnits = parseTime(until, null);
         int endHour = endUnits[0], endMin = endUnits[1], endSec = endUnits[2];
 
-        final var cal = Calendar.getInstance();
+        var cal = Calendar.getInstance();
         int curHour = cal.get(HOUR_OF_DAY), curMin = cal.get(MINUTE), curSec = cal.get(SECOND);
 
         int h = 0, m = 0, s = 0, warn = 0;
@@ -124,7 +124,7 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
     }
 
     private static int[] splitDurationString (String dur) {
-        final var units = dur.split(" *: *| +");
+        var units = dur.split(" *: *| +");
 
         double h = 0.0, m = 0.0, s = 0.0;
         switch (units.length) {
@@ -148,7 +148,7 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
     public static int[] parseDuration(String dur) { // TODO: handle 24h time properly
         if (dur.matches("(until|t(ill?|o)) .*")) return parseDurationUntil(dur);
         else {
-            final var timeUnits = new double[4];
+            var timeUnits = new double[4];
             String[] patterns = {
                     "\\d*\\.?\\d+ *h((ou)?rs?)?",
                     "\\d*\\.?\\d+ *m(in(ute)?s?)?",
@@ -161,7 +161,7 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
                 if (containsRgxIgnoreCase(dur, rgx)) {
                     hit = true;
 
-                    final var sansHrs = dur.split(rgx);
+                    var sansHrs = dur.split(rgx);
                     if (sansHrs.length > 2) throw new EmlaBadCommandException(R.string.command_timer, R.string.error_invalid_duration);
 
                     String before = "", after = "";
@@ -214,7 +214,7 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
     }
 
     private static Calendar parseDate(String s) { // TODO more formats but dear god locales ughhhhh
-        final var cal = Calendar.getInstance();
+        var cal = Calendar.getInstance();
         cal.set(MILLISECOND, 0);
         cal.set(SECOND, 0);
         cal.add(MINUTE, -cal.get(MINUTE) % 30 + 30);
@@ -250,14 +250,14 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
     }
 
     public static long[] parseDateAndTimes(String date) {
-        final var dateTime = date.split(" *@ *|(^| +)(at|from) +");
+        var dateTime = date.split(" *@ *|(^| +)(at|from) +");
 
         int[] startTime = null, endTime = null;
         boolean endTomorrow = false; // TODO
         int len = dateTime.length;
         if (len == 2) {
             date = dateTime[0];
-            final var times = dateTime[1].split(" *(-|t(o|ill?)|until) *");
+            var times = dateTime[1].split(" *(-|t(o|ill?)|until) *");
 
             switch (times.length) {
             case 2:

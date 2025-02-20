@@ -14,7 +14,7 @@ public interface ContactCardReceiver extends ContactReceiver {
     @Override
     default void useContact(Cursor cur) {
         long id = cur.getLong(IDX_ID);
-        final var key = cur.getString(IDX_KEY);
+        var key = cur.getString(IDX_KEY);
 
         provide(ContactsContract.Contacts.getLookupUri(id, key));
     }

@@ -118,7 +118,7 @@ public final class Sms extends CoreDataCommand implements PhoneReceiver {
         if (numbers != null) message(numbers, message);
         else {
             String toNumbers = Contacts.phonewordsToNumbers(recipients);
-            final var msg = string(R.string.notice_sms_not_numbers, recipients, toNumbers);
+            var msg = string(R.string.notice_sms_not_numbers, recipients, toNumbers);
             // todo: better message.
             offerDialog(Dialogs.dual(activity, NAME, msg, R.string.message_directly,
                     (dlg, which) -> message(toNumbers, message)));
@@ -126,7 +126,7 @@ public final class Sms extends CoreDataCommand implements PhoneReceiver {
     }
 
     private void message(@NonNull String numbers, @Nullable String message) {
-        final var sendTo = new Intent(ACTION_SENDTO, Uri.parse("smsto:" + numbers));
+        var sendTo = new Intent(ACTION_SENDTO, Uri.parse("smsto:" + numbers));
 
         if (message != null) sendTo.putExtra("sms_body", message);
         // overwrites any existing draft to the recipient

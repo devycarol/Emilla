@@ -105,7 +105,7 @@ public final class Call extends CoreCommand implements PhoneReceiver, Permission
 
         if (number != null) call(number);
         else {
-            final var msg = string(R.string.notice_call_not_number, nameOrNumber,
+            var msg = string(R.string.notice_call_not_number, nameOrNumber,
                     Contacts.phonewordsToNumbers(nameOrNumber));
             offerDialog(Dialogs.dual(activity, NAME, msg, R.string.call_directly,
                     (dlg, which) -> call(nameOrNumber)));

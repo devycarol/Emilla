@@ -18,7 +18,7 @@ public final class Files {
     public static boolean endsWithNewline(ContentResolver cr, Uri fileUri) throws IOException {
         InputStream is = cr.openInputStream(fileUri);
         if (is == null) throw new FileNotFoundException();
-        final var reader = new BufferedReader(new InputStreamReader(is));
+        var reader = new BufferedReader(new InputStreamReader(is));
         // todo: what.
 
         int c, lastChar = '\n';
@@ -80,8 +80,8 @@ public final class Files {
 
         @Deprecated
         private static String union(String type1, String type2) {
-            final var parts1 = type1.split("/");
-            final var parts2 = type2.split("/");
+            var parts1 = type1.split("/");
+            var parts2 = type2.split("/");
             return partUnion(parts1[0], parts2[0]) + "/" + partUnion(parts1[1], parts2[1]);
         }
 

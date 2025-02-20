@@ -7,7 +7,7 @@ import android.net.Uri;
 
 public final class Custom implements Chimer {
     private static Uri uriOf(SharedPreferences prefs, String prefString) {
-        final var uriStr = prefs.getString(prefString, null);
+        var uriStr = prefs.getString(prefString, null);
         return uriStr != null ? Uri.parse(uriStr) : null;
     }
 

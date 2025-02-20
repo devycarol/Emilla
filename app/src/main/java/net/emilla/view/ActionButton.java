@@ -77,7 +77,7 @@ public final class ActionButton extends AppCompatImageButton implements View.OnT
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        final var am = (AccessibilityManager) getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
+        var am = (AccessibilityManager) getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
         if (!am.isTouchExplorationEnabled()) switch (event.getAction()) {
             // do not perform special behavior if a screen reader is in use.
             case MotionEvent.ACTION_DOWN -> {

@@ -124,7 +124,7 @@ public final class Email extends AttachCommand implements EmailReceiver {
 
     private void email(@NonNull String addresses, @Nullable String body) {
         Intent email;
-        final var sendTo = new Intent(ACTION_SENDTO, Uri.parse("mailto:"));
+        var sendTo = new Intent(ACTION_SENDTO, Uri.parse("mailto:"));
         if (attachments == null) email = sendTo;
         else {
             email = new Intent(ACTION_SEND_MULTIPLE).putExtra(EXTRA_STREAM, attachments);

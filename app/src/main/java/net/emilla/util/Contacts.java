@@ -20,7 +20,7 @@ public final class Contacts {
 
     public static String phonewordsToNumbers(@NonNull String namesOrNumbers) {
         // Todo: change this function to "nicely formatted number" like (208) 555-1234.
-        final var sb = new StringBuilder();
+        var sb = new StringBuilder();
         for (int i = 0; i < namesOrNumbers.length(); ++i) {
             char c = namesOrNumbers.charAt(i);
             if (isAcceptablePhoneChar(c)) sb.append(c);
@@ -64,7 +64,7 @@ public final class Contacts {
         Uri contentUri = Phone.CONTENT_URI;
         String[] projection = {Phone.NUMBER};
         int IDX_NUMBER = 0;
-        final var selection = Phone.CONTACT_ID + " = ?";
+        var selection = Phone.CONTACT_ID + " = ?";
         String[] selectionArgs = {contact.getLastPathSegment()};
         try (Cursor cur = cr.query(contentUri, projection, selection, selectionArgs, null)) {
             if (cur != null && cur.moveToFirst()) return cur.getString(IDX_NUMBER);
@@ -76,7 +76,7 @@ public final class Contacts {
         Uri contentUri = Email.CONTENT_URI;
         String[] projection = {Email.ADDRESS};
         int IDX_ADDRESS = 0;
-        final var selection = Email.CONTACT_ID + " = ?";
+        var selection = Email.CONTACT_ID + " = ?";
         String[] selectionArgs = {contact.getLastPathSegment()};
         try (Cursor cur = cr.query(contentUri, projection, selection, selectionArgs, null)) {
             if (cur != null && cur.moveToFirst()) return cur.getString(IDX_ADDRESS);

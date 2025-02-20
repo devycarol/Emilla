@@ -33,7 +33,7 @@ public final class ContactCardAdapter extends ContactCursorAdapter {
 
     @Override
     public void bindView(View view, Context ctx, Cursor cur) {
-        final var item = (ContactItemView) view;
+        var item = (ContactItemView) view;
         item.setContactInfo(cur.getLong(IDX_ID), cur.getString(IDX_KEY), cur.getString(IDX_NAME),
                 cur.getString(IDX_PHOTO), cur.getInt(IDX_STARRED) != 0);
         item.setSelected(true);
