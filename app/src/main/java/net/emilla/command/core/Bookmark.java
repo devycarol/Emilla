@@ -87,7 +87,7 @@ public final class Bookmark extends CoreCommand {
         Intent get = mBookmarkMap.get(bookmark.toLowerCase());
         if (get == null) {
             offerDialog(mBookmarkChooser);
-            if (mHasBookmarks) toast(string(R.string.dlg_msg_choose_media));
+            if (mHasBookmarks) toast(str(R.string.dlg_msg_choose_media));
             return;
         }
         appSucceed(get);

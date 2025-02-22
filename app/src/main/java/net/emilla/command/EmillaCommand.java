@@ -207,11 +207,11 @@ public abstract class EmillaCommand {
         return mInstruction;
     }
 
-    protected final String string(@StringRes int id) {
+    protected final String str(@StringRes int id) {
         return resources.getString(id);
     }
 
-    protected final String string(@StringRes int id, Object ... formatArgs) {
+    protected final String str(@StringRes int id, Object ... formatArgs) {
         return resources.getString(id, formatArgs);
     }
 

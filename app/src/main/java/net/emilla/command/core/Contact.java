@@ -180,11 +180,11 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
         if (message != null) send.putExtra(EXTRA_TEXT, message);
         // todo: see if it's possible to detect when apps won't accept this.
 
-        appSucceed(Intent.createChooser(send, string(NAME)));
+        appSucceed(Intent.createChooser(send, str(NAME)));
     }
 
     private void offerCreate(@NonNull String person, @Nullable String details) {
-        var msg = string(R.string.notice_contact_no_match, person);
+        var msg = str(R.string.notice_contact_no_match, person);
         offerDialog(Dialogs.dual(activity, NAME, msg, R.string.create,
                 (dlg, which) -> create(person, details)));
     }

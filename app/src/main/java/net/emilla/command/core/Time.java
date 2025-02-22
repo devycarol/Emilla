@@ -53,11 +53,11 @@ public final class Time extends CoreCommand {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             var cal = Calendar.getInstance();
             time = DateFormat.getTimeInstance();
-            localTime = string(R.string.toast_local_time, time.format(cal.getTime()));
+            localTime = str(R.string.toast_local_time, time.format(cal.getTime()));
         } else {
             var cal = java.util.Calendar.getInstance();
             time = java.text.DateFormat.getTimeInstance();
-            localTime = string(R.string.toast_local_time, time.format(cal.getTime()));
+            localTime = str(R.string.toast_local_time, time.format(cal.getTime()));
         }
         // todo: configurable format &/ allow adjustment via the command instruction
         giveText(localTime, false);

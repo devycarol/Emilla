@@ -109,7 +109,7 @@ public final class Tasker extends AppCommand implements DataCommand {
         Cursor cur = contentResolver().query(CONTENT_URI, projection, null, null, null);
 
         if (cur == null) {
-            failMessage(string(R.string.error_tasker_no_tasks, task));
+            failMessage(str(R.string.error_tasker_no_tasks, task));
             return;
         }
 
@@ -129,7 +129,7 @@ public final class Tasker extends AppCommand implements DataCommand {
         cur.close();
 
         if (tasks.isEmpty()) {
-            failMessage(string(R.string.error_tasker_no_tasks, task));
+            failMessage(str(R.string.error_tasker_no_tasks, task));
             return;
         }
 

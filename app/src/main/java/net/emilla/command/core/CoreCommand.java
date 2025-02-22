@@ -30,7 +30,7 @@ public abstract class CoreCommand extends EmillaCommand {
 
     @Override @Deprecated
     protected String dupeLabel() {
-        return string(mParams.mName) + " (Emilla command)";
+        return str(mParams.mName) + " (Emilla command)";
     }
 
     public static final class Yielder extends CommandYielder {

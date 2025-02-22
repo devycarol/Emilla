@@ -50,7 +50,7 @@ public final class Pomodoro extends CoreDataCommand {
 
     public Pomodoro(AssistActivity act) {
         super(act, new PomodoroParams());
-        mIntent.putExtra(EXTRA_MESSAGE, string(NAME));
+        mIntent.putExtra(EXTRA_MESSAGE, str(NAME));
     }
 
     /**
@@ -83,10 +83,9 @@ public final class Pomodoro extends CoreDataCommand {
     @Override
     protected void run(@NonNull String duration) throws EmlaBadCommandException {
         boolean isBreak = putDuration(duration);
-        if (isBreak) mIntent.putExtra(EXTRA_MESSAGE, string(R.string.memo_pomodoro_break));
+        if (isBreak) mIntent.putExtra(EXTRA_MESSAGE, str(R.string.memo_pomodoro_break));
         appSucceed(mIntent);
-        toast(isBreak ? string(R.string.toast_pomodoro_break)
-                : string(R.string.toast_pomodoro));
+        toast(isBreak ? str(R.string.toast_pomodoro_break) : str(R.string.toast_pomodoro));
     }
 
     @Override
@@ -99,7 +98,6 @@ public final class Pomodoro extends CoreDataCommand {
         boolean isBreak = putDuration(duration);
         mIntent.putExtra(EXTRA_MESSAGE, memo);
         appSucceed(mIntent);
-        toast(isBreak ? string(R.string.toast_pomodoro_break)
-                : string(R.string.toast_pomodoro));
+        toast(isBreak ? str(R.string.toast_pomodoro_break) : str(R.string.toast_pomodoro));
     }
 }

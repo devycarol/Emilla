@@ -141,7 +141,7 @@ public final class Snippets extends CoreDataCommand {
 
                 mUsedSnippet = label;
                 snippetAction(label, lcLabel);
-            } else failMessage(string(R.string.error_no_snippet, label));
+            } else failMessage(str(R.string.error_no_snippet, label));
         } else if (mSnippetNames.isEmpty()) failMessage(R.string.error_no_snippets);
         else {
             var items = mSnippetNames.toArray(new String[0]);
@@ -161,7 +161,7 @@ public final class Snippets extends CoreDataCommand {
         }
         if (mAction >= POP) {
             mSnippetNames = SettingVals.removeSnippet(prefs(), lcLabel);
-            toast(string(R.string.toast_snippet_deleted, label));
+            toast(str(R.string.toast_snippet_deleted, label));
             if (mAction == REMOVE) give(() -> {});
         }
     }
@@ -198,7 +198,7 @@ public final class Snippets extends CoreDataCommand {
             mUsedSnippet = label;
             mUsedText = text;
 
-            var msg = string(R.string.dlg_msg_overwrite_snippet, label);
+            var msg = str(R.string.dlg_msg_overwrite_snippet, label);
             offerDialog(Dialogs.dual(activity, R.string.dialog_overwrite_snippet, msg,
                     R.string.overwrite, (dlg, which) -> addSnippet(lcLabel, text)));
             return;
@@ -212,6 +212,6 @@ public final class Snippets extends CoreDataCommand {
 
     private void addSnippet(String label, String text) {
         mSnippetNames = SettingVals.addSnippet(prefs(), label, text);
-        giveText(string(R.string.toast_saved), false);
+        giveText(str(R.string.toast_saved), false);
     }
 }
