@@ -193,7 +193,7 @@ public final class TaskerIntent extends Intent {
             if (varNames != null) index = varNames.size() + 1;
         }
 
-        Log.d(TAG, "index: " + index);
+//        Log.d(TAG, "index: " + index);
 
         addLocalVariable("%" + PARAM_VAR_NAME_PREFIX + index, value);
 
