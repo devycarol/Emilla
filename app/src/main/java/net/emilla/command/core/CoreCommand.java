@@ -43,8 +43,13 @@ public abstract class CoreCommand extends EmillaCommand {
         @ArrayRes
         private final int mAliases;
 
-        public Yielder(boolean usesInstruction, Maker maker, String prefsEntry, @StringRes int name,
-                @ArrayRes int aliases) {
+        public Yielder(
+            boolean usesInstruction,
+            Maker maker,
+            String prefsEntry,
+            @StringRes int name,
+            @ArrayRes int aliases
+        ) {
             mUsesInstruction = usesInstruction;
             mMaker = maker;
             mName = name;
@@ -87,14 +92,26 @@ public abstract class CoreCommand extends EmillaCommand {
         @StringRes
         private final int mSummary, mManual;
 
-        protected CoreParams(@StringRes int name, @StringRes int instruction, @DrawableRes int icon,
-                int imeAction, @StringRes int summary, @StringRes int manual) {
+        protected CoreParams(
+            @StringRes int name,
+            @StringRes int instruction,
+            @DrawableRes int icon,
+            int imeAction,
+            @StringRes int summary,
+            @StringRes int manual
+        ) {
             this(name, instruction, true, icon, imeAction, summary, manual);
         }
 
-        protected CoreParams(@StringRes int name, @StringRes int instruction,
-                boolean shouldLowercase, @DrawableRes int icon, int imeAction,
-                @StringRes int summary, @StringRes int manual) {
+        protected CoreParams(
+            @StringRes int name,
+            @StringRes int instruction,
+            boolean shouldLowercase,
+            @DrawableRes int icon,
+            int imeAction,
+            @StringRes int summary,
+            @StringRes int manual
+        ) {
             mName = name;
             mInstruction = instruction;
             mShouldLowercase = shouldLowercase;

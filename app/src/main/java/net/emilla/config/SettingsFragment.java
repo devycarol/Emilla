@@ -109,8 +109,11 @@ public final class SettingsFragment extends EmillaPreferenceFragment {
         setupCustomSoundPref(Chimer.PREF_FAIL, enabled/*, R.string.chime_fail*/);
     }
 
-    private void setupCustomSoundPref(String prefKey, boolean enabled/*,
-            @StringRes int resId*/) {
+    private void setupCustomSoundPref(
+        String prefKey,
+        boolean enabled/*,
+        @StringRes int resId*/
+    ) {
         Preference soundPref = preferenceOf(prefKey);
         soundPref.setOnPreferenceClickListener((pref) -> onClickCustomSoundPref(prefKey));
         if (!enabled) soundPref.setVisible(false);

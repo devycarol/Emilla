@@ -14,14 +14,22 @@ public final class Aliases {
         return "aliases_" + entry + "_text";
     }
 
-    public static Set<String> coreSet(SharedPreferences prefs, Resources res, String commandEntry,
-            @ArrayRes int aliases) {
+    public static Set<String> coreSet(
+        SharedPreferences prefs,
+        Resources res,
+        String commandEntry,
+        @ArrayRes int aliases
+    ) {
         return prefs.getStringSet("aliases_" + commandEntry, Set.of(res.getStringArray(aliases)));
     }
 
     @Nullable
-    public static Set<String> appSet(SharedPreferences prefs, Resources res, String pkg,
-            @ArrayRes int setId) {
+    public static Set<String> appSet(
+        SharedPreferences prefs,
+        Resources res,
+        String pkg,
+        @ArrayRes int setId
+    ) {
         if (setId == 0) return null;
         return prefs.getStringSet("aliases_" + pkg, Set.of(res.getStringArray(setId)));
     }

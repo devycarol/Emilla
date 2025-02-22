@@ -50,14 +50,22 @@ public class AppSend extends AppCommand {
         @StringRes
         private final int mInstruction;
 
-        protected AppSendParams(Yielder info, @StringRes int instruction, @StringRes int summary,
-                @StringRes int manual) {
+        protected AppSendParams(
+            Yielder info,
+            @StringRes int instruction,
+            @StringRes int summary,
+            @StringRes int manual
+        ) {
             this(info, instruction, EditorInfo.IME_ACTION_SEND, summary, manual);
             // todo: the 'send' action shouldn't apply when just launching
         }
 
-        protected AppSendParams(Yielder info, @StringRes int instruction, int imeAction,
-                @StringRes int summary, @StringRes int manual) {
+        protected AppSendParams(
+            Yielder info,
+            @StringRes int instruction,
+            int imeAction,
+            @StringRes int summary, @StringRes int manual
+        ) {
             super(info, imeAction, summary, manual);
             mInstruction = instruction;
         }

@@ -111,8 +111,11 @@ public abstract class OpenCommand extends CoreCommand {
 
     protected abstract Intent makeIntent(String pkg, String cls);
 
-    private AlertDialog.Builder makeDialog(CharSequence[] prefLabels, int prefCount,
-            Intent[] prefIntents) {
+    private AlertDialog.Builder makeDialog(
+        CharSequence[] prefLabels,
+        int prefCount,
+        Intent[] prefIntents
+    ) {
         CharSequence[] labels = Arrays.copyOfRange(prefLabels, 0, prefCount);
         return Dialogs.list(activity, R.string.dialog_app, labels,
                 (dlg, which) -> appSucceed(prefIntents[which]));

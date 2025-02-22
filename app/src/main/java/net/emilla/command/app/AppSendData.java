@@ -48,8 +48,12 @@ class AppSendData extends AppSend implements DataCommand {
         @StringRes
         private final int mHint;
 
-        protected AppSendDataParams(Yielder info, @StringRes int instruction, @StringRes int summary,
-                @StringRes int hint) {
+        protected AppSendDataParams(
+            Yielder info,
+            @StringRes int instruction,
+            @StringRes int summary,
+            @StringRes int hint
+        ) {
             super(info,
                   instruction,
                   EditorInfo.IME_ACTION_NEXT,

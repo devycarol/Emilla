@@ -125,15 +125,23 @@ public final class CommandsFragment extends EmillaPreferenceFragment {
         setupCorePref(Toast.ALIAS_TEXT_KEY, listener, Toast.ALIASES);
     }
 
-    private void setupCorePref(String textKey, OnPreferenceChangeListener listener,
-            @ArrayRes int aliases) {
+    private void setupCorePref(
+        String textKey,
+        OnPreferenceChangeListener listener,
+        @ArrayRes int aliases
+    ) {
         EditTextPreference cmdPref = preferenceOf(textKey);
         var setKey = textKey.substring(0, textKey.length() - 5);
         setupPref(cmdPref, setKey, listener, mRes, aliases);
     }
 
-    private void setupPref(EditTextPreference cmdPref, String setKey,
-            OnPreferenceChangeListener listener, Resources res, @ArrayRes int aliases) {
+    private void setupPref(
+        EditTextPreference cmdPref,
+        String setKey,
+        OnPreferenceChangeListener listener,
+        Resources res,
+        @ArrayRes int aliases
+    ) {
         var aliasSet = mPrefs.getStringSet(setKey, Set.of(res.getStringArray(aliases)));
         cmdPref.setText(String.join(", ", aliasSet));
         cmdPref.setOnPreferenceChangeListener(listener);

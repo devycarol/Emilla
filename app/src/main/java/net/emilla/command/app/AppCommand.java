@@ -173,8 +173,12 @@ public class AppCommand extends EmillaCommand {
         @StringRes
         private final int mSummary, mManual;
 
-        protected AppParams(Yielder info, int imeAction, @StringRes int summary,
-                @StringRes int manual) {
+        protected AppParams(
+            Yielder info,
+            int imeAction,
+            @StringRes int summary,
+            @StringRes int manual
+        ) {
             mImeAction = imeAction;
             name = info.mName;
             mPkg = info.mPkg;

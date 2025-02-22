@@ -31,8 +31,13 @@ public abstract class FieldToggle implements QuickAction {
     private boolean mActivated = false;
     private EditText mField;
 
-    public FieldToggle(AssistActivity act, @IdRes int action, @IdRes int field,
-            @StringRes int fieldName, @DrawableRes int icon) {
+    public FieldToggle(
+        AssistActivity act,
+        @IdRes int action,
+        @IdRes int field,
+        @StringRes int fieldName,
+        @DrawableRes int icon
+    ) {
         mActionId = action;
         mFieldId = field;
         mFieldName = fieldName;

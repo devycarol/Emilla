@@ -21,9 +21,14 @@ public abstract class CoreDataCommand extends CoreCommand implements DataCommand
         @StringRes
         private final int mHint;
 
-        protected CoreDataParams(@StringRes int name, @StringRes int instruction,
-                @DrawableRes int icon, @StringRes int summary, @StringRes int manual,
-                @StringRes int hint) {
+        protected CoreDataParams(
+            @StringRes int name,
+            @StringRes int instruction,
+            @DrawableRes int icon,
+            @StringRes int summary,
+            @StringRes int manual,
+            @StringRes int hint
+        ) {
             this(name, instruction,
                  true,
                  icon,
@@ -31,9 +36,15 @@ public abstract class CoreDataCommand extends CoreCommand implements DataCommand
                  hint);
         }
 
-        protected CoreDataParams(@StringRes int name, @StringRes int instruction,
-                boolean shouldLowercase, @DrawableRes int icon, @StringRes int summary,
-                @StringRes int manual, @StringRes int hint) {
+        protected CoreDataParams(
+            @StringRes int name,
+            @StringRes int instruction,
+            boolean shouldLowercase,
+            @DrawableRes int icon,
+            @StringRes int summary,
+            @StringRes int manual,
+            @StringRes int hint
+        ) {
             super(name, instruction,
                   shouldLowercase,
                   icon,

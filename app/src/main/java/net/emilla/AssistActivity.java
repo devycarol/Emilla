@@ -342,8 +342,7 @@ public final class AssistActivity extends EmillaActivity {
     }
 
     public void addAction(QuickAction action) {
-        var button = (ActionButton) mInflater.inflate(R.layout.btn_action, mActionsContainer,
-                false);
+        var button = (ActionButton) mInflater.inflate(R.layout.btn_action, mActionsContainer, false);
         button.setId(action.id());
         button.setIcon(action.icon());
         button.setContentDescription(action.label(getResources()));

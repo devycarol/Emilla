@@ -66,8 +66,8 @@ public final class ContactItemView extends LinearLayout {
 
         Resources res = getResources();
 
-        ViewCompat.replaceAccessibilityAction(this, ACTION_CLICK,
-                res.getString(R.string.select), null);
+        ViewCompat.replaceAccessibilityAction(this, ACTION_CLICK, res.getString(R.string.select),
+                null);
         ViewCompat.addAccessibilityAction(this, res.getString(R.string.contact_view),
                 (v, args) -> {
             viewContactDetails();
@@ -86,8 +86,13 @@ public final class ContactItemView extends LinearLayout {
         getContext().startActivity(viewContact);
     }
 
-    public void setContactInfo(long contactId, String lookupKey, String name, String photoUri,
-            boolean starred) {
+    public void setContactInfo(
+        long contactId,
+        String lookupKey,
+        String name,
+        String photoUri,
+        boolean starred
+    ) {
         mContactId = contactId;
         mLookupKey = lookupKey;
 

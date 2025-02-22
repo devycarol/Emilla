@@ -101,8 +101,12 @@ public abstract class EmillaCommand {
         };
     }
 
-    public static CommandMap map(SharedPreferences prefs, Resources res, PackageManager pm,
-            List<ResolveInfo> appList) {
+    public static CommandMap map(
+        SharedPreferences prefs,
+        Resources res,
+        PackageManager pm,
+        List<ResolveInfo> appList
+    ) {
         CoreCommand.Yielder[] coreYielders = coreYielders();
 
         var map = new CommandMap(SettingVals.defaultCommand(prefs, coreYielders));
@@ -362,8 +366,11 @@ public abstract class EmillaCommand {
         activity.fail(failure);
     }
 
-    protected final void failDialog(@StringRes int msg, @StringRes int yesLabel,
-            DialogInterface.OnClickListener yesClick) {
+    protected final void failDialog(
+        @StringRes int msg,
+        @StringRes int yesLabel,
+        DialogInterface.OnClickListener yesClick
+    ) {
         fail(new DialogFailure(activity, Dialogs.dual(activity, name(), msg, yesLabel, yesClick)));
     }
 

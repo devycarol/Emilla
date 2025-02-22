@@ -13,8 +13,7 @@ import net.emilla.util.Dialogs;
 
 public final class PermissionFailure extends DialogFailure {
 
-    private static AlertDialog.Builder permissionDialog(AssistActivity act,
-            @StringRes int permissionName) {
+    private static AlertDialog.Builder dialog(AssistActivity act, @StringRes int permissionName) {
         // todo: this often results in an activity restart, which messes with the resume chime and
         //  probably other elements of state. handle accordingly.
         Intent appInfo = Apps.infoTask();
@@ -28,6 +27,6 @@ public final class PermissionFailure extends DialogFailure {
     }
 
     public PermissionFailure(AssistActivity act, @StringRes int permissionName) {
-        super(act, permissionDialog(act, permissionName));
+        super(act, dialog(act, permissionName));
     }
 }

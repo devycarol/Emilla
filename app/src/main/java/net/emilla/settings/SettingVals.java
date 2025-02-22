@@ -54,8 +54,10 @@ public final class SettingVals {
             ALIASES_CUSTOM = "aliases_custom",
             ALIASES_CUSTOM_TEXT = "aliases_custom_text";
 
-    public static DefaultCommandWrapper.Yielder defaultCommand(SharedPreferences prefs,
-            CoreCommand.Yielder[] coreYielders) {
+    public static DefaultCommandWrapper.Yielder defaultCommand(
+        SharedPreferences prefs,
+        CoreCommand.Yielder[] coreYielders
+    ) {
         // Todo: allow apps and customs. Make sure to fall back to a core if the app is uninstalled
         //  or the custom is deleted.
         var entry = prefs.getString("default_command", "web");
@@ -131,8 +133,11 @@ public final class SettingVals {
         return quickAction(prefs, QuickAction.PREF_LONG_SUBMIT, QuickAction.SELECT_ALL, act);
     }
 
-    public static QuickAction doubleAssist(SharedPreferences prefs, AssistActivity act,
-            PackageManager pm) {
+    public static QuickAction doubleAssist(
+        SharedPreferences prefs,
+        AssistActivity act,
+        PackageManager pm
+    ) {
         String defaultAction = Features.torch(pm) ? QuickAction.FLASHLIGHT
                 : QuickAction.ASSISTANT_SETTINGS;
         return quickAction(prefs, QuickAction.PREF_DOUBLE_ASSIST, defaultAction, act);
@@ -142,8 +147,12 @@ public final class SettingVals {
         return quickAction(prefs, QuickAction.PREF_MENU_KEY, QuickAction.HELP, act);
     }
 
-    private static QuickAction quickAction(SharedPreferences prefs, String actionPref,
-            String defaultAction, AssistActivity act) {
+    private static QuickAction quickAction(
+        SharedPreferences prefs,
+        String actionPref,
+        String defaultAction,
+        AssistActivity act
+    ) {
         return switch (prefs.getString(actionPref, defaultAction)) {
             case QuickAction.FLASHLIGHT -> new Flashlight(act);
             case QuickAction.ASSISTANT_SETTINGS -> new AssistantSettings(act);

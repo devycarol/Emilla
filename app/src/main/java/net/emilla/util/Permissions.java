@@ -53,8 +53,11 @@ public final class Permissions {
      * @param onNoPrompt action to perform if permission is denied and can't be requested.
      * @return true if calling permission is granted, false if not.
      */
-    public static boolean callFlow(AssistActivity act, @Nullable PermissionReceiver receiver,
-            Runnable onNoPrompt) {
+    public static boolean callFlow(
+        AssistActivity act,
+        @Nullable PermissionReceiver receiver,
+        Runnable onNoPrompt
+    ) {
         return flow(act, CALL_PHONE, receiver, onNoPrompt);
     }
 
@@ -112,8 +115,11 @@ public final class Permissions {
      * @param onNoPrompt action to perform if permission is denied and can't be requested.
      * @return true if contacts permission is granted, false if not.
      */
-    public static boolean contactsFlow(AssistActivity act, @Nullable PermissionReceiver receiver,
-            Runnable onNoPrompt) {
+    public static boolean contactsFlow(
+        AssistActivity act,
+        @Nullable PermissionReceiver receiver,
+        Runnable onNoPrompt
+    ) {
         return flow(act, CONTACTS, receiver, onNoPrompt);
     }
 
@@ -169,8 +175,11 @@ public final class Permissions {
      * @param onNoPrompt action to perform if permission is denied and can't be requested.
      * @return true if Tasker permission is granted, false if not.
      */
-    public static boolean taskerFlow(AssistActivity act, @Nullable PermissionReceiver receiver,
-            Runnable onNoPrompt) {
+    public static boolean taskerFlow(
+        AssistActivity act,
+        @Nullable PermissionReceiver receiver,
+        Runnable onNoPrompt
+    ) {
         return flow(act, TASKER, receiver, onNoPrompt);
     }
 
@@ -199,14 +208,22 @@ public final class Permissions {
         return prompt(act, TASKER);
     }
 
-    private static boolean flow(AssistActivity act, String permission,
-            @Nullable PermissionReceiver receiver, @StringRes int name) {
+    private static boolean flow(
+        AssistActivity act,
+        String permission,
+        @Nullable PermissionReceiver receiver,
+        @StringRes int name
+    ) {
         return flow(act, permission, receiver, () -> act.fail(new PermissionFailure(act, name)));
     }
 
     @SuppressLint("NewApi")
-    private static boolean flow(AssistActivity act, String permission,
-            @Nullable PermissionReceiver receiver, Runnable onNoPrompt) {
+    private static boolean flow(
+        AssistActivity act,
+        String permission,
+        @Nullable PermissionReceiver receiver,
+        Runnable onNoPrompt
+    ) {
         if (has(act, permission)) return true;
 
         if (prompt(act, permission)) act.offer(new PermissionOffering(act, permission, receiver));
@@ -225,14 +242,22 @@ public final class Permissions {
         return act.shouldShowRequestPermissionRationale(permission);
     }
 
-    private static boolean flow(AssistActivity act, String[] permissions,
-            @Nullable PermissionReceiver receiver, @StringRes int name) {
+    private static boolean flow(
+        AssistActivity act,
+        String[] permissions,
+        @Nullable PermissionReceiver receiver,
+        @StringRes int name
+    ) {
         return flow(act, permissions, receiver, () -> act.fail(new PermissionFailure(act, name)));
     }
 
     @SuppressLint("NewApi")
-    private static boolean flow(AssistActivity act, String[] permissions,
-            @Nullable PermissionReceiver receiver, Runnable onNoPrompt) {
+    private static boolean flow(
+        AssistActivity act,
+        String[] permissions,
+        @Nullable PermissionReceiver receiver,
+        Runnable onNoPrompt
+    ) {
         if (has(act, permissions)) return true;
 
         if (prompt(act, permissions)) act.offer(new PermissionOffering(act, permissions, receiver));

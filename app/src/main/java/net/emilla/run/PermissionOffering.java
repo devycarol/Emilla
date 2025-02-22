@@ -24,13 +24,19 @@ public final class PermissionOffering implements Offering {
     @Nullable
     private final PermissionReceiver mReceiver;
 
-    public PermissionOffering(AssistActivity act, String permission,
-            @Nullable PermissionReceiver receiver) {
+    public PermissionOffering(
+        AssistActivity act,
+        String permission,
+        @Nullable PermissionReceiver receiver
+    ) {
         this(act, new String[]{permission}, receiver);
     }
 
-    public PermissionOffering(AssistActivity act, String[] permissions,
-            @Nullable PermissionReceiver receiver) {
+    public PermissionOffering(
+        AssistActivity act,
+        String[] permissions,
+        @Nullable PermissionReceiver receiver
+    ) {
         mActivity = act;
         mPermissions = permissions;
         mReceiver = receiver;
