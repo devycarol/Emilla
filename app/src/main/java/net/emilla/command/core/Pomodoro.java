@@ -54,7 +54,7 @@ public final class Pomodoro extends CoreDataCommand {
     }
 
     /**
-     * @return true if this is a break timer
+     * @return true if this is a break timer.
      */
     private boolean putDuration(String duration) throws EmlaBadCommandException {
         var m = Pattern.compile(" *b(reak)? *").matcher(duration); // TODO LANG

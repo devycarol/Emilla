@@ -254,7 +254,7 @@ public abstract class TrieMap<K, V extends TrieMap.Value<V>> {
     /**
      * Retrieves the value associated with {@code phrase}, or {@code null} if no such value exists.
      *
-     * @param phrase phrase to query the trie for a mapped value
+     * @param phrase phrase to query the trie for a mapped value.
      * @return the value associated with {@code phrase}, or {@code null} if no value is found.
      */
     @Nullable

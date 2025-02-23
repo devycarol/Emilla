@@ -243,10 +243,10 @@ public abstract class EmillaCommand {
     /**
      * Todo: these toast messages should generally be replaced with widget dialogs (which would have
      *  their own "more info please" chime). Excessive toasting is disruptive (the messages cover
-     *  the keyboard and are opaque in many ROMs)
+     *  the keyboard and are opaque in many ROMs).
      *
-     * @param text is shown as a toast notification at the bottom of the screen. Don't use
-     *             hard-coded text.
+     * @param text is shown as a toast notification at the bottom of the screen. Don't hard-code
+     *             text.
      */
     protected final void toast(CharSequence text) {
         activity.toast(text);
@@ -294,8 +294,8 @@ public abstract class EmillaCommand {
     }
 
     /**
-     * Tells the AssistActivity to close and start the `intent` activity. The succeeding activity must
-     * never be excluded from the recents.
+     * Tells the AssistActivity to close and start the `intent` activity. The succeeding activity
+     * must never be excluded from the recents.
      *
      * @param intent is launched after the assistant closes. It's very important that this is
      *               resolvable, else an ANF exception will occur.
@@ -448,7 +448,7 @@ public abstract class EmillaCommand {
         CharSequence title(Resources res);
 
         /**
-         * The command's icon for the submit button
+         * The command's icon for the submit button.
          *
          * @param ctx can be used to retrieve the icon from drawable resources.
          * @return the command's icon drawable.
