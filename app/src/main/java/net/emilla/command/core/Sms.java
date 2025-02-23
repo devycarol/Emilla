@@ -34,24 +34,21 @@ public final class Sms extends CoreDataCommand implements PhoneReceiver {
         return new Yielder(true, Sms::new, ENTRY, NAME, ALIASES);
     }
 
-    private static final class SmsParams extends CoreDataParams {
-
-        private SmsParams() {
-            super(NAME,
-                  R.string.instruction_phone,
-                  false, // the initials "SMS" shouldn't be lowercased
-                  R.drawable.ic_sms,
-                  R.string.summary_sms,
-                  R.string.manual_sms,
-                  R.string.data_hint_message);
-        }
+    @Override
+    protected boolean shouldLowercase() {
+        return false; // the initials "SMS" shouldn't be lowercased
     }
 
     private FieldToggle mSubjectToggle;
     private ContactPhonesFragment mContactsFragment;
 
     public Sms(AssistActivity act) {
-        super(act, new SmsParams());
+        super(act, NAME,
+              R.string.instruction_phone,
+              R.drawable.ic_sms,
+              R.string.summary_sms,
+              R.string.manual_sms,
+              R.string.data_hint_message);
     }
 
     @Override

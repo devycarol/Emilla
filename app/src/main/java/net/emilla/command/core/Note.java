@@ -21,20 +21,13 @@ public final class Note extends CoreDataCommand {
         return new Yielder(true, Note::new, ENTRY, NAME, ALIASES);
     }
 
-    private static final class NoteParams extends CoreDataParams {
-
-        private NoteParams() {
-            super(NAME,
-                  R.string.instruction_file,
-                  R.drawable.ic_note,
-                  R.string.summary_note,
-                  R.string.manual_note,
-                  R.string.data_hint_note);
-        }
-    }
-
     public Note(AssistActivity act) {
-        super(act, new NoteParams());
+        super(act, NAME,
+              R.string.instruction_file,
+              R.drawable.ic_note,
+              R.string.summary_note,
+              R.string.manual_note,
+              R.string.data_hint_note);
     }
 
     @Override

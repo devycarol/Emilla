@@ -23,20 +23,13 @@ public final class Setting extends CoreCommand {
         return new Yielder(true, Setting::new, ENTRY, NAME, ALIASES);
     }
 
-    private static final class SettingParams extends CoreParams {
-
-        private SettingParams() {
-            super(NAME,
-                  R.string.instruction_setting,
-                  R.drawable.ic_settings,
-                  EditorInfo.IME_ACTION_DONE,
-                  R.string.summary_setting,
-                  R.string.manual_setting);
-        }
-    }
-
     public Setting(AssistActivity act) {
-        super(act, new SettingParams());
+        super(act, NAME,
+              R.string.instruction_setting,
+              R.drawable.ic_settings,
+              R.string.summary_setting,
+              R.string.manual_setting,
+              EditorInfo.IME_ACTION_DONE);
     }
 
     @Override

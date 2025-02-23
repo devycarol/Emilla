@@ -37,22 +37,15 @@ public final class Call extends CoreCommand implements PhoneReceiver, Permission
         return new Yielder(true, Call::new, ENTRY, NAME, ALIASES);
     }
 
-    private static final class CallParams extends CoreParams {
-
-        private CallParams() {
-            super(NAME,
-                  R.string.instruction_phone,
-                  R.drawable.ic_call,
-                  EditorInfo.IME_ACTION_GO,
-                  R.string.summary_call,
-                  R.string.manual_call);
-        }
-    }
-
     private ContactPhonesFragment mContactsFragment;
 
     public Call(AssistActivity act) {
-        super(act, new CallParams());
+        super(act, NAME,
+              R.string.instruction_phone,
+              R.drawable.ic_call,
+              R.string.summary_call,
+              R.string.manual_call,
+              EditorInfo.IME_ACTION_GO);
     }
 
     @Override

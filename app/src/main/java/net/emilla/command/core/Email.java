@@ -38,25 +38,18 @@ public final class Email extends AttachCommand implements EmailReceiver {
         return new Yielder(true, Email::new, ENTRY, NAME, ALIASES);
     }
 
-    private static final class EmailParams extends CoreDataParams {
-
-        private EmailParams() {
-            super(NAME,
-                  R.string.instruction_email,
-                  R.drawable.ic_email,
-                  R.string.summary_email,
-                  R.string.manual_email,
-                  R.string.data_hint_email);
-        }
-    }
-
     private FieldToggle mSubjectToggle;
     private FileFetcher mFileFetcher;
     private MediaFetcher mMediaFetcher;
     private ContactEmailsFragment mContactsFragment;
 
     public Email(AssistActivity act) {
-        super(act, new EmailParams());
+        super(act, NAME,
+              R.string.instruction_email,
+              R.drawable.ic_email,
+              R.string.summary_email,
+              R.string.manual_email,
+              R.string.data_hint_email);
     }
 
     @Override

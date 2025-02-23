@@ -31,18 +31,6 @@ public final class Torch extends CoreCommand {
         return new Yielder(false, Torch::new, ENTRY, NAME, ALIASES);
     }
 
-    private static final class TorchParams extends CoreParams {
-
-        private TorchParams() {
-            super(NAME,
-                  R.string.instruction_torch,
-                  R.drawable.ic_torch,
-                  EditorInfo.IME_ACTION_DONE,
-                  R.string.summary_torch,
-                  R.string.manual_torch);
-        }
-    }
-
     private static String flashCameraId(CameraManager camMgr) throws CameraAccessException {
         String[] ids = camMgr.getCameraIdList();
         for (String id : ids) {
@@ -64,7 +52,12 @@ public final class Torch extends CoreCommand {
     //  what if the torch was turned on before the app was started?
 
     public Torch(AssistActivity act) {
-        super(act, new TorchParams());
+        super(act, NAME,
+              R.string.instruction_torch,
+              R.drawable.ic_torch,
+              R.string.summary_torch,
+              R.string.manual_torch,
+              EditorInfo.IME_ACTION_DONE);
     }
 
     @Override

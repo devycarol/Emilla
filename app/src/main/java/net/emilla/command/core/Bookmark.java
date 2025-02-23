@@ -36,24 +36,17 @@ public final class Bookmark extends CoreCommand {
             Open-source software, OSS, https://en.wikipedia.org/wiki/Open_source_software
             Rick, dQw, https://www.youtube.com/watch?v=dQw4w9WgXcQ""";
 
-    private static final class BookmarkParams extends CoreParams {
-
-        private BookmarkParams() {
-            super(NAME,
-                  R.string.instruction_bookmark,
-                  R.drawable.ic_bookmark,
-                  EditorInfo.IME_ACTION_GO,
-                  R.string.summary_bookmark,
-                  R.string.manual_bookmark);
-        }
-    }
-
     private final HashMap<String, Intent> mBookmarkMap = new HashMap<>();
     private final AlertDialog.Builder mBookmarkChooser;
     private final boolean mHasBookmarks; // Todo: remove once search is implemented
 
     public Bookmark(AssistActivity act) {
-        super(act, new BookmarkParams());
+        super(act, NAME,
+              R.string.instruction_bookmark,
+              R.drawable.ic_bookmark,
+              R.string.summary_bookmark,
+              R.string.manual_bookmark,
+              EditorInfo.IME_ACTION_GO);
 
         String[] lines = SettingVals.bookmarkCsv(prefs()).split("\\s*\n\\s*");
         var labels = new String[lines.length];

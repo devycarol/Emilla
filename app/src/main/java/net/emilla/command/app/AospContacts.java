@@ -11,14 +11,9 @@ public final class AospContacts extends AppSearch {
     @ArrayRes
     public static final int ALIASES = R.array.aliases_aosp_contacts;
 
-    private static final class ContactsParams extends AppSearchParams {
-
-        private ContactsParams(Yielder info) {
-            super(info, R.string.instruction_contact, R.string.summary_app_aosp_contacts);
-        }
-    }
-
     public AospContacts(AssistActivity act, Yielder info) {
-        super(act, new ContactsParams(info));
+        super(act, info,
+              R.string.instruction_contact,
+              R.string.summary_app_aosp_contacts);
     }
 }

@@ -40,24 +40,17 @@ public final class Calendar extends CoreDataCommand {
         return new Yielder(true, Calendar::new, ENTRY, NAME, ALIASES);
     }
 
-    private static final class CalendarParams extends CoreDataParams {
-
-        private CalendarParams() {
-            super(NAME,
-                  R.string.instruction_calendar,
-                  R.drawable.ic_calendar,
-                  R.string.summary_calendar,
-                  R.string.manual_calendar,
-                  R.string.data_hint_calendar);
-        }
-    }
-
     // Todo: Etar is broken if already open. May be a flags issue?
     private final Intent mIntent = Apps.insertTask(Events.CONTENT_URI, "vnd.android.cursor.dir/event");
     private FieldToggle mLocationToggle, mUrlToggle;
 
     public Calendar(AssistActivity act) {
-        super(act, new CalendarParams());
+        super(act, NAME,
+              R.string.instruction_calendar,
+              R.drawable.ic_calendar,
+              R.string.summary_calendar,
+              R.string.manual_calendar,
+              R.string.data_hint_calendar);
     }
 
     @Override

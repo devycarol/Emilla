@@ -5,7 +5,9 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.AssistActivity;
@@ -21,8 +23,21 @@ public abstract class OpenCommand extends CoreCommand {
     protected final List<ResolveInfo> appList;
     protected final AlertDialog.Builder appChooser;
 
-    protected OpenCommand(AssistActivity act, CoreParams params) {
-        super(act, params);
+    protected OpenCommand(
+        AssistActivity act,
+        @StringRes int name,
+        @StringRes int instruction,
+        @DrawableRes int icon,
+        @StringRes int summary,
+        @StringRes int manual,
+        int imeAction
+    ) {
+        super(act, name,
+              instruction,
+              icon,
+              summary,
+              manual,
+              imeAction);
 
         appList = act.appList();
         appChooser = makeChooser();

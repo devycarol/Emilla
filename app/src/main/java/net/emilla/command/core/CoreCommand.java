@@ -21,16 +21,61 @@ import java.util.Set;
 
 public abstract class CoreCommand extends EmillaCommand {
 
-    private final CoreParams mParams;
+    public record CoreParams(
+        @StringRes int name,
+        @StringRes int instruction,
+        @DrawableRes int icon
+    ) implements Params {
 
-    protected CoreCommand(AssistActivity act, CoreParams params) {
-        super(act, params);
-        mParams = params;
+        @Override
+        public CharSequence name(Resources res) {
+            return res.getString(name);
+        }
+
+        @Override
+        public CharSequence title(Resources res) {
+            return Lang.colonConcat(res, name, instruction);
+        }
+
+        @Override
+        public Drawable icon(Context ctx) {
+            return AppCompatResources.getDrawable(ctx, icon);
+        }
+    }
+
+    @StringRes
+    private final int mName;
+
+    protected CoreCommand(
+        AssistActivity act,
+        @StringRes int name,
+        @StringRes int instruction,
+        @DrawableRes int icon,
+        @StringRes int summary,
+        @StringRes int manual,
+        int imeAction
+    ) {
+        super(act, new CoreParams(name, instruction, icon),
+              summary,
+              manual,
+              imeAction);
+
+        mName = name;
+    }
+
+    @Override
+    protected boolean shouldLowercase() {
+        return true;
+    }
+
+    @Override
+    public final boolean usesAppIcon() {
+        return false;
     }
 
     @Override @Deprecated
     protected String dupeLabel() {
-        return str(mParams.mName) + " (Emilla command)";
+        return str(mName) + " (Emilla command)";
     }
 
     public static final class Yielder extends CommandYielder {
@@ -81,88 +126,7 @@ public abstract class CoreCommand extends EmillaCommand {
         CoreCommand make(AssistActivity act);
     }
 
-    public static abstract class CoreParams implements Params {
-
-        @StringRes
-        private final int mName, mInstruction;
-        private final boolean mShouldLowercase;
-        @DrawableRes
-        private final int mIcon;
-        private final int mImeAction;
-        @StringRes
-        private final int mSummary, mManual;
-
-        protected CoreParams(
-            @StringRes int name,
-            @StringRes int instruction,
-            @DrawableRes int icon,
-            int imeAction,
-            @StringRes int summary,
-            @StringRes int manual
-        ) {
-            this(name, instruction, true, icon, imeAction, summary, manual);
-        }
-
-        protected CoreParams(
-            @StringRes int name,
-            @StringRes int instruction,
-            boolean shouldLowercase,
-            @DrawableRes int icon,
-            int imeAction,
-            @StringRes int summary,
-            @StringRes int manual
-        ) {
-            mName = name;
-            mInstruction = instruction;
-            mShouldLowercase = shouldLowercase;
-            mIcon = icon;
-            mImeAction = imeAction;
-            mSummary = summary;
-            mManual = manual;
-        }
-
-        @Override
-        public final CharSequence name(Resources res) {
-            return res.getString(mName);
-        }
-
-        @Override
-        public final boolean shouldLowercase() {
-            return mShouldLowercase;
-        }
-
-        @Override
-        public final CharSequence title(Resources res) {
-            return Lang.colonConcat(res, mName, mInstruction);
-        }
-
-        @Override
-        public final Drawable icon(Context ctx) {
-            return AppCompatResources.getDrawable(ctx, mIcon);
-        }
-
-        @Override
-        public final boolean usesAppIcon() {
-            return false;
-        }
-
-        @Override
-        public final int imeAction() {
-            return mImeAction;
-        }
-
-        @Override
-        public int summary() {
-            return mSummary;
-        }
-
-        @Override
-        public int manual() {
-            return mManual;
-        }
-    }
-
     protected final EmlaBadCommandException badCommand(@StringRes int msg) {
-        return new EmlaBadCommandException(mParams.mName, msg);
+        return new EmlaBadCommandException(mName, msg);
     }
 }

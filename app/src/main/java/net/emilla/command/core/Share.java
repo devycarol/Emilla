@@ -32,23 +32,16 @@ public final class Share extends AttachCommand implements AppChoiceReceiver {
         return new Yielder(true, Share::new, ENTRY, NAME, ALIASES);
     }
 
-    private static final class ShareParams extends CoreDataParams {
-
-        private ShareParams() {
-            super(NAME,
-                  R.string.instruction_app,
-                  R.drawable.ic_share,
-                  R.string.summary_share,
-                  R.string.manual_share,
-                  R.string.data_hint_text);
-        }
-    }
-
     private FileFetcher mFileFetcher;
     private MediaFetcher mMediaFetcher;
 
     public Share(AssistActivity act) {
-        super(act, new ShareParams());
+        super(act, NAME,
+              R.string.instruction_app,
+              R.drawable.ic_share,
+              R.string.summary_share,
+              R.string.manual_share,
+              R.string.data_hint_text);
     }
 
     @Override

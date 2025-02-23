@@ -40,18 +40,6 @@ public final class Todo extends CoreDataCommand {
         return new Yielder(true, Todo::new, ENTRY, NAME, ALIASES);
     }
 
-    private static final class TodoParams extends CoreDataParams {
-
-        private TodoParams() {
-            super(NAME,
-                  R.string.instruction_todo,
-                  R.drawable.ic_todo,
-                  R.string.summary_todo,
-                  R.string.manual_todo,
-                  R.string.data_hint_todo);
-        }
-    }
-
     private final File mFile = new File(Environment.getExternalStoragePublicDirectory(DIRECTORY_DOCUMENTS), "todo.txt"); // TODO: allow configurable path and don't require all files permission
     private final Uri mUri = FileProvider.getUriForFile(activity, Apps.MY_PKG + ".fileprovider", mFile);
     private final Intent mViewIntent = new Intent(ACTION_VIEW).setDataAndType(mUri, "text/plain")
@@ -60,7 +48,12 @@ public final class Todo extends CoreDataCommand {
             .putExtra("EXTRA_FILEPATH", mFile.getAbsolutePath());
 
     public Todo(AssistActivity act) {
-        super(act, new TodoParams());
+        super(act, NAME,
+              R.string.instruction_todo,
+              R.drawable.ic_todo,
+              R.string.summary_todo,
+              R.string.manual_todo,
+              R.string.data_hint_todo);
     }
 
     @Override

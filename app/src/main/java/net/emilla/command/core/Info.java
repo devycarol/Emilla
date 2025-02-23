@@ -26,20 +26,13 @@ public final class Info extends OpenCommand {
         return new Yielder(true, Info::new, ENTRY, NAME, ALIASES);
     }
 
-    private static final class InfoParams extends CoreParams {
-
-        private InfoParams() {
-            super(NAME,
-                  R.string.instruction_app,
-                  R.drawable.ic_info,
-                  EditorInfo.IME_ACTION_GO,
-                  R.string.summary_info,
-                  R.string.manual_info);
-        }
-    }
-
     public Info(AssistActivity act) {
-        super(act, new InfoParams());
+        super(act, NAME,
+              R.string.instruction_app,
+              R.drawable.ic_info,
+              R.string.summary_info,
+              R.string.manual_info,
+              EditorInfo.IME_ACTION_GO);
     }
 
     @Override

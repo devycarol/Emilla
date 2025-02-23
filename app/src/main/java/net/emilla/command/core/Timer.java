@@ -30,20 +30,13 @@ public final class Timer extends CoreDataCommand {
         return new Yielder(true, Timer::new, ENTRY, NAME, ALIASES);
     }
 
-    private static final class TimerParams extends CoreDataParams {
-
-        private TimerParams() {
-            super(NAME,
-                  R.string.instruction_timer,
-                  R.drawable.ic_timer,
-                  R.string.summary_timer,
-                  R.string.manual_timer,
-                  R.string.data_hint_label);
-        }
-    }
-
     public Timer(AssistActivity act) {
-        super(act, new TimerParams());
+        super(act, NAME,
+              R.string.instruction_timer,
+              R.drawable.ic_timer,
+              R.string.summary_timer,
+              R.string.manual_timer,
+              R.string.data_hint_label);
     }
 
     private Intent makeIntent() {

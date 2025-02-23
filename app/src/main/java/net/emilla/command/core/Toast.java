@@ -22,20 +22,13 @@ public final class Toast extends CoreDataCommand {
         return new Yielder(true, Toast::new, ENTRY, NAME, ALIASES);
     }
 
-    private static final class ToastParams extends CoreDataParams {
-
-        private ToastParams() {
-            super(NAME,
-                  R.string.instruction_text,
-                  R.drawable.ic_toast,
-                  R.string.summary_toast,
-                  R.string.manual_toast,
-                  R.string.data_hint_toast);
-        }
-    }
-
     public Toast(AssistActivity act) {
-        super(act, new ToastParams());
+        super(act, NAME,
+              R.string.instruction_text,
+              R.drawable.ic_toast,
+              R.string.summary_toast,
+              R.string.manual_toast,
+              R.string.data_hint_toast);
     }
 
     private void toast(String message, boolean longToast) {

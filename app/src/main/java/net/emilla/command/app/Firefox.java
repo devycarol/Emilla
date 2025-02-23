@@ -11,14 +11,9 @@ public final class Firefox extends AppSearch {
     @ArrayRes
     public static final int ALIASES = R.array.aliases_firefox;
 
-    private static final class FirefoxParams extends AppSearchParams {
-
-        private FirefoxParams(Yielder info) {
-            super(info, R.string.instruction_web, R.string.summary_web);
-        }
-    }
-
     public Firefox(AssistActivity act, Yielder info) {
-        super(act, new FirefoxParams(info));
+        super(act, info,
+              R.string.instruction_web,
+              R.string.summary_web);
     }
 }

@@ -23,20 +23,13 @@ public final class Find extends CoreCommand {
         return new Yielder(true, Find::new, ENTRY, NAME, ALIASES);
     }
 
-    private static final class FindParams extends CoreParams {
-
-        private FindParams() {
-            super(NAME,
-                  R.string.instruction_find,
-                  R.drawable.ic_find,
-                  EditorInfo.IME_ACTION_SEARCH,
-                  R.string.summary_find,
-                  R.string.manual_find);
-        }
-    }
-
     public Find(AssistActivity act) {
-        super(act, new FindParams());
+        super(act, NAME,
+              R.string.instruction_find,
+              R.drawable.ic_find,
+              R.string.summary_find,
+              R.string.manual_find,
+              EditorInfo.IME_ACTION_SEARCH);
     }
 
     @Override

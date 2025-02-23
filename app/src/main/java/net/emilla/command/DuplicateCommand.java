@@ -8,35 +8,33 @@ import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.command.core.CoreCommand;
+import net.emilla.command.core.CoreCommand.CoreParams;
 import net.emilla.util.Dialogs;
 
 public final class DuplicateCommand extends EmillaCommand implements DataCommand {
 
-    private static final class DuplicateParams extends CoreCommand.CoreParams {
-
-        private DuplicateParams() {
-            super(R.string.command_duplicate,
-                  R.string.instruction_duplicate,
-                  R.drawable.ic_command,
-                  EditorInfo.IME_ACTION_NEXT,
-                  R.string.summary_duplicate,
-                  R.string.manual_duplicate);
-        }
+    @Override
+    protected boolean shouldLowercase() {
+        return true; // Todo: exclude this from the interface for wrappers
     }
 
     @Override @Deprecated
     protected String dupeLabel() {
-        return null;
+        return null; // Todo: exclude this from the interface for wrappers
+    }
+
+    @Override
+    protected boolean usesAppIcon() {
+        return false;
     }
 
     @Override @StringRes
-    public final int dataHint() {
+    public int dataHint() {
         return R.string.data_hint_default;
     }
 
     @Override
-    public final boolean usesData() {
+    public boolean usesData() {
         return mUsesData;
     }
 
@@ -45,7 +43,12 @@ public final class DuplicateCommand extends EmillaCommand implements DataCommand
     private final boolean mUsesData;
 
     public DuplicateCommand(AssistActivity act, EmillaCommand[] cmds) {
-        super(act, new DuplicateParams());
+        super(act, new CoreParams(R.string.command_duplicate,
+                                  R.string.instruction_duplicate,
+                                  R.drawable.ic_command),
+              R.string.summary_duplicate,
+              R.string.manual_duplicate,
+              EditorInfo.IME_ACTION_NEXT);
 
         mLabels = new String[cmds.length];
         mCommands = cmds;

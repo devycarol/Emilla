@@ -26,20 +26,13 @@ public final class Uninstall extends OpenCommand {
         return new Yielder(true, Uninstall::new, ENTRY, NAME, ALIASES);
     }
 
-    private static final class UninstallParams extends CoreParams {
-
-        private UninstallParams() {
-            super(NAME,
-                  R.string.instruction_app,
-                  R.drawable.ic_uninstall,
-                  EditorInfo.IME_ACTION_GO,
-                  R.string.summary_uninstall,
-                  R.string.manual_uninstall);
-        }
-    }
-
     public Uninstall(AssistActivity act) {
-        super(act, new UninstallParams());
+        super(act, NAME,
+              R.string.instruction_app,
+              R.drawable.ic_uninstall,
+              R.string.summary_uninstall,
+              R.string.manual_uninstall,
+              EditorInfo.IME_ACTION_GO);
     }
 
     @Override

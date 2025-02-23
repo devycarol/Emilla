@@ -143,16 +143,40 @@ public abstract class EmillaCommand {
 
     protected final AssistActivity activity;
     protected final Resources resources;
-    private final Params mParams;
+    protected final Params params;
+
+    @StringRes
+    public final int summary, manual;
+    /**
+     * The command's "IME action." This determines the soft keyboard's enter key icon. The options
+     * are GO, SEARCH, SEND, DONE, and NEXT. GO is usually a forward arrow, SEARCH is usually a
+     * magnifying glass, SEND is usually a paper airplane, and DONE is usually a checkmark. NEXT is
+     * the 'tab' function and should be used when the data field is available.
+     */
+    protected final int imeAction;
+    // todo: you should be able to long-click the enter key in the command or data field to
+    //  submit the command, using an appropriate action icon.
+    // requires changing the input method code directly
+    // it's also proven cumbersome to get the key icon to actually update to begin with..
 
     private String mInstruction;
     private boolean mInitialized;
     private Drawable mIcon;
 
-    protected EmillaCommand(AssistActivity act, Params params) {
+    protected EmillaCommand(
+        AssistActivity act,
+        Params params,
+        @StringRes int summary,
+        @StringRes int manual,
+        int imeAction
+    ) {
         this.activity = act;
         this.resources = act.getResources();
-        mParams = params;
+
+        this.params = params;
+        this.summary = summary;
+        this.manual = manual;
+        this.imeAction = imeAction;
     }
 
     final EmillaCommand instruct(String instruction) {
@@ -179,8 +203,8 @@ public abstract class EmillaCommand {
     public final void decorate(boolean setIcon) {
         activity.updateTitle(title());
         activity.updateDataHint();
-        activity.setImeAction(imeAction());
-        if (setIcon) activity.setSubmitIcon(icon(), mParams.usesAppIcon());
+        activity.setImeAction(imeAction);
+        if (setIcon) activity.setSubmitIcon(icon(), usesAppIcon());
     }
 
     public final void init() {
@@ -391,37 +415,37 @@ public abstract class EmillaCommand {
     }
 
     public final CharSequence name() {
-        return mParams.name(resources);
+        return params.name(resources);
     }
 
     @Deprecated
     protected abstract String dupeLabel(); // Todo: replace with icons
 
     protected final CharSequence sentenceName() {
-        return mParams.shouldLowercase() ? name().toString().toLowerCase() : name();
+        return shouldLowercase() ? name().toString().toLowerCase() : name();
     }
 
+    /**
+     * Whether the command should be lowercased mid-sentence.
+     *
+     * @return true if the command is a common noun, false if the command is a proper noun.
+     */
+    protected abstract boolean shouldLowercase();
+
     protected final CharSequence title() {
-        return mParams.title(resources);
+        return params.title(resources);
     }
 
     protected final Drawable icon() {
-        return mIcon == null ? mIcon = mParams.icon(activity) : mIcon;
+        return mIcon == null ? mIcon = params.icon(activity) : mIcon;
     }
 
-    @StringRes
-    public final int summary() {
-        return mParams.summary();
-    }
-
-    @StringRes
-    public final int manual() {
-        return mParams.manual();
-    }
-
-    protected final int imeAction() {
-        return mParams.imeAction();
-    }
+    /**
+     * Whether the command's icon is an app icon.
+     *
+     * @return true if the command uses an app's icon, false if it just uses clip art.
+     */
+    protected abstract boolean usesAppIcon();
 
     protected interface Params {
 
@@ -432,12 +456,6 @@ public abstract class EmillaCommand {
          * @return the name of the command.
          */
         CharSequence name(Resources res);
-        /**
-         * Whether the command should be lowercased mid-sentence.
-         *
-         * @return true if the command is a common noun, false if the command is a proper noun.
-         */
-        boolean shouldLowercase();
         /**
          * The command's title as it should appear in the assistant's action-bar. Usually, this
          * should be the command name followed by a brief description of what it takes as input.
@@ -454,45 +472,6 @@ public abstract class EmillaCommand {
          * @return the command's icon drawable.
          */
         Drawable icon(Context ctx);
-
-        /**
-         * Whether the command's icon is an app icon.
-         *
-         * @return true if the command uses an app's icon, false if it just uses clip art.
-         */
-        boolean usesAppIcon();
-
-        /**
-         * The command's "IME action." This determines which icon is used for the soft keyboard's
-         * enter key. The options are GO, SEARCH, SEND, DONE, and NEXT. GO is usually a forward
-         * arrow, SEARCH is usually a magnifying glass, SEND is usually a paper airplane, and DONE
-         * is usually a checkmark. NEXT is the 'tab' function and should be used when the data field
-         * is available.
-         *
-         * @return the command's IME action ID.
-         */
-        int imeAction();
-        // todo: you should be able to long-click the enter key in the command or data field to submit
-        //  the command, using the action icon of one of the below.
-        // requires changing the input method code directly
-        // it's also proven cumbersome to get the key icon to actually update to begin with..
-
-        /**
-         * A brief description of what the command does
-         *
-         * @return the resource ID for the command's summary
-         */
-        @StringRes
-        int summary();
-
-        /**
-         * The command's manual page, used in the 'help' button dialog. This is a detailed
-         * description of what the command does and how to use it
-         *
-         * @return the resource ID for the command's manual page
-         */
-        @StringRes
-        int manual();
     }
 
     protected abstract void run();

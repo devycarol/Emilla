@@ -18,17 +18,10 @@ public final class Markor extends AppSendData {
         // Markor can have multiple launchers, only the main should have the 'send' property.
     }
 
-    private static final class MarkorParams extends AppSendDataParams {
-
-        private MarkorParams(Yielder info) {
-            super(info,
-                  R.string.instruction_text,
-                  R.string.summary_note,
-                  R.string.data_hint_note);
-        }
-    }
-
     private Markor(AssistActivity act, Yielder info) {
-        super(act, new MarkorParams(info));
+        super(act, info,
+              R.string.instruction_text,
+              R.string.summary_note,
+              R.string.data_hint_note);
     }
 }

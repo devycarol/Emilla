@@ -15,14 +15,10 @@ import net.emilla.util.Apps;
 
 public class AppSend extends AppCommand {
 
-    private static final class BasicAppSendParams extends AppParams {
+    private static final class AppSendParams extends AppParams {
 
-        private BasicAppSendParams(Yielder info) {
-            super(info,
-                  EditorInfo.IME_ACTION_SEND,
-                  R.string.summary_app_send,
-                  R.string.manual_app_send);
-            // todo: the 'send' action shouldn't apply when just launching
+        private AppSendParams(Yielder info) {
+            super(info);
         }
 
         @Override
@@ -32,47 +28,48 @@ public class AppSend extends AppCommand {
     }
 
     public AppSend(AssistActivity act, Yielder info) {
-        this(act, new BasicAppSendParams(info));
+        this(act, info,
+             R.string.summary_app_send,
+             R.string.manual_app_send,
+             EditorInfo.IME_ACTION_SEND);
+        // todo: the 'send' action shouldn't apply when just launching
     }
 
-    AppSend(AssistActivity act, AppParams params) {
-        super(act, params);
+    AppSend(
+        AssistActivity act,
+        Yielder info,
+        @StringRes int summary,
+        @StringRes int manual,
+        int imeAction
+    ) {
+        // for the generics
+        super(act, new AppSendParams(info), summary, manual, imeAction);
+    }
+
+    AppSend(AssistActivity act, Yielder info, @StringRes int instruction, @StringRes int summary) {
+        this(act, info,
+             instruction,
+             summary,
+             R.string.manual_app_send,
+             EditorInfo.IME_ACTION_SEND);
+    }
+
+    AppSend(
+        AssistActivity act,
+        Yielder info,
+        @StringRes int instruction,
+        @StringRes int summary,
+        @StringRes int manual,
+        int imeAction
+    ) {
+        super(act, new InstructyParams(info, instruction),
+              summary,
+              manual,
+              imeAction);
     }
 
     @Override
     protected void run(@NonNull String message) {
-        // todo: instantly pull up bookmarked videos for newpipe
         appSucceed(Apps.sendToApp(packageName).putExtra(EXTRA_TEXT, message));
-    }
-
-    protected static abstract class AppSendParams extends AppParams {
-
-        @StringRes
-        private final int mInstruction;
-
-        protected AppSendParams(
-            Yielder info,
-            @StringRes int instruction,
-            @StringRes int summary,
-            @StringRes int manual
-        ) {
-            this(info, instruction, EditorInfo.IME_ACTION_SEND, summary, manual);
-            // todo: the 'send' action shouldn't apply when just launching
-        }
-
-        protected AppSendParams(
-            Yielder info,
-            @StringRes int instruction,
-            int imeAction,
-            @StringRes int summary, @StringRes int manual
-        ) {
-            super(info, imeAction, summary, manual);
-            mInstruction = instruction;
-        }
-
-        @Override
-        public final CharSequence title(Resources res) {
-            return Lang.colonConcat(res, name, mInstruction);
-        }
     }
 }

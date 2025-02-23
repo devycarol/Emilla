@@ -16,59 +16,30 @@ public abstract class CoreDataCommand extends CoreCommand implements DataCommand
         return true;
     }
 
-    protected static abstract class CoreDataParams extends CoreParams implements DataParams {
+    @StringRes
+    private final int mHint;
 
-        @StringRes
-        private final int mHint;
-
-        protected CoreDataParams(
-            @StringRes int name,
-            @StringRes int instruction,
-            @DrawableRes int icon,
-            @StringRes int summary,
-            @StringRes int manual,
-            @StringRes int hint
-        ) {
-            this(name, instruction,
-                 true,
-                 icon,
-                 summary, manual,
-                 hint);
-        }
-
-        protected CoreDataParams(
-            @StringRes int name,
-            @StringRes int instruction,
-            boolean shouldLowercase,
-            @DrawableRes int icon,
-            @StringRes int summary,
-            @StringRes int manual,
-            @StringRes int hint
-        ) {
-            super(name, instruction,
-                  shouldLowercase,
-                  icon,
-                  EditorInfo.IME_ACTION_NEXT,
-                  summary, manual);
-            mHint = hint;
-        }
-
-        @Override @StringRes
-        public int hint() {
-            return mHint;
-        }
-    }
-
-    private final CoreDataParams mParams;
-
-    protected CoreDataCommand(AssistActivity act, CoreDataParams params) {
-        super(act, params);
-        mParams = params;
+    protected CoreDataCommand(
+        AssistActivity act,
+        @StringRes int name,
+        @StringRes int instruction,
+        @DrawableRes int icon,
+        @StringRes int summary,
+        @StringRes int manual,
+        @StringRes int hint
+    ) {
+        super(act, name,
+              instruction,
+              icon,
+              summary,
+              manual,
+              EditorInfo.IME_ACTION_NEXT);
+        mHint = hint;
     }
 
     @Override @StringRes
     public final int dataHint() {
-        return mParams.hint();
+        return mHint;
     }
 
     /**

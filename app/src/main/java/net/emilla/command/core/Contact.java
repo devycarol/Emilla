@@ -43,23 +43,16 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
             SEND = 2,
             CREATE = 4;
 
-    private static final class ContactParams extends CoreDataParams {
-
-        private ContactParams() {
-            super(NAME,
-                  R.string.instruction_contact,
-                  R.drawable.ic_contact,
-                  R.string.summary_contact,
-                  R.string.manual_contact,
-                  R.string.data_hint_contact);
-        }
-    }
-
     private byte mAction;
     private ContactCardsFragment mContactsFragment;
 
     public Contact(AssistActivity act) {
-        super(act, new ContactParams());
+        super(act, NAME,
+              R.string.instruction_contact,
+              R.drawable.ic_contact,
+              R.string.summary_contact,
+              R.string.manual_contact,
+              R.string.data_hint_contact);
     }
 
     @Override

@@ -26,20 +26,13 @@ public final class Navigate extends CategoryCommand {
         return new Yielder(true, Navigate::new, ENTRY, NAME, ALIASES);
     }
 
-    private static final class NavigateParams extends CoreParams {
-
-        private NavigateParams() {
-            super(NAME,
-                  R.string.instruction_location,
-                  R.drawable.ic_navigate,
-                  EditorInfo.IME_ACTION_GO,
-                  R.string.summary_navigate,
-                  R.string.manual_navigate);
-        }
-    }
-
     public Navigate(AssistActivity act) {
-        super(act, new NavigateParams());
+        super(act, NAME,
+              R.string.instruction_location,
+              R.drawable.ic_navigate,
+              R.string.summary_navigate,
+              R.string.manual_navigate,
+              EditorInfo.IME_ACTION_GO);
     }
 
     @Override

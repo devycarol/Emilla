@@ -3,6 +3,8 @@ package net.emilla.command.core;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.AssistActivity;
@@ -19,8 +21,21 @@ public abstract class CategoryCommand extends CoreCommand {
     private Intent mLaunchIntent;
     private AlertDialog.Builder mAppChooser;
 
-    protected CategoryCommand(AssistActivity act, CoreParams params) {
-        super(act, params);
+    protected CategoryCommand(
+            AssistActivity act,
+            @StringRes int name,
+            @StringRes int instruction,
+            @DrawableRes int icon,
+            @StringRes int summary,
+            @StringRes int manual,
+            int imeAction
+    ) {
+        super(act, name,
+              instruction,
+              icon,
+              summary,
+              manual,
+              imeAction);
 
         var pm = act.getPackageManager();
         List<ResolveInfo> appList = Apps.resolveList(pm, makeFilter());

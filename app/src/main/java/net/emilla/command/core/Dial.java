@@ -27,20 +27,13 @@ public final class Dial extends CoreCommand {
         return new Yielder(true, Dial::new, ENTRY, NAME, ALIASES);
     }
 
-    private static final class DialParams extends CoreParams {
-
-        private DialParams() {
-            super(NAME,
-                  R.string.instruction_dial,
-                  R.drawable.ic_dial,
-                  EditorInfo.IME_ACTION_GO,
-                  R.string.summary_dial,
-                  R.string.manual_dial);
-        }
-    }
-
     public Dial(AssistActivity act) {
-        super(act, new DialParams());
+        super(act, NAME,
+              R.string.instruction_dial,
+              R.drawable.ic_dial,
+              R.string.summary_dial,
+              R.string.manual_dial,
+              EditorInfo.IME_ACTION_GO);
     }
 
     @Override

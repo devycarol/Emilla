@@ -28,20 +28,13 @@ public final class Time extends CoreCommand {
         return new Yielder(true, Time::new, ENTRY, NAME, ALIASES);
     }
 
-    private static final class TimeParams extends CoreParams {
-
-        private TimeParams() {
-            super(NAME,
-                  R.string.instruction_location,
-                  R.drawable.ic_clock,
-                  EditorInfo.IME_ACTION_DONE,
-                  R.string.summary_time,
-                  R.string.manual_time);
-        }
-    }
-
     public Time(AssistActivity act) {
-        super(act, new TimeParams());
+        super(act, NAME,
+              R.string.instruction_location,
+              R.drawable.ic_clock,
+              R.string.summary_time,
+              R.string.manual_time,
+              EditorInfo.IME_ACTION_DONE);
     }
 
     @Override

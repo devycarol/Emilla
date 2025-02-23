@@ -21,20 +21,13 @@ public final class Notify extends CoreDataCommand {
         return new Yielder(true, Notify::new, ENTRY, NAME, ALIASES);
     }
 
-    private static final class NotifyParams extends CoreDataParams {
-
-        private NotifyParams() {
-            super(NAME,
-                  R.string.instruction_notify,
-                  R.drawable.ic_notify,
-                  R.string.summary_notify,
-                  R.string.manual_notify,
-                  R.string.data_hint_notify);
-        }
-    }
-
     public Notify(AssistActivity act) {
-        super(act, new NotifyParams());
+        super(act, NAME,
+              R.string.instruction_notify,
+              R.drawable.ic_notify,
+              R.string.summary_notify,
+              R.string.manual_notify,
+              R.string.data_hint_notify);
     }
 
     @Override

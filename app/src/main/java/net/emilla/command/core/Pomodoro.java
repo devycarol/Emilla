@@ -32,24 +32,17 @@ public final class Pomodoro extends CoreDataCommand {
         return new Yielder(true, Pomodoro::new, ENTRY, NAME, ALIASES);
     }
 
-    private static final class PomodoroParams extends CoreDataParams {
-
-        private PomodoroParams() {
-            super(NAME,
-                  R.string.instruction_pomodoro,
-                  R.drawable.ic_pomodoro,
-                  R.string.summary_pomodoro,
-                  R.string.manual_pomodoro,
-                  R.string.data_hint_pomodoro);
-        }
-    }
-
     private final Intent mIntent = new Intent(ACTION_SET_TIMER)
             .putExtra(EXTRA_SKIP_UI, true)
             .putExtra(EXTRA_LENGTH, 1500 /*25m*/); // todo: make configurable
 
     public Pomodoro(AssistActivity act) {
-        super(act, new PomodoroParams());
+        super(act, NAME,
+              R.string.instruction_pomodoro,
+              R.drawable.ic_pomodoro,
+              R.string.summary_pomodoro,
+              R.string.manual_pomodoro,
+              R.string.data_hint_pomodoro);
         mIntent.putExtra(EXTRA_MESSAGE, str(NAME));
     }
 

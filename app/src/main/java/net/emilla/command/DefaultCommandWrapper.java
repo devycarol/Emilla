@@ -32,65 +32,45 @@ public final class DefaultCommandWrapper extends EmillaCommand {
         }
     }
 
-    private final EmillaCommand mCmd; // Todo: allow app commands
-
-    private static final class DefaultWrapperParams implements Params {
-
-        private final EmillaCommand mCmd;
-
-        private DefaultWrapperParams(EmillaCommand cmd) {
-            mCmd = cmd;
-        }
+    private record DefaultWrapperParams(EmillaCommand cmd) implements Params {
 
         @Override
         public CharSequence name(Resources res) {
-            return mCmd.name();
-        }
-
-        @Override
-        public boolean shouldLowercase() {
-            return true;
+            return cmd.name();
         }
 
         @Override
         public CharSequence title(Resources res) {
-            return Lang.colonConcat(res, R.string.command_default, mCmd.sentenceName());
+            return Lang.colonConcat(res, R.string.command_default, cmd.sentenceName());
         }
 
         @Override
         public Drawable icon(Context ctx) {
-            return mCmd.icon();
+            return cmd.icon();
         }
+    }
 
-        @Override
-        public boolean usesAppIcon() {
-            return mCmd instanceof AppCommand;
-        }
-
-        @Override
-        public int imeAction() {
-            return mCmd.imeAction();
-        }
-
-        @Override
-        public int summary() {
-            return mCmd.summary();
-        }
-
-        @Override
-        public int manual() {
-            return mCmd.manual();
-        }
+    @Override
+    protected boolean shouldLowercase() {
+        return true; // Todo: exclude this from the interface for wrappers
     }
 
     @Override @Deprecated
     protected String dupeLabel() {
-        // Todo: exclude this from the interface for wrappers
-        return null;
+        return null; // Todo: exclude this from the interface for wrappers
     }
 
-    protected DefaultCommandWrapper(AssistActivity act, EmillaCommand cmd) {
-        super(act, new DefaultWrapperParams(cmd));
+    @Override
+    public boolean usesAppIcon() {
+        return mCmd instanceof AppCommand;
+    }
+
+    private final EmillaCommand mCmd; // Todo: allow app and data commands
+
+    private DefaultCommandWrapper(AssistActivity act, EmillaCommand cmd) {
+        super(act, new DefaultWrapperParams(cmd),
+              cmd.summary, cmd.manual, cmd.imeAction
+        );
         mCmd = cmd;
     }
 

@@ -1,6 +1,5 @@
 package net.emilla.command.app;
 
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.view.inputmethod.EditorInfo;
@@ -13,7 +12,6 @@ import androidx.annotation.StringRes;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.command.DataCommand;
-import net.emilla.lang.Lang;
 import net.emilla.lang.Lines;
 import net.emilla.util.Dialogs;
 import net.emilla.util.Permissions;
@@ -28,21 +26,6 @@ public final class Tasker extends AppCommand implements DataCommand {
     public static final String PKG = TaskerIntent.TASKER_PACKAGE_MARKET;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_tasker;
-
-    private static final class TaskerParams extends AppParams {
-
-        private TaskerParams(Yielder info) {
-            super(info,
-                  EditorInfo.IME_ACTION_NEXT,
-                  R.string.summary_app_tasker,
-                  R.string.manual_app_tasker);
-        }
-
-        @Override
-        public CharSequence title(Resources res) {
-            return Lang.colonConcat(res, name, R.string.instruction_app_tasker);
-        }
-    }
 
     @Override
     public boolean usesData() {
@@ -60,7 +43,10 @@ public final class Tasker extends AppCommand implements DataCommand {
     private static final String COL_PROJECT_NAME = "project_name";
 
     public Tasker(AssistActivity act, Yielder info) {
-        super(act, new TaskerParams(info));
+        super(act, new InstructyParams(info, R.string.instruction_app_tasker),
+              R.string.summary_app_tasker,
+              R.string.manual_app_tasker,
+              EditorInfo.IME_ACTION_NEXT);
     }
 
     @Override

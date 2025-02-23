@@ -30,18 +30,6 @@ public final class Snippets extends CoreDataCommand {
         return new Yielder(true, Snippets::new, ENTRY, NAME, ALIASES);
     }
 
-    private static final class SnippetsParams extends CoreDataParams {
-
-        private SnippetsParams() {
-            super(NAME,
-                  R.string.instruction_name_label,
-                  R.drawable.ic_snippets,
-                  R.string.summary_snippets,
-                  R.string.manual_snippets,
-                  R.string.data_hint_text);
-        }
-    }
-
     private static final byte
             VIEW = -1, // todo: adding this requires changing the comparison logic in snippetAction().
             GET = 0,
@@ -55,7 +43,12 @@ public final class Snippets extends CoreDataCommand {
     private String mUsedText;
 
     public Snippets(AssistActivity act) {
-        super(act, new SnippetsParams());
+        super(act, NAME,
+              R.string.instruction_name_label,
+              R.drawable.ic_snippets,
+              R.string.summary_snippets,
+              R.string.manual_snippets,
+              R.string.data_hint_text);
     }
 
     @Override

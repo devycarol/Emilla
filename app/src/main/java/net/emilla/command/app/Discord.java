@@ -11,17 +11,9 @@ public final class Discord extends AppSend {
     @ArrayRes
     public static final int ALIASES = R.array.aliases_discord;
 
-    private static final class DiscordParams extends AppSendParams {
-
-        private DiscordParams(Yielder info) {
-            super(info,
-                  R.string.instruction_message,
-                  R.string.summary_messaging,
-                  R.string.manual_app_send);
-        }
-    }
-
     public Discord(AssistActivity act, Yielder info) {
-        super(act, new DiscordParams(info));
+        super(act, info,
+              R.string.instruction_message,
+              R.string.summary_messaging);
     }
 }

@@ -36,22 +36,15 @@ public final class Web extends CoreCommand {
             DuckDuckGo, ddg, dd, d, https://duckduckgo.com/?q=%s
             DuckDuckGo Images, duckimages, duckimage, duckimg, ddgimages, ddgimage, ddgimg, ddgi, ddimages, ddimage, ddimg, ddi, dimages, dimage, dimg, https://duckduckgo.com/?q=%s&ia=images&iax=images""";
 
-    private static final class WebParams extends CoreParams {
-
-        private WebParams() {
-            super(NAME,
-                  R.string.instruction_web,
-                  R.drawable.ic_web,
-                  EditorInfo.IME_ACTION_SEARCH,
-                  R.string.summary_web,
-                  R.string.manual_web);
-        }
-    }
-
     private SearchEngineParser mSearchEngineMap;
 
     public Web(AssistActivity act) {
-        super(act, new WebParams());
+        super(act, NAME,
+              R.string.instruction_web,
+              R.drawable.ic_web,
+              R.string.summary_web,
+              R.string.manual_web,
+              EditorInfo.IME_ACTION_SEARCH);
     }
 
     @Override

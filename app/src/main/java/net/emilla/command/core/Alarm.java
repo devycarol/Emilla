@@ -33,20 +33,13 @@ public final class Alarm extends CoreDataCommand {
         return new Yielder(true, Alarm::new, ENTRY, NAME, ALIASES);
     }
 
-    private static final class AlarmParams extends CoreDataParams {
-
-        private AlarmParams() {
-            super(NAME,
-                  R.string.instruction_alarm,
-                  R.drawable.ic_alarm,
-                  R.string.summary_alarm,
-                  R.string.manual_alarm,
-                  R.string.data_hint_label);
-        }
-    }
-
     public Alarm(AssistActivity act) {
-        super(act, new AlarmParams());
+        super(act, NAME,
+              R.string.instruction_alarm,
+              R.drawable.ic_alarm,
+              R.string.summary_alarm,
+              R.string.manual_alarm,
+              R.string.data_hint_label);
     }
 
     private Intent makeIntent() {

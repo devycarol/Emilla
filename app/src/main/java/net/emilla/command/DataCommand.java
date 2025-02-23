@@ -8,9 +8,4 @@ public interface DataCommand {
     @StringRes
     int dataHint();
     void execute(@NonNull String data);
-
-    interface DataParams {
-        @StringRes
-        int hint();
-    }
 }

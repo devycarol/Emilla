@@ -28,20 +28,13 @@ public final class Calculate extends CategoryCommand {
         return new Yielder(true, Calculate::new, ENTRY, NAME, ALIASES);
     }
 
-    private static final class CalculateParams extends CoreParams {
-
-        private CalculateParams() {
-            super(NAME,
-                  R.string.instruction_calculate,
-                  R.drawable.ic_calculate,
-                  EditorInfo.IME_ACTION_DONE,
-                  R.string.summary_calculate,
-                  R.string.manual_calculate);
-        }
-    }
-
     public Calculate(AssistActivity act) {
-        super(act, new CalculateParams());
+        super(act, NAME,
+              R.string.instruction_calculate,
+              R.drawable.ic_calculate,
+              R.string.summary_calculate,
+              R.string.manual_calculate,
+              EditorInfo.IME_ACTION_DONE);
     }
 
     @Override

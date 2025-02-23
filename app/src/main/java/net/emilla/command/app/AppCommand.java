@@ -27,53 +27,24 @@ import java.util.Set;
 
 public class AppCommand extends EmillaCommand {
 
-    private static final class BasicAppParams extends AppParams {
-
-        private BasicAppParams(Yielder info) {
-            super(info,
-                  EditorInfo.IME_ACTION_GO,
-                  R.string.summary_app,
-                  R.string.manual_app);
-        }
-
-        @Override
-        public CharSequence title(Resources res) {
-            return Lang.colonConcat(res, R.string.command_app, name);
-        }
-    }
-
-    private final CharSequence mName;
-    private final ComponentName mComponentName;
-    protected final String packageName;
-
-    public AppCommand(AssistActivity act, Yielder info) {
-        this(act, new BasicAppParams(info));
-    }
-
-    protected AppCommand(AssistActivity act, AppParams params) {
-        super(act, params);
-        mName = params.name;
-        mComponentName = params.mComponentName;
-        packageName = params.mPkg;
-    }
-
-    @Override @Deprecated
-    protected String dupeLabel() {
-        return mName + " (" + packageName + ")";
-    }
-
-    @Override
-    protected final void run() {
-        appSucceed(launchIntent());
-    }
-
-    protected final Intent launchIntent() {
-        return Apps.launchIntent(mComponentName);
-    }
-
-    @Override
-    protected void run(@NonNull String ignored) {
-        run(); // Todo: remove this from the interface for non-instructables.
+    @ArrayRes
+    public static int aliasId(String pkg, String cls) {
+        return switch (pkg) {
+            case AospContacts.PKG -> AospContacts.ALIASES;
+            case Markor.PKG -> cls.equals(Markor.CLS_MAIN) ? Markor.ALIASES : 0;
+            // Markor can have multiple launchers, only the main one should have the aliases.
+            case Firefox.PKG -> Firefox.ALIASES;
+            case Tor.PKG -> Tor.ALIASES;
+            case Signal.PKG -> Signal.ALIASES;
+            case Newpipe.PKG -> Newpipe.ALIASES;
+            case Tubular.PKG -> Tubular.ALIASES;
+            case Tasker.PKG -> Tasker.ALIASES;
+            case Github.PKG -> Github.ALIASES;
+            case Youtube.PKG -> Youtube.ALIASES;
+            case Discord.PKG -> Discord.ALIASES;
+            case Outlook.PKG -> Outlook.ALIASES;
+            default -> 0;
+        };
     }
 
     public static final class Yielder extends CommandYielder {
@@ -144,57 +115,21 @@ public class AppCommand extends EmillaCommand {
         }
     }
 
-    @ArrayRes
-    public static int aliasId(String pkg, String cls) {
-        return switch (pkg) {
-            case AospContacts.PKG -> AospContacts.ALIASES;
-            case Markor.PKG -> cls.equals(Markor.CLS_MAIN) ? Markor.ALIASES : 0;
-            // Markor can have multiple launchers, only the main one should have the aliases.
-            case Firefox.PKG -> Firefox.ALIASES;
-            case Tor.PKG -> Tor.ALIASES;
-            case Signal.PKG -> Signal.ALIASES;
-            case Newpipe.PKG -> Newpipe.ALIASES;
-            case Tubular.PKG -> Tubular.ALIASES;
-            case Tasker.PKG -> Tasker.ALIASES;
-            case Github.PKG -> Github.ALIASES;
-            case Youtube.PKG -> Youtube.ALIASES;
-            case Discord.PKG -> Discord.ALIASES;
-            case Outlook.PKG -> Outlook.ALIASES;
-            default -> 0;
-        };
-    }
+    protected static class AppParams implements Params {
 
-    protected static abstract class AppParams implements Params {
-
-        private final int mImeAction;
         protected final CharSequence name;
         private final String mPkg;
         private final ComponentName mComponentName;
-        @StringRes
-        private final int mSummary, mManual;
 
-        protected AppParams(
-            Yielder info,
-            int imeAction,
-            @StringRes int summary,
-            @StringRes int manual
-        ) {
-            mImeAction = imeAction;
+        protected AppParams(Yielder info) {
             name = info.mName;
             mPkg = info.mPkg;
             mComponentName = info.componentName();
-            mSummary = summary;
-            mManual = manual;
         }
 
         @Override
         public final CharSequence name(Resources res) {
             return name;
-        }
-
-        @Override
-        public final boolean shouldLowercase() {
-            return false; // App names shouldn't be lowercased.
         }
 
         @Override
@@ -205,23 +140,77 @@ public class AppCommand extends EmillaCommand {
         }}
 
         @Override
-        public final boolean usesAppIcon() {
-            return true;
+        public CharSequence title(Resources res) {
+            return Lang.colonConcat(res, R.string.command_app, name);
+        }
+    }
+
+    protected static final class InstructyParams extends AppParams {
+
+        @StringRes
+        private final int mInstruction;
+
+        InstructyParams(Yielder info, @StringRes int instruction) {
+            super(info);
+            mInstruction = instruction;
         }
 
         @Override
-        public final int imeAction() {
-            return mImeAction;
+        public CharSequence title(Resources res) {
+            return Lang.colonConcat(res, name, mInstruction);
         }
+    }
 
-        @Override
-        public int summary() {
-            return mSummary;
-        }
+    private final CharSequence mName;
+    private final ComponentName mComponentName;
+    protected final String packageName;
 
-        @Override
-        public int manual() {
-            return mManual;
-        }
+    public AppCommand(AssistActivity act, Yielder info) {
+        this(act, new AppParams(info),
+             R.string.summary_app,
+             R.string.manual_app,
+             EditorInfo.IME_ACTION_GO);
+    }
+
+    protected AppCommand(
+        AssistActivity act,
+        AppParams params,
+        @StringRes int summary,
+        @StringRes int manual,
+        int imeAction
+    ) {
+        super(act, params, summary, manual, imeAction);
+        mName = params.name;
+        mComponentName = params.mComponentName;
+        packageName = params.mPkg;
+    }
+
+    @Override
+    public final boolean shouldLowercase() {
+        return false; // App names shouldn't be lowercased.
+    }
+
+    @Override @Deprecated
+    protected String dupeLabel() {
+        return mName + " (" + packageName + ")";
+    }
+
+    @Override
+    public final boolean usesAppIcon() {
+        return true;
+    }
+
+    @Override
+    protected final void run() {
+        appSucceed(launchIntent());
+    }
+
+    protected final Intent launchIntent() {
+        return Apps.launchIntent(mComponentName);
+    }
+
+    @Override
+    protected void run(@NonNull String ignored) {
+        run(); // Todo: remove this from the interface for non-instructables.
     }
 }

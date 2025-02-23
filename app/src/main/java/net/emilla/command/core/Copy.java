@@ -24,22 +24,15 @@ public final class Copy extends CoreCommand {
         return new Yielder(true, Copy::new, ENTRY, NAME, ALIASES);
     }
 
-    private static final class CopyParams extends CoreParams {
-
-        private CopyParams() {
-            super(NAME,
-                  R.string.instruction_text,
-                  R.drawable.ic_copy,
-                  EditorInfo.IME_ACTION_DONE,
-                  R.string.summary_copy,
-                  R.string.manual_copy);
-        }
-    }
-
     private String mCopiedText;
 
     public Copy(AssistActivity act) {
-        super(act, new CopyParams());
+        super(act, NAME,
+              R.string.instruction_text,
+              R.drawable.ic_copy,
+              R.string.summary_copy,
+              R.string.manual_copy,
+              EditorInfo.IME_ACTION_DONE);
     }
 
     @Override

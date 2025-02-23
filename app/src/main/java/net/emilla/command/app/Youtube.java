@@ -11,14 +11,9 @@ public final class Youtube extends AppSearch {
     @ArrayRes
     public static final int ALIASES = R.array.aliases_youtube;
 
-    private static final class YoutubeParams extends AppSearchParams {
-
-        private YoutubeParams(Yielder info) {
-            super(info, R.string.instruction_video, R.string.summary_video);
-        }
-    }
-
     public Youtube(AssistActivity act, Yielder info) {
-        super(act, new YoutubeParams(info));
+        super(act, info,
+              R.string.instruction_video,
+              R.string.summary_video);
     }
 }

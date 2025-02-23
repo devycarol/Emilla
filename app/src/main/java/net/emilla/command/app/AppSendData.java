@@ -11,7 +11,31 @@ import net.emilla.command.DataCommand;
 
 class AppSendData extends AppSend implements DataCommand {
 
-    private final AppSendDataParams mParams;
+    @StringRes
+    private final int mHint;
+
+    public AppSendData(AssistActivity act, Yielder info, @StringRes int hint) {
+        super(act, info,
+              R.string.summary_app_send,
+              R.string.manual_app_send_data,
+              EditorInfo.IME_ACTION_NEXT);
+        mHint = hint;
+    }
+
+    AppSendData(
+        AssistActivity act,
+        Yielder info,
+        @StringRes int instruction,
+        @StringRes int summary,
+        @StringRes int hint
+    ) {
+        super(act, info,
+              instruction,
+              summary,
+              R.string.manual_app_send_data,
+              EditorInfo.IME_ACTION_NEXT);
+        mHint = hint;
+    }
 
     @Override
     public boolean usesData() {
@@ -20,12 +44,7 @@ class AppSendData extends AppSend implements DataCommand {
 
     @Override @StringRes
     public int dataHint() {
-        return mParams.hint();
-    }
-
-    AppSendData(AssistActivity act, AppSendDataParams params) {
-        super(act, params);
-        mParams = params;
+        return mHint;
     }
 
     private void runWithData(@NonNull String message) {
@@ -41,30 +60,5 @@ class AppSendData extends AppSend implements DataCommand {
         String instruction = instruction();
         if (instruction == null) runWithData(data);
         else runWithData(instruction, data);
-    }
-
-    protected static abstract class AppSendDataParams extends AppSendParams implements DataParams {
-
-        @StringRes
-        private final int mHint;
-
-        protected AppSendDataParams(
-            Yielder info,
-            @StringRes int instruction,
-            @StringRes int summary,
-            @StringRes int hint
-        ) {
-            super(info,
-                  instruction,
-                  EditorInfo.IME_ACTION_NEXT,
-                  summary,
-                  R.string.manual_app_send_data);
-            mHint = hint;
-        }
-
-        @Override @StringRes
-        public final int hint() {
-            return mHint;
-        }
     }
 }

@@ -49,7 +49,7 @@ public final class Help implements LabeledQuickAction {
         EmillaCommand cmd = mActivity.command();
         // Todo: pull up a general manual when no command.
         Resources res = mActivity.getResources();
-        CharSequence msg = res.getText(cmd.summary()) + "\n\n" + res.getText(cmd.manual());
+        CharSequence msg = res.getText(cmd.summary) + "\n\n" + res.getText(cmd.manual);
         // TODO: resolve weird whitespace parsing.
         AlertDialog manual = Dialogs.base(mActivity, cmd.name(), msg, android.R.string.ok)
                 .setOnDismissListener(dlg -> mActivity.setManual(null))

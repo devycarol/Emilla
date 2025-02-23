@@ -26,20 +26,13 @@ public final class Launch extends OpenCommand {
         return new Yielder(true, Launch::new, ENTRY, NAME, ALIASES);
     }
 
-    private static final class LaunchParams extends CoreParams {
-
-        private LaunchParams() {
-            super(NAME,
-                  R.string.instruction_app,
-                  R.drawable.ic_launch,
-                  EditorInfo.IME_ACTION_GO,
-                  R.string.summary_launch,
-                  R.string.manual_launch);
-        }
-    }
-
     public Launch(AssistActivity act) {
-        super(act, new LaunchParams());
+        super(act, NAME,
+              R.string.instruction_app,
+              R.drawable.ic_launch,
+              R.string.summary_launch,
+              R.string.manual_launch,
+              EditorInfo.IME_ACTION_GO);
     }
 
     @Override

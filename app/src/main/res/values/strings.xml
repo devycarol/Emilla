@@ -176,7 +176,7 @@
     <!-- Generic instruction for email apps -->
     <string name="instruction_app_email">email body</string>
     <!-- Generic instruction for code issues -->
-    <string name="instruction_issue">issue body</string>
+    <string name="instruction_issue">issue text</string>
     <string name="instruction_app_tasker">task name</string>
 
     <!-- Command summaries -->

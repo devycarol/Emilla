@@ -28,20 +28,13 @@ public final class Weather extends CategoryCommand {
         return new Yielder(true, Weather::new, ENTRY, NAME, ALIASES);
     }
 
-    private static final class WeatherParams extends CoreParams {
-
-        private WeatherParams() {
-            super(NAME,
-                  R.string.instruction_app,
-                  R.drawable.ic_weather,
-                  EditorInfo.IME_ACTION_GO,
-                  R.string.summary_weather,
-                  R.string.manual_weather);
-        }
-    }
-
     public Weather(AssistActivity act) {
-        super(act, new WeatherParams());
+        super(act, NAME,
+              R.string.instruction_app,
+              R.drawable.ic_weather,
+              R.string.summary_weather,
+              R.string.manual_weather,
+              EditorInfo.IME_ACTION_GO);
     }
 
     @Override
@@ -56,7 +49,7 @@ public final class Weather extends CategoryCommand {
     }
 
     @Override
-    protected void run(@NonNull String expression) {
+    protected void run(@NonNull String location) {
         throw badCommand(R.string.error_unfinished_categorical_app_search); // Todo
     }
 }
