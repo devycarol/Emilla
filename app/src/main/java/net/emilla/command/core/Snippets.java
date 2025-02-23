@@ -11,6 +11,7 @@ import net.emilla.run.CopyGift;
 import net.emilla.settings.Aliases;
 import net.emilla.settings.SettingVals;
 import net.emilla.util.Dialogs;
+import net.emilla.util.Strings;
 
 import java.util.Set;
 
@@ -92,25 +93,25 @@ public final class Snippets extends CoreDataCommand {
         byte action;
         if (lcLabel.startsWith("get")) {
             action = GET;
-            label = label.substring(3).trim();
+            label = Strings.subTrimToNull(label, 3);
         } else if (lcLabel.startsWith("copy")) {
             action = GET;
-            label = label.substring(4).trim();
+            label = Strings.subTrimToNull(label, 4);
         } else if (lcLabel.startsWith("cp")) {
             action = GET;
-            label = label.substring(2).trim();
+            label = Strings.subTrimToNull(label, 2);
         } else if (lcLabel.startsWith("pop") || lcLabel.startsWith("cut")) {
             action = POP;
-            label = label.substring(3).trim();
+            label = Strings.subTrimToNull(label, 3);
         } else if (lcLabel.startsWith("remove") || lcLabel.startsWith("delete")) {
             action = REMOVE;
-            label = label.substring(6).trim();
+            label = Strings.subTrimToNull(label, 6);
         } else if (lcLabel.startsWith("rm")) {
             action = REMOVE;
-            label = label.substring(2).trim();
+            label = Strings.subTrimToNull(label, 2);
         } else if (lcLabel.startsWith("del")) {
             action = REMOVE;
-            label = label.substring(3).trim();
+            label = Strings.subTrimToNull(label, 3);
         } else action = GET;
         // TODO LANG: use TrieMap for all subcommands
 
@@ -121,7 +122,7 @@ public final class Snippets extends CoreDataCommand {
             // forget the used snippet
         }
 
-        return label.isEmpty() ? null : label;
+        return label;
     }
 
     private void snippet(@Nullable String label) {

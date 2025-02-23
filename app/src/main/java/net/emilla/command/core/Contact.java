@@ -20,6 +20,7 @@ import net.emilla.content.receive.ContactCardReceiver;
 import net.emilla.settings.Aliases;
 import net.emilla.util.Apps;
 import net.emilla.util.Dialogs;
+import net.emilla.util.Strings;
 
 import java.util.List;
 
@@ -92,22 +93,22 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
         var lcPerson = person.toLowerCase();
         if (lcPerson.startsWith("edit")) {
             mAction = EDIT;
-            person = person.substring(4).trim();
+            person = Strings.subTrimToNull(person, 4);
         } else if (lcPerson.startsWith("send")) {
             mAction = SEND;
-            person = person.substring(4).trim();
+            person = Strings.subTrimToNull(person, 4);
         } else if (lcPerson.startsWith("share")) {
             mAction = SEND;
-            person = person.substring(5).trim();
+            person = Strings.subTrimToNull(person, 5);
         } else if (lcPerson.startsWith("new")) {
             mAction = CREATE;
-            person = person.substring(3).trim();
+            person = Strings.subTrimToNull(person, 3);
         } else if (lcPerson.startsWith("create")) {
             mAction = CREATE;
-            person = person.substring(6).trim();
+            person = Strings.subTrimToNull(person, 6);
         } else mAction = VIEW;
 
-        return person.isEmpty() ? null : person;
+        return person;
     }
 
     @Override
