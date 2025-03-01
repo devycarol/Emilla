@@ -13,7 +13,9 @@ import net.emilla.lang.date.impl.WeekdaysEN_US;
 import net.emilla.lang.grammar.ListPhrase;
 import net.emilla.lang.grammar.impl.ListPhraseEN_US;
 import net.emilla.lang.phrase.Dices;
+import net.emilla.lang.phrase.RandRange;
 import net.emilla.lang.phrase.impl.DicesEN_US;
+import net.emilla.lang.phrase.impl.RandRangeEN_US;
 
 public final class Lang {
 
@@ -70,6 +72,12 @@ public final class Lang {
     public static Weekdays weekdays(String timeStr) {
         return switch (-1) {
             default -> WeekdaysEN_US.instance(timeStr);
+        };
+    }
+
+    public static RandRange randomRange(String range) {
+        return switch (-1) {
+            default -> RandRangeEN_US.instance(range);
         };
     }
 

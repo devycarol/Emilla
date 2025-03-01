@@ -63,6 +63,11 @@
             android:summary="@string/summary_calculate"
             android:title="@string/command_calculate" />
         <EditTextPreference
+            android:icon="@drawable/ic_random_number"
+            android:key="aliases_random_number_text"
+            android:summary="@string/summary_random_number"
+            android:title="@string/command_random_number" />
+        <EditTextPreference
             android:icon="@drawable/ic_roll"
             android:key="aliases_roll_text"
             android:summary="@string/summary_roll"
