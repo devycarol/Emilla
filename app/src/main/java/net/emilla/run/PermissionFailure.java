@@ -11,7 +11,7 @@ import net.emilla.R;
 import net.emilla.util.Apps;
 import net.emilla.util.Dialogs;
 
-public final class PermissionFailure extends DialogFailure {
+public final class PermissionFailure extends DialogRun {
 
     private static AlertDialog.Builder dialog(AssistActivity act, @StringRes int permissionName) {
         // todo: this often results in an activity restart, which messes with the resume chime and
@@ -22,7 +22,7 @@ public final class PermissionFailure extends DialogFailure {
                 R.string.dlg_msg_perm_denial, R.string.app_info,
                 (dlg, which) -> act.startActivity(appInfo));
 
-        return Dialogs.base(act, permissionName, R.string.dlg_msg_perm_denial, android.R.string.ok);
+        return Dialogs.message(act, permissionName, R.string.dlg_msg_perm_denial);
         // this should pretty much never happen.
     }
 

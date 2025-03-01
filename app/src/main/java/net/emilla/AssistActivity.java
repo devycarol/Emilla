@@ -72,7 +72,7 @@ import net.emilla.exception.EmillaException;
 import net.emilla.lang.Lang;
 import net.emilla.permission.PermissionRetriever;
 import net.emilla.run.BugFailure;
-import net.emilla.run.DialogOffering;
+import net.emilla.run.DialogRun;
 import net.emilla.run.Failure;
 import net.emilla.run.Gift;
 import net.emilla.run.MessageFailure;
@@ -631,7 +631,7 @@ public final class AssistActivity extends EmillaActivity {
         if (!askTryCancel()) return;
 
         if (shouldCancel()) cancel();
-        else offer(new DialogOffering(this, cancelDialog()));
+        else offer(new DialogRun(this, cancelDialog()));
     }
 
     @Deprecated

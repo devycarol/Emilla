@@ -4,7 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.AssistActivity;
 
-public abstract class DialogRun implements CommandRun {
+public class DialogRun implements Gift, Offering, Failure {
 
     private final AssistActivity mActivity;
     private final AlertDialog mDialog;

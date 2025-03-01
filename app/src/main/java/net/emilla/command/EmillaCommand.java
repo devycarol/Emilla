@@ -50,8 +50,7 @@ import net.emilla.command.core.Weather;
 import net.emilla.command.core.Web;
 import net.emilla.run.AppSuccess;
 import net.emilla.run.BroadcastGift;
-import net.emilla.run.DialogFailure;
-import net.emilla.run.DialogOffering;
+import net.emilla.run.DialogRun;
 import net.emilla.run.Failure;
 import net.emilla.run.Gift;
 import net.emilla.run.MessageFailure;
@@ -338,6 +337,10 @@ public abstract class EmillaCommand {
         activity.give(gift);
     }
 
+    protected final void giveDialog(AlertDialog.Builder builder) {
+        give(new DialogRun(activity, builder));
+    }
+
     protected final void giveBroadcast(Intent intent) {
         give(new BroadcastGift(activity, intent));
     }
@@ -367,7 +370,7 @@ public abstract class EmillaCommand {
     }
 
     protected final void offerDialog(AlertDialog.Builder builder) {
-        offer(new DialogOffering(activity, builder));
+        offer(new DialogRun(activity, builder));
     }
 
     protected final void offerTimePicker(OnTimeSetListener timeSet) {
@@ -395,7 +398,7 @@ public abstract class EmillaCommand {
         @StringRes int yesLabel,
         DialogInterface.OnClickListener yesClick
     ) {
-        fail(new DialogFailure(activity, Dialogs.dual(activity, name(), msg, yesLabel, yesClick)));
+        fail(new DialogRun(activity, Dialogs.dual(activity, name(), msg, yesLabel, yesClick)));
     }
 
     protected final void failMessage(@StringRes int msg) {

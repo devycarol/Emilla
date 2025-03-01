@@ -11,7 +11,7 @@ import androidx.appcompat.app.AlertDialog;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.command.EmillaCommand;
-import net.emilla.run.DialogOffering;
+import net.emilla.run.DialogRun;
 import net.emilla.util.Dialogs;
 
 public final class Help implements LabeledQuickAction {
@@ -51,7 +51,7 @@ public final class Help implements LabeledQuickAction {
         Resources res = mActivity.getResources();
         CharSequence msg = res.getText(cmd.summary) + "\n\n" + res.getText(cmd.manual);
         // TODO: resolve weird whitespace parsing.
-        AlertDialog manual = Dialogs.base(mActivity, cmd.name(), msg, android.R.string.ok)
+        AlertDialog manual = Dialogs.message(mActivity, cmd.name(), msg)
                 .setOnDismissListener(dlg -> mActivity.setManual(null))
                 .setOnKeyListener((dlg, keyCode, event) -> {
                     if (keyCode == KEYCODE_MENU && event.getAction() == ACTION_UP) {
@@ -61,6 +61,6 @@ public final class Help implements LabeledQuickAction {
                     return false;
                 }).create();
         mActivity.setManual(manual);
-        mActivity.offer(new DialogOffering(mActivity, manual));
+        mActivity.offer(new DialogRun(mActivity, manual));
     }
 }

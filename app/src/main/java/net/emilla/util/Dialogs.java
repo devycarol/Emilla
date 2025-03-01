@@ -70,6 +70,22 @@ public final class Dialogs {
         return base(ctx, title, noLabel).setMessage(msg);
     }
 
+    public static AlertDialog.Builder message(Context ctx, @StringRes int title, @StringRes int msg) {
+        return base(ctx, title, android.R.string.ok).setMessage(msg);
+    }
+
+    public static AlertDialog.Builder message(Context ctx, @StringRes int title, CharSequence msg) {
+        return base(ctx, title, android.R.string.ok).setMessage(msg);
+    }
+
+    public static AlertDialog.Builder message(Context ctx, CharSequence title, @StringRes int msg) {
+        return base(ctx, title, android.R.string.ok).setMessage(msg);
+    }
+
+    public static AlertDialog.Builder message(Context ctx, CharSequence title, CharSequence msg) {
+        return base(ctx, title, android.R.string.ok).setMessage(msg);
+    }
+
     public static AlertDialog.Builder list(
         AssistActivity act,
         @StringRes int title,
