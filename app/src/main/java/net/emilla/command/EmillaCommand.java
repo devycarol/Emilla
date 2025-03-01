@@ -38,6 +38,7 @@ import net.emilla.command.core.Info;
 import net.emilla.command.core.Launch;
 import net.emilla.command.core.Navigate;
 import net.emilla.command.core.Pomodoro;
+import net.emilla.command.core.Roll;
 import net.emilla.command.core.Share;
 import net.emilla.command.core.Sms;
 import net.emilla.command.core.Snippets;
@@ -91,6 +92,7 @@ public abstract class EmillaCommand {
                 Contact.yielder(),
 //                Notify.yielder(),
                 Calculate.yielder(),
+                Roll.yielder(),
                 Weather.yielder(),
                 Bookmark.yielder(),
                 Torch.yielder(),

@@ -14,6 +14,8 @@
     <string name="never">Never</string>
     <string name="none">None</string>
     <string name="overwrite">Overwrite</string>
+    <string name="heads">Heads!</string>
+    <string name="tails">Tails!</string>
 
     <string name="app_name">Emilla</string>
     <string name="activity_assistant">Emilla Assistant</string>
@@ -115,6 +117,7 @@
     <string name="command_email">Email</string>
     <string name="command_navigate">Navigate</string>
     <string name="command_calculate">Calculate</string>
+    <string name="command_roll">Roll</string>
     <string name="command_weather">Weather</string>
     <string name="command_time">Time</string>
     <string name="command_alarm">Alarm</string>
@@ -146,6 +149,7 @@
     <string name="instruction_contact">person</string>
     <string name="instruction_email">person or email address</string>
     <string name="instruction_calculate">expression (incomplete)</string><!--todo-->
+    <string name="instruction_roll">dice</string>
     <string name="instruction_alarm">time and weekdays</string>
     <string name="instruction_timer">minutes, duration, or until-time</string>
     <string name="instruction_calendar">event name | DATETIME</string>
@@ -191,6 +195,7 @@
     <string name="summary_email">Write emails</string>
     <string name="summary_navigate">Search and navigate to locations</string>
     <string name="summary_calculate">Compute math equations</string>
+    <string name="summary_roll">Roll virtual dice</string>
     <string name="summary_weather">Open a weather app</string>
     <string name="summary_time">Tell the time</string>
     <string name="summary_alarm">Set alarms</string>
@@ -327,6 +332,14 @@
     <string name="manual_calculate">
         The text you enter will be evaluated as a math expression. Computations can be done with
         symbols as well as some words. In the future, these will be documented.
+    </string>
+    <!-- "Roll virtual dice" -->
+    <string name="manual_roll">
+        To roll dice, provide a dice notation expression.\n
+        \n
+        Example: roll 1d6 + 2d8.\n
+        \n
+        If no instruction is given, a simple coin flip will occur.
     </string>
     <!-- "Open a weather app" -->
     <string name="manual_weather">
@@ -590,6 +603,7 @@
     <string name="error_duplicate_tags">You can\'t have duplicate tags.</string>
     <string name="error_calc_malformed_expression">Malformed expression!</string>
     <string name="error_calc_undefined">Undefined!</string>
+    <string name="error_invalid_dice_roll">Invalid dice roll.</string>
     <string name="error_no_contact_phone">The contact doesn\'t have a phone number.</string>
     <!-- Should match @android:string/noApplications. -->
     <string name="error_no_app">No apps can perform this action.</string>

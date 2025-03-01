@@ -33,6 +33,7 @@ import net.emilla.command.core.Info;
 import net.emilla.command.core.Launch;
 import net.emilla.command.core.Navigate;
 import net.emilla.command.core.Pomodoro;
+import net.emilla.command.core.Roll;
 import net.emilla.command.core.Share;
 import net.emilla.command.core.Sms;
 import net.emilla.command.core.Snippets;
@@ -84,12 +85,13 @@ public final class SettingVals {
             case Contact.ENTRY -> coreYielders[15];
 //            case Notify.ENTRY -> coreYielders[];
             case Calculate.ENTRY -> coreYielders[16];
-            case Weather.ENTRY -> coreYielders[17];
-            case Bookmark.ENTRY -> coreYielders[18];
-            case Torch.ENTRY -> coreYielders[19];
-            case Info.ENTRY -> coreYielders[20];
-            case Uninstall.ENTRY -> coreYielders[21];
-            case Toast.ENTRY -> coreYielders[22];
+            case Roll.ENTRY -> coreYielders[17];
+            case Weather.ENTRY -> coreYielders[18];
+            case Bookmark.ENTRY -> coreYielders[19];
+            case Torch.ENTRY -> coreYielders[20];
+            case Info.ENTRY -> coreYielders[21];
+            case Uninstall.ENTRY -> coreYielders[22];
+            case Toast.ENTRY -> coreYielders[23];
             default -> throw new IllegalArgumentException("No such command \"" + entry + "\".");
         });
     }

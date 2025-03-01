@@ -64,6 +64,7 @@
         <item>@string/command_email</item>
         <item>@string/command_navigate</item>
         <item>@string/command_calculate</item>
+        <item>@string/command_roll</item>
         <item>@string/command_weather</item>
         <item>@string/command_time</item>
         <item>@string/command_alarm</item>
@@ -96,6 +97,7 @@
         <item>email</item>
         <item>navigate</item>
         <item>calculate</item>
+        <item>roll</item>
         <item>weather</item>
         <item>time</item>
         <item>alarm</item>
@@ -190,6 +192,13 @@
     <string-array name="aliases_calculate">
         <item>calc</item>
         <item>math</item>
+    </string-array>
+    <string-array name="aliases_roll">
+        <item>dice</item>
+        <item>flip a coin</item>
+        <item>coin flip</item>
+        <item>coinflip</item>
+        <item>coin</item>
     </string-array>
     <string-array name="aliases_weather" />
     <string-array name="aliases_bookmark" />

@@ -42,6 +42,7 @@ import net.emilla.command.core.Launch;
 import net.emilla.command.core.Note;
 import net.emilla.command.core.Notify;
 import net.emilla.command.core.Pomodoro;
+import net.emilla.command.core.Roll;
 import net.emilla.command.core.Setting;
 import net.emilla.command.core.Share;
 import net.emilla.command.core.Sms;
@@ -118,6 +119,7 @@ public final class CommandsFragment extends EmillaPreferenceFragment {
         setupCorePref(Contact.ALIAS_TEXT_KEY, listener, Contact.ALIASES);
         deactivate(Notify.ALIAS_TEXT_KEY);
         setupCorePref(Calculate.ALIAS_TEXT_KEY, listener, Calculate.ALIASES);
+        setupCorePref(Roll.ALIAS_TEXT_KEY, listener, Roll.ALIASES);
         setupCorePref(Weather.ALIAS_TEXT_KEY, listener, Weather.ALIASES);
         setupCorePref(Bookmark.ALIAS_TEXT_KEY, listener, Bookmark.ALIASES);
         setupCorePref(Torch.ALIAS_TEXT_KEY, listener, Torch.ALIASES);
