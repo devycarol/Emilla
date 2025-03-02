@@ -11,7 +11,4 @@
     <color name="secn_background_dark">#2F3036</color>
     <color name="main_background_light">#F1F0F7</color>
     <color name="secn_background_light">#E2E2E9</color>
-
-    <!-- Local colors -->
-    <color name="icons">?attr/colorOnSurface</color><!--Todo KitKat-->
 </resources>
