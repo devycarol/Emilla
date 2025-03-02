@@ -23,7 +23,7 @@ public final class PermissionRetriever {
     private final AssistActivity mActivity;
     private final ActivityResultLauncher<String[]> mLauncher;
     @Nullable @Deprecated // todo: integrate in the contract if possible.
-    private PermissionReceiver mReceiver;
+    private Runnable mOnGrant;
 
     public PermissionRetriever(AssistActivity act) {
         mActivity = act;
@@ -31,12 +31,12 @@ public final class PermissionRetriever {
         mLauncher = act.registerForActivityResult(contract, new PermissionCallback());
     }
 
-    public void retrieve(String[] permissions, @Nullable PermissionReceiver receiver) {
-        if (mReceiver != null) {
+    public void retrieve(String[] permissions, @Nullable Runnable onGrant) {
+        if (mOnGrant != null) {
             Log.d(TAG, "retrieve: result launcher already engaged. Not launching again.");
             return;
         }
-        mReceiver = receiver;
+        mOnGrant = onGrant;
         mLauncher.launch(permissions);
     }
 
@@ -44,19 +44,19 @@ public final class PermissionRetriever {
 
         @Override
         public void onActivityResult(Map<String, Boolean> grants) {
-            PermissionReceiver receiver = mReceiver;
-            mReceiver = null;
-            onResult(grants, receiver);
+            Runnable onGrant = mOnGrant;
+            mOnGrant = null;
+            onResult(grants, onGrant);
         }
 
-        private void onResult(Map<String, Boolean> grants, @Nullable PermissionReceiver receiver) {
+        private void onResult(Map<String, Boolean> grants, @Nullable Runnable onGrant) {
             for (boolean granted : grants.values()) if (!granted) {
                 // permission not granted.
                 mActivity.chime(RESUME);
                 return;
             }
             // permission granted.
-            if (receiver != null) receiver.onGrant();
+            if (onGrant != null) onGrant.run();
             else mActivity.chime(RESUME);
         }
     }

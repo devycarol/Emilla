@@ -5,7 +5,6 @@ import static net.emilla.chime.Chimer.RESUME;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract.Contacts;
 import android.util.SparseBooleanArray;
@@ -18,7 +17,6 @@ import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.cursoradapter.widget.CursorAdapter;
 import androidx.fragment.app.Fragment;
 import androidx.loader.app.LoaderManager;
@@ -31,12 +29,11 @@ import net.emilla.contact.ContactItemView;
 import net.emilla.contact.MultiSearch;
 import net.emilla.contact.adapter.ContactCursorAdapter;
 import net.emilla.content.receive.ContactReceiver;
-import net.emilla.permission.PermissionReceiver;
 import net.emilla.util.Apps;
 import net.emilla.util.Permissions;
 
 public abstract class ContactsFragment<T> extends Fragment
-        implements PermissionReceiver, LoaderManager.LoaderCallbacks<Cursor>,
+        implements LoaderManager.LoaderCallbacks<Cursor>,
         AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
     private ListView mContactList;
@@ -84,15 +81,11 @@ public abstract class ContactsFragment<T> extends Fragment
         mContactList.setVisibility(View.GONE);
         mPermissionContainer.setVisibility(View.VISIBLE);
         mPermissionButton.setOnClickListener(v -> {
-            if (Permissions.contactsFlow((AssistActivity) requireActivity(), this,
-                    () -> startActivity(Apps.infoTask()))) activateContacts();
+            AssistActivity act = (AssistActivity) requireActivity();
+            Permissions.withContacts(act, this::activateContacts,
+                                     () -> startActivity(Apps.infoTask()),
+                                     () -> act.chime(RESUME));
         });
-    }
-
-    @Override @RequiresApi(api = Build.VERSION_CODES.M)
-    public void onGrant() {
-        activateContacts();
-        ((AssistActivity) requireActivity()).chime(RESUME);
     }
 
     private void activateContacts() {

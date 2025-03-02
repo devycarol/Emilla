@@ -4,12 +4,10 @@ import static android.content.Intent.ACTION_CALL;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -17,14 +15,13 @@ import net.emilla.R;
 import net.emilla.contact.fragment.ContactPhonesFragment;
 import net.emilla.content.receive.PhoneReceiver;
 import net.emilla.exception.EmlaFeatureException;
-import net.emilla.permission.PermissionReceiver;
 import net.emilla.settings.Aliases;
 import net.emilla.util.Contacts;
 import net.emilla.util.Dialogs;
 import net.emilla.util.Features;
 import net.emilla.util.Permissions;
 
-public final class Call extends CoreCommand implements PhoneReceiver, PermissionReceiver {
+public final class Call extends CoreCommand implements PhoneReceiver {
 
     public static final String ENTRY = "call";
     @StringRes
@@ -72,7 +69,7 @@ public final class Call extends CoreCommand implements PhoneReceiver, Permission
 
     @Override
     protected void run() {
-        if (Permissions.contactsFlow(activity, null)) tryCall();
+        Permissions.withContacts(activity, this::tryCall);
     }
 
     private void tryCall() {
@@ -89,7 +86,7 @@ public final class Call extends CoreCommand implements PhoneReceiver, Permission
         //  transfer. it shouldn't disable the "command enabled" pref, it should just be its own
         //  element of an "is the command enabled" check similar to HeliBoard's handling in its
         //  "SettingsValues" class.
-        if (Permissions.callFlow(activity, this)) tryCall(nameOrNumber);
+        Permissions.withCall(activity, () -> tryCall(nameOrNumber));
     }
 
     private void tryCall(@NonNull String nameOrNumber) {
@@ -116,14 +113,6 @@ public final class Call extends CoreCommand implements PhoneReceiver, Permission
 
     @Override
     public void provide(@NonNull String phoneNumber) {
-        if (Permissions.callFlow(activity, this)) call(phoneNumber);
-        else setInstruction(phoneNumber);
-    }
-
-    @Override @RequiresApi(api = Build.VERSION_CODES.M)
-    public void onGrant() {
-        String nameOrNumber = instruction();
-        if (nameOrNumber == null) tryCall();
-        else tryCall(nameOrNumber);
+        Permissions.withCall(activity, () -> call(phoneNumber));
     }
 }

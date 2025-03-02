@@ -69,7 +69,7 @@ public final class Lang {
         };
     }
 
-    public static Weekdays weekdays(String timeStr) {
+    public static Weekdays weekdays(String timeStr, @StringRes int errorTitle) {
         return switch (-1) {
             default -> WeekdaysEN_US.instance(timeStr);
         };

@@ -6,7 +6,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import net.emilla.AssistActivity;
-import net.emilla.permission.PermissionReceiver;
 
 /**
  * <p>
@@ -22,28 +21,20 @@ public final class PermissionOffering implements Offering {
     private final AssistActivity mActivity;
     private final String[] mPermissions;
     @Nullable
-    private final PermissionReceiver mReceiver;
+    private final Runnable mOnGrant;
 
-    public PermissionOffering(
-        AssistActivity act,
-        String permission,
-        @Nullable PermissionReceiver receiver
-    ) {
-        this(act, new String[]{permission}, receiver);
+    public PermissionOffering(AssistActivity act, String permission, @Nullable Runnable onGrant) {
+        this(act, new String[]{permission}, onGrant);
     }
 
-    public PermissionOffering(
-        AssistActivity act,
-        String[] permissions,
-        @Nullable PermissionReceiver receiver
-    ) {
+    public PermissionOffering(AssistActivity act, String[] permissions, @Nullable Runnable onGrant) {
         mActivity = act;
         mPermissions = permissions;
-        mReceiver = receiver;
+        mOnGrant = onGrant;
     }
 
     @Override
     public void run() {
-        mActivity.permissionRetriever.retrieve(mPermissions, mReceiver);
+        mActivity.permissionRetriever.retrieve(mPermissions, mOnGrant);
     }
 }
