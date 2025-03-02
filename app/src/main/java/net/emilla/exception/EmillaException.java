@@ -2,7 +2,7 @@ package net.emilla.exception;
 
 import androidx.annotation.StringRes;
 
-public abstract class EmillaException extends RuntimeException {
+public final class EmillaException extends RuntimeException {
 
     @StringRes
     private final int mTitle, mMessage;

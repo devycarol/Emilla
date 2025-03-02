@@ -44,6 +44,6 @@ public final class Calculate extends CategoryCommand {
 
     @Override
     protected void run(@NonNull String expression) {
-        giveText(String.valueOf(Calculator.compute(expression)), true);
+        giveText(String.valueOf(Calculator.compute(expression, NAME)), true);
     }
 }

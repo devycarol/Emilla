@@ -4,8 +4,10 @@ import static java.lang.Long.parseLong;
 import static java.lang.Math.pow;
 import static java.util.regex.Pattern.CASE_INSENSITIVE;
 
+import androidx.annotation.StringRes;
+
 import net.emilla.R;
-import net.emilla.exception.EmlaBadCommandException;
+import net.emilla.exception.EmillaException;
 
 import java.util.regex.Pattern;
 
@@ -141,15 +143,15 @@ public final class Calculator { // i should definitely be using an expression tr
         return expr;
     }
 
-    public static long compute(String expression) {
+    public static long compute(String expression, @StringRes int errorTitle) {
         // Todo: ans, floating point math, many more math functions...
         if (expression.matches("[+-]?\\d+")) return parseLong(expression);
     try {
         return evaluate(cleanup(expression));
     } catch (NumberFormatException e) {
-        throw new EmlaBadCommandException(R.string.command_calculate, R.string.error_calc_malformed_expression);
+        throw new EmillaException(errorTitle, R.string.error_calc_malformed_expression);
     } catch (ArithmeticException e) {
-        throw new EmlaBadCommandException(R.string.command_calculate, R.string.error_calc_undefined);
+        throw new EmillaException(errorTitle, R.string.error_calc_undefined);
     }}
 
     private Calculator() {}

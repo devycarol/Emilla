@@ -3,9 +3,10 @@ package net.emilla.lang.phrase.impl;
 import static java.lang.Character.isDigit;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 
 import net.emilla.R;
-import net.emilla.exception.EmlaBadCommandException;
+import net.emilla.exception.EmillaException;
 import net.emilla.lang.phrase.Dice;
 import net.emilla.lang.phrase.Dices;
 import net.emilla.util.SortedArray;
@@ -14,16 +15,15 @@ import java.util.Iterator;
 
 public final class DicesEN_US {
 
-    public static Dices instance(String roll) {
+    public static Dices instance(String roll, @StringRes int errorTitle) {
         String actualRoll = roll.replaceAll("\\s+", "");
         if (!actualRoll.matches("(?i)((-\\d)?\\d*D\\d+|-?\\d+)([+-]((-\\d)?\\d*D\\d+|-?\\d+))*")) {
-            throw new EmlaBadCommandException(R.string.command_roll,
-                                              R.string.error_invalid_dice_roll);
+            throw new EmillaException(errorTitle, R.string.error_invalid_dice_roll);
         }
 
         var dices = new SortedArray<Dice>(1);
 
-        for (Dice dice : dices(actualRoll)) {
+        for (Dice dice : dices(actualRoll, errorTitle)) {
             Dice retrieve = dices.retrieve(dice);
             if (retrieve == null) dices.add(dice);
             else retrieve.add(dice.count());
@@ -32,7 +32,7 @@ public final class DicesEN_US {
         return new Dices(dices);
     }
 
-    private static Iterable<Dice> dices(String roll) {
+    private static Iterable<Dice> dices(String roll, @StringRes int errorTitle) {
         return () -> new Iterator<>() {
             private boolean negative = roll.charAt(0) == '-';
             private int pos = negative ? 1 : 0;
@@ -51,8 +51,7 @@ public final class DicesEN_US {
                     ++pos; // skip the 'D'.
                     faces = nextInt();
                     if (faces < 1) {
-                        throw new EmlaBadCommandException(R.string.command_roll,
-                                                          R.string.error_invalid_dice_roll);
+                        throw new EmillaException(errorTitle, R.string.error_invalid_dice_roll);
                     }
                 } else faces = 1; // just adding `count` as a constant—"d1"
 

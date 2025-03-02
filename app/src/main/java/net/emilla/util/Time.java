@@ -14,9 +14,11 @@ import static java.util.Calendar.SECOND;
 import static java.util.Calendar.YEAR;
 import static java.util.regex.Pattern.CASE_INSENSITIVE;
 
+import androidx.annotation.StringRes;
+
 import net.emilla.EmillaActivity;
 import net.emilla.R;
-import net.emilla.exception.EmlaBadCommandException;
+import net.emilla.exception.EmillaException;
 
 import java.util.Calendar;
 import java.util.regex.Pattern;
@@ -45,9 +47,11 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         return Pattern.compile(rgx, CASE_INSENSITIVE).matcher(s).find();
     }
 
-    private static int[] timeUnits(String time) {
+    private static int[] timeUnits(String time, @StringRes int errorTitle) {
         time = time.replaceAll("\\D", "");
-        if (!time.matches("\\d{1,6}")) throw new EmlaBadCommandException(R.string.error, R.string.error_invalid_time);
+        if (!time.matches("\\d{1,6}")) {
+            throw new EmillaException(errorTitle, R.string.error_invalid_time);
+        }
 
         int h = 0, m = 0, s = 0;
         int len = time.length();
@@ -66,13 +70,13 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         return new int[]{h, m, s};
     }
 
-    public static int[] parseTime(String time, EmillaActivity act /*todo jesus christ*/) {
+    public static int[] parseTime(String time, EmillaActivity act /*todo jesus christ*/, @StringRes int errorTitle) {
         int meridiem;
         if (time.matches("(?i).*\\d *A.*")) meridiem = AM;
         else if (time.matches("(?i).*\\d *P.*")) meridiem = PM;
         else meridiem = -1;
 
-        int[] units = timeUnits(time);
+        int[] units = timeUnits(time, errorTitle);
         int h = units[0], m = units[1], s = units[2];
 
         if (meridiem == -1) {
@@ -81,18 +85,20 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
                 else if (h == 12) act.toast("Warning! Time set for PM.");
             }
         } else {
-            if (h < 1 || 12 < h) throw new EmlaBadCommandException(R.string.error, R.string.error_invalid_time);
+            if (h < 1 || 12 < h) throw new EmillaException(errorTitle, R.string.error_invalid_time);
             if (h == 12) h = 0;
             if (meridiem == PM) h += 12;
         }
 
-        if (h > 23 || max(m, s) > 59) throw new EmlaBadCommandException(R.string.error, R.string.error_invalid_time);
+        if (h > 23 || max(m, s) > 59) {
+            throw new EmillaException(errorTitle, R.string.error_invalid_time);
+        }
 
         return new int[]{h, m, s};
     }
 
-    private static int[] parseDurationUntil(String until) {
-        int[] endUnits = parseTime(until, null);
+    private static int[] parseDurationUntil(String until, @StringRes int errorTitle) {
+        int[] endUnits = parseTime(until, null, errorTitle);
         int endHour = endUnits[0], endMin = endUnits[1], endSec = endUnits[2];
 
         var cal = Calendar.getInstance();
@@ -145,8 +151,9 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         return new int[]{(int) h, (int) m, (int) s, 0};
     }
 
-    public static int[] parseDuration(String dur) { // TODO: handle 24h time properly
-        if (dur.matches("(until|t(ill?|o)) .*")) return parseDurationUntil(dur);
+    public static int[] parseDuration(String dur, @StringRes int errorTitle) {
+        // TODO: handle 24h time properly
+        if (dur.matches("(until|t(ill?|o)) .*")) return parseDurationUntil(dur, errorTitle);
         else {
             var timeUnits = new double[4];
             String[] patterns = {
@@ -162,7 +169,9 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
                     hit = true;
 
                     var sansHrs = dur.split(rgx);
-                    if (sansHrs.length > 2) throw new EmlaBadCommandException(R.string.command_timer, R.string.error_invalid_duration);
+                    if (sansHrs.length > 2) {
+                        throw new EmillaException(errorTitle, R.string.error_invalid_duration);
+                    }
 
                     String before = "", after = "";
                     switch (sansHrs.length) {
@@ -181,7 +190,7 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
             }
 
             if (hit) {
-                if (notEmpty) throw new EmlaBadCommandException(R.string.command_timer, R.string.error_excess_time_units);
+                if (notEmpty) throw new EmillaException(errorTitle, R.string.error_excess_time_units);
 
                 timeUnits[1] += timeUnits[0] % 1.0 * 60.0;
                 timeUnits[2] += timeUnits[1] % 1.0 * 60.0;
@@ -213,7 +222,8 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         };
     }
 
-    private static Calendar parseDate(String s) { // TODO more formats but dear god locales ughhhhh
+    private static Calendar parseDate(String s, @StringRes int errorTitle) {
+        // TODO more formats but dear god locales ughhhhh
         var cal = Calendar.getInstance();
         cal.set(MILLISECOND, 0);
         cal.set(SECOND, 0);
@@ -227,19 +237,19 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         var m = MONTH_RGX.matcher(s);
         if (m.find()) {
             cal.set(MONTH, parseMonth(m.group()));
-            if (m.find()) throw new EmlaBadCommandException(R.string.command_calendar, R.string.error_excess_time_units);
+            if (m.find()) throw new EmillaException(errorTitle, R.string.error_excess_time_units);
         }
 
         m = DAY_RGX.matcher(s);
         if (m.find()) {
             cal.set(DAY_OF_MONTH, parseInt(m.group().trim()));
-            if (m.find()) throw new EmlaBadCommandException(R.string.command_calendar, R.string.error_excess_time_units);
+            if (m.find()) throw new EmillaException(errorTitle, R.string.error_excess_time_units);
         }
 
         m = YEAR_RGX.matcher(s);
         if (m.find()) {
             String y = m.group();
-            if (m.find()) throw new EmlaBadCommandException(R.string.command_calendar, R.string.error_excess_time_units);
+            if (m.find()) throw new EmillaException(errorTitle, R.string.error_excess_time_units);
 
             int tickIdx = y.indexOf('\'');
             if (tickIdx == -1) cal.set(YEAR, parseInt(y));
@@ -249,7 +259,7 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         return cal;
     }
 
-    public static long[] parseDateAndTimes(String date) {
+    public static long[] parseDateAndTimes(String date, @StringRes int errorTitle) {
         var dateTime = date.split(" *@ *|(^| +)(at|from) +");
 
         int[] startTime = null, endTime = null;
@@ -266,16 +276,16 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
                     endTomorrow = true;
                     endStr = endStr.replaceFirst(" *tomorrow", "");
                 } else if (containsRgxIgnoreCase(endStr, "on "))
-                endTime = parseTime(endStr, null);
+                endTime = parseTime(endStr, null, errorTitle);
                 // fallthrough
             case 1:
-                startTime = parseTime(times[0], null);
+                startTime = parseTime(times[0], null, errorTitle);
                 break;
-            default: throw new EmlaBadCommandException(R.string.command_calendar, R.string.error_excess_timespan);
+            default: throw new EmillaException(errorTitle, R.string.error_excess_timespan);
             }
-        } else if (len != 1) throw new EmlaBadCommandException(R.string.command_calendar, R.string.error_excess_timespans);
+        } else if (len != 1) throw new EmillaException(errorTitle, R.string.error_excess_timespans);
 
-        Calendar cal = parseDate(date);
+        Calendar cal = parseDate(date, errorTitle);
         Calendar endCal = null;
         if (startTime != null) {
             if (endTime != null) {

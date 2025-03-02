@@ -14,7 +14,6 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.contact.fragment.ContactPhonesFragment;
 import net.emilla.content.receive.PhoneReceiver;
-import net.emilla.exception.EmlaFeatureException;
 import net.emilla.settings.Aliases;
 import net.emilla.util.Contacts;
 import net.emilla.util.Dialogs;
@@ -81,7 +80,7 @@ public final class Call extends CoreCommand implements PhoneReceiver {
     @Override
     protected void run(@NonNull String nameOrNumber) {
         // todo: conference calls?
-        if (!Features.phone(pm())) throw new EmlaFeatureException(NAME, R.string.error_feature_phone);
+        if (!Features.phone(pm())) throw badCommand(R.string.error_feature_phone);
         // Todo: handle at install - make sure it's not 'sticky' in sharedprefs in case of data
         //  transfer. it shouldn't disable the "command enabled" pref, it should just be its own
         //  element of an "is the command enabled" check similar to HeliBoard's handling in its

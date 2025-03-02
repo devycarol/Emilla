@@ -45,7 +45,7 @@ public final class Roll extends CoreCommand {
 
     @Override
     protected void run(@NonNull String roll) {
-        var dices = Lang.dices(roll);
+        var dices = Lang.dices(roll, NAME);
         var rand = new Random();
         var msg = String.valueOf(dices.roll(rand));
         giveDialog(Dialogs.message(activity, NAME, msg));

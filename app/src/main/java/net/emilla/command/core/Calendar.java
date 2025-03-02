@@ -20,7 +20,6 @@ import net.emilla.R;
 import net.emilla.action.field.FieldToggle;
 import net.emilla.action.field.LocationField;
 import net.emilla.action.field.UrlField;
-import net.emilla.exception.EmlaBadCommandException;
 import net.emilla.settings.Aliases;
 import net.emilla.util.Apps;
 import net.emilla.util.Time;
@@ -75,7 +74,7 @@ public final class Calendar extends CoreDataCommand {
         hideField(UrlField.FIELD_ID);
     }
 
-    private void putTitleAndDate(String title) throws EmlaBadCommandException {
+    private void putTitleAndDate(String title) {
         // todo: clean this up
         var m = Pattern.compile(" */all(day)?", CASE_INSENSITIVE).matcher(title);
         if (m.find()) {
@@ -87,7 +86,7 @@ public final class Calendar extends CoreDataCommand {
         case 1 -> {}
         case 2 -> {
             title = nameAndTime[0];
-            long[] times = Time.parseDateAndTimes(nameAndTime[1]);
+            long[] times = Time.parseDateAndTimes(nameAndTime[1], NAME);
             mIntent.putExtra(EXTRA_EVENT_BEGIN_TIME, times[0]);
             if (times[1] != 0) mIntent.putExtra(EXTRA_EVENT_END_TIME, times[1]);
         }

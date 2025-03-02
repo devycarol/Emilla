@@ -13,7 +13,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import net.emilla.AssistActivity;
 import net.emilla.command.CommandYielder;
 import net.emilla.command.EmillaCommand;
-import net.emilla.exception.EmlaBadCommandException;
+import net.emilla.exception.EmillaException;
 import net.emilla.lang.Lang;
 import net.emilla.settings.Aliases;
 
@@ -126,7 +126,7 @@ public abstract class CoreCommand extends EmillaCommand {
         CoreCommand make(AssistActivity act);
     }
 
-    protected final EmlaBadCommandException badCommand(@StringRes int msg) {
-        return new EmlaBadCommandException(mName, msg);
+    protected final EmillaException badCommand(@StringRes int msg) {
+        return new EmillaException(mName, msg);
     }
 }

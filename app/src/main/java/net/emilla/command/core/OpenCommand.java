@@ -12,7 +12,6 @@ import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.exception.EmlaAppsException;
 import net.emilla.util.Dialogs;
 
 import java.util.Arrays;
@@ -118,7 +117,7 @@ public abstract class OpenCommand extends CoreCommand {
         } // else `other` arrays are null
 
         switch (prefCount) {
-        case 0 -> throw new EmlaAppsException(R.string.error, R.string.error_apps_not_found);
+        case 0 -> throw badCommand(R.string.error_apps_not_found);
         // Todo: offer to search app store
         case 1 -> appSucceed(prefIntents[0]);
         default -> offerDialog(makeDialog(prefLabels, prefCount, prefIntents));

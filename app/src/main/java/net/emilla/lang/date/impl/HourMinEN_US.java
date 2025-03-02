@@ -3,8 +3,10 @@ package net.emilla.lang.date.impl;
 import android.content.Context;
 import android.text.format.DateFormat;
 
+import androidx.annotation.StringRes;
+
 import net.emilla.R;
-import net.emilla.exception.EmlaBadCommandException;
+import net.emilla.exception.EmillaException;
 import net.emilla.lang.date.HourMin;
 
 import java.util.Calendar;
@@ -16,7 +18,7 @@ public record HourMinEN_US(int hour24, int minute) implements HourMin {
             RGX_AM = "(?i).*\\d *A.*",
             RGX_PM = "(?i).*\\d *P.*";
 
-    public static HourMin instance(String timeStr, Context ctx) {
+    public static HourMin instance(String timeStr, Context ctx, @StringRes int errorTitle) {
         int meridiem;
         if (timeStr.matches(RGX_AM)) meridiem = Calendar.AM;
         else if (timeStr.matches(RGX_PM)) meridiem = Calendar.PM;
@@ -24,7 +26,7 @@ public record HourMinEN_US(int hour24, int minute) implements HourMin {
 
         timeStr = timeStr.replaceAll("\\D", "");
         if (!timeStr.matches("\\d{1,4}")) {
-            throw new EmlaBadCommandException(R.string.error, R.string.error_invalid_time);
+            throw new EmillaException(errorTitle, R.string.error_invalid_time);
         }
 
         int hour, minute;
@@ -44,7 +46,9 @@ public record HourMinEN_US(int hour24, int minute) implements HourMin {
                 // flip the meridiem: advance the hour by 12 and wrap back to 0 if it reaches 24.
             } // 24-time hours 0 and 13+ are left unchanged
         } else { // meridiem was specified
-            if (hour < 1 || 12 < hour) throw new EmlaBadCommandException(R.string.error, R.string.error_invalid_time);
+            if (hour < 1 || 12 < hour) {
+                throw new EmillaException(errorTitle, R.string.error_invalid_time);
+            }
             // hours outside of [1, 12] are invalid.
             if (hour == 12) hour = 0;
             // 12 AM is 0, 12 PM is 12.
@@ -52,7 +56,9 @@ public record HourMinEN_US(int hour24, int minute) implements HourMin {
             // advance hour by 12 to convert to PM.
         }
 
-        if (hour > 23 || minute > 59) throw new EmlaBadCommandException(R.string.error, R.string.error_invalid_time);
+        if (hour > 23 || minute > 59) {
+            throw new EmillaException(errorTitle, R.string.error_invalid_time);
+        }
 
         return new HourMinEN_US(hour, minute);
     }

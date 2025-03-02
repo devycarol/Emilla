@@ -2,15 +2,17 @@ package net.emilla.lang.phrase.impl;
 
 import static java.lang.Integer.parseInt;
 
+import androidx.annotation.StringRes;
+
 import net.emilla.R;
-import net.emilla.exception.EmlaBadCommandException;
+import net.emilla.exception.EmillaException;
 import net.emilla.lang.phrase.RandRange;
 
 import java.util.Scanner;
 
 public final class RandRangeEN_US {
 
-    public static RandRange instance(String range) {
+    public static RandRange instance(String range, @StringRes int errorTitle) {
         if (range.matches("[(\\[]-?\\d+,\\s*-?\\d+[)\\]]")) {
             // range notation.
             boolean leftInclus = range.charAt(0) == '[';
@@ -48,10 +50,7 @@ public final class RandRangeEN_US {
         } else if (range.matches("-?\\d+")) {
             // simple number
             int inclusEnd = parseInt(range);
-            return new RandRange(inclusEnd);
-        } else {
-            throw new EmlaBadCommandException(R.string.command_random_number,
-                                              R.string.error_invalid_number_range);
-        }
+            return new RandRange(inclusEnd, errorTitle);
+        } else throw new EmillaException(errorTitle, R.string.error_invalid_number_range);
     }
 }

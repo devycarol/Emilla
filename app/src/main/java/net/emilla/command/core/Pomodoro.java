@@ -14,7 +14,6 @@ import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
-import net.emilla.exception.EmlaBadCommandException;
 import net.emilla.settings.Aliases;
 
 import java.util.regex.Pattern;
@@ -49,7 +48,7 @@ public final class Pomodoro extends CoreDataCommand {
     /**
      * @return true if this is a break timer.
      */
-    private boolean putDuration(String duration) throws EmlaBadCommandException {
+    private boolean putDuration(String duration) {
         var m = Pattern.compile(" *b(reak)? *").matcher(duration); // TODO LANG
         boolean isBreak = m.find();
         if (isBreak) duration = m.replaceFirst("");
@@ -74,7 +73,7 @@ public final class Pomodoro extends CoreDataCommand {
     }
 
     @Override
-    protected void run(@NonNull String duration) throws EmlaBadCommandException {
+    protected void run(@NonNull String duration) {
         boolean isBreak = putDuration(duration);
         if (isBreak) mIntent.putExtra(EXTRA_MESSAGE, str(R.string.memo_pomodoro_break));
         appSucceed(mIntent);
@@ -87,7 +86,7 @@ public final class Pomodoro extends CoreDataCommand {
     }
 
     @Override
-    protected void runWithData(@NonNull String duration, @NonNull String memo) throws EmlaBadCommandException {
+    protected void runWithData(@NonNull String duration, @NonNull String memo) {
         boolean isBreak = putDuration(duration);
         mIntent.putExtra(EXTRA_MESSAGE, memo);
         appSucceed(mIntent);

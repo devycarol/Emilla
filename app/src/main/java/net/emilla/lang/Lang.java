@@ -63,21 +63,21 @@ public final class Lang {
         };
     }
 
-    public static HourMin time(String timeStr, Context ctx) {
+    public static HourMin time(String timeStr, Context ctx, @StringRes int errorTitle) {
         return switch (-1) {
-            default -> HourMinEN_US.instance(timeStr, ctx);
+            default -> HourMinEN_US.instance(timeStr, ctx, errorTitle);
         };
     }
 
     public static Weekdays weekdays(String timeStr, @StringRes int errorTitle) {
         return switch (-1) {
-            default -> WeekdaysEN_US.instance(timeStr);
+            default -> WeekdaysEN_US.instance(timeStr, errorTitle);
         };
     }
 
-    public static RandRange randomRange(String range) {
+    public static RandRange randomRange(String range, @StringRes int errorTitle) {
         return switch (-1) {
-            default -> RandRangeEN_US.instance(range);
+            default -> RandRangeEN_US.instance(range, errorTitle);
         };
     }
 
@@ -87,9 +87,9 @@ public final class Lang {
      * @param roll a dice notation string, e.g. "d4 + 2d6".
      * @return the set of dices represented by {@code roll}.
      */
-    public static Dices dices(String roll) {
+    public static Dices dices(String roll, @StringRes int errorTitle) {
         return switch (-1) {
-            default -> DicesEN_US.instance(roll);
+            default -> DicesEN_US.instance(roll, errorTitle);
         };
     }
 

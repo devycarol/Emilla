@@ -45,9 +45,9 @@ public final class RandomNumber extends CoreCommand {
 
     @Override
     protected void run(@NonNull String range) {
-        var randRange = Lang.randomRange(range);
-        int inclusStart = randRange.inclusStart();
-        int exclusEnd = randRange.exclusEnd();
+        var randRange = Lang.randomRange(range, NAME);
+        int inclusStart = randRange.inclusStart;
+        int exclusEnd = randRange.exclusEnd;
 
         int negativeOffset = 0;
         boolean negative = inclusStart < 0;
