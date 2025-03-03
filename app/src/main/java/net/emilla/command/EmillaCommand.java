@@ -61,11 +61,11 @@ import net.emilla.run.DialogRun;
 import net.emilla.run.Failure;
 import net.emilla.run.Gift;
 import net.emilla.run.MessageFailure;
+import net.emilla.run.MessageGift;
 import net.emilla.run.Offering;
 import net.emilla.run.PingGift;
 import net.emilla.run.Success;
 import net.emilla.run.TimePickerOffering;
-import net.emilla.run.ToastGift;
 import net.emilla.settings.SettingVals;
 import net.emilla.util.Dialogs;
 
@@ -274,9 +274,7 @@ public abstract class EmillaCommand {
     }
 
     /**
-     * Todo: these toast messages should generally be replaced with widget dialogs (which would have
-     *  their own "more info please" chime). Excessive toasting is disruptive (the messages cover
-     *  the keyboard and are opaque in many ROMs).
+     * Show a little message.
      *
      * @param text is shown as a toast notification at the bottom of the screen. Don't hard-code
      *             text.
@@ -351,6 +349,10 @@ public abstract class EmillaCommand {
         give(new DialogRun(activity, builder));
     }
 
+    protected final void giveMessage(CharSequence msg) {
+        give(new MessageGift(activity, name(), msg));
+    }
+
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     protected final void givePing(Notification ping, PingChannel channel) {
         give(new PingGift(activity, ping, channel));
@@ -358,19 +360,6 @@ public abstract class EmillaCommand {
 
     protected final void giveBroadcast(Intent intent) {
         give(new BroadcastGift(activity, intent));
-    }
-
-    /**
-     * Todo: these toast messages should generally be replaced with widget dialogs (which would have
-     *  their own "here you go" chime). Text displayed in toasts can't be copied, and excessive
-     *  toasting is disruptive (the messages cover the keyboard and are opaque in many ROMs)
-     *
-     * @param text is shown as a toast notification at the bottom of the screen. Don't hard-code text.
-     * @param longToast whether to use Toast.LENGTH_LONG. Use this sparingly, for reasons above.
-     */
-    @Deprecated
-    protected final void giveText(CharSequence text, boolean longToast) {
-        give(new ToastGift(activity, text, longToast));
     }
 
     /**

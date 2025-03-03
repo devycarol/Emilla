@@ -192,6 +192,6 @@ public final class Snippets extends CoreDataCommand {
 
     private void addSnippet(String label, String text) {
         mSnippetNames = SettingVals.addSnippet(prefs(), label, text);
-        giveText(str(R.string.toast_saved), false);
+        give(() -> toast(str(R.string.toast_saved)));
     }
 }
