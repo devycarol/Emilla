@@ -31,7 +31,7 @@ public final class Snippets extends CoreDataCommand {
     }
 
     private enum Action {
-//        VIEW,
+        PEEK,
         GET,
         POP,
         REMOVE,
@@ -56,14 +56,17 @@ public final class Snippets extends CoreDataCommand {
     @Override
     protected void onInit() {
         super.onInit();
-        if (mSnippetNames == null) mSnippetNames = SettingVals.snippets(prefs());
+
         if (mActionMap == null) {
             mActionMap = new ActionMap<>(Action.GET);
 
+            mActionMap.put(resources, Action.PEEK, R.array.subcmd_snippet_peek, true);
             mActionMap.put(resources, Action.GET, R.array.subcmd_snippet_get, true);
             mActionMap.put(resources, Action.POP, R.array.subcmd_snippet_pop, true);
             mActionMap.put(resources, Action.REMOVE, R.array.subcmd_snippet_remove, true);
         }
+
+        if (mSnippetNames == null) mSnippetNames = SettingVals.snippets(prefs());
     }
 
     @Override
@@ -129,6 +132,7 @@ public final class Snippets extends CoreDataCommand {
 
     private void snippet(@NonNull String label, @NonNull String lcLabel, Action action) {
         switch (action) {
+        case PEEK -> giveMessage(SettingVals.snippet(prefs(), lcLabel));
         case GET -> {
             String snippet = SettingVals.snippet(prefs(), lcLabel);
             give(new CopyGift(activity, snippet));

@@ -264,17 +264,21 @@
         <item>srch</item>
         <item>find</item>
     </string-array>
+    <string-array name="subcmd_snippet_peek">
+        <item>Peek</item>
+        <item>view</item>
+    </string-array>
     <string-array name="subcmd_snippet_get">
-        <item>get</item>
+        <item>Get</item>
         <item>copy</item>
         <item>cp</item>
     </string-array>
     <string-array name="subcmd_snippet_pop">
-        <item>pop</item>
+        <item>Pop</item>
         <item>cut</item>
     </string-array>
     <string-array name="subcmd_snippet_remove">
-        <item>remove</item>
+        <item>Remove</item>
         <item>rm</item>
         <item>delete</item>
         <item>del</item>
