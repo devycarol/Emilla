@@ -107,11 +107,7 @@ public final class Tasker extends AppCommand implements DataCommand {
             offerApp(TaskerIntent.getExternalAccessPrefsIntent(), false);
             activity.onCloseDialog(false); // Todo: don't require this.
         })));
-        case NO_PERMISSION -> {
-            if (Permissions.taskerFlow(activity, () -> trySearchRun(task, params))) {
-                fail(new MessageFailure(activity, R.string.error, R.string.error_tasker_no_permission));
-            }
-        }
+        case NO_PERMISSION -> Permissions.taskerFlow(activity, () -> trySearchRun(task, params));
         case NO_RECEIVER -> fail(new MessageFailure(activity, R.string.error, R.string.error_tasker_no_receiver));
         }
     }

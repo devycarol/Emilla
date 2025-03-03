@@ -627,7 +627,6 @@
     <!-- App-specific errors -->
     <string name="error_tasker_not_enabled">Tasker isn\'t enabled.</string>
     <string name="error_tasker_blocked">External access isn\'t enabled in Tasker.</string>
-    <string name="error_tasker_no_permission">Tasker hasn\'t granted permission to run tasks.</string>
     <string name="error_tasker_no_receiver">Tasker receive tasks. This is probably a Tasker bug.</string>
     <string name="error_tasker_no_tasks">No tasks matching \"%s\" were found.</string>
 
