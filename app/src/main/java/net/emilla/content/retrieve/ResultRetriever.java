@@ -45,12 +45,12 @@ abstract class ResultRetriever<I, O, C extends ResultReceiver> {
     }}
 
     @Deprecated
-    protected C receiver() {
+    protected /*open*/ C receiver() {
         return mReceiver;
     }
 
     @Deprecated
-    protected void deleteReceiver() {
+    protected /*open*/ void deleteReceiver() {
         mReceiver = null;
     }
 

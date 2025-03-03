@@ -121,7 +121,8 @@ public final class CsvLine implements Iterable<String> {
         return mEnforceTrimming ? new TrimmingValIterator() : new ValIterator();
     }
 
-    private sealed class ValIterator implements Iterator<String> permits TrimmingValIterator {
+    private sealed /*open*/ class ValIterator implements Iterator<String>
+            permits TrimmingValIterator {
 
         protected int pos = mStart;
 
@@ -164,12 +165,12 @@ public final class CsvLine implements Iterable<String> {
             return makeVal(sb);
         }
 
-        protected void advanceToNextVal() {
+        protected /*open*/ void advanceToNextVal() {
             ++pos; // not worrying about spaces
         }
 
         @Nullable
-        protected String makeVal(StringBuilder sb) {
+        protected /*open*/ String makeVal(StringBuilder sb) {
             return sb.length() > 0 ? sb.toString() : null;
         }
     }

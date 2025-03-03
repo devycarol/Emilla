@@ -30,7 +30,7 @@ public abstract class AttachCommand extends CoreDataCommand implements FileRecei
     }
 
     @Override
-    public void provide(@NonNull List<Uri> attachments) {
+    public final void provide(@NonNull List<Uri> attachments) {
         if (attachments.isEmpty()) return;
         if (this.attachments == null) this.attachments = new ArrayList<>(attachments);
         else for (Uri attachment : attachments) {

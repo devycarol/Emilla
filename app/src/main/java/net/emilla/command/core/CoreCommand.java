@@ -64,7 +64,7 @@ public abstract class CoreCommand extends EmillaCommand {
     }
 
     @Override
-    protected boolean shouldLowercase() {
+    protected /*open*/ boolean shouldLowercase() {
         return true;
     }
 
@@ -74,7 +74,7 @@ public abstract class CoreCommand extends EmillaCommand {
     }
 
     @Override @Deprecated
-    protected String dupeLabel() {
+    protected final String dupeLabel() {
         return str(mName) + " (Emilla command)";
     }
 

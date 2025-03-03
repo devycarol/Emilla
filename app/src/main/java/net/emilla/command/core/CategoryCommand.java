@@ -21,13 +21,13 @@ public abstract class CategoryCommand extends CoreCommand {
     private AlertDialog.Builder mAppChooser;
 
     protected CategoryCommand(
-            AssistActivity act,
-            @StringRes int name,
-            @StringRes int instruction,
-            @DrawableRes int icon,
-            @StringRes int summary,
-            @StringRes int manual,
-            int imeAction
+        AssistActivity act,
+        @StringRes int name,
+        @StringRes int instruction,
+        @DrawableRes int icon,
+        @StringRes int summary,
+        @StringRes int manual,
+        int imeAction
     ) {
         super(act, name,
               instruction,
@@ -46,7 +46,7 @@ public abstract class CategoryCommand extends CoreCommand {
     protected abstract Intent makeFilter();
 
     @Override
-    protected void run() {
+    protected final void run() {
         switch (mAppCount) {
         case 0 -> throw badCommand(R.string.error_no_app);
         case 1 -> appSucceed(mLaunchIntent);

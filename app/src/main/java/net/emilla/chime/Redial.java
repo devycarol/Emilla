@@ -4,6 +4,7 @@ import android.media.AudioManager;
 import android.media.ToneGenerator;
 
 public final class Redial implements Chimer {
+
     private final ToneGenerator mToneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
 
     @Override

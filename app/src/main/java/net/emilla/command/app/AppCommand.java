@@ -25,7 +25,7 @@ import net.emilla.util.Apps;
 
 import java.util.Set;
 
-public class AppCommand extends EmillaCommand {
+public /*open*/ class AppCommand extends EmillaCommand {
 
     @ArrayRes
     public static int aliasId(String pkg, String cls) {
@@ -115,7 +115,7 @@ public class AppCommand extends EmillaCommand {
         }
     }
 
-    protected static class AppParams implements Params {
+    protected static /*open*/ class AppParams implements Params {
 
         protected final CharSequence name;
         private final String mPkg;
@@ -140,7 +140,7 @@ public class AppCommand extends EmillaCommand {
         }}
 
         @Override
-        public CharSequence title(Resources res) {
+        public /*open*/ CharSequence title(Resources res) {
             return Lang.colonConcat(res, R.string.command_app, name);
         }
     }
@@ -191,7 +191,7 @@ public class AppCommand extends EmillaCommand {
     }
 
     @Override @Deprecated
-    protected String dupeLabel() {
+    protected final String dupeLabel() {
         return mName + " (" + packageName + ")";
     }
 
@@ -210,7 +210,7 @@ public class AppCommand extends EmillaCommand {
     }
 
     @Override
-    protected void run(@NonNull String ignored) {
+    protected /*open*/ void run(@NonNull String ignored) {
         run(); // Todo: remove this from the interface for non-instructables.
     }
 }

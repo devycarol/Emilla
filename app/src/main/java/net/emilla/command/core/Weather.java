@@ -3,7 +3,6 @@ package net.emilla.command.core;
 import static android.content.Intent.CATEGORY_APP_WEATHER;
 
 import android.content.Intent;
-import android.os.Build;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
@@ -40,12 +39,7 @@ public final class Weather extends CategoryCommand {
     @Override
     protected Intent makeFilter() {
         return Apps.categoryTask(CATEGORY_APP_WEATHER);
-    }
-
-    @Override
-    protected void run() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) throw badCommand(R.string.error_unfinished_version); // TODO
-        super.run();
+        // TODO: figure out what's up with API level stuff here.
     }
 
     @Override

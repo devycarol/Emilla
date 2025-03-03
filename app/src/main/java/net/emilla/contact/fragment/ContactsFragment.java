@@ -60,7 +60,7 @@ public abstract class ContactsFragment<T> extends Fragment
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public final void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mHasMultiSelect = requireArguments().getBoolean("multiSelect");
 
         mContactList = view.findViewById(R.id.ctct_list);
@@ -109,7 +109,7 @@ public abstract class ContactsFragment<T> extends Fragment
 
     protected abstract ContactCursorAdapter cursorAdapter();
 
-    public void search(String search) {
+    public final void search(String search) {
         mSearchString = search;
 
         Context ctx = getContext();
@@ -153,17 +153,17 @@ public abstract class ContactsFragment<T> extends Fragment
     }
 
     @Override
-    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+    public final void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         mCursorAdapter.swapCursor(data);
     }
 
     @Override
-    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+    public final void onLoaderReset(@NonNull Loader<Cursor> loader) {
         mCursorAdapter.swapCursor(null);
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
+    public final void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
         var item = (ContactItemView) view;
         if (item.isDoubleTap() && (!mHasMultiSelect || mContactList.getCheckedItemCount() == 0)) {
             // TODO ACC DONTMERGE: replace double-tap with accessibility action when a service is in
@@ -179,7 +179,7 @@ public abstract class ContactsFragment<T> extends Fragment
     }
 
     @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int pos, long id) {
+    public final boolean onItemLongClick(AdapterView<?> parent, View view, int pos, long id) {
         if (!mContactList.isItemChecked(pos)) return false;
         mContactList.setItemChecked(pos, false);
         var item = (ContactItemView) view;

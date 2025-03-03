@@ -32,17 +32,17 @@ public abstract class Words implements TrieMap.Phrase<String, String> {
     }
 
     @Override
-    public void setPosition(Iterator<String> iterator) {
+    public final void setPosition(Iterator<String> iterator) {
         mPosition = ((WordIterator) iterator).mStartIndex;
     }
 
     @Override
-    public boolean hasRemainingContents() {
+    public final boolean hasRemainingContents() {
         return mPosition < mPhrase.length();
     }
 
     @Override
-    public String remainingContents() {
+    public final String remainingContents() {
         return mPhrase.substring(mPosition);
     }
 
@@ -55,7 +55,7 @@ public abstract class Words implements TrieMap.Phrase<String, String> {
         }
 
         @Override
-        public boolean hasNext() {
+        public final boolean hasNext() {
             return mStartIndex < mPhrase.length();
         }
     }

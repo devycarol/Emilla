@@ -46,37 +46,37 @@ public abstract class FieldToggle implements QuickAction {
         mActivity = act;
     }
 
-    public boolean activated() {
+    public final boolean activated() {
         return mActivated;
     }
 
-    public String fieldText() {
+    public final String fieldText() {
         return mField == null || mField.getVisibility() == View.GONE || mField.length() == 0 ? null
                 : mField.getText().toString();
     }
 
     @Override @IdRes
-    public int id() {
+    public final int id() {
         return mActionId;
     }
 
     @Override @DrawableRes
-    public int icon() {
+    public final int icon() {
         return mIcon;
     }
 
     @Override
-    public String label(Resources res) {
+    public final String label(Resources res) {
         return res.getString(R.string.action_toggle_field, res.getString(mFieldName));
     }
 
     @Override
-    public String description(Resources res) {
+    public final String description(Resources res) {
         return res.getString(R.string.action_desc_toggle_field, res.getString(mFieldName));
     }
 
     @Override
-    public void perform() {
+    public final void perform() {
         if (mField == null) {
             mField = mActivity.createField(mFieldId, mFieldName);
             mActivated = true;

@@ -44,8 +44,9 @@ abstract class TrieNode<K, V extends TrieMap.Value<V>> {
     }
 
     private static <K, V extends TrieMap.Value<V>> List<V> valuesRec(
-            TrieNode<K, V> node,
-            List<V> values) {
+        TrieNode<K, V> node,
+        List<V> values
+    ) {
         if (node.hasChildren()) {
             if (node.val != null) addValues(values, node.val);
             for (TrieNode<K, V> next : node.children.values()) valuesRec(next, values);

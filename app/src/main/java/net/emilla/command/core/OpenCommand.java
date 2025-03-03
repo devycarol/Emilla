@@ -45,7 +45,7 @@ public abstract class OpenCommand extends CoreCommand {
     protected abstract AlertDialog.Builder makeChooser();
 
     @Override
-    protected void run(@NonNull String app) {
+    protected final void run(@NonNull String app) {
         // todo: optimized pre-processed search
         int appCount = appList.size();
 

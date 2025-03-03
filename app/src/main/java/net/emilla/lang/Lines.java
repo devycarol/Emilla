@@ -135,7 +135,8 @@ public final class Lines implements Iterable<String> {
         return mEnforceTrimming ? new TrimmingLineIterator() : new LineIterator();
     }
 
-    private sealed class LineIterator implements Iterator<String> permits TrimmingLineIterator {
+    private sealed /*open*/ class LineIterator implements Iterator<String>
+            permits TrimmingLineIterator {
 
         protected int pos = mStart;
 
@@ -178,12 +179,12 @@ public final class Lines implements Iterable<String> {
             return makeLine(sb);
         }
 
-        protected void advanceToNextLine() {
+        protected /*open*/ void advanceToNextLine() {
             ++pos; // not worrying about spaces
         }
 
         @NonNull
-        protected String makeLine(StringBuilder sb) {
+        protected /*open*/ String makeLine(StringBuilder sb) {
             return sb.toString();
         }
     }

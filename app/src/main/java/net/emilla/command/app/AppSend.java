@@ -13,7 +13,7 @@ import net.emilla.R;
 import net.emilla.lang.Lang;
 import net.emilla.util.Apps;
 
-public class AppSend extends AppCommand {
+public /*open*/ class AppSend extends AppCommand {
 
     private static final class AppSendParams extends AppParams {
 
@@ -69,7 +69,7 @@ public class AppSend extends AppCommand {
     }
 
     @Override
-    protected void run(@NonNull String message) {
+    protected final void run(@NonNull String message) {
         appSucceed(Apps.sendToApp(packageName).putExtra(EXTRA_TEXT, message));
     }
 }

@@ -61,7 +61,7 @@ public abstract class CommandYielder implements TrieMap.Value<CommandYielder> {
     protected abstract EmillaCommand makeCommand(AssistActivity act);
 
     @Override
-    public CommandYielder duplicate(CommandYielder value) {
+    public final CommandYielder duplicate(CommandYielder value) {
         return new DuplicateYielder(this, value);
     }
 }

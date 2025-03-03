@@ -222,13 +222,13 @@ public abstract class EmillaCommand {
     }
 
     @CallSuper
-    protected void onInit() {}
+    protected /*open*/ void onInit() {}
 
     @CallSuper
-    protected void onInstruct(String instruction) {}
+    protected /*open*/ void onInstruct(String instruction) {}
 
     @CallSuper
-    protected void onClean() {}
+    protected /*open*/ void onClean() {}
 
     protected final String instruction() {
         return mInstruction;
@@ -417,7 +417,7 @@ public abstract class EmillaCommand {
      * End of finisher methods. *
      *==========================*/
 
-    public boolean usesData() {
+    public /*open*/ boolean usesData() {
         return false;
     }
 

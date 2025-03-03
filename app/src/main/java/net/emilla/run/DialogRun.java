@@ -4,7 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.AssistActivity;
 
-public class DialogRun implements Gift, Offering, Failure {
+public /*open*/ class DialogRun implements Gift, Offering, Failure {
 
     private final AssistActivity mActivity;
     private final AlertDialog mDialog;
@@ -24,7 +24,7 @@ public class DialogRun implements Gift, Offering, Failure {
     }
 
     @Override
-    public void run() {
+    public final void run() {
         mActivity.prepareForDialog();
         mDialog.show();
     }

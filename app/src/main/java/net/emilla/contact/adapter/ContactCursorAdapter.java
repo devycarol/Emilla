@@ -68,7 +68,7 @@ public abstract class ContactCursorAdapter extends CursorAdapter {
     public abstract String[] projection();
 
     @Override
-    public View newView(Context ctx, Cursor cur, ViewGroup parent) {
+    public final View newView(Context ctx, Cursor cur, ViewGroup parent) {
         return mInflater.inflate(R.layout.contact_item, parent, false);
     }
 }

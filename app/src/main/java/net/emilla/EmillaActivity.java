@@ -7,19 +7,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public abstract class EmillaActivity extends AppCompatActivity {
 
-    public void toast(CharSequence message) {
+    public final void toast(CharSequence message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    public void toast(CharSequence message, boolean longToast) {
+    public final void toast(CharSequence message, boolean longToast) {
         Toast.makeText(this, message, longToast ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT).show();
     }
 
-    public void toast(@StringRes int message) {
+    public final void toast(@StringRes int message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    public void toast(@StringRes int message, boolean longToast) {
+    public final void toast(@StringRes int message, boolean longToast) {
         Toast.makeText(this, message, longToast ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT).show();
     }
 }

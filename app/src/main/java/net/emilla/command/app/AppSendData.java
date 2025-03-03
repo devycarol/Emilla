@@ -9,7 +9,7 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.command.DataCommand;
 
-class AppSendData extends AppSend implements DataCommand {
+/*open*/ class AppSendData extends AppSend implements DataCommand {
 
     @StringRes
     private final int mHint;
@@ -38,12 +38,12 @@ class AppSendData extends AppSend implements DataCommand {
     }
 
     @Override
-    public boolean usesData() {
+    public final boolean usesData() {
         return true;
     }
 
     @Override @StringRes
-    public int dataHint() {
+    public final int dataHint() {
         return mHint;
     }
 
@@ -56,7 +56,7 @@ class AppSendData extends AppSend implements DataCommand {
     }
 
     @Override
-    public void execute(@NonNull String data) {
+    public final void execute(@NonNull String data) {
         String instruction = instruction();
         if (instruction == null) runWithData(data);
         else runWithData(instruction, data);
