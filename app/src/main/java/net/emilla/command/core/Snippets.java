@@ -2,16 +2,16 @@ package net.emilla.command.core;
 
 import androidx.annotation.ArrayRes;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.command.ActionMap;
+import net.emilla.command.Subcommand;
 import net.emilla.run.CopyGift;
 import net.emilla.settings.Aliases;
 import net.emilla.settings.SettingVals;
 import net.emilla.util.Dialogs;
-import net.emilla.util.Strings;
 
 import java.util.Set;
 
@@ -30,14 +30,16 @@ public final class Snippets extends CoreDataCommand {
         return new Yielder(true, Snippets::new, ENTRY, NAME, ALIASES);
     }
 
-    private static final byte
-            VIEW = -1, // todo: adding this requires changing the comparison logic in snippetAction().
-            GET = 0,
-            POP = 1,
-            REMOVE = 2,
-            ADD = 3;
+    private enum Action {
+//        VIEW,
+        GET,
+        POP,
+        REMOVE,
+        ADD
+    }
 
-    private byte mAction = GET;
+    private ActionMap<Action> mActionMap;
+    private Action mAction = Action.GET;
     private Set<String> mSnippetNames;
     private String mUsedSnippet;
     private String mUsedText;
@@ -55,6 +57,13 @@ public final class Snippets extends CoreDataCommand {
     protected void onInit() {
         super.onInit();
         if (mSnippetNames == null) mSnippetNames = SettingVals.snippets(prefs());
+        if (mActionMap == null) {
+            mActionMap = new ActionMap<>(Action.GET);
+
+            mActionMap.put(resources, Action.GET, R.array.subcmd_snippet_get, true);
+            mActionMap.put(resources, Action.POP, R.array.subcmd_snippet_pop, true);
+            mActionMap.put(resources, Action.REMOVE, R.array.subcmd_snippet_remove, true);
+        }
     }
 
     @Override
@@ -67,58 +76,28 @@ public final class Snippets extends CoreDataCommand {
 
     @Override
     protected void run() {
-        if (mAction != GET) {
-            mAction = GET;
-            mUsedSnippet = null;
-            mUsedText = null;
-            // forget the used snippet
-        }
-        snippet(null);
+        refreshState(Action.GET);
+        snippet(new Subcommand<>(Action.GET, null));
     }
 
     @Override
     protected void run(@NonNull String label) {
-        snippet(extractAction(label));
+        Subcommand<Action> subcmd = mActionMap.get(label);
+        refreshState(subcmd.action());
+        snippet(subcmd);
     }
 
-    private String extractAction(String label) {
-        var lcLabel = label.toLowerCase();
-        byte action;
-        if (lcLabel.startsWith("get")) {
-            action = GET;
-            label = Strings.subTrimToNull(label, 3);
-        } else if (lcLabel.startsWith("copy")) {
-            action = GET;
-            label = Strings.subTrimToNull(label, 4);
-        } else if (lcLabel.startsWith("cp")) {
-            action = GET;
-            label = Strings.subTrimToNull(label, 2);
-        } else if (lcLabel.startsWith("pop") || lcLabel.startsWith("cut")) {
-            action = POP;
-            label = Strings.subTrimToNull(label, 3);
-        } else if (lcLabel.startsWith("remove") || lcLabel.startsWith("delete")) {
-            action = REMOVE;
-            label = Strings.subTrimToNull(label, 6);
-        } else if (lcLabel.startsWith("rm")) {
-            action = REMOVE;
-            label = Strings.subTrimToNull(label, 2);
-        } else if (lcLabel.startsWith("del")) {
-            action = REMOVE;
-            label = Strings.subTrimToNull(label, 3);
-        } else action = GET;
-        // TODO LANG: use TrieMap for all subcommands
-
+    private void refreshState(Action action) {
         if (mAction != action) {
             mAction = action;
             mUsedSnippet = null;
             mUsedText = null;
             // forget the used snippet
         }
-
-        return label;
     }
 
-    private void snippet(@Nullable String label) {
+    private void snippet(Subcommand<Action> subcmd) {
+        String label = subcmd.instruction();
         if (label != null) {
             var lcLabel = label.toLowerCase();
             if (mSnippetNames.contains(lcLabel)) {
@@ -134,13 +113,13 @@ public final class Snippets extends CoreDataCommand {
                 }
 
                 mUsedSnippet = label;
-                snippetAction(label, lcLabel);
+                snippet(label, lcLabel, subcmd.action());
             } else failMessage(str(R.string.error_no_snippet, label));
         } else if (mSnippetNames.isEmpty()) failMessage(R.string.error_no_snippets);
         else {
             var items = mSnippetNames.toArray(new String[0]);
             offerDialog(Dialogs.list(activity, NAME, items,
-                    (dlg, which) -> snippetAction(items[which], items[which])));
+                    (dlg, which) -> snippet(items[which], items[which], subcmd.action())));
             // TODO: use the case that the user used for the labels while
             //  - must retain case-insensitivity
             //  - would require a 'rename' subcmd
@@ -148,16 +127,23 @@ public final class Snippets extends CoreDataCommand {
         }
     }
 
-    private void snippetAction(@NonNull String label, @NonNull String lcLabel) {
-        if (mAction <= POP) {
+    private void snippet(@NonNull String label, @NonNull String lcLabel, Action action) {
+        switch (action) {
+        case GET -> {
             String snippet = SettingVals.snippet(prefs(), lcLabel);
             give(new CopyGift(activity, snippet));
         }
-        if (mAction >= POP) {
+        case POP -> {
+            String snippet = SettingVals.snippet(prefs(), lcLabel);
+            give(new CopyGift(activity, snippet));
             mSnippetNames = SettingVals.removeSnippet(prefs(), lcLabel);
             toast(str(R.string.toast_snippet_deleted, label));
-            if (mAction == REMOVE) give(() -> {});
         }
+        case REMOVE -> {
+            mSnippetNames = SettingVals.removeSnippet(prefs(), lcLabel);
+            toast(str(R.string.toast_snippet_deleted, label));
+            give(() -> {});
+        }}
     }
 
     @Override
@@ -174,7 +160,7 @@ public final class Snippets extends CoreDataCommand {
 
     @Override
     protected void runWithData(@NonNull String label, @NonNull String text) {
-        mAction = ADD;
+        mAction = Action.ADD;
 
         var lcLabel = label.toLowerCase();
         if (mSnippetNames.contains(lcLabel)) {

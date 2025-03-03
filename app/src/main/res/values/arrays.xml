@@ -258,10 +258,25 @@
     <string-array name="aliases_outlook" />
 
     <!-- Sub-commands -->
-    <!-- Todo: make these configurable -->
+    <!-- Todo config. When you do, prevent duplicate names. -->
     <string-array name="subcmd_search">
         <item>search</item>
         <item>srch</item>
         <item>find</item>
+    </string-array>
+    <string-array name="subcmd_snippet_get">
+        <item>get</item>
+        <item>copy</item>
+        <item>cp</item>
+    </string-array>
+    <string-array name="subcmd_snippet_pop">
+        <item>pop</item>
+        <item>cut</item>
+    </string-array>
+    <string-array name="subcmd_snippet_remove">
+        <item>remove</item>
+        <item>rm</item>
+        <item>delete</item>
+        <item>del</item>
     </string-array>
 </resources>
