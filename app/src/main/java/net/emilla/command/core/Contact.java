@@ -15,12 +15,13 @@ import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.command.ActionMap;
+import net.emilla.command.Subcommand;
 import net.emilla.contact.fragment.ContactCardsFragment;
 import net.emilla.content.receive.ContactCardReceiver;
 import net.emilla.settings.Aliases;
 import net.emilla.util.Apps;
 import net.emilla.util.Dialogs;
-import net.emilla.util.Strings;
 
 import java.util.List;
 
@@ -37,14 +38,17 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
         return new Yielder(true, Contact::new, ENTRY, NAME, ALIASES);
     }
 
-    private static final byte
-            VIEW = 0,
-            EDIT = 1,
-            SEND = 2,
-            CREATE = 4;
+    private enum Action {
+        VIEW,
+        EDIT,
+        SHARE,
+        CREATE
+    }
 
-    private byte mAction;
     private ContactCardsFragment mContactsFragment;
+
+    private ActionMap<Action> mActionMap;
+    private Action mAction = Action.VIEW;
 
     public Contact(AssistActivity act) {
         super(act, NAME,
@@ -61,12 +65,21 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
 
         if (mContactsFragment == null) mContactsFragment = ContactCardsFragment.newInstance();
         activity.giveActionBox(mContactsFragment);
+
+        if (mActionMap == null) {
+            mActionMap = new ActionMap<>(Action.VIEW);
+
+            mActionMap.put(resources, Action.VIEW, R.array.subcmd_edit, true);
+            mActionMap.put(resources, Action.EDIT, R.array.subcmd_edit, true);
+            mActionMap.put(resources, Action.SHARE, R.array.subcmd_share, true);
+            mActionMap.put(resources, Action.CREATE, R.array.subcmd_create, true);
+        }
     }
 
     @Override
     protected void onInstruct(String instruction) {
         super.onInstruct(instruction);
-        mContactsFragment.search(mAction == CREATE ? null : extractAction(instruction));
+        mContactsFragment.search(mAction == Action.CREATE ? null : extractAction(instruction));
         // Todo: maybe don't show contacts for the 'create' subcommand
     }
 
@@ -80,28 +93,15 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
 
     @Nullable
     private String extractAction(String person) {
-        // TODO LANG: replace with tri-state button
-        if (person == null) return null;
+        if (person == null) {
+            mAction = Action.VIEW;
+            return null;
+        }
 
-        var lcPerson = person.toLowerCase();
-        if (lcPerson.startsWith("edit")) {
-            mAction = EDIT;
-            person = Strings.subTrimToNull(person, 4);
-        } else if (lcPerson.startsWith("send")) {
-            mAction = SEND;
-            person = Strings.subTrimToNull(person, 4);
-        } else if (lcPerson.startsWith("share")) {
-            mAction = SEND;
-            person = Strings.subTrimToNull(person, 5);
-        } else if (lcPerson.startsWith("new")) {
-            mAction = CREATE;
-            person = Strings.subTrimToNull(person, 3);
-        } else if (lcPerson.startsWith("create")) {
-            mAction = CREATE;
-            person = Strings.subTrimToNull(person, 6);
-        } else mAction = VIEW;
+        Subcommand<Action> subcmd = mActionMap.get(person);
+        mAction = subcmd.action();
 
-        return person;
+        return subcmd.instruction();
     }
 
     @Override
@@ -122,12 +122,12 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
         //  - emergency/sos: contact emergency numbers (SOS could be its own command, "panic button")
         //    - see calyx's panic button functionality
         switch (mAction) {
-        case VIEW, EDIT, SEND -> {
+        case VIEW, EDIT, SHARE -> {
             Uri contact = mContactsFragment.selectedContacts();
             if (contact != null) switch (mAction) {
                 case VIEW -> view(contact);
                 case EDIT -> edit(contact);
-                case SEND -> send(contact, null);
+                case SHARE -> send(contact, null);
             } else if (person != null) offerCreate(person, null);
             else activity.offerContactCards(this);
         }
@@ -149,7 +149,7 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
 
     private void contact(@Nullable String person, @NonNull String details) {
         // Todo: dynamic data hint
-        if (mAction != SEND) create(person, details);
+        if (mAction != Action.SHARE) create(person, details);
         else if (person != null) offerCreate(person, details);
         else activity.offerContactCards(this);
     }
@@ -195,7 +195,7 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
     public void provide(@NonNull Uri contact) {
         switch (mAction) {
         case EDIT -> edit(contact);
-        case SEND -> send(contact, activity.dataText());
+        case SHARE -> send(contact, activity.dataText());
         default -> view(contact);
         }
     }

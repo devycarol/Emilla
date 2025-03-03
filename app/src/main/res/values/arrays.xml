@@ -259,6 +259,22 @@
 
     <!-- Sub-commands -->
     <!-- Todo config. When you do, prevent duplicate names. -->
+    <string-array name="subcmd_view">
+        <item>View</item>
+        <item>peek</item>
+    </string-array>
+    <string-array name="subcmd_edit">
+        <item>Edit</item>
+        <item>change</item>
+    </string-array>
+    <string-array name="subcmd_share">
+        <item>Share</item>
+        <item>send</item>
+    </string-array>
+    <string-array name="subcmd_create">
+        <item>Create</item>
+        <item>new</item>
+    </string-array>
     <string-array name="subcmd_search">
         <item>search</item>
         <item>srch</item>
@@ -282,5 +298,9 @@
         <item>rm</item>
         <item>delete</item>
         <item>del</item>
+    </string-array>
+    <string-array name="subcmd_pomodoro_break">
+        <item>Break</item>
+        <item>b</item>
     </string-array>
 </resources>
