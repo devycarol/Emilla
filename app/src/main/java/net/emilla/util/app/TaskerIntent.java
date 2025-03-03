@@ -91,7 +91,9 @@ public final class TaskerIntent extends Intent {
     // OK: you should be able to send a task to run. Still need to listen for result for e.g. task
     //     not found
 
-    public enum Status {NOT_ENABLED, NO_ACCESS, NO_PERMISSION, NO_RECEIVER, OK}
+    public enum Status {
+        NOT_ENABLED, NO_ACCESS, NO_PERMISSION, NO_RECEIVER, OK
+    }
 
     // -------------------------- PRIVATE VARS ---------------------------- //
 

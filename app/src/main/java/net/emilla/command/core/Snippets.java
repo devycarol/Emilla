@@ -31,11 +31,7 @@ public final class Snippets extends CoreDataCommand {
     }
 
     private enum Action {
-        PEEK,
-        GET,
-        POP,
-        REMOVE,
-        ADD
+        PEEK, GET, POP, REMOVE, ADD
     }
 
     private ActionMap<Action> mActionMap;

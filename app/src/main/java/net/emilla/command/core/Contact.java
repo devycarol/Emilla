@@ -39,10 +39,7 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
     }
 
     private enum Action {
-        VIEW,
-        EDIT,
-        SHARE,
-        CREATE
+        VIEW, EDIT, SHARE, CREATE
     }
 
     private ContactCardsFragment mContactsFragment;
