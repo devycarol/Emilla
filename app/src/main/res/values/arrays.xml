@@ -303,4 +303,10 @@
         <item>Break</item>
         <item>b</item>
     </string-array>
+    <string-array name="subcmd_tasker_run">
+        <item>Run</item>
+    </string-array>
+    <string-array name="subcmd_tasker_list">
+        <item>List</item>
+    </string-array>
 </resources>

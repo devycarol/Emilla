@@ -5,12 +5,14 @@ import android.net.Uri;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.command.ActionMap;
 import net.emilla.command.DataCommand;
 import net.emilla.lang.Lines;
 import net.emilla.util.Dialogs;
@@ -42,11 +44,36 @@ public final class Tasker extends AppCommand implements DataCommand {
     private static final String COL_TASK_NAME = "name";
     private static final String COL_PROJECT_NAME = "project_name";
 
+    private enum Action {
+        RUN, LIST
+    }
+
+    private ActionMap<Action> mActionMap;
+
     public Tasker(AssistActivity act, Yielder info) {
         super(act, new InstructyParams(info, R.string.instruction_app_tasker),
               R.string.summary_app_tasker,
               R.string.manual_app_tasker,
               EditorInfo.IME_ACTION_NEXT);
+    }
+
+    @Override @CallSuper
+    protected void onInit() {
+        super.onInit();
+
+        if (mActionMap == null) {
+            mActionMap = new ActionMap<>(Action.RUN);
+
+            mActionMap.put(resources, Action.RUN, R.array.subcmd_tasker_run, true);
+            mActionMap.put(resources, Action.LIST, R.array.subcmd_tasker_list, false);
+            // todo: list with search—when you do, change usesInstruction from false to true.
+            // todo: in the far future, you could have a rudimentary UI for creating tasks
+        }
+    }
+
+    @Override @CallSuper
+    protected void onClean() {
+        super.onClean();
     }
 
     @Override
@@ -70,11 +97,8 @@ public final class Tasker extends AppCommand implements DataCommand {
     }
 
     private String extractAction(@NonNull String task) {
-        if (task.startsWith("run")) task = task.substring(3).trim();
-        else if (task.startsWith("list")) task = task.substring(4).trim();
-        // TODO LANG: use TrieMap for all subcommands
-        // todo: in the far future, you could have a rudimentary UI for creating tasks
-        return task;
+        task = mActionMap.get(task).instruction();
+        return task != null ? task : "";
     }
 
     private void trySearchRun(@NonNull String task, @Nullable String params) {
