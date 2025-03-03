@@ -22,6 +22,30 @@
     <string name="title_assistant">Assistant</string>
     <string name="title_commands">Commands</string>
 
+    <string name="ping_channel_command" translatable="false">@string/title_commands</string>
+    <string name="channel_desc_command">Notifications from commands.</string>
+    <string name="ping_channel_pomodoro_start">Pomodoro Started</string>
+    <string name="channel_desc_pomodoro_start">Fired when a Pomodoro has started.</string>
+    <string name="ping_channel_pomodoro_warn">Pomodoro Warning</string>
+    <string name="channel_desc_pomodoro_warn">Fired when a Pomodoro is about to end.</string>
+    <string name="ping_channel_pomodoro_end" translatable="false">@string/ping_pomodoro_over</string>
+    <string name="channel_desc_pomodoro_end">Fired when a Pomodoro has finished.</string>
+    <string name="ping_channel_pomodoro_break_start">Pomodoro Break Started</string>
+    <string name="channel_desc_pomodoro_break_start">Fired when a Pomodoro break has started.</string>
+    <string name="ping_channel_pomodoro_break_warn">Pomodoro Break Warning</string>
+    <string name="channel_desc_pomodoro_break_warn">Fired when a Pomodoro break is about to end.</string>
+    <string name="ping_channel_pomodoro_break_end" translatable="false">@string/ping_pomodoro_break_over</string>
+    <string name="channel_desc_pomodoro_break_end">Fired when a Pomodoro break has finished.</string>
+
+    <string name="ping_command">Emilla Notifier</string>
+    <string name="ping_pomodoro">Pomodoro</string>
+    <string name="ping_pomodoro_text">You got it!</string>
+    <string name="ping_pomodoro_warn_text">A minute remains.</string>
+    <string name="ping_pomodoro_over">Pomodoro Over</string>
+    <string name="ping_pomodoro_break">Pomodoro Break</string>
+    <string name="ping_pomodoro_break_text">Take a breather :)</string>
+    <string name="ping_pomodoro_break_over">Pomodoro Break Over</string>
+
     <!-- UI Components -->
     <string name="field_command">Command</string>
     <string name="field_subject">Subject</string>
@@ -64,6 +88,8 @@
     <string name="pref_favorites">Favorite commands</string>
     <string name="smry_favorites">Shortcuts for your favorite actions</string>
     <string name="pref_always_show_data">Always show data field</string>
+    <string name="pref_pomo_default_work">Default Pomodoro work memo</string>
+    <string name="pref_pomo_default_break">Default Pomodoro break memo</string>
 
     <!-- Customization settings -->
     <string name="pref_show_titlebar">Titlebar</string>
@@ -91,7 +117,7 @@
     <string name="pref_default_assistant">Default assistant</string>
     <string name="pref_accessibility_button">Accessibility button</string>
     <string name="accessibility_service_description">Launch assistant with a navigation shortcut</string>
-    <string name="pref_notifications">Notifications</string>
+    <string name="pref_notifications" translatable="false">@string/perm_notifications</string>
     <string name="summary_app_info">Permissions, etc.</string>
 
     <!-- Command settings -->
@@ -441,7 +467,8 @@
     </string>
     <!-- "Set notification reminders" -->
     <string name="manual_notify">
-        In the future, this command will work.
+        You can set a notification title with the instruction. You can set notification text in the
+        data field.
     </string>
     <!-- "Search and change system settings" -->
     <string name="manual_setting">
@@ -633,7 +660,6 @@
     <string name="error_feature_phone">Your device doesn\'t support phone calls.</string>
     <string name="error_feature_sms">Your device doesn\'t support SMS messaging.</string>
     <string name="error_unfinished_feature">Unfinished feature!</string>
-    <string name="error_unfinished_reminders">Sorry! I don\'t know how to make reminders yet.</string>
     <string name="error_unfinished_setting">Sorry! I don\'t know how to modify specific settings yet.</string>
     <string name="error_unfinished_notes">Sorry! I don\'t know how to write notes yet.</string>
     <string name="error_unfinished_version">Sorry! This command doesn\'t support your Android version yet.</string>
@@ -677,6 +703,7 @@
     <!-- Permission labels  -->
     <string name="perm_calling">Calling</string>
     <string name="perm_contacts">Contacts</string>
+    <string name="perm_notifications">Notifications</string>
     <string name="perm_tasker">Tasker</string>
 
     <!-- Contact list actions -->
@@ -693,14 +720,9 @@
     <string name="contacts_permission_required">Permission is needed to read device contacts.</string>
     <string name="contacts_permission_button">Get permission</string>
 
-    <!-- Memos -->
-    <string name="memo_pomodoro_break">Pomodoro break</string>
-
     <!-- Toast messages -->
     <string name="toast_local_time">Local time: %s</string>
     <string name="toast_hello">Hi there!</string>
-    <string name="toast_pomodoro_break">Take a breather :)</string>
-    <string name="toast_pomodoro">You got it!</string>
     <plurals name="toast_tasks_created">
         <item quantity="one">Task created.</item>
         <item quantity="other">%d tasks created.</item>

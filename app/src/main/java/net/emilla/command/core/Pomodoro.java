@@ -1,22 +1,29 @@
 package net.emilla.command.core;
 
-import static android.provider.AlarmClock.ACTION_SET_TIMER;
-import static android.provider.AlarmClock.EXTRA_LENGTH;
-import static android.provider.AlarmClock.EXTRA_MESSAGE;
-import static android.provider.AlarmClock.EXTRA_SKIP_UI;
-import static java.lang.Float.parseFloat;
-
-import android.content.Intent;
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Notification;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresPermission;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.command.ActionMap;
+import net.emilla.command.Subcommand;
+import net.emilla.event.PingPlan;
+import net.emilla.event.PingScheduler;
+import net.emilla.event.Plan;
+import net.emilla.lang.Lang;
+import net.emilla.ping.PingChannel;
+import net.emilla.ping.PingsKt;
 import net.emilla.settings.Aliases;
-
-import java.util.regex.Pattern;
+import net.emilla.settings.SettingVals;
+import net.emilla.util.Permissions;
 
 public final class Pomodoro extends CoreDataCommand {
 
@@ -31,9 +38,12 @@ public final class Pomodoro extends CoreDataCommand {
         return new Yielder(true, Pomodoro::new, ENTRY, NAME, ALIASES);
     }
 
-    private final Intent mIntent = new Intent(ACTION_SET_TIMER)
-            .putExtra(EXTRA_SKIP_UI, true)
-            .putExtra(EXTRA_LENGTH, 1500 /*25m*/); // todo: make configurable
+    private enum Action {
+        WORK, BREAK
+    }
+
+    private ActionMap<Action> mActionMap;
+    private String mWorkMemo, mBreakMemo;
 
     public Pomodoro(AssistActivity act) {
         super(act, NAME,
@@ -42,54 +52,125 @@ public final class Pomodoro extends CoreDataCommand {
               R.string.summary_pomodoro,
               R.string.manual_pomodoro,
               R.string.data_hint_pomodoro);
-        mIntent.putExtra(EXTRA_MESSAGE, str(NAME));
     }
 
-    /**
-     * @return true if this is a break timer.
-     */
-    private boolean putDuration(String duration) {
-        var m = Pattern.compile(" *b(reak)? *").matcher(duration); // TODO LANG
-        boolean isBreak = m.find();
-        if (isBreak) duration = m.replaceFirst("");
+    @Override @CallSuper
+    protected void onInit() {
+        super.onInit();
 
-        if (duration.isEmpty()) mIntent.putExtra(EXTRA_LENGTH, 300 /*5m*/); // todo: make configurable
-        // only reached if the string was emptied by the stripping the 'break' tag
-        else try {
-            float dur = parseFloat(duration);
-            // todo: I need to learn more about float errors..
-            //  and this function... ion wanna worry about hexadecimal :sob:
-            if (dur <= 0.0f) throw badCommand(R.string.error_bad_minutes);
-            mIntent.putExtra(EXTRA_LENGTH, (int) (dur * 60.0f));
-        } catch (NumberFormatException e) {
-            throw badCommand(R.string.error_bad_minutes);
+        if (mActionMap == null) {
+            mActionMap = new ActionMap<>(Action.WORK);
+            mActionMap.put(resources, Action.BREAK, R.array.subcmd_pomodoro_break, true);
         }
-        return isBreak;
+
+        if (mWorkMemo == null || mBreakMemo == null) {
+            mWorkMemo = SettingVals.defaultPomoWorkMemo(prefs(), resources);
+            mBreakMemo = SettingVals.defaultPomoBreakMemo(prefs(), resources);
+        }
+    }
+
+    @Override @CallSuper
+    protected void onClean() {
+        super.onClean();
+
+        mWorkMemo = null;
+        mBreakMemo = null;
     }
 
     @Override
     protected void run() {
-        appSucceed(mIntent);
+        tryPomo(null, false);
     }
 
     @Override
-    protected void run(@NonNull String duration) {
-        boolean isBreak = putDuration(duration);
-        if (isBreak) mIntent.putExtra(EXTRA_MESSAGE, str(R.string.memo_pomodoro_break));
-        appSucceed(mIntent);
-        toast(isBreak ? str(R.string.toast_pomodoro_break) : str(R.string.toast_pomodoro));
+    protected void run(@NonNull String minutes) {
+        Subcommand<Action> sumcmd = mActionMap.get(minutes);
+        tryPomo(sumcmd.instruction(), sumcmd.action() == Action.BREAK);
     }
 
     @Override
     protected void runWithData(@NonNull String memo) {
-        appSucceed(mIntent.putExtra(EXTRA_MESSAGE, memo));
+        mWorkMemo = memo;
+        tryPomo(null, false);
     }
 
     @Override
-    protected void runWithData(@NonNull String duration, @NonNull String memo) {
-        boolean isBreak = putDuration(duration);
-        mIntent.putExtra(EXTRA_MESSAGE, memo);
-        appSucceed(mIntent);
-        toast(isBreak ? str(R.string.toast_pomodoro_break) : str(R.string.toast_pomodoro));
+    protected void runWithData(@NonNull String minutes, @NonNull String memo) {
+        Subcommand<Action> subcmd = mActionMap.get(minutes);
+
+        boolean isBreak = subcmd.action() == Action.BREAK;
+        if (isBreak) mBreakMemo = memo;
+        else mWorkMemo = memo;
+
+        tryPomo(subcmd.instruction(), isBreak);
+    }
+
+    @SuppressLint("MissingPermission")
+    private void tryPomo(@Nullable String minutes, boolean isBreak) {
+        int seconds = seconds(minutes, isBreak);
+        Permissions.withPings(activity, () -> pomo(seconds, mWorkMemo, mBreakMemo, isBreak));
+    }
+
+    private int seconds(@Nullable String minutes, boolean isBreak) {
+        if (minutes == null) {
+            if (isBreak) return SettingVals.defaultPomoBreakMins(prefs()) * 60;
+            return SettingVals.defaultPomoWorkMins(prefs()) * 60;
+        }
+
+        return Lang.duration(minutes, NAME).seconds;
+    }
+
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
+    private void pomo(int seconds, String workMemo, String breakMemo, boolean isBreak) {
+        String title, overTitle, memo, overMemo;
+        String startChannel, warnChannel, endChannel;
+        if (isBreak) {
+            title = str(R.string.ping_pomodoro_break);
+            overTitle = str(R.string.ping_pomodoro_break_over);
+            startChannel = PingChannel.POMODORO_BREAK_START;
+            warnChannel = PingChannel.POMODORO_BREAK_WARN;
+            endChannel = PingChannel.POMODORO_BREAK_END;
+
+            memo = breakMemo;
+            overMemo = workMemo;
+        } else {
+            title = str(R.string.ping_pomodoro);
+            overTitle = str(R.string.ping_pomodoro_over);
+            startChannel = PingChannel.POMODORO_START;
+            warnChannel = PingChannel.POMODORO_WARN;
+            endChannel = PingChannel.POMODORO_END;
+
+            memo = workMemo;
+            overMemo = breakMemo;
+        }
+
+        var scheduler = new PingScheduler(activity);
+
+        var warnMemo = str(R.string.ping_pomodoro_warn_text);
+        if (seconds > 60) {
+            givePing(startChannel, title, memo);
+
+            scheduler.plan(PingPlan.afterSeconds(
+                    Plan.POMODORO_WARNING,
+                    seconds - 60,
+                    makePing(warnChannel, title, warnMemo),
+                    warnChannel));
+
+        } else givePing(warnChannel, title, warnMemo);
+
+        scheduler.plan(PingPlan.afterSeconds(
+                Plan.POMODORO_ENDED,
+                seconds,
+                makePing(endChannel, overTitle, overMemo),
+                endChannel));
+    }
+
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
+    private void givePing(String channel, @NonNull String title, @NonNull String memo) {
+        givePing(makePing(channel, title, memo), PingChannel.of(channel));
+    }
+
+    private Notification makePing(String channel, @NonNull String title, @NonNull String memo) {
+        return PingsKt.make(activity, channel, title, memo, R.drawable.ic_pomodoro);
     }
 }

@@ -22,6 +22,14 @@
             app:defaultValue="false"
             app:key="always_show_data"
             app:title="@string/pref_always_show_data" />
+        <EditTextPreference
+            app:defaultValue="@string/ping_pomodoro_text"
+            app:key="pomo_default_work_memo"
+            app:title="@string/pref_pomo_default_work" />
+        <EditTextPreference
+            app:defaultValue="@string/ping_pomodoro_break_text"
+            app:key="pomo_default_break_memo"
+            app:title="@string/pref_pomo_default_break" />
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/header_customization">

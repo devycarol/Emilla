@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 
+import androidx.annotation.NonNull;
+
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.action.AssistantSettings;
@@ -32,6 +34,7 @@ import net.emilla.command.core.Email;
 import net.emilla.command.core.Info;
 import net.emilla.command.core.Launch;
 import net.emilla.command.core.Navigate;
+import net.emilla.command.core.Notify;
 import net.emilla.command.core.Pomodoro;
 import net.emilla.command.core.RandomNumber;
 import net.emilla.command.core.Roll;
@@ -84,16 +87,16 @@ public final class SettingVals {
             case Pomodoro.ENTRY -> coreYielders[13];
             case Calendar.ENTRY -> coreYielders[14];
             case Contact.ENTRY -> coreYielders[15];
-//            case Notify.ENTRY -> coreYielders[];
-            case Calculate.ENTRY -> coreYielders[16];
-            case RandomNumber.ENTRY -> coreYielders[17];
-            case Roll.ENTRY -> coreYielders[18];
-            case Weather.ENTRY -> coreYielders[19];
-            case Bookmark.ENTRY -> coreYielders[20];
-            case Torch.ENTRY -> coreYielders[21];
-            case Info.ENTRY -> coreYielders[22];
-            case Uninstall.ENTRY -> coreYielders[23];
-            case Toast.ENTRY -> coreYielders[24];
+            case Notify.ENTRY -> coreYielders[16];
+            case Calculate.ENTRY -> coreYielders[17];
+            case RandomNumber.ENTRY -> coreYielders[18];
+            case Roll.ENTRY -> coreYielders[19];
+            case Weather.ENTRY -> coreYielders[20];
+            case Bookmark.ENTRY -> coreYielders[21];
+            case Torch.ENTRY -> coreYielders[22];
+            case Info.ENTRY -> coreYielders[23];
+            case Uninstall.ENTRY -> coreYielders[24];
+            case Toast.ENTRY -> coreYielders[25];
             default -> throw new IllegalArgumentException("No such command \"" + entry + "\".");
         });
     }
@@ -223,4 +226,24 @@ public final class SettingVals {
     }
 
     private SettingVals() {}
+
+    public static int defaultPomoWorkMins(SharedPreferences prefs) {
+        return prefs.getInt("pomo_default_work_mins", 25);
+        // Todo config.
+    }
+
+    public static int defaultPomoBreakMins(SharedPreferences prefs) {
+        return prefs.getInt("pomo_default_break_mins", 5);
+        // Todo config.
+    }
+
+    @NonNull
+    public static String defaultPomoWorkMemo(SharedPreferences prefs, Resources res) {
+        return prefs.getString("pomo_default_work_memo", res.getString(R.string.ping_pomodoro_text));
+    }
+
+    @NonNull
+    public static String defaultPomoBreakMemo(SharedPreferences prefs, Resources res) {
+        return prefs.getString("pomo_default_break_memo", res.getString(R.string.ping_pomodoro_break_text));
+    }
 }

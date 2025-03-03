@@ -1,6 +1,7 @@
 package net.emilla.util;
 
 import static android.Manifest.permission.CALL_PHONE;
+import static android.Manifest.permission.POST_NOTIFICATIONS;
 import static android.Manifest.permission.READ_CONTACTS;
 import static android.Manifest.permission.WRITE_CONTACTS;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
@@ -23,6 +24,8 @@ public final class Permissions {
 
     public static final String CALL = CALL_PHONE;
     public static final String[] CONTACTS = {READ_CONTACTS, WRITE_CONTACTS};
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
+    public static final String PINGS = POST_NOTIFICATIONS;
     public static final String TASKER = TaskerIntent.PERMISSION_RUN_TASKS;
 
     /**
@@ -240,6 +243,52 @@ public final class Permissions {
     private static boolean contactsPrompt(Activity act) {
         return prompt(act, READ_CONTACTS)
             && prompt(act, WRITE_CONTACTS);
+    }
+
+    /**
+     * <p>
+     * Performs the given action if notifications permission is granted and triggers request flow if
+     * not. If the user then grants permission, the action will be performed at that point.</p>
+     * <p>
+     * If the system permission request is suppressed, a fail dialog will link the user to the app
+     * info screen where they can manually grant permission.</p>
+     *
+     * @param act is used to perform permission checks and construct dialogs as needed.
+     * @param onGrant action to perform if permission granted.
+     */
+    public static void withPings(AssistActivity act, @NonNull Runnable onGrant) {
+        if (pings(act)) {
+            onGrant.run();
+            return;
+        }
+
+        if (pingsPrompt(act)) act.offer(new PermissionOffering(act, PINGS, onGrant));
+        else act.fail(new PermissionFailure(act, R.string.perm_notifications));
+    }
+
+    /**
+     * Checks if notifications permission is granted.
+     *
+     * @param ctx is used to perform permission checks.
+     * @return true if contacts permission is granted, false if not.
+     */
+    public static boolean pings(Context ctx) {
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU
+            || ctx.checkSelfPermission(PINGS) == PERMISSION_GRANTED;
+    }
+
+    /**
+     * <p>
+     * Checks if the notifications permission prompt is available.</p>
+     * <p>
+     * This should only be used when permission isn't granted.</p>
+     *
+     * @param act is used to perform permission checks.
+     * @return true if the contacts prompt is available, false otherwise.
+     */
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
+    private static boolean pingsPrompt(Activity act) {
+        return prompt(act, PINGS);
     }
 
     /**

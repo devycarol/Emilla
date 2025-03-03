@@ -118,7 +118,7 @@ public final class CommandsFragment extends EmillaPreferenceFragment {
         setupCorePref(Pomodoro.ALIAS_TEXT_KEY, listener, Pomodoro.ALIASES);
         setupCorePref(Calendar.ALIAS_TEXT_KEY, listener, Calendar.ALIASES);
         setupCorePref(Contact.ALIAS_TEXT_KEY, listener, Contact.ALIASES);
-        deactivate(Notify.ALIAS_TEXT_KEY);
+        setupCorePref(Notify.ALIAS_TEXT_KEY, listener, Notify.ALIASES);
         setupCorePref(Calculate.ALIAS_TEXT_KEY, listener, Calculate.ALIASES);
         setupCorePref(RandomNumber.ALIAS_TEXT_KEY, listener, RandomNumber.ALIASES);
         setupCorePref(Roll.ALIAS_TEXT_KEY, listener, Roll.ALIASES);

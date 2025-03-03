@@ -6,8 +6,10 @@ import android.content.res.Resources;
 import androidx.annotation.StringRes;
 
 import net.emilla.R;
+import net.emilla.lang.date.Duration;
 import net.emilla.lang.date.HourMin;
 import net.emilla.lang.date.Weekdays;
+import net.emilla.lang.date.impl.DurationEN_US;
 import net.emilla.lang.date.impl.HourMinEN_US;
 import net.emilla.lang.date.impl.WeekdaysEN_US;
 import net.emilla.lang.grammar.ListPhrase;
@@ -66,6 +68,12 @@ public final class Lang {
     public static HourMin time(String timeStr, Context ctx, @StringRes int errorTitle) {
         return switch (-1) {
             default -> HourMinEN_US.instance(timeStr, ctx, errorTitle);
+        };
+    }
+
+    public static Duration duration(String minutes, @StringRes int errorTitle) {
+        return switch (-1) {
+            default -> DurationEN_US.instance(minutes, errorTitle);
         };
     }
 

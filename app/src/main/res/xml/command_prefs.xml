@@ -102,7 +102,7 @@
             android:key="aliases_calendar_text"
             android:summary="@string/summary_calendar"
             android:title="@string/command_calendar" />
-        <Preference
+        <EditTextPreference
             android:icon="@drawable/ic_notify"
             android:key="aliases_notify_text"
             android:summary="@string/summary_notify"

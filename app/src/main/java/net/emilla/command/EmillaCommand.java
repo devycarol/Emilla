@@ -2,6 +2,8 @@ package net.emilla.command;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
+import android.Manifest;
+import android.app.Notification;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -18,6 +20,7 @@ import androidx.annotation.CallSuper;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.PluralsRes;
+import androidx.annotation.RequiresPermission;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
@@ -37,6 +40,7 @@ import net.emilla.command.core.Email;
 import net.emilla.command.core.Info;
 import net.emilla.command.core.Launch;
 import net.emilla.command.core.Navigate;
+import net.emilla.command.core.Notify;
 import net.emilla.command.core.Pomodoro;
 import net.emilla.command.core.RandomNumber;
 import net.emilla.command.core.Roll;
@@ -50,6 +54,7 @@ import net.emilla.command.core.Torch;
 import net.emilla.command.core.Uninstall;
 import net.emilla.command.core.Weather;
 import net.emilla.command.core.Web;
+import net.emilla.ping.PingChannel;
 import net.emilla.run.AppSuccess;
 import net.emilla.run.BroadcastGift;
 import net.emilla.run.DialogRun;
@@ -57,6 +62,7 @@ import net.emilla.run.Failure;
 import net.emilla.run.Gift;
 import net.emilla.run.MessageFailure;
 import net.emilla.run.Offering;
+import net.emilla.run.PingGift;
 import net.emilla.run.Success;
 import net.emilla.run.TimePickerOffering;
 import net.emilla.run.ToastGift;
@@ -91,7 +97,7 @@ public abstract class EmillaCommand {
                 Pomodoro.yielder(),
                 Calendar.yielder(),
                 Contact.yielder(),
-//                Notify.yielder(),
+                Notify.yielder(),
                 Calculate.yielder(),
                 RandomNumber.yielder(),
                 Roll.yielder(),
@@ -343,6 +349,11 @@ public abstract class EmillaCommand {
 
     protected final void giveDialog(AlertDialog.Builder builder) {
         give(new DialogRun(activity, builder));
+    }
+
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
+    protected final void givePing(Notification ping, PingChannel channel) {
+        give(new PingGift(activity, ping, channel));
     }
 
     protected final void giveBroadcast(Intent intent) {

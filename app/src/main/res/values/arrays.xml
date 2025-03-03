@@ -72,7 +72,7 @@
         <item>@string/command_timer</item>
 <!--        <item>@string/command_note</item>-->
         <item>@string/command_calendar</item>
-<!--        <item>@string/command_notify</item>-->
+        <item>@string/command_notify</item>
         <item>@string/command_setting</item>
         <item>@string/command_copy</item>
         <item>@string/command_snippets</item>
@@ -106,7 +106,7 @@
         <item>timer</item>
 <!--        <item>note</item>-->
         <item>calendar</item>
-<!--        <item>notify</item>-->
+        <item>notify</item>
         <item>setting</item>
         <item>copy</item>
         <item>snippets</item>
