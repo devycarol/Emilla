@@ -122,46 +122,50 @@ public final class Pomodoro extends CoreDataCommand {
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     private void pomo(int seconds, String workMemo, String breakMemo, boolean isBreak) {
-        String title, overTitle, memo, overMemo;
-        String startChannel, warnChannel, endChannel;
         if (isBreak) {
-            title = str(R.string.ping_pomodoro_break);
-            overTitle = str(R.string.ping_pomodoro_break_over);
-            startChannel = PingChannel.POMODORO_BREAK_START;
-            warnChannel = PingChannel.POMODORO_BREAK_WARN;
-            endChannel = PingChannel.POMODORO_BREAK_END;
-
-            memo = breakMemo;
-            overMemo = workMemo;
+            pomo(seconds, PingChannel.POMODORO_BREAK_START,
+                 str(R.string.ping_pomodoro_break), breakMemo,
+                 PingChannel.POMODORO_BREAK_WARN,
+                 PingChannel.POMODORO_BREAK_END,
+                 str(R.string.ping_pomodoro_break_over), workMemo);
         } else {
-            title = str(R.string.ping_pomodoro);
-            overTitle = str(R.string.ping_pomodoro_over);
-            startChannel = PingChannel.POMODORO_START;
-            warnChannel = PingChannel.POMODORO_WARN;
-            endChannel = PingChannel.POMODORO_END;
-
-            memo = workMemo;
-            overMemo = breakMemo;
+            pomo(seconds, PingChannel.POMODORO_START,
+                 str(R.string.ping_pomodoro), workMemo,
+                 PingChannel.POMODORO_WARN,
+                 PingChannel.POMODORO_END,
+                 str(R.string.ping_pomodoro_over), breakMemo);
         }
 
-        var scheduler = new PingScheduler(activity);
+    }
 
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
+    private void pomo(
+        int seconds,
+        String startChannel,
+        String mainTitle,
+        String startMemo,
+        String warnChannel,
+        String endChannel,
+        String endTitle,
+        String endMemo
+    ) {
+        var scheduler = new PingScheduler(activity);
         var warnMemo = str(R.string.ping_pomodoro_warn_text);
         if (seconds > 60) {
-            givePing(startChannel, title, memo);
+            givePing(startChannel, mainTitle, startMemo);
 
             scheduler.plan(PingPlan.afterSeconds(
                     Plan.POMODORO_WARNING,
                     seconds - 60,
-                    makePing(warnChannel, title, warnMemo),
+                    makePing(warnChannel, mainTitle, warnMemo),
                     warnChannel));
 
-        } else givePing(warnChannel, title, warnMemo);
+        } else givePing(warnChannel, mainTitle, warnMemo);
 
         scheduler.plan(PingPlan.afterSeconds(
                 Plan.POMODORO_ENDED,
                 seconds,
-                makePing(endChannel, overTitle, overMemo),
+                makePing(endChannel, endTitle, endMemo),
                 endChannel));
     }
 
