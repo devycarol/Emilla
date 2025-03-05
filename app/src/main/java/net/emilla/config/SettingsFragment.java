@@ -165,7 +165,7 @@ public final class SettingsFragment extends EmillaPreferenceFragment {
     }
 
     private boolean mShouldToast = true;
-    private boolean setupActionPref(ListPreference actionPref, boolean noTorch, boolean noSelectAll) {
+    private void setupActionPref(ListPreference actionPref, boolean noTorch, boolean noSelectAll) {
         if (noTorch) {
             var entries = noSelectAll ? new CharSequence[]{"None", "These settings"}
                     : new CharSequence[]{"None", "These settings", "Select whole command"}; // TODO LANG: remove
@@ -180,12 +180,12 @@ public final class SettingsFragment extends EmillaPreferenceFragment {
             }
             return false;
         });
-        return true;
     }
 
     private void setupDoubleAssistPref(boolean noTorch) {
         ListPreference doubleAction = preferenceOf("action_double_assist");
-        if (setupActionPref(doubleAction, noTorch, false) && noTorch) doubleAction.setDefaultValue("config");
+        setupActionPref(doubleAction, noTorch, false);
+        if (noTorch) doubleAction.setDefaultValue("config");
     }
 
     private void setupDefaultAssistantPref() {

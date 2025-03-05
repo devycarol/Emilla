@@ -125,8 +125,8 @@ public final class TaskerIntent extends Intent {
     // still need to test the *result after* sending intent
 
     public static Status testStatus(Context ctx) {
-        if (!prefSet(ctx, PROVIDER_COL_NAME_ENABLED)) return NOT_ENABLED;
-        if (!prefSet(ctx, PROVIDER_COL_NAME_EXTERNAL_ACCESS)) return NO_ACCESS;
+        if (prefNotSet(ctx, PROVIDER_COL_NAME_ENABLED)) return NOT_ENABLED;
+        if (prefNotSet(ctx, PROVIDER_COL_NAME_EXTERNAL_ACCESS)) return NO_ACCESS;
         if (!hasPermission(ctx)) return NO_PERMISSION;
         if (!new TaskerIntent("").receiverExists(ctx)) return NO_RECEIVER;
         return OK;
@@ -240,7 +240,10 @@ public final class TaskerIntent extends Intent {
     public TaskerIntent addArg(String arg) {
         Bundle b = getActionBundle();
 
-        if (b != null) b.putString(ARG_INDEX_PREFIX + mArgCount++, arg);
+        if (b != null) {
+            b.putString(ARG_INDEX_PREFIX + mArgCount, arg);
+            mArgCount++;
+        }
 
         return this;
     }
@@ -249,7 +252,10 @@ public final class TaskerIntent extends Intent {
     public TaskerIntent addArg(int arg) {
         Bundle b = getActionBundle();
 
-        if (b != null) b.putInt(ARG_INDEX_PREFIX + mArgCount++, arg);
+        if (b != null) {
+            b.putInt(ARG_INDEX_PREFIX + mArgCount, arg);
+            mArgCount++;
+        }
 
         return this;
     }
@@ -258,7 +264,10 @@ public final class TaskerIntent extends Intent {
     public TaskerIntent addArg(boolean arg) {
         Bundle b = getActionBundle();
 
-        if (b != null) b.putBoolean(ARG_INDEX_PREFIX + mArgCount++, arg);
+        if (b != null) {
+            b.putBoolean(ARG_INDEX_PREFIX + mArgCount, arg);
+            mArgCount++;
+        }
 
         return this;
     }
@@ -269,7 +278,8 @@ public final class TaskerIntent extends Intent {
 
         if (b != null) {
             String builder = APP_ARG_PREFIX + pkg + "," + cls;
-            b.putString(ARG_INDEX_PREFIX + mArgCount++, builder);
+            b.putString(ARG_INDEX_PREFIX + mArgCount, builder);
+            mArgCount++;
         }
 
         return this;
@@ -322,22 +332,22 @@ public final class TaskerIntent extends Intent {
 
     // for testing that Tasker is enabled and external access is allowed
 
-    private static boolean prefSet(Context ctx, String col) {
+    private static boolean prefNotSet(Context ctx, String col) {
         String[] proj = {col};
 
         Cursor c = ctx.getContentResolver().query(Uri.parse(TASKER_PREFS_URI), proj, null, null, null);
 
-        boolean acceptingFlag = false;
+        boolean notAccepting = true;
 
         if (c == null) Log.w(TAG, "no cursor for " + TASKER_PREFS_URI);
         else {
             c.moveToFirst();
 
-            if (Boolean.TRUE.toString().equals(c.getString(0))) acceptingFlag = true;
+            if (Boolean.TRUE.toString().equals(c.getString(0))) notAccepting = false;
 
             c.close();
         }
 
-        return acceptingFlag;
+        return notAccepting;
     }
 }
