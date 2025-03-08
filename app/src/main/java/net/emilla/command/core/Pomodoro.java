@@ -6,7 +6,6 @@ import android.app.Notification;
 
 import androidx.annotation.ArrayRes;
 import androidx.annotation.CallSuper;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
 import androidx.annotation.StringRes;
@@ -43,6 +42,7 @@ public final class Pomodoro extends CoreDataCommand {
     }
 
     private ActionMap<Action> mActionMap;
+    @Nullable
     private String mWorkMemo, mBreakMemo;
 
     public Pomodoro(AssistActivity act) {
@@ -83,19 +83,19 @@ public final class Pomodoro extends CoreDataCommand {
     }
 
     @Override
-    protected void run(@NonNull String minutes) {
+    protected void run(String minutes) {
         Subcommand<Action> sumcmd = mActionMap.get(minutes);
         tryPomo(sumcmd.instruction(), sumcmd.action() == Action.BREAK);
     }
 
     @Override
-    protected void runWithData(@NonNull String memo) {
+    protected void runWithData(String memo) {
         mWorkMemo = memo;
         tryPomo(null, false);
     }
 
     @Override
-    protected void runWithData(@NonNull String minutes, @NonNull String memo) {
+    protected void runWithData(String minutes, String memo) {
         Subcommand<Action> subcmd = mActionMap.get(minutes);
 
         boolean isBreak = subcmd.action() == Action.BREAK;
@@ -170,11 +170,11 @@ public final class Pomodoro extends CoreDataCommand {
     }
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
-    private void givePing(String channel, @NonNull String title, @NonNull String memo) {
+    private void givePing(String channel, String title, String memo) {
         givePing(makePing(channel, title, memo), PingChannel.of(channel));
     }
 
-    private Notification makePing(String channel, @NonNull String title, @NonNull String memo) {
+    private Notification makePing(String channel, String title, String memo) {
         return PingsKt.make(activity, channel, title, memo, R.drawable.ic_pomodoro);
     }
 }

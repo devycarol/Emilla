@@ -43,16 +43,16 @@ public final class ContactItemView extends LinearLayout {
 
     private long mLastTap = 0;
 
-    public ContactItemView(Context context) {
-        super(context);
+    public ContactItemView(Context ctx) {
+        super(ctx);
     }
 
-    public ContactItemView(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
+    public ContactItemView(Context ctx, @Nullable AttributeSet attrs) {
+        super(ctx, attrs);
     }
 
-    public ContactItemView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+    public ContactItemView(Context ctx, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(ctx, attrs, defStyleAttr);
     }
 
     @Override

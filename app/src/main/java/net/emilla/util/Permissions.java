@@ -10,7 +10,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
@@ -39,7 +38,7 @@ public final class Permissions {
      * @param act is used to perform permission checks and construct dialogs as needed.
      * @param onGrant action to perform if permission granted.
      */
-    public static void withCall(AssistActivity act, @NonNull Runnable onGrant) {
+    public static void withCall(AssistActivity act, Runnable onGrant) {
         if (call(act)) {
             onGrant.run();
             return;
@@ -84,7 +83,7 @@ public final class Permissions {
     public static boolean callFlow(
         AssistActivity act,
         @Nullable Runnable onGrant,
-        @NonNull Runnable onNoPrompt
+        Runnable onNoPrompt
     ) {
         if (call(act)) return true;
 
@@ -131,7 +130,7 @@ public final class Permissions {
      * @param act is used to perform permission checks and construct dialogs as needed.
      * @param onGrant action to perform if permission granted.
      */
-    public static void withContacts(AssistActivity act, @NonNull Runnable onGrant) {
+    public static void withContacts(AssistActivity act, Runnable onGrant) {
         if (contacts(act)) {
             onGrant.run();
             return;
@@ -156,9 +155,9 @@ public final class Permissions {
      */
     public static void withContacts(
         AssistActivity act,
-        @NonNull Runnable onGrant,
-        @NonNull Runnable onNoPrompt,
-        @NonNull Runnable afterGrant
+        Runnable onGrant,
+        Runnable onNoPrompt,
+        Runnable afterGrant
     ) {
         if (contacts(act)) {
             onGrant.run();
@@ -207,7 +206,7 @@ public final class Permissions {
     public static boolean contactsFlow(
         AssistActivity act,
         @Nullable Runnable onGrant,
-        @NonNull Runnable onNoPrompt
+        Runnable onNoPrompt
     ) {
         if (contacts(act)) return true;
 
@@ -256,7 +255,7 @@ public final class Permissions {
      * @param act is used to perform permission checks and construct dialogs as needed.
      * @param onGrant action to perform if permission granted.
      */
-    public static void withPings(AssistActivity act, @NonNull Runnable onGrant) {
+    public static void withPings(AssistActivity act, Runnable onGrant) {
         if (pings(act)) {
             onGrant.run();
             return;
@@ -326,7 +325,7 @@ public final class Permissions {
     public static boolean taskerFlow(
         AssistActivity act,
         @Nullable Runnable onGrant,
-        @NonNull Runnable onNoPrompt
+        Runnable onNoPrompt
     ) {
         if (tasker(act)) return true;
 

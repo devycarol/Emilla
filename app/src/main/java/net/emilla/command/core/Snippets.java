@@ -1,7 +1,7 @@
 package net.emilla.command.core;
 
 import androidx.annotation.ArrayRes;
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -37,8 +37,8 @@ public final class Snippets extends CoreDataCommand {
     private ActionMap<Action> mActionMap;
     private Action mAction = Action.GET;
     private Set<String> mSnippetNames;
-    private String mUsedSnippet;
-    private String mUsedText;
+    @Nullable
+    private String mUsedSnippet, mUsedText;
 
     public Snippets(AssistActivity act) {
         super(act, NAME,
@@ -80,7 +80,7 @@ public final class Snippets extends CoreDataCommand {
     }
 
     @Override
-    protected void run(@NonNull String label) {
+    protected void run(String label) {
         Subcommand<Action> subcmd = mActionMap.get(label);
         refreshState(subcmd.action());
         snippet(subcmd);
@@ -126,7 +126,7 @@ public final class Snippets extends CoreDataCommand {
         }
     }
 
-    private void snippet(@NonNull String label, @NonNull String lcLabel, Action action) {
+    private void snippet(String label, String lcLabel, Action action) {
         switch (action) {
         case PEEK -> giveMessage(SettingVals.snippet(prefs(), lcLabel));
         case GET -> {
@@ -147,7 +147,7 @@ public final class Snippets extends CoreDataCommand {
     }
 
     @Override
-    protected void runWithData(@NonNull String text) {
+    protected void runWithData(String text) {
         if (mSnippetNames.isEmpty()) {
             failMessage(R.string.error_no_snippets);
             return;
@@ -159,7 +159,7 @@ public final class Snippets extends CoreDataCommand {
     }
 
     @Override
-    protected void runWithData(@NonNull String label, @NonNull String text) {
+    protected void runWithData(String label, String text) {
         mAction = Action.ADD;
 
         var lcLabel = label.toLowerCase();

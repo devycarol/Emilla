@@ -119,7 +119,7 @@ public final class SettingsFragment extends EmillaPreferenceFragment {
         if (!enabled) soundPref.setVisible(false);
     //    soundPref.setSummaryProvider(new Preference.SummaryProvider<>() {
     //        @Nullable @Override
-    //        public CharSequence provideSummary(@NonNull Preference pref) {
+    //        public CharSequence provideSummary(Preference pref) {
     //            var uriStr = mPrefs.getString(prefKey, null);
     //            if (uriStr != null) {
     //                var ringtone = RingtoneManager.getRingtone(mActivity, Uri.parse(uriStr));

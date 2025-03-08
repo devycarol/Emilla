@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.provider.CalendarContract.Events;
 
 import androidx.annotation.ArrayRes;
-import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -110,19 +109,19 @@ public final class Calendar extends CoreDataCommand {
     }
 
     @Override
-    protected void run(@NonNull String titleAndDate) {
+    protected void run(String titleAndDate) {
         putTitleAndDate(titleAndDate);
         run();
     }
 
     @Override
-    protected void runWithData(@NonNull String details) {
+    protected void runWithData(String details) {
         mIntent.putExtra(DESCRIPTION, details);
         run();
     }
 
     @Override
-    protected void runWithData(@NonNull String titleAndDate, @NonNull String details) {
+    protected void runWithData(String titleAndDate, String details) {
         putTitleAndDate(titleAndDate);
         mIntent.putExtra(DESCRIPTION, details);
         run();

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
-import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
@@ -58,7 +57,8 @@ public final class Bookmark extends CoreCommand {
                 int lastIdx = vals.length - 1;
                 Intent view = Apps.viewTask(vals[lastIdx]);
                 for (int i = 0; i < lastIdx; ++i) mBookmarkMap.put(vals[i].toLowerCase(), view);
-                labels[++idx] = vals[0];
+                ++idx;
+                labels[idx] = vals[0];
                 intents[idx] = view;
             }
         }
@@ -76,7 +76,7 @@ public final class Bookmark extends CoreCommand {
     }
 
     @Override
-    protected void run(@NonNull String bookmark) {
+    protected void run(String bookmark) {
         Intent get = mBookmarkMap.get(bookmark.toLowerCase());
         if (get == null) {
             offerDialog(mBookmarkChooser);

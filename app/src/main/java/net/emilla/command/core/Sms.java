@@ -65,7 +65,7 @@ public final class Sms extends CoreDataCommand implements PhoneReceiver {
     }
 
     @Override
-    protected void onInstruct(String instruction) {
+    protected void onInstruct(@Nullable String instruction) {
         super.onInstruct(instruction);
         if (mContactsFragment != null) mContactsFragment.search(instruction);
     }
@@ -86,7 +86,7 @@ public final class Sms extends CoreDataCommand implements PhoneReceiver {
     }
 
     @Override
-    protected void run(@NonNull String recipients) {
+    protected void run(String recipients) {
         tryMessage(recipients, null);
     }
 
@@ -97,12 +97,12 @@ public final class Sms extends CoreDataCommand implements PhoneReceiver {
     }
 
     @Override
-    protected void runWithData(@NonNull String message) {
+    protected void runWithData(String message) {
         tryMessage(message);
     }
 
     @Override
-    protected void runWithData(@NonNull String recipients, @NonNull String message) {
+    protected void runWithData(String recipients, String message) {
         // todo: immediate texting. likely requires a feature check and special permissions.
         //  attachments, feedback for delivered/not delivered..
         tryMessage(recipients, message);
@@ -122,7 +122,7 @@ public final class Sms extends CoreDataCommand implements PhoneReceiver {
         }
     }
 
-    private void message(@NonNull String numbers, @Nullable String message) {
+    private void message(String numbers, @Nullable String message) {
         var sendTo = new Intent(ACTION_SENDTO, Uri.parse("smsto:" + numbers));
 
         if (message != null) sendTo.putExtra("sms_body", message);
@@ -137,7 +137,7 @@ public final class Sms extends CoreDataCommand implements PhoneReceiver {
     }
 
     @Override
-    public void provide(@NonNull String phoneNumber) {
+    public void provide(String phoneNumber) {
         message(phoneNumber, activity.dataText());
     }
 }

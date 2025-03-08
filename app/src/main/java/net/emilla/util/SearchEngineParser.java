@@ -5,7 +5,7 @@ import static android.app.SearchManager.QUERY;
 import android.content.Intent;
 import android.net.Uri;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import net.emilla.lang.Lang;
 import net.emilla.lang.Words;
@@ -22,7 +22,7 @@ public final class SearchEngineParser {
      * @param siteUrl the website's main page.
      * @param searchUrl the website's search URL, with placeholder "%s" for the search query.
      */
-    private record Website(@NonNull String siteUrl, String searchUrl)
+    private record Website(String siteUrl, @Nullable String searchUrl)
             implements TrieMap.Value<Website> {
 
         @Override

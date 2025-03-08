@@ -4,8 +4,6 @@ import static net.emilla.contact.adapter.ContactPhoneAdapter.IDX_NUMBER;
 
 import android.database.Cursor;
 
-import androidx.annotation.NonNull;
-
 public interface PhoneReceiver extends ContactDataReceiver {
 
     @Override
@@ -16,5 +14,5 @@ public interface PhoneReceiver extends ContactDataReceiver {
     /**
      * @param phoneNumber is provided to the object.
      */
-    void provide(@NonNull String phoneNumber);
+    void provide(String phoneNumber);
 }

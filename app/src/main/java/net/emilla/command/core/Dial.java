@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
-import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -42,7 +41,7 @@ public final class Dial extends CoreCommand {
     }
 
     @Override
-    protected void run(@NonNull String numberOrPhoneword) {
+    protected void run(String numberOrPhoneword) {
         appSucceed(new Intent(ACTION_DIAL).setData(Uri.parse("tel:" + numberOrPhoneword)));
     }
 }

@@ -3,7 +3,7 @@ package net.emilla.command.core;
 import android.net.Uri;
 
 import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -15,6 +15,7 @@ import java.util.List;
 
 public abstract class AttachCommand extends CoreDataCommand implements FileReceiver {
 
+    @Nullable
     protected ArrayList<Uri> attachments;
 
     protected AttachCommand(
@@ -30,7 +31,7 @@ public abstract class AttachCommand extends CoreDataCommand implements FileRecei
     }
 
     @Override
-    public final void provide(@NonNull List<Uri> attachments) {
+    public final void provide(List<Uri> attachments) {
         if (attachments.isEmpty()) return;
         if (this.attachments == null) this.attachments = new ArrayList<>(attachments);
         else for (Uri attachment : attachments) {

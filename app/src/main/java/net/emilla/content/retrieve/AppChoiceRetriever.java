@@ -8,6 +8,7 @@ import android.os.Build;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -66,7 +67,7 @@ public final class AppChoiceRetriever extends ResultRetriever<Intent, ActivityRe
     @Deprecated
     public static final class AppChooserBroadcastReceiver extends BroadcastReceiver {
 
-        @Deprecated
+        @Nullable @Deprecated
         private static AppChoiceRetriever sRetriever = null;
         // Todo: there *has* to be a better way.
 
@@ -76,7 +77,7 @@ public final class AppChoiceRetriever extends ResultRetriever<Intent, ActivityRe
         }
 
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(Context ctx, Intent intent) {
             // Because Intent.createChooser(Intent, CharSequence, IntentSender) requires API 22, this
             // will not occur on devices older than Lollipop MR1.
             if (sRetriever == null) return;

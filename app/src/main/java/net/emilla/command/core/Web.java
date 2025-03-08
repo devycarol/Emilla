@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
-import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -67,7 +66,7 @@ public final class Web extends CoreCommand {
     }
 
     @Override
-    protected void run(@NonNull String query) {
+    protected void run(String query) {
         // Todo: make a UI for this.
         //  - don't allow multiple %s's in the setting (i don't imagine there's any use for that right?)
         //    - handle character escapes if you want to be particular about it but the user can

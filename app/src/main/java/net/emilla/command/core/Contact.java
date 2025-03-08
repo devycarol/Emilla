@@ -9,7 +9,6 @@ import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents.Insert;
 
 import androidx.annotation.ArrayRes;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
@@ -74,7 +73,7 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
     }
 
     @Override
-    protected void onInstruct(String instruction) {
+    protected void onInstruct(@Nullable String instruction) {
         super.onInstruct(instruction);
         mContactsFragment.search(mAction == Action.CREATE ? null : extractAction(instruction));
         // Todo: maybe don't show contacts for the 'create' subcommand
@@ -89,7 +88,7 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
     }
 
     @Nullable
-    private String extractAction(String person) {
+    private String extractAction(@Nullable String person) {
         if (person == null) {
             mAction = Action.VIEW;
             return null;
@@ -107,7 +106,7 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
     }
 
     @Override
-    protected void run(@NonNull String person) {
+    protected void run(String person) {
         contact(extractAction(person));
     }
 
@@ -133,33 +132,33 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
     }
 
     @Override
-    protected void runWithData(@NonNull String details) {
+    protected void runWithData(String details) {
         // TODO LANG: only show data field in 'create' or 'send' mode.
         contact(null, details);
     }
 
     @Override
-    protected void runWithData(@NonNull String person, @NonNull String details) {
+    protected void runWithData(String person, String details) {
         // TODO LANG: only show data field in 'create' or 'send' mode.
         contact(person, details);
     }
 
-    private void contact(@Nullable String person, @NonNull String details) {
+    private void contact(@Nullable String person, String details) {
         // Todo: dynamic data hint
         if (mAction != Action.SHARE) create(person, details);
         else if (person != null) offerCreate(person, details);
         else activity.offerContactCards(this);
     }
 
-    private void view(@NonNull Uri contact) {
+    private void view(Uri contact) {
         appSucceed(Apps.viewTask(contact));
     }
 
-    private void edit(@NonNull Uri contact) {
+    private void edit(Uri contact) {
         appSucceed(Apps.editTask(contact));
     }
 
-    private void send(@NonNull Uri contact, @Nullable String message) {
+    private void send(Uri contact, @Nullable String message) {
         // todo: multi-selection for this particular case..
         Intent send = Apps.sendTask(Contacts.CONTENT_VCARD_TYPE);
 
@@ -174,7 +173,7 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
         appSucceed(Intent.createChooser(send, str(NAME)));
     }
 
-    private void offerCreate(@NonNull String person, @Nullable String details) {
+    private void offerCreate(String person, @Nullable String details) {
         var msg = str(R.string.notice_contact_no_match, person);
         offerDialog(Dialogs.dual(activity, NAME, msg, R.string.create,
                 (dlg, which) -> create(person, details)));
@@ -189,7 +188,7 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
     }
 
     @Override
-    public void provide(@NonNull Uri contact) {
+    public void provide(Uri contact) {
         switch (mAction) {
         case EDIT -> edit(contact);
         case SHARE -> send(contact, activity.dataText());

@@ -107,6 +107,7 @@ public final class AssistActivity extends EmillaActivity {
     @Nullable
     private Fragment mDefaultActionBox;
 
+    @Nullable
     private AlertDialog mManual;
     // todo: please handle this another way..
 
@@ -572,7 +573,7 @@ public final class AssistActivity extends EmillaActivity {
         mDontTryCancel = true;
     }
 
-    public void setManual(AlertDialog manual) {
+    public void setManual(@Nullable AlertDialog manual) {
         mManual = manual;
     }
 

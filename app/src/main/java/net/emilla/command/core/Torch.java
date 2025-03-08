@@ -11,7 +11,7 @@ import android.os.Build;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -31,6 +31,7 @@ public final class Torch extends CoreCommand {
         return new Yielder(false, Torch::new, ENTRY, NAME, ALIASES);
     }
 
+    @Nullable
     private static String flashCameraId(CameraManager camMgr) throws CameraAccessException {
         String[] ids = camMgr.getCameraIdList();
         for (String id : ids) {
@@ -83,7 +84,7 @@ public final class Torch extends CoreCommand {
     }
 
     @Override
-    protected void run(@NonNull String ignored) {
+    protected void run(String ignored) {
         run(); // Todo: remove this from the interface for non-instructables.
     }
 }

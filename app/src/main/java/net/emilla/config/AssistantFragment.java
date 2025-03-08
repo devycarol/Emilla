@@ -6,12 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import net.emilla.databinding.FragmentAssistantBinding;
 
 public final class AssistantFragment extends Fragment {
 
+    @Nullable
     private FragmentAssistantBinding mBinding;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

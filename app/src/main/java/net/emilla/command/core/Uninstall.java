@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
@@ -40,7 +41,7 @@ public final class Uninstall extends OpenCommand {
         offerDialog(appChooser);
     }
 
-    @Override
+    @Override @Nullable
     protected Intent makeIntent(String pkg, String cls) {
         return Apps.uninstallIntent(pkg, pm());
     }

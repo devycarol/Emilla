@@ -8,6 +8,7 @@ import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -53,7 +54,7 @@ public final class Call extends CoreCommand implements PhoneReceiver {
     }
 
     @Override
-    protected void onInstruct(String instruction) {
+    protected void onInstruct(@Nullable String instruction) {
         super.onInstruct(instruction);
         mContactsFragment.search(instruction);
     }
@@ -78,7 +79,7 @@ public final class Call extends CoreCommand implements PhoneReceiver {
     }
 
     @Override
-    protected void run(@NonNull String nameOrNumber) {
+    protected void run(String nameOrNumber) {
         // todo: conference calls?
         if (!Features.phone(pm())) throw badCommand(R.string.error_feature_phone);
         // Todo: handle at install - make sure it's not 'sticky' in sharedprefs in case of data
@@ -111,7 +112,7 @@ public final class Call extends CoreCommand implements PhoneReceiver {
     }
 
     @Override
-    public void provide(@NonNull String phoneNumber) {
+    public void provide(String phoneNumber) {
         Permissions.withCall(activity, () -> call(phoneNumber));
     }
 }

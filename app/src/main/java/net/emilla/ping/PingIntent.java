@@ -4,8 +4,6 @@ import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 
-import androidx.annotation.NonNull;
-
 import net.emilla.event.PingReceiver;
 
 public final class PingIntent extends Intent {
@@ -18,7 +16,7 @@ public final class PingIntent extends Intent {
         super(intent);
     }
 
-    public PingIntent(Context ctx, @NonNull Notification ping, @NonNull String channel) {
+    public PingIntent(Context ctx, Notification ping, String channel) {
         super(ctx, PingReceiver.class);
 
         putExtra(EXTRA_PING, ping);

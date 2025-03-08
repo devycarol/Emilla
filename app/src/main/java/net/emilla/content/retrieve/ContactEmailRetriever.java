@@ -5,6 +5,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.provider.ContactsContract.CommonDataKinds.Email;
 
+import androidx.annotation.Nullable;
+
 import net.emilla.AssistActivity;
 import net.emilla.util.Contacts;
 
@@ -21,7 +23,7 @@ public final class ContactEmailRetriever extends ContactDataRetriever {
             return Email.CONTENT_TYPE;
         }
 
-        @Override
+        @Override @Nullable
         protected String parseData(Uri contact, ContentResolver cr) {
             return Contacts.emailAddress(contact, cr);
         }

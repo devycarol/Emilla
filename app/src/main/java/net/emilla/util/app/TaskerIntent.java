@@ -21,6 +21,8 @@ import android.os.PatternMatcher;
 import android.os.Process;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -310,19 +312,20 @@ public final class TaskerIntent extends Intent {
         setData(Uri.parse(TASK_ID_SCHEME + ":" + getRandomString()));
     }
 
+    @Nullable
     private Bundle getActionBundle() {
-        Bundle toReturn = null;
+        Bundle actionBundle = null;
 
         if (mArgCount > MAX_ARGS) {
             Log.e(TAG, "maximum number of arguments exceeded (" + MAX_ARGS + ")");
         } else {
             String key = EXTRA_ACTION_INDEX_PREFIX + mActionCount;
 
-            if (this.hasExtra(key)) toReturn = getBundleExtra(key);
+            if (this.hasExtra(key)) actionBundle = getBundleExtra(key);
             else Log.e(TAG, "no actions added yet");
         }
 
-        return toReturn;
+        return actionBundle;
     }
 
     private void putMetaExtras(String taskName) {

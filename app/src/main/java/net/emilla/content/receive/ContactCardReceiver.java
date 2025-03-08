@@ -7,8 +7,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 
-import androidx.annotation.NonNull;
-
 public interface ContactCardReceiver extends ContactReceiver {
 
     @Override
@@ -22,5 +20,5 @@ public interface ContactCardReceiver extends ContactReceiver {
     /**
      * @param contact is provided to the object.
      */
-    void provide(@NonNull Uri contact);
+    void provide(Uri contact);
 }

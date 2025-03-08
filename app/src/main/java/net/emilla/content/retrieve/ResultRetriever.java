@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContract;
+import androidx.annotation.Nullable;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -18,6 +19,7 @@ abstract class ResultRetriever<I, O, C extends ResultReceiver> {
 
     protected final AssistActivity activity;
     private final ActivityResultLauncher<I> mLauncher;
+    @Nullable
     @Deprecated // Todo: incorporate these in the launchers directly if possible.
     private C mReceiver;
 
@@ -38,13 +40,13 @@ abstract class ResultRetriever<I, O, C extends ResultReceiver> {
         return false;
     }
 
-    protected final void launch(I input) { try {
+    protected final void launch(@Nullable I input) { try {
         mLauncher.launch(input);
     } catch (ActivityNotFoundException e) {
         activity.fail(new MessageFailure(activity, R.string.error, R.string.error_no_app));
     }}
 
-    @Deprecated
+    @Deprecated @Nullable
     protected /*open*/ C receiver() {
         return mReceiver;
     }
@@ -63,6 +65,6 @@ abstract class ResultRetriever<I, O, C extends ResultReceiver> {
             onActivityResult(output, receiver);
         }
 
-        protected abstract void onActivityResult(O output, C receiver);
+        protected abstract void onActivityResult(O output, @Nullable C receiver);
     }
 }

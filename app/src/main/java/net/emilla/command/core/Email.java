@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.net.Uri;
 
 import androidx.annotation.ArrayRes;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
@@ -72,7 +71,7 @@ public final class Email extends AttachCommand implements EmailReceiver {
     }
 
     @Override
-    protected void onInstruct(String instruction) {
+    protected void onInstruct(@Nullable String instruction) {
         super.onInstruct(instruction);
         mContactsFragment.search(instruction);
     }
@@ -94,28 +93,28 @@ public final class Email extends AttachCommand implements EmailReceiver {
     }
 
     @Override
-    protected void run(@NonNull String recipients) {
+    protected void run(String recipients) {
         tryEmail(recipients, null);
     }
 
     @Override
-    protected void runWithData(@NonNull String body) {
+    protected void runWithData(String body) {
         tryEmail("", body);
     }
 
     @Override
-    protected void runWithData(@NonNull String recipients, @NonNull String body) {
+    protected void runWithData(String recipients, String body) {
         tryEmail(recipients, body);
     }
 
-    private void tryEmail(@NonNull String recipients, @Nullable String body) {
+    private void tryEmail(String recipients, @Nullable String body) {
         String addresses = mContactsFragment.selectedContacts();
         if (addresses != null) email(addresses, body);
         else email(recipients, body);
         // todo: validate the raw recipients
     }
 
-    private void email(@NonNull String addresses, @Nullable String body) {
+    private void email(String addresses, @Nullable String body) {
         Intent email;
         var sendTo = new Intent(ACTION_SENDTO, Uri.parse("mailto:"));
         if (attachments == null) email = sendTo;
@@ -135,7 +134,7 @@ public final class Email extends AttachCommand implements EmailReceiver {
     }
 
     @Override
-    public void provide(@NonNull String emailAddress) {
+    public void provide(String emailAddress) {
         email(emailAddress, activity.dataText());
     }
 }

@@ -25,13 +25,13 @@ public /*open*/ class ContactDataRetriever extends ResultRetriever<Void, String,
         }
 
         @Override @NonNull
-        public final Intent createIntent(@NonNull Context context, Void unused) {
+        public final Intent createIntent(@NonNull Context ctx, Void unused) {
             return new Intent(Intent.ACTION_PICK).setType(contentType());
         }
 
         protected abstract String contentType();
 
-        @Override
+        @Override @Nullable
         public final String parseResult(int resultCode, @Nullable Intent intent) {
             if (resultCode == Activity.RESULT_OK && intent != null) {
                 Uri contact = intent.getData();
@@ -40,6 +40,7 @@ public /*open*/ class ContactDataRetriever extends ResultRetriever<Void, String,
             return null;
         }
 
+        @Nullable
         protected abstract String parseData(Uri contact, ContentResolver cr);
     }
 

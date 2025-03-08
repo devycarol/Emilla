@@ -5,8 +5,11 @@ import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.net.Uri;
 
+import androidx.annotation.Nullable;
+
 public final class Custom implements Chimer {
 
+    @Nullable
     private static Uri uriOf(SharedPreferences prefs, String prefString) {
         var uriStr = prefs.getString(prefString, null);
         return uriStr != null ? Uri.parse(uriStr) : null;

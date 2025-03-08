@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import net.emilla.AssistActivity;
 import net.emilla.R;
@@ -55,7 +55,7 @@ public final class DefaultCommandWrapper extends EmillaCommand {
         return true; // Todo: exclude this from the interface for wrappers
     }
 
-    @Override @Deprecated
+    @Override @Nullable @Deprecated
     protected String dupeLabel() {
         return null; // Todo: exclude this from the interface for wrappers
     }
@@ -92,7 +92,7 @@ public final class DefaultCommandWrapper extends EmillaCommand {
     }
 
     @Override
-    protected void run(@NonNull String instruction) {
+    protected void run(String instruction) {
         mCmd.run(instruction);
     }
 }

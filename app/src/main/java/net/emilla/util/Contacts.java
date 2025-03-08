@@ -6,7 +6,7 @@ import android.net.Uri;
 import android.provider.ContactsContract.CommonDataKinds.Email;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.regex.Pattern;
 
@@ -18,7 +18,7 @@ public final class Contacts {
         return PHONE_NUMBERS.matcher(s).matches();
     }
 
-    public static String phonewordsToNumbers(@NonNull String namesOrNumbers) {
+    public static String phonewordsToNumbers(String namesOrNumbers) {
         // Todo: change this function to "nicely formatted number" like (208) 555-1234.
         var sb = new StringBuilder();
         for (int i = 0; i < namesOrNumbers.length(); ++i) {
@@ -60,6 +60,7 @@ public final class Contacts {
         };
     }
 
+    @Nullable
     public static String phoneNumber(Uri contact, ContentResolver cr) {
         Uri contentUri = Phone.CONTENT_URI;
         String[] projection = {Phone.NUMBER};
@@ -72,6 +73,7 @@ public final class Contacts {
         return null;
     }
 
+    @Nullable
     public static String emailAddress(Uri contact, ContentResolver cr) {
         Uri contentUri = Email.CONTENT_URI;
         String[] projection = {Email.ADDRESS};

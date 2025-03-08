@@ -109,7 +109,7 @@ public abstract class ContactsFragment<T> extends Fragment
 
     protected abstract ContactCursorAdapter cursorAdapter();
 
-    public final void search(String search) {
+    public final void search(@Nullable String search) {
         mSearchString = search;
 
         Context ctx = getContext();
@@ -144,7 +144,11 @@ public abstract class ContactsFragment<T> extends Fragment
         return makeLoader(uri, selection, selectionArgs);
     }
 
-    private CursorLoader makeLoader(Uri uri, String selection, String[] selectionArgs) {
+    private CursorLoader makeLoader(
+        Uri uri,
+        @Nullable String selection,
+        @Nullable String[] selectionArgs
+    ) {
         return new CursorLoader(requireContext(),
                 uri, mCursorAdapter.projection(),
                 selection, selectionArgs,

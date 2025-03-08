@@ -13,7 +13,6 @@ import android.view.ViewConfiguration;
 import android.view.accessibility.AccessibilityManager;
 
 import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -39,8 +38,8 @@ public final class ActionButton extends AppCompatImageButton implements View.OnT
         if (mHasAppIcon) applyNormalIconBackground(getResources());
     };
 
-    public ActionButton(@NonNull Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
+    public ActionButton(Context ctx, @Nullable AttributeSet attrs) {
+        super(ctx, attrs);
 
         setOnTouchListener(this);
         mIcon = getDrawable();

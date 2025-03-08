@@ -77,31 +77,31 @@ public final class Tasker extends AppCommand implements DataCommand {
     }
 
     @Override
-    protected void run(@NonNull String task) {
+    protected void run(String task) {
         trySearchRun(extractAction(task), null);
     }
 
     @Override
-    public void execute(@NonNull String data) {
+    public void execute(String data) {
         String instruction = instruction();
         if (instruction == null) runWithData(data);
         else runWithData(instruction, data);
     }
 
-    private void runWithData(@NonNull String params) {
+    private void runWithData(String params) {
         trySearchRun("", params);
     }
 
-    private void runWithData(@NonNull String task, @NonNull String params) {
+    private void runWithData(String task, String params) {
         trySearchRun(extractAction(task), params);
     }
 
-    private String extractAction(@NonNull String task) {
+    private String extractAction(String task) {
         task = mActionMap.get(task).instruction();
         return task != null ? task : "";
     }
 
-    private void trySearchRun(@NonNull String task, @Nullable String params) {
+    private void trySearchRun(String task, @Nullable String params) {
         switch (TaskerIntent.testStatus(activity)) {
         case OK -> searchRun(task, params);
         case NOT_ENABLED -> failDialog(R.string.error_tasker_not_enabled,
@@ -114,7 +114,7 @@ public final class Tasker extends AppCommand implements DataCommand {
         }
     }
 
-    private void searchRun(@NonNull String task, @Nullable String params) {
+    private void searchRun(String task, @Nullable String params) {
         String[] projection = {COL_TASK_NAME, COL_PROJECT_NAME};
         Cursor cur = contentResolver().query(CONTENT_URI, projection, null, null, null);
 
@@ -156,7 +156,8 @@ public final class Tasker extends AppCommand implements DataCommand {
         var taskLabels = new String[size];
         int i = -1;
         for (Task tsk : tasks) {
-            taskNames[++i] = tsk.taskName;
+            ++i;
+            taskNames[i] = tsk.taskName;
             taskLabels[i] = tsk.toString();
         }
 
@@ -165,7 +166,6 @@ public final class Tasker extends AppCommand implements DataCommand {
         // todo: see if it's possible to display task/project icons
     }
 
-    @NonNull
     private Comparator<Task> taskComparator(String lcTask) {
         return (a, b) -> {
             boolean aStarts = a.taskName.toLowerCase().startsWith(lcTask);
@@ -187,7 +187,7 @@ public final class Tasker extends AppCommand implements DataCommand {
         }
     }
 
-    private void runTask(@NonNull String taskName, @Nullable String params) {
+    private void runTask(String taskName, @Nullable String params) {
         var in = new TaskerIntent(taskName);
         if (params != null) {
             for (String param : new Lines(params, false)) in.addParameter(param);

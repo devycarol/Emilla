@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
 import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
@@ -45,7 +44,7 @@ public abstract class OpenCommand extends CoreCommand {
     protected abstract AlertDialog.Builder makeChooser();
 
     @Override
-    protected final void run(@NonNull String app) {
+    protected final void run(String app) {
         // todo: optimized pre-processed search
         int appCount = appList.size();
 

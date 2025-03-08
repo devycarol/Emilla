@@ -1,6 +1,5 @@
 package net.emilla.util.trie;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
@@ -198,7 +197,7 @@ public abstract class TrieMap<K, V extends TrieMap.Value<V>> {
      * @param phrase the value's prefix key, whose values will be used for retrieval.
      * @param value the corresponding value to put in the trie.
      */
-    public final void put(Phrase<K, ?> phrase, @NonNull V value) {
+    public final void put(Phrase<K, ?> phrase, V value) {
         TrieNode<K, V> current = root;
 
         for (K item : phrase) {

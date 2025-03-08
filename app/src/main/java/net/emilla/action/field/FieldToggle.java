@@ -9,6 +9,7 @@ import android.widget.EditText;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -50,6 +51,7 @@ public abstract class FieldToggle implements QuickAction {
         return mActivated;
     }
 
+    @Nullable
     public final String fieldText() {
         return mField == null || mField.getVisibility() == View.GONE || mField.length() == 0 ? null
                 : mField.getText().toString();

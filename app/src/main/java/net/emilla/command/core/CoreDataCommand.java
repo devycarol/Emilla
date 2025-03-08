@@ -3,7 +3,6 @@ package net.emilla.command.core;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -47,12 +46,12 @@ public abstract class CoreDataCommand extends CoreCommand implements DataCommand
      * @param data contents of command data field.
      */
     @Override
-    public final void execute(@NonNull String data) {
+    public final void execute(String data) {
         String instruction = instruction();
         if (instruction == null) runWithData(data);
         else runWithData(instruction, data);
     }
 
-    protected abstract void runWithData(@NonNull String data);
-    protected abstract void runWithData(@NonNull String instruction, @NonNull String data);
+    protected abstract void runWithData(String data);
+    protected abstract void runWithData(String instruction, String data);
 }

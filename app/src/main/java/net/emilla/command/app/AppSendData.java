@@ -2,7 +2,6 @@ package net.emilla.command.app;
 
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -47,16 +46,16 @@ import net.emilla.command.DataCommand;
         return mHint;
     }
 
-    private void runWithData(@NonNull String message) {
+    private void runWithData(String message) {
         run(message);
     }
 
-    private void runWithData(@NonNull String message, String cont) {
+    private void runWithData(String message, String cont) {
         run(message + '\n' + cont);
     }
 
     @Override
-    public final void execute(@NonNull String data) {
+    public final void execute(String data) {
         String instruction = instruction();
         if (instruction == null) runWithData(data);
         else runWithData(instruction, data);

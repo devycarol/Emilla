@@ -3,7 +3,7 @@ package net.emilla.command;
 import android.content.DialogInterface;
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -18,7 +18,7 @@ public final class DuplicateCommand extends EmillaCommand implements DataCommand
         return true; // Todo: exclude this from the interface for wrappers
     }
 
-    @Override @Deprecated
+    @Override @Nullable @Deprecated
     protected String dupeLabel() {
         return null; // Todo: exclude this from the interface for wrappers
     }
@@ -70,7 +70,7 @@ public final class DuplicateCommand extends EmillaCommand implements DataCommand
     }
 
     @Override
-    protected void run(@NonNull String instruction) {
+    protected void run(String instruction) {
         chooseCommand((dlg, which) -> {
             mCommands[which].setInstruction(instruction);
             mCommands[which].init();
@@ -80,7 +80,7 @@ public final class DuplicateCommand extends EmillaCommand implements DataCommand
     }
 
     @Override
-    public void execute(@NonNull String data) {
+    public void execute(String data) {
         chooseCommand((dlg, which) -> {
             mCommands[which].init();
             // Todo: this surely looks janky and will behave as such. Don't execute dupe commands

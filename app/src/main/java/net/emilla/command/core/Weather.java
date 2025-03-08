@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
-import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -43,7 +42,7 @@ public final class Weather extends CategoryCommand {
     }
 
     @Override
-    protected void run(@NonNull String location) {
+    protected void run(String location) {
         throw badCommand(R.string.error_unfinished_categorical_app_search); // Todo
     }
 }

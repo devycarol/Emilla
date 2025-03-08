@@ -145,7 +145,7 @@ public final class Lines implements Iterable<String> {
             return pos < mLen;
         }
 
-        @Override @NonNull
+        @Override
         public final String next() {
             var sb = new StringBuilder();
             boolean escape = false;
@@ -183,7 +183,6 @@ public final class Lines implements Iterable<String> {
             ++pos; // not worrying about spaces
         }
 
-        @NonNull
         protected /*open*/ String makeLine(StringBuilder sb) {
             return sb.toString();
         }
@@ -199,7 +198,7 @@ public final class Lines implements Iterable<String> {
             // continue advancing as needed
         }
 
-        @Override @NonNull
+        @Override
         protected String makeLine(StringBuilder sb)  {
             int len = sb.length();
             while (len > 0 && isNonLineSpace(sb.charAt(len - 1))) --len;

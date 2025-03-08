@@ -2,7 +2,6 @@ package net.emilla.lang.phrase.impl;
 
 import static java.lang.Character.isDigit;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import net.emilla.R;
@@ -43,7 +42,7 @@ public final class DicesEN_US {
                 return pos < length;
             }
 
-            @Override @NonNull
+            @Override
             public Dice next() {
                 int count = nextCount();
                 int faces;
@@ -57,10 +56,12 @@ public final class DicesEN_US {
 
                 if (hasNext()) {
                     negative = roll.charAt(pos) == '-';
-                    while (++pos < length) {
+                    ++pos;
+                    while (pos < length) {
                         char c = roll.charAt(pos);
                         if (c == '-') negative = !negative;
                         else if (c != '+') break;
+                        ++pos;
                     }
                 }
 

@@ -37,8 +37,13 @@ public final class SortedArray<E extends Comparable<E>> implements Iterable<E> {
         ++mSize;
     }
 
+    public E get(int index) {
+        if (index >= mSize) throw new IndexOutOfBoundsException();
+        return mData[index];
+    }
+
     @Nullable
-    public E retrieve(@NonNull E val) {
+    public E retrieve(E val) {
         int pos = indexOf(val);
         if (pos < 0) return null;
         return mData[pos];
@@ -51,7 +56,24 @@ public final class SortedArray<E extends Comparable<E>> implements Iterable<E> {
     }
 
     private int indexOf(E val) {
-        return Arrays.binarySearch(mData, 0, mSize, val);
+        int lo = 0;
+        int hi = mSize - 1;
+
+        while (lo <= hi) {
+            int mid = (lo + hi) >>> 1;
+            Comparable<E> midVal = mData[mid];
+            int cmp = midVal.compareTo(val);
+
+            if (cmp < 0) lo = mid + 1;
+            else if (cmp > 0) hi = mid - 1;
+            else return mid; // key found.
+        }
+
+        return -(lo + 1); // key not found.
+    }
+
+    public int size() {
+        return mSize;
     }
 
     @Override @NonNull
@@ -67,7 +89,9 @@ public final class SortedArray<E extends Comparable<E>> implements Iterable<E> {
             @Override
             public E next() {
                 if (!hasNext()) throw new NoSuchElementException();
-                return mData[pos++];
+                E e = mData[pos];
+                pos++;
+                return e;
             }
         };
     }

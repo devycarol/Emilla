@@ -4,8 +4,6 @@ import static net.emilla.contact.adapter.ContactEmailAdapter.IDX_ADDRESS;
 
 import android.database.Cursor;
 
-import androidx.annotation.NonNull;
-
 public interface EmailReceiver extends ContactDataReceiver {
 
     @Override
@@ -16,5 +14,5 @@ public interface EmailReceiver extends ContactDataReceiver {
     /**
      * @param emailAddress is provided to the object.
      */
-    void provide(@NonNull String emailAddress);
+    void provide(String emailAddress);
 }

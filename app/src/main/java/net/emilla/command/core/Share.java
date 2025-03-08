@@ -7,7 +7,6 @@ import static net.emilla.chime.Chimer.RESUME;
 import android.content.Intent;
 
 import androidx.annotation.ArrayRes;
-import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -97,17 +96,17 @@ public final class Share extends AttachCommand implements AppChoiceReceiver {
     }
 
     @Override
-    protected void run(@NonNull String app) {
+    protected void run(String app) {
         runWithData(app); // TODO: allow to specify app, conversation, and (ideally) person
     }
 
     @Override
-    protected void runWithData(@NonNull String text) {
+    protected void runWithData(String text) {
         activity.offerChooser(this, makeIntent(text), NAME);
     }
 
     @Override
-    protected void runWithData(@NonNull String app, @NonNull String text) {
+    protected void runWithData(String app, String text) {
         runWithData(app + '\n' + text);
     }
 

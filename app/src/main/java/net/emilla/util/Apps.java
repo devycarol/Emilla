@@ -21,7 +21,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import net.emilla.BuildConfig;
 import net.emilla.EmillaActivity;
@@ -32,12 +32,10 @@ public final class Apps {
 
     public static final String MY_PKG = BuildConfig.APPLICATION_ID;
 
-    @NonNull
     public static List<ResolveInfo> resolveList(PackageManager pm) {
         return pm.queryIntentActivities(new Intent(ACTION_MAIN).addCategory(CATEGORY_LAUNCHER), 0);
     }
 
-    @NonNull
     public static List<ResolveInfo> resolveList(PackageManager pm, Intent filter) {
         return pm.queryIntentActivities(filter, 0);
     }
@@ -112,7 +110,10 @@ public final class Apps {
                 .map(ri -> ri.activityInfo.loadLabel(pm)).toArray(CharSequence[]::new);
         var labels = new CharSequence[appList.size()];
         int i = -1;
-        for (ResolveInfo ri : appList) labels[++i] = ri.activityInfo.packageName;
+        for (ResolveInfo ri : appList) {
+            ++i;
+            labels[i] = ri.activityInfo.packageName;
+        }
         return labels;
     }
 
@@ -121,7 +122,10 @@ public final class Apps {
                 .map(ri -> launchIntent(ri.activityInfo)).toArray(Intent[]::new);
         var intents = new Intent[appList.size()];
         int i = -1;
-        for (ResolveInfo ri : appList) intents[++i] = launchIntent(ri.activityInfo);
+        for (ResolveInfo ri : appList) {
+            ++i;
+            intents[i] = launchIntent(ri.activityInfo);
+        }
         return intents;
     }
 
@@ -129,6 +133,7 @@ public final class Apps {
         return Uri.parse("package:" + pkg);
     }
 
+    @Nullable
     public static Intent uninstallIntent(String pkg, PackageManager pm) {
     try {
         var info = pm.getApplicationInfo(pkg, 0);
@@ -148,7 +153,10 @@ public final class Apps {
                 .map(ri -> uninstallIntent(ri.activityInfo.packageName, pm)).toArray(Intent[]::new);
         var intents = new Intent[appList.size()];
         int i = -1;
-        for (ResolveInfo ri : appList) intents[++i] = uninstallIntent(ri.activityInfo.packageName, pm);
+        for (ResolveInfo ri : appList) {
+            ++i;
+            intents[i] = uninstallIntent(ri.activityInfo.packageName, pm);
+        }
         return intents;
     }
 

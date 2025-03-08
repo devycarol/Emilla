@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 
 import androidx.annotation.ArrayRes;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
 import androidx.annotation.StringRes;
@@ -44,27 +43,27 @@ public final class Notify extends CoreDataCommand {
     }
 
     @Override
-    protected void run(@NonNull String title) {
+    protected void run(String title) {
         tryPing(title, null);
     }
 
     @Override
-    protected void runWithData(@NonNull String text) {
+    protected void runWithData(String text) {
         tryPing(str(R.string.ping_command), text);
     }
 
     @Override
-    protected void runWithData(@NonNull String title, @NonNull String text) {
+    protected void runWithData(String title, String text) {
         tryPing(title, text);
     }
 
     @SuppressLint("MissingPermission")
-    private void tryPing(@NonNull String title, @Nullable String text) {
+    private void tryPing(String title, @Nullable String text) {
         Permissions.withPings(activity, () -> ping(title, text));
     }
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
-    private void ping(@NonNull String title, @Nullable String text) {
+    private void ping(String title, @Nullable String text) {
         givePing(PingsKt.make(activity, PingChannel.COMMAND, title, text, R.drawable.ic_notify),
                  PingChannel.command());
     }

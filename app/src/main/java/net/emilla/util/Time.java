@@ -14,6 +14,7 @@ import static java.util.Calendar.SECOND;
 import static java.util.Calendar.YEAR;
 import static java.util.regex.Pattern.CASE_INSENSITIVE;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import net.emilla.EmillaActivity;
@@ -70,7 +71,7 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         return new int[]{h, m, s};
     }
 
-    public static int[] parseTime(String time, EmillaActivity act /*todo jesus christ*/, @StringRes int errorTitle) {
+    public static int[] parseTime(String time, @Nullable EmillaActivity act /*todo jesus christ*/, @StringRes int errorTitle) {
         int meridiem;
         if (time.matches("(?i).*\\d *A.*")) meridiem = AM;
         else if (time.matches("(?i).*\\d *P.*")) meridiem = PM;

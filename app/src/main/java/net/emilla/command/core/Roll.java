@@ -3,7 +3,6 @@ package net.emilla.command.core;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
-import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import net.emilla.AssistActivity;
@@ -44,7 +43,7 @@ public final class Roll extends CoreCommand {
     }
 
     @Override
-    protected void run(@NonNull String roll) {
+    protected void run(String roll) {
         var dices = Lang.dices(roll, NAME);
         var rand = new Random();
         var msg = String.valueOf(dices.roll(rand));

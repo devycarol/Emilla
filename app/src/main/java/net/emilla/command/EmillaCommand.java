@@ -18,7 +18,7 @@ import android.graphics.drawable.Drawable;
 import androidx.annotation.ArrayRes;
 import androidx.annotation.CallSuper;
 import androidx.annotation.IdRes;
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.PluralsRes;
 import androidx.annotation.RequiresPermission;
 import androidx.annotation.StringRes;
@@ -168,6 +168,7 @@ public abstract class EmillaCommand {
     // requires changing the input method code directly
     // it's also proven cumbersome to get the key icon to actually update to begin with..
 
+    @Nullable
     private String mInstruction;
     private boolean mInitialized;
     private Drawable mIcon;
@@ -188,7 +189,7 @@ public abstract class EmillaCommand {
         this.imeAction = imeAction;
     }
 
-    final EmillaCommand instruct(String instruction) {
+    final EmillaCommand instruct(@Nullable String instruction) {
         if (!Objects.equals(mInstruction, instruction)) {
             // we don't assume this is true because input editor bugs may cause onTextChanged() to
             // be called repeatedly for the same text.
@@ -199,7 +200,7 @@ public abstract class EmillaCommand {
         return this;
     }
 
-    protected final void setInstruction(String instruction) {
+    protected final void setInstruction(@Nullable String instruction) {
         mInstruction = instruction;
     }
 
@@ -231,11 +232,12 @@ public abstract class EmillaCommand {
     protected /*open*/ void onInit() {}
 
     @CallSuper
-    protected /*open*/ void onInstruct(String instruction) {}
+    protected /*open*/ void onInstruct(@Nullable String instruction) {}
 
     @CallSuper
     protected /*open*/ void onClean() {}
 
+    @Nullable
     protected final String instruction() {
         return mInstruction;
     }
@@ -486,5 +488,5 @@ public abstract class EmillaCommand {
      * @param instruction is provided after in the command field after the command's name. It's always
      *                    space-trimmed should remain as such.
      */
-    protected abstract void run(@NonNull String instruction);
+    protected abstract void run(String instruction);
 }

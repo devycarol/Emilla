@@ -1,12 +1,10 @@
 package net.emilla.contact;
 
-import androidx.annotation.NonNull;
-
 import net.emilla.lang.Lang;
 
 public record MultiSearch(String selection, String[] selectionArgs, boolean hasMultipleTerms) {
 
-    public static MultiSearch instance(@NonNull String baseSelection, @NonNull String search) {
+    public static MultiSearch instance(String baseSelection, String search) {
         String[] terms = Lang.list(search).items();
 
         var selection = new StringBuilder(baseSelection);

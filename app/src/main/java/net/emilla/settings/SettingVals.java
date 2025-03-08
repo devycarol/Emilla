@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 
-import androidx.annotation.NonNull;
-
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.action.AssistantSettings;
@@ -237,12 +235,10 @@ public final class SettingVals {
         // Todo config.
     }
 
-    @NonNull
     public static String defaultPomoWorkMemo(SharedPreferences prefs, Resources res) {
         return prefs.getString("pomo_default_work_memo", res.getString(R.string.ping_pomodoro_text));
     }
 
-    @NonNull
     public static String defaultPomoBreakMemo(SharedPreferences prefs, Resources res) {
         return prefs.getString("pomo_default_break_memo", res.getString(R.string.ping_pomodoro_break_text));
     }
