@@ -24,6 +24,7 @@ public final class ActionYielder<A extends Enum<A>> implements TrieMap.Value<Act
     }
 
     public Subcommand<A> action(Words words) {
-        return new Subcommand<>(action, words.remainingContents());
+        if (words.hasRemainingContents()) return new Subcommand<>(action, words.remainingContents());
+        return new Subcommand<>(action, null);
     }
 }
