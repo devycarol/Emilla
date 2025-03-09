@@ -81,6 +81,7 @@ import net.emilla.run.Success;
 import net.emilla.settings.SettingVals;
 import net.emilla.util.Apps;
 import net.emilla.util.Dialogs;
+import net.emilla.util.Strings;
 import net.emilla.view.ActionButton;
 
 import java.util.List;
@@ -496,12 +497,7 @@ public final class AssistActivity extends EmillaActivity {
     }
 
     private void onCommandChanged(String command) {
-        int len = command.length();
-        if (len > 0 && command.charAt(0) == ' ') {
-            int nonSpace = 0;
-            while (len > ++nonSpace && command.charAt(nonSpace) == ' ') ;
-            command = command.substring(nonSpace, len);
-        }
+        command = Strings.trimLeading(command);
 
         EmillaCommand cmd = mCommandMap.get(this, command);
         boolean noCommand = command.isEmpty();

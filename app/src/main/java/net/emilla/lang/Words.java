@@ -5,6 +5,7 @@ import static androidx.annotation.RestrictTo.Scope.SUBCLASSES;
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 
+import net.emilla.util.Strings;
 import net.emilla.util.trie.TrieMap;
 
 import java.util.Iterator;
@@ -73,18 +74,8 @@ public abstract class Words implements TrieMap.Phrase<String, String> {
 
         private final class LatinIterator extends WordIterator {
 
-            private static int firstIndexOfNonSpace(String s) {
-                if (s.isEmpty() || !Character.isWhitespace(s.charAt(0))) return 0;
-
-                int index = 0, len = s.length();
-                do if (++index >= len) return len;
-                while (Character.isWhitespace(s.charAt(index)));
-
-                return index;
-            }
-
             private LatinIterator() {
-                super(firstIndexOfNonSpace(mPhrase));
+                super(Strings.indexOfNonSpace(mPhrase));
             }
 
             @Override
@@ -92,12 +83,18 @@ public abstract class Words implements TrieMap.Phrase<String, String> {
                 int endIndex = mStartIndex;
                 int len = mPhrase.length();
 
-                do if (++endIndex >= len) break;
+                do {
+                    ++endIndex;
+                    if (endIndex >= len) break;
+                }
                 while (!Character.isWhitespace(mPhrase.charAt(endIndex)));
                 var word = mPhrase.substring(mStartIndex, endIndex);
 
                 if (endIndex < len) {
-                    do if (++endIndex >= len) break;
+                    do {
+                        ++endIndex;
+                        if (endIndex >= len) break;
+                    }
                     while (Character.isWhitespace(mPhrase.charAt(endIndex)));
                 }
                 mStartIndex = endIndex;
