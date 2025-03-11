@@ -23,22 +23,41 @@ public final class SortedArray<E extends Comparable<E>> implements Iterable<E> {
         mData = (E[]) new Comparable[initialCapacity];
     }
 
-    private void bumpCapacity() {
-        mData = Arrays.copyOf(mData, mData.length * 3 / 2 + 1);
+    private void ensureCapacity() {
+        if (mSize == mData.length) mData = Arrays.copyOf(mData, mData.length * 3 / 2 + 1);
     }
 
-    public void add(E val) {
-        if (mSize == mData.length) bumpCapacity();
+    /**
+     * Adds {@code val} to the array, maintaining sorted order.
+     *
+     * @param val value to insert.
+     * @return position the item was inserted at.
+     */
+    public int add(E val) {
+        ensureCapacity();
+        return addInternal(val);
+    }
 
-        int pos = indexFor(val);
-        System.arraycopy(mData, pos, mData, pos + 1, mSize - pos);
+    private int addInternal(E val) {
+        int pos;
+        if (mSize == 0 || mData[mSize - 1].compareTo(val) < 0) {
+            pos = mSize;
+        } else {
+            pos = indexFor(val);
+            System.arraycopy(mData, pos, mData, pos + 1, mSize - pos);
+        }
+
         mData[pos] = val;
-
         ++mSize;
+
+        return pos;
     }
 
     public E get(int index) {
-        if (index >= mSize) throw new IndexOutOfBoundsException();
+        if (index >= mSize) {
+            var msg = "Index " + index + " out of bounds for size " + mSize + ".";
+            throw new IndexOutOfBoundsException(msg);
+        }
         return mData[index];
     }
 
@@ -59,15 +78,14 @@ public final class SortedArray<E extends Comparable<E>> implements Iterable<E> {
 
         while (lo <= hi) {
             int mid = lo + hi >>> 1;
-            Comparable<E> midVal = mData[mid];
-            int cmp = midVal.compareTo(val);
+            int cmp = mData[mid].compareTo(val);
 
             if (cmp < 0) lo = mid + 1;
             else if (cmp > 0) hi = mid - 1;
-            else return mid; // key found.
+            else return mid; // value found.
         }
 
-        return ~lo; // key not found.
+        return ~lo; // value not found.
     }
 
     public int size() {
