@@ -61,10 +61,51 @@ public final class SortedArray<E extends Comparable<E>> implements Iterable<E> {
         return mData[index];
     }
 
+    public boolean contains(E val) {
+        return indexOf(val) >= 0;
+    }
+
     @Nullable
     public E retrieve(E val) {
         int pos = indexOf(val);
         return pos < 0 ? null : mData[pos];
+    }
+
+    @Nullable
+    public ReplaceRange replace(E val, E replacement) {
+        int pos = indexOf(val);
+        if (pos < 0) return null;
+
+        int repl = indexFor(replacement);
+        if (pos < repl) {
+            int shiftLen = repl - pos - 1;
+            System.arraycopy(mData, pos + 1, mData, pos, shiftLen);
+        } else if (repl < pos) {
+            int shiftLen = pos - repl - 1;
+            System.arraycopy(mData, repl, mData, repl + 1, shiftLen);
+        }
+        mData[repl] = replacement;
+
+        return new ReplaceRange(pos, repl);
+    }
+
+    /**
+     * Removes {@code val} from the array.
+     *
+     * @param val value to remove.
+     * @return the former position of the value, or -index - 1 of where the value would have been
+     *         if the value wasn't found
+     */
+    public int remove(E val) {
+        int pos = indexOf(val);
+
+        if (pos >= 0) {
+            --mSize;
+            System.arraycopy(mData, pos + 1, mData, pos, mSize - pos);
+            mData[mSize] = null;
+        }
+
+        return pos;
     }
 
     private int indexFor(E val) {
@@ -86,6 +127,10 @@ public final class SortedArray<E extends Comparable<E>> implements Iterable<E> {
         }
 
         return ~lo; // value not found.
+    }
+
+    public boolean isEmpty() {
+        return mSize == 0;
     }
 
     public int size() {
