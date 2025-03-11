@@ -45,14 +45,12 @@ public final class SortedArray<E extends Comparable<E>> implements Iterable<E> {
     @Nullable
     public E retrieve(E val) {
         int pos = indexOf(val);
-        if (pos < 0) return null;
-        return mData[pos];
+        return pos < 0 ? null : mData[pos];
     }
 
     private int indexFor(E val) {
-        int index = indexOf(val);
-        if (index < 0) index = -index - 1;
-        return index;
+        int pos = indexOf(val);
+        return pos < 0 ? ~pos : pos;
     }
 
     private int indexOf(E val) {
@@ -60,7 +58,7 @@ public final class SortedArray<E extends Comparable<E>> implements Iterable<E> {
         int hi = mSize - 1;
 
         while (lo <= hi) {
-            int mid = (lo + hi) >>> 1;
+            int mid = lo + hi >>> 1;
             Comparable<E> midVal = mData[mid];
             int cmp = midVal.compareTo(val);
 
@@ -69,7 +67,7 @@ public final class SortedArray<E extends Comparable<E>> implements Iterable<E> {
             else return mid; // key found.
         }
 
-        return -(lo + 1); // key not found.
+        return ~lo; // key not found.
     }
 
     public int size() {
@@ -89,9 +87,7 @@ public final class SortedArray<E extends Comparable<E>> implements Iterable<E> {
             @Override
             public E next() {
                 if (!hasNext()) throw new NoSuchElementException();
-                E e = mData[pos];
-                pos++;
-                return e;
+                return mData[pos++];
             }
         };
     }
