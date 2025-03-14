@@ -1,9 +1,9 @@
 package net.emilla.lang;
 
-import static java.lang.Character.isWhitespace;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import net.emilla.util.Chars;
 
 import java.util.Iterator;
 
@@ -131,13 +131,9 @@ public final class Lines implements Iterable<String> {
     private static int textStart(String s) {
         for (int i = 0; i < s.length(); ++i) {
             char c = s.charAt(i);
-            if (!isNonLineSpace(c)) return i;
+            if (!Chars.isNonLineSpace(c)) return i;
         }
         return s.length();
-    }
-
-    private static boolean isNonLineSpace(char c) {
-        return isWhitespace(c) && c != '\n';
     }
 
     @Override @NonNull
@@ -205,14 +201,14 @@ public final class Lines implements Iterable<String> {
         protected void advanceToNextLine() {
             do ++pos;
             // advance past the newline
-            while (pos < mLen && isNonLineSpace(mText.charAt(pos)));
+            while (pos < mLen && Chars.isNonLineSpace(mText.charAt(pos)));
             // continue advancing as needed
         }
 
         @Override
         protected String makeLine(StringBuilder sb)  {
             int len = sb.length();
-            while (len > 0 && isNonLineSpace(sb.charAt(len - 1))) {
+            while (len > 0 && Chars.isNonLineSpace(sb.charAt(len - 1))) {
                 --len;
             }
             sb.setLength(len);
