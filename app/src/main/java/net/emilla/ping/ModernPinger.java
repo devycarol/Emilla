@@ -10,7 +10,7 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.RequiresPermission;
 
 @RequiresApi(Build.VERSION_CODES.O)
-final class ModernPinger extends ClassicPinger {
+/*internal*/ final class ModernPinger extends ClassicPinger {
 
     private final PingChannel mChannel;
     private final Resources mRes;

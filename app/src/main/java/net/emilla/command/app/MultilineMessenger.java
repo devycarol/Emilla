@@ -3,9 +3,9 @@ package net.emilla.command.app;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 
-abstract class MultilineMessenger extends AppSendData {
+/*internal*/ abstract class MultilineMessenger extends AppSendData {
 
-    MultilineMessenger(AssistActivity act, Yielder info) {
+    public MultilineMessenger(AssistActivity act, Yielder info) {
         super(act, info,
               R.string.instruction_message,
               R.string.summary_messaging,

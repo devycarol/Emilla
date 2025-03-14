@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-abstract class TrieNode<K, V extends TrieMap.Value<V>> {
+/*internal*/ abstract class TrieNode<K, V extends TrieMap.Value<V>> {
 
     V val;
     private Map<K, TrieNode<K, V>> children;

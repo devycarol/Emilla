@@ -8,7 +8,7 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.command.DataCommand;
 
-/*open*/ class AppSendData extends AppSend implements DataCommand {
+/*internal open*/ class AppSendData extends AppSend implements DataCommand {
 
     @StringRes
     private final int mHint;
@@ -21,7 +21,7 @@ import net.emilla.command.DataCommand;
         mHint = hint;
     }
 
-    AppSendData(
+    protected AppSendData(
         AssistActivity act,
         Yielder info,
         @StringRes int instruction,

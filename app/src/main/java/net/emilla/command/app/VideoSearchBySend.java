@@ -5,9 +5,9 @@ import android.view.inputmethod.EditorInfo;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 
-abstract class VideoSearchBySend extends AppSend {
+/*internal*/ abstract class VideoSearchBySend extends AppSend {
 
-    VideoSearchBySend(AssistActivity act, Yielder info) {
+    public VideoSearchBySend(AssistActivity act, Yielder info) {
         super(act, info,
               R.string.instruction_video,
               R.string.summary_video,

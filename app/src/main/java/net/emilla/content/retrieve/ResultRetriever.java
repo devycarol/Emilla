@@ -13,7 +13,7 @@ import net.emilla.R;
 import net.emilla.content.receive.ResultReceiver;
 import net.emilla.run.MessageFailure;
 
-abstract class ResultRetriever<I, O, C extends ResultReceiver> {
+/*internal*/ abstract class ResultRetriever<I, O, C extends ResultReceiver> {
 
     private static final String TAG = ResultRetriever.class.getSimpleName();
 

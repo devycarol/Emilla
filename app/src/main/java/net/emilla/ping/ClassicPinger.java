@@ -7,7 +7,7 @@ import android.content.Context;
 
 import androidx.annotation.RequiresPermission;
 
-/*open*/ class ClassicPinger implements Pinger {
+/*internal open*/ class ClassicPinger implements Pinger {
 
     protected final NotificationManager pingManager;
     private final Notification mPing;

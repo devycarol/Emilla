@@ -10,9 +10,10 @@ import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.util.Apps;
 
-abstract class AppSearch extends AppCommand {
+/*internal*/ abstract class AppSearch extends AppCommand {
 
-    AppSearch(AssistActivity act, Yielder info, @StringRes int instruction, @StringRes int summary) {
+    public AppSearch(AssistActivity act, Yielder info, @StringRes int instruction,
+            @StringRes int summary) {
         super(act, new InstructyParams(info, instruction),
               summary,
               R.string.manual_app_search,
