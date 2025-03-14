@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 
+@FunctionalInterface
 public interface ContactCardReceiver extends ContactReceiver {
 
     @Override

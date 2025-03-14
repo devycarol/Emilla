@@ -121,6 +121,7 @@ public abstract class CoreCommand extends EmillaCommand {
         }
     }
 
+    @FunctionalInterface
     public interface Maker {
 
         CoreCommand make(AssistActivity act);

@@ -1,5 +1,6 @@
 package net.emilla.content.receive;
 
+@FunctionalInterface
 public interface AppChoiceReceiver extends ResultReceiver {
 
     /**

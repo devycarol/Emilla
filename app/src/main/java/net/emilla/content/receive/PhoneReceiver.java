@@ -4,6 +4,7 @@ import static net.emilla.contact.adapter.ContactPhoneAdapter.IDX_NUMBER;
 
 import android.database.Cursor;
 
+@FunctionalInterface
 public interface PhoneReceiver extends ContactDataReceiver {
 
     @Override

@@ -1,5 +1,6 @@
 package net.emilla.chime;
 
+@FunctionalInterface
 public interface Chimer {
 
     byte // IDs

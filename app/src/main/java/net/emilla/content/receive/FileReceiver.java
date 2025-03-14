@@ -4,6 +4,7 @@ import android.net.Uri;
 
 import java.util.List;
 
+@FunctionalInterface
 public interface FileReceiver extends ResultReceiver {
 
     /**

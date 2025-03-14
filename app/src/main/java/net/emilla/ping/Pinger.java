@@ -7,6 +7,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresPermission;
 
+@FunctionalInterface
 public interface Pinger {
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)

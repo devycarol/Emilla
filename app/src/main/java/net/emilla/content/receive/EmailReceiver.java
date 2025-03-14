@@ -4,6 +4,7 @@ import static net.emilla.contact.adapter.ContactEmailAdapter.IDX_ADDRESS;
 
 import android.database.Cursor;
 
+@FunctionalInterface
 public interface EmailReceiver extends ContactDataReceiver {
 
     @Override
