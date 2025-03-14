@@ -54,7 +54,7 @@ public final class ActionButton extends AppCompatImageButton implements View.OnT
         setImageDrawable(mIcon = icon);
         if (mHasAppIcon != isAppIcon) {
             mHasAppIcon = isAppIcon;
-            Resources res = getResources();
+            var res = getResources();
             if (isAppIcon) applyAppIconBackground(res);
             else applyNormalIconBackground(res);
         }

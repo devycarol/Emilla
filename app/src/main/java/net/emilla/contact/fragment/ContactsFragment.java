@@ -2,7 +2,6 @@ package net.emilla.contact.fragment;
 
 import static net.emilla.chime.Chimer.RESUME;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -112,7 +111,7 @@ public abstract class ContactsFragment<T> extends Fragment
     public final void search(@Nullable String search) {
         mSearchString = search;
 
-        Context ctx = getContext();
+        var ctx = getContext();
         if (ctx == null || !Permissions.contacts(ctx)) return;
 
         LoaderManager.getInstance(this).restartLoader(0, null, this);

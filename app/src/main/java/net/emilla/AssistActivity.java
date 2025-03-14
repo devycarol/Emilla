@@ -25,7 +25,6 @@ import static java.lang.Character.isWhitespace;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -179,7 +178,7 @@ public final class AssistActivity extends EmillaActivity {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.bg_assistant));
         }
 
-        PackageManager pm = getPackageManager();
+        var pm = getPackageManager();
         mAppList = Apps.resolveList(pm);
         mCommandMap = EmillaCommand.map(mPrefs, res, pm, mAppList);
 

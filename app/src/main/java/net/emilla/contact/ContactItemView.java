@@ -2,11 +2,9 @@ package net.emilla.contact;
 
 import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_CLICK;
 
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.ContactsContract.Contacts;
@@ -64,7 +62,7 @@ public final class ContactItemView extends LinearLayout {
 
         mStar = findViewById(R.id.ctct_star);
 
-        Resources res = getResources();
+        var res = getResources();
 
         ViewCompat.replaceAccessibilityAction(this, ACTION_CLICK, res.getString(R.string.select),
                 null);
@@ -125,7 +123,8 @@ public final class ContactItemView extends LinearLayout {
         var values = new ContentValues();
         values.put(Contacts.STARRED, starred ? 1 : 0);
 
-        ContentResolver cr = getContext().getContentResolver();
+        var ctx = getContext();
+        var cr = ctx.getContentResolver();
         String[] selectionArgs = {String.valueOf(mContactId)};
         cr.update(Contacts.CONTENT_URI, values, Contacts._ID + " = ?", selectionArgs);
 
@@ -136,7 +135,7 @@ public final class ContactItemView extends LinearLayout {
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     private void setStateDesc() {
-        Resources res = getResources();
+        var res = getResources();
         if (mSelected) setStateDescription(res.getString(mStarred ? R.string.selected_and_starred
                 : R.string.selected));
         else setStateDescription(mStarred ? getResources().getString(R.string.starred) : null);

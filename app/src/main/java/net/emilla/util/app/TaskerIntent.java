@@ -206,13 +206,13 @@ public final class TaskerIntent extends Intent {
 
     // Arbitrary specification of (local) variable names and values
     public TaskerIntent addLocalVariable(String name, String value) {
-        ArrayList<String> names = getStringArrayListExtra(EXTRA_VAR_NAMES_LIST);
+        var names = getStringArrayListExtra(EXTRA_VAR_NAMES_LIST);
         if (names == null) {
             names = new ArrayList<>();
             putStringArrayListExtra(EXTRA_VAR_NAMES_LIST, names);
         }
 
-        ArrayList<String> values = getStringArrayListExtra(EXTRA_VAR_VALUES_LIST);
+        var values = getStringArrayListExtra(EXTRA_VAR_VALUES_LIST);
         if (values == null) {
             values = new ArrayList<>();
             putStringArrayListExtra(EXTRA_VAR_VALUES_LIST, values);
