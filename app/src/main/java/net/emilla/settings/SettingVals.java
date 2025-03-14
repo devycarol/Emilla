@@ -197,26 +197,27 @@ public final class SettingVals {
         return prefs.getString(snippetPref(label), "");
     }
 
-    public static Set<String> addSnippet(SharedPreferences prefs, String label, String text) {
+    public static void addSnippet(SharedPreferences prefs, String label, String text) {
         Set<String> snippets = new HashSet<>(prefs.getStringSet("snippets", Snippets.DFLT_SNIPPETS));
         snippets.add(label);
 
         prefs.edit().putString(snippetPref(label), text)
                     .putStringSet("snippets", snippets)
                     .apply();
-
-        return snippets;
     }
 
-    public static Set<String> removeSnippet(SharedPreferences prefs, String label) {
+    public static void replaceSnippet(SharedPreferences prefs, String label, String text) {
+        prefs.edit().putString(snippetPref(label), text)
+                    .apply();
+    }
+
+    public static void removeSnippet(SharedPreferences prefs, String label) {
         Set<String> snippets = new HashSet<>(prefs.getStringSet("snippets", Snippets.DFLT_SNIPPETS));
         snippets.remove(label);
 
         prefs.edit().remove(snippetPref(label))
                     .putStringSet("snippets", snippets)
                     .apply();
-
-        return snippets;
     }
 
     private static String snippetPref(String label) {

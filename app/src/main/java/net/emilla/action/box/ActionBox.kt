@@ -16,7 +16,7 @@ protected constructor(@LayoutRes contentLayoutId: Int)
     : Fragment (contentLayoutId) {
 
     protected val activity by lazy { requireActivity() as AssistActivity }
-    private val resources by lazy { activity.resources }
+    private val res by lazy { activity.resources }
 
     protected fun chime(id: Byte) {
         activity.chime(id)
@@ -31,7 +31,7 @@ protected constructor(@LayoutRes contentLayoutId: Int)
     }
 
     protected fun str(@StringRes id: Int, vararg formatArgs: Any): String {
-        return resources.getString(id, *formatArgs)
+        return res.getString(id, *formatArgs)
     }
 
     private fun offer(offering: Offering) {

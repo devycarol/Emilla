@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -21,6 +22,12 @@ public final class SortedArray<E extends Comparable<E>> implements Iterable<E> {
     public SortedArray(int initialCapacity) {
         if (initialCapacity < 0) throw new IllegalArgumentException();
         mData = (E[]) new Comparable[initialCapacity];
+    }
+
+    @SuppressWarnings("unchecked")
+    public SortedArray(Collection<E> c) {
+        mData = (E[]) new Comparable[c.size()];
+        for (E val : c) addInternal(val);
     }
 
     private void ensureCapacity() {
