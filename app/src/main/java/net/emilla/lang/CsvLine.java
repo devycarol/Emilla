@@ -121,8 +121,7 @@ public final class CsvLine implements Iterable<String> {
         return mEnforceTrimming ? new TrimmingValIterator() : new ValIterator();
     }
 
-    private sealed /*open*/ class ValIterator implements Iterator<String>
-            permits TrimmingValIterator {
+    private sealed class ValIterator implements Iterator<String> permits TrimmingValIterator {
 
         protected int pos = mStart;
 

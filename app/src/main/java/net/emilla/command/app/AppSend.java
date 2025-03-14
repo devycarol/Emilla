@@ -16,7 +16,7 @@ public /*open*/ class AppSend extends AppCommand {
 
     private static final class AppSendParams extends AppParams {
 
-        private AppSendParams(Yielder info) {
+        AppSendParams(Yielder info) {
             super(info);
         }
 

@@ -135,8 +135,7 @@ public final class Lines implements Iterable<String> {
         return mEnforceTrimming ? new TrimmingLineIterator() : new LineIterator();
     }
 
-    private sealed /*open*/ class LineIterator implements Iterator<String>
-            permits TrimmingLineIterator {
+    private sealed class LineIterator implements Iterator<String> permits TrimmingLineIterator {
 
         protected int pos = mStart;
 

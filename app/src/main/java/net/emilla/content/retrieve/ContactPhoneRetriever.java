@@ -14,7 +14,7 @@ public final class ContactPhoneRetriever extends ContactDataRetriever {
 
     private static final class PickContactPhone extends PickContactData {
 
-        public PickContactPhone(Context ctx) {
+        PickContactPhone(Context ctx) {
             super(ctx);
         }
 
