@@ -83,18 +83,12 @@ public abstract class Words implements TrieMap.Phrase<String, String> {
                 int endIndex = mStartIndex;
                 int len = mPhrase.length();
 
-                do {
-                    ++endIndex;
-                    if (endIndex >= len) break;
-                }
+                do if (++endIndex >= len) break;
                 while (!Character.isWhitespace(mPhrase.charAt(endIndex)));
                 var word = mPhrase.substring(mStartIndex, endIndex);
 
                 if (endIndex < len) {
-                    do {
-                        ++endIndex;
-                        if (endIndex >= len) break;
-                    }
+                    do if (++endIndex >= len) break;
                     while (Character.isWhitespace(mPhrase.charAt(endIndex)));
                 }
                 mStartIndex = endIndex;

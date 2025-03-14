@@ -50,19 +50,21 @@ public final class Bookmark extends CoreCommand {
         String[] lines = SettingVals.bookmarkCsv(prefs()).split("\\s*\n\\s*");
         var labels = new String[lines.length];
         var intents = new Intent[lines.length];
-        int idx = -1;
+        int idx = 0;
         for (String line : lines) {
             var vals = line.split("\\s*,\\s*");
             if (vals.length > 1) {
                 int lastIdx = vals.length - 1;
                 Intent view = Apps.viewTask(vals[lastIdx]);
-                for (int i = 0; i < lastIdx; ++i) mBookmarkMap.put(vals[i].toLowerCase(), view);
-                ++idx;
+                for (int i = 0; i < lastIdx; ++i) {
+                    mBookmarkMap.put(vals[i].toLowerCase(), view);
+                }
                 labels[idx] = vals[0];
                 intents[idx] = view;
+                ++idx;
             }
         }
-        mHasBookmarks = idx != -1;
+        mHasBookmarks = idx > 0;
         if (mHasBookmarks) mBookmarkChooser = Dialogs.list(act, R.string.dialog_media, labels,
                 (dlg, which) -> appSucceed(intents[which]));
         else mBookmarkChooser = Dialogs.dual(act, R.string.dialog_no_bookmarks,

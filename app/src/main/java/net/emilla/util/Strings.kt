@@ -4,8 +4,7 @@ package net.emilla.util
 
 fun String.trimLeading(): String {
     val index = indexOfNonSpace()
-    if (index > 0) return substring(index)
-    return this
+    return if (index > 0) substring(index) else this
 }
 
 fun String.indexOfNonSpace(): Int {

@@ -20,7 +20,8 @@ public final class AppSuccess implements Success {
 
     @Override
     public void run() {
-        if (mIntent.resolveActivity(mActivity.getPackageManager()) != null) {
+        var pm = mActivity.getPackageManager();
+        if (mIntent.resolveActivity(pm) != null) {
             mActivity.finishAndRemoveTask();
             mActivity.startActivity(mIntent.addFlags(FLAG_ACTIVITY_NEW_TASK));
         } else throw new EmillaException(R.string.error, R.string.error_no_app);

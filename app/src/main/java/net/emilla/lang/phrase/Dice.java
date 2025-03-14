@@ -26,9 +26,13 @@ public final class Dice implements Comparable<Dice> {
 
         int result = 0;
         if (mCount >= 0) {
-            for (int i = 0; i < mCount; ++i) result += rand.nextInt(faces) + 1;
+            for (int i = 0; i < mCount; ++i) {
+                result += rand.nextInt(faces) + 1;
+            }
         } else {
-            for (int i = 0; i > mCount; --i) result -= rand.nextInt(faces) + 1;
+            for (int i = 0; i > mCount; --i) {
+                result -= rand.nextInt(faces) + 1;
+            }
         }
 
         return result;
@@ -41,9 +45,9 @@ public final class Dice implements Comparable<Dice> {
 
     @Override
     public boolean equals(Object that) {
-        if (this == that) return true;
-        if (!(that instanceof Dice dice)) return false;
-        return faces == dice.faces;
+        return this == that
+            || that instanceof Dice dice
+                && faces == dice.faces;
     }
 
     @Override

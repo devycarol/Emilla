@@ -53,4 +53,6 @@ public final class RandRangeEN_US {
             return new RandRange(inclusEnd, errorTitle);
         } else throw new EmillaException(errorTitle, R.string.error_invalid_number_range);
     }
+
+    private RandRangeEN_US() {}
 }

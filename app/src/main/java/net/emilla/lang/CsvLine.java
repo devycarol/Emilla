@@ -19,7 +19,9 @@ public final class CsvLine implements Iterable<String> {
 //        while (itr.hasNext()) {
 //            sb.append(',');
 //            next = itr.next();
-//            if (next != null) sb.append(encodeVal(next));
+//            if (next != null) {
+//                sb.append(encodeVal(next));
+//            }
 //        }
 //
 //        return sb.toString();
@@ -37,7 +39,9 @@ public final class CsvLine implements Iterable<String> {
             else sb.append(',');
 
             next = itr.next();
-            if (next != null) sb.append(encodeVal(next));
+            if (next != null) {
+                sb.append(encodeVal(next));
+            }
         }
 
         return sb.toString();
@@ -53,7 +57,9 @@ public final class CsvLine implements Iterable<String> {
 //        while (itr.hasNext()) {
 //            sb.append(',');
 //            next = itr.next();
-//            if (next != null) sb.append(encodeVal(next));
+//            if (next != null) {
+//                sb.append(encodeVal(next));
+//            }
 //        }
 //
 //        return sb.toString();
@@ -73,7 +79,9 @@ public final class CsvLine implements Iterable<String> {
 //        int len = text.length();
 //        var sb = new StringBuilder(len);
 //
-//        for (int i = 0; i < len; ++i) appendEscape(sb, text.charAt(i));
+//        for (int i = 0; i < len; ++i) {
+//            appendEscape(sb, text.charAt(i));
+//        }
 //
 //        return sb.toString();
 //    }
@@ -94,7 +102,9 @@ public final class CsvLine implements Iterable<String> {
         if (!itr.hasNext()) return null;
 
         sb.append(itr.next());
-        while (itr.hasNext()) sb.append(',').append(itr.next());
+        while (itr.hasNext()) {
+            sb.append(',').append(itr.next());
+        }
 
         return sb.toString();
     }
@@ -112,7 +122,11 @@ public final class CsvLine implements Iterable<String> {
     }
 
     private static int valStart(String s) {
-        for (int i = 0; i < s.length(); ++i) if (!isWhitespace(s.charAt(i))) return i;
+        for (int i = 0; i < s.length(); ++i) {
+            if (!isWhitespace(s.charAt(i))) {
+                return i;
+            }
+        }
         return s.length();
     }
 
@@ -142,7 +156,9 @@ public final class CsvLine implements Iterable<String> {
                     if (escape) {
                         sb.append('\\');
                         escape = false;
-                    } else escape = true;
+                    } else {
+                        escape = true;
+                    }
                 }
                 case ',' -> {
                     if (!escape) {
@@ -187,7 +203,9 @@ public final class CsvLine implements Iterable<String> {
         @Override @Nullable
         protected String makeVal(StringBuilder sb)  {
             int len = sb.length();
-            while (len > 0 && isWhitespace(sb.charAt(len - 1))) --len;
+            while (len > 0 && isWhitespace(sb.charAt(len - 1))) {
+                --len;
+            }
             sb.setLength(len);
             // remove trailing whitespaces, leading ones are handled by `advanceToNextVal()` and
             // `valStart(String)`.

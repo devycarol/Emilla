@@ -50,10 +50,12 @@ public final class PermissionRetriever {
         }
 
         private void onResult(Map<String, Boolean> grants, @Nullable Runnable onGrant) {
-            for (boolean granted : grants.values()) if (!granted) {
-                // permission not granted.
-                mActivity.chime(RESUME);
-                return;
+            for (boolean granted : grants.values()) {
+                if (!granted) {
+                    // permission not granted.
+                    mActivity.chime(RESUME);
+                    return;
+                }
             }
             // permission granted.
             if (onGrant != null) onGrant.run();

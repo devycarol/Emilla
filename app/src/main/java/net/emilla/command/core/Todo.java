@@ -72,7 +72,9 @@ public final class Todo extends CoreDataCommand {
         todo(tasks); // TODO
 
         int taskCount = 0;
-        for (String t : tasks.split("\n")) if (!t.isBlank()) ++taskCount;
+        for (String t : tasks.split("\n")) {
+            if (!t.isBlank()) ++taskCount;
+        }
         toast(quantityString(R.plurals.toast_tasks_created, taskCount));
         give(() -> {});
     }
@@ -82,7 +84,9 @@ public final class Todo extends CoreDataCommand {
         todo(task + '\n' + moreTasks); // TODO
 
         int taskCount = 0;
-        for (String t : task.split("\n")) if (!t.isBlank()) ++taskCount;
+        for (String t : task.split("\n")) {
+            if (!t.isBlank()) ++taskCount;
+        }
         toast(quantityString(R.plurals.toast_tasks_created, taskCount));
         give(() -> {});
     }

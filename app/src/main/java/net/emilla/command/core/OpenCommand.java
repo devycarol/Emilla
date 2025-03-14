@@ -110,8 +110,7 @@ public abstract class OpenCommand extends CoreCommand {
             while (i < prefCount) {
                 prefLabels[i] = otherLabels[k];
                 prefIntents[i] = otherIntents[k];
-                ++i;
-                ++k;
+                ++i; ++k;
             }
         } // else `other` arrays are null
 

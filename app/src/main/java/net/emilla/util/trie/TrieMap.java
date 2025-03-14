@@ -48,7 +48,9 @@ import java.util.Map;
     ) {
         if (node.hasChildren()) {
             if (node.val != null) addValues(values, node.val);
-            for (TrieNode<K, V> next : node.children.values()) valuesRec(next, values);
+            for (TrieNode<K, V> next : node.children.values()) {
+                valuesRec(next, values);
+            }
         } else addValues(values, node.val);
         // a leaf node always has a value.
 
@@ -57,7 +59,9 @@ import java.util.Map;
 
     private static <V extends TrieMap.Value<V>> void addValues(List<V> values, V value) {
         if (value instanceof TrieMap.Duplicate<?>) {
-            for (V dupe : (TrieMap.Duplicate<V>) value) values.add(dupe);
+            for (V dupe : (TrieMap.Duplicate<V>) value) {
+                values.add(dupe);
+            }
         } else values.add(value);
     }
 }

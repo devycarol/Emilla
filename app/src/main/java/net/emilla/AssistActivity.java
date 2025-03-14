@@ -282,8 +282,9 @@ public final class AssistActivity extends EmillaActivity {
     }
 
     private void setupDataButtons() {
-        if (mAlwaysShowData) mShowDataButton.setVisibility(View.GONE);
-        else {
+        if (mAlwaysShowData) {
+            mShowDataButton.setVisibility(View.GONE);
+        } else {
             mShowDataButton.setOnClickListener(v -> focusDataField());
             mHideDataButton.setOnClickListener(v -> hideDataField());
         }

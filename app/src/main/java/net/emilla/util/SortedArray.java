@@ -31,7 +31,9 @@ public final class SortedArray<E extends Comparable<E>> implements Iterable<E> {
     }
 
     private void ensureCapacity() {
-        if (mSize == mData.length) mData = Arrays.copyOf(mData, mData.length * 3 / 2 + 1);
+        if (mSize == mData.length) {
+            mData = Arrays.copyOf(mData, mData.length * 3 / 2 + 1);
+        }
     }
 
     /**

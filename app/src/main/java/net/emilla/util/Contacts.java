@@ -26,8 +26,11 @@ public final class Contacts {
             if (isAcceptablePhoneChar(c)) sb.append(c);
             else {
                 int letterDigit = keypadNumber(c);
-                if (letterDigit != -1) sb.append(letterDigit);
-                else if (sb.length() == 0 && c == '+') sb.append('+');
+                if (letterDigit != -1) {
+                    sb.append(letterDigit);
+                } else if (sb.length() == 0 && c == '+') {
+                    sb.append('+');
+                }
             }
         }
         return sb.toString();
@@ -68,7 +71,9 @@ public final class Contacts {
         var selection = Phone.CONTACT_ID + " = ?";
         String[] selectionArgs = {contact.getLastPathSegment()};
         try (Cursor cur = cr.query(contentUri, projection, selection, selectionArgs, null)) {
-            if (cur != null && cur.moveToFirst()) return cur.getString(IDX_NUMBER);
+            if (cur != null && cur.moveToFirst()) {
+                return cur.getString(IDX_NUMBER);
+            }
         }
         return null;
     }

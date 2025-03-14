@@ -154,15 +154,15 @@ public final class Tasker extends AppCommand implements DataCommand {
 
         var taskNames = new String[size];
         var taskLabels = new String[size];
-        int i = -1;
+        int i = 0;
         for (Task tsk : tasks) {
-            ++i;
             taskNames[i] = tsk.taskName;
             taskLabels[i] = tsk.toString();
+            ++i;
         }
 
         offerDialog(Dialogs.list(activity, R.string.dialog_tasker_select_task, taskLabels,
-                (dlg, which) -> runTask(taskNames[which], params)));
+                                 (dlg, which) -> runTask(taskNames[which], params)));
         // todo: see if it's possible to display task/project icons
     }
 

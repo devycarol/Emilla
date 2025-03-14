@@ -52,7 +52,9 @@ public final class SearchEngineParser {
             var engine = url.contains("%s") ? new Website(url.replaceFirst("%s", ""), url)
                     : new Website(url, null);
 
-            for (String alias : aliases) mEngineMap.put(Lang.words(alias), engine);
+            for (String alias : aliases) {
+                mEngineMap.put(Lang.words(alias), engine);
+            }
         }
     }
 
@@ -64,7 +66,9 @@ public final class SearchEngineParser {
                 String encodedQuery = Uri.encode(queryWords.remainingContents());
                 Uri uri = Uri.parse(get.searchUrl.replaceFirst("%s", encodedQuery));
                 return Apps.viewTask(uri);
-            } else return Apps.viewTask(Uri.parse(get.siteUrl));
+            } else {
+                return Apps.viewTask(Uri.parse(get.siteUrl));
+            }
         }
         return new Intent(Intent.ACTION_WEB_SEARCH).putExtra(QUERY, query);
     }

@@ -16,16 +16,18 @@ import java.util.List;
 public final class Files {
 
     public static boolean endsWithNewline(ContentResolver cr, Uri fileUri) throws IOException {
-        InputStream is = cr.openInputStream(fileUri);
-        if (is == null) throw new FileNotFoundException();
-        var reader = new BufferedReader(new InputStreamReader(is));
+        InputStream istream = cr.openInputStream(fileUri);
+        if (istream == null) throw new FileNotFoundException();
+        var reader = new BufferedReader(new InputStreamReader(istream));
         // todo: what.
 
         int c, lastChar = '\n';
-        while ((c = reader.read()) != -1) lastChar = c;
+        while ((c = reader.read()) != -1) {
+            lastChar = c;
+        }
         // todo: don't loop through each char.
         reader.close();
-        is.close();
+        istream.close();
         return lastChar == '\n';
     }
 
@@ -42,7 +44,9 @@ public final class Files {
         public static String of(List<Uri> fileUris, Context ctx) {
             Iterator<Uri> itr = fileUris.iterator();
             String type = of(itr.next(), ctx);
-            while (!type.equals("*/*") && itr.hasNext()) type = union(type, of(itr.next(), ctx));
+            while (!type.equals("*/*") && itr.hasNext()) {
+                type = union(type, of(itr.next(), ctx));
+            }
             return type;
         }
 

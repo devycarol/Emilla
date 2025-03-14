@@ -56,12 +56,10 @@ public final class DicesEN_US {
 
                 if (hasNext()) {
                     negative = roll.charAt(pos) == '-';
-                    ++pos;
-                    while (pos < length) {
+                    while (++pos < length) {
                         char c = roll.charAt(pos);
                         if (c == '-') negative = !negative;
                         else if (c != '+') break;
-                        ++pos;
                     }
                 }
 

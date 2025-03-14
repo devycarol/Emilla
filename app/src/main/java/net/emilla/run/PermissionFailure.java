@@ -18,9 +18,10 @@ public final class PermissionFailure extends DialogRun {
         //  probably other elements of state. handle accordingly.
         Intent appInfo = Apps.infoTask();
         PackageManager pm = act.getPackageManager();
-        if (appInfo.resolveActivity(pm) != null) return Dialogs.dual(act, permissionName,
-                R.string.dlg_msg_perm_denial, R.string.app_info,
-                (dlg, which) -> act.startActivity(appInfo));
+        if (appInfo.resolveActivity(pm) != null) {
+            return Dialogs.dual(act, permissionName, R.string.dlg_msg_perm_denial, R.string.app_info,
+                                (dlg, which) -> act.startActivity(appInfo));
+        }
 
         return Dialogs.message(act, permissionName, R.string.dlg_msg_perm_denial);
         // this should pretty much never happen.

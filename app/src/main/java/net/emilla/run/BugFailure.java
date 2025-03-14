@@ -7,6 +7,7 @@ import static android.content.Intent.EXTRA_TEXT;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.appcompat.app.AlertDialog;
@@ -44,7 +45,9 @@ public final class BugFailure extends DialogRun {
 
         var body = "Feel free to describe what was happening when the error occurred:\n\n\n\n"
                  + "======== exception details ========\n\n";
-        if (message != null && !message.isEmpty()) body += message + "\n";
+        if (!TextUtils.isEmpty(message)) {
+            body += message + "\n";
+        }
         body += stackTrace + "\n"
                 + "======== more helpful stuff ========\n\n"
                 + deviceInfo();
@@ -58,15 +61,21 @@ public final class BugFailure extends DialogRun {
 
     private static String deviceInfo() {
         var device = new StringBuilder(Build.MODEL.isEmpty() ? "Unknown" : Build.MODEL);
-        if (!Build.DEVICE.isEmpty()) device.append(" (").append(Build.DEVICE).append(')');
+        if (!Build.DEVICE.isEmpty()) {
+            device.append(" (").append(Build.DEVICE).append(')');
+        }
 
         String baseOs;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Build.VERSION.BASE_OS.isEmpty()) {
             baseOs = Build.VERSION.BASE_OS;
-        } else baseOs = "Android";
+        } else {
+            baseOs = "Android";
+        }
 
         var os = new StringBuilder(baseOs).append(' ');
-        if (!Build.VERSION.RELEASE.isEmpty()) os.append(Build.VERSION.RELEASE).append(' ');
+        if (!Build.VERSION.RELEASE.isEmpty()) {
+            os.append(Build.VERSION.RELEASE).append(' ');
+        }
         os.append(versionCodename());
 
         var app = new StringBuilder(BuildConfig.APPLICATION_NAME).append(' ')

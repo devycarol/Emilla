@@ -33,4 +33,6 @@ public final class Aliases {
         if (setId == 0) return null;
         return prefs.getStringSet("aliases_" + pkg, Set.of(res.getStringArray(setId)));
     }
+
+    private Aliases() {}
 }

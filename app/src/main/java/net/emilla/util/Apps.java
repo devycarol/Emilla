@@ -106,25 +106,31 @@ public final class Apps {
     }
 
     public static CharSequence[] labels(List<ResolveInfo> appList, PackageManager pm) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) return appList.parallelStream()
-                .map(ri -> ri.activityInfo.loadLabel(pm)).toArray(CharSequence[]::new);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return appList.parallelStream()
+                    .map(ri -> ri.activityInfo.loadLabel(pm))
+                    .toArray(CharSequence[]::new);
+        }
         var labels = new CharSequence[appList.size()];
-        int i = -1;
+        int i = 0;
         for (ResolveInfo ri : appList) {
-            ++i;
             labels[i] = ri.activityInfo.packageName;
+            ++i;
         }
         return labels;
     }
 
     public static Intent[] launches(List<ResolveInfo> appList) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) return appList.parallelStream()
-                .map(ri -> launchIntent(ri.activityInfo)).toArray(Intent[]::new);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return appList.parallelStream()
+                    .map(ri -> launchIntent(ri.activityInfo))
+                    .toArray(Intent[]::new);
+        }
         var intents = new Intent[appList.size()];
-        int i = -1;
+        int i = 0;
         for (ResolveInfo ri : appList) {
-            ++i;
             intents[i] = launchIntent(ri.activityInfo);
+            ++i;
         }
         return intents;
     }
@@ -137,9 +143,10 @@ public final class Apps {
     public static Intent uninstallIntent(String pkg, PackageManager pm) {
     try {
         var info = pm.getApplicationInfo(pkg, 0);
-        boolean uninstallable = (info.flags & ApplicationInfo.FLAG_SYSTEM) == 0;
-        if (uninstallable) return new Intent(ACTION_UNINSTALL_PACKAGE, pkgUri(pkg));
-        // Todo: ACTION_UNINSTALL_PACKAGE is deprecated.
+        if ((info.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
+            return new Intent(ACTION_UNINSTALL_PACKAGE, pkgUri(pkg));
+            // Todo: ACTION_UNINSTALL_PACKAGE is deprecated.
+        }
         Intent appInfo = infoTask(pkg);
         if (appInfo.resolveActivity(pm) != null) return appInfo;
         var settings = new Intent(Settings.ACTION_SETTINGS);
@@ -149,13 +156,16 @@ public final class Apps {
     }
 
     public static Intent[] uninstalls(List<ResolveInfo> appList, PackageManager pm) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) return appList.parallelStream()
-                .map(ri -> uninstallIntent(ri.activityInfo.packageName, pm)).toArray(Intent[]::new);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return appList.parallelStream()
+                    .map(ri -> uninstallIntent(ri.activityInfo.packageName, pm))
+                    .toArray(Intent[]::new);
+        }
         var intents = new Intent[appList.size()];
-        int i = -1;
+        int i = 0;
         for (ResolveInfo ri : appList) {
-            ++i;
             intents[i] = uninstallIntent(ri.activityInfo.packageName, pm);
+            ++i;
         }
         return intents;
     }

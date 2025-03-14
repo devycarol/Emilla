@@ -13,12 +13,16 @@ public record WeekdaysEN_US(ArrayList<Integer> days, boolean empty) implements W
 
     public static WeekdaysEN_US instance(String timeStr, @StringRes int errorTitle) {
         timeStr = timeStr.toLowerCase().replaceFirst(HourMinEN_US.REGEX, "").trim();
-        if (timeStr.isEmpty()) return new WeekdaysEN_US(new ArrayList<>(), true);
+        if (timeStr.isEmpty()) {
+            return new WeekdaysEN_US(new ArrayList<>(), true);
+        }
 
         if (!timeStr.matches("\\w+( +\\w+){0,6}")) {
             throw new EmillaException(errorTitle, R.string.error_invalid_weekday_format);
         }
-        if (!timeStr.matches("[umtwrfs]{1,7}")) timeStr = letterString(timeStr, errorTitle);
+        if (!timeStr.matches("[umtwrfs]{1,7}")) {
+            timeStr = letterString(timeStr, errorTitle);
+        }
 
         ArrayList<Integer> weekdays = new ArrayList<>(timeStr.length());
         do {
@@ -47,7 +51,9 @@ public record WeekdaysEN_US(ArrayList<Integer> days, boolean empty) implements W
     private static String letterString(String s, @StringRes int errorTitle) {
         var words = s.split(", *| +");
         var sb = new StringBuilder();
-        for (String word : words) sb.append(dayLetter(word, errorTitle));
+        for (String word : words) {
+            sb.append(dayLetter(word, errorTitle));
+        }
         return sb.toString();
     }
 

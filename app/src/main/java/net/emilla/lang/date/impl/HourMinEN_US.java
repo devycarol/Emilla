@@ -42,8 +42,10 @@ public record HourMinEN_US(int hour24, int minute) implements HourMin {
         if (meridiem == -1) { // meridiem wasn't specified
             if (1 <= hour && hour <= 12 && !DateFormat.is24HourFormat(ctx)) {
                 // don't change to the soonest occurrence if the device uses 24-hour time.
-                if (isFlip(hour, minute)) hour = (hour + 12) % 24;
-                // flip the meridiem: advance the hour by 12 and wrap back to 0 if it reaches 24.
+                if (isFlip(hour, minute)) {
+                    hour = (hour + 12) % 24;
+                    // flip the meridiem: advance the hour by 12 and wrap back to 0 if it reaches 24.
+                }
             } // 24-time hours 0 and 13+ are left unchanged
         } else { // meridiem was specified
             if (hour < 1 || 12 < hour) {

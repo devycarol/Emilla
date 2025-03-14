@@ -20,7 +20,9 @@ public final class Lines implements Iterable<String> {
 //            sb.append('\n');
 //
 //            next = itr.next();
-//            if (next != null) sb.append(encodeLine(next));
+//            if (next != null) {
+//                sb.append(encodeLine(next));
+//            }
 //        }
 //
 //        if (haveTrailing) sb.append('\n');
@@ -39,7 +41,9 @@ public final class Lines implements Iterable<String> {
             sb.append('\n');
 
             next = itr.next();
-            if (next != null) sb.append(encodeLine(next));
+            if (next != null) {
+                sb.append(encodeLine(next));
+            }
         }
 
         if (haveTrailing) sb.append('\n');
@@ -58,7 +62,9 @@ public final class Lines implements Iterable<String> {
 //            sb.append('\n');
 //
 //            next = itr.next();
-//            if (next != null) sb.append(encodeLine(next));
+//            if (next != null) {
+//                sb.append(encodeLine(next));
+//            }
 //        }
 //
 //        if (haveTrailing) sb.append('\n');
@@ -80,7 +86,9 @@ public final class Lines implements Iterable<String> {
 //        int len = text.length();
 //        var sb = new StringBuilder(len);
 //
-//        for (int i = 0; i < len; ++i) appendEscape(sb, text.charAt(i));
+//        for (int i = 0; i < len; ++i) {
+//            appendEscape(sb, text.charAt(i));
+//        }
 //
 //        return sb.toString();
 //    }
@@ -101,7 +109,9 @@ public final class Lines implements Iterable<String> {
         if (!itr.hasNext()) return null;
 
         sb.append(itr.next());
-        while (itr.hasNext()) sb.append('\n').append(itr.next());
+        while (itr.hasNext()) {
+            sb.append('\n').append(itr.next());
+        }
 
         return sb.toString();
     }
@@ -156,7 +166,9 @@ public final class Lines implements Iterable<String> {
                     if (escape) {
                         sb.append('\\');
                         escape = false;
-                    } else escape = true;
+                    } else {
+                        escape = true;
+                    }
                 }
                 case '\n' -> {
                     if (!escape) {
@@ -200,7 +212,9 @@ public final class Lines implements Iterable<String> {
         @Override
         protected String makeLine(StringBuilder sb)  {
             int len = sb.length();
-            while (len > 0 && isNonLineSpace(sb.charAt(len - 1))) --len;
+            while (len > 0 && isNonLineSpace(sb.charAt(len - 1))) {
+                --len;
+            }
             sb.setLength(len);
             // remove trailing non-line spaces, leading ones are handled by `advanceToNextLine()`
             // and `textStart(String)`.

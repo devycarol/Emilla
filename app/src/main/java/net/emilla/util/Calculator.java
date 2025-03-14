@@ -47,7 +47,8 @@ public final class Calculator { // i should definitely be using an expression tr
                 lastGroup2 = m.group(2);
             }
 
-            CharSequence before = solBuilder.subSequence(0, lastStart), after = solBuilder.subSequence(lastEnd, solBuilder.length());
+            CharSequence before = solBuilder.subSequence(0, lastStart),
+                         after = solBuilder.subSequence(lastEnd, solBuilder.length());
             solBuilder.setLength(0);
             solBuilder.append(before);
 
@@ -59,12 +60,19 @@ public final class Calculator { // i should definitely be using an expression tr
 
         m.reset(solBuilder).usePattern(PROD);
         while (m.find()) {
-            CharSequence before = solBuilder.subSequence(0, m.start()), after = solBuilder.subSequence(m.end(), solBuilder.length());
+            CharSequence before = solBuilder.subSequence(0, m.start()),
+                         after = solBuilder.subSequence(m.end(), solBuilder.length());
             solBuilder.setLength(0);
             solBuilder.append(before);
 
-            if (m.group().contains("*")) solBuilder.append(parseLong(m.group(1)) * parseLong(m.group(2)));
-            else solBuilder.append(parseLong(m.group(1)) / parseLong(m.group(2)));
+            if (m.group().contains("*")) {
+                long times = parseLong(m.group(1)) * parseLong(m.group(2));
+                solBuilder.append(times);
+            } else {
+                long div = parseLong(m.group(1)) / parseLong(m.group(2));
+                // TODO: why on earth are we floor-dividing.
+                solBuilder.append(div);
+            }
             solBuilder.append(after);
 
             m.reset(solBuilder);
@@ -72,12 +80,18 @@ public final class Calculator { // i should definitely be using an expression tr
 
         m.usePattern(SUM);
         while (m.find()) {
-            CharSequence before = solBuilder.subSequence(0, m.start()), after = solBuilder.subSequence(m.end(), solBuilder.length());
+            CharSequence before = solBuilder.subSequence(0, m.start()),
+                         after = solBuilder.subSequence(m.end(), solBuilder.length());
             solBuilder.setLength(0);
             solBuilder.append(before);
 
-            if (m.group().contains("+")) solBuilder.append(parseLong(m.group(1)) + parseLong(m.group(2)));
-            else solBuilder.append(parseLong(m.group(1)) - parseLong(m.group(2)));
+            if (m.group().contains("+")) {
+                long add = parseLong(m.group(1)) + parseLong(m.group(2));
+                solBuilder.append(add);
+            } else {
+                long subtract = parseLong(m.group(1)) - parseLong(m.group(2));
+                solBuilder.append(subtract);
+            }
             solBuilder.append(after);
 
             m.reset(solBuilder);
@@ -111,7 +125,9 @@ public final class Calculator { // i should definitely be using an expression tr
         if (m.find()) {
             expr = m.replaceAll("");
             m.reset(expr);
-        } else m.reset();
+        } else {
+            m.reset();
+        }
 
         // simplify negative positives
         m.usePattern(Pattern.compile("\\+-|-\\+"));
@@ -119,14 +135,18 @@ public final class Calculator { // i should definitely be using an expression tr
             m.usePattern(Pattern.compile("\\+*-\\+*"));
             expr = m.replaceAll("-");
             m.reset(expr);
-        } else m.reset();
+        } else {
+            m.reset();
+        }
 
         // simplify double negatives
         m.usePattern(Pattern.compile("--"));
         if (m.find()) {
             expr = m.replaceAll("+");
             m.reset(expr);
-        } else m.reset();
+        } else {
+            m.reset();
+        }
 
         // simplify negative positives again
         m.usePattern(Pattern.compile("\\+-|-\\+"));
@@ -134,7 +154,9 @@ public final class Calculator { // i should definitely be using an expression tr
             m.usePattern(Pattern.compile("\\+*-\\+*"));
             expr = m.replaceAll("-");
             m.reset(expr);
-        } else m.reset();
+        } else {
+            m.reset();
+        }
 
         // remove unary/double positives
         m.usePattern(Pattern.compile("(^|[+*/^])\\++"));
