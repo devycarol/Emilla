@@ -11,7 +11,7 @@ import androidx.annotation.StringRes;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.ping.PingChannel;
-import net.emilla.ping.PingsKt;
+import net.emilla.ping.Pings;
 import net.emilla.settings.Aliases;
 import net.emilla.util.Permissions;
 
@@ -64,7 +64,7 @@ public final class Notify extends CoreDataCommand {
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     private void ping(String title, @Nullable String text) {
-        givePing(PingsKt.make(activity, PingChannel.COMMAND, title, text, R.drawable.ic_notify),
+        givePing(Pings.make(activity, PingChannel.COMMAND, title, text, R.drawable.ic_notify),
                  PingChannel.command());
     }
 }

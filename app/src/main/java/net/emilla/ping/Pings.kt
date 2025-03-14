@@ -1,3 +1,5 @@
+@file:JvmName("Pings")
+
 package net.emilla.ping
 
 import android.app.Notification

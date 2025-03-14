@@ -19,7 +19,7 @@ import net.emilla.event.PingScheduler;
 import net.emilla.event.Plan;
 import net.emilla.lang.Lang;
 import net.emilla.ping.PingChannel;
-import net.emilla.ping.PingsKt;
+import net.emilla.ping.Pings;
 import net.emilla.settings.Aliases;
 import net.emilla.settings.SettingVals;
 import net.emilla.util.Permissions;
@@ -175,6 +175,6 @@ public final class Pomodoro extends CoreDataCommand {
     }
 
     private Notification makePing(String channel, String title, String memo) {
-        return PingsKt.make(activity, channel, title, memo, R.drawable.ic_pomodoro);
+        return Pings.make(activity, channel, title, memo, R.drawable.ic_pomodoro);
     }
 }
