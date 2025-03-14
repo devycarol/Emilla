@@ -9,7 +9,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import net.emilla.EmillaActivity;
 
-public abstract class EmillaPreferenceFragment extends PreferenceFragmentCompat {
+public abstract class EmillaSettingsFragment extends PreferenceFragmentCompat {
 
     protected final <T extends Preference> T preferenceOf(String key) {
         return requireNonNull(findPreference(key));

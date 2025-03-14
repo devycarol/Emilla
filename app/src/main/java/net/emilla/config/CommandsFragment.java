@@ -62,7 +62,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public final class CommandsFragment extends EmillaPreferenceFragment {
+public final class CommandsFragment extends EmillaSettingsFragment {
 
     private EmillaActivity mActivity;
     private SharedPreferences mPrefs;
