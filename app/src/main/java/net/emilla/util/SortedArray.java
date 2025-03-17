@@ -1,6 +1,5 @@
 package net.emilla.util;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.Arrays;
@@ -146,7 +145,7 @@ public final class SortedArray<E extends Comparable<E>> implements Iterable<E> {
         return mSize;
     }
 
-    @Override @NonNull
+    @Override
     public Iterator<E> iterator() {
         return new Iterator<>() {
             private int pos = 0;

@@ -1,6 +1,5 @@
 package net.emilla.lang;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import net.emilla.util.Chars;
@@ -136,7 +135,7 @@ public final class Lines implements Iterable<String> {
         return s.length();
     }
 
-    @Override @NonNull
+    @Override
     public Iterator<String> iterator() {
         return mEnforceTrimming ? new TrimmingLineIterator() : new LineIterator();
     }

@@ -6,7 +6,6 @@ import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
 import androidx.annotation.CallSuper;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
@@ -181,7 +180,7 @@ public final class Tasker extends AppCommand implements DataCommand {
 
     private record Task(String projectName, String taskName) {
 
-        @Override @NonNull
+        @Override
         public String toString() {
             return taskName + " | " + projectName;
         }

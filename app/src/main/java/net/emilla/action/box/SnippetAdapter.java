@@ -4,7 +4,6 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import net.emilla.action.box.SnippetAdapter.SnippetHolder;
@@ -25,8 +24,8 @@ import net.emilla.util.SortedArray;
         mItemClickAction = itemClickAction;
     }
 
-    @Override @NonNull
-    public SnippetHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    @Override
+    public SnippetHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         var ctx = parent.getContext();
         var inflater = LayoutInflater.from(ctx);
         var binding = SnippetItemBinding.inflate(inflater, parent, false);

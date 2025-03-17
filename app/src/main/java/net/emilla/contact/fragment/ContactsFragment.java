@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cursoradapter.widget.CursorAdapter;
 import androidx.fragment.app.Fragment;
@@ -59,7 +58,7 @@ public abstract class ContactsFragment<T> extends Fragment
     }
 
     @Override
-    public final void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public final void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         mHasMultiSelect = requireArguments().getBoolean("multiSelect");
 
         mContactList = view.findViewById(R.id.ctct_list);
@@ -117,7 +116,7 @@ public abstract class ContactsFragment<T> extends Fragment
         LoaderManager.getInstance(this).restartLoader(0, null, this);
     }
 
-    @Override @NonNull
+    @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
         Uri uri;
         String selection;
@@ -156,12 +155,12 @@ public abstract class ContactsFragment<T> extends Fragment
     }
 
     @Override
-    public final void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+    public final void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mCursorAdapter.swapCursor(data);
     }
 
     @Override
-    public final void onLoaderReset(@NonNull Loader<Cursor> loader) {
+    public final void onLoaderReset(Loader<Cursor> loader) {
         mCursorAdapter.swapCursor(null);
     }
 

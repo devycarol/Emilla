@@ -2,7 +2,6 @@ package net.emilla.lang;
 
 import static androidx.annotation.RestrictTo.Scope.SUBCLASSES;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 
 import net.emilla.util.Strings;
@@ -67,7 +66,7 @@ public abstract class Words implements TrieMap.Phrase<String, String> {
             super(phrase);
         }
 
-        @Override @NonNull
+        @Override
         public Iterator<String> iterator() {
             return new LatinIterator();
         }
@@ -105,7 +104,7 @@ public abstract class Words implements TrieMap.Phrase<String, String> {
             super(phrase);
         }
 
-        @Override @NonNull
+        @Override
         public Iterator<String> iterator() {
             return new GlyphIterator();
         }

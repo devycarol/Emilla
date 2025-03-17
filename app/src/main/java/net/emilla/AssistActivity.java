@@ -39,7 +39,6 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import androidx.annotation.IdRes;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
@@ -209,7 +208,7 @@ public final class AssistActivity extends EmillaActivity {
     }
 
     @Override
-    protected void onNewIntent(@NonNull Intent intent) {
+    protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
 
         String action = intent.getAction();
@@ -229,7 +228,7 @@ public final class AssistActivity extends EmillaActivity {
     }
 
     @Override // Todo: replace with view-model?
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
+    protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean("dataFieldVisible", mDataField.getVisibility() == View.VISIBLE);
     }

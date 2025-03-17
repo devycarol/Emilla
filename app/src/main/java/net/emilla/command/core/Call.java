@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
@@ -89,7 +88,7 @@ public final class Call extends CoreCommand implements PhoneReceiver {
         Permissions.withCall(activity, () -> tryCall(nameOrNumber));
     }
 
-    private void tryCall(@NonNull String nameOrNumber) {
+    private void tryCall(String nameOrNumber) {
         String number = mContactsFragment.selectedContacts();
         if (number == null && Contacts.isPhoneNumbers(nameOrNumber)) number = nameOrNumber;
 

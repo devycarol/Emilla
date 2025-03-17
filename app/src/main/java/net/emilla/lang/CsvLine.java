@@ -2,7 +2,6 @@ package net.emilla.lang;
 
 import static java.lang.Character.isWhitespace;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.Iterator;
@@ -130,7 +129,7 @@ public final class CsvLine implements Iterable<String> {
         return s.length();
     }
 
-    @Override @NonNull
+    @Override
     public Iterator<String> iterator() {
         return mEnforceTrimming ? new TrimmingValIterator() : new ValIterator();
     }

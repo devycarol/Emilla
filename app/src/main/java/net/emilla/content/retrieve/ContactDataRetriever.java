@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.net.Uri;
 
 import androidx.activity.result.contract.ActivityResultContract;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import net.emilla.AssistActivity;
@@ -24,8 +23,8 @@ public /*open*/ class ContactDataRetriever extends ResultRetriever<Void, String,
             mContext = ctx;
         }
 
-        @Override @NonNull
-        public final Intent createIntent(@NonNull Context ctx, Void unused) {
+        @Override
+        public final Intent createIntent(Context ctx, Void unused) {
             return new Intent(Intent.ACTION_PICK).setType(contentType());
         }
 

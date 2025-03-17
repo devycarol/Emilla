@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.net.Uri;
 
 import androidx.annotation.ArrayRes;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
@@ -108,7 +107,7 @@ public final class Sms extends CoreDataCommand implements PhoneReceiver {
         tryMessage(recipients, message);
     }
 
-    private void tryMessage(@NonNull String recipients, @Nullable String message) {
+    private void tryMessage(String recipients, @Nullable String message) {
         String numbers = mContactsFragment.selectedContacts();
         if (numbers == null && Contacts.isPhoneNumbers(recipients)) numbers = recipients;
 

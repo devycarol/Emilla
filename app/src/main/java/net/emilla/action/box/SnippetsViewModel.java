@@ -3,7 +3,6 @@ package net.emilla.action.box;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
@@ -65,8 +64,8 @@ import java.util.Set;
             this.ctx = ctx;
         }
 
-        @Override @NonNull
-        public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+        @Override
+        public <T extends ViewModel> T create(Class<T> modelClass) {
             var prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
             return (T) new SnippetsViewModel(prefs);
         }
