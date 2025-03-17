@@ -13,6 +13,7 @@ import net.emilla.R;
 import net.emilla.settings.Aliases;
 import net.emilla.util.Apps;
 import net.emilla.util.Calculator;
+import net.emilla.util.Maths;
 
 public final class Calculate extends CategoryCommand {
 
@@ -43,6 +44,6 @@ public final class Calculate extends CategoryCommand {
 
     @Override
     protected void run(String expression) {
-        giveMessage(String.valueOf(Calculator.compute(expression, NAME)));
+        giveMessage(Maths.prettyNumber(Calculator.compute(expression, NAME)));
     }
 }

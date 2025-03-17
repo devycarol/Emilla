@@ -175,7 +175,7 @@
     <string name="instruction_dial">number or phoneword</string>
     <string name="instruction_contact">person</string>
     <string name="instruction_email">person or email address</string>
-    <string name="instruction_calculate">expression (incomplete)</string><!--todo-->
+    <string name="instruction_calculate">expression</string>
     <string name="instruction_random_number">range</string>
     <string name="instruction_roll">dice</string>
     <string name="instruction_alarm">time and weekdays</string>
@@ -359,9 +359,12 @@
     </string>
     <!-- "Compute math equations" -->
     <string name="manual_calculate">
-        The text you enter will be evaluated as a math expression. Computations can be done with
-        symbols as well as some words. In the future, these will be documented.
-    </string>
+        The text you enter will be evaluated as a math expression.\n
+        \n
+        In the future, more functions
+        will be supported and you\'ll be able to use natural language like \"plus\" and "times" in
+        the instruction.
+    </string><!--todo-->
     <!-- "Generate random numbers" -->
     <string name="manual_random_number">
         To get a random number, provide a range. A single number will yield a pseudorandom number
