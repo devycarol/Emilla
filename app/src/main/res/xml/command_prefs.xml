@@ -73,6 +73,11 @@
             android:summary="@string/summary_roll"
             android:title="@string/command_roll" />
         <EditTextPreference
+            android:icon="@drawable/ic_command"
+            android:key="aliases_bits_text"
+            android:summary="@string/summary_bits"
+            android:title="@string/command_bits" />
+        <EditTextPreference
             android:icon="@drawable/ic_weather"
             android:key="aliases_weather_text"
             android:summary="@string/summary_weather"

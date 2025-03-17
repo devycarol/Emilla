@@ -26,3 +26,7 @@ fun CharArray.indexOfNonSpace(): Int {
 
     return index
 }
+
+fun Char.repeat(count: Int): String {
+    return String(CharArray(count) { this })
+}

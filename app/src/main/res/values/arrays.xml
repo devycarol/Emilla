@@ -100,6 +100,7 @@
         <item>calculate</item>
         <item>random_number</item>
         <item>roll</item>
+        <item>bits</item>
         <item>weather</item>
         <item>time</item>
         <item>alarm</item>
@@ -195,6 +196,12 @@
         <item>calc</item>
         <item>math</item>
     </string-array>
+    <string-array name="aliases_random_number">
+        <item>random number between</item>
+        <item>random</item>
+        <item>rand</item>
+        <item>rng</item>
+    </string-array>
     <string-array name="aliases_roll">
         <item>dice</item>
         <item>flip a coin</item>
@@ -202,12 +209,7 @@
         <item>coinflip</item>
         <item>coin</item>
     </string-array>
-    <string-array name="aliases_random_number">
-        <item>random number between</item>
-        <item>random</item>
-        <item>rand</item>
-        <item>rng</item>
-    </string-array>
+    <string-array name="aliases_bits" />
     <string-array name="aliases_weather" />
     <string-array name="aliases_bookmark" />
     <string-array name="aliases_torch" />

@@ -28,6 +28,7 @@ import net.emilla.AssistActivity;
 import net.emilla.action.QuickAction;
 import net.emilla.command.app.AppCommand;
 import net.emilla.command.core.Alarm;
+import net.emilla.command.core.Bits;
 import net.emilla.command.core.Bookmark;
 import net.emilla.command.core.Calculate;
 import net.emilla.command.core.Calendar;
@@ -101,6 +102,7 @@ public abstract class EmillaCommand {
                 Calculate.yielder(),
                 RandomNumber.yielder(),
                 Roll.yielder(),
+                Bits.yielder(),
                 Weather.yielder(),
                 Bookmark.yielder(),
                 Torch.yielder(),

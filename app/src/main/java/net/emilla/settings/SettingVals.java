@@ -20,6 +20,7 @@ import net.emilla.chime.Redial;
 import net.emilla.chime.Silence;
 import net.emilla.command.DefaultCommandWrapper;
 import net.emilla.command.core.Alarm;
+import net.emilla.command.core.Bits;
 import net.emilla.command.core.Bookmark;
 import net.emilla.command.core.Calculate;
 import net.emilla.command.core.Calendar;
@@ -89,12 +90,13 @@ public final class SettingVals {
             case Calculate.ENTRY -> coreYielders[17];
             case RandomNumber.ENTRY -> coreYielders[18];
             case Roll.ENTRY -> coreYielders[19];
-            case Weather.ENTRY -> coreYielders[20];
-            case Bookmark.ENTRY -> coreYielders[21];
-            case Torch.ENTRY -> coreYielders[22];
-            case Info.ENTRY -> coreYielders[23];
-            case Uninstall.ENTRY -> coreYielders[24];
-            case Toast.ENTRY -> coreYielders[25];
+            case Bits.ENTRY -> coreYielders[20];
+            case Weather.ENTRY -> coreYielders[21];
+            case Bookmark.ENTRY -> coreYielders[22];
+            case Torch.ENTRY -> coreYielders[23];
+            case Info.ENTRY -> coreYielders[24];
+            case Uninstall.ENTRY -> coreYielders[25];
+            case Toast.ENTRY -> coreYielders[26];
             default -> throw new IllegalArgumentException("No such command \"" + entry + "\".");
         });
     }

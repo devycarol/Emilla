@@ -28,6 +28,7 @@ import net.emilla.command.app.Tor;
 import net.emilla.command.app.Tubular;
 import net.emilla.command.app.Youtube;
 import net.emilla.command.core.Alarm;
+import net.emilla.command.core.Bits;
 import net.emilla.command.core.Bookmark;
 import net.emilla.command.core.Calculate;
 import net.emilla.command.core.Calendar;
@@ -122,6 +123,7 @@ public final class CommandsFragment extends EmillaSettingsFragment {
         setupCorePref(Calculate.ALIAS_TEXT_KEY, listener, Calculate.ALIASES);
         setupCorePref(RandomNumber.ALIAS_TEXT_KEY, listener, RandomNumber.ALIASES);
         setupCorePref(Roll.ALIAS_TEXT_KEY, listener, Roll.ALIASES);
+        setupCorePref(Bits.ALIAS_TEXT_KEY, listener, Bits.ALIASES);
         setupCorePref(Weather.ALIAS_TEXT_KEY, listener, Weather.ALIASES);
         setupCorePref(Bookmark.ALIAS_TEXT_KEY, listener, Bookmark.ALIASES);
         setupCorePref(Torch.ALIAS_TEXT_KEY, listener, Torch.ALIASES);

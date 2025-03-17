@@ -145,6 +145,7 @@
     <string name="command_calculate">Calculate</string>
     <string name="command_random_number">Random number</string>
     <string name="command_roll">Roll</string>
+    <string name="command_bits">Bits</string>
     <string name="command_weather">Weather</string>
     <string name="command_time">Time</string>
     <string name="command_alarm">Alarm</string>
@@ -225,6 +226,7 @@
     <string name="summary_calculate">Compute math equations</string>
     <string name="summary_random_number">Generate random numbers</string>
     <string name="summary_roll">Roll virtual dice</string>
+    <string name="summary_bits">Compute bitwise equations</string>
     <string name="summary_weather">Open a weather app</string>
     <string name="summary_time">Tell the time</string>
     <string name="summary_alarm">Set alarms</string>
@@ -385,6 +387,20 @@
         Example: roll 1d6 + 2d8.\n
         \n
         If no instruction is given, a simple coin flip will occur.
+    </string>
+    <!-- "Compute bitwise equations" -->
+    <string name="manual_bits">
+        Enter numbers with bitwise operators to get a result.\n
+        \n
+        Valid operators are &lt;&lt;, &gt;&gt;, &gt;&gt;&gt;, &amp;, ^, |, and ~.\n
+        \n
+        The arithmetic operators +, -, *, /, and % also work. Note that / performs integer (floor)
+        division and % performs remainder (modulo) division.\n
+        \n
+        Precedence is as follows: NOT and negation, multiplicatives, additives, bit-shifts, AND, XOR,
+        then OR.\n
+        \n
+        This command performs integer arithmetic with 64-bit signed integers.
     </string>
     <!-- "Open a weather app" -->
     <string name="manual_weather">
