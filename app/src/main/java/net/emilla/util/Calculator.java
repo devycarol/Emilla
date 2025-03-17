@@ -132,12 +132,10 @@ public final class Calculator {
             this.errorTitle = errorTitle;
         }
 
-        void push(String operand) { try {
-            vals[size] = parseDouble(operand);
+        void push(String operand) {
+            vals[size] = tryParseDouble(operand, errorTitle);
             ++size;
-        } catch (NumberFormatException e) {
-            throw malformedExpression(errorTitle);
-        }}
+        }
 
         void squish(Operator op) {
             if (size < 2) throw malformedExpression(errorTitle);
@@ -323,8 +321,20 @@ public final class Calculator {
                 var s = new String(Arrays.copyOfRange(expr, start, pos));
                 advance();
 
+                if (nextCharIs('%')) {
+                    // postfix unary 'percent' sign turns the number into a decimal value.
+                    double percent = tryParseDouble(s, errorTitle) / 100.0;
+
+                    advanceImmediate();
+                    s = String.valueOf(percent);
+                }
+
                 prevType = Type.NUMBER;
                 return s;
+            }
+
+            private boolean nextCharIs(char c) {
+                return pos < length && expr[pos] == c;
             }
 
             private static boolean isNumberChar(char c) {
@@ -337,6 +347,12 @@ public final class Calculator {
             }
         }
     }
+
+    private static double tryParseDouble(String operand, @StringRes int errorTitle) { try {
+        return parseDouble(operand);
+    } catch (NumberFormatException e) {
+        throw malformedExpression(errorTitle);
+    }}
 
     private static EmillaException malformedExpression(@StringRes int errorTitle) {
         return new EmillaException(errorTitle, R.string.error_calc_malformed_expression);
