@@ -1,16 +1,17 @@
 # Emilla
 A powerful, user-respecting assistant application for Android.
 
-### [Releases](https://github.com/devycarol/Emilla/releases)
+## [Releases](https://github.com/devycarol/Emilla/releases)
 
-What's awesome about Emilla:
-- It doesn't require a microphone, so you can use it wherever you want.
-- It never interrupts you when you're giving a command—Emilla will never assume that it knows better than you.
-- It's easy to turn off sounds if they're not your thing.
-- It never connects to the internet, so it's not even capable of snooping on you ;)
-- Assistance is based on explicit, configurable commands rather than black-box language processing. This means your command is processed instantly, and you never have to worry about what it will actually do.
-- Emilla is designed by someone passionate about software accessibility, and has many features aimed at helping with accessibility needs :)
+### Why is Emilla awesome?
+- You don't need a microphone! You can use it wherever you want.
+- It never interrupts you! Emilla will never assume it knows better than you.
+- You can turn off sound effects if they're not your thing.
+- It never connects to the internet! It won't snoop on you ;)
+- It's designed with accessibility at front of mind! 
+- It uses explicit, configurable commands rather than mysterious language processing. You never have to wonder what your command will do, and it's processed instantly!
 
-<img src="https://github.com/user-attachments/assets/794bc563-57f3-47e3-b684-ecb325bffdd1" width="300dp">
-<img src="https://github.com/user-attachments/assets/67b7ef6b-3e7f-4c5a-bc62-38b19b4539aa" width="300dp">
-<img src="https://github.com/user-attachments/assets/f79d6845-d565-40f2-a82b-201c1fd5f9d3" width="300dp">
+<img src="https://github.com/user-attachments/assets/82f3bb88-5d74-4c08-bd18-d6b7029ee0e8" width="380px">
+<img src="https://github.com/user-attachments/assets/1783c154-97ec-4c22-8857-3c4b51f79578" width="380px">
+<img src="https://github.com/user-attachments/assets/fa86d57e-40d0-485e-802b-3e801e909277" width="380px">
+<img src="https://github.com/user-attachments/assets/a2fcce07-4c05-412d-a3d3-a8eadcafa831" width="380px">
