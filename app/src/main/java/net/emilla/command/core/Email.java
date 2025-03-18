@@ -123,7 +123,7 @@ public final class Email extends AttachCommand implements EmailReceiver {
             email.setSelector(sendTo);
         }
         email.putExtra(EXTRA_EMAIL, addresses.split(", *"));
-        // TODO DONTMERGE: CC and BCC fields
+        // TODO: CC and BCC selections
 
         if (body != null) email.putExtra(EXTRA_TEXT, body);
 

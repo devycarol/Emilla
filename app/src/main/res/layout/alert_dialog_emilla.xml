@@ -70,8 +70,9 @@
     <FrameLayout
         android:id="@+id/customPanel"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="360dp"
         android:minHeight="48dp">
+        <!--TODO: don't hardcode height, ensure the dialogs don't exceed screen height another way.-->
 
         <FrameLayout
             android:id="@+id/custom"

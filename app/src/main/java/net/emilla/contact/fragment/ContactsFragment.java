@@ -168,7 +168,7 @@ public abstract class ContactsFragment<T> extends Fragment
     public final void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
         var item = (ContactItemView) view;
         if (item.isDoubleTap() && (!mHasMultiSelect || mContactList.getCheckedItemCount() == 0)) {
-            // TODO ACC DONTMERGE: replace double-tap with accessibility action when a service is in
+            // TODO ACC: replace double-tap with accessibility action when a service is in
             //  use.
             var adapter = (CursorAdapter) parent.getAdapter();
             var cur = adapter.getCursor();
@@ -177,7 +177,10 @@ public abstract class ContactsFragment<T> extends Fragment
             var receiver = (ContactReceiver) mActivity.command();
             receiver.useContact(cur);
         } else if (mHasMultiSelect) item.markSelected(mContactList.isItemChecked(pos));
-        // TODO ACC DONTMERGE: have this feedback for single-selection as well.
+        // TODO ACC: have this feedback for single-selection as well.
+        // TODO BUG: in multi-selection, selecting 2 then deselecting 2 doesn't properly deselect
+        //  them—they still get included in selectedContacts(). All these uppercase issues probably
+        //  warrant a full rewrite of this fragment.
     }
 
     @Override
@@ -192,7 +195,7 @@ public abstract class ContactsFragment<T> extends Fragment
     @Nullable
     public final T selectedContacts() {
         // todo: when there's only one contact, highlight it to indicate it's automatically selected.
-        // TODO ACC DONTMERGE: have a more available feedback for users to know which contacts are
+        // TODO ACC: have a more available feedback for users to know which contacts are
         //  selected without having to scour the whole list.
         if (Permissions.contacts(requireContext())) {
             var adapter = (CursorAdapter) mContactList.getAdapter();
@@ -218,11 +221,13 @@ public abstract class ContactsFragment<T> extends Fragment
                 SparseBooleanArray selecteds = contactList.getCheckedItemPositions();
                 int selectedCount = selecteds.size();
                 if (selectedCount == 0) return null;
+
                 int firstPos = selecteds.keyAt(0);
                 cur.moveToPosition(firstPos);
                 var firstContact = cur.getString(colIndex);
 
                 if (selectedCount == 1) return firstContact;
+
                 var contacts = new StringBuilder(firstContact);
 
                 for (int i = 1; i < selectedCount; ++i) {

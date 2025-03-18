@@ -84,8 +84,8 @@ public final class Pomodoro extends CoreDataCommand {
 
     @Override
     protected void run(String minutes) {
-        Subcommand<Action> sumcmd = mActionMap.get(minutes);
-        tryPomo(sumcmd.instruction(), sumcmd.action() == Action.BREAK);
+        Subcommand<Action> subcmd = mActionMap.get(minutes);
+        tryPomo(subcmd.instruction(), subcmd.action() == Action.BREAK);
     }
 
     @Override
