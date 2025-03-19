@@ -381,6 +381,10 @@ public abstract class EmillaCommand {
         offer(new DialogRun(activity, builder));
     }
 
+    protected final void offerDialog(AlertDialog dialog) {
+        offer(new DialogRun(activity, dialog));
+    }
+
     protected final void offerTimePicker(OnTimeSetListener timeSet) {
         offer(new TimePickerOffering(activity, timeSet));
     }

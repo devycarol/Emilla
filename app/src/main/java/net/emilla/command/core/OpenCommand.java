@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
+import androidx.annotation.CallSuper;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
@@ -17,9 +18,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public abstract class OpenCommand extends CoreCommand {
-
-    protected final List<ResolveInfo> appList;
-    protected final AlertDialog.Builder appChooser;
 
     protected OpenCommand(
         AssistActivity act,
@@ -36,9 +34,25 @@ public abstract class OpenCommand extends CoreCommand {
               summary,
               manual,
               imeAction);
+    }
 
-        appList = act.appList();
+    protected List<ResolveInfo> appList;
+    protected AlertDialog.Builder appChooser;
+
+    @Override @CallSuper
+    protected void onInit() {
+        super.onInit();
+
+        appList = activity.appList();
         appChooser = makeChooser();
+    }
+
+    @Override @CallSuper
+    protected void onClean() {
+        super.onClean();
+
+        appList = null;
+        appChooser = null;
     }
 
     protected abstract AlertDialog.Builder makeChooser();
