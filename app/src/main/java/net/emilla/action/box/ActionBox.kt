@@ -18,41 +18,15 @@ protected constructor(@LayoutRes contentLayoutId: Int)
     protected val activity by lazy { requireActivity() as AssistActivity }
     private val res by lazy { activity.resources }
 
-    protected fun chime(id: Byte) {
-        activity.chime(id)
-    }
-
-    protected fun toast(msg: CharSequence) {
-        activity.toast(msg)
-    }
-
-    protected fun toast(@StringRes msg: Int, vararg formatArgs: Any) {
-        activity.toast(str(msg, *formatArgs))
-    }
-
-    protected fun str(@StringRes id: Int, vararg formatArgs: Any): String {
-        return res.getString(id, *formatArgs)
-    }
-
-    private fun offer(offering: Offering) {
-        activity.offer(offering)
-    }
-
-    protected fun offerDialog(dlg: AlertDialog.Builder) {
-        offer(DialogRun(activity, dlg))
-    }
-
-    protected fun give(gift: Gift) {
-        activity.give(gift)
-    }
-
-    protected fun giveMessage(msg: CharSequence) {
-        give(MessageGift(activity, name(), msg))
-    }
-
-    protected fun giveCopy(text: String) {
-        give(CopyGift(activity, text))
-    }
+    protected fun chime(id: Byte) = activity.chime(id)
+    protected fun toast(msg: CharSequence) = activity.toast(msg)
+    protected fun toast(@StringRes msg: Int, vararg formatArgs: Any) = activity.toast(str(msg, *formatArgs))
+    protected fun str(@StringRes id: Int, vararg formatArgs: Any) = res.getString(id, *formatArgs)
+    private fun offer(offering: Offering) = activity.offer(offering)
+    protected fun offerDialog(dlg: AlertDialog.Builder) = offer(DialogRun(activity, dlg))
+    protected fun give(gift: Gift) = activity.give(gift)
+    protected fun giveMessage(msg: CharSequence) = give(MessageGift(activity, name(), msg))
+    protected fun giveCopy(text: String) = give(CopyGift(activity, text))
 
     @StringRes
     protected abstract fun name(): Int

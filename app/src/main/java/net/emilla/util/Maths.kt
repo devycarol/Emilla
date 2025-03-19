@@ -4,7 +4,5 @@ package net.emilla.util
 
 import java.text.DecimalFormat
 
-fun Double.prettyNumber(): String {
-    // todo: configurable sig digs.
-    return DecimalFormat("#.######").format(this)
-}
+// todo: configurable sig digs.
+fun Double.prettyNumber(): String = DecimalFormat("#.######").format(this)
