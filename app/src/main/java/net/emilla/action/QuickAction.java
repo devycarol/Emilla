@@ -17,7 +17,9 @@ public interface QuickAction {
            NONE = "none",
            FLASHLIGHT = "torch",
            ASSISTANT_SETTINGS = "config",
+           CURSOR_START = "cursor_start",
            SELECT_ALL = "select_all",
+           PLAY_PAUSE = "play_pause",
            HELP = "help";
 
     @IdRes

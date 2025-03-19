@@ -65,6 +65,8 @@
     <string name="action_cursor_start">Cursor start</string>
     <!--TODO ACC: this is inaccurate if the caret is already at the start of the edit box-->
     <string name="action_desc_cursor_start">Move the caret to the start of the edit box</string>
+    <string name="action_play_pause">Play/pause</string>
+    <string name="action_desc_play_pause">Toggle media playback</string>
     <string name="action_attach_files">Attach</string>
     <string name="action_desc_attach_files">Attach files</string>
     <string name="action_attach_media">Media</string>

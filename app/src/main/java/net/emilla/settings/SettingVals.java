@@ -8,9 +8,11 @@ import android.content.res.Resources;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.action.AssistantSettings;
+import net.emilla.action.CursorStart;
 import net.emilla.action.Flashlight;
 import net.emilla.action.Help;
 import net.emilla.action.NoAction;
+import net.emilla.action.PlayPause;
 import net.emilla.action.QuickAction;
 import net.emilla.action.SelectAll;
 import net.emilla.chime.Chimer;
@@ -134,6 +136,11 @@ public final class SettingVals {
         // Todo: put these in an editor.
     }
 
+    public static boolean showPlayPauseButton(SharedPreferences prefs) {
+        return prefs.getBoolean("show_play_pause_button", false);
+        // Todo: put these in an editor.
+    }
+
     public static QuickAction noCommand(SharedPreferences prefs, AssistActivity act) {
         return quickAction(prefs, QuickAction.PREF_NO_COMMAND, QuickAction.ASSISTANT_SETTINGS, act);
     }
@@ -166,6 +173,8 @@ public final class SettingVals {
             case QuickAction.FLASHLIGHT -> new Flashlight(act);
             case QuickAction.ASSISTANT_SETTINGS -> new AssistantSettings(act);
             case QuickAction.SELECT_ALL -> new SelectAll(act);
+            case QuickAction.CURSOR_START -> new CursorStart(act);
+            case QuickAction.PLAY_PAUSE -> new PlayPause(act);
             case QuickAction.HELP -> new Help(act);
             default -> new NoAction(act);
         };

@@ -28,14 +28,18 @@
         <item>@string/action_none</item>
         <item>@string/action_flashlight</item>
         <item>@string/action_assistant_settings</item>
+        <item>@string/action_cursor_start</item>
         <item>@string/action_select_all</item>
+        <item>@string/action_play_pause</item>
         <item>@string/action_help</item>
     </string-array>
     <string-array name="action_values" translatable="false">
         <item>none</item>
         <item>torch</item>
         <item>config</item>
+        <item>cursor_start</item>
         <item>select_all</item>
+        <item>play_pause</item>
         <item>help</item>
     </string-array>
     <!-- No-command action preference -->
@@ -43,12 +47,14 @@
         <item>@string/action_none</item>
         <item>@string/action_flashlight</item>
         <item>@string/action_assistant_settings</item>
+        <item>@string/action_play_pause</item>
         <item>@string/action_help</item>
     </string-array>
     <string-array name="no_command_action_values" translatable="false">
         <item>none</item>
         <item>torch</item>
         <item>config</item>
+        <item>play_pause</item>
         <item>help</item>
     </string-array>
 

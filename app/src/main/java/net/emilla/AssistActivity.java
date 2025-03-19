@@ -50,6 +50,7 @@ import androidx.preference.PreferenceManager;
 
 import net.emilla.action.CursorStart;
 import net.emilla.action.Help;
+import net.emilla.action.PlayPause;
 import net.emilla.action.QuickAction;
 import net.emilla.chime.Chimer;
 import net.emilla.command.CommandMap;
@@ -339,6 +340,7 @@ public final class AssistActivity extends EmillaActivity {
         // Todo: put these in an editor.
         if (SettingVals.showCursorStartButton(mPrefs)) addAction(new CursorStart(this));
         if (SettingVals.showHelpButton(mPrefs)) addAction(new Help(this));
+        if (SettingVals.showPlayPauseButton(mPrefs)) addAction(new PlayPause(this));
         mFieldsContainer = findViewById(R.id.container_more_fields);
     }
 

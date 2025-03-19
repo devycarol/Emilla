@@ -86,6 +86,10 @@
             app:defaultValue="false"
             app:key="show_cursor_start_button"
             app:title="@string/action_cursor_start"/>
+        <SwitchPreference
+            app:defaultValue="false"
+            app:key="show_play_pause_button"
+            app:title="@string/action_play_pause"/>
         <ListPreference
             app:defaultValue="config"
             app:entries="@array/no_command_action_entries"
