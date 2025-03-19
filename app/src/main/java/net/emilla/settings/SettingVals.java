@@ -21,7 +21,6 @@ import net.emilla.chime.Silence;
 import net.emilla.command.DefaultCommandWrapper;
 import net.emilla.command.core.Alarm;
 import net.emilla.command.core.Bits;
-import net.emilla.command.core.Bookmark;
 import net.emilla.command.core.Calculate;
 import net.emilla.command.core.Calendar;
 import net.emilla.command.core.Call;
@@ -92,11 +91,11 @@ public final class SettingVals {
             case Roll.ENTRY -> coreYielders[19];
             case Bits.ENTRY -> coreYielders[20];
             case Weather.ENTRY -> coreYielders[21];
-            case Bookmark.ENTRY -> coreYielders[22];
-            case Torch.ENTRY -> coreYielders[23];
-            case Info.ENTRY -> coreYielders[24];
-            case Uninstall.ENTRY -> coreYielders[25];
-            case Toast.ENTRY -> coreYielders[26];
+//            case Play.ENTRY -> coreYielders[];
+            case Torch.ENTRY -> coreYielders[22];
+            case Info.ENTRY -> coreYielders[23];
+            case Uninstall.ENTRY -> coreYielders[24];
+            case Toast.ENTRY -> coreYielders[25];
             default -> throw new IllegalArgumentException("No such command \"" + entry + "\".");
         });
     }
@@ -181,10 +180,6 @@ public final class SettingVals {
 
     public static String soundSet(SharedPreferences prefs) {
         return prefs.getString(Chimer.SOUND_SET, Chimer.NEBULA);
-    }
-
-    public static String bookmarkCsv(SharedPreferences prefs) {
-        return prefs.getString("medias", Bookmark.DFLT_BOOKMARKS);
     }
 
     public static String searchEngineCsv(SharedPreferences prefs) {

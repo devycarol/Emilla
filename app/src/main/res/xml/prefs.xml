@@ -13,11 +13,6 @@
             app:key="search_engines"
             app:summary="Replace the query with '%s'"
             app:title="Web search engines" />
-        <EditTextPreference
-            app:defaultValue="Emilla GitHub, emla, https://github.com/devycarol/Emilla\nOpen-source software, OSS, https://en.wikipedia.org/wiki/Open_source_software\nRick, dQw, https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-            app:key="medias"
-            app:summary="Used in the 'bookmark' command; only supports web URLs for now"
-            app:title="Bookmarks" />
         <SwitchPreference
             app:defaultValue="false"
             app:key="always_show_data"

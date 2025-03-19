@@ -134,7 +134,7 @@
     <string name="command_duplicate">Duplicate command</string>
     <string name="command_web">Web</string>
     <string name="command_launch">Launch</string>
-    <string name="command_bookmark">Bookmark</string>
+    <string name="command_play">Play</string>
     <string name="command_find">Find</string>
     <string name="command_call">Call</string>
     <string name="command_dial">Dial</string>
@@ -171,7 +171,7 @@
     <!-- Descriptions for command arguments -->
     <string name="instruction">instruction</string>
     <string name="instruction_web">search or URL</string>
-    <string name="instruction_bookmark">name</string><!--todo: song, playlist, album, audiobook, podcast, etc.-->
+    <string name="instruction_play">media</string>
     <string name="instruction_find">file or folder</string>
     <string name="instruction_dial">number or phoneword</string>
     <string name="instruction_contact">person</string>
@@ -215,7 +215,7 @@
     <!-- Command summaries -->
     <string name="summary_web">Search the internet</string>
     <string name="summary_launch">Open your apps</string>
-    <string name="summary_bookmark">Open bookmarked URLs</string><!--todo: other url types. also "play"—music, audiobooks, and podcasts-->
+    <string name="summary_play">Play songs, playlists, albums, audiobooks, and podcasts</string>
     <string name="summary_find">Locate files and folders</string>
     <string name="summary_call">Make calls by name or number</string>
     <string name="summary_dial">Make calls by number or phoneword</string>
@@ -277,10 +277,9 @@
         You\'ll be presented with a list of apps matching your search. An exact match or single
         result will launch immediately.
     </string>
-    <!-- "Open bookmarked URLs" -->
-    <string name="manual_bookmark">
-        You\'ll be presented with a list of saved bookmarks. For now, you can save web URLs in
-        assistant settings. In the future, more link types and search will be supported.
+    <!-- "Play songs, playlists, albums, audiobooks, and podcasts" -->
+    <string name="manual_play">
+        In the future, this command will search and play medias matching your input.
     </string>
     <!-- "Locate files and folders" -->
     <string name="manual_find">
@@ -699,11 +698,6 @@
 
     <!-- Alert dialogs -->
     <string name="dialog_app">Select application</string>
-
-    <string name="dialog_media">Select media</string>
-    <string name="dialog_no_bookmarks">No bookmarks</string>
-    <string name="dlg_msg_choose_media">Search will improve in future releases.</string>
-    <string name="dlg_yes_add_bookmarks">Add more</string>
 
     <string name="dialog_overwrite_snippet">Overwrite snippet</string>
     <string name="dlg_msg_overwrite_snippet">Snippet \"%s\" already exists.</string>

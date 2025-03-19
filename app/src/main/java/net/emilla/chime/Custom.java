@@ -32,7 +32,7 @@ public final class Custom implements Chimer {
 
     @Override
     public void chime(byte id) {
-        MediaPlayer player = MediaPlayer.create(mContext, mUris[id]);
+        var player = MediaPlayer.create(mContext, mUris[id]);
         if (player == null) player = MediaPlayer.create(mContext, Nebula.sound(id));
         // If the URI is null or broken fall back to nebula
         player.setOnCompletionListener(MediaPlayer::release);

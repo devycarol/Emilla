@@ -32,7 +32,7 @@ public final class Nebula implements Chimer {
     @Override
     public void chime(byte id) {
         // Todo: still encountering occasional sound cracking issues
-        MediaPlayer player = MediaPlayer.create(mContext, sound(id));
+        var player = MediaPlayer.create(mContext, sound(id));
         player.setOnCompletionListener(MediaPlayer::release);
         player.start();
     }

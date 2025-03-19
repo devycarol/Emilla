@@ -12,11 +12,11 @@
             android:key="aliases_launch_text"
             android:summary="@string/summary_launch"
             android:title="@string/command_launch" />
-        <EditTextPreference
-            android:icon="@drawable/ic_bookmark"
-            android:key="aliases_bookmark_text"
-            android:summary="@string/summary_bookmark"
-            android:title="@string/command_bookmark" />
+        <Preference
+            android:icon="@drawable/ic_play"
+            android:key="aliases_play_text"
+            android:summary="@string/summary_play"
+            android:title="@string/command_play" />
         <EditTextPreference
             android:icon="@drawable/ic_torch"
             android:key="aliases_torch_text"

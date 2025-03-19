@@ -55,7 +55,7 @@
     <string-array name="command_entries">
         <item>@string/command_web</item>
         <item>@string/command_launch</item>
-        <item>@string/command_bookmark</item>
+<!--        <item>@string/command_play</item>-->
 <!--        <item>@string/command_find</item>-->
         <item>@string/command_call</item>
         <item>@string/command_dial</item>
@@ -89,7 +89,7 @@
     <string-array name="command_values">
         <item>web</item>
         <item>launch</item>
-        <item>bookmark</item>
+<!--        <item>play</item>-->
 <!--        <item>find</item>-->
         <item>call</item>
         <item>dial</item>
@@ -211,7 +211,7 @@
     </string-array>
     <string-array name="aliases_bits" />
     <string-array name="aliases_weather" />
-    <string-array name="aliases_bookmark" />
+    <string-array name="aliases_play" />
     <string-array name="aliases_torch" />
     <string-array name="aliases_info" />
     <string-array name="aliases_uninstall">

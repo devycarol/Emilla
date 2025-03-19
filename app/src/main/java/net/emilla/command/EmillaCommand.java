@@ -29,7 +29,6 @@ import net.emilla.action.QuickAction;
 import net.emilla.command.app.AppCommand;
 import net.emilla.command.core.Alarm;
 import net.emilla.command.core.Bits;
-import net.emilla.command.core.Bookmark;
 import net.emilla.command.core.Calculate;
 import net.emilla.command.core.Calendar;
 import net.emilla.command.core.Call;
@@ -104,7 +103,7 @@ public abstract class EmillaCommand {
                 Roll.yielder(),
                 Bits.yielder(),
                 Weather.yielder(),
-                Bookmark.yielder(),
+//                Play.yielder(),
                 Torch.yielder(),
                 Info.yielder(),
                 Uninstall.yielder(),
