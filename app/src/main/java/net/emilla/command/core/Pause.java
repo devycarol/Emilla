@@ -12,37 +12,37 @@ import net.emilla.settings.Aliases;
 import net.emilla.util.MediaControl;
 import net.emilla.util.Services;
 
-public final class Play extends CoreCommand {
+public final class Pause extends CoreCommand {
 
-    public static final String ENTRY = "play";
+    public static final String ENTRY = "pause";
     @StringRes
-    public static final int NAME = R.string.command_play;
+    public static final int NAME = R.string.command_pause;
     @ArrayRes
-    public static final int ALIASES = R.array.aliases_play;
+    public static final int ALIASES = R.array.aliases_pause;
     public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     public static Yielder yielder() {
-        return new Yielder(true, Play::new, ENTRY, NAME, ALIASES);
+        return new Yielder(false, Pause::new, ENTRY, NAME, ALIASES);
     }
 
-    public Play(AssistActivity act) {
+    public Pause(AssistActivity act) {
         super(act, NAME,
-              R.string.instruction_play,
-              R.drawable.ic_play,
-              R.string.summary_play,
-              R.string.manual_play,
-              EditorInfo.IME_ACTION_GO);
+              R.string.instruction_pause,
+              R.drawable.ic_pause,
+              R.string.summary_pause,
+              R.string.manual_pause,
+              EditorInfo.IME_ACTION_DONE);
     }
 
     @Override
     protected void run() {
         AudioManager am = Services.audio(activity);
-        MediaControl.sendPlayEvent(am);
+        MediaControl.sendPauseEvent(am);
         give(() -> {});
     }
 
     @Override
-    protected void run(String media) {
-        throw badCommand(R.string.error_unfinished_feature);
+    protected void run(String ignored) {
+        run(); // Todo: remove this from the interface for non-instructables.
     }
 }

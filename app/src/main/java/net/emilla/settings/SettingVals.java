@@ -33,6 +33,8 @@ import net.emilla.command.core.Info;
 import net.emilla.command.core.Launch;
 import net.emilla.command.core.Navigate;
 import net.emilla.command.core.Notify;
+import net.emilla.command.core.Pause;
+import net.emilla.command.core.Play;
 import net.emilla.command.core.Pomodoro;
 import net.emilla.command.core.RandomNumber;
 import net.emilla.command.core.Roll;
@@ -91,11 +93,12 @@ public final class SettingVals {
             case Roll.ENTRY -> coreYielders[19];
             case Bits.ENTRY -> coreYielders[20];
             case Weather.ENTRY -> coreYielders[21];
-//            case Play.ENTRY -> coreYielders[];
-            case Torch.ENTRY -> coreYielders[22];
-            case Info.ENTRY -> coreYielders[23];
-            case Uninstall.ENTRY -> coreYielders[24];
-            case Toast.ENTRY -> coreYielders[25];
+            case Play.ENTRY -> coreYielders[22];
+            case Pause.ENTRY -> coreYielders[23];
+            case Torch.ENTRY -> coreYielders[24];
+            case Info.ENTRY -> coreYielders[25];
+            case Uninstall.ENTRY -> coreYielders[26];
+            case Toast.ENTRY -> coreYielders[27];
             default -> throw new IllegalArgumentException("No such command \"" + entry + "\".");
         });
     }

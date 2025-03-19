@@ -12,11 +12,16 @@
             android:key="aliases_launch_text"
             android:summary="@string/summary_launch"
             android:title="@string/command_launch" />
-        <Preference
+        <EditTextPreference
             android:icon="@drawable/ic_play"
             android:key="aliases_play_text"
             android:summary="@string/summary_play"
             android:title="@string/command_play" />
+        <EditTextPreference
+            android:icon="@drawable/ic_pause"
+            android:key="aliases_pause_text"
+            android:summary="@string/summary_pause"
+            android:title="@string/command_pause" />
         <EditTextPreference
             android:icon="@drawable/ic_torch"
             android:key="aliases_torch_text"

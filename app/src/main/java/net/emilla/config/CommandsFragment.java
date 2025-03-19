@@ -41,6 +41,7 @@ import net.emilla.command.core.Info;
 import net.emilla.command.core.Launch;
 import net.emilla.command.core.Note;
 import net.emilla.command.core.Notify;
+import net.emilla.command.core.Pause;
 import net.emilla.command.core.Play;
 import net.emilla.command.core.Pomodoro;
 import net.emilla.command.core.RandomNumber;
@@ -125,7 +126,8 @@ public final class CommandsFragment extends EmillaSettingsFragment {
         setupCorePref(Roll.ALIAS_TEXT_KEY, listener, Roll.ALIASES);
         setupCorePref(Bits.ALIAS_TEXT_KEY, listener, Bits.ALIASES);
         setupCorePref(Weather.ALIAS_TEXT_KEY, listener, Weather.ALIASES);
-        deactivate(Play.ALIAS_TEXT_KEY);
+        setupCorePref(Play.ALIAS_TEXT_KEY, listener, Play.ALIASES);
+        setupCorePref(Pause.ALIAS_TEXT_KEY, listener, Pause.ALIASES);
         setupCorePref(Torch.ALIAS_TEXT_KEY, listener, Torch.ALIASES);
         setupCorePref(Info.ALIAS_TEXT_KEY, listener, Info.ALIASES);
         setupCorePref(Toast.ALIAS_TEXT_KEY, listener, Toast.ALIASES);

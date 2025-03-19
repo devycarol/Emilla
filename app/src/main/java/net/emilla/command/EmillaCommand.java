@@ -41,6 +41,8 @@ import net.emilla.command.core.Info;
 import net.emilla.command.core.Launch;
 import net.emilla.command.core.Navigate;
 import net.emilla.command.core.Notify;
+import net.emilla.command.core.Pause;
+import net.emilla.command.core.Play;
 import net.emilla.command.core.Pomodoro;
 import net.emilla.command.core.RandomNumber;
 import net.emilla.command.core.Roll;
@@ -103,7 +105,8 @@ public abstract class EmillaCommand {
                 Roll.yielder(),
                 Bits.yielder(),
                 Weather.yielder(),
-//                Play.yielder(),
+                Play.yielder(),
+                Pause.yielder(),
                 Torch.yielder(),
                 Info.yielder(),
                 Uninstall.yielder(),
