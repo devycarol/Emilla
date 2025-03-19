@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
+import net.emilla.util.Services;
+
 public abstract class EventScheduler<P extends Plan> {
 
     protected final Context context;
@@ -13,7 +15,7 @@ public abstract class EventScheduler<P extends Plan> {
 
     public EventScheduler(Context ctx) {
         context = ctx;
-        mAlarmManager = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
+        mAlarmManager = Services.alarm(ctx);
     }
 
     public final void plan(P plan) {

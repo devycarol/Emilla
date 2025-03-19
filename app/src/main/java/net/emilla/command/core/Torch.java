@@ -3,7 +3,6 @@ package net.emilla.command.core;
 import static net.emilla.chime.Chimer.ACT;
 import static net.emilla.chime.Chimer.RESUME;
 
-import android.content.Context;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
@@ -17,6 +16,7 @@ import androidx.annotation.StringRes;
 import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.settings.Aliases;
+import net.emilla.util.Services;
 
 public final class Torch extends CoreCommand {
 
@@ -65,7 +65,7 @@ public final class Torch extends CoreCommand {
     protected void run() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) throw badCommand(R.string.error_unfinished_version);
         // TODO: https://github.com/LineageOS/android_packages_apps_Torch
-        var camMgr = (CameraManager) activity.getSystemService(Context.CAMERA_SERVICE);
+        CameraManager camMgr = Services.camera(activity);
     try {
         String camId = flashCameraId(camMgr);
         if (camId == null) return;

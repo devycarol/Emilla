@@ -2,9 +2,9 @@ package net.emilla.run;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.Context;
 
 import net.emilla.AssistActivity;
+import net.emilla.util.Services;
 
 public final class CopyGift implements Gift {
 
@@ -18,7 +18,7 @@ public final class CopyGift implements Gift {
 
     @Override
     public void run() {
-        var mgr = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
-        mgr.setPrimaryClip(ClipData.newPlainText(null, mText));
+        ClipboardManager clipMgr = Services.clipboard(mActivity);
+        clipMgr.setPrimaryClip(ClipData.newPlainText(null, mText));
     }
 }

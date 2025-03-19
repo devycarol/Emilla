@@ -21,6 +21,7 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.Accessibilit
 
 import net.emilla.R;
 import net.emilla.action.QuickAction;
+import net.emilla.util.Services;
 
 public final class ActionButton extends AppCompatImageButton implements View.OnTouchListener {
 
@@ -76,7 +77,7 @@ public final class ActionButton extends AppCompatImageButton implements View.OnT
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        var am = (AccessibilityManager) getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
+        AccessibilityManager am = Services.accessibility(getContext());
         if (!am.isTouchExplorationEnabled()) switch (event.getAction()) {
             // do not perform special behavior if a screen reader is in use.
             case MotionEvent.ACTION_DOWN -> {

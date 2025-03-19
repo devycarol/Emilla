@@ -7,6 +7,8 @@ import android.content.Context;
 
 import androidx.annotation.RequiresPermission;
 
+import net.emilla.util.Services;
+
 /*internal open*/ class ClassicPinger implements Pinger {
 
     protected final NotificationManager pingManager;
@@ -20,7 +22,7 @@ import androidx.annotation.RequiresPermission;
     private static int sSlot = 0;
 
     public ClassicPinger(Context ctx, Notification ping, PingChannel channel) {
-        pingManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
+        pingManager = Services.notification(ctx);
         mPing = ping;
         mSlot = channel.slot;
     }
