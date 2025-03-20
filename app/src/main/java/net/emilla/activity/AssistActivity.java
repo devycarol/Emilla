@@ -22,6 +22,7 @@ import static net.emilla.chime.Chimer.RESUME;
 import static net.emilla.chime.Chimer.START;
 import static net.emilla.chime.Chimer.SUCCEED;
 import static java.lang.Character.isWhitespace;
+import static java.util.Objects.requireNonNull;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -45,6 +46,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
 import net.emilla.R;
@@ -90,6 +92,7 @@ public final class AssistActivity extends EmillaActivity {
 
     private LayoutInflater mInflater;
     private ActivityAssistBinding mBinding;
+    private AssistViewModel mViewModel;
 
     private SharedPreferences mPrefs;
     private CommandMap mCommandMap;
@@ -128,15 +131,6 @@ public final class AssistActivity extends EmillaActivity {
     private boolean
             mLaunched = false,
             mOpen = false;
-    private boolean mDialogOpen = false;
-    private boolean
-            mDontChimePend = false,
-            mDontChimeResume = false,
-            mDontChimeSuccess = false,
-            mDontTryCancel = false;
-    private boolean mHasTitlebar;
-
-    private long mLastAssistIntentTime;
 
 //    public static long nanosPlease(long prevTime, String label) {
 //        long curTime = System.nanoTime();
@@ -156,24 +150,27 @@ public final class AssistActivity extends EmillaActivity {
         mBinding = ActivityAssistBinding.inflate(mInflater);
         setContentView(mBinding.getRoot());
 
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        var res = getResources();
+
+        var factory = new AssistViewModel.Factory(mPrefs, res);
+        var provider = new ViewModelProvider(this, factory);
+        mViewModel = provider.get(AssistViewModel.class);
+
         if (ACTION_ASSIST.equals(getIntent().getAction())) handleAssistIntent(false);
 
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         mChimer = SettingVals.chimer(this, mPrefs);
         if (savedInstanceState == null) chime(START);
 
-        var res = getResources();
+        ActionBar actionBar = requireNonNull(getSupportActionBar());
 
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar == null) throw new NullPointerException();
-        mHasTitlebar = SettingVals.showTitleBar(mPrefs, res);
-        if (mHasTitlebar) {
+        if (mViewModel.noTitlebar) {
+            actionBar.hide();
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.bg_assistant));
+        } else {
             var dfltTitle = res.getString(R.string.activity_assistant);
             var title = mPrefs.getString("motd", dfltTitle);
             if (!title.equals(dfltTitle)) actionBar.setTitle(title);
-        } else {
-            actionBar.hide();
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.bg_assistant));
         }
 
         var pm = getPackageManager();
@@ -210,13 +207,15 @@ public final class AssistActivity extends EmillaActivity {
         } else if (ACTION_ASSIST.equals(action)) handleAssistIntent(false);
     }
 
+    private long mLastAssistTime = 0;
+
     private void handleAssistIntent(boolean performAction) {
         // TODO: determine why the corner gesture sends the assist intent twice.
         long currentTime = System.currentTimeMillis();
-        if (currentTime - mLastAssistIntentTime > 150 /*ms*/) {
-            mLastAssistIntentTime = currentTime;
+        if (currentTime - mLastAssistTime > 150 /*ms*/) {
+            mLastAssistTime = currentTime;
             if (performAction) mDoubleAssistAction.perform();
-        } else mLastAssistIntentTime = 0;
+        } else mLastAssistTime = 0;
     }
 
     @Override // Todo: replace with view-model?
@@ -440,7 +439,7 @@ public final class AssistActivity extends EmillaActivity {
         if (!(isChangingConfigurations() || isFinishing())) {
             if (shouldCancel()) cancel();
             // TODO: the launch fail bug is caused by focus stealing
-            else if (!mDialogOpen && askChimePend()) chime(PEND);
+            else if (!mViewModel.dialogOpen && mViewModel.askChimePend()) chime(PEND);
         }
     }
 
@@ -491,12 +490,15 @@ public final class AssistActivity extends EmillaActivity {
     }
 
     public void updateTitle(CharSequence title) {
-        if (mHasTitlebar) {
-            ActionBar actionBar = getSupportActionBar();
-            if (actionBar != null) actionBar.setTitle(mNoCommand ? mPrefs.getString("motd",
-                    getString(R.string.activity_assistant))
-                : title);
+        if (mViewModel.noTitlebar) return;
+
+        ActionBar actionBar = requireNonNull(getSupportActionBar());
+
+        if (mNoCommand) {
+            title = mPrefs.getString("motd", getString(R.string.activity_assistant));
         }
+
+        actionBar.setTitle(title);
     }
 
     public void updateDataHint() {
@@ -574,23 +576,21 @@ public final class AssistActivity extends EmillaActivity {
      * Setters *
      *=========*/
 
-    public void suppressPendingChime() {
-        mDontChimePend = true;
+    public void suppressPendChime() {
+        mViewModel.suppressPendChime();
     }
 
     public void suppressResumeChime() {
-        mDontChimeResume = true;
+        mViewModel.suppressResumeChime();
     }
 
     public void suppressSuccessChime() {
-        mDontChimeSuccess = true;
+        mViewModel.suppressSuccessChime();
     }
 
     @Deprecated
     public void suppressBackCancellation() {
-        // Todo: don't have this. use what the 'modern' navigation system wants instead of
-        //  KEYCODE_BACK.
-        mDontTryCancel = true;
+        mViewModel.suppressBackCancellation();
     }
 
     public void setManual(@Nullable AlertDialog manual) {
@@ -613,23 +613,8 @@ public final class AssistActivity extends EmillaActivity {
         mChimer.chime(id);
     }
 
-    private boolean askChimePend() {
-        if (mDontChimePend) return mDontChimePend = false;
-        return true;
-    }
-
-    private boolean askChimeResume() {
-        if (mDontChimeResume) return mDontChimeResume = false;
-        return true;
-    }
-
-    private boolean askChimeSuccess() {
-        if (mDontChimeSuccess) return mDontChimeSuccess = false;
-        return true;
-    }
-
     public void resume() {
-        if (!mDialogOpen && askChimeResume()) chime(RESUME);
+        if (!mViewModel.dialogOpen && mViewModel.askChimeResume()) chime(RESUME);
     }
 
     public boolean shouldCancel() {
@@ -645,20 +630,14 @@ public final class AssistActivity extends EmillaActivity {
     public void onCloseDialog() {
         mBinding.emptySpace.setEnabled(true);
         mBinding.submitButton.setEnabled(true);
-        mDialogOpen = false;
+        mViewModel.dialogOpen = false;
     }
 
     private void cancelIfWarranted() {
-        if (!askTryCancel()) return;
+        if (!mViewModel.askTryCancel()) return;
 
         if (shouldCancel()) cancel();
         else offer(new DialogRun(this, cancelDialog()));
-    }
-
-    @Deprecated
-    private boolean askTryCancel() {
-        if (mDontTryCancel) return mDontTryCancel = false;
-        return true;
     }
 
     private AlertDialog.Builder cancelDialog() {
@@ -677,7 +656,7 @@ public final class AssistActivity extends EmillaActivity {
         // TODO: view enablement shouldn't be handled on a view-by-view basis. Perhaps target the
         //  mother of all views (whatever that is) or get to the bottom of why views can be clicked
         //  in the split-second after dialog invocation in the first place
-        mDialogOpen = true;
+        mViewModel.dialogOpen = true;
         mBinding.emptySpace.setEnabled(false);
         mBinding.submitButton.setEnabled(false);
     }
@@ -721,7 +700,7 @@ public final class AssistActivity extends EmillaActivity {
 
     public void succeed(Success success) {
         success.run();
-        if (askChimeSuccess()) chime(SUCCEED);
+        if (mViewModel.askChimeSuccess()) chime(SUCCEED);
     }
 
     public void fail(Failure failure) {

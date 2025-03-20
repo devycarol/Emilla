@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.StringRes
 import androidx.fragment.app.viewModels
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import net.emilla.R
@@ -23,7 +24,8 @@ class SnippetsFragment : ActionBox(R.layout.snippet_item_list) {
     }
 
     private val mViewModel: SnippetsViewModel by viewModels<SnippetsViewModel> {
-        SnippetsViewModel.Factory(activity)
+        val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
+        SnippetsViewModel.Factory(prefs)
     }
     private val mAdapter: SnippetAdapter by lazy {
         SnippetAdapter(mViewModel.snippetLabels(), SnippetAdapter.OnItemClickListener { pos ->

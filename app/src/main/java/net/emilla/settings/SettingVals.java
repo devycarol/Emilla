@@ -109,7 +109,7 @@ public final class SettingVals {
         return prefs.getStringSet(ALIASES_CUSTOM, Set.of());
     }
 
-    public static boolean showTitleBar(SharedPreferences prefs, Resources res) {
+    public static boolean showTitlebar(SharedPreferences prefs, Resources res) {
         return switch (prefs.getString("show_titlebar", res.getString(R.string.conf_show_titlebar))) {
             // Todo: in the off chance app-data is transferred across phone/tablet, the setting
             //  should change if it's still default. back:prefs.xml

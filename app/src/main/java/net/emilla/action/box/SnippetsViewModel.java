@@ -1,11 +1,9 @@
 package net.emilla.action.box;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.preference.PreferenceManager;
 
 import net.emilla.settings.SettingVals;
 import net.emilla.util.ReplaceRange;
@@ -58,15 +56,14 @@ import java.util.Set;
 
     public static final class Factory implements ViewModelProvider.Factory {
 
-        private final Context ctx;
+        private final SharedPreferences prefs;
 
-        public Factory(Context ctx) {
-            this.ctx = ctx;
+        public Factory(SharedPreferences prefs) {
+            this.prefs = prefs;
         }
 
         @Override
         public <T extends ViewModel> T create(Class<T> modelClass) {
-            var prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
             return (T) new SnippetsViewModel(prefs);
         }
     }
