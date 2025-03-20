@@ -35,7 +35,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import androidx.annotation.IdRes;
@@ -67,6 +66,7 @@ import net.emilla.content.retrieve.ContactEmailRetriever;
 import net.emilla.content.retrieve.ContactPhoneRetriever;
 import net.emilla.content.retrieve.FileRetriever;
 import net.emilla.content.retrieve.MediaRetriever;
+import net.emilla.databinding.ActivityAssistBinding;
 import net.emilla.exception.EmillaException;
 import net.emilla.lang.Lang;
 import net.emilla.permission.PermissionRetriever;
@@ -87,18 +87,13 @@ import java.util.List;
 
 public final class AssistActivity extends EmillaActivity {
 
+    private LayoutInflater mInflater;
+    private ActivityAssistBinding mBinding;
+
     private SharedPreferences mPrefs;
     private CommandMap mCommandMap;
     private List<ResolveInfo> mAppList;
     private Chimer mChimer;
-
-    private LayoutInflater mInflater;
-    private FrameLayout mEmptySpace;
-    private EditText mCommandField, mDataField;
-    private ActionButton mSubmitButton;
-    private ActionButton mShowDataButton, mHideDataButton;
-    private LinearLayout mFieldsContainer;
-    private LinearLayout mActionsContainer;
 
     private QuickAction mNoCommandAction;
     private QuickAction mDoubleAssistAction;
@@ -156,7 +151,9 @@ public final class AssistActivity extends EmillaActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_assist);
+        mInflater = getLayoutInflater();
+        mBinding = ActivityAssistBinding.inflate(mInflater);
+        setContentView(mBinding.getRoot());
 
         if (ACTION_ASSIST.equals(getIntent().getAction())) handleAssistIntent(false);
 
@@ -182,13 +179,6 @@ public final class AssistActivity extends EmillaActivity {
         mAppList = Apps.resolveList(pm);
         mCommandMap = EmillaCommand.map(mPrefs, res, pm, mAppList);
 
-        mEmptySpace = findViewById(R.id.empty_space);
-        mCommandField = findViewById(R.id.field_command);
-        mDataField = findViewById(R.id.field_data);
-        mSubmitButton = findViewById(R.id.btn_submit);
-        mShowDataButton = findViewById(R.id.btn_show_data);
-        mHideDataButton = findViewById(R.id.btn_hide_data);
-
         setupCommandField();
         mAlwaysShowData = SettingVals.alwaysShowData(mPrefs);
         // TODO ACC: There's no reason for a hidden data field if a screen reader is in use.
@@ -197,7 +187,7 @@ public final class AssistActivity extends EmillaActivity {
             showDataField();
         }
 
-        mEmptySpace.setOnClickListener(v -> cancelIfWarranted());
+        mBinding.emptySpace.setOnClickListener(v -> cancelIfWarranted());
 
         mNoCommandAction = SettingVals.noCommand(mPrefs, this);
         mDoubleAssistAction = SettingVals.doubleAssist(mPrefs, this, pm);
@@ -231,28 +221,42 @@ public final class AssistActivity extends EmillaActivity {
     @Override // Todo: replace with view-model?
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean("dataFieldVisible", mDataField.getVisibility() == View.VISIBLE);
+        outState.putBoolean("dataFieldVisible", mBinding.dataField.getVisibility() == View.VISIBLE);
     }
 
     private void setupCommandField() {
-        mCommandField.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence text, int start, int count, int after) {}
+        EditText commandField = mBinding.commandField;
 
-            @Override
-            public void onTextChanged(CharSequence text, int start, int before, int count) {
-                onCommandChanged(text.toString());
-            }
+        commandField.addTextChangedListener(new CommandWatcher());
+        commandField.setOnEditorActionListener((v, actionId, event) -> onActionKey(actionId));
 
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
+        mCommand = mCommandMap.get(this, "");
 
-        mCommandField.setOnEditorActionListener((v, actionId, event) -> switch (actionId) {
+        commandField.setHorizontallyScrolling(false);
+        commandField.setMaxLines(8);
+        commandField.requestFocus();
+    }
+
+    private final class CommandWatcher implements TextWatcher {
+
+        @Override
+        public void beforeTextChanged(CharSequence text, int start, int count, int after) {}
+
+        @Override
+        public void onTextChanged(CharSequence text, int start, int before, int count) {
+            onCommandChanged(text.toString());
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {}
+    }
+
+    private boolean onActionKey(int actionId) {
+        return switch (actionId) {
             case IME_ACTION_UNSPECIFIED, IME_ACTION_NONE, IME_ACTION_PREVIOUS -> false;
             default -> switch (mImeAction) {
-                // TODO ACC: There must be clarity on what the enter key will do if you can't see the
-                //  screen.
+                // TODO ACC: There must be clarity on what the enter key will do if you can't see
+                //  the screen.
                 case IME_ACTION_NEXT:
                     if (mDataAvailable) {
                         focusDataField();
@@ -265,104 +269,108 @@ public final class AssistActivity extends EmillaActivity {
                 default:
                     yield false;
             };
-        });
-
-        mCommand = mCommandMap.get(this, "");
-
-        mCommandField.setHorizontallyScrolling(false);
-        mCommandField.setMaxLines(8);
-        mCommandField.requestFocus();
+        };
     }
 
     private void setupSubmitButton() {
-        mSubmitButton.setIcon(mNoCommandAction.icon());
-        mSubmitButton.setOnClickListener(v -> submitCommand());
+        ActionButton submitButton = mBinding.submitButton;
+        submitButton.setIcon(mNoCommandAction.icon());
+        submitButton.setOnClickListener(v -> submitCommand());
 
-        mSubmitButton.setLongPress(SettingVals.longSubmit(mPrefs, this), getResources());
+        submitButton.setLongPress(SettingVals.longSubmit(mPrefs, this), getResources());
     }
 
     private void setupDataButtons() {
         if (mAlwaysShowData) {
-            mShowDataButton.setVisibility(View.GONE);
+            mBinding.showDataButton.setVisibility(View.GONE);
         } else {
-            mShowDataButton.setOnClickListener(v -> focusDataField());
-            mHideDataButton.setOnClickListener(v -> hideDataField());
+            mBinding.showDataButton.setOnClickListener(v -> focusDataField());
+            mBinding.hideDataButton.setOnClickListener(v -> hideDataField());
         }
     }
 
     private void focusDataField() {
-        if (mDataField.hasFocus()) return;
-        if (mDataField.getVisibility() == View.GONE) showDataField();
-        mDataField.requestFocus();
+        EditText dataField = mBinding.dataField;
+        if (dataField.hasFocus()) return;
+
+        if (dataField.getVisibility() == View.GONE) showDataField();
+        dataField.requestFocus();
     }
 
     private void showDataField() {
-        mDataField.setVisibility(View.VISIBLE);
+        mBinding.dataField.setVisibility(View.VISIBLE);
         if (mAlwaysShowData) return;
-        mHideDataButton.setVisibility(View.VISIBLE);
-        mShowDataButton.setVisibility(View.GONE);
+        mBinding.hideDataButton.setVisibility(View.VISIBLE);
+        mBinding.showDataButton.setVisibility(View.GONE);
     }
 
     private void hideDataField() {
-        int start, end;
-        boolean dataFocused = mDataField.hasFocus();
-        if (dataFocused) {
-            int dataLen = mDataField.length();
-            start = mDataField.getSelectionStart() - dataLen;
-            end = mDataField.getSelectionEnd() - dataLen;
-        } else {
-            start = mCommandField.getSelectionStart();
-            end = mCommandField.getSelectionEnd();
-        }
-        mCommandField.requestFocus();
-        if (mDataField.length() > 0) {
-            Editable commandText = mCommandField.getText();
-            Editable dataText = mDataField.getText();
-            int len = commandText.length();
-            if (len == 0 || isWhitespace(commandText.charAt(len - 1))) mCommandField.append(dataText);
-            else mCommandField.append(Lang.wordConcat(getResources(), "", dataText));
-            mDataField.setText(null);
-        }
-        int newLen = mCommandField.length();
-        if (dataFocused) mCommandField.setSelection(newLen + start, newLen + end);
-        else mCommandField.setSelection(start, end);
+        EditText commandField = mBinding.commandField;
+        EditText dataField = mBinding.dataField;
 
-        mDataField.setVisibility(View.GONE);
-        mHideDataButton.setVisibility(View.GONE);
+        int start, end;
+        boolean dataFocused = dataField.hasFocus();
+        if (dataFocused) {
+            int dataLen = dataField.length();
+            start = dataField.getSelectionStart() - dataLen;
+            end = dataField.getSelectionEnd() - dataLen;
+        } else {
+            start = commandField.getSelectionStart();
+            end = commandField.getSelectionEnd();
+        }
+        commandField.requestFocus();
+        if (dataField.length() > 0) {
+            Editable commandText = commandField.getText();
+            Editable dataText = dataField.getText();
+            int len = commandText.length();
+            if (len == 0 || isWhitespace(commandText.charAt(len - 1))) commandField.append(dataText);
+            else commandField.append(Lang.wordConcat(getResources(), "", dataText));
+            dataField.setText(null);
+        }
+        int newLen = commandField.length();
+        if (dataFocused) commandField.setSelection(newLen + start, newLen + end);
+        else commandField.setSelection(start, end);
+
+        dataField.setVisibility(View.GONE);
+        mBinding.hideDataButton.setVisibility(View.GONE);
         if (!mDataAvailable) disableDataButton();
-        mShowDataButton.setVisibility(View.VISIBLE);
+        mBinding.showDataButton.setVisibility(View.VISIBLE);
     }
 
     private void setupMoreActions() {
         // TODO: save state hell
-        mInflater = LayoutInflater.from(this);
-        mActionsContainer = findViewById(R.id.container_more_actions);
         // Todo: put these in an editor.
         if (SettingVals.showCursorStartButton(mPrefs)) addAction(new CursorStart(this));
         if (SettingVals.showHelpButton(mPrefs)) addAction(new Help(this));
         if (SettingVals.showPlayPauseButton(mPrefs)) addAction(new PlayPause(this));
-        mFieldsContainer = findViewById(R.id.container_more_fields);
     }
 
     public void addAction(QuickAction action) {
-        var button = (ActionButton) mInflater.inflate(R.layout.btn_action, mActionsContainer, false);
+        LinearLayout actionsContainer = mBinding.actionsContainer;
+        var button = (ActionButton) mInflater.inflate(R.layout.btn_action, actionsContainer, false);
+
         button.setId(action.id());
         button.setIcon(action.icon());
         button.setContentDescription(action.label(getResources()));
         button.setOnClickListener(v -> action.perform());
-        mActionsContainer.addView(button, 0);
+
+        actionsContainer.addView(button, 0);
     }
 
     public void removeAction(@IdRes int action) {
-        mActionsContainer.removeView(findViewById(action));
+        mBinding.actionsContainer.removeView(findViewById(action));
     }
 
     public EditText createField(@IdRes int id, @StringRes int hint) {
-        var box = (EditText) mInflater.inflate(R.layout.field_extra, mFieldsContainer, false);
+        LinearLayout fieldsContainer = mBinding.fieldsContainer;
+
+        var box = (EditText) mInflater.inflate(R.layout.field_extra, fieldsContainer, false);
         box.setId(id);
         box.setHint(hint);
-        mFieldsContainer.addView(box);
+
+        fieldsContainer.addView(box);
         box.requestFocus();
+
         return box;
     }
 
@@ -376,7 +384,7 @@ public final class AssistActivity extends EmillaActivity {
         // Todo: it's vague which field is which. First step: make them ordered consistently.
         EditText box = findViewById(id);
         if (box.getVisibility() == View.VISIBLE) {
-            if (box.hasFocus()) mCommandField.requestFocus();
+            if (box.hasFocus()) mBinding.commandField.requestFocus();
             box.setVisibility(View.GONE);
             return false;
         } else {
@@ -394,7 +402,7 @@ public final class AssistActivity extends EmillaActivity {
     public void hideField(@IdRes int id) {
         EditText box = findViewById(id);
         if (box != null && box.getVisibility() == View.VISIBLE) {
-            if (box.hasFocus()) mCommandField.requestFocus();
+            if (box.hasFocus()) mBinding.commandField.requestFocus();
             box.setVisibility(View.GONE);
         }
     }
@@ -455,23 +463,30 @@ public final class AssistActivity extends EmillaActivity {
     }
 
     private void updateDataAvailability(boolean available) {
+        EditText dataField = mBinding.dataField;
+
         if (available) {
             if (!mAlwaysShowData) enableDataButton();
-            mDataField.setEnabled(true);
-        } else if (mDataField.getVisibility() == View.GONE) {
+            dataField.setEnabled(true);
+        } else if (dataField.getVisibility() == View.GONE) {
             if (!mAlwaysShowData) disableDataButton();
-        } else mDataField.setEnabled(false);
+        } else {
+            dataField.setEnabled(false);
+        }
+
         mDataAvailable = available;
     }
 
     private void enableDataButton() {
-        mShowDataButton.setEnabled(true);
-        mShowDataButton.setAlpha(1.0f);
+        ActionButton showDataButton = mBinding.showDataButton;
+        showDataButton.setEnabled(true);
+        showDataButton.setAlpha(1.0f);
     }
 
     private void disableDataButton() {
-        mShowDataButton.setEnabled(false);
-        mShowDataButton.setAlpha(0.3f);
+        ActionButton showDataButton = mBinding.showDataButton;
+        showDataButton.setEnabled(false);
+        showDataButton.setAlpha(0.3f);
     }
 
     public void updateTitle(CharSequence title) {
@@ -484,17 +499,18 @@ public final class AssistActivity extends EmillaActivity {
     }
 
     public void updateDataHint() {
-        if (mNoCommand || !mCommand.usesData()) mDataField.setHint(R.string.data_hint_default);
-        else mDataField.setHint(((DataCommand) mCommand).dataHint());
+        EditText dataField = mBinding.dataField;
+        if (mNoCommand || !mCommand.usesData()) dataField.setHint(R.string.data_hint_default);
+        else dataField.setHint(((DataCommand) mCommand).dataHint());
     }
 
     public void setSubmitIcon(Drawable icon, boolean isAppIcon) {
-        mSubmitButton.setIcon(icon, isAppIcon);
+        mBinding.submitButton.setIcon(icon, isAppIcon);
     }
 
     public void setImeAction(int action) {
         if (mNoCommand) action = IME_ACTION_NEXT;
-        if (action != mImeAction) mCommandField.setImeOptions(mImeAction = action);
+        if (action != mImeAction) mBinding.commandField.setImeOptions(mImeAction = action);
     }
 
     private void onCommandChanged(String command) {
@@ -508,7 +524,7 @@ public final class AssistActivity extends EmillaActivity {
             mNoCommand = noCommand;
             if (noCommand) {
                 cmd.decorate(false);
-                mSubmitButton.setIcon(mNoCommandAction.icon());
+                mBinding.submitButton.setIcon(mNoCommandAction.icon());
             } else {
                 cmd.decorate(true);
                 cmd.init();
@@ -532,15 +548,21 @@ public final class AssistActivity extends EmillaActivity {
     }
 
     public EditText focusedEditBox() {
-        if (getCurrentFocus() instanceof EditText focusedTextBox) return focusedTextBox;
-        mCommandField.requestFocus();
-        return mCommandField;
+        if (getCurrentFocus() instanceof EditText focusedTextBox) {
+            return focusedTextBox;
+        }
+
+        EditText commandField = mBinding.commandField;
+        commandField.requestFocus();
+
+        return commandField;
         // default to the command field
     }
 
     @Nullable
     public String dataText() {
-        return mDataField.length() == 0 ? null : mDataField.getText().toString();
+        EditText dataField = mBinding.dataField;
+        return dataField.length() == 0 ? null : dataField.getText().toString();
     }
 
     public EmillaCommand command() {
@@ -610,7 +632,7 @@ public final class AssistActivity extends EmillaActivity {
     }
 
     public boolean shouldCancel() {
-        return mCommandField.length() + mDataField.length() == 0;
+        return (mBinding.commandField.length() | mBinding.dataField.length()) == 0;
     }
 
     public void cancel() {
@@ -620,8 +642,8 @@ public final class AssistActivity extends EmillaActivity {
 
     @Deprecated
     public void onCloseDialog() {
-        mEmptySpace.setEnabled(true);
-        mSubmitButton.setEnabled(true);
+        mBinding.emptySpace.setEnabled(true);
+        mBinding.submitButton.setEnabled(true);
         mDialogOpen = false;
     }
 
@@ -655,8 +677,8 @@ public final class AssistActivity extends EmillaActivity {
         //  mother of all views (whatever that is) or get to the bottom of why views can be clicked
         //  in the split-second after dialog invocation in the first place
         mDialogOpen = true;
-        mEmptySpace.setEnabled(false);
-        mSubmitButton.setEnabled(false);
+        mBinding.emptySpace.setEnabled(false);
+        mBinding.submitButton.setEnabled(false);
     }
 
     public void offer(Offering offering) {
@@ -707,14 +729,15 @@ public final class AssistActivity extends EmillaActivity {
     }
 
     private void submitCommand() {
-        var fullCommand = mCommandField.getText().toString().trim();
+        var fullCommand = mBinding.commandField.getText().toString().trim();
         if (fullCommand.isEmpty()) {
             mNoCommandAction.perform();
             return;
         }
     try {
-        if (mCommand.usesData() && mDataField.length() > 0) {
-            ((DataCommand) mCommand).execute(mDataField.getText().toString());
+        EditText dataField = mBinding.dataField;
+        if (mCommand.usesData() && dataField.length() > 0) {
+            ((DataCommand) mCommand).execute(dataField.getText().toString());
         } else mCommand.execute();
     } catch (EmillaException e) {
         fail(new MessageFailure(this, e.title(), e.message()));

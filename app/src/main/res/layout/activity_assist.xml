@@ -21,11 +21,11 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="@dimen/margin_narrow"
-        app:layout_constraintBottom_toTopOf="@id/container_more_actions"
+        app:layout_constraintBottom_toTopOf="@id/actions_container"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:id="@+id/container_more_actions"
+        android:id="@+id/actions_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_narrow"
@@ -36,7 +36,7 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <net.emilla.view.ActionButton
-            android:id="@+id/btn_show_data"
+            android:id="@+id/show_data_button"
             android:layout_width="@dimen/width_action"
             android:layout_height="@dimen/width_action"
             android:layout_marginEnd="@dimen/margin_narrow"
@@ -62,7 +62,7 @@
         app:layout_constraintRight_toRightOf="parent">
 
         <LinearLayout
-            android:id="@+id/container_more_fields"
+            android:id="@+id/fields_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
@@ -73,7 +73,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/field_data"
+                android:id="@+id/data_field"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_narrow"
@@ -88,7 +88,7 @@
                 android:visibility="gone" />
 
             <net.emilla.view.ActionButton
-                android:id="@+id/btn_hide_data"
+                android:id="@+id/hide_data_button"
                 android:layout_width="@dimen/width_action"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/margin_narrow"
@@ -109,7 +109,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/field_command"
+                android:id="@+id/command_field"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -122,7 +122,7 @@
                 tools:ignore="VisualLintTextFieldSize" />
 
             <net.emilla.view.ActionButton
-                android:id="@+id/btn_submit"
+                android:id="@+id/submit_button"
                 android:layout_width="@dimen/width_action"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/margin_narrow"
