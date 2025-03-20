@@ -12,9 +12,9 @@ import android.util.Log;
 
 import androidx.appcompat.app.AlertDialog;
 
-import net.emilla.AssistActivity;
 import net.emilla.BuildConfig;
 import net.emilla.R;
+import net.emilla.activity.AssistActivity;
 import net.emilla.util.Dialogs;
 
 import java.io.PrintWriter;

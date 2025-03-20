@@ -1,6 +1,6 @@
 package net.emilla.run;
 
-import net.emilla.AssistActivity;
+import net.emilla.activity.AssistActivity;
 
 public final class ToastGift implements Gift {
 

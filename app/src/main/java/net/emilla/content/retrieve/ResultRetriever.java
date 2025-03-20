@@ -8,8 +8,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContract;
 import androidx.annotation.Nullable;
 
-import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.activity.AssistActivity;
 import net.emilla.content.receive.ResultReceiver;
 import net.emilla.run.MessageFailure;
 

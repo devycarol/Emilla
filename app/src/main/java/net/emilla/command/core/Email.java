@@ -14,12 +14,12 @@ import androidx.annotation.ArrayRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
-import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.action.FileFetcher;
 import net.emilla.action.MediaFetcher;
 import net.emilla.action.field.FieldToggle;
 import net.emilla.action.field.SubjectField;
+import net.emilla.activity.AssistActivity;
 import net.emilla.contact.fragment.ContactEmailsFragment;
 import net.emilla.content.receive.EmailReceiver;
 import net.emilla.settings.Aliases;

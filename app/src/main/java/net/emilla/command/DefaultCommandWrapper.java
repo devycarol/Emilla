@@ -6,8 +6,8 @@ import android.graphics.drawable.Drawable;
 
 import androidx.annotation.Nullable;
 
-import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.activity.AssistActivity;
 import net.emilla.command.app.AppCommand;
 import net.emilla.lang.Lang;
 

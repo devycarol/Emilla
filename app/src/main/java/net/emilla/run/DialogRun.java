@@ -2,7 +2,7 @@ package net.emilla.run;
 
 import androidx.appcompat.app.AlertDialog;
 
-import net.emilla.AssistActivity;
+import net.emilla.activity.AssistActivity;
 
 public /*open*/ class DialogRun implements Gift, Offering, Failure {
 

@@ -15,8 +15,8 @@ import androidx.annotation.ArrayRes;
 import androidx.annotation.StringRes;
 import androidx.core.content.FileProvider;
 
-import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.activity.AssistActivity;
 import net.emilla.settings.Aliases;
 import net.emilla.util.Apps;
 import net.emilla.util.Files;

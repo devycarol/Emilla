@@ -21,8 +21,8 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
-import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.activity.AssistActivity;
 import net.emilla.contact.ContactItemView;
 import net.emilla.contact.MultiSearch;
 import net.emilla.contact.adapter.ContactCursorAdapter;

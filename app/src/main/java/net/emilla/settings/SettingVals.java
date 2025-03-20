@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 
-import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.action.AssistantSettings;
 import net.emilla.action.CursorStart;
@@ -15,6 +14,7 @@ import net.emilla.action.NoAction;
 import net.emilla.action.PlayPause;
 import net.emilla.action.QuickAction;
 import net.emilla.action.SelectAll;
+import net.emilla.activity.AssistActivity;
 import net.emilla.chime.Chimer;
 import net.emilla.chime.Custom;
 import net.emilla.chime.Nebula;

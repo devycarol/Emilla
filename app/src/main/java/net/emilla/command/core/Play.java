@@ -6,8 +6,8 @@ import android.view.inputmethod.EditorInfo;
 import androidx.annotation.ArrayRes;
 import androidx.annotation.StringRes;
 
-import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.activity.AssistActivity;
 import net.emilla.settings.Aliases;
 import net.emilla.util.MediaControl;
 import net.emilla.util.Services;

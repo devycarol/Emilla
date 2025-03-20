@@ -1,6 +1,6 @@
 package net.emilla.command;
 
-import net.emilla.AssistActivity;
+import net.emilla.activity.AssistActivity;
 import net.emilla.lang.Lang;
 import net.emilla.lang.Words;
 import net.emilla.util.trie.HashTrieMap;

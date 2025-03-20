@@ -10,7 +10,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
 import androidx.appcompat.content.res.AppCompatResources;
 
-import net.emilla.AssistActivity;
+import net.emilla.activity.AssistActivity;
 import net.emilla.command.CommandYielder;
 import net.emilla.command.EmillaCommand;
 import net.emilla.exception.EmillaException;

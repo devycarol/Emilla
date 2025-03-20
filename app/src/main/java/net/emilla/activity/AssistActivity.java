@@ -1,4 +1,4 @@
-package net.emilla;
+package net.emilla.activity;
 
 import static android.content.Intent.ACTION_ASSIST;
 import static android.content.Intent.ACTION_VOICE_COMMAND;
@@ -47,6 +47,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
 
+import net.emilla.R;
 import net.emilla.action.CursorStart;
 import net.emilla.action.Help;
 import net.emilla.action.PlayPause;

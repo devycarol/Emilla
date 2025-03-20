@@ -4,7 +4,7 @@ import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import net.emilla.AssistActivity
+import net.emilla.activity.AssistActivity
 import net.emilla.run.CopyGift
 import net.emilla.run.DialogRun
 import net.emilla.run.Gift

@@ -7,7 +7,7 @@ import android.provider.ContactsContract.CommonDataKinds.Phone;
 
 import androidx.annotation.Nullable;
 
-import net.emilla.AssistActivity;
+import net.emilla.activity.AssistActivity;
 import net.emilla.util.Contacts;
 
 public final class ContactPhoneRetriever extends ContactDataRetriever {

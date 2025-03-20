@@ -14,8 +14,8 @@ import androidx.annotation.ArrayRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
-import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.activity.AssistActivity;
 import net.emilla.command.CommandYielder;
 import net.emilla.command.EmillaCommand;
 import net.emilla.lang.Lang;

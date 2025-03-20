@@ -2,8 +2,8 @@ package net.emilla.action.field;
 
 import androidx.annotation.IdRes;
 
-import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.activity.AssistActivity;
 
 public final class UrlField extends FieldToggle {
 

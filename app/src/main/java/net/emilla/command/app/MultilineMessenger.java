@@ -1,7 +1,7 @@
 package net.emilla.command.app;
 
-import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.activity.AssistActivity;
 
 /*internal*/ abstract class MultilineMessenger extends AppSendData {
 

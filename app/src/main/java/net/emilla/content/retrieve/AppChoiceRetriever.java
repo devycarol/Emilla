@@ -11,7 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts.StartActivityFo
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
-import net.emilla.AssistActivity;
+import net.emilla.activity.AssistActivity;
 import net.emilla.content.receive.AppChoiceReceiver;
 
 public final class AppChoiceRetriever extends ResultRetriever<Intent, ActivityResult, AppChoiceReceiver> {

@@ -10,8 +10,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
 import androidx.annotation.StringRes;
 
-import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.activity.AssistActivity;
 import net.emilla.command.ActionMap;
 import net.emilla.command.Subcommand;
 import net.emilla.event.PingPlan;

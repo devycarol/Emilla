@@ -10,8 +10,8 @@ import androidx.annotation.ArrayRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
-import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.activity.AssistActivity;
 import net.emilla.contact.fragment.ContactPhonesFragment;
 import net.emilla.content.receive.PhoneReceiver;
 import net.emilla.settings.Aliases;

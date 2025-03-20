@@ -2,8 +2,8 @@ package net.emilla.command.app;
 
 import androidx.annotation.ArrayRes;
 
-import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.activity.AssistActivity;
 
 public final class Discord extends AppSend {
 

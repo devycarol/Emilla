@@ -11,7 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts.RequestMultiple
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
-import net.emilla.AssistActivity;
+import net.emilla.activity.AssistActivity;
 
 import java.util.Map;
 

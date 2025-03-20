@@ -6,9 +6,9 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import net.emilla.AssistActivity;
-import net.emilla.EmillaActivity;
 import net.emilla.R;
+import net.emilla.activity.AssistActivity;
+import net.emilla.activity.EmillaActivity;
 import net.emilla.databinding.ActivityConfigBinding;
 import net.emilla.util.Apps;
 

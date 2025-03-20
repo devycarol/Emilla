@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
-import net.emilla.EmillaActivity;
+import net.emilla.activity.EmillaActivity;
 
 public abstract class EmillaSettingsFragment extends PreferenceFragmentCompat {
 

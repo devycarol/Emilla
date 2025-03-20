@@ -8,8 +8,8 @@ import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts.PickMultipleVisualMedia;
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia;
 
-import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.activity.AssistActivity;
 import net.emilla.content.receive.FileReceiver;
 
 import java.util.List;

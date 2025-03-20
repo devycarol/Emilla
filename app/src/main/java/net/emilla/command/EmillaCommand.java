@@ -24,8 +24,8 @@ import androidx.annotation.RequiresPermission;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
-import net.emilla.AssistActivity;
 import net.emilla.action.QuickAction;
+import net.emilla.activity.AssistActivity;
 import net.emilla.command.app.AppCommand;
 import net.emilla.command.core.Alarm;
 import net.emilla.command.core.Bits;

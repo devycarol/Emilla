@@ -24,7 +24,7 @@ import android.provider.Settings;
 import androidx.annotation.Nullable;
 
 import net.emilla.BuildConfig;
-import net.emilla.EmillaActivity;
+import net.emilla.activity.EmillaActivity;
 
 import java.util.List;
 

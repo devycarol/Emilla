@@ -4,8 +4,8 @@ import android.net.Uri;
 
 import androidx.activity.result.contract.ActivityResultContracts.GetMultipleContents;
 
-import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.activity.AssistActivity;
 import net.emilla.content.receive.FileReceiver;
 
 import java.util.List;

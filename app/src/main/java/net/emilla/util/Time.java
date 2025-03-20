@@ -17,8 +17,8 @@ import static java.util.regex.Pattern.CASE_INSENSITIVE;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
-import net.emilla.EmillaActivity;
 import net.emilla.R;
+import net.emilla.activity.EmillaActivity;
 import net.emilla.exception.EmillaException;
 
 import java.util.Calendar;

@@ -9,10 +9,10 @@ import android.content.Intent;
 import androidx.annotation.ArrayRes;
 import androidx.annotation.StringRes;
 
-import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.action.FileFetcher;
 import net.emilla.action.MediaFetcher;
+import net.emilla.activity.AssistActivity;
 import net.emilla.content.receive.AppChoiceReceiver;
 import net.emilla.settings.Aliases;
 import net.emilla.util.Apps;

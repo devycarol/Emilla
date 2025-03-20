@@ -12,8 +12,8 @@ import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
 
-import net.emilla.EmillaActivity;
 import net.emilla.R;
+import net.emilla.activity.EmillaActivity;
 import net.emilla.command.app.AospContacts;
 import net.emilla.command.app.AppCommand;
 import net.emilla.command.app.Discord;

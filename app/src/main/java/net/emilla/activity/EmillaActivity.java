@@ -1,4 +1,4 @@
-package net.emilla;
+package net.emilla.activity;
 
 import android.widget.Toast;
 

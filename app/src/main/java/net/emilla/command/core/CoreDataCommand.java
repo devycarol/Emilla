@@ -5,7 +5,7 @@ import android.view.inputmethod.EditorInfo;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
 
-import net.emilla.AssistActivity;
+import net.emilla.activity.AssistActivity;
 import net.emilla.command.DataCommand;
 
 public abstract class CoreDataCommand extends CoreCommand implements DataCommand {

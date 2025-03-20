@@ -9,8 +9,8 @@ import android.net.Uri;
 import androidx.activity.result.contract.ActivityResultContract;
 import androidx.annotation.Nullable;
 
-import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.activity.AssistActivity;
 import net.emilla.content.receive.ContactDataReceiver;
 
 public /*open*/ class ContactDataRetriever extends ResultRetriever<Void, String, ContactDataReceiver> {

@@ -13,8 +13,8 @@ import android.os.Build;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
-import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.activity.AssistActivity;
 import net.emilla.run.PermissionFailure;
 import net.emilla.run.PermissionOffering;
 import net.emilla.util.app.TaskerIntent;

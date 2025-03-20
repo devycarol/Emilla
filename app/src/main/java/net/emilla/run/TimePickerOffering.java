@@ -4,7 +4,7 @@ import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.text.format.DateFormat;
 
-import net.emilla.AssistActivity;
+import net.emilla.activity.AssistActivity;
 
 public final class TimePickerOffering implements Offering {
 

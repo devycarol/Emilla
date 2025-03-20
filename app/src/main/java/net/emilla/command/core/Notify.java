@@ -8,8 +8,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
 import androidx.annotation.StringRes;
 
-import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.activity.AssistActivity;
 import net.emilla.ping.PingChannel;
 import net.emilla.ping.Pings;
 import net.emilla.settings.Aliases;

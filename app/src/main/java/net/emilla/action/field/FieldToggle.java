@@ -12,9 +12,9 @@ import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
-import net.emilla.AssistActivity;
 import net.emilla.R;
 import net.emilla.action.QuickAction;
+import net.emilla.activity.AssistActivity;
 
 public abstract class FieldToggle implements QuickAction {
 

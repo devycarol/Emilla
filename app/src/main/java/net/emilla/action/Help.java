@@ -6,8 +6,8 @@ import static android.view.KeyEvent.KEYCODE_MENU;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
-import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.activity.AssistActivity;
 import net.emilla.command.EmillaCommand;
 import net.emilla.run.DialogRun;
 import net.emilla.util.Dialogs;

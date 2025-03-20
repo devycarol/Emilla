@@ -5,7 +5,7 @@ import android.os.Build;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
-import net.emilla.AssistActivity;
+import net.emilla.activity.AssistActivity;
 
 /**
  * <p>

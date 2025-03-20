@@ -6,8 +6,8 @@ import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.StringRes;
 
-import net.emilla.AssistActivity;
 import net.emilla.R;
+import net.emilla.activity.AssistActivity;
 import net.emilla.util.Apps;
 
 /*internal*/ abstract class AppSearch extends AppCommand {

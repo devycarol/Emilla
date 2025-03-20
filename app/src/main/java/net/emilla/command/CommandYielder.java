@@ -4,7 +4,7 @@ import static androidx.annotation.RestrictTo.Scope.SUBCLASSES;
 
 import androidx.annotation.RestrictTo;
 
-import net.emilla.AssistActivity;
+import net.emilla.activity.AssistActivity;
 import net.emilla.lang.Words;
 import net.emilla.util.trie.TrieMap;
 

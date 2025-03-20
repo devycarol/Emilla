@@ -15,8 +15,8 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 
-import net.emilla.EmillaActivity;
 import net.emilla.R;
+import net.emilla.activity.EmillaActivity;
 import net.emilla.chime.Chimer;
 import net.emilla.settings.SettingVals;
 import net.emilla.system.EmillaAccessibilityService;

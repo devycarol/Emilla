@@ -81,7 +81,7 @@
                 android:resource="@xml/shortcuts" />
         </activity>
         <activity
-            android:name="net.emilla.AssistActivity"
+            android:name="net.emilla.activity.AssistActivity"
             android:exported="true"
             android:icon="@mipmap/ic_launcher_assistant"
             android:label="@string/activity_assistant"
