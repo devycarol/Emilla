@@ -129,8 +129,6 @@ public final class AssistActivity extends EmillaActivity {
 
     private EmillaCommand mCommand;
 
-    private boolean mDataAvailable = true;
-    private boolean mAlwaysShowData;
     private int mImeAction = IME_ACTION_NEXT;
     private boolean
             mLaunched = false,
@@ -168,7 +166,6 @@ public final class AssistActivity extends EmillaActivity {
         if (savedInstanceState == null) chime(START);
 
         ActionBar actionBar = requireNonNull(getSupportActionBar());
-
         if (mVm.noTitlebar) {
             actionBar.hide();
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.bg_assistant));
@@ -181,12 +178,8 @@ public final class AssistActivity extends EmillaActivity {
         mCommandMap = EmillaCommand.map(mPrefs, res, pm, mVm.appList);
 
         setupCommandField();
-        mAlwaysShowData = SettingVals.alwaysShowData(mPrefs);
-        // TODO ACC: There's no reason for a hidden data field if a screen reader is in use.
-        if (mAlwaysShowData
-                || savedInstanceState != null && savedInstanceState.getBoolean("dataFieldVisible")) {
-            showDataField();
-        }
+        if (mVm.dataVisible) showDataField();
+        // TODO ACC: no reason for a hidden data field if a screen reader is in use.
 
         mBinding.emptySpace.setOnClickListener(v -> cancelIfWarranted());
 
@@ -219,12 +212,6 @@ public final class AssistActivity extends EmillaActivity {
             mLastAssistTime = currentTime;
             if (performAction) mDoubleAssistAction.perform();
         } else mLastAssistTime = 0;
-    }
-
-    @Override // Todo: replace with view-model?
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean("dataFieldVisible", mBinding.dataField.getVisibility() == View.VISIBLE);
     }
 
     private void setupCommandField() {
@@ -261,7 +248,7 @@ public final class AssistActivity extends EmillaActivity {
                 // TODO ACC: There must be clarity on what the enter key will do if you can't see
                 //  the screen.
                 case IME_ACTION_NEXT:
-                    if (mDataAvailable) {
+                    if (mVm.dataAvailable) {
                         focusDataField();
                         yield true;
                     }
@@ -284,7 +271,7 @@ public final class AssistActivity extends EmillaActivity {
     }
 
     private void setupDataButtons() {
-        if (mAlwaysShowData) {
+        if (mVm.alwaysShowData) {
             mBinding.showDataButton.setVisibility(View.GONE);
         } else {
             mBinding.showDataButton.setOnClickListener(v -> focusDataField());
@@ -302,7 +289,9 @@ public final class AssistActivity extends EmillaActivity {
 
     private void showDataField() {
         mBinding.dataField.setVisibility(View.VISIBLE);
-        if (mAlwaysShowData) return;
+        mVm.dataVisible = true;
+        if (mVm.alwaysShowData) return;
+
         mBinding.hideDataButton.setVisibility(View.VISIBLE);
         mBinding.showDataButton.setVisibility(View.GONE);
     }
@@ -335,8 +324,10 @@ public final class AssistActivity extends EmillaActivity {
         else commandField.setSelection(start, end);
 
         dataField.setVisibility(View.GONE);
+        mVm.dataVisible = false;
+
         mBinding.hideDataButton.setVisibility(View.GONE);
-        if (!mDataAvailable) disableDataButton();
+        if (!mVm.dataAvailable) disableDataButton();
         mBinding.showDataButton.setVisibility(View.VISIBLE);
     }
 
@@ -469,15 +460,15 @@ public final class AssistActivity extends EmillaActivity {
         EditText dataField = mBinding.dataField;
 
         if (available) {
-            if (!mAlwaysShowData) enableDataButton();
+            if (!mVm.alwaysShowData) enableDataButton();
             dataField.setEnabled(true);
         } else if (dataField.getVisibility() == View.GONE) {
-            if (!mAlwaysShowData) disableDataButton();
+            if (!mVm.alwaysShowData) disableDataButton();
         } else {
             dataField.setEnabled(false);
         }
 
-        mDataAvailable = available;
+        mVm.dataAvailable = available;
     }
 
     private void enableDataButton() {
@@ -544,7 +535,7 @@ public final class AssistActivity extends EmillaActivity {
             }
 
             boolean dataAvailable = noCommand || mCommand.usesData();
-            if (dataAvailable != mDataAvailable) updateDataAvailability(dataAvailable);
+            if (dataAvailable != mVm.dataAvailable) updateDataAvailability(dataAvailable);
         }
     }
 

@@ -18,12 +18,20 @@ internal class AssistViewModel(
     @JvmField
     val noTitlebar = !SettingVals.showTitlebar(prefs, res)
     @JvmField
+    val alwaysShowData = SettingVals.alwaysShowData(prefs)
+
+    @JvmField
     val appList: List<ResolveInfo> = Apps.resolveList(pm)
 
     @JvmField
     var noCommand = true
     @JvmField
+    var dataAvailable = true
+    @JvmField
+    var dataVisible = alwaysShowData
+    @JvmField
     var dialogOpen = false
+    // todo: you can probably hard-code these UI-state properties into views, fragments, .. directly?
 
     private var dontChimePend = false
     private var dontChimeResume = false
