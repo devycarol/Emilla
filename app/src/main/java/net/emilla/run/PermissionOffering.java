@@ -35,6 +35,6 @@ public final class PermissionOffering implements Offering {
 
     @Override
     public void run() {
-        mActivity.permissionRetriever.retrieve(mPermissions, mOnGrant);
+        mActivity.offerPermissions(mPermissions, mOnGrant);
     }
 }

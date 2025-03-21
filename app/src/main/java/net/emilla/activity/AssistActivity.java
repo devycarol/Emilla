@@ -40,6 +40,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
@@ -119,12 +120,12 @@ public final class AssistActivity extends EmillaActivity {
     // TODO: save state hell. rotation deletes attachments ughhhhh probably because the command
     //  tree is rebuilt.
 
-    public final PermissionRetriever permissionRetriever;
+    private final PermissionRetriever mPermissionRetriever;
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            permissionRetriever = new PermissionRetriever(this);
+            mPermissionRetriever = new PermissionRetriever(this);
         } else {
-            permissionRetriever = null;
+            mPermissionRetriever = null;
         }
     }
 
@@ -703,6 +704,11 @@ public final class AssistActivity extends EmillaActivity {
     public void offerChooser(AppChoiceReceiver receiver, Intent target, @StringRes int title) {
         mAppChoiceRetriever.retrieve(receiver, target, title);
         chime(PEND);
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    public void offerPermissions(String[] permissions, Runnable onGrant) {
+        mPermissionRetriever.retrieve(permissions, onGrant);
     }
 
     public void give(Gift gift) {
