@@ -23,14 +23,14 @@ class SnippetsFragment : ActionBox(R.layout.snippet_item_list) {
         fun newInstance(): SnippetsFragment = SnippetsFragment()
     }
 
-    private val mViewModel: SnippetsViewModel by viewModels<SnippetsViewModel> {
+    private val vm: SnippetsViewModel by viewModels<SnippetsViewModel> {
         val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
         SnippetsViewModel.Factory(prefs)
     }
 
-    private val mAdapter: SnippetAdapter by lazy {
-        SnippetAdapter(mViewModel.snippetLabels(), SnippetAdapter.OnItemClickListener { pos ->
-            peek(mViewModel.labelAt(pos))
+    private val adapter: SnippetAdapter by lazy {
+        SnippetAdapter(vm.snippetLabels(), SnippetAdapter.OnItemClickListener { pos ->
+            peek(vm.labelAt(pos))
         })
     }
 
@@ -43,39 +43,39 @@ class SnippetsFragment : ActionBox(R.layout.snippet_item_list) {
         mgr.setStackFromEnd(true)
 
         view.setLayoutManager(mgr)
-        view.setAdapter(mAdapter)
+        view.setAdapter(adapter)
     }
 
-    fun contains(label: String) = mViewModel.snippetLabels().contains(label)
+    fun contains(label: String) = vm.snippetLabels().contains(label)
 
-    val isEmpty get() = mViewModel.snippetLabels().isEmpty
+    val isEmpty get() = vm.snippetLabels().isEmpty
 
     fun prime(action: Snippets.Action) {
         activity.chime(PEND)
 
-        mAdapter.setItemClickAction(
+        adapter.setItemClickAction(
         when (action) {
             Snippets.Action.PEEK -> { pos ->
-                peek(mViewModel.labelAt(pos))
+                peek(vm.labelAt(pos))
             }
             Snippets.Action.GET -> { pos ->
-                val label = mViewModel.labelAt(pos)
+                val label = vm.labelAt(pos)
                 get(label)
                 resetItemClickListener()
             }
             Snippets.Action.POP -> { pos ->
-                val label = mViewModel.labelAt(pos)
+                val label = vm.labelAt(pos)
                 pop(label, label)
                 resetItemClickListener()
             }
             Snippets.Action.REMOVE -> { pos ->
-                val label = mViewModel.labelAt(pos)
+                val label = vm.labelAt(pos)
                 remove(label, label)
                 give(Gift {})
                 resetItemClickListener()
             }
             Snippets.Action.ADD -> { pos ->
-                val label = mViewModel.labelAt(pos)
+                val label = vm.labelAt(pos)
                 val text = activity.dataText()
                 if (text != null) tryAdd(label, text)
                 else peek(label)
@@ -85,14 +85,14 @@ class SnippetsFragment : ActionBox(R.layout.snippet_item_list) {
     }
 
     private fun resetItemClickListener() {
-        mAdapter.setItemClickAction(SnippetAdapter.OnItemClickListener { pos ->
-            peek(mViewModel.labelAt(pos))
+        adapter.setItemClickAction(SnippetAdapter.OnItemClickListener { pos ->
+            peek(vm.labelAt(pos))
         })
     }
 
-    fun peek(label: String) = giveMessage(SettingVals.snippet(mViewModel.prefs, label))
+    fun peek(label: String) = giveMessage(SettingVals.snippet(vm.prefs, label))
 
-    fun get(label: String) = giveCopy(SettingVals.snippet(mViewModel.prefs, label))
+    fun get(label: String) = giveCopy(SettingVals.snippet(vm.prefs, label))
 
     fun pop(label: String, lcLabel: String) {
         get(lcLabel)
@@ -105,18 +105,18 @@ class SnippetsFragment : ActionBox(R.layout.snippet_item_list) {
             offerDialog(
                 Dialogs.dual(activity, R.string.dialog_overwrite_snippet, msg, R.string.overwrite,
                 DialogInterface.OnClickListener { dlg, which ->
-                    mViewModel.replaceSnippet(label, text, mAdapter)
+                    vm.replaceSnippet(label, text, adapter)
                     chime(RESUME)
                 })
             )
         } else {
-            mViewModel.addSnippet(label, text, mAdapter)
+            vm.addSnippet(label, text, adapter)
             give(Gift { toast(R.string.toast_saved) })
         }
     }
 
     fun remove(label: String, lcLabel: String) {
-        mViewModel.removeSnippet(lcLabel, mAdapter)
+        vm.removeSnippet(lcLabel, adapter)
         toast(R.string.toast_snippet_deleted, label)
     }
 
