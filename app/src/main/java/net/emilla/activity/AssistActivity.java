@@ -119,8 +119,14 @@ public final class AssistActivity extends EmillaActivity {
     // TODO: save state hell. rotation deletes attachments ughhhhh probably because the command
     //  tree is rebuilt.
 
-    public final PermissionRetriever permissionRetriever =
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? new PermissionRetriever(this) : null;
+    public final PermissionRetriever permissionRetriever;
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            permissionRetriever = new PermissionRetriever(this);
+        } else {
+            permissionRetriever = null;
+        }
+    }
 
     private EmillaCommand mCommand;
 
@@ -503,8 +509,11 @@ public final class AssistActivity extends EmillaActivity {
 
     public void updateDataHint() {
         EditText dataField = mBinding.dataField;
-        if (mNoCommand || !mCommand.usesData()) dataField.setHint(R.string.data_hint_default);
-        else dataField.setHint(((DataCommand) mCommand).dataHint());
+        if (mNoCommand || !mCommand.usesData()) {
+            dataField.setHint(R.string.data_hint_default);
+        } else {
+            dataField.setHint(((DataCommand) mCommand).dataHint());
+        }
     }
 
     public void setSubmitIcon(Drawable icon, boolean isAppIcon) {
@@ -512,8 +521,12 @@ public final class AssistActivity extends EmillaActivity {
     }
 
     public void setImeAction(int action) {
-        if (mNoCommand) action = IME_ACTION_NEXT;
-        if (action != mImeAction) mBinding.commandField.setImeOptions(mImeAction = action);
+        if (mNoCommand) {
+            action = IME_ACTION_NEXT;
+        }
+        if (action != mImeAction) {
+            mBinding.commandField.setImeOptions(mImeAction = action);
+        }
     }
 
     private void onCommandChanged(String command) {
@@ -608,8 +621,8 @@ public final class AssistActivity extends EmillaActivity {
      *====================*/
 
     public void chime(byte id) {
-        // Todo: I'd love to add a couple more in-built sound packs from open source ecosystems! Anyone
-        //  stumbling across this is welcome to give suggestions.
+        // Todo: I'd love to add a couple more in-built sound packs from open source ecosystems!
+        //  Anyone stumbling across this is welcome to give suggestions.
         mChimer.chime(id);
     }
 
