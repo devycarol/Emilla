@@ -126,9 +126,7 @@ public final class AssistActivity extends EmillaActivity {
     private EmillaCommand mCommand;
 
     private int mImeAction = IME_ACTION_NEXT;
-    private boolean
-            mLaunched = false,
-            mOpen = false;
+    private boolean mOpen = false;
 
 //    public static long nanosPlease(long prevTime, String label) {
 //        long curTime = System.nanoTime();
@@ -152,7 +150,7 @@ public final class AssistActivity extends EmillaActivity {
         var provider = new ViewModelProvider(this, factory);
         mVm = provider.get(AssistViewModel.class);
 
-        if (ACTION_ASSIST.equals(getIntent().getAction())) handleAssistIntent(false);
+        if (ACTION_ASSIST.equals(getIntent().getAction())) acknowledgeAssistIntent(false);
 
         if (savedInstanceState == null) chime(START);
 
@@ -192,21 +190,32 @@ public final class AssistActivity extends EmillaActivity {
         super.onNewIntent(intent);
 
         String action = intent.getAction();
-        if (mOpen && action != null) switch (action) {
-            case ACTION_ASSIST -> handleAssistIntent(true);
+        if (action == null) return;
+
+        if (!mOpen) {
+            if (action.equals(ACTION_ASSIST)) {
+                acknowledgeAssistIntent(false);
+            }
+            return;
+        }
+
+        switch (action) {
+            case ACTION_ASSIST -> acknowledgeAssistIntent(true);
             case ACTION_VOICE_COMMAND -> mDoubleAssistAction.perform();
-        } else if (ACTION_ASSIST.equals(action)) handleAssistIntent(false);
+        }
     }
 
     private long mLastAssistTime = 0;
 
-    private void handleAssistIntent(boolean performAction) {
+    private void acknowledgeAssistIntent(boolean performAction) {
         // TODO: determine why the corner gesture sends the assist intent twice.
         long currentTime = System.currentTimeMillis();
         if (currentTime - mLastAssistTime > 150 /*ms*/) {
             mLastAssistTime = currentTime;
             if (performAction) mDoubleAssistAction.perform();
-        } else mLastAssistTime = 0;
+        } else {
+            mLastAssistTime = 0;
+        }
     }
 
     private void setupCommandField() {
@@ -412,11 +421,14 @@ public final class AssistActivity extends EmillaActivity {
         transaction.commit();
     }
 
+    private boolean mLaunched = false;
+
     protected void onResume() {
         super.onResume();
         if (!mOpen) {
             if (mLaunched) resume();
             else mLaunched = true;
+
             mOpen = true;
         }
     }
