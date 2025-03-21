@@ -21,6 +21,8 @@ internal class AssistViewModel(
     val appList: List<ResolveInfo> = Apps.resolveList(pm)
 
     @JvmField
+    var noCommand = true
+    @JvmField
     var dialogOpen = false
 
     private var dontChimePend = false

@@ -129,7 +129,6 @@ public final class AssistActivity extends EmillaActivity {
 
     private EmillaCommand mCommand;
 
-    private boolean mNoCommand = true;
     private boolean mDataAvailable = true;
     private boolean mAlwaysShowData;
     private int mImeAction = IME_ACTION_NEXT;
@@ -498,7 +497,7 @@ public final class AssistActivity extends EmillaActivity {
 
         ActionBar actionBar = requireNonNull(getSupportActionBar());
 
-        if (mNoCommand) {
+        if (mVm.noCommand) {
             title = mPrefs.getString("motd", getString(R.string.activity_assistant));
         }
 
@@ -507,7 +506,7 @@ public final class AssistActivity extends EmillaActivity {
 
     public void updateDataHint() {
         EditText dataField = mBinding.dataField;
-        if (mNoCommand || !mCommand.usesData()) {
+        if (mVm.noCommand || !mCommand.usesData()) {
             dataField.setHint(R.string.data_hint_default);
         } else {
             dataField.setHint(((DataCommand) mCommand).dataHint());
@@ -519,7 +518,7 @@ public final class AssistActivity extends EmillaActivity {
     }
 
     public void setImeAction(int action) {
-        if (mNoCommand) {
+        if (mVm.noCommand) {
             action = IME_ACTION_NEXT;
         }
         if (action != mImeAction) {
@@ -532,10 +531,10 @@ public final class AssistActivity extends EmillaActivity {
 
         EmillaCommand cmd = mCommandMap.get(this, command);
         boolean noCommand = command.isEmpty();
-        if (cmd != mCommand || noCommand != mNoCommand) {
+        if (cmd != mCommand || noCommand != mVm.noCommand) {
             mCommand.clean();
             mCommand = cmd;
-            mNoCommand = noCommand;
+            mVm.noCommand = noCommand;
             if (noCommand) {
                 cmd.decorate(false);
                 mBinding.submitButton.setIcon(mNoCommandAction.icon());
