@@ -1,39 +1,35 @@
-package net.emilla.chime;
+package net.emilla.chime
 
-import android.content.Context;
-import android.media.MediaPlayer;
+import android.content.Context
+import android.media.MediaPlayer
+import androidx.annotation.RawRes
+import net.emilla.R
 
-import androidx.annotation.RawRes;
+/**
+ * The default Nebula chimer.
+ *
+ * @param ctx it's important to use application context to avoid memory leaks!
+ */
+class Nebula(private val ctx: Context) : Chimer {
 
-import net.emilla.R;
-
-public final class Nebula implements Chimer {
-
-    @RawRes
-    static int sound(byte chime) {
-        return switch (chime) {
-            case Chimer.START -> R.raw.nebula_start;
-            case Chimer.ACT -> R.raw.nebula_act;
-            case Chimer.PEND -> R.raw.nebula_pend;
-            case Chimer.RESUME -> R.raw.nebula_resume;
-            case Chimer.EXIT -> R.raw.nebula_exit;
-            case Chimer.SUCCEED -> R.raw.nebula_succeed;
-            case Chimer.FAIL -> R.raw.nebula_fail;
-            default -> -1;
-        };
+    override fun chime(id: Byte) {
+        // TODO: still encountering occasional sound cracking issues
+        val player: MediaPlayer = MediaPlayer.create(ctx, sound(id))
+        player.setOnCompletionListener(MediaPlayer::release)
+        player.start()
     }
 
-    private final Context mContext;
-
-    public Nebula(Context ctx) {
-        mContext = ctx;
-    }
-
-    @Override
-    public void chime(byte id) {
-        // Todo: still encountering occasional sound cracking issues
-        var player = MediaPlayer.create(mContext, sound(id));
-        player.setOnCompletionListener(MediaPlayer::release);
-        player.start();
+    companion object {
+        @JvmStatic @RawRes
+        internal fun sound(chime: Byte) = when (chime) {
+            Chimer.START -> R.raw.nebula_start
+            Chimer.ACT -> R.raw.nebula_act
+            Chimer.PEND -> R.raw.nebula_pend
+            Chimer.RESUME -> R.raw.nebula_resume
+            Chimer.EXIT -> R.raw.nebula_exit
+            Chimer.SUCCEED -> R.raw.nebula_succeed
+            Chimer.FAIL -> R.raw.nebula_fail
+            else -> 0
+        }
     }
 }

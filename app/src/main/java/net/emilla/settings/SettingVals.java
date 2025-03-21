@@ -180,13 +180,20 @@ public final class SettingVals {
         };
     }
 
-    public static Chimer chimer(Context ctx, SharedPreferences prefs) {
+    /**
+     * The user's preferred chimer for audio feedback.
+     *
+     * @param appCtx it's important to use the application context to avoid memory leaks!
+     * @param prefs used to build the chimer from user settings.
+     * @return the user's chosen chimer.
+     */
+    public static Chimer chimer(Context appCtx, SharedPreferences prefs) {
         return switch (soundSet(prefs)) {
             case Chimer.NONE -> new Silence();
-            case Chimer.NEBULA -> new Nebula(ctx);
+            case Chimer.NEBULA -> new Nebula(appCtx);
             case Chimer.VOICE_DIALER -> new Redial();
-            case Chimer.CUSTOM -> new Custom(ctx, prefs);
-            default -> throw new RuntimeException("Not a chimer.");
+            case Chimer.CUSTOM -> new Custom(appCtx, prefs);
+            default -> throw new IllegalArgumentException();
         };
     }
 

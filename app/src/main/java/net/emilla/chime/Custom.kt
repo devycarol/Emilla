@@ -1,41 +1,24 @@
-package net.emilla.chime;
+package net.emilla.chime
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.media.MediaPlayer;
-import android.net.Uri;
+import android.content.Context
+import android.content.SharedPreferences
+import android.media.MediaPlayer
+import android.net.Uri
 
-import androidx.annotation.Nullable;
+/**
+ * A custom-sound chimer built from user settings.
+ *
+ * @param ctx it's important to use application context to avoid memory leaks!
+ * @param prefs used to fetch sound URIs from user settings.
+ */
+class Custom(private val ctx: Context, prefs: SharedPreferences) : Chimer {
+    private val uris: Array<Uri?> = Chimer.customSounds(prefs)
 
-public final class Custom implements Chimer {
-
-    @Nullable
-    private static Uri uriOf(SharedPreferences prefs, String prefString) {
-        var uriStr = prefs.getString(prefString, null);
-        return uriStr != null ? Uri.parse(uriStr) : null;
-    }
-
-    private final Context mContext;
-    private final Uri[] mUris = new Uri[7];
-
-    public Custom(Context ctx, SharedPreferences prefs) {
-        mContext = ctx;
-
-        mUris[Chimer.START] = uriOf(prefs, Chimer.PREF_START);
-        mUris[Chimer.ACT] = uriOf(prefs, Chimer.PREF_ACT);
-        mUris[Chimer.PEND] = uriOf(prefs, Chimer.PREF_PEND);
-        mUris[Chimer.RESUME] = uriOf(prefs, Chimer.PREF_RESUME);
-        mUris[Chimer.EXIT] = uriOf(prefs, Chimer.PREF_EXIT);
-        mUris[Chimer.SUCCEED] = uriOf(prefs, Chimer.PREF_SUCCEED);
-        mUris[Chimer.FAIL] = uriOf(prefs, Chimer.PREF_FAIL);
-    }
-
-    @Override
-    public void chime(byte id) {
-        var player = MediaPlayer.create(mContext, mUris[id]);
-        if (player == null) player = MediaPlayer.create(mContext, Nebula.sound(id));
-        // If the URI is null or broken fall back to nebula
-        player.setOnCompletionListener(MediaPlayer::release);
-        player.start();
+    override fun chime(id: Byte) {
+        var player = MediaPlayer.create(ctx, uris[id.toInt()])
+            ?: MediaPlayer.create(ctx, Nebula.sound(id))
+        // fall back to nebula URI is broken or null
+        player.setOnCompletionListener(MediaPlayer::release)
+        player.start()
     }
 }

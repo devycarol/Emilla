@@ -1,32 +1,50 @@
-package net.emilla.chime;
+package net.emilla.chime
 
-@FunctionalInterface
-public interface Chimer {
+import android.content.SharedPreferences
+import android.net.Uri
+import androidx.core.net.toUri
 
-    byte // IDs
-            START = 0,
-            ACT = 1,
-            PEND = 2,
-            RESUME = 3,
-            EXIT = 4,
-            SUCCEED = 5,
-            FAIL = 6;
+fun interface Chimer {
+    fun chime(id: Byte)
 
-    String // Sound sets
-            NONE = "none",
-            NEBULA = "nebula",
-            VOICE_DIALER = "voice_dialer",
-            CUSTOM = "custom";
+    companion object {
+        // IDs
+        const val START: Byte = 0
+        const val ACT: Byte = 1
+        const val PEND: Byte = 2
+        const val RESUME: Byte = 3
+        const val EXIT: Byte = 4
+        const val SUCCEED: Byte = 5
+        const val FAIL: Byte = 6
 
-    String // Preference keys
-            SOUND_SET = "sound_set",
-            PREF_START = "chime_start",
-            PREF_ACT = "chime_act",
-            PREF_PEND = "chime_pend",
-            PREF_RESUME = "chime_resume",
-            PREF_EXIT = "chime_exit",
-            PREF_SUCCEED = "chime_succeed",
-            PREF_FAIL = "chime_fail";
+        // Sound sets
+        const val NONE: String = "none"
+        const val NEBULA: String = "nebula"
+        const val VOICE_DIALER: String = "voice_dialer"
+        const val CUSTOM: String = "custom"
 
-    void chime(byte id);
+        // Preference keys
+        const val SOUND_SET: String = "sound_set"
+        const val PREF_START: String = "chime_start"
+        const val PREF_ACT: String = "chime_act"
+        const val PREF_PEND: String = "chime_pend"
+        const val PREF_RESUME: String = "chime_resume"
+        const val PREF_EXIT: String = "chime_exit"
+        const val PREF_SUCCEED: String = "chime_succeed"
+        const val PREF_FAIL: String = "chime_fail"
+
+        internal fun customSounds(prefs: SharedPreferences) = arrayOf<Uri?>(
+            soundUri(prefs, PREF_START),
+            soundUri(prefs, PREF_ACT),
+            soundUri(prefs, PREF_PEND),
+            soundUri(prefs, PREF_RESUME),
+            soundUri(prefs, PREF_EXIT),
+            soundUri(prefs, PREF_SUCCEED),
+            soundUri(prefs, PREF_FAIL)
+        )
+
+        private fun soundUri(prefs: SharedPreferences, prefKey: String?): Uri? {
+            return prefs.getString(prefKey, null)?.toUri()
+        }
+    }
 }

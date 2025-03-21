@@ -1,21 +1,21 @@
-package net.emilla.chime;
+package net.emilla.chime
 
-import android.media.AudioManager;
-import android.media.ToneGenerator;
+import android.media.AudioManager
+import android.media.ToneGenerator
 
-public final class Redial implements Chimer {
+class Redial : Chimer {
+    private val toneGenerator = ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME)
 
-    private final ToneGenerator mToneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
+    override fun chime(id: Byte) {
+        toneGenerator.startTone(tone(id))
+    }
 
-    @Override
-    public void chime(byte id) {
-        mToneGenerator.startTone(switch (id) {
-            case Chimer.START, Chimer.PEND, Chimer.RESUME -> ToneGenerator.TONE_PROP_BEEP;
-            case Chimer.ACT -> ToneGenerator.TONE_PROP_PROMPT;
-            case Chimer.EXIT -> ToneGenerator.TONE_PROP_BEEP2;
-            case Chimer.SUCCEED -> ToneGenerator.TONE_PROP_ACK;
-            case Chimer.FAIL -> ToneGenerator.TONE_PROP_NACK;
-            default -> -1;
-        });
+    private fun tone(id: Byte) = when (id) {
+        Chimer.START, Chimer.PEND, Chimer.RESUME -> ToneGenerator.TONE_PROP_BEEP
+        Chimer.ACT -> ToneGenerator.TONE_PROP_PROMPT
+        Chimer.EXIT -> ToneGenerator.TONE_PROP_BEEP2
+        Chimer.SUCCEED -> ToneGenerator.TONE_PROP_ACK
+        Chimer.FAIL -> ToneGenerator.TONE_PROP_NACK
+        else -> -1
     }
 }

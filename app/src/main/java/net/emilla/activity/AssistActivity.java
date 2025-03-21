@@ -48,14 +48,12 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.preference.PreferenceManager;
 
 import net.emilla.R;
 import net.emilla.action.CursorStart;
 import net.emilla.action.Help;
 import net.emilla.action.PlayPause;
 import net.emilla.action.QuickAction;
-import net.emilla.chime.Chimer;
 import net.emilla.command.CommandMap;
 import net.emilla.command.DataCommand;
 import net.emilla.command.EmillaCommand;
@@ -94,9 +92,7 @@ public final class AssistActivity extends EmillaActivity {
     private ActivityAssistBinding mBinding;
     private AssistViewModel mVm;
 
-    private SharedPreferences mPrefs;
     private CommandMap mCommandMap;
-    private Chimer mChimer;
 
     private QuickAction mNoCommandAction;
     private QuickAction mDoubleAssistAction;
@@ -152,18 +148,16 @@ public final class AssistActivity extends EmillaActivity {
         mBinding = ActivityAssistBinding.inflate(mInflater);
         setContentView(mBinding.getRoot());
 
-        var pm = getPackageManager();
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        var res = getResources();
-
-        var factory = new AssistViewModel.Factory(pm, mPrefs, res);
+        var factory = new AssistViewModel.Factory(getApplicationContext());
         var provider = new ViewModelProvider(this, factory);
         mVm = provider.get(AssistViewModel.class);
 
         if (ACTION_ASSIST.equals(getIntent().getAction())) handleAssistIntent(false);
 
-        mChimer = SettingVals.chimer(this, mPrefs);
         if (savedInstanceState == null) chime(START);
+
+        SharedPreferences prefs = mVm.prefs;
+        var res = getResources();
 
         ActionBar actionBar = requireNonNull(getSupportActionBar());
         if (mVm.noTitlebar) {
@@ -171,11 +165,12 @@ public final class AssistActivity extends EmillaActivity {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.bg_assistant));
         } else {
             var dfltTitle = res.getString(R.string.activity_assistant);
-            var title = mPrefs.getString("motd", dfltTitle);
+            var title = prefs.getString("motd", dfltTitle);
             if (!title.equals(dfltTitle)) actionBar.setTitle(title);
         }
 
-        mCommandMap = EmillaCommand.map(mPrefs, res, pm, mVm.appList);
+        var pm = getPackageManager();
+        mCommandMap = EmillaCommand.map(prefs, res, pm, mVm.appList);
 
         setupCommandField();
         if (mVm.dataVisible) showDataField();
@@ -183,9 +178,9 @@ public final class AssistActivity extends EmillaActivity {
 
         mBinding.emptySpace.setOnClickListener(v -> cancelIfWarranted());
 
-        mNoCommandAction = SettingVals.noCommand(mPrefs, this);
-        mDoubleAssistAction = SettingVals.doubleAssist(mPrefs, this, pm);
-        mMenuKeyAction = SettingVals.menuKey(mPrefs, this);
+        mNoCommandAction = SettingVals.noCommand(prefs, this);
+        mDoubleAssistAction = SettingVals.doubleAssist(prefs, this, pm);
+        mMenuKeyAction = SettingVals.menuKey(prefs, this);
 
         setupSubmitButton();
         setupDataButtons();
@@ -267,7 +262,7 @@ public final class AssistActivity extends EmillaActivity {
         submitButton.setIcon(mNoCommandAction.icon());
         submitButton.setOnClickListener(v -> submitCommand());
 
-        submitButton.setLongPress(SettingVals.longSubmit(mPrefs, this), getResources());
+        submitButton.setLongPress(SettingVals.longSubmit(mVm.prefs, this), getResources());
     }
 
     private void setupDataButtons() {
@@ -332,11 +327,12 @@ public final class AssistActivity extends EmillaActivity {
     }
 
     private void setupMoreActions() {
+        SharedPreferences prefs = mVm.prefs;
         // TODO: save state hell
         // Todo: put these in an editor.
-        if (SettingVals.showCursorStartButton(mPrefs)) addAction(new CursorStart(this));
-        if (SettingVals.showHelpButton(mPrefs)) addAction(new Help(this));
-        if (SettingVals.showPlayPauseButton(mPrefs)) addAction(new PlayPause(this));
+        if (SettingVals.showCursorStartButton(prefs)) addAction(new CursorStart(this));
+        if (SettingVals.showHelpButton(prefs)) addAction(new Help(this));
+        if (SettingVals.showPlayPauseButton(prefs)) addAction(new PlayPause(this));
     }
 
     public void addAction(QuickAction action) {
@@ -489,7 +485,7 @@ public final class AssistActivity extends EmillaActivity {
         ActionBar actionBar = requireNonNull(getSupportActionBar());
 
         if (mVm.noCommand) {
-            title = mPrefs.getString("motd", getString(R.string.activity_assistant));
+            title = mVm.prefs.getString("motd", getString(R.string.activity_assistant));
         }
 
         actionBar.setTitle(title);
@@ -544,7 +540,7 @@ public final class AssistActivity extends EmillaActivity {
      *=========*/
 
     public SharedPreferences prefs() {
-        return mPrefs;
+        return mVm.prefs;
     }
 
     public List<ResolveInfo> appList() {
@@ -611,7 +607,7 @@ public final class AssistActivity extends EmillaActivity {
     public void chime(byte id) {
         // Todo: I'd love to add a couple more in-built sound packs from open source ecosystems!
         //  Anyone stumbling across this is welcome to give suggestions.
-        mChimer.chime(id);
+        mVm.chimer.chime(id);
     }
 
     public void resume() {

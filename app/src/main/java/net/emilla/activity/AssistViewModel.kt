@@ -1,27 +1,42 @@
 package net.emilla.activity
 
+import android.content.Context
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
-import android.content.res.Resources
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
+import net.emilla.chime.Chimer
 import net.emilla.settings.SettingVals
 import net.emilla.util.Apps
 
-internal class AssistViewModel(
-    pm: PackageManager,
-    prefs: SharedPreferences,
-    res: Resources
-) : ViewModel() {
+internal class AssistViewModel private constructor(appCtx: Context) : ViewModel() {
+
+    /**
+     * A factory for the assistant view model.
+     *
+     * @param appCtx it's important to use the application context to avoid memory leaks!
+     */
+    class Factory(private val appCtx: Context) : ViewModelProvider.Factory {
+
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return AssistViewModel(appCtx) as T
+        }
+    }
 
     @JvmField
-    val noTitlebar = !SettingVals.showTitlebar(prefs, res)
+    val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(appCtx)
+
+    @JvmField
+    val noTitlebar = !SettingVals.showTitlebar(prefs, appCtx.resources)
     @JvmField
     val alwaysShowData = SettingVals.alwaysShowData(prefs)
 
     @JvmField
-    val appList: List<ResolveInfo> = Apps.resolveList(pm)
+    val chimer: Chimer = SettingVals.chimer(appCtx, prefs)
+    @JvmField
+    val appList: List<ResolveInfo> = Apps.resolveList(appCtx.packageManager)
 
     @JvmField
     var noCommand = true
@@ -75,16 +90,4 @@ internal class AssistViewModel(
         dontTryCancel = false
         false
     } else true
-
-    class Factory(
-        private val pm: PackageManager,
-        private val prefs: SharedPreferences,
-        private val res: Resources
-    ) : ViewModelProvider.Factory {
-
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return AssistViewModel(pm, prefs, res) as T
-        }
-    }
 }
