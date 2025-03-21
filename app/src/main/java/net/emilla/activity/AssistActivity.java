@@ -92,7 +92,7 @@ public final class AssistActivity extends EmillaActivity {
 
     private LayoutInflater mInflater;
     private ActivityAssistBinding mBinding;
-    private AssistViewModel mViewModel;
+    private AssistViewModel mVm;
 
     private SharedPreferences mPrefs;
     private CommandMap mCommandMap;
@@ -161,7 +161,7 @@ public final class AssistActivity extends EmillaActivity {
 
         var factory = new AssistViewModel.Factory(pm, mPrefs, res);
         var provider = new ViewModelProvider(this, factory);
-        mViewModel = provider.get(AssistViewModel.class);
+        mVm = provider.get(AssistViewModel.class);
 
         if (ACTION_ASSIST.equals(getIntent().getAction())) handleAssistIntent(false);
 
@@ -170,7 +170,7 @@ public final class AssistActivity extends EmillaActivity {
 
         ActionBar actionBar = requireNonNull(getSupportActionBar());
 
-        if (mViewModel.noTitlebar) {
+        if (mVm.noTitlebar) {
             actionBar.hide();
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.bg_assistant));
         } else {
@@ -179,7 +179,7 @@ public final class AssistActivity extends EmillaActivity {
             if (!title.equals(dfltTitle)) actionBar.setTitle(title);
         }
 
-        mCommandMap = EmillaCommand.map(mPrefs, res, pm, mViewModel.appList);
+        mCommandMap = EmillaCommand.map(mPrefs, res, pm, mVm.appList);
 
         setupCommandField();
         mAlwaysShowData = SettingVals.alwaysShowData(mPrefs);
@@ -443,7 +443,7 @@ public final class AssistActivity extends EmillaActivity {
         if (!(isChangingConfigurations() || isFinishing())) {
             if (shouldCancel()) cancel();
             // TODO: the launch fail bug is caused by focus stealing
-            else if (!mViewModel.dialogOpen && mViewModel.askChimePend()) chime(PEND);
+            else if (!mVm.dialogOpen && mVm.askChimePend()) chime(PEND);
         }
     }
 
@@ -494,7 +494,7 @@ public final class AssistActivity extends EmillaActivity {
     }
 
     public void updateTitle(CharSequence title) {
-        if (mViewModel.noTitlebar) return;
+        if (mVm.noTitlebar) return;
 
         ActionBar actionBar = requireNonNull(getSupportActionBar());
 
@@ -558,7 +558,7 @@ public final class AssistActivity extends EmillaActivity {
     }
 
     public List<ResolveInfo> appList() {
-        return mViewModel.appList;
+        return mVm.appList;
     }
 
     public EditText focusedEditBox() {
@@ -588,20 +588,20 @@ public final class AssistActivity extends EmillaActivity {
      *=========*/
 
     public void suppressPendChime() {
-        mViewModel.suppressPendChime();
+        mVm.suppressPendChime();
     }
 
     public void suppressResumeChime() {
-        mViewModel.suppressResumeChime();
+        mVm.suppressResumeChime();
     }
 
     public void suppressSuccessChime() {
-        mViewModel.suppressSuccessChime();
+        mVm.suppressSuccessChime();
     }
 
     @Deprecated
     public void suppressBackCancellation() {
-        mViewModel.suppressBackCancellation();
+        mVm.suppressBackCancellation();
     }
 
     public void setManual(@Nullable AlertDialog manual) {
@@ -625,7 +625,7 @@ public final class AssistActivity extends EmillaActivity {
     }
 
     public void resume() {
-        if (!mViewModel.dialogOpen && mViewModel.askChimeResume()) chime(RESUME);
+        if (!mVm.dialogOpen && mVm.askChimeResume()) chime(RESUME);
     }
 
     public boolean shouldCancel() {
@@ -641,11 +641,11 @@ public final class AssistActivity extends EmillaActivity {
     public void onCloseDialog() {
         mBinding.emptySpace.setEnabled(true);
         mBinding.submitButton.setEnabled(true);
-        mViewModel.dialogOpen = false;
+        mVm.dialogOpen = false;
     }
 
     private void cancelIfWarranted() {
-        if (!mViewModel.askTryCancel()) return;
+        if (!mVm.askTryCancel()) return;
 
         if (shouldCancel()) cancel();
         else offer(new DialogRun(this, cancelDialog()));
@@ -667,7 +667,7 @@ public final class AssistActivity extends EmillaActivity {
         // TODO: view enablement shouldn't be handled on a view-by-view basis. Perhaps target the
         //  mother of all views (whatever that is) or get to the bottom of why views can be clicked
         //  in the split-second after dialog invocation in the first place
-        mViewModel.dialogOpen = true;
+        mVm.dialogOpen = true;
         mBinding.emptySpace.setEnabled(false);
         mBinding.submitButton.setEnabled(false);
     }
@@ -716,7 +716,7 @@ public final class AssistActivity extends EmillaActivity {
 
     public void succeed(Success success) {
         success.run();
-        if (mViewModel.askChimeSuccess()) chime(SUCCEED);
+        if (mVm.askChimeSuccess()) chime(SUCCEED);
     }
 
     public void fail(Failure failure) {
