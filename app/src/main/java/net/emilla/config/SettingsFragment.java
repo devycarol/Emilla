@@ -39,7 +39,7 @@ public final class SettingsFragment extends EmillaSettingsFragment {
 //        case SettingVals.CHIME_EXIT -> R.string.chime_exit;
 //        case SettingVals.CHIME_SUCCEED -> R.string.chime_succeed;
 //        case SettingVals.CHIME_FAIL -> R.string.chime_fail;
-//        default -> -1;
+//        default -> 0;
 //        };
 //    }
 
