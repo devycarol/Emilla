@@ -27,6 +27,7 @@ class SnippetsFragment : ActionBox(R.layout.snippet_item_list) {
         val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
         SnippetsViewModel.Factory(prefs)
     }
+
     private val mAdapter: SnippetAdapter by lazy {
         SnippetAdapter(mViewModel.snippetLabels(), SnippetAdapter.OnItemClickListener { pos ->
             peek(mViewModel.labelAt(pos))

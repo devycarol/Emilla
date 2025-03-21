@@ -737,7 +737,9 @@ public final class AssistActivity extends EmillaActivity {
         EditText dataField = mBinding.dataField;
         if (mCommand.usesData() && dataField.length() > 0) {
             ((DataCommand) mCommand).execute(dataField.getText().toString());
-        } else mCommand.execute();
+        } else {
+            mCommand.execute();
+        }
     } catch (EmillaException e) {
         fail(new MessageFailure(this, e.title(), e.message()));
     } catch (RuntimeException e) {

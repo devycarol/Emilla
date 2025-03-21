@@ -11,14 +11,31 @@ import android.media.AudioManager
 import android.view.accessibility.AccessibilityManager
 
 @JvmName("accessibility")
-fun Context.accessibilityService() = getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
+fun Context.accessibilityService(): AccessibilityManager {
+    return getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
+}
+
 @JvmName("alarm")
-fun Context.alarmService() = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+fun Context.alarmService(): AlarmManager {
+    return getSystemService(Context.ALARM_SERVICE) as AlarmManager
+}
+
 @JvmName("audio")
-fun Context.audioService() = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+fun Context.audioService(): AudioManager {
+    return getSystemService(Context.AUDIO_SERVICE) as AudioManager
+}
+
 @JvmName("camera")
-fun Context.cameraService() = getSystemService(Context.CAMERA_SERVICE) as CameraManager
+fun Context.cameraService(): CameraManager {
+    return getSystemService(Context.CAMERA_SERVICE) as CameraManager
+}
+
 @JvmName("clipboard")
-fun Context.clipboardService() = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+fun Context.clipboardService(): ClipboardManager {
+    return getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+}
+
 @JvmName("notification")
-fun Context.notificationService() = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+fun Context.notificationService(): NotificationManager {
+    return getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+}
