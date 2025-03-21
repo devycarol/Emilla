@@ -122,8 +122,13 @@ public final class SettingVals {
         };
     }
 
+    public static String motd(SharedPreferences prefs, Resources res) {
+        return prefs.getString("motd", res.getString(R.string.activity_assistant));
+    }
+
     public static boolean alwaysShowData(SharedPreferences prefs) {
         return prefs.getBoolean("always_show_data", false);
+        // TODO ACC: no reason for a hidden data field if a screen reader is in use.
     }
 
     public static boolean showHelpButton(SharedPreferences prefs) {

@@ -88,32 +88,14 @@ import java.util.List;
 
 public final class AssistActivity extends EmillaActivity {
 
-    private LayoutInflater mInflater;
-    private ActivityAssistBinding mBinding;
-    private AssistViewModel mVm;
-
-    private CommandMap mCommandMap;
-
-    private QuickAction mNoCommandAction;
-    private QuickAction mDoubleAssistAction;
-    private QuickAction mMenuKeyAction;
-
-    @Nullable
-    private Fragment mDefaultActionBox;
-
-    @Nullable
-    private AlertDialog mManual;
-    // todo: please handle this another way..
-
     private final FileRetriever mFileRetriever = new FileRetriever(this);
     private final MediaRetriever mMediaRetriever = new MediaRetriever(this);
     private final ContactCardRetriever mContactCardRetriever = new ContactCardRetriever(this);
     private final ContactPhoneRetriever mContactPhoneRetriever = new ContactPhoneRetriever(this);
     private final ContactEmailRetriever mContactEmailRetriever = new ContactEmailRetriever(this);
-    private final AppChoiceRetriever mAppChoiceRetriever = new AppChoiceRetriever(this);
     // TODO: save state hell. rotation deletes attachments ughhhhh probably because the command
     //  tree is rebuilt.
-
+    private final AppChoiceRetriever mAppChoiceRetriever = new AppChoiceRetriever(this);
     private final PermissionRetriever mPermissionRetriever;
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -123,20 +105,24 @@ public final class AssistActivity extends EmillaActivity {
         }
     }
 
+    private LayoutInflater mInflater;
+    private ActivityAssistBinding mBinding;
+    private AssistViewModel mVm;
+
+    @Nullable
+    private Fragment mDefaultActionBox;
+    @Nullable
+    private AlertDialog mManual;
+    // todo: please handle this another way..
+
+    private QuickAction mNoCommandAction;
+    private QuickAction mDoubleAssistAction;
+    private QuickAction mMenuKeyAction;
+
+    private CommandMap mCommandMap;
     private EmillaCommand mCommand;
 
-    private int mImeAction = IME_ACTION_NEXT;
     private boolean mOpen = false;
-
-//    public static long nanosPlease(long prevTime, String label) {
-//        long curTime = System.nanoTime();
-//        var s = String.valueOf(curTime - prevTime);
-//        var sb = new StringBuilder(label).append(": ");
-//        int start = sb.length();
-//        for (int i = sb.append(s).length() - 3; i > start; i -= 3) sb.insert(i, ',');
-//        Log.d("nanosPlease", sb.append(" nanoseconds").toString());
-//        return System.nanoTime();
-//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,84 +136,48 @@ public final class AssistActivity extends EmillaActivity {
         var provider = new ViewModelProvider(this, factory);
         mVm = provider.get(AssistViewModel.class);
 
-        if (ACTION_ASSIST.equals(getIntent().getAction())) acknowledgeAssistIntent(false);
+        if (ACTION_ASSIST.equals(getIntent().getAction())) {
+            acknowledgeAssistIntent(false);
+        }
 
         if (savedInstanceState == null) chime(START);
 
         SharedPreferences prefs = mVm.prefs;
-        var res = getResources();
 
         ActionBar actionBar = requireNonNull(getSupportActionBar());
         if (mVm.noTitlebar) {
             actionBar.hide();
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.bg_assistant));
         } else {
-            var dfltTitle = res.getString(R.string.activity_assistant);
-            var title = prefs.getString("motd", dfltTitle);
-            if (!title.equals(dfltTitle)) actionBar.setTitle(title);
+            actionBar.setTitle(mVm.motd);
         }
-
-        var pm = getPackageManager();
-        mCommandMap = EmillaCommand.map(prefs, res, pm, mVm.appList);
 
         setupCommandField();
         if (mVm.dataVisible) showDataField();
-        // TODO ACC: no reason for a hidden data field if a screen reader is in use.
-
         mBinding.emptySpace.setOnClickListener(v -> cancelIfWarranted());
+        setupDataButtons();
+        setupMoreActions();
+
+        var pm = getPackageManager();
 
         mNoCommandAction = SettingVals.noCommand(prefs, this);
+        setupSubmitButton();
         mDoubleAssistAction = SettingVals.doubleAssist(prefs, this, pm);
         mMenuKeyAction = SettingVals.menuKey(prefs, this);
 
-        setupSubmitButton();
-        setupDataButtons();
-        setupMoreActions();
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-
-        String action = intent.getAction();
-        if (action == null) return;
-
-        if (!mOpen) {
-            if (action.equals(ACTION_ASSIST)) {
-                acknowledgeAssistIntent(false);
-            }
-            return;
-        }
-
-        switch (action) {
-            case ACTION_ASSIST -> acknowledgeAssistIntent(true);
-            case ACTION_VOICE_COMMAND -> mDoubleAssistAction.perform();
-        }
-    }
-
-    private long mLastAssistTime = 0;
-
-    private void acknowledgeAssistIntent(boolean performAction) {
-        // TODO: determine why the corner gesture sends the assist intent twice.
-        long currentTime = System.currentTimeMillis();
-        if (currentTime - mLastAssistTime > 150 /*ms*/) {
-            mLastAssistTime = currentTime;
-            if (performAction) mDoubleAssistAction.perform();
-        } else {
-            mLastAssistTime = 0;
-        }
+        mCommandMap = EmillaCommand.map(prefs, mVm.res, pm, mVm.appList);
+        mCommand = mCommandMap.get(this, "");
     }
 
     private void setupCommandField() {
         EditText commandField = mBinding.commandField;
 
+        commandField.setHorizontallyScrolling(false);
+        commandField.setMaxLines(8);
+
         commandField.addTextChangedListener(new CommandWatcher());
         commandField.setOnEditorActionListener((v, actionId, event) -> onActionKey(actionId));
 
-        mCommand = mCommandMap.get(this, "");
-
-        commandField.setHorizontallyScrolling(false);
-        commandField.setMaxLines(8);
         commandField.requestFocus();
     }
 
@@ -238,17 +188,62 @@ public final class AssistActivity extends EmillaActivity {
 
         @Override
         public void onTextChanged(CharSequence text, int start, int before, int count) {
-            onCommandChanged(text.toString());
+            String command = Strings.trimLeading(text.toString());
+
+            EmillaCommand cmd = mCommandMap.get(AssistActivity.this, command);
+            boolean noCommand = command.isEmpty();
+            if (cmd != mCommand || noCommand != mVm.noCommand) {
+                mCommand.clean();
+                mCommand = cmd;
+                mVm.noCommand = noCommand;
+                if (noCommand) {
+                    cmd.decorate(false);
+                    mBinding.submitButton.setIcon(mNoCommandAction.icon());
+                } else {
+                    cmd.decorate(true);
+                    cmd.init();
+                }
+
+                boolean dataAvailable = noCommand || mCommand.usesData();
+                if (dataAvailable != mVm.dataAvailable) updateDataAvailability(dataAvailable);
+            }
         }
 
         @Override
         public void afterTextChanged(Editable s) {}
     }
 
+    private void updateDataAvailability(boolean available) {
+        EditText dataField = mBinding.dataField;
+
+        if (available) {
+            if (!mVm.alwaysShowData) enableDataButton();
+            dataField.setEnabled(true);
+        } else if (dataField.getVisibility() == View.GONE) {
+            if (!mVm.alwaysShowData) disableDataButton();
+        } else {
+            dataField.setEnabled(false);
+        }
+
+        mVm.dataAvailable = available;
+    }
+
+    private void enableDataButton() {
+        ActionButton showDataButton = mBinding.showDataButton;
+        showDataButton.setEnabled(true);
+        showDataButton.setAlpha(1.0f);
+    }
+
+    private void disableDataButton() {
+        ActionButton showDataButton = mBinding.showDataButton;
+        showDataButton.setEnabled(false);
+        showDataButton.setAlpha(0.3f);
+    }
+
     private boolean onActionKey(int actionId) {
         return switch (actionId) {
             case IME_ACTION_UNSPECIFIED, IME_ACTION_NONE, IME_ACTION_PREVIOUS -> false;
-            default -> switch (mImeAction) {
+            default -> switch (mVm.imeAction) {
                 // TODO ACC: There must be clarity on what the enter key will do if you can't see
                 //  the screen.
                 case IME_ACTION_NEXT:
@@ -268,10 +263,11 @@ public final class AssistActivity extends EmillaActivity {
 
     private void setupSubmitButton() {
         ActionButton submitButton = mBinding.submitButton;
+
         submitButton.setIcon(mNoCommandAction.icon());
         submitButton.setOnClickListener(v -> submitCommand());
 
-        submitButton.setLongPress(SettingVals.longSubmit(mVm.prefs, this), getResources());
+        submitButton.setLongPress(SettingVals.longSubmit(mVm.prefs, this), mVm.res);
     }
 
     private void setupDataButtons() {
@@ -320,7 +316,7 @@ public final class AssistActivity extends EmillaActivity {
             Editable dataText = dataField.getText();
             int len = commandText.length();
             if (len == 0 || isWhitespace(commandText.charAt(len - 1))) commandField.append(dataText);
-            else commandField.append(Lang.wordConcat(getResources(), "", dataText));
+            else commandField.append(Lang.wordConcat(mVm.res, "", dataText));
             dataField.setText(null);
         }
         int newLen = commandField.length();
@@ -350,7 +346,7 @@ public final class AssistActivity extends EmillaActivity {
 
         button.setId(action.id());
         button.setIcon(action.icon());
-        button.setContentDescription(action.label(getResources()));
+        button.setContentDescription(action.label(mVm.res));
         button.setOnClickListener(v -> action.perform());
 
         actionsContainer.addView(button, 0);
@@ -406,19 +402,37 @@ public final class AssistActivity extends EmillaActivity {
         }
     }
 
-    public void giveActionBox(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.action_box, fragment)
-                .commit();
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        String action = intent.getAction();
+        if (action == null) return;
+
+        if (!mOpen) {
+            if (action.equals(ACTION_ASSIST)) {
+                acknowledgeAssistIntent(false);
+            }
+            return;
+        }
+
+        switch (action) {
+            case ACTION_ASSIST -> acknowledgeAssistIntent(true);
+            case ACTION_VOICE_COMMAND -> mDoubleAssistAction.perform();
+        }
     }
 
-    public void removeActionBox(Fragment fragment) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+    private long mLastAssistTime = 0;
 
-        if (mDefaultActionBox == null) transaction.remove(fragment);
-        else transaction.replace(R.id.action_box, mDefaultActionBox);
-
-        transaction.commit();
+    private void acknowledgeAssistIntent(boolean performAction) {
+        // TODO: determine why the corner gesture sends the assist intent twice.
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - mLastAssistTime > 150 /*ms*/) {
+            mLastAssistTime = currentTime;
+            if (performAction) mDoubleAssistAction.perform();
+        } else {
+            mLastAssistTime = 0;
+        }
     }
 
     private boolean mLaunched = false;
@@ -431,6 +445,19 @@ public final class AssistActivity extends EmillaActivity {
 
             mOpen = true;
         }
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (event.isCanceled()) return false;
+
+        switch (keyCode) {
+        case KEYCODE_BACK -> cancelIfWarranted(); // todo config? command history?
+        case KEYCODE_MENU -> mMenuKeyAction.perform();
+        case KEYCODE_SEARCH -> give(() -> {}); // todo config
+        default -> { return false; }
+        }
+        return true;
     }
 
     @Override
@@ -449,102 +476,6 @@ public final class AssistActivity extends EmillaActivity {
     protected void onDestroy() {
         super.onDestroy();
         AppChoiceRetriever.AppChooserBroadcastReceiver.deleteRetriever();
-    }
-
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (event.isCanceled()) return false;
-
-        switch (keyCode) {
-        case KEYCODE_BACK -> cancelIfWarranted(); // todo config? command history?
-        case KEYCODE_MENU -> mMenuKeyAction.perform();
-        case KEYCODE_SEARCH -> give(() -> {}); // todo config
-        default -> { return false; }
-        }
-        return true;
-    }
-
-    private void updateDataAvailability(boolean available) {
-        EditText dataField = mBinding.dataField;
-
-        if (available) {
-            if (!mVm.alwaysShowData) enableDataButton();
-            dataField.setEnabled(true);
-        } else if (dataField.getVisibility() == View.GONE) {
-            if (!mVm.alwaysShowData) disableDataButton();
-        } else {
-            dataField.setEnabled(false);
-        }
-
-        mVm.dataAvailable = available;
-    }
-
-    private void enableDataButton() {
-        ActionButton showDataButton = mBinding.showDataButton;
-        showDataButton.setEnabled(true);
-        showDataButton.setAlpha(1.0f);
-    }
-
-    private void disableDataButton() {
-        ActionButton showDataButton = mBinding.showDataButton;
-        showDataButton.setEnabled(false);
-        showDataButton.setAlpha(0.3f);
-    }
-
-    public void updateTitle(CharSequence title) {
-        if (mVm.noTitlebar) return;
-
-        ActionBar actionBar = requireNonNull(getSupportActionBar());
-
-        if (mVm.noCommand) {
-            title = mVm.prefs.getString("motd", getString(R.string.activity_assistant));
-        }
-
-        actionBar.setTitle(title);
-    }
-
-    public void updateDataHint() {
-        EditText dataField = mBinding.dataField;
-        if (mVm.noCommand || !mCommand.usesData()) {
-            dataField.setHint(R.string.data_hint_default);
-        } else {
-            dataField.setHint(((DataCommand) mCommand).dataHint());
-        }
-    }
-
-    public void setSubmitIcon(Drawable icon, boolean isAppIcon) {
-        mBinding.submitButton.setIcon(icon, isAppIcon);
-    }
-
-    public void setImeAction(int action) {
-        if (mVm.noCommand) {
-            action = IME_ACTION_NEXT;
-        }
-        if (action != mImeAction) {
-            mBinding.commandField.setImeOptions(mImeAction = action);
-        }
-    }
-
-    private void onCommandChanged(String command) {
-        command = Strings.trimLeading(command);
-
-        EmillaCommand cmd = mCommandMap.get(this, command);
-        boolean noCommand = command.isEmpty();
-        if (cmd != mCommand || noCommand != mVm.noCommand) {
-            mCommand.clean();
-            mCommand = cmd;
-            mVm.noCommand = noCommand;
-            if (noCommand) {
-                cmd.decorate(false);
-                mBinding.submitButton.setIcon(mNoCommandAction.icon());
-            } else {
-                cmd.decorate(true);
-                cmd.init();
-            }
-
-            boolean dataAvailable = noCommand || mCommand.usesData();
-            if (dataAvailable != mVm.dataAvailable) updateDataAvailability(dataAvailable);
-        }
     }
 
     /*=========*
@@ -584,6 +515,53 @@ public final class AssistActivity extends EmillaActivity {
     /*=========*
      * Setters *
      *=========*/
+
+    public void giveActionBox(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.action_box, fragment)
+                .commit();
+    }
+
+    public void removeActionBox(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        if (mDefaultActionBox == null) transaction.remove(fragment);
+        else transaction.replace(R.id.action_box, mDefaultActionBox);
+
+        transaction.commit();
+    }
+
+    public void updateTitle(CharSequence title) {
+        if (mVm.noTitlebar) return;
+
+        ActionBar actionBar = requireNonNull(getSupportActionBar());
+        if (mVm.noCommand) title = mVm.motd;
+
+        actionBar.setTitle(title);
+    }
+
+    public void updateDataHint() {
+        EditText dataField = mBinding.dataField;
+        if (mVm.noCommand || !mCommand.usesData()) {
+            dataField.setHint(R.string.data_hint_default);
+        } else {
+            dataField.setHint(((DataCommand) mCommand).dataHint());
+        }
+    }
+
+    public void setSubmitIcon(Drawable icon, boolean isAppIcon) {
+        mBinding.submitButton.setIcon(icon, isAppIcon);
+    }
+
+    public void setImeAction(int action) {
+        if (mVm.noCommand) {
+            action = IME_ACTION_NEXT;
+        }
+        if (action != mVm.imeAction) {
+            mBinding.commandField.setImeOptions(action);
+            mVm.imeAction = action;
+        }
+    }
 
     public void suppressPendChime() {
         mVm.suppressPendChime();

@@ -3,6 +3,8 @@ package net.emilla.activity
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.ResolveInfo
+import android.content.res.Resources
+import android.view.inputmethod.EditorInfo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
@@ -27,11 +29,16 @@ internal class AssistViewModel private constructor(appCtx: Context) : ViewModel(
 
     @JvmField
     val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(appCtx)
+    @JvmField
+    val res: Resources = appCtx.resources
 
     @JvmField
-    val noTitlebar = !SettingVals.showTitlebar(prefs, appCtx.resources)
+    val noTitlebar = !SettingVals.showTitlebar(prefs, res)
     @JvmField
     val alwaysShowData = SettingVals.alwaysShowData(prefs)
+
+    @JvmField
+    val motd: String? = if (noTitlebar) null else SettingVals.motd(prefs, res)
 
     @JvmField
     val chimer: Chimer = SettingVals.chimer(appCtx, prefs)
@@ -47,6 +54,10 @@ internal class AssistViewModel private constructor(appCtx: Context) : ViewModel(
     @JvmField
     var dialogOpen = false
     // todo: you can probably hard-code these UI-state properties into views, fragments, .. directly?
+
+    @JvmField
+    var imeAction = EditorInfo.IME_ACTION_NEXT
+    // IME action is next with an empty command field
 
     private var dontChimePend = false
     private var dontChimeResume = false
