@@ -1,15 +1,24 @@
 package net.emilla.activity
 
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
 import android.content.res.Resources
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import net.emilla.settings.SettingVals
+import net.emilla.util.Apps
 
-internal class AssistViewModel(prefs: SharedPreferences, res: Resources) : ViewModel() {
+internal class AssistViewModel(
+    pm: PackageManager,
+    prefs: SharedPreferences,
+    res: Resources
+) : ViewModel() {
 
     @JvmField
     val noTitlebar = !SettingVals.showTitlebar(prefs, res)
+    @JvmField
+    val appList: List<ResolveInfo> = Apps.resolveList(pm)
 
     @JvmField
     var dialogOpen = false
@@ -57,11 +66,15 @@ internal class AssistViewModel(prefs: SharedPreferences, res: Resources) : ViewM
         false
     } else true
 
-    class Factory(private val prefs: SharedPreferences, private val res: Resources)
-        : ViewModelProvider.Factory {
+    class Factory(
+        private val pm: PackageManager,
+        private val prefs: SharedPreferences,
+        private val res: Resources
+    ) : ViewModelProvider.Factory {
+
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return AssistViewModel(prefs, res) as T
+            return AssistViewModel(pm, prefs, res) as T
         }
     }
 }

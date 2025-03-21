@@ -82,7 +82,6 @@ import net.emilla.run.MessageFailure;
 import net.emilla.run.Offering;
 import net.emilla.run.Success;
 import net.emilla.settings.SettingVals;
-import net.emilla.util.Apps;
 import net.emilla.util.Dialogs;
 import net.emilla.util.Strings;
 import net.emilla.view.ActionButton;
@@ -97,7 +96,6 @@ public final class AssistActivity extends EmillaActivity {
 
     private SharedPreferences mPrefs;
     private CommandMap mCommandMap;
-    private List<ResolveInfo> mAppList;
     private Chimer mChimer;
 
     private QuickAction mNoCommandAction;
@@ -157,10 +155,11 @@ public final class AssistActivity extends EmillaActivity {
         mBinding = ActivityAssistBinding.inflate(mInflater);
         setContentView(mBinding.getRoot());
 
+        var pm = getPackageManager();
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         var res = getResources();
 
-        var factory = new AssistViewModel.Factory(mPrefs, res);
+        var factory = new AssistViewModel.Factory(pm, mPrefs, res);
         var provider = new ViewModelProvider(this, factory);
         mViewModel = provider.get(AssistViewModel.class);
 
@@ -180,9 +179,7 @@ public final class AssistActivity extends EmillaActivity {
             if (!title.equals(dfltTitle)) actionBar.setTitle(title);
         }
 
-        var pm = getPackageManager();
-        mAppList = Apps.resolveList(pm);
-        mCommandMap = EmillaCommand.map(mPrefs, res, pm, mAppList);
+        mCommandMap = EmillaCommand.map(mPrefs, res, pm, mViewModel.appList);
 
         setupCommandField();
         mAlwaysShowData = SettingVals.alwaysShowData(mPrefs);
@@ -561,7 +558,7 @@ public final class AssistActivity extends EmillaActivity {
     }
 
     public List<ResolveInfo> appList() {
-        return mAppList;
+        return mViewModel.appList;
     }
 
     public EditText focusedEditBox() {
