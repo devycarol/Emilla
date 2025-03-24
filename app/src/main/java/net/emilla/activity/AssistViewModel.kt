@@ -8,7 +8,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
-import net.emilla.chime.Chimer
+import net.emilla.chime.Chimer.Companion.START
 import net.emilla.settings.SettingVals
 import net.emilla.util.Apps
 
@@ -39,9 +39,6 @@ internal class AssistViewModel private constructor(appCtx: Context) : ViewModel(
 
     @JvmField
     val motd: String? = if (noTitlebar) null else SettingVals.motd(prefs, res)
-
-    @JvmField
-    val chimer: Chimer = SettingVals.chimer(appCtx, prefs)
     @JvmField
     val appList: List<ResolveInfo> = Apps.resolveList(appCtx.packageManager)
 
@@ -59,10 +56,18 @@ internal class AssistViewModel private constructor(appCtx: Context) : ViewModel(
     var imeAction = EditorInfo.IME_ACTION_NEXT
     // IME action is next with an empty command field
 
+    private val chimer = SettingVals.chimer(appCtx, prefs)
+
     private var dontChimePend = false
     private var dontChimeResume = false
     private var dontChimeSuccess = false
     private var dontTryCancel = false
+
+    init {
+        chime(START)
+    }
+
+    fun chime(id: Byte) = chimer.chime(id)
 
     fun suppressPendChime() {
         dontChimePend = true

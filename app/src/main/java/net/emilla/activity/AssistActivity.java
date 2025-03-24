@@ -19,7 +19,6 @@ import static net.emilla.chime.Chimer.EXIT;
 import static net.emilla.chime.Chimer.FAIL;
 import static net.emilla.chime.Chimer.PEND;
 import static net.emilla.chime.Chimer.RESUME;
-import static net.emilla.chime.Chimer.START;
 import static net.emilla.chime.Chimer.SUCCEED;
 import static java.lang.Character.isWhitespace;
 import static java.util.Objects.requireNonNull;
@@ -139,8 +138,6 @@ public final class AssistActivity extends EmillaActivity {
         if (ACTION_ASSIST.equals(getIntent().getAction())) {
             acknowledgeAssistIntent(false);
         }
-
-        if (savedInstanceState == null) chime(START);
 
         SharedPreferences prefs = mVm.prefs;
 
@@ -595,9 +592,7 @@ public final class AssistActivity extends EmillaActivity {
      *====================*/
 
     public void chime(byte id) {
-        // Todo: I'd love to add a couple more in-built sound packs from open source ecosystems!
-        //  Anyone stumbling across this is welcome to give suggestions.
-        mVm.chimer.chime(id);
+        mVm.chime(id);
     }
 
     public void resume() {
