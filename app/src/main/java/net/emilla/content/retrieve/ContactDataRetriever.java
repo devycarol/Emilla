@@ -13,7 +13,7 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.content.receive.ContactDataReceiver;
 
-public /*open*/ class ContactDataRetriever extends ResultRetriever<Void, String, ContactDataReceiver> {
+public abstract class ContactDataRetriever extends ResultRetriever<Void, String, ContactDataReceiver> {
 
     protected static abstract class PickContactData extends ActivityResultContract<Void, String> {
 
