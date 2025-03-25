@@ -1,4 +1,4 @@
-package net.emilla.util;
+package net.emilla.math;
 
 import static java.lang.Character.isWhitespace;
 import static java.lang.Double.parseDouble;
@@ -8,6 +8,7 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.exception.EmillaException;
+import net.emilla.util.Strings;
 
 import java.util.Arrays;
 import java.util.Iterator;
