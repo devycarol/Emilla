@@ -8,6 +8,8 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.exception.EmillaException;
+import net.emilla.math.CalcToken.LParen;
+import net.emilla.math.CalcToken.RParen;
 import net.emilla.util.Strings;
 
 import java.util.Arrays;
@@ -15,7 +17,7 @@ import java.util.Iterator;
 
 public final class BitwiseCalculator {
 
-    private enum BitwiseOperator {
+    /*internal*/ enum BitwiseOperator implements BitwiseToken {
         OR(-3) {
             @Override
             long apply(long a, long b) {
@@ -83,8 +85,7 @@ public final class BitwiseCalculator {
             }
         };
 
-        @Nullable
-        public static BitwiseOperator of(String token) {
+        private static BitwiseOperator of(String token) {
             // todo: nat-language words like "add", "to the power of", ..
             return switch (token) {
                 case "|" -> OR;
@@ -98,14 +99,14 @@ public final class BitwiseCalculator {
                 case "*" -> TIMES;
                 case "/" -> DIV;
                 case "%" -> MOD;
-                default -> null;
+                default -> throw new IllegalArgumentException();
             };
         }
 
-        static final BitwiseOperator LPAREN = null;
+        private static final BitwiseOperator LPAREN = null;
 
-        final int precedence;
-        final boolean rightAssociative = false;
+        private final int precedence;
+        private final boolean rightAssociative = false;
 
         BitwiseOperator(int precedence) {
             this.precedence = precedence;
@@ -201,8 +202,8 @@ public final class BitwiseCalculator {
             this.errorTitle = errorTitle;
         }
 
-        void push(String operand) {
-            vals[size] = tryParseLong(operand, errorTitle);
+        void push(long operand) {
+            vals[size] = operand;
             ++size;
         }
 
@@ -242,13 +243,15 @@ public final class BitwiseCalculator {
         var opStk = new OpStack(len, errorTitle);
         var result = new ValStack(len, errorTitle);
 
-        for (String token : new BitwiseTokens(expression, errorTitle)) {
-            var op = BitwiseOperator.of(token);
-            if (op != null) result.applyOperator(op, opStk);
-            else switch (token) {
-                case "(" -> opStk.push(BitwiseOperator.LPAREN);
-                case ")" -> result.applyRParen(opStk);
-                default -> result.push(token);
+        for (BitwiseToken token : new BitwiseTokens(expression, errorTitle)) {
+            if (token instanceof BitwiseOperator op) {
+                result.applyOperator(op, opStk);
+            } else if (token instanceof LParen) {
+                opStk.push(BitwiseOperator.LPAREN);
+            } else if (token instanceof RParen) {
+                result.applyRParen(opStk);
+            } else if (token instanceof IntegerNumber num) {
+                result.push(num.val);
             }
         }
 
@@ -267,18 +270,18 @@ public final class BitwiseCalculator {
     private record BitwiseTokens(
         String expression,
         @StringRes int errorTitle
-    ) implements Iterable<String> {
+    ) implements Iterable<BitwiseToken> {
 
         enum Type {
             LPAREN, RPAREN, OPERATOR, NUMBER
         }
 
         @Override
-        public Iterator<String> iterator() {
+        public Iterator<BitwiseToken> iterator() {
             return new BitwiseIterator(expression, errorTitle);
         }
 
-        static class BitwiseIterator implements Iterator<String> {
+        static class BitwiseIterator implements Iterator<BitwiseToken> {
 
             final char[] expr;
             final int length;
@@ -305,12 +308,12 @@ public final class BitwiseCalculator {
             }
 
             @Override
-            public String next() {
+            public BitwiseToken next() {
                 return switch (expr[pos]) {
                     case '|', '^', '&', '+', '*', '/', '%' -> switch (prevType) {
                         case LPAREN, OPERATOR -> throw malformedExpression(errorTitle);
                         // todo: unary plus ugh.
-                        case RPAREN, NUMBER -> extractChar(Type.OPERATOR);
+                        case RPAREN, NUMBER -> extractOperator();
                     };
                     case '<', '>' -> switch (prevType) {
                         case LPAREN, OPERATOR -> throw malformedExpression(errorTitle);
@@ -318,16 +321,16 @@ public final class BitwiseCalculator {
                     };
                     case '(' -> switch (prevType) {
                         case RPAREN, NUMBER -> phantomStar();
-                        case LPAREN, OPERATOR -> extractChar(Type.LPAREN);
+                        case LPAREN, OPERATOR -> extractLParen();
                     };
                     case ')' -> switch (prevType) {
                         case LPAREN, OPERATOR -> throw malformedExpression(errorTitle);
-                        case RPAREN, NUMBER -> extractChar(Type.RPAREN);
+                        case RPAREN, NUMBER -> extractRParen();
                     };
                     case '-' -> switch (prevType) {
                         case LPAREN -> phantomZero();
                         case OPERATOR -> extractSignedNumber(true);
-                        case RPAREN, NUMBER -> extractChar(Type.OPERATOR);
+                        case RPAREN, NUMBER -> extractOperator();
                     };
                     case '~' -> switch (prevType) {
                         case LPAREN, OPERATOR -> extractSignedNumber(false);
@@ -349,6 +352,20 @@ public final class BitwiseCalculator {
                 };
             }
 
+            private LParen extractLParen() {
+                extractChar(Type.LPAREN);
+                return LParen.INSTANCE;
+            }
+
+            private RParen extractRParen() {
+                extractChar(Type.RPAREN);
+                return RParen.INSTANCE;
+            }
+
+            private BitwiseOperator extractOperator() {
+                return BitwiseOperator.of(extractChar(Type.OPERATOR));
+            }
+
             private String extractChar(Type type) {
                 var s = String.valueOf(expr[pos]);
                 advanceImmediate();
@@ -356,37 +373,37 @@ public final class BitwiseCalculator {
                 return s;
             }
 
-            private String extractShift() {
+            private BitwiseOperator extractShift() {
                 char shiftType = expr[pos];
                 ++pos;
                 if (!nextCharIs(shiftType)) throw malformedExpression(errorTitle);
 
                 ++pos;
-                String s;
+                BitwiseOperator op;
                 if (shiftType == '>' && nextCharIs('>')) {
-                    s = ">>>";
+                    op = BitwiseOperator.URSHIFT;
                     advanceImmediate();
                 } else {
-                    s = Strings.repeat(shiftType, 2);
+                    op = BitwiseOperator.of(Strings.repeat(shiftType, 2));
                     advance();
                 }
 
                 prevType = Type.OPERATOR;
-                return s;
+                return op;
             }
 
             private boolean nextCharIs(char c) {
                 return pos < length && expr[pos] == c;
             }
 
-            private String phantomZero() {
+            private IntegerNumber phantomZero() {
                 prevType = Type.NUMBER;
-                return "0";
+                return new IntegerNumber(0);
             }
 
-            private String phantomStar() {
+            private BitwiseOperator phantomStar() {
                 prevType = Type.OPERATOR;
-                return "*";
+                return BitwiseOperator.TIMES;
             }
 
             private void tryAdvanceImmediate() {
@@ -405,7 +422,7 @@ public final class BitwiseCalculator {
                 }
             }
 
-            private String extractNumber() {
+            private IntegerNumber extractNumber() {
                 int start = pos;
 
                 do ++pos;
@@ -415,10 +432,10 @@ public final class BitwiseCalculator {
                 advance();
 
                 prevType = Type.NUMBER;
-                return s;
+                return new IntegerNumber(tryParseLong(s, errorTitle));
             }
 
-            private String extractSignedNumber(boolean negativeFirst) {
+            private IntegerNumber extractSignedNumber(boolean negativeFirst) {
                 var signs = new SignStack(length - pos, errorTitle);
                 signs.push(negativeFirst ? Sign.NEGATIVE : Sign.NOT);
 
@@ -431,13 +448,13 @@ public final class BitwiseCalculator {
                     signs.push(sign);
                 } while (true);
 
-                long n = tryParseLong(extractNumber(), errorTitle);
-                do n = switch (signs.pop()) {
-                    case NEGATIVE -> -n;
-                    case NOT -> ~n;
+                IntegerNumber num = extractNumber();
+                do num = switch (signs.pop()) {
+                    case NEGATIVE -> new IntegerNumber(-num.val);
+                    case NOT -> new IntegerNumber(~num.val);
                 }; while (signs.notEmpty());
 
-                return String.valueOf(n);
+                return num;
             }
 
             private static boolean isNumberChar(char c) {

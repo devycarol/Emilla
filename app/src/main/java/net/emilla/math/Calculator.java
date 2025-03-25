@@ -8,6 +8,8 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.exception.EmillaException;
+import net.emilla.math.CalcToken.LParen;
+import net.emilla.math.CalcToken.RParen;
 import net.emilla.util.Strings;
 
 import java.util.Arrays;
@@ -28,7 +30,7 @@ public final class Calculator {
 //            START_PAREN = " *start *",
 //            END_PAREN = " *(all|end) *";
 
-    private enum BinaryOperator {
+    /*internal*/ enum BinaryOperator implements InfixToken {
         ADD(1, false) {
             @Override
             double apply(double a, double b) {
@@ -60,23 +62,22 @@ public final class Calculator {
             }
         };
 
-        @Nullable
-        public static BinaryOperator of(String token) {
+        private static BinaryOperator of(char token) {
             // todo: nat-language words like "add", "to the power of", ..
             return switch (token) {
-                case "+" -> ADD;
-                case "-" -> SUBTRACT;
-                case "*" -> TIMES;
-                case "/" -> DIV;
-                case "^" -> POW;
-                default -> null;
+                case '+' -> ADD;
+                case '-' -> SUBTRACT;
+                case '*' -> TIMES;
+                case '/' -> DIV;
+                case '^' -> POW;
+                default -> throw new IllegalArgumentException();
             };
         }
 
-        static final BinaryOperator LPAREN = null;
+        private static final BinaryOperator LPAREN = null;
 
-        final int precedence;
-        final boolean rightAssociative;
+        private final int precedence;
+        private final boolean rightAssociative;
 
         BinaryOperator(int precedence, boolean rightAssociative) {
             this.precedence = precedence;
@@ -133,8 +134,8 @@ public final class Calculator {
             this.errorTitle = errorTitle;
         }
 
-        void push(String operand) {
-            vals[size] = tryParseDouble(operand, errorTitle);
+        void push(double operand) {
+            vals[size] = operand;
             ++size;
         }
 
@@ -174,13 +175,15 @@ public final class Calculator {
         var opStk = new OpStack(len, errorTitle);
         var result = new ValStack(len, errorTitle);
 
-        for (String token : new InfixTokens(expression, errorTitle)) {
-            var op = BinaryOperator.of(token);
-            if (op != null) result.applyOperator(op, opStk);
-            else switch (token) {
-                case "(" -> opStk.push(BinaryOperator.LPAREN);
-                case ")" -> result.applyRParen(opStk);
-                default -> result.push(token);
+        for (InfixToken token : new InfixTokens(expression, errorTitle)) {
+            if (token instanceof BinaryOperator op) {
+                result.applyOperator(op, opStk);
+            } else if (token instanceof LParen) {
+                opStk.push(BinaryOperator.LPAREN);
+            } else if (token instanceof RParen) {
+                result.applyRParen(opStk);
+            } else if (token instanceof FloatingPointNumber num) {
+                result.push(num.val);
             }
         }
 
@@ -199,18 +202,18 @@ public final class Calculator {
     private record InfixTokens(
         String expression,
         @StringRes int errorTitle
-    ) implements Iterable<String> {
+    ) implements Iterable<InfixToken> {
 
         enum Type {
             LPAREN, RPAREN, OPERATOR, NUMBER
         }
 
         @Override
-        public Iterator<String> iterator() {
+        public Iterator<InfixToken> iterator() {
             return new InfixIterator(expression, errorTitle);
         }
 
-        static class InfixIterator implements Iterator<String> {
+        static class InfixIterator implements Iterator<InfixToken> {
 
             final char[] expr;
             final int length;
@@ -237,20 +240,20 @@ public final class Calculator {
             }
 
             @Override
-            public String next() {
+            public InfixToken next() {
                 return switch (expr[pos]) {
                     case '+', '*', '/', '^' -> switch (prevType) {
                         case LPAREN, OPERATOR -> throw malformedExpression(errorTitle);
                         // todo: unary plus ugh.
-                        case RPAREN, NUMBER -> extractChar(Type.OPERATOR);
+                        case RPAREN, NUMBER -> extractOperator();
                     };
                     case '(' -> switch (prevType) {
                         case RPAREN, NUMBER -> phantomStar();
-                        case LPAREN, OPERATOR -> extractChar(Type.LPAREN);
+                        case LPAREN, OPERATOR -> extractLParen();
                     };
                     case ')' -> switch (prevType) {
                         case LPAREN, OPERATOR -> throw malformedExpression(errorTitle);
-                        case RPAREN, NUMBER -> extractChar(Type.RPAREN);
+                        case RPAREN, NUMBER -> extractRParen();
                     };
                     case '-' -> switch (prevType) {
                         case LPAREN -> phantomZero();
@@ -270,7 +273,7 @@ public final class Calculator {
 
                             yield extractNumber(start);
                         }
-                        case RPAREN, NUMBER -> extractChar(Type.OPERATOR);
+                        case RPAREN, NUMBER -> extractOperator();
                     };
                     case '.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> switch (prevType) {
                         case RPAREN, NUMBER -> phantomStar();
@@ -281,21 +284,35 @@ public final class Calculator {
                 };
             }
 
-            private String extractChar(Type type) {
-                var s = String.valueOf(expr[pos]);
+            private LParen extractLParen() {
+                extractChar(Type.LPAREN);
+                return LParen.INSTANCE;
+            }
+
+            private RParen extractRParen() {
+                extractChar(Type.RPAREN);
+                return RParen.INSTANCE;
+            }
+
+            private BinaryOperator extractOperator() {
+                return BinaryOperator.of(extractChar(Type.OPERATOR));
+            }
+
+            private char extractChar(Type type) {
+                char c = expr[pos];
                 advanceImmediate();
                 prevType = type;
-                return s;
+                return c;
             }
 
-            private String phantomZero() {
+            private FloatingPointNumber phantomZero() {
                 prevType = Type.NUMBER;
-                return "0";
+                return new FloatingPointNumber(0.0);
             }
 
-            private String phantomStar() {
+            private BinaryOperator phantomStar() {
                 prevType = Type.OPERATOR;
-                return "*";
+                return BinaryOperator.TIMES;
             }
 
             private int tryAdvanceImmediate() {
@@ -315,7 +332,7 @@ public final class Calculator {
                 }
             }
 
-            private String extractNumber(int start) {
+            private FloatingPointNumber extractNumber(int start) {
                 do ++pos;
                 while (pos < length && isNumberChar(expr[pos]));
 
@@ -331,7 +348,7 @@ public final class Calculator {
                 }
 
                 prevType = Type.NUMBER;
-                return s;
+                return new FloatingPointNumber(tryParseDouble(s, errorTitle));
             }
 
             private boolean nextCharIs(char c) {
