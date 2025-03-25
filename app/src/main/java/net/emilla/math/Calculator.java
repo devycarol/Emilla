@@ -2,7 +2,6 @@ package net.emilla.math;
 
 import static net.emilla.math.Maths.malformedExpression;
 import static java.lang.Character.isWhitespace;
-import static java.lang.Double.parseDouble;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -28,63 +27,6 @@ public final class Calculator {
 //            DECIMAL = " *(point|dot) *",
 //            START_PAREN = " *start *",
 //            END_PAREN = " *(all|end) *";
-
-    /*internal*/ enum BinaryOperator implements InfixToken {
-        ADD(1, false) {
-            @Override
-            double apply(double a, double b) {
-                return a + b;
-            }
-        },
-        SUBTRACT(1, false) {
-            @Override
-            double apply(double a, double b) {
-                return a - b;
-            }
-        },
-        TIMES(2, false) {
-            @Override
-            double apply(double a, double b) {
-                return a * b;
-            }
-        },
-        DIV(2, false) {
-            @Override
-            double apply(double a, double b) {
-                return a / b;
-            }
-        },
-        POW(3, true) {
-            @Override
-            double apply(double a, double b) {
-                return Math.pow(a, b);
-            }
-        };
-
-        private static BinaryOperator of(char token) {
-            // todo: nat-language words like "add", "to the power of", ..
-            return switch (token) {
-                case '+' -> ADD;
-                case '-' -> SUBTRACT;
-                case '*' -> TIMES;
-                case '/' -> DIV;
-                case '^' -> POW;
-                default -> throw new IllegalArgumentException();
-            };
-        }
-
-        private static final BinaryOperator LPAREN = null;
-
-        private final int precedence;
-        private final boolean rightAssociative;
-
-        BinaryOperator(int precedence, boolean rightAssociative) {
-            this.precedence = precedence;
-            this.rightAssociative = rightAssociative;
-        }
-
-        abstract double apply(double a, double b);
-    }
 
     private static final class OpStack {
 
@@ -124,6 +66,7 @@ public final class Calculator {
     private static final class ValStack {
 
         final double[] vals;
+        final SignStack signs;
         int size = 0;
 
         @StringRes
@@ -131,10 +74,18 @@ public final class Calculator {
 
         ValStack(int capacity, @StringRes int errorTitle) {
             vals = new double[capacity];
+            signs = new SignStack(capacity, errorTitle);
+
             this.errorTitle = errorTitle;
         }
 
         void push(double operand) {
+            while (signs.notEmpty()) {
+                if (signs.peek() == UnaryOperator.LPAREN) break;
+                operand = signs.pop().apply(operand);
+                // peek is valid, therefore pop is valid.
+            }
+
             vals[size] = operand;
             ++size;
         }
@@ -144,6 +95,13 @@ public final class Calculator {
 
             --size;
             vals[size - 1] = op.apply(vals[size - 1], vals[size]);
+        }
+
+        void applyOperator(UnaryOperator op) {
+            if (op.postfix) {
+                int last = size - 1;
+                vals[last] = op.apply(vals[last]);
+            } else if (op != UnaryOperator.POSITIVE) signs.push(op);
         }
 
         void applyOperator(BinaryOperator op, OpStack opStk) {
@@ -156,17 +114,77 @@ public final class Calculator {
             opStk.push(op);
         }
 
+        void applyLParen() {
+            signs.push(UnaryOperator.LPAREN);
+        }
+
         void applyRParen(OpStack opStk) {
             while (opStk.notEmpty()) {
                 BinaryOperator pop = opStk.pop();
                 if (pop == BinaryOperator.LPAREN) break;
-                else squish(pop);
+
+                squish(pop);
+            }
+
+            if (signs.notEmpty()) closeSignParen();
+        }
+
+        void applyRemainingSigns() {
+            while (signs.notEmpty()) closeSignParen();
+        }
+
+        private void closeSignParen() {
+            if (signs.peek() == UnaryOperator.LPAREN) {
+                signs.pop();
+                int last = size - 1;
+                while (signs.notEmpty()) {
+                    UnaryOperator peek = signs.peek();
+                    if (peek == UnaryOperator.LPAREN) break;
+
+                    vals[last] = signs.pop().apply(vals[last]);
+                    // peek is valid, therefore pop is valid.
+                }
             }
         }
 
         double value() {
             if (size != 1) throw malformedExpression(errorTitle);
             return vals[0];
+        }
+    }
+
+    private static final class SignStack {
+
+        final UnaryOperator[] arr;
+        int size = 0;
+
+        @StringRes
+        final int errorTitle;
+
+        SignStack(int capacity, @StringRes int errorTitle) {
+            arr = new UnaryOperator[capacity];
+
+            this.errorTitle = errorTitle;
+        }
+
+        void push(@Nullable UnaryOperator sign) {
+            arr[size++] = sign;
+        }
+
+        @Nullable
+        UnaryOperator peek() {
+            if (size < 1) throw malformedExpression(errorTitle);
+            return arr[size - 1];
+        }
+
+        @Nullable
+        UnaryOperator pop() {
+            if (size < 1) throw malformedExpression(errorTitle);
+            return arr[--size];
+        }
+
+        boolean notEmpty() {
+            return size > 0;
         }
     }
 
@@ -178,7 +196,10 @@ public final class Calculator {
         for (InfixToken token : new InfixTokens(expression, errorTitle)) {
             if (token instanceof BinaryOperator op) {
                 result.applyOperator(op, opStk);
+            } else if (token instanceof UnaryOperator op) {
+                result.applyOperator(op);
             } else if (token instanceof LParen) {
+                result.applyLParen();
                 opStk.push(BinaryOperator.LPAREN);
             } else if (token instanceof RParen) {
                 result.applyRParen(opStk);
@@ -195,6 +216,8 @@ public final class Calculator {
                 else result.applyRParen(opStk);
             }
         }
+
+        result.applyRemainingSigns();
 
         return result.value();
     }
@@ -242,43 +265,30 @@ public final class Calculator {
             @Override
             public InfixToken next() {
                 return switch (expr[pos]) {
-                    case '+', '*', '/', '^' -> switch (prevType) {
+                    case '+', '-' -> switch (prevType) {
+                        case LPAREN, OPERATOR -> extractUnary(false);
+                        case RPAREN, NUMBER -> extractOperator();
+                    };
+                    case '%' -> switch (prevType) {
                         case LPAREN, OPERATOR -> throw malformedExpression(errorTitle);
-                        // todo: unary plus ugh.
+                        case RPAREN, NUMBER -> extractUnary(true);
+                    };
+                    case '*', '/', '^' -> switch (prevType) {
+                        case LPAREN, OPERATOR -> throw malformedExpression(errorTitle);
                         case RPAREN, NUMBER -> extractOperator();
                     };
                     case '(' -> switch (prevType) {
-                        case RPAREN, NUMBER -> phantomStar();
                         case LPAREN, OPERATOR -> extractLParen();
+                        case RPAREN, NUMBER -> phantomStar();
                     };
                     case ')' -> switch (prevType) {
                         case LPAREN, OPERATOR -> throw malformedExpression(errorTitle);
                         case RPAREN, NUMBER -> extractRParen();
                     };
-                    case '-' -> switch (prevType) {
-                        case LPAREN -> phantomZero();
-                        case OPERATOR -> {
-                            int start = pos;
-                            boolean negative = true;
-                            tryAdvanceImmediate();
-                            do if (expr[pos] == '-') {
-                                if (negative) {
-                                    start = tryAdvanceImmediate();
-                                    negative = false;
-                                } else {
-                                    tryAdvanceImmediate();
-                                    negative = true;
-                                }
-                            } while (pos < length && expr[pos] == '-');
-
-                            yield extractNumber(start);
-                        }
-                        case RPAREN, NUMBER -> extractOperator();
-                    };
                     case '.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> switch (prevType) {
+                        case LPAREN, OPERATOR -> extractNumber(pos);
                         case RPAREN, NUMBER -> phantomStar();
                         // note that this treats space-separated numbers as multiplication.
-                        case LPAREN, OPERATOR -> extractNumber(pos);
                     };
                     default -> throw malformedExpression(errorTitle);
                 };
@@ -294,6 +304,12 @@ public final class Calculator {
                 return RParen.INSTANCE;
             }
 
+            private UnaryOperator extractUnary(boolean postfix) {
+                var type = postfix ? Type.NUMBER : Type.OPERATOR;
+                // postfix unaries are applied immediately, so act like token was a number.
+                return UnaryOperator.of(extractChar(type));
+            }
+
             private BinaryOperator extractOperator() {
                 return BinaryOperator.of(extractChar(Type.OPERATOR));
             }
@@ -305,20 +321,9 @@ public final class Calculator {
                 return c;
             }
 
-            private FloatingPointNumber phantomZero() {
-                prevType = Type.NUMBER;
-                return new FloatingPointNumber(0.0);
-            }
-
             private BinaryOperator phantomStar() {
                 prevType = Type.OPERATOR;
                 return BinaryOperator.TIMES;
-            }
-
-            private int tryAdvanceImmediate() {
-                do if (++pos == length) throw malformedExpression(errorTitle);
-                while (isWhitespace(expr[pos]));
-                return pos;
             }
 
             private void advanceImmediate() {
@@ -339,38 +344,19 @@ public final class Calculator {
                 var s = new String(Arrays.copyOfRange(expr, start, pos));
                 advance();
 
-                if (nextCharIs('%')) {
-                    // postfix unary 'percent' sign turns the number into a decimal value.
-                    double percent = tryParseDouble(s, errorTitle) / 100.0;
-
-                    advanceImmediate();
-                    s = String.valueOf(percent);
-                }
-
                 prevType = Type.NUMBER;
-                return new FloatingPointNumber(tryParseDouble(s, errorTitle));
-            }
-
-            private boolean nextCharIs(char c) {
-                return pos < length && expr[pos] == c;
+                return new FloatingPointNumber(s, errorTitle);
             }
 
             private static boolean isNumberChar(char c) {
                 return switch (c) {
                     case '.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> true;
-                    // note that unary minus isn't included for this method.
                     // todo: scientific notation?
                     default -> false;
                 };
             }
         }
     }
-
-    private static double tryParseDouble(String operand, @StringRes int errorTitle) { try {
-        return parseDouble(operand);
-    } catch (NumberFormatException e) {
-        throw malformedExpression(errorTitle);
-    }}
 
     private Calculator() {}
 }

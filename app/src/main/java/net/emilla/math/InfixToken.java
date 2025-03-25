@@ -1,5 +1,8 @@
 package net.emilla.math;
 
+import net.emilla.math.CalcToken.LParen;
+import net.emilla.math.CalcToken.RParen;
+
 /*internal*/ sealed interface InfixToken extends CalcToken
-        permits CalcToken.LParen, CalcToken.RParen, Calculator.BinaryOperator, FloatingPointNumber {
+        permits LParen, RParen, BinaryOperator, UnaryOperator, FloatingPointNumber {
 }
