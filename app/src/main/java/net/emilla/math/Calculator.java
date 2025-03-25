@@ -1,13 +1,12 @@
 package net.emilla.math;
 
+import static net.emilla.math.Maths.malformedExpression;
 import static java.lang.Character.isWhitespace;
 import static java.lang.Double.parseDouble;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
-import net.emilla.R;
-import net.emilla.exception.EmillaException;
 import net.emilla.math.CalcToken.LParen;
 import net.emilla.math.CalcToken.RParen;
 import net.emilla.util.Strings;
@@ -97,6 +96,7 @@ public final class Calculator {
 
         OpStack(int capacity, @StringRes int errorTitle) {
             arr = new BinaryOperator[capacity];
+
             this.errorTitle = errorTitle;
         }
 
@@ -371,10 +371,6 @@ public final class Calculator {
     } catch (NumberFormatException e) {
         throw malformedExpression(errorTitle);
     }}
-
-    private static EmillaException malformedExpression(@StringRes int errorTitle) {
-        return new EmillaException(errorTitle, R.string.error_calc_malformed_expression);
-    }
 
     private Calculator() {}
 }
