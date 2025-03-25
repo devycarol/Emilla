@@ -28,7 +28,7 @@ public final class Calculator {
 //            START_PAREN = " *start *",
 //            END_PAREN = " *(all|end) *";
 
-    private enum Operator {
+    private enum BinaryOperator {
         ADD(1, false) {
             @Override
             double apply(double a, double b) {
@@ -61,7 +61,7 @@ public final class Calculator {
         };
 
         @Nullable
-        public static Operator of(String token) {
+        public static BinaryOperator of(String token) {
             // todo: nat-language words like "add", "to the power of", ..
             return switch (token) {
                 case "+" -> ADD;
@@ -73,12 +73,12 @@ public final class Calculator {
             };
         }
 
-        static final Operator LPAREN = null;
+        static final BinaryOperator LPAREN = null;
 
         final int precedence;
         final boolean rightAssociative;
 
-        Operator(int precedence, boolean rightAssociative) {
+        BinaryOperator(int precedence, boolean rightAssociative) {
             this.precedence = precedence;
             this.rightAssociative = rightAssociative;
         }
@@ -88,29 +88,29 @@ public final class Calculator {
 
     private static final class OpStack {
 
-        final Operator[] arr;
+        final BinaryOperator[] arr;
         int size = 0;
 
         @StringRes
         final int errorTitle;
 
         OpStack(int capacity, @StringRes int errorTitle) {
-            arr = new Operator[capacity];
+            arr = new BinaryOperator[capacity];
             this.errorTitle = errorTitle;
         }
 
-        void push(@Nullable Operator val) {
+        void push(@Nullable BinaryOperator val) {
             arr[size++] = val;
         }
 
         @Nullable
-        Operator peek() {
+        BinaryOperator peek() {
             if (size < 1) throw malformedExpression(errorTitle);
             return arr[size - 1];
         }
 
         @Nullable
-        Operator pop() {
+        BinaryOperator pop() {
             if (size < 1) throw malformedExpression(errorTitle);
             return arr[--size];
         }
@@ -138,17 +138,17 @@ public final class Calculator {
             ++size;
         }
 
-        void squish(Operator op) {
+        void squish(BinaryOperator op) {
             if (size < 2) throw malformedExpression(errorTitle);
 
             --size;
             vals[size - 1] = op.apply(vals[size - 1], vals[size]);
         }
 
-        void applyOperator(Operator op, OpStack opStk) {
+        void applyOperator(BinaryOperator op, OpStack opStk) {
             while (opStk.notEmpty()) {
-                Operator peek = opStk.peek();
-                if (peek == Operator.LPAREN || op.precedence > peek.precedence
+                BinaryOperator peek = opStk.peek();
+                if (peek == BinaryOperator.LPAREN || op.precedence > peek.precedence
                 ||  op.rightAssociative && op.precedence == peek.precedence) break;
                 else squish(opStk.pop()); // peek is valid, therefore pop is valid.
             }
@@ -157,8 +157,8 @@ public final class Calculator {
 
         void applyRParen(OpStack opStk) {
             while (opStk.notEmpty()) {
-                Operator pop = opStk.pop();
-                if (pop == Operator.LPAREN) break;
+                BinaryOperator pop = opStk.pop();
+                if (pop == BinaryOperator.LPAREN) break;
                 else squish(pop);
             }
         }
@@ -175,20 +175,20 @@ public final class Calculator {
         var result = new ValStack(len, errorTitle);
 
         for (String token : new InfixTokens(expression, errorTitle)) {
-            var op = Operator.of(token);
+            var op = BinaryOperator.of(token);
             if (op != null) result.applyOperator(op, opStk);
             else switch (token) {
-                case "(" -> opStk.push(Operator.LPAREN);
+                case "(" -> opStk.push(BinaryOperator.LPAREN);
                 case ")" -> result.applyRParen(opStk);
                 default -> result.push(token);
             }
         }
 
         while (opStk.notEmpty()) {
-            Operator pop = opStk.pop();
-            if (pop != Operator.LPAREN) result.squish(pop);
+            BinaryOperator pop = opStk.pop();
+            if (pop != BinaryOperator.LPAREN) result.squish(pop);
             else while (opStk.notEmpty()) {
-                if (opStk.peek() == Operator.LPAREN) opStk.pop();
+                if (opStk.peek() == BinaryOperator.LPAREN) opStk.pop();
                 else result.applyRParen(opStk);
             }
         }

@@ -15,7 +15,7 @@ import java.util.Iterator;
 
 public final class BitwiseCalculator {
 
-    private enum Operator {
+    private enum BitwiseOperator {
         OR(-3) {
             @Override
             long apply(long a, long b) {
@@ -84,7 +84,7 @@ public final class BitwiseCalculator {
         };
 
         @Nullable
-        public static Operator of(String token) {
+        public static BitwiseOperator of(String token) {
             // todo: nat-language words like "add", "to the power of", ..
             return switch (token) {
                 case "|" -> OR;
@@ -102,12 +102,12 @@ public final class BitwiseCalculator {
             };
         }
 
-        static final Operator LPAREN = null;
+        static final BitwiseOperator LPAREN = null;
 
         final int precedence;
         final boolean rightAssociative = false;
 
-        Operator(int precedence) {
+        BitwiseOperator(int precedence) {
             this.precedence = precedence;
         }
 
@@ -129,29 +129,29 @@ public final class BitwiseCalculator {
 
     private static final class OpStack {
 
-        final Operator[] arr;
+        final BitwiseOperator[] arr;
         int size = 0;
 
         @StringRes
         final int errorTitle;
 
         OpStack(int capacity, @StringRes int errorTitle) {
-            arr = new Operator[capacity];
+            arr = new BitwiseOperator[capacity];
             this.errorTitle = errorTitle;
         }
 
-        void push(@Nullable Operator val) {
+        void push(@Nullable BitwiseOperator val) {
             arr[size++] = val;
         }
 
         @Nullable
-        Operator peek() {
+        BitwiseOperator peek() {
             if (size < 1) throw malformedExpression(errorTitle);
             return arr[size - 1];
         }
 
         @Nullable
-        Operator pop() {
+        BitwiseOperator pop() {
             if (size < 1) throw malformedExpression(errorTitle);
             return arr[--size];
         }
@@ -206,17 +206,17 @@ public final class BitwiseCalculator {
             ++size;
         }
 
-        void squish(Operator op) {
+        void squish(BitwiseOperator op) {
             if (size < 2) throw malformedExpression(errorTitle);
 
             --size;
             vals[size - 1] = op.apply(vals[size - 1], vals[size]);
         }
 
-        void applyOperator(Operator op, OpStack opStk) {
+        void applyOperator(BitwiseOperator op, OpStack opStk) {
             while (opStk.notEmpty()) {
-                Operator peek = opStk.peek();
-                if (peek == Operator.LPAREN || op.precedence > peek.precedence
+                BitwiseOperator peek = opStk.peek();
+                if (peek == BitwiseOperator.LPAREN || op.precedence > peek.precedence
                 ||  op.rightAssociative && op.precedence == peek.precedence) break;
                 else squish(opStk.pop()); // peek is valid, therefore pop is valid.
             }
@@ -225,8 +225,8 @@ public final class BitwiseCalculator {
 
         void applyRParen(OpStack opStk) {
             while (opStk.notEmpty()) {
-                Operator pop = opStk.pop();
-                if (pop == Operator.LPAREN) break;
+                BitwiseOperator pop = opStk.pop();
+                if (pop == BitwiseOperator.LPAREN) break;
                 else squish(pop);
             }
         }
@@ -242,21 +242,21 @@ public final class BitwiseCalculator {
         var opStk = new OpStack(len, errorTitle);
         var result = new ValStack(len, errorTitle);
 
-        for (String token : new InfixTokens(expression, errorTitle)) {
-            var op = Operator.of(token);
+        for (String token : new BitwiseTokens(expression, errorTitle)) {
+            var op = BitwiseOperator.of(token);
             if (op != null) result.applyOperator(op, opStk);
             else switch (token) {
-                case "(" -> opStk.push(Operator.LPAREN);
+                case "(" -> opStk.push(BitwiseOperator.LPAREN);
                 case ")" -> result.applyRParen(opStk);
                 default -> result.push(token);
             }
         }
 
         while (opStk.notEmpty()) {
-            Operator pop = opStk.pop();
-            if (pop != Operator.LPAREN) result.squish(pop);
+            BitwiseOperator pop = opStk.pop();
+            if (pop != BitwiseOperator.LPAREN) result.squish(pop);
             else while (opStk.notEmpty()) {
-                if (opStk.peek() == Operator.LPAREN) opStk.pop();
+                if (opStk.peek() == BitwiseOperator.LPAREN) opStk.pop();
                 else result.applyRParen(opStk);
             }
         }
@@ -264,7 +264,7 @@ public final class BitwiseCalculator {
         return result.value();
     }
 
-    private record InfixTokens(
+    private record BitwiseTokens(
         String expression,
         @StringRes int errorTitle
     ) implements Iterable<String> {
@@ -275,10 +275,10 @@ public final class BitwiseCalculator {
 
         @Override
         public Iterator<String> iterator() {
-            return new InfixIterator(expression, errorTitle);
+            return new BitwiseIterator(expression, errorTitle);
         }
 
-        static class InfixIterator implements Iterator<String> {
+        static class BitwiseIterator implements Iterator<String> {
 
             final char[] expr;
             final int length;
@@ -291,7 +291,7 @@ public final class BitwiseCalculator {
             @StringRes
             private final int errorTitle;
 
-            InfixIterator(String expression, @StringRes int errorTitle) {
+            BitwiseIterator(String expression, @StringRes int errorTitle) {
                 expr = expression.toCharArray();
                 length = expr.length;
                 pos = Strings.indexOfNonSpace(expr);
