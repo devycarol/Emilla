@@ -17,10 +17,10 @@ import androidx.preference.Preference;
 
 import net.emilla.R;
 import net.emilla.activity.EmillaActivity;
+import net.emilla.app.Apps;
 import net.emilla.chime.Chimer;
 import net.emilla.settings.SettingVals;
 import net.emilla.system.EmillaAccessibilityService;
-import net.emilla.app.Apps;
 import net.emilla.util.Features;
 
 public final class SettingsFragment extends EmillaSettingsFragment {
@@ -115,7 +115,7 @@ public final class SettingsFragment extends EmillaSettingsFragment {
         @StringRes int resId*/
     ) {
         Preference soundPref = preferenceOf(prefKey);
-        soundPref.setOnPreferenceClickListener((pref) -> onClickCustomSoundPref(prefKey));
+        soundPref.setOnPreferenceClickListener(pref -> onClickCustomSoundPref(prefKey));
         if (!enabled) soundPref.setVisible(false);
     //    soundPref.setSummaryProvider(new Preference.SummaryProvider<>() {
     //        @Nullable @Override
