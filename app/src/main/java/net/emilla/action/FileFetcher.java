@@ -16,9 +16,9 @@ public final class FileFetcher implements LabeledQuickAction {
     private final FileReceiver mReceiver;
     private final String mMimeType;
 
-    public FileFetcher(AssistActivity act, FileReceiver receiver, String mimeType) {
+    public FileFetcher(AssistActivity act, String commandEntry, String mimeType) {
         mActivity = act;
-        mReceiver = receiver;
+        mReceiver = new FileReceiver(act, commandEntry);
         mMimeType = mimeType;
     }
 

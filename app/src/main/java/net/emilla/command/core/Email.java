@@ -24,7 +24,9 @@ import net.emilla.contact.fragment.ContactEmailsFragment;
 import net.emilla.content.receive.EmailReceiver;
 import net.emilla.settings.Aliases;
 
-public final class Email extends AttachCommand implements EmailReceiver {
+import java.util.ArrayList;
+
+public final class Email extends CoreDataCommand implements EmailReceiver {
 
     public static final String ENTRY = "email";
     @StringRes
@@ -62,11 +64,11 @@ public final class Email extends AttachCommand implements EmailReceiver {
         else if (mSubjectToggle.activated()) reshowField(SubjectField.FIELD_ID);
         giveAction(mSubjectToggle);
 
-        if (mFileFetcher == null) mFileFetcher = new FileFetcher(activity, this, "*/*");
+        if (mFileFetcher == null) mFileFetcher = new FileFetcher(activity, ENTRY, "*/*");
         // TODO: Thunderbird doesn't like certain filetypes. See if you can find a type statement
         //  that's consistently email-friendly.
         giveAction(mFileFetcher);
-        if (mMediaFetcher == null) mMediaFetcher = new MediaFetcher(activity, this);
+        if (mMediaFetcher == null) mMediaFetcher = new MediaFetcher(activity, ENTRY);
         giveAction(mMediaFetcher);
     }
 
@@ -115,10 +117,13 @@ public final class Email extends AttachCommand implements EmailReceiver {
     }
 
     private void email(String addresses, @Nullable String body) {
+        ArrayList<Uri> attachments = activity.attachments(ENTRY);
+
         Intent email;
         var sendTo = new Intent(ACTION_SENDTO, Uri.parse("mailto:"));
-        if (attachments == null) email = sendTo;
-        else {
+        if (attachments == null) {
+            email = sendTo;
+        } else {
             email = new Intent(ACTION_SEND_MULTIPLE).putExtra(EXTRA_STREAM, attachments);
             email.setSelector(sendTo);
         }

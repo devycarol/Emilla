@@ -5,6 +5,7 @@ import static android.content.Intent.EXTRA_TEXT;
 import static net.emilla.chime.Chimer.RESUME;
 
 import android.content.Intent;
+import android.net.Uri;
 
 import androidx.annotation.ArrayRes;
 import androidx.annotation.StringRes;
@@ -18,7 +19,9 @@ import net.emilla.settings.Aliases;
 import net.emilla.util.Apps;
 import net.emilla.util.Files.MimeType;
 
-public final class Share extends AttachCommand implements AppChoiceReceiver {
+import java.util.ArrayList;
+
+public final class Share extends CoreDataCommand implements AppChoiceReceiver {
 
     public static final String ENTRY = "share";
     @StringRes
@@ -47,9 +50,9 @@ public final class Share extends AttachCommand implements AppChoiceReceiver {
     protected void onInit() {
         super.onInit();
 
-        if (mFileFetcher == null) mFileFetcher = new FileFetcher(activity, this, "*/*");
+        if (mFileFetcher == null) mFileFetcher = new FileFetcher(activity, ENTRY, "*/*");
         giveAction(mFileFetcher);
-        if (mMediaFetcher == null) mMediaFetcher = new MediaFetcher(activity, this);
+        if (mMediaFetcher == null) mMediaFetcher = new MediaFetcher(activity, ENTRY);
         giveAction(mMediaFetcher);
     }
 
@@ -62,6 +65,8 @@ public final class Share extends AttachCommand implements AppChoiceReceiver {
     }
 
     private Intent makeIntent() {
+        ArrayList<Uri> attachments = activity.attachments(ENTRY);
+
         if (attachments == null) return Apps.sendTask("text/plain");
         if (attachments.size() == 1) {
             Intent in = Apps.sendTask("text/plain").putExtra(EXTRA_STREAM, attachments.get(0));
@@ -74,6 +79,8 @@ public final class Share extends AttachCommand implements AppChoiceReceiver {
     }
 
     private Intent makeIntent(String text) {
+        ArrayList<Uri> attachments = activity.attachments(ENTRY);
+
         if (attachments == null) return Apps.sendTask("text/plain").putExtra(EXTRA_TEXT, text);
         Intent in;
         if (attachments.size() == 1) {

@@ -2,15 +2,40 @@ package net.emilla.content.receive;
 
 import android.net.Uri;
 
+import net.emilla.R;
+import net.emilla.activity.AssistActivity;
+
+import java.util.ArrayList;
 import java.util.List;
 
-@FunctionalInterface
-public interface FileReceiver extends ResultReceiver {
+public final class FileReceiver implements ResultReceiver {
 
-    /**
-     * Provides attachments to the object. Be sure to trigger visual and spoken feedback as needed.
-     *
-     * @param attachments attachment set to give to the receiver.
-     */
-    void provide(List<Uri> attachments);
+    private final AssistActivity mActivity;
+    private final String mCommandEntry;
+
+    public FileReceiver(AssistActivity act, String commandEntry) {
+        mActivity = act;
+        mCommandEntry = commandEntry;
+    }
+
+    public void provide(List<Uri> attachments) {
+        if (attachments.isEmpty()) return;
+
+        ArrayList<Uri> attaches = mActivity.attachments(mCommandEntry);
+        if (attaches == null) attaches = new ArrayList<>(attachments);
+        else for (Uri attachment : attachments) {
+            int index = attaches.indexOf(attachment);
+            if (index == -1) attaches.add(attachment);
+            else attaches.remove(index); // TODO: better attachment UI.
+        }
+
+        int size = attaches.size();
+        if (size == 0) attaches = null;
+
+        mActivity.putAttachments(mCommandEntry, attaches);
+
+        var res = mActivity.getResources();
+        mActivity.toast(res.getQuantityString(R.plurals.toast_files_attached, size, size));
+        // Todo: better feedback.
+    }
 }

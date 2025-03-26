@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.ResolveInfo
 import android.content.res.Resources
+import android.net.Uri
 import android.view.inputmethod.EditorInfo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -41,6 +42,9 @@ internal class AssistViewModel private constructor(appCtx: Context) : ViewModel(
     val motd: String? = if (noTitlebar) null else SettingVals.motd(prefs, res)
     @JvmField
     val appList: List<ResolveInfo> = Apps.resolveList(appCtx.packageManager)
+
+    val attachmentMap: HashMap<String, ArrayList<Uri>?> by lazy { HashMap<String, ArrayList<Uri>?>() }
+        @JvmName("attachmentMap") get
 
     @JvmField
     var noCommand = true

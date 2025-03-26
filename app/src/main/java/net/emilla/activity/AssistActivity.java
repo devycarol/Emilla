@@ -27,6 +27,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -83,6 +84,7 @@ import net.emilla.util.Dialogs;
 import net.emilla.util.Strings;
 import net.emilla.view.ActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class AssistActivity extends EmillaActivity {
@@ -92,8 +94,6 @@ public final class AssistActivity extends EmillaActivity {
     private final ContactCardRetriever mContactCardRetriever = new ContactCardRetriever(this);
     private final ContactPhoneRetriever mContactPhoneRetriever = new ContactPhoneRetriever(this);
     private final ContactEmailRetriever mContactEmailRetriever = new ContactEmailRetriever(this);
-    // TODO: save state hell. rotation deletes attachments ughhhhh probably because the command
-    //  tree is rebuilt.
     private final AppChoiceRetriever mAppChoiceRetriever = new AppChoiceRetriever(this);
     private final PermissionRetriever mPermissionRetriever;
     {
@@ -509,9 +509,18 @@ public final class AssistActivity extends EmillaActivity {
         return mCommand;
     }
 
+    @Nullable
+    public ArrayList<Uri> attachments(String commandEntry) {
+        return mVm.attachmentMap().get(commandEntry);
+    }
+
     /*=========*
      * Setters *
      *=========*/
+
+    public void putAttachments(String commandEntry, @Nullable ArrayList<Uri> attachments) {
+        mVm.attachmentMap().put(commandEntry, attachments);
+    }
 
     public void giveActionBox(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
@@ -648,8 +657,8 @@ public final class AssistActivity extends EmillaActivity {
         chime(PEND);
     }
 
-    public void offerFiles(FileReceiver retriever, String mimeType) {
-        mFileRetriever.retrieve(retriever, mimeType);
+    public void offerFiles(FileReceiver receiver, String mimeType) {
+        mFileRetriever.retrieve(receiver, mimeType);
     }
 
     public void offerMedia(FileReceiver receiver) {

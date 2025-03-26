@@ -15,9 +15,9 @@ public final class MediaFetcher implements LabeledQuickAction {
     private final AssistActivity mActivity;
     private final FileReceiver mReceiver;
 
-    public MediaFetcher(AssistActivity act, FileReceiver receiver) {
+    public MediaFetcher(AssistActivity act, String commandEntry) {
         mActivity = act;
-        mReceiver = receiver;
+        mReceiver = new FileReceiver(act, commandEntry);
     }
 
     @Override @IdRes
