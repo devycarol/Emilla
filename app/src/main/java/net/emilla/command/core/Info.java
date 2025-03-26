@@ -1,6 +1,5 @@
 package net.emilla.command.core;
 
-import android.content.Intent;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
@@ -43,12 +42,12 @@ public final class Info extends OpenCommand {
     }
 
     @Override
-    protected Intent makeIntent(String pkg, String cls) {
-        return Apps.infoTask(pkg);
+    protected void run(String app) {
+        appSearchRun(app, (pkg, cls) -> Apps.infoTask(pkg));
     }
 
     @Override
     protected AlertDialog.Builder makeChooser() {
-        return Dialogs.appLaunches(activity, pm(), appList);
+        return Dialogs.appLaunches(activity, pm());
     }
 }

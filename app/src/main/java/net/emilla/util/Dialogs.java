@@ -142,6 +142,10 @@ public final class Dialogs {
         });
     }
 
+    public static AlertDialog.Builder appLaunches(AssistActivity act, PackageManager pm) {
+        return appLaunches(act, pm, act.appList());
+    }
+
     public static AlertDialog.Builder appLaunches(
         AssistActivity act,
         PackageManager pm,
@@ -159,7 +163,8 @@ public final class Dialogs {
                 (dlg, which) -> act.succeed(new AppSuccess(act, intents[which])));
     }
 
-    public static AlertDialog.Builder appUninstalls(AssistActivity act, List<ResolveInfo> appList) {
+    public static AlertDialog.Builder appUninstalls(AssistActivity act) {
+        List<ResolveInfo> appList = act.appList();
         var pm = act.getPackageManager();
         Intent[] intents = Apps.uninstalls(appList, pm);
         return list(act, R.string.dialog_app, Apps.labels(appList, pm), (dlg, which) -> {

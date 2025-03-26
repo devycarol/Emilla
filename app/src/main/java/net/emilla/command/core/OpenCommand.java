@@ -36,30 +36,25 @@ public abstract class OpenCommand extends CoreCommand {
               imeAction);
     }
 
-    protected List<ResolveInfo> appList;
     protected AlertDialog.Builder appChooser;
 
     @Override @CallSuper
     protected void onInit() {
         super.onInit();
-
-        appList = activity.appList();
         appChooser = makeChooser();
     }
 
     @Override @CallSuper
     protected void onClean() {
         super.onClean();
-
-        appList = null;
         appChooser = null;
     }
 
     protected abstract AlertDialog.Builder makeChooser();
 
-    @Override
-    protected final void run(String app) {
+    protected final void appSearchRun(String app, IntentMaker action) {
         // todo: optimized pre-processed search
+        List<ResolveInfo> appList = activity.appList();
         int appCount = appList.size();
 
         var prefLabels = new CharSequence[appCount];
@@ -72,10 +67,10 @@ public abstract class OpenCommand extends CoreCommand {
         var lcQuery = app.toLowerCase();
         boolean exactMatch = false;
 
+        PackageManager pm = pm();
         for (int i = 0; i < appCount; ++i) {
             ActivityInfo info = appList.get(i).activityInfo;
 
-            PackageManager pm = pm();
             CharSequence label = info.loadLabel(pm);
             var lcLabel = label.toString().toLowerCase();
 
@@ -86,7 +81,7 @@ public abstract class OpenCommand extends CoreCommand {
                 otherIntents = null;
 
                 prefLabels[0] = label;
-                prefIntents[0] = makeIntent(info.packageName, info.name);
+                prefIntents[0] = action.make(info.packageName, info.name);
                 prefCount = 1;
 
                 for (++i; i < appCount; ++i) { // continue searching for duplicates only
@@ -96,7 +91,7 @@ public abstract class OpenCommand extends CoreCommand {
 
                     if (lcLabel.equals(lcQuery)) {
                         prefLabels[prefCount] = label;
-                        prefIntents[prefCount] = makeIntent(info.packageName, info.name);
+                        prefIntents[prefCount] = action.make(info.packageName, info.name);
                         ++prefCount;
                     }
                 }
@@ -105,14 +100,13 @@ public abstract class OpenCommand extends CoreCommand {
                 break; // search is finished
             }
             if (lcLabel.contains(lcQuery)) {
-                Intent in = makeIntent(info.packageName, info.name);
                 if (lcLabel.startsWith(lcQuery)) {
                     prefLabels[prefCount] = label;
-                    prefIntents[prefCount] = in;
+                    prefIntents[prefCount] = action.make(info.packageName, info.name);
                     ++prefCount;
                 } else {
                     otherLabels[otherCount] = label;
-                    otherIntents[otherCount] = in;
+                    otherIntents[otherCount] = action.make(info.packageName, info.name);
                     ++otherCount;
                 }
             }
@@ -133,9 +127,13 @@ public abstract class OpenCommand extends CoreCommand {
         // Todo: offer to search app store
         case 1 -> appSucceed(prefIntents[0]);
         default -> offerDialog(makeDialog(prefLabels, prefCount, prefIntents));
-    }}
+        }
+    }
 
-    protected abstract Intent makeIntent(String pkg, String cls);
+    @FunctionalInterface
+    protected interface IntentMaker {
+        Intent make(String pkg, String cls);
+    }
 
     private AlertDialog.Builder makeDialog(
         CharSequence[] prefLabels,

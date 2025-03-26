@@ -1,10 +1,8 @@
 package net.emilla.command.core;
 
-import android.content.Intent;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
-import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
@@ -41,13 +39,13 @@ public final class Uninstall extends OpenCommand {
         offerDialog(appChooser);
     }
 
-    @Override @Nullable
-    protected Intent makeIntent(String pkg, String cls) {
-        return Apps.uninstallIntent(pkg, pm());
+    @Override
+    protected void run(String app) {
+        appSearchRun(app, (pkg, cls) -> Apps.uninstallIntent(pkg, pm()));
     }
 
     @Override
     protected AlertDialog.Builder makeChooser() {
-        return Dialogs.appUninstalls(activity, appList);
+        return Dialogs.appUninstalls(activity);
     }
 }
