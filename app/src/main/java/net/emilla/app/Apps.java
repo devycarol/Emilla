@@ -1,4 +1,4 @@
-package net.emilla.util;
+package net.emilla.app;
 
 import static android.content.Intent.ACTION_EDIT;
 import static android.content.Intent.ACTION_INSERT;

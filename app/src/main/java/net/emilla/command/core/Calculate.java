@@ -13,7 +13,7 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.math.Calculator;
 import net.emilla.math.Maths;
 import net.emilla.settings.Aliases;
-import net.emilla.util.Apps;
+import net.emilla.app.Apps;
 
 public final class Calculate extends CategoryCommand {
 

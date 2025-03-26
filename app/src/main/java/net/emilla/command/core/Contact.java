@@ -19,7 +19,7 @@ import net.emilla.command.Subcommand;
 import net.emilla.contact.fragment.ContactCardsFragment;
 import net.emilla.content.receive.ContactCardReceiver;
 import net.emilla.settings.Aliases;
-import net.emilla.util.Apps;
+import net.emilla.app.Apps;
 import net.emilla.util.Dialogs;
 
 import java.util.List;

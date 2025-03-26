@@ -13,6 +13,7 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.run.AppSuccess;
 import net.emilla.run.MessageFailure;
+import net.emilla.app.Apps;
 
 import java.util.List;
 

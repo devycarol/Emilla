@@ -17,7 +17,7 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.run.PermissionFailure;
 import net.emilla.run.PermissionOffering;
-import net.emilla.util.app.TaskerIntent;
+import net.emilla.app.TaskerIntent;
 
 public final class Permissions {
 

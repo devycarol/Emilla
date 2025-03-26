@@ -8,7 +8,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.util.Apps;
+import net.emilla.app.Apps;
 import net.emilla.util.Dialogs;
 
 public final class PermissionFailure extends DialogRun {

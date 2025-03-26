@@ -16,7 +16,7 @@ import net.emilla.command.DataCommand;
 import net.emilla.lang.Lines;
 import net.emilla.util.Dialogs;
 import net.emilla.util.Permissions;
-import net.emilla.util.app.TaskerIntent;
+import net.emilla.app.TaskerIntent;
 
 import java.util.Comparator;
 import java.util.SortedSet;

@@ -20,7 +20,7 @@ import net.emilla.command.CommandYielder;
 import net.emilla.command.EmillaCommand;
 import net.emilla.lang.Lang;
 import net.emilla.settings.Aliases;
-import net.emilla.util.Apps;
+import net.emilla.app.Apps;
 
 import java.util.Set;
 

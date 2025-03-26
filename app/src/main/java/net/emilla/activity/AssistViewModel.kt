@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import net.emilla.chime.Chimer.Companion.START
 import net.emilla.settings.SettingVals
-import net.emilla.util.Apps
+import net.emilla.app.Apps
 
 internal class AssistViewModel private constructor(appCtx: Context) : ViewModel() {
 

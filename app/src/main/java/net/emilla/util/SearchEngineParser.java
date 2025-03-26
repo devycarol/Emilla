@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 
 import net.emilla.lang.Lang;
 import net.emilla.lang.Words;
+import net.emilla.app.Apps;
 import net.emilla.util.trie.HashTrieMap;
 import net.emilla.util.trie.TrieMap;
 

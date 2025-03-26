@@ -10,7 +10,7 @@ import androidx.annotation.StringRes;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.lang.Lang;
-import net.emilla.util.Apps;
+import net.emilla.app.Apps;
 
 public /*open*/ class AppSend extends AppCommand {
 

@@ -18,7 +18,7 @@ import androidx.core.content.FileProvider;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.settings.Aliases;
-import net.emilla.util.Apps;
+import net.emilla.app.Apps;
 import net.emilla.util.Files;
 
 import java.io.File;

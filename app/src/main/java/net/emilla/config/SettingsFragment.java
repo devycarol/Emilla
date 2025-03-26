@@ -20,7 +20,7 @@ import net.emilla.activity.EmillaActivity;
 import net.emilla.chime.Chimer;
 import net.emilla.settings.SettingVals;
 import net.emilla.system.EmillaAccessibilityService;
-import net.emilla.util.Apps;
+import net.emilla.app.Apps;
 import net.emilla.util.Features;
 
 public final class SettingsFragment extends EmillaSettingsFragment {
