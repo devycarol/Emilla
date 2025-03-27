@@ -688,6 +688,7 @@
     <string name="error_cant_uninstall">Failed to uninstall the app.</string>
     <string name="error_cant_find_file">Can\'t find the file.</string>
     <string name="error_cant_use_file">A file error occurred.</string>
+    <string name="error_torch_failed">Failed to toggle the flashlight.</string>
     <string name="error_feature_phone">Your device doesn\'t support phone calls.</string>
     <string name="error_feature_sms">Your device doesn\'t support SMS messaging.</string>
     <string name="error_unfinished_feature">Unfinished feature!</string>

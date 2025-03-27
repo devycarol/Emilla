@@ -1,22 +1,14 @@
 package net.emilla.command.core;
 
-import static net.emilla.chime.Chimer.ACT;
-import static net.emilla.chime.Chimer.RESUME;
-
-import android.hardware.camera2.CameraAccessException;
-import android.hardware.camera2.CameraCharacteristics;
-import android.hardware.camera2.CameraManager;
-import android.os.Build;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
-import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.settings.Aliases;
-import net.emilla.util.Services;
+import net.emilla.util.TorchManager;
 
 public final class Torch extends CoreCommand {
 
@@ -31,27 +23,6 @@ public final class Torch extends CoreCommand {
         return new Yielder(false, Torch::new, ENTRY, NAME, ALIASES);
     }
 
-    @Nullable
-    private static String flashCameraId(CameraManager camMgr) throws CameraAccessException {
-        String[] ids = camMgr.getCameraIdList();
-        for (String id : ids) {
-            CameraCharacteristics c = camMgr.getCameraCharacteristics(id);
-            Boolean flashAvailable = c.get(CameraCharacteristics.FLASH_INFO_AVAILABLE);
-            if (Boolean.TRUE.equals(flashAvailable)) {
-                Integer lensFacing = c.get(CameraCharacteristics.LENS_FACING);
-                if (lensFacing != null && lensFacing == CameraCharacteristics.LENS_FACING_BACK) {
-                    return id;
-                }
-            }
-        }
-        return null;
-        // Todo: what if multiple torches?
-    }
-
-    private static boolean sTorching = false;
-    // TODO: replace this with a query - this isn't fully reliable for detecting toggle state. e.g.
-    //  what if the torch was turned on before the app was started?
-
     public Torch(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_torch,
@@ -63,24 +34,7 @@ public final class Torch extends CoreCommand {
 
     @Override
     protected void run() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) throw badCommand(R.string.error_unfinished_version);
-        // TODO: https://github.com/LineageOS/android_packages_apps_Torch
-        CameraManager camMgr = Services.camera(activity);
-    try {
-        String camId = flashCameraId(camMgr);
-        if (camId == null) return;
-        if (sTorching) {
-            camMgr.setTorchMode(camId, false);
-            chime(RESUME);
-            // TODO ACC: if you can't see the torch, this feedback is critically insufficient.
-            sTorching = false;
-        } else {
-            camMgr.setTorchMode(camId, true);
-            chime(ACT);
-            // TODO ACC: if you can't see the torch, this feedback is critically insufficient.
-            sTorching = true;
-        }
-    } catch (CameraAccessException ignored) {} // Torch not toggled, nothing to do.
+        TorchManager.toggle(activity, NAME);
     }
 
     @Override

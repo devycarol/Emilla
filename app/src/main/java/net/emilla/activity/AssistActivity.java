@@ -716,7 +716,7 @@ public final class AssistActivity extends EmillaActivity {
             mCommand.execute();
         }
     } catch (EmillaException e) {
-        fail(new MessageFailure(this, e.title(), e.message()));
+        fail(new MessageFailure(this, e));
     } catch (RuntimeException e) {
         fail(new BugFailure(this, e, mCommand.name()));
     }}
