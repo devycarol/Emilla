@@ -25,7 +25,7 @@ public final class Pause extends CoreCommand {
         return new Yielder(false, Pause::new, ENTRY, NAME, ALIASES);
     }
 
-    public Pause(AssistActivity act) {
+    private Pause(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_pause,
               R.drawable.ic_pause,

@@ -26,7 +26,7 @@ public final class RandomNumber extends CoreCommand {
         return new Yielder(true, RandomNumber::new, ENTRY, NAME, ALIASES);
     }
 
-    public RandomNumber(AssistActivity act) {
+    private RandomNumber(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_text,
               R.drawable.ic_random_number,

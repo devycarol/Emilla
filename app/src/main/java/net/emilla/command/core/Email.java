@@ -44,7 +44,7 @@ public final class Email extends CoreDataCommand implements EmailReceiver {
     private MediaFetcher mMediaFetcher;
     private ContactEmailsFragment mContactsFragment;
 
-    public Email(AssistActivity act) {
+    private Email(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_email,
               R.drawable.ic_email,

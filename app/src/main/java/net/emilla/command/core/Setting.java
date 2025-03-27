@@ -22,7 +22,7 @@ public final class Setting extends CoreCommand {
         return new Yielder(true, Setting::new, ENTRY, NAME, ALIASES);
     }
 
-    public Setting(AssistActivity act) {
+    private Setting(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_setting,
               R.drawable.ic_settings,

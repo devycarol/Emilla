@@ -25,7 +25,7 @@ public final class Info extends OpenCommand {
         return new Yielder(true, Info::new, ENTRY, NAME, ALIASES);
     }
 
-    public Info(AssistActivity act) {
+    private Info(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_app,
               R.drawable.ic_info,

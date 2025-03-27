@@ -45,7 +45,7 @@ public final class Pomodoro extends CoreDataCommand {
     @Nullable
     private String mWorkMemo, mBreakMemo;
 
-    public Pomodoro(AssistActivity act) {
+    private Pomodoro(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_pomodoro,
               R.drawable.ic_pomodoro,

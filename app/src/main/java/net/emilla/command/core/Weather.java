@@ -10,8 +10,8 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.settings.Aliases;
 import net.emilla.app.Apps;
+import net.emilla.settings.Aliases;
 
 public final class Weather extends CategoryCommand {
 
@@ -26,7 +26,7 @@ public final class Weather extends CategoryCommand {
         return new Yielder(true, Weather::new, ENTRY, NAME, ALIASES);
     }
 
-    public Weather(AssistActivity act) {
+    private Weather(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_app,
               R.drawable.ic_weather,

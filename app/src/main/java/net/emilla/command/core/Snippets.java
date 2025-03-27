@@ -40,7 +40,7 @@ public final class Snippets extends CoreDataCommand {
     @Nullable
     private String mUsedSnippet, mUsedText;
 
-    public Snippets(AssistActivity act) {
+    private Snippets(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_name_label,
               R.drawable.ic_snippets,

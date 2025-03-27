@@ -10,9 +10,9 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.app.Apps;
 import net.emilla.math.BitwiseCalculator;
 import net.emilla.settings.Aliases;
-import net.emilla.app.Apps;
 
 public final class Bits extends CategoryCommand {
 
@@ -27,7 +27,7 @@ public final class Bits extends CategoryCommand {
         return new Yielder(true, Bits::new, ENTRY, NAME, ALIASES);
     }
 
-    public Bits(AssistActivity act) {
+    private Bits(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_calculate,
               R.drawable.ic_command,

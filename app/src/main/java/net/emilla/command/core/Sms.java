@@ -41,7 +41,7 @@ public final class Sms extends CoreDataCommand implements PhoneReceiver {
     private FieldToggle mSubjectToggle;
     private ContactPhonesFragment mContactsFragment;
 
-    public Sms(AssistActivity act) {
+    private Sms(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_phone,
               R.drawable.ic_sms,

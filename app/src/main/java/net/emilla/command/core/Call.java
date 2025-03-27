@@ -35,7 +35,7 @@ public final class Call extends CoreCommand implements PhoneReceiver {
 
     private ContactPhonesFragment mContactsFragment;
 
-    public Call(AssistActivity act) {
+    private Call(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_phone,
               R.drawable.ic_call,

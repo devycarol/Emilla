@@ -26,7 +26,7 @@ public final class Dial extends CoreCommand {
         return new Yielder(true, Dial::new, ENTRY, NAME, ALIASES);
     }
 
-    public Dial(AssistActivity act) {
+    private Dial(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_dial,
               R.drawable.ic_dial,

@@ -9,8 +9,8 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.settings.Aliases;
 import net.emilla.app.Apps;
+import net.emilla.settings.Aliases;
 
 public final class Navigate extends CategoryCommand {
 
@@ -25,7 +25,7 @@ public final class Navigate extends CategoryCommand {
         return new Yielder(true, Navigate::new, ENTRY, NAME, ALIASES);
     }
 
-    public Navigate(AssistActivity act) {
+    private Navigate(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_location,
               R.drawable.ic_navigate,

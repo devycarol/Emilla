@@ -27,7 +27,7 @@ public final class Time extends CoreCommand {
         return new Yielder(true, Time::new, ENTRY, NAME, ALIASES);
     }
 
-    public Time(AssistActivity act) {
+    private Time(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_location,
               R.drawable.ic_clock,

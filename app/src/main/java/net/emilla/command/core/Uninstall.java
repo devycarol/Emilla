@@ -25,7 +25,7 @@ public final class Uninstall extends OpenCommand {
         return new Yielder(true, Uninstall::new, ENTRY, NAME, ALIASES);
     }
 
-    public Uninstall(AssistActivity act) {
+    private Uninstall(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_app,
               R.drawable.ic_uninstall,

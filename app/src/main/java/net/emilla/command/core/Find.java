@@ -22,7 +22,7 @@ public final class Find extends CoreCommand {
         return new Yielder(true, Find::new, ENTRY, NAME, ALIASES);
     }
 
-    public Find(AssistActivity act) {
+    private Find(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_find,
               R.drawable.ic_find,

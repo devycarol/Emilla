@@ -32,7 +32,7 @@ public final class Alarm extends CoreDataCommand {
         return new Yielder(true, Alarm::new, ENTRY, NAME, ALIASES);
     }
 
-    public Alarm(AssistActivity act) {
+    private Alarm(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_alarm,
               R.drawable.ic_alarm,

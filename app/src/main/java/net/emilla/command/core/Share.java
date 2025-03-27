@@ -14,9 +14,9 @@ import net.emilla.R;
 import net.emilla.action.FileFetcher;
 import net.emilla.action.MediaFetcher;
 import net.emilla.activity.AssistActivity;
+import net.emilla.app.Apps;
 import net.emilla.content.receive.AppChoiceReceiver;
 import net.emilla.settings.Aliases;
-import net.emilla.app.Apps;
 import net.emilla.util.Files.MimeType;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public final class Share extends CoreDataCommand implements AppChoiceReceiver {
     private FileFetcher mFileFetcher;
     private MediaFetcher mMediaFetcher;
 
-    public Share(AssistActivity act) {
+    private Share(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_app,
               R.drawable.ic_share,

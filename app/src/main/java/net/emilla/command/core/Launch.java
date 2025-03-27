@@ -25,7 +25,7 @@ public final class Launch extends OpenCommand {
         return new Yielder(true, Launch::new, ENTRY, NAME, ALIASES);
     }
 
-    public Launch(AssistActivity act) {
+    private Launch(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_app,
               R.drawable.ic_launch,

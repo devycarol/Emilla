@@ -17,8 +17,8 @@ import androidx.core.content.FileProvider;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.settings.Aliases;
 import net.emilla.app.Apps;
+import net.emilla.settings.Aliases;
 import net.emilla.util.Files;
 
 import java.io.File;
@@ -46,7 +46,7 @@ public final class Todo extends CoreDataCommand {
             .putExtra(EXTRA_STREAM, mUri)
             .putExtra("EXTRA_FILEPATH", mFile.getAbsolutePath());
 
-    public Todo(AssistActivity act) {
+    private Todo(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_todo,
               R.drawable.ic_todo,

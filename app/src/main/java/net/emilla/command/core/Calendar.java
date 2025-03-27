@@ -19,8 +19,8 @@ import net.emilla.action.field.FieldToggle;
 import net.emilla.action.field.LocationField;
 import net.emilla.action.field.UrlField;
 import net.emilla.activity.AssistActivity;
-import net.emilla.settings.Aliases;
 import net.emilla.app.Apps;
+import net.emilla.settings.Aliases;
 import net.emilla.util.Time;
 
 import java.util.regex.Pattern;
@@ -42,7 +42,7 @@ public final class Calendar extends CoreDataCommand {
     private final Intent mIntent = Apps.insertTask(Events.CONTENT_URI, "vnd.android.cursor.dir/event");
     private FieldToggle mLocationToggle, mUrlToggle;
 
-    public Calendar(AssistActivity act) {
+    private Calendar(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_calendar,
               R.drawable.ic_calendar,

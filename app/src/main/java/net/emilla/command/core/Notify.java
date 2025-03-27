@@ -28,7 +28,7 @@ public final class Notify extends CoreDataCommand {
         return new Yielder(true, Notify::new, ENTRY, NAME, ALIASES);
     }
 
-    public Notify(AssistActivity act) {
+    private Notify(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_notify,
               R.drawable.ic_notify,

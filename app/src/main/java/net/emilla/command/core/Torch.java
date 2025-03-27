@@ -23,7 +23,7 @@ public final class Torch extends CoreCommand {
         return new Yielder(false, Torch::new, ENTRY, NAME, ALIASES);
     }
 
-    public Torch(AssistActivity act) {
+    private Torch(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_torch,
               R.drawable.ic_torch,

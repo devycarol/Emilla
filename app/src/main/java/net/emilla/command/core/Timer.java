@@ -29,7 +29,7 @@ public final class Timer extends CoreDataCommand {
         return new Yielder(true, Timer::new, ENTRY, NAME, ALIASES);
     }
 
-    public Timer(AssistActivity act) {
+    private Timer(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_timer,
               R.drawable.ic_timer,

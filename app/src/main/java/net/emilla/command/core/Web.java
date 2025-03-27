@@ -37,7 +37,7 @@ public final class Web extends CoreCommand {
 
     private SearchEngineParser mSearchEngineMap;
 
-    public Web(AssistActivity act) {
+    private Web(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_web,
               R.drawable.ic_web,

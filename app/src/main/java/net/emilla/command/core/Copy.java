@@ -27,7 +27,7 @@ public final class Copy extends CoreCommand {
     @Nullable
     private String mCopiedText;
 
-    public Copy(AssistActivity act) {
+    private Copy(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_text,
               R.drawable.ic_copy,

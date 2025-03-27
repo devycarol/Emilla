@@ -20,7 +20,7 @@ public final class Note extends CoreDataCommand {
         return new Yielder(true, Note::new, ENTRY, NAME, ALIASES);
     }
 
-    public Note(AssistActivity act) {
+    private Note(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_file,
               R.drawable.ic_note,

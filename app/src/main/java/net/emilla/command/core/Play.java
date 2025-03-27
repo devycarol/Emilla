@@ -25,7 +25,7 @@ public final class Play extends CoreCommand {
         return new Yielder(true, Play::new, ENTRY, NAME, ALIASES);
     }
 
-    public Play(AssistActivity act) {
+    private Play(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_play,
               R.drawable.ic_play,

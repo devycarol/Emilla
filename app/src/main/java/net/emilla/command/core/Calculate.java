@@ -10,10 +10,10 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.app.Apps;
 import net.emilla.math.Calculator;
 import net.emilla.math.Maths;
 import net.emilla.settings.Aliases;
-import net.emilla.app.Apps;
 
 public final class Calculate extends CategoryCommand {
 
@@ -28,7 +28,7 @@ public final class Calculate extends CategoryCommand {
         return new Yielder(true, Calculate::new, ENTRY, NAME, ALIASES);
     }
 
-    public Calculate(AssistActivity act) {
+    private Calculate(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_calculate,
               R.drawable.ic_calculate,

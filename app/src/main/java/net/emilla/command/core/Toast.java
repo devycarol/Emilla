@@ -21,7 +21,7 @@ public final class Toast extends CoreDataCommand {
         return new Yielder(true, Toast::new, ENTRY, NAME, ALIASES);
     }
 
-    public Toast(AssistActivity act) {
+    private Toast(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_text,
               R.drawable.ic_toast,

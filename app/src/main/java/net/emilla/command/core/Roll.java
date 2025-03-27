@@ -26,7 +26,7 @@ public final class Roll extends CoreCommand {
         return new Yielder(true, Roll::new, ENTRY, NAME, ALIASES);
     }
 
-    public Roll(AssistActivity act) {
+    private Roll(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_text,
               R.drawable.ic_roll,
