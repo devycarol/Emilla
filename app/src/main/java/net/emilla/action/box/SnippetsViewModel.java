@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import net.emilla.settings.SettingVals;
-import net.emilla.util.ReplaceRange;
+import net.emilla.util.IndexWindow;
 import net.emilla.util.SortedArray;
 
 import java.util.Set;
@@ -37,11 +37,11 @@ import java.util.Set;
     }
 
     public void replaceSnippet(String label, String text, SnippetAdapter adapter) {
-        ReplaceRange range = mLabels.replace(label, label);
+        IndexWindow range = mLabels.replace(label, label);
         if (range == null) return;
 
-        if (!range.singleItem()) adapter.notifyItemMoved(range.start(), range.end());
-        adapter.notifyItemChanged(range.start());
+        if (range.size() > 1) adapter.notifyItemMoved(range.start, range.last);
+        adapter.notifyItemChanged(range.start);
 
         SettingVals.replaceSnippet(prefs, label, text);
     }

@@ -80,7 +80,7 @@ public final class SortedArray<E extends Comparable<E>> implements Iterable<E> {
     }
 
     @Nullable
-    public ReplaceRange replace(E val, E replacement) {
+    public IndexWindow replace(E val, E replacement) {
         int pos = indexOf(val);
         if (pos < 0) return null;
 
@@ -94,7 +94,7 @@ public final class SortedArray<E extends Comparable<E>> implements Iterable<E> {
         }
         mData[repl] = replacement;
 
-        return new ReplaceRange(pos, repl);
+        return new IndexWindow(pos, repl);
     }
 
     /**
