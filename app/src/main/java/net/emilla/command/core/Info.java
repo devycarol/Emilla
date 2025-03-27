@@ -8,8 +8,8 @@ import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.settings.Aliases;
 import net.emilla.app.Apps;
+import net.emilla.settings.Aliases;
 import net.emilla.util.Dialogs;
 
 public final class Info extends OpenCommand {
@@ -43,11 +43,11 @@ public final class Info extends OpenCommand {
 
     @Override
     protected void run(String app) {
-        appSearchRun(app, (pkg, cls) -> Apps.infoTask(pkg));
+        appSearchRun(app, (appEntry) -> Apps.infoTask(appEntry.pkg));
     }
 
     @Override
     protected AlertDialog.Builder makeChooser() {
-        return Dialogs.appLaunches(activity, pm());
+        return Dialogs.appLaunches(activity);
     }
 }

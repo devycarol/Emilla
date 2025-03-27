@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -13,6 +14,11 @@ import java.util.NoSuchElementException;
  * @param <E> comparable type for the array elements.
  */
 public final class SortedArray<E extends Comparable<E>> implements Iterable<E> {
+
+    @FunctionalInterface
+    public interface Converter<T, E> {
+        E convert(T val);
+    }
 
     private E[] mData;
     private int mSize;
@@ -27,6 +33,12 @@ public final class SortedArray<E extends Comparable<E>> implements Iterable<E> {
     public SortedArray(Collection<E> c) {
         mData = (E[]) new Comparable[c.size()];
         for (E val : c) addInternal(val);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> SortedArray(Collection<T> c, Converter<T, E> converter) {
+        mData = (E[]) new Comparable[c.size()];
+        for (T val : c) addInternal(converter.convert(val));
     }
 
     private void ensureCapacity() {
@@ -135,6 +147,62 @@ public final class SortedArray<E extends Comparable<E>> implements Iterable<E> {
         }
 
         return ~lo; // value not found.
+    }
+
+    @Nullable
+    public IndexWindow windowMatching(Comparable<E> comparable) {
+        int lo = 0;
+        int hi = mSize - 1;
+
+        while (lo <= hi) {
+            int mid = lo + hi >>> 1;
+            int cmp = comparable.compareTo(mData[mid]);
+
+            if (cmp > 0) lo = mid + 1;
+            else if (cmp < 0) hi = mid - 1;
+            else return new IndexWindow(firstIndexOf(comparable, lo, mid),
+                                        lastIndexOf(comparable, mid, hi));
+        }
+
+        return null; // no values found.
+    }
+
+    private int firstIndexOf(Comparable<E> comparable, int lo, int hi) {
+        int first = -1;
+
+        while (lo <= hi) {
+            int mid = lo + hi >>> 1;
+            int cmp = comparable.compareTo(mData[mid]);
+
+            if (cmp > 0) lo = mid + 1;
+            else {
+                if (cmp == 0) first = mid;
+                hi = mid - 1; // keep searching the lower half.
+            }
+        }
+
+        return first;
+    }
+
+    private int lastIndexOf(Comparable<E> comparable, int lo, int hi) {
+        int last = -1;
+
+        while (lo <= hi) {
+            int mid = lo + hi >>> 1;
+            int cmp = comparable.compareTo(mData[mid]);
+
+            if (cmp < 0) hi = mid - 1;
+            else {
+                if (cmp == 0) last = mid;
+                lo = mid + 1; // keep searching the upper half.
+            }
+        }
+
+        return last;
+    }
+
+    public List<E> elements(IndexWindow window) {
+        return Arrays.asList(Arrays.copyOfRange(mData, window.start, window.end));
     }
 
     public boolean isEmpty() {

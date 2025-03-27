@@ -3,19 +3,16 @@ package net.emilla.util;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.app.AppList;
+import net.emilla.app.Apps;
 import net.emilla.run.AppSuccess;
 import net.emilla.run.MessageFailure;
-import net.emilla.app.Apps;
-
-import java.util.List;
 
 public final class Dialogs {
 
@@ -143,15 +140,11 @@ public final class Dialogs {
         });
     }
 
-    public static AlertDialog.Builder appLaunches(AssistActivity act, PackageManager pm) {
-        return appLaunches(act, pm, act.appList());
+    public static AlertDialog.Builder appLaunches(AssistActivity act) {
+        return appLaunches(act, act.appList());
     }
 
-    public static AlertDialog.Builder appLaunches(
-        AssistActivity act,
-        PackageManager pm,
-        List<ResolveInfo> appList
-    ) {
+    public static AlertDialog.Builder appLaunches(AssistActivity act, AppList appList) {
         // TODO: due to duplicate app labels, it's important to eventually include app icons in this
         //  dialog
         // TODO: allow for alpha sort. important for screen readers (it should be on by default in
@@ -160,15 +153,15 @@ public final class Dialogs {
         //  would be helpful for everyone. basically: very accessible search interface
         // a choice between list and grid layout would be cool
         Intent[] intents = Apps.launches(appList);
-        return list(act, R.string.dialog_app, Apps.labels(appList, pm),
+        return list(act, R.string.dialog_app, Apps.labels(appList),
                 (dlg, which) -> act.succeed(new AppSuccess(act, intents[which])));
     }
 
     public static AlertDialog.Builder appUninstalls(AssistActivity act) {
-        List<ResolveInfo> appList = act.appList();
+        AppList appList = act.appList();
         var pm = act.getPackageManager();
         Intent[] intents = Apps.uninstalls(appList, pm);
-        return list(act, R.string.dialog_app, Apps.labels(appList, pm), (dlg, which) -> {
+        return list(act, R.string.dialog_app, Apps.labels(appList), (dlg, which) -> {
             if (intents[which] == null) {
                 act.fail(new MessageFailure(act, R.string.command_uninstall,
                                             R.string.error_cant_uninstall));

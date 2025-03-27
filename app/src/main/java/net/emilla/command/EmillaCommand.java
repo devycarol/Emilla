@@ -11,7 +11,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 
@@ -26,6 +25,8 @@ import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.action.QuickAction;
 import net.emilla.activity.AssistActivity;
+import net.emilla.app.AppEntry;
+import net.emilla.app.AppList;
 import net.emilla.command.app.AppCommand;
 import net.emilla.command.core.Alarm;
 import net.emilla.command.core.Bits;
@@ -71,7 +72,6 @@ import net.emilla.run.TimePickerOffering;
 import net.emilla.settings.SettingVals;
 import net.emilla.util.Dialogs;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -118,7 +118,7 @@ public abstract class EmillaCommand {
         SharedPreferences prefs,
         Resources res,
         PackageManager pm,
-        List<ResolveInfo> appList
+        AppList appList
     ) {
         CoreCommand.Yielder[] coreYielders = coreYielders();
 
@@ -129,9 +129,9 @@ public abstract class EmillaCommand {
             for (String alias : yielder.aliases(prefs, res)) map.put(alias, yielder);
         }
 
-        for (ResolveInfo ri : appList) {
+        for (AppEntry app : appList) {
             // todo: edge case where a mapped app is uninstalled during the activity lifecycle
-            var yielder = new AppCommand.Yielder(ri.activityInfo, pm);
+            var yielder = new AppCommand.Yielder(app, pm);
 
             map.put(yielder.name(), yielder);
             Set<String> aliases = yielder.aliases(prefs, res);

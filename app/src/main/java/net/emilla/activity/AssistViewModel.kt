@@ -2,16 +2,15 @@ package net.emilla.activity
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.content.pm.ResolveInfo
 import android.content.res.Resources
 import android.net.Uri
 import android.view.inputmethod.EditorInfo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
+import net.emilla.app.AppList
 import net.emilla.chime.Chimer.Companion.START
 import net.emilla.settings.SettingVals
-import net.emilla.app.Apps
 
 internal class AssistViewModel private constructor(appCtx: Context) : ViewModel() {
 
@@ -41,7 +40,7 @@ internal class AssistViewModel private constructor(appCtx: Context) : ViewModel(
     @JvmField
     val motd: String? = if (noTitlebar) null else SettingVals.motd(prefs, res)
     @JvmField
-    val appList: List<ResolveInfo> = Apps.resolveList(appCtx.packageManager)
+    val appList = AppList(appCtx.packageManager)
 
     val attachmentMap: HashMap<String, ArrayList<Uri>?> by lazy { HashMap<String, ArrayList<Uri>?>() }
         @JvmName("attachmentMap") get

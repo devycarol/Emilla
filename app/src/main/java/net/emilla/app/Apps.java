@@ -13,15 +13,11 @@ import static android.content.Intent.CATEGORY_LAUNCHER;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.Settings;
-
-import androidx.annotation.Nullable;
 
 import net.emilla.BuildConfig;
 import net.emilla.activity.EmillaActivity;
@@ -40,11 +36,11 @@ public final class Apps {
         return pm.queryIntentActivities(filter, 0);
     }
 
-    public static Intent launchIntent(ActivityInfo info) {
-        return launchIntent(info.packageName, info.name);
+    public static Intent launchIntent(AppEntry info) {
+        return launchIntent(info.pkg, info.cls);
     }
 
-    public static Intent launchIntent(String pkg, String cls) {
+    private static Intent launchIntent(String pkg, String cls) {
         return launchIntent(new ComponentName(pkg, cls));
     }
 
@@ -105,31 +101,21 @@ public final class Apps {
         return new Intent(ctx, cls);
     }
 
-    public static CharSequence[] labels(List<ResolveInfo> appList, PackageManager pm) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            return appList.parallelStream()
-                    .map(ri -> ri.activityInfo.loadLabel(pm))
-                    .toArray(CharSequence[]::new);
-        }
+    public static CharSequence[] labels(AppList appList) {
         var labels = new CharSequence[appList.size()];
         int i = 0;
-        for (ResolveInfo ri : appList) {
-            labels[i] = ri.activityInfo.packageName;
+        for (AppEntry app : appList) {
+            labels[i] = app.label;
             ++i;
         }
         return labels;
     }
 
-    public static Intent[] launches(List<ResolveInfo> appList) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            return appList.parallelStream()
-                    .map(ri -> launchIntent(ri.activityInfo))
-                    .toArray(Intent[]::new);
-        }
+    public static Intent[] launches(AppList appList) {
         var intents = new Intent[appList.size()];
         int i = 0;
-        for (ResolveInfo ri : appList) {
-            intents[i] = launchIntent(ri.activityInfo);
+        for (AppEntry app : appList) {
+            intents[i] = launchIntent(app);
             ++i;
         }
         return intents;
@@ -139,7 +125,16 @@ public final class Apps {
         return Uri.parse("package:" + pkg);
     }
 
-    @Nullable
+    public static Intent[] uninstalls(AppList appList, PackageManager pm) {
+        var intents = new Intent[appList.size()];
+        int i = 0;
+        for (AppEntry app : appList) {
+            intents[i] = uninstallIntent(app.pkg, pm);
+            ++i;
+        }
+        return intents;
+    }
+
     public static Intent uninstallIntent(String pkg, PackageManager pm) {
     try {
         var info = pm.getApplicationInfo(pkg, 0);
@@ -152,22 +147,7 @@ public final class Apps {
         var settings = new Intent(Settings.ACTION_SETTINGS);
         if (appInfo.resolveActivity(pm) != null) return settings;
     } catch (PackageManager.NameNotFoundException ignored) {}
-        return null;
-    }
-
-    public static Intent[] uninstalls(List<ResolveInfo> appList, PackageManager pm) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            return appList.parallelStream()
-                    .map(ri -> uninstallIntent(ri.activityInfo.packageName, pm))
-                    .toArray(Intent[]::new);
-        }
-        var intents = new Intent[appList.size()];
-        int i = 0;
-        for (ResolveInfo ri : appList) {
-            intents[i] = uninstallIntent(ri.activityInfo.packageName, pm);
-            ++i;
-        }
-        return intents;
+        throw new IllegalStateException();
     }
 
     private Apps() {}

@@ -1,7 +1,6 @@
 package net.emilla.command.core;
 
 import android.content.Intent;
-import android.content.pm.ResolveInfo;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.DrawableRes;
@@ -10,10 +9,9 @@ import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.app.AppList;
 import net.emilla.app.Apps;
 import net.emilla.util.Dialogs;
-
-import java.util.List;
 
 public abstract class CategoryCommand extends CoreCommand {
 
@@ -34,16 +32,16 @@ public abstract class CategoryCommand extends CoreCommand {
               imeAction);
     }
 
-    private List<ResolveInfo> mAppList;
+    private AppList mAppList;
     private AlertDialog mChooser;
 
     @Override @CallSuper
     protected void onInit() {
         super.onInit();
 
-        mAppList = Apps.resolveList(pm(), makeFilter());
+        if (mAppList == null) mAppList = new AppList(pm(), makeFilter());
         if (mAppList.size() > 1) {
-            mChooser = Dialogs.appLaunches(activity, pm(), mAppList).create();
+            mChooser = Dialogs.appLaunches(activity, mAppList).create();
         }
     }
 
@@ -61,7 +59,7 @@ public abstract class CategoryCommand extends CoreCommand {
     protected final void run() {
         switch (mAppList.size()) {
         case 0 -> throw badCommand(R.string.error_no_app);
-        case 1 -> appSucceed(Apps.launchIntent(mAppList.get(0).activityInfo));
+        case 1 -> appSucceed(Apps.launchIntent(mAppList.get(0)));
         default -> offerDialog(mChooser);
         // todo: allow to select a default app, ensuring that the preference is cleared if ever the
         //  default is no longer installed or a new candidate is installed

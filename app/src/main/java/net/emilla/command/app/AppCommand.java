@@ -4,7 +4,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
@@ -16,11 +15,12 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.app.AppEntry;
+import net.emilla.app.Apps;
 import net.emilla.command.CommandYielder;
 import net.emilla.command.EmillaCommand;
 import net.emilla.lang.Lang;
 import net.emilla.settings.Aliases;
-import net.emilla.app.Apps;
 
 import java.util.Set;
 
@@ -54,9 +54,9 @@ public /*open*/ class AppCommand extends EmillaCommand {
         private final boolean mUsesInstruction;
         private final CharSequence mName;
 
-        public Yielder(ActivityInfo info, PackageManager pm) {
-            mPkg = info.packageName;
-            cls = info.name;
+        public Yielder(AppEntry info, PackageManager pm) {
+            mPkg = info.pkg;
+            cls = info.cls;
             mHasSend = Apps.sendToApp(mPkg).resolveActivity(pm) != null;
 
             mUsesInstruction = switch (mPkg) {
@@ -68,10 +68,7 @@ public /*open*/ class AppCommand extends EmillaCommand {
                 default -> mHasSend;
             }; // Todo: handle in a more centralized way, this is tedious and error-prone.
 
-            mName = info.loadLabel(pm);
-            // TODO: this is the biggest performance bottleneck I've found so far. Look into how the
-            //  launcher caches labels for ideas on how to improve the performance of this critical
-            //  onCreate task. That is, if they do to begin with..
+            mName = info.label;
         }
 
         @Override

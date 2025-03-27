@@ -25,7 +25,6 @@ import static java.util.Objects.requireNonNull;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -54,6 +53,7 @@ import net.emilla.action.CursorStart;
 import net.emilla.action.Help;
 import net.emilla.action.PlayPause;
 import net.emilla.action.QuickAction;
+import net.emilla.app.AppList;
 import net.emilla.command.CommandMap;
 import net.emilla.command.DataCommand;
 import net.emilla.command.EmillaCommand;
@@ -85,7 +85,6 @@ import net.emilla.util.Strings;
 import net.emilla.view.ActionButton;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public final class AssistActivity extends EmillaActivity {
 
@@ -379,11 +378,10 @@ public final class AssistActivity extends EmillaActivity {
             if (box.hasFocus()) mBinding.commandField.requestFocus();
             box.setVisibility(View.GONE);
             return false;
-        } else {
-            box.setVisibility(View.VISIBLE);
-            box.requestFocus();
-            return true;
         }
+        box.setVisibility(View.VISIBLE);
+        box.requestFocus();
+        return true;
     }
 
     public void reshowField(@IdRes int id) {
@@ -483,7 +481,7 @@ public final class AssistActivity extends EmillaActivity {
         return mVm.prefs;
     }
 
-    public List<ResolveInfo> appList() {
+    public AppList appList() {
         return mVm.appList;
     }
 

@@ -8,8 +8,8 @@ import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.settings.Aliases;
 import net.emilla.app.Apps;
+import net.emilla.settings.Aliases;
 import net.emilla.util.Dialogs;
 
 public final class Uninstall extends OpenCommand {
@@ -41,7 +41,7 @@ public final class Uninstall extends OpenCommand {
 
     @Override
     protected void run(String app) {
-        appSearchRun(app, (pkg, cls) -> Apps.uninstallIntent(pkg, pm()));
+        appSearchRun(app, (appEntry) -> Apps.uninstallIntent(appEntry.pkg, pm()));
     }
 
     @Override
