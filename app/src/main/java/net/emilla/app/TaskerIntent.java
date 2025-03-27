@@ -3,6 +3,7 @@
 
 package net.emilla.app;
 
+import static net.emilla.BuildConfig.DEBUG;
 import static net.emilla.app.TaskerIntent.Status.NOT_ENABLED;
 import static net.emilla.app.TaskerIntent.Status.NO_ACCESS;
 import static net.emilla.app.TaskerIntent.Status.NO_PERMISSION;
@@ -182,7 +183,7 @@ public final class TaskerIntent extends Intent {
 
     public TaskerIntent setTaskPriority(int priority) {
         if (validatePriority(priority)) putExtra(EXTRA_TASK_PRIORITY, priority);
-        else Log.e(TAG, "priority out of range: " + MIN_PRIORITY + ":" + MAX_PRIORITY);
+        else if (DEBUG) Log.e(TAG, "priority out of range: " + MIN_PRIORITY + ":" + MAX_PRIORITY);
 
         return this;
     }
@@ -197,7 +198,7 @@ public final class TaskerIntent extends Intent {
             if (varNames != null) index = varNames.size() + 1;
         }
 
-//        Log.d(TAG, "index: " + index);
+        if (DEBUG) Log.d(TAG, "index: " + index);
 
         addLocalVariable("%" + PARAM_VAR_NAME_PREFIX + index, value);
 
@@ -317,12 +318,12 @@ public final class TaskerIntent extends Intent {
         Bundle actionBundle = null;
 
         if (mArgCount > MAX_ARGS) {
-            Log.e(TAG, "maximum number of arguments exceeded (" + MAX_ARGS + ")");
+            if (DEBUG) Log.e(TAG, "maximum number of arguments exceeded (" + MAX_ARGS + ")");
         } else {
             String key = EXTRA_ACTION_INDEX_PREFIX + mActionCount;
 
             if (this.hasExtra(key)) actionBundle = getBundleExtra(key);
-            else Log.e(TAG, "no actions added yet");
+            else if (DEBUG) Log.e(TAG, "no actions added yet");
         }
 
         return actionBundle;
@@ -342,8 +343,9 @@ public final class TaskerIntent extends Intent {
 
         boolean notAccepting = true;
 
-        if (c == null) Log.w(TAG, "no cursor for " + TASKER_PREFS_URI);
-        else {
+        if (c == null) {
+            if (DEBUG) Log.w(TAG, "no cursor for " + TASKER_PREFS_URI);
+        } else {
             c.moveToFirst();
 
             if (Boolean.TRUE.toString().equals(c.getString(0))) notAccepting = false;

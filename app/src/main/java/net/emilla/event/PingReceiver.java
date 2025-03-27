@@ -1,5 +1,7 @@
 package net.emilla.event;
 
+import static net.emilla.BuildConfig.DEBUG;
+
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -17,6 +19,6 @@ public final class PingReceiver extends BroadcastReceiver {
     @Override @SuppressLint("MissingPermission")
     public void onReceive(Context ctx, Intent intent) {
         if (Permissions.pings(ctx)) Pinger.of(ctx, new PingIntent(intent)).ping();
-        else Log.e(TAG, "Unable to ping due to lack of permission.");
+        else if (DEBUG) Log.e(TAG, "Unable to ping due to lack of permission.");
     }
 }

@@ -1,5 +1,7 @@
 package net.emilla.content.retrieve;
 
+import static net.emilla.BuildConfig.DEBUG;
+
 import android.content.ActivityNotFoundException;
 import android.util.Log;
 
@@ -33,7 +35,7 @@ import net.emilla.run.MessageFailure;
     @Deprecated
     protected final boolean alreadyHas(C receiver) {
         if (mReceiver != null) {
-            Log.d(TAG, "retrieve: result launcher already engaged. Not launching again.");
+            if (DEBUG) Log.d(TAG, "retrieve: result launcher already engaged. Not launching again.");
             return true;
         }
         mReceiver = receiver;
