@@ -38,10 +38,6 @@ public final class Calendar extends CoreDataCommand {
         return new Yielder(true, Calendar::new, ENTRY, NAME, ALIASES);
     }
 
-    // Todo: Etar is broken if already open. May be a flags issue?
-    private final Intent mIntent = Apps.insertTask(Events.CONTENT_URI, "vnd.android.cursor.dir/event");
-    private FieldToggle mLocationToggle, mUrlToggle;
-
     private Calendar(AssistActivity act) {
         super(act, NAME,
               R.string.instruction_calendar,
@@ -50,6 +46,8 @@ public final class Calendar extends CoreDataCommand {
               R.string.manual_calendar,
               R.string.data_hint_calendar);
     }
+
+    private FieldToggle mLocationToggle, mUrlToggle;
 
     @Override
     protected void onInit() {
@@ -73,57 +71,66 @@ public final class Calendar extends CoreDataCommand {
         hideField(UrlField.FIELD_ID);
     }
 
-    private void putTitleAndDate(String title) {
-        // todo: clean this up
-        var m = Pattern.compile(" */all(day)?", CASE_INSENSITIVE).matcher(title);
-        if (m.find()) {
-            title = m.replaceFirst("");
-            mIntent.putExtra(EXTRA_EVENT_ALL_DAY, true);
-        }
-        var nameAndTime = title.split(" *\\| *");
-        switch (nameAndTime.length) {
-        case 1 -> {}
-        case 2 -> {
-            title = nameAndTime[0];
-            long[] times = Time.parseDateAndTimes(nameAndTime[1], NAME);
-            mIntent.putExtra(EXTRA_EVENT_BEGIN_TIME, times[0]);
-            if (times[1] != 0) mIntent.putExtra(EXTRA_EVENT_END_TIME, times[1]);
-        }
-        default -> throw badCommand(R.string.error_multiple_dates);
-        }
-        if (!title.isEmpty()) mIntent.putExtra(TITLE, title);
-    }
-
     @Override
     protected void run() {
-        String location = mLocationToggle.fieldText();
-        if (location != null) mIntent.putExtra(EVENT_LOCATION, location);
-        String url = mUrlToggle.fieldText();
-        if (url != null) mIntent.putExtra("url", url);
-        // todo: is there a way to query supported extras?
-        // Todo: action buttons to select availability, access level, and guests—last requires contacts
-        //  stuff. If possible also: reminders, repeats, timezone, event color, and calendar selection.
-        appSucceed(mIntent);
-        // todo: etar calendar acts really janky in the recents which causes unwanted event-saving
-        // it also flashes white on start even in the dark (black, LineageOS) theme
+        calendar(makeIntent());
     }
 
     @Override
     protected void run(String titleAndDate) {
-        putTitleAndDate(titleAndDate);
-        run();
+        calendar(makeIntent(titleAndDate));
     }
 
     @Override
     protected void runWithData(String details) {
-        mIntent.putExtra(DESCRIPTION, details);
-        run();
+        calendar(makeIntent().putExtra(DESCRIPTION, details));
     }
 
     @Override
     protected void runWithData(String titleAndDate, String details) {
-        putTitleAndDate(titleAndDate);
-        mIntent.putExtra(DESCRIPTION, details);
-        run();
+        calendar(makeIntent(titleAndDate).putExtra(DESCRIPTION, details));
+    }
+
+    private static Intent makeIntent() {
+        return Apps.insertTask(Events.CONTENT_URI, "vnd.android.cursor.dir/event");
+        // Todo: Etar is broken if already open. May be a flags issue?
+    }
+
+    private Intent makeIntent(String titleAndDate) {
+        Intent intent = makeIntent();
+
+        // todo: clean this up
+        var m = Pattern.compile(" */all(day)?", CASE_INSENSITIVE).matcher(titleAndDate);
+        if (m.find()) {
+            titleAndDate = m.replaceFirst("");
+            intent.putExtra(EXTRA_EVENT_ALL_DAY, true);
+        }
+        var nameAndTime = titleAndDate.split(" *\\| *");
+        switch (nameAndTime.length) {
+        case 1 -> {}
+        case 2 -> {
+            titleAndDate = nameAndTime[0];
+            long[] times = Time.parseDateAndTimes(nameAndTime[1], NAME);
+            intent.putExtra(EXTRA_EVENT_BEGIN_TIME, times[0]);
+            if (times[1] != 0) intent.putExtra(EXTRA_EVENT_END_TIME, times[1]);
+        }
+        default -> throw badCommand(R.string.error_multiple_dates);
+        }
+        if (!titleAndDate.isEmpty()) intent.putExtra(TITLE, titleAndDate);
+
+        return intent;
+    }
+
+    private void calendar(Intent intent) {
+        String location = mLocationToggle.fieldText();
+        if (location != null) intent.putExtra(EVENT_LOCATION, location);
+        String url = mUrlToggle.fieldText();
+        if (url != null) intent.putExtra("url", url);
+        // todo: is there a way to query supported extras?
+        // Todo: action buttons to select availability, access level, and guests—last requires contacts
+        //  stuff. If possible also: reminders, repeats, timezone, event color, and calendar selection.
+        appSucceed(intent);
+        // todo: etar calendar acts really janky in the recents which causes unwanted event-saving
+        // it also flashes white on start even in the dark (LineageOS black) theme
     }
 }
