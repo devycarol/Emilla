@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 
 import androidx.annotation.ArrayRes;
 import androidx.annotation.DrawableRes;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.content.res.AppCompatResources;
 
@@ -168,6 +169,7 @@ public abstract class CoreCommand extends EmillaCommand {
             return res.getString(mName);
         }
 
+        @Nullable
         public Set<String> aliases(SharedPreferences prefs, Resources res) {
             return Aliases.coreSet(prefs, res, mEntry, mAliases);
         }

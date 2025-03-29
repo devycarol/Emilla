@@ -3,4 +3,8 @@
     <declare-styleable name="ActionButton">
         <attr name="colorSucceed" format="color" />
     </declare-styleable>
+
+    <declare-styleable name="CommandPreference">
+        <attr name="commandPreferenceStyle" format="reference" />
+    </declare-styleable>
 </resources>

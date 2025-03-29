@@ -127,20 +127,23 @@ public abstract class EmillaCommand {
         for (CoreCommand.Yielder yielder : coreYielders) {
             if (yielder.enabled(pm, prefs)) {
                 map.put(yielder.name(res), yielder);
-                for (String alias : yielder.aliases(prefs, res)) {
-                    map.put(alias, yielder);
-                }
+
+                Set<String> aliases = yielder.aliases(prefs, res);
+                if (aliases == null) continue;
+                for (String alias : aliases) map.put(alias, yielder);
             }
         }
 
         for (AppEntry app : appList) {
-            // todo: edge case where a mapped app is uninstalled during the activity lifecycle
-            var yielder = new AppCommand.Yielder(app, pm);
+            if (app.commandEnabled(prefs)) {
+                // todo: edge case where a mapped app is uninstalled during the activity lifecycle
+                var yielder = new AppCommand.Yielder(app, pm);
+                map.put(yielder.name(), yielder);
 
-            map.put(yielder.name(), yielder);
-            Set<String> aliases = yielder.aliases(prefs, res);
-            if (aliases == null) continue; // Todo: alias config for all apps.
-            for (String alias : aliases) map.put(alias, yielder);
+                Set<String> aliases = yielder.aliases(prefs, res);
+                if (aliases == null) continue;
+                for (String alias : aliases) map.put(alias, yielder);
+            }
         }
 
         Set<String> customs = SettingVals.customCommands(prefs);

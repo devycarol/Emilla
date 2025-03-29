@@ -11,11 +11,7 @@
         <item name="allowDividerBelow">false</item>
     </style>
 
-    <style name="Preference.DialogPreference.Emilla" parent="Preference.DialogPreference.Material">
-        <item name="iconSpaceReserved">false</item>
-    </style>
-
-    <style name="Preference.DialogPreference.EditTextPreference.Emilla" parent="Preference.DialogPreference.EditTextPreference.Material">
+    <style name="Preference.Emilla" parent="Preference.Material">
         <item name="iconSpaceReserved">false</item>
     </style>
 
@@ -23,16 +19,25 @@
         <item name="iconSpaceReserved">false</item>
     </style>
 
-    <style name="Preference.Emilla" parent="Preference.Material">
+    <style name="Preference.DialogPreference.Emilla" parent="Preference.DialogPreference.Material">
         <item name="iconSpaceReserved">false</item>
+    </style>
+
+    <style name="Preference.EditTextPreference.Emilla" parent="Preference.DialogPreference.EditTextPreference.Material">
+        <item name="iconSpaceReserved">false</item>
+    </style>
+
+    <style name="Preference.CommandPreference.Emilla" parent="Preference.EditTextPreference.Emilla">
+        <item name="android:widgetLayout">@layout/prefrence_widget_switch</item>
     </style>
 
     <style name="SettingsTheme" parent="PreferenceThemeOverlay">
         <item name="preferenceCategoryStyle">@style/Preference.Category.Emilla</item>
-        <item name="dialogPreferenceStyle">@style/Preference.DialogPreference.Emilla</item>
-        <item name="editTextPreferenceStyle">@style/Preference.DialogPreference.EditTextPreference.Emilla</item>
         <item name="preferenceStyle">@style/Preference.Emilla</item>
         <item name="switchPreferenceStyle">@style/Preference.SwitchPreference.Emilla</item>
+        <item name="dialogPreferenceStyle">@style/Preference.DialogPreference.Emilla</item>
+        <item name="editTextPreferenceStyle">@style/Preference.EditTextPreference.Emilla</item>
+        <item name="commandPreferenceStyle">@style/Preference.CommandPreference.Emilla</item>
     </style>
 
     <style name="EmillaPreferenceCategoryTitleTextStyle">

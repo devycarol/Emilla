@@ -1,8 +1,11 @@
 package net.emilla.app;
 
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+
+import net.emilla.settings.SettingVals;
 
 import java.util.List;
 
@@ -41,5 +44,9 @@ public final class AppEntry implements Comparable<AppEntry> {
 
     public String label() {
         return mLabel != null ? mLabel : (mLabel = label.toString());
+    }
+
+    public boolean commandEnabled(SharedPreferences prefs) {
+        return SettingVals.appEnabled(prefs, pkg);
     }
 }

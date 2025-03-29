@@ -10,28 +10,35 @@ import java.util.Set;
 
 public final class Aliases {
 
-    public static String textKey(String entry) {
-        return "aliases_" + entry + "_text";
-    }
-
-    public static Set<String> coreSet(
-        SharedPreferences prefs,
-        Resources res,
-        String commandEntry,
-        @ArrayRes int aliases
-    ) {
-        return prefs.getStringSet("aliases_" + commandEntry, Set.of(res.getStringArray(aliases)));
-    }
-
     @Nullable
     public static Set<String> appSet(
         SharedPreferences prefs,
         Resources res,
-        String pkg,
+        String entry,
         @ArrayRes int setId
     ) {
-        if (setId == 0) return null;
-        return prefs.getStringSet("aliases_" + pkg, Set.of(res.getStringArray(setId)));
+        return setId == 0 ? prefs.getStringSet(setKey(entry), null)
+                          : coreSet(prefs, res, entry, setId);
+    }
+
+    @Nullable
+    public static Set<String> coreSet(
+        SharedPreferences prefs,
+        Resources res,
+        String entry,
+        @ArrayRes int setId
+    ) {
+        Set<String> set = Set.of(res.getStringArray(setId));
+        set = prefs.getStringSet(setKey(entry), set);
+        return set.isEmpty() ? null : set;
+    }
+
+    public static String setKey(String entry) {
+        return "aliases_" + entry;
+    }
+
+    public static String textKey(String entry) {
+        return "aliases_" + entry + "_text";
     }
 
     private Aliases() {}

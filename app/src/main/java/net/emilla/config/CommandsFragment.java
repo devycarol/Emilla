@@ -12,7 +12,6 @@ import androidx.preference.EditTextPreference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
 
 import net.emilla.R;
-import net.emilla.activity.EmillaActivity;
 import net.emilla.command.app.AospContacts;
 import net.emilla.command.app.AppCommand;
 import net.emilla.command.app.Discord;
@@ -58,6 +57,7 @@ import net.emilla.command.core.Torch;
 import net.emilla.command.core.Weather;
 import net.emilla.command.core.Web;
 import net.emilla.settings.Aliases;
+import net.emilla.settings.CommandPreference;
 import net.emilla.settings.SettingVals;
 
 import java.util.ArrayList;
@@ -67,7 +67,6 @@ import java.util.Set;
 
 public final class CommandsFragment extends EmillaSettingsFragment {
 
-    private EmillaActivity mActivity;
     private SharedPreferences mPrefs;
     private Resources mRes;
     private PackageManager mPm;
@@ -76,10 +75,9 @@ public final class CommandsFragment extends EmillaSettingsFragment {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.command_prefs, rootKey);
 
-        mActivity = emillaActivity();
         mPrefs = prefs();
         mRes = getResources();
-        mPm = mActivity.getPackageManager();
+        mPm = emillaActivity().getPackageManager();
 
         OnPreferenceChangeListener listener = (pref, newVal) -> {
             String textKey = pref.getKey();
@@ -88,7 +86,7 @@ public final class CommandsFragment extends EmillaSettingsFragment {
             var vals = correctedText.split(" *, *");
             Set<String> aliases = Set.of(vals);
             var joined = String.join(", ", aliases);
-            ((EditTextPreference) pref).setText(joined);
+            ((CommandPreference) pref).setText(joined);
             mPrefs.edit()
                   .putString(textKey, joined)
                   .putStringSet(setKey, aliases)
@@ -141,12 +139,12 @@ public final class CommandsFragment extends EmillaSettingsFragment {
     ) {
         String enabledKey = SettingVals.commandEnabledKey(entry);
         if (CoreCommand.possible(mPm, entry)) {
-//            if (!mPrefs.contains(enabledKey)) {
+            if (!mPrefs.contains(enabledKey)) {
                 mPrefs.edit().putBoolean(enabledKey, true).apply();
                 // TODO: actually allow to toggle this setting.
-//            }
+            }
             String textKey = Aliases.textKey(entry);
-            EditTextPreference cmdPref = preferenceOf(textKey);
+            CommandPreference cmdPref = preferenceOf(textKey);
             String setKey = textKey.substring(0, textKey.length() - 5);
             setupPref(cmdPref, setKey, listener, mRes, aliases);
         } else {
@@ -156,7 +154,7 @@ public final class CommandsFragment extends EmillaSettingsFragment {
     }
 
     private void setupPref(
-        EditTextPreference cmdPref,
+        CommandPreference cmdPref,
         String setKey,
         OnPreferenceChangeListener listener,
         Resources res,
@@ -168,7 +166,7 @@ public final class CommandsFragment extends EmillaSettingsFragment {
     }
 
     private void deactivate(String entry, boolean implemented) {
-        EditTextPreference cmdPref = preferenceOf(Aliases.textKey(entry));
+        CommandPreference cmdPref = preferenceOf(Aliases.textKey(entry));
         cmdPref.setEnabled(false);
 //        if (implemented) cmdPref.setOnPreferenceClickListener(pref -> {
 //            mActivity.toast(R.string.toast_command_unsupported);
@@ -201,7 +199,7 @@ public final class CommandsFragment extends EmillaSettingsFragment {
     }
 
     private void setupAppPref(String pkg, OnPreferenceChangeListener listener) {
-        EditTextPreference appCmdPref = preferenceOf("aliases_" + pkg + "_text");
+        CommandPreference appCmdPref = preferenceOf(Aliases.textKey(pkg));
     try {
         var info = mPm.getApplicationInfo(pkg, 0);
         CharSequence label = mPm.getApplicationLabel(info);
@@ -209,7 +207,7 @@ public final class CommandsFragment extends EmillaSettingsFragment {
         // this uses the application icon and doesn't account for multiple launcher icons yet
         Drawable appIcon = mPm.getApplicationIcon(pkg);
         appCmdPref.setIcon(appIcon);
-        setupPref(appCmdPref, "aliases_" + pkg, listener, mRes, AppCommand.aliasId(pkg, Markor.CLS_MAIN /*Todo: procedurally generate these prefs*/));
+        setupPref(appCmdPref, Aliases.setKey(pkg), listener, mRes, AppCommand.aliasId(pkg, Markor.CLS_MAIN));
     } catch (PackageManager.NameNotFoundException e) {
         appCmdPref.setVisible(false);
     }}

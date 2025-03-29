@@ -72,6 +72,11 @@ public final class SettingVals {
         // be sure to still write exception-safe code.
     }
 
+    public static boolean appEnabled(SharedPreferences prefs, String pkg) {
+        String key = commandEnabledKey(pkg);
+        return prefs.getBoolean(key, true /*allowProprietary(prefs) || isFoss(pkg)*/);
+    }
+
     public static String commandEnabledKey(String entry) {
         return "cmd_" + entry + "_enabled";
     }
