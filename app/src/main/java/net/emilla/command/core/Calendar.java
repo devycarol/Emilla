@@ -38,7 +38,7 @@ public final class Calendar extends CoreDataCommand {
     }
 
     public static boolean possible(PackageManager pm) {
-        return canDo(pm, makeIntent());
+        return Apps.canDo(pm, makeIntent());
     }
 
     private Calendar(AssistActivity act) {

@@ -34,7 +34,7 @@ public final class Share extends CoreDataCommand implements AppChoiceReceiver {
     }
 
     public static boolean possible(PackageManager pm) {
-        return canDo(pm, Apps.sendTask("text/plain"));
+        return Apps.canDo(pm, Apps.sendTask("text/plain"));
     }
 
     private FileFetcher mFileFetcher;

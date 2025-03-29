@@ -108,6 +108,10 @@ public final class Apps {
         return new Intent(ctx, cls);
     }
 
+    public static boolean canDo(PackageManager pm, Intent intent) {
+        return pm.resolveActivity(intent, 0) != null;
+    }
+
     public static String[] labels(AppList apps) {
         var labels = new String[apps.size()];
         int i = 0;

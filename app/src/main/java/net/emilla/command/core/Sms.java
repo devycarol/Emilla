@@ -35,7 +35,7 @@ public final class Sms extends CoreDataCommand implements PhoneReceiver {
     }
 
     public static boolean possible(PackageManager pm) {
-        return Features.sms(pm) || canDo(pm, Apps.sendTask(Uri.parse("smsto:")));
+        return Features.sms(pm) || Apps.canDo(pm, Apps.sendTask(Uri.parse("smsto:")));
     }
 
     @Override

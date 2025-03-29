@@ -28,9 +28,9 @@ public final class Web extends CoreCommand {
     }
 
     public static boolean possible(PackageManager pm) {
-        return canDo(pm, new Intent(ACTION_WEB_SEARCH))
-            || canDo(pm, Apps.viewTask("https:"))
-            || canDo(pm, Apps.viewTask("http:"));
+        return Apps.canDo(pm, new Intent(ACTION_WEB_SEARCH))
+            || Apps.canDo(pm, Apps.viewTask("https:"))
+            || Apps.canDo(pm, Apps.viewTask("http:"));
     }
 
     public static final String DFLT_SEARCH_ENGINES = """

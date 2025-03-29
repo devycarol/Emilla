@@ -21,6 +21,7 @@ import net.emilla.action.MediaFetcher;
 import net.emilla.action.field.FieldToggle;
 import net.emilla.action.field.SubjectField;
 import net.emilla.activity.AssistActivity;
+import net.emilla.app.Apps;
 import net.emilla.contact.fragment.ContactEmailsFragment;
 import net.emilla.content.receive.EmailReceiver;
 
@@ -39,7 +40,7 @@ public final class Email extends CoreDataCommand implements EmailReceiver {
     }
 
     public static boolean possible(PackageManager pm) {
-        return canDo(pm, new Intent(ACTION_SENDTO, Uri.parse("mailto:")));
+        return Apps.canDo(pm, new Intent(ACTION_SENDTO, Uri.parse("mailto:")));
     }
 
     private FieldToggle mSubjectToggle;

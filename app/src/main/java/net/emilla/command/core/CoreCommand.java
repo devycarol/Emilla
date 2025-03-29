@@ -1,7 +1,6 @@
 package net.emilla.command.core;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -64,10 +63,6 @@ public abstract class CoreCommand extends EmillaCommand {
             case Toast.ENTRY -> Toast.possible();
             default -> throw new IllegalArgumentException("No such command \"" + entry + "\".");
         };
-    }
-
-    protected static boolean canDo(PackageManager pm, Intent intent) {
-        return pm.resolveActivity(intent, 0) != null;
     }
 
     public record CoreParams(

@@ -25,7 +25,7 @@ public final class Navigate extends CategoryCommand {
     }
 
     public static boolean possible(PackageManager pm) {
-        return canDo(pm, Apps.viewTask("geo:"));
+        return Apps.canDo(pm, Apps.viewTask("geo:"));
     }
 
     private Navigate(AssistActivity act) {

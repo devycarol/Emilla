@@ -14,6 +14,7 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.app.Apps;
 import net.emilla.util.Time;
 
 public final class Timer extends CoreDataCommand {
@@ -29,7 +30,7 @@ public final class Timer extends CoreDataCommand {
     }
 
     public static boolean possible(PackageManager pm) {
-        return canDo(pm, makeIntent());
+        return Apps.canDo(pm, makeIntent());
     }
 
     private Timer(AssistActivity act) {

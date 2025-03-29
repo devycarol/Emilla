@@ -37,10 +37,10 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
     }
 
     public static boolean possible(PackageManager pm) {
-        return canDo(pm, Apps.viewTask(Contacts.CONTENT_URI, Contacts.CONTENT_TYPE))
-            || canDo(pm, Apps.editTask(Contacts.CONTENT_URI, Contacts.CONTENT_TYPE))
-            || canDo(pm, Apps.sendTask(Contacts.CONTENT_VCARD_TYPE))
-            || canDo(pm, Apps.insertTask(Contacts.CONTENT_TYPE));
+        return Apps.canDo(pm, Apps.viewTask(Contacts.CONTENT_URI, Contacts.CONTENT_TYPE))
+            || Apps.canDo(pm, Apps.editTask(Contacts.CONTENT_URI, Contacts.CONTENT_TYPE))
+            || Apps.canDo(pm, Apps.sendTask(Contacts.CONTENT_VCARD_TYPE))
+            || Apps.canDo(pm, Apps.insertTask(Contacts.CONTENT_TYPE));
     }
 
     private enum Action {

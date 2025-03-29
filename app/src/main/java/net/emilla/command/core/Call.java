@@ -13,6 +13,7 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.app.Apps;
 import net.emilla.contact.fragment.ContactPhonesFragment;
 import net.emilla.content.receive.PhoneReceiver;
 import net.emilla.util.Contacts;
@@ -33,7 +34,7 @@ public final class Call extends CoreCommand implements PhoneReceiver {
     }
 
     public static boolean possible(PackageManager pm) {
-        return Features.phone(pm) || canDo(pm, makeIntent(""));
+        return Features.phone(pm) || Apps.canDo(pm, makeIntent(""));
     }
 
     private ContactPhonesFragment mContactsFragment;

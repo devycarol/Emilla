@@ -12,6 +12,7 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.app.Apps;
 
 public final class Dial extends CoreCommand {
 
@@ -26,7 +27,7 @@ public final class Dial extends CoreCommand {
     }
 
     public static boolean possible(PackageManager pm) {
-        return canDo(pm, new Intent(ACTION_DIAL));
+        return Apps.canDo(pm, new Intent(ACTION_DIAL));
     }
 
     private Dial(AssistActivity act) {

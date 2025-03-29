@@ -26,7 +26,7 @@ public final class Weather extends CategoryCommand {
     }
 
     public static boolean possible(PackageManager pm) {
-        return canDo(pm, Apps.categoryTask(CATEGORY_APP_WEATHER));
+        return Apps.canDo(pm, Apps.categoryTask(CATEGORY_APP_WEATHER));
     }
 
     private Weather(AssistActivity act) {

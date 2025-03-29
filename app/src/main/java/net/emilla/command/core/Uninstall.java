@@ -29,10 +29,10 @@ public final class Uninstall extends OpenCommand {
     }
 
     public static boolean possible(PackageManager pm) {
-        return canDo(pm, new Intent(ACTION_UNINSTALL_PACKAGE, Apps.pkgUri("")))
+        return Apps.canDo(pm, new Intent(ACTION_UNINSTALL_PACKAGE, Apps.pkgUri("")))
             // todo: ACTION_UNINSTALL_PACKAGE is deprecated?
-            || canDo(pm, Apps.infoTask(""))
-            || canDo(pm, new Intent(Settings.ACTION_SETTINGS));
+            || Apps.canDo(pm, Apps.infoTask(""))
+            || Apps.canDo(pm, new Intent(Settings.ACTION_SETTINGS));
     }
 
     private Uninstall(AssistActivity act) {

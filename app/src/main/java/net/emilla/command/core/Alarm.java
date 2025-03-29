@@ -15,6 +15,7 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.app.Apps;
 import net.emilla.lang.Lang;
 import net.emilla.lang.date.HourMin;
 import net.emilla.lang.date.Weekdays;
@@ -32,7 +33,7 @@ public final class Alarm extends CoreDataCommand {
     }
 
     public static boolean possible(PackageManager pm) {
-        return canDo(pm, makeIntent()) || canDo(pm, new Intent(ACTION_SET_ALARM));
+        return Apps.canDo(pm, makeIntent()) || Apps.canDo(pm, new Intent(ACTION_SET_ALARM));
     }
 
     private Alarm(AssistActivity act) {

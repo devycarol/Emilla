@@ -25,7 +25,7 @@ public final class Info extends OpenCommand {
     }
 
     public static boolean possible(PackageManager pm) {
-        return canDo(pm, Apps.infoTask(""));
+        return Apps.canDo(pm, Apps.infoTask(""));
     }
 
     private Info(AssistActivity act) {
