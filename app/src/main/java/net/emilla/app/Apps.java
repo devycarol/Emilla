@@ -28,6 +28,10 @@ public final class Apps {
 
     public static final String MY_PKG = BuildConfig.APPLICATION_ID;
 
+    public static String entry(String pkg, String cls) {
+        return pkg + "/" + cls;
+    }
+
     public static List<ResolveInfo> resolveList(PackageManager pm) {
         return pm.queryIntentActivities(new Intent(ACTION_MAIN).addCategory(CATEGORY_LAUNCHER), 0);
     }

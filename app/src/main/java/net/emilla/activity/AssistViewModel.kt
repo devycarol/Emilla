@@ -40,7 +40,7 @@ internal class AssistViewModel private constructor(appCtx: Context) : ViewModel(
     @JvmField
     val motd: String? = if (noTitlebar) null else SettingVals.motd(prefs, res)
     @JvmField
-    val appList = AppList(appCtx.packageManager)
+    val appList = AppList.launchers(appCtx.packageManager)
 
     val attachmentMap: HashMap<String, ArrayList<Uri>?> by lazy { HashMap<String, ArrayList<Uri>?>() }
         @JvmName("attachmentMap") get

@@ -27,7 +27,7 @@ import java.util.Set;
 public /*open*/ class AppCommand extends EmillaCommand {
 
     @ArrayRes
-    public static int aliasId(String pkg, String cls) {
+    public static int aliases(String pkg, String cls) {
         return switch (pkg) {
             case AospContacts.PKG -> AospContacts.ALIASES;
             case Markor.PKG -> cls.equals(Markor.CLS_MAIN) ? Markor.ALIASES : 0;
@@ -42,6 +42,25 @@ public /*open*/ class AppCommand extends EmillaCommand {
             case Youtube.PKG -> Youtube.ALIASES;
             case Discord.PKG -> Discord.ALIASES;
             case Outlook.PKG -> Outlook.ALIASES;
+            default -> 0;
+        };
+    }
+
+    @StringRes
+    public static int summary(String pkg, String cls) {
+        return switch (pkg) {
+            case AospContacts.PKG -> AospContacts.SUMMARY;
+            case Markor.PKG -> cls.equals(Markor.CLS_MAIN) ? Markor.SUMMARY : 0;
+            case Firefox.PKG -> Firefox.SUMMARY;
+            case Tor.PKG -> Tor.SUMMARY;
+            case Signal.PKG -> Signal.SUMMARY;
+            case Newpipe.PKG -> Newpipe.SUMMARY;
+            case Tubular.PKG -> Tubular.SUMMARY;
+            case Tasker.PKG -> Tasker.SUMMARY;
+            case Github.PKG -> Github.SUMMARY;
+            case Youtube.PKG -> Youtube.SUMMARY;
+            case Discord.PKG -> Discord.SUMMARY;
+            case Outlook.PKG -> Outlook.SUMMARY;
             default -> 0;
         };
     }
@@ -107,7 +126,7 @@ public /*open*/ class AppCommand extends EmillaCommand {
 
         @Nullable
         public Set<String> aliases(SharedPreferences prefs, Resources res) {
-            return Aliases.appSet(prefs, res, mPkg, aliasId(mPkg, cls));
+            return Aliases.appSet(prefs, res, mPkg, cls);
         }
     }
 

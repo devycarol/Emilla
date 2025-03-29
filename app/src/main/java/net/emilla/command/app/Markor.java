@@ -1,6 +1,7 @@
 package net.emilla.command.app;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
@@ -11,6 +12,8 @@ public final class Markor extends AppSendData {
     public static final String CLS_MAIN = PKG + ".activity.MainActivity";
     @ArrayRes
     public static final int ALIASES = R.array.aliases_markor;
+    @StringRes
+    public static final int SUMMARY = R.string.summary_note;
 
     public static AppCommand instance(AssistActivity act, Yielder info) {
         return info.cls.equals(CLS_MAIN) ? new Markor(act, info)
@@ -21,7 +24,7 @@ public final class Markor extends AppSendData {
     private Markor(AssistActivity act, Yielder info) {
         super(act, info,
               R.string.instruction_text,
-              R.string.summary_note,
+              SUMMARY,
               R.string.data_hint_note);
     }
 }

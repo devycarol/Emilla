@@ -177,43 +177,7 @@
             android:title="@string/command_custom" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_apps">
-        <net.emilla.config.CommandPreference
-            android:key="com.android.contacts"
-            android:summary="@string/summary_app_aosp_contacts" />
-        <net.emilla.config.CommandPreference
-            android:key="net.gsantner.markor"
-            android:summary="@string/summary_note" />
-        <!-- TODO: this will break when generic aliasing is added! Must be activity-specific. -->
-        <net.emilla.config.CommandPreference
-            android:key="org.mozilla.firefox"
-            android:summary="@string/summary_web" />
-        <net.emilla.config.CommandPreference
-            android:key="org.torproject.torbrowser"
-            android:summary="@string/summary_web" />
-        <net.emilla.config.CommandPreference
-            android:key="org.thoughtcrime.securesms"
-            android:summary="@string/summary_messaging" />
-        <net.emilla.config.CommandPreference
-            android:key="org.schabi.newpipe"
-            android:summary="@string/summary_video" />
-        <net.emilla.config.CommandPreference
-            android:key="org.polymorphicshade.tubular"
-            android:summary="@string/summary_video" />
-        <net.emilla.config.CommandPreference
-            android:key="net.dinglisch.android.taskerm"
-            android:summary="@string/summary_app_tasker" />
-        <net.emilla.config.CommandPreference
-            android:key="com.github.android"
-            android:summary="@string/summary_issues" />
-        <net.emilla.config.CommandPreference
-            android:key="com.google.android.youtube"
-            android:summary="@string/summary_video" />
-        <net.emilla.config.CommandPreference
-            android:key="com.discord"
-            android:summary="@string/summary_messaging" />
-        <net.emilla.config.CommandPreference
-            android:key="com.microsoft.office.outlook"
-            android:summary="@string/summary_email" />
-    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="category_apps"
+        android:title="@string/category_apps" />
 </PreferenceScreen>

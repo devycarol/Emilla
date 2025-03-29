@@ -11,12 +11,12 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.app.TaskerIntent;
 import net.emilla.command.ActionMap;
 import net.emilla.command.DataCommand;
 import net.emilla.lang.Lines;
 import net.emilla.util.Dialogs;
 import net.emilla.util.Permissions;
-import net.emilla.app.TaskerIntent;
 
 import java.util.Comparator;
 import java.util.SortedSet;
@@ -27,6 +27,8 @@ public final class Tasker extends AppCommand implements DataCommand {
     public static final String PKG = TaskerIntent.TASKER_PACKAGE_MARKET;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_tasker;
+    @StringRes
+    public static final int SUMMARY = R.string.summary_app_tasker;
 
     @Override
     public boolean usesData() {

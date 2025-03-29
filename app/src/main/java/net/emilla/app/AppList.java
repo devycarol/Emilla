@@ -15,8 +15,8 @@ public final class AppList implements Iterable<AppEntry> {
 
     private final SortedArray<AppEntry> mData;
 
-    public AppList(PackageManager pm) {
-        this(Apps.resolveList(pm), pm);
+    public static AppList launchers(PackageManager pm) {
+        return new AppList(Apps.resolveList(pm), pm);
     }
 
     public AppList(PackageManager pm, Intent filter) {

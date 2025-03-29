@@ -1,10 +1,15 @@
 package net.emilla.app;
 
+import android.content.ComponentName;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.drawable.Drawable;
 
+import androidx.annotation.StringRes;
+
+import net.emilla.command.app.AppCommand;
 import net.emilla.config.SettingVals;
 
 import java.util.List;
@@ -42,11 +47,30 @@ public final class AppEntry implements Comparable<AppEntry> {
         return label().compareToIgnoreCase(that.label());
     }
 
+    public String entry() {
+        return Apps.entry(pkg, cls);
+    }
+
     public String label() {
         return mLabel != null ? mLabel : (mLabel = label.toString());
     }
 
+    @StringRes
+    public int summary() {
+        return AppCommand.summary(pkg, cls);
+    }
+
+    public Drawable icon(PackageManager pm) { try {
+        return pm.getActivityIcon(componentName());
+    } catch (PackageManager.NameNotFoundException e) {
+        throw new RuntimeException(e);
+    }}
+
+    private ComponentName componentName() {
+        return new ComponentName(pkg, cls);
+    }
+
     public boolean commandEnabled(SharedPreferences prefs) {
-        return SettingVals.appEnabled(prefs, pkg);
+        return SettingVals.appEnabled(prefs, pkg, cls);
     }
 }

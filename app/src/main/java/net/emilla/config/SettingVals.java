@@ -15,6 +15,7 @@ import net.emilla.action.PlayPause;
 import net.emilla.action.QuickAction;
 import net.emilla.action.SelectAll;
 import net.emilla.activity.AssistActivity;
+import net.emilla.app.Apps;
 import net.emilla.chime.Chimer;
 import net.emilla.chime.Custom;
 import net.emilla.chime.Nebula;
@@ -72,9 +73,13 @@ public final class SettingVals {
         // be sure to still write exception-safe code.
     }
 
-    public static boolean appEnabled(SharedPreferences prefs, String pkg) {
-        String key = commandEnabledKey(pkg);
+    public static boolean appEnabled(SharedPreferences prefs, String pkg, String cls) {
+        String key = appEnabledKey(pkg, cls);
         return prefs.getBoolean(key, true /*allowProprietary(prefs) || isFoss(pkg)*/);
+    }
+
+    public static String appEnabledKey(String pkg, String cls) {
+        return commandEnabledKey(Apps.entry(pkg, cls));
     }
 
     public static String commandEnabledKey(String entry) {

@@ -8,22 +8,41 @@ import android.util.AttributeSet;
 import android.widget.CompoundButton;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.preference.EditTextPreference;
 import androidx.preference.PreferenceViewHolder;
 
 import net.emilla.R;
+import net.emilla.app.AppEntry;
 
 public final class CommandPreference extends EditTextPreference {
+
+    public final String setKey;
 
     private final String mEnabledKey;
 
     public CommandPreference(Context ctx, @Nullable AttributeSet attrs) {
         super(ctx, attrs, R.attr.commandPreferenceStyle, 0);
 
-        String key = getKey();
-        setKey(Aliases.textKey(key));
-        mEnabledKey = SettingVals.commandEnabledKey(key);
+        String entry = getKey();
+        setKey(Aliases.textKey(entry));
+        setKey = Aliases.setKey(entry);
+        mEnabledKey = SettingVals.commandEnabledKey(entry);
+    }
+
+    /*internal*/ CommandPreference(Context ctx, AppEntry app) {
+        super(ctx, null, R.attr.commandPreferenceStyle, 0);
+
+        String entry = app.entry();
+        setKey(Aliases.textKey(entry));
+        setKey = Aliases.setKey(entry);
+        mEnabledKey = SettingVals.appEnabledKey(app.pkg, app.cls);
+
+        setTitle(app.label);
+        @StringRes int summary = app.summary();
+        if (summary != 0) setSummary(summary);
+        setIcon(app.icon(ctx.getPackageManager()));
     }
 
     private boolean mChecked;

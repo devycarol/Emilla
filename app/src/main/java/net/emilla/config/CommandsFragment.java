@@ -3,28 +3,18 @@ package net.emilla.config;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.ArrayRes;
 import androidx.annotation.Nullable;
 import androidx.preference.EditTextPreference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
+import androidx.preference.PreferenceCategory;
 
 import net.emilla.R;
-import net.emilla.command.app.AospContacts;
-import net.emilla.command.app.AppCommand;
-import net.emilla.command.app.Discord;
-import net.emilla.command.app.Firefox;
-import net.emilla.command.app.Github;
-import net.emilla.command.app.Markor;
-import net.emilla.command.app.Newpipe;
-import net.emilla.command.app.Outlook;
-import net.emilla.command.app.Signal;
-import net.emilla.command.app.Tasker;
-import net.emilla.command.app.Tor;
-import net.emilla.command.app.Tubular;
-import net.emilla.command.app.Youtube;
+import net.emilla.activity.EmillaActivity;
+import net.emilla.app.AppEntry;
+import net.emilla.app.AppList;
 import net.emilla.command.core.Alarm;
 import net.emilla.command.core.Bits;
 import net.emilla.command.core.Calculate;
@@ -64,74 +54,76 @@ import java.util.Set;
 
 public final class CommandsFragment extends EmillaSettingsFragment {
 
+    private EmillaActivity mActivity;
+    private PackageManager mPm;
     private SharedPreferences mPrefs;
     private Resources mRes;
-    private PackageManager mPm;
+
+    private final OnPreferenceChangeListener mListener = (pref, newVal) -> {
+        var cmdPref = (CommandPreference) pref;
+        String textKey = cmdPref.getKey();
+        String setKey = cmdPref.setKey;
+        var correctedText = ((String) newVal).trim().toLowerCase();
+        var vals = correctedText.split(" *, *");
+        Set<String> aliases = Set.of(vals);
+        var joined = String.join(", ", aliases);
+        cmdPref.setText(joined);
+        mPrefs.edit()
+                .putString(textKey, joined)
+                .putStringSet(setKey, aliases)
+                .apply();
+        return false;
+    };
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.command_prefs, rootKey);
 
+        mActivity = emillaActivity();
+        mPm = mActivity.getPackageManager();
         mPrefs = prefs();
         mRes = getResources();
-        mPm = emillaActivity().getPackageManager();
 
-        OnPreferenceChangeListener listener = (pref, newVal) -> {
-            String textKey = pref.getKey();
-            String setKey = textKey.substring(0, textKey.length() - 5);
-            var correctedText = ((String) newVal).trim().toLowerCase();
-            var vals = correctedText.split(" *, *");
-            Set<String> aliases = Set.of(vals);
-            var joined = String.join(", ", aliases);
-            ((CommandPreference) pref).setText(joined);
-            mPrefs.edit()
-                  .putString(textKey, joined)
-                  .putStringSet(setKey, aliases)
-                  .apply();
-            return false;
-        };
-
-        setupCores(listener);
-        setupApps(listener);
+        setupCores();
+        setupApps();
         setupCustoms();
     }
 
-    private void setupCores(OnPreferenceChangeListener listener) {
-        setupCorePref(Call.ENTRY, listener, Call.ALIASES);
-        setupCorePref(Dial.ENTRY, listener, Dial.ALIASES);
-        setupCorePref(Sms.ENTRY, listener, Sms.ALIASES);
-        setupCorePref(Email.ENTRY, listener, Email.ALIASES);
-        setupCorePref(Copy.ENTRY, listener, Copy.ALIASES);
-        setupCorePref(Snippets.ENTRY, listener, Snippets.ALIASES);
-        setupCorePref(Share.ENTRY, listener, Share.ALIASES);
-        setupCorePref(Launch.ENTRY, listener, Launch.ALIASES);
+    private void setupCores() {
+        setupCorePref(Call.ENTRY, Call.ALIASES);
+        setupCorePref(Dial.ENTRY, Dial.ALIASES);
+        setupCorePref(Sms.ENTRY, Sms.ALIASES);
+        setupCorePref(Email.ENTRY, Email.ALIASES);
+        setupCorePref(Copy.ENTRY, Copy.ALIASES);
+        setupCorePref(Snippets.ENTRY, Snippets.ALIASES);
+        setupCorePref(Share.ENTRY, Share.ALIASES);
+        setupCorePref(Launch.ENTRY, Launch.ALIASES);
         deactivate(Setting.ENTRY, false);
         deactivate(Note.ENTRY, false);
         deactivate(Todo.ENTRY, false);
-        setupCorePref(Web.ENTRY, listener, Web.ALIASES);
+        setupCorePref(Web.ENTRY, Web.ALIASES);
         deactivate(Find.ENTRY, false);
-        setupCorePref(Time.ENTRY, listener, Time.ALIASES);
-        setupCorePref(Alarm.ENTRY, listener, Alarm.ALIASES);
-        setupCorePref(Timer.ENTRY, listener, Timer.ALIASES);
-        setupCorePref(Pomodoro.ENTRY, listener, Pomodoro.ALIASES);
-        setupCorePref(Calendar.ENTRY, listener, Calendar.ALIASES);
-        setupCorePref(Contact.ENTRY, listener, Contact.ALIASES);
-        setupCorePref(Notify.ENTRY, listener, Notify.ALIASES);
-        setupCorePref(Calculate.ENTRY, listener, Calculate.ALIASES);
-        setupCorePref(RandomNumber.ENTRY, listener, RandomNumber.ALIASES);
-        setupCorePref(Roll.ENTRY, listener, Roll.ALIASES);
-        setupCorePref(Bits.ENTRY, listener, Bits.ALIASES);
-        setupCorePref(Weather.ENTRY, listener, Weather.ALIASES);
-        setupCorePref(Play.ENTRY, listener, Play.ALIASES);
-        setupCorePref(Pause.ENTRY, listener, Pause.ALIASES);
-        setupCorePref(Torch.ENTRY, listener, Torch.ALIASES);
-        setupCorePref(Info.ENTRY, listener, Info.ALIASES);
-        setupCorePref(Toast.ENTRY, listener, Toast.ALIASES);
+        setupCorePref(Time.ENTRY, Time.ALIASES);
+        setupCorePref(Alarm.ENTRY, Alarm.ALIASES);
+        setupCorePref(Timer.ENTRY, Timer.ALIASES);
+        setupCorePref(Pomodoro.ENTRY, Pomodoro.ALIASES);
+        setupCorePref(Calendar.ENTRY, Calendar.ALIASES);
+        setupCorePref(Contact.ENTRY, Contact.ALIASES);
+        setupCorePref(Notify.ENTRY, Notify.ALIASES);
+        setupCorePref(Calculate.ENTRY, Calculate.ALIASES);
+        setupCorePref(RandomNumber.ENTRY, RandomNumber.ALIASES);
+        setupCorePref(Roll.ENTRY, Roll.ALIASES);
+        setupCorePref(Bits.ENTRY, Bits.ALIASES);
+        setupCorePref(Weather.ENTRY, Weather.ALIASES);
+        setupCorePref(Play.ENTRY, Play.ALIASES);
+        setupCorePref(Pause.ENTRY, Pause.ALIASES);
+        setupCorePref(Torch.ENTRY, Torch.ALIASES);
+        setupCorePref(Info.ENTRY, Info.ALIASES);
+        setupCorePref(Toast.ENTRY, Toast.ALIASES);
     }
 
     private void setupCorePref(
         String entry,
-        OnPreferenceChangeListener listener,
         @ArrayRes int aliases
     ) {
         String enabledKey = SettingVals.commandEnabledKey(entry);
@@ -142,8 +134,8 @@ public final class CommandsFragment extends EmillaSettingsFragment {
             }
             String textKey = Aliases.textKey(entry);
             CommandPreference cmdPref = preferenceOf(textKey);
-            String setKey = textKey.substring(0, textKey.length() - 5);
-            setupPref(cmdPref, setKey, listener, mRes, aliases);
+            Set<String> aliasSet = Aliases.coreSet(mPrefs, mRes, entry, aliases);
+            setupPref(cmdPref, aliasSet);
         } else {
             mPrefs.edit().putBoolean(enabledKey, false).apply();
             deactivate(entry, true);
@@ -152,14 +144,10 @@ public final class CommandsFragment extends EmillaSettingsFragment {
 
     private void setupPref(
         CommandPreference cmdPref,
-        String setKey,
-        OnPreferenceChangeListener listener,
-        Resources res,
-        @ArrayRes int aliases
+        @Nullable Set<String> aliases
     ) {
-        var aliasSet = mPrefs.getStringSet(setKey, Set.of(res.getStringArray(aliases)));
-        cmdPref.setText(String.join(", ", aliasSet));
-        cmdPref.setOnPreferenceChangeListener(listener);
+        cmdPref.setText(aliases != null ? String.join(", ", aliases) : null);
+        cmdPref.setOnPreferenceChangeListener(mListener);
     }
 
     private void deactivate(String entry, boolean implemented) {
@@ -179,38 +167,22 @@ public final class CommandsFragment extends EmillaSettingsFragment {
 //        });
     }
 
-    private void setupApps(OnPreferenceChangeListener listener) {
-        setupAppPref(AospContacts.PKG, listener);
-        setupAppPref(Markor.PKG, listener);
-        setupAppPref(Firefox.PKG, listener);
-        setupAppPref(Tor.PKG, listener);
-        setupAppPref(Signal.PKG, listener);
-        setupAppPref(Newpipe.PKG, listener);
-        setupAppPref(Tubular.PKG, listener);
-        setupAppPref(Tasker.PKG, listener);
-        setupAppPref(Github.PKG, listener);
-        setupAppPref(Youtube.PKG, listener);
-        setupAppPref(Discord.PKG, listener);
-        setupAppPref(Outlook.PKG, listener);
-        // Todo: procedurally generate these
+    private void setupApps() {
+        // Todo: priority-sort the apps with hard-coded support?
+        PreferenceCategory apps = preferenceOf("category_apps");
+        for (AppEntry app : AppList.launchers(mPm)) {
+            var appPref = new CommandPreference(mActivity, app);
+            apps.addPreference(appPref);
+            setupPref(appPref, Aliases.appSet(mPrefs, mRes, app.pkg, app.cls));
+        }
     }
-
-    private void setupAppPref(String pkg, OnPreferenceChangeListener listener) {
-        CommandPreference appCmdPref = preferenceOf(Aliases.textKey(pkg));
-    try {
-        var info = mPm.getApplicationInfo(pkg, 0);
-        CharSequence label = mPm.getApplicationLabel(info);
-        appCmdPref.setTitle(label);
-        // this uses the application icon and doesn't account for multiple launcher icons yet
-        Drawable appIcon = mPm.getApplicationIcon(pkg);
-        appCmdPref.setIcon(appIcon);
-        setupPref(appCmdPref, Aliases.setKey(pkg), listener, mRes, AppCommand.aliasId(pkg, Markor.CLS_MAIN));
-    } catch (PackageManager.NameNotFoundException e) {
-        appCmdPref.setVisible(false);
-    }}
 
     private void setupCustoms() {
         EditTextPreference customCommands = preferenceOf(SettingVals.ALIASES_CUSTOM_TEXT);
+        if (true) {
+            customCommands.setEnabled(false);
+            return;
+        }
         customCommands.setOnPreferenceChangeListener((pref, newVal) -> {
             // self-evident Todo.
             var newText = (String) newVal;
