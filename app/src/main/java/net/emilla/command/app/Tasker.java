@@ -106,7 +106,7 @@ public final class Tasker extends AppCommand implements DataCommand {
         switch (TaskerIntent.testStatus(activity)) {
         case OK -> searchRun(task, params);
         case NOT_ENABLED -> failDialog(R.string.error_tasker_not_enabled,
-                R.string.dlg_yes_tasker_open, (dlg, which) -> offerApp(launchIntent(), true));
+                R.string.dlg_yes_tasker_open, (dlg, which) -> offerApp(app.launchIntent(), true));
         case NO_ACCESS -> failDialog(R.string.error_tasker_blocked,
                 R.string.dlg_yes_tasker_external_access_settings,
                 (dlg, which) -> offerApp(TaskerIntent.getExternalAccessPrefsIntent(), false));

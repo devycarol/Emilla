@@ -438,7 +438,7 @@ public abstract class EmillaCommand {
         return false;
     }
 
-    public final CharSequence name() {
+    public final String name() {
         return params.name(resources);
     }
 
@@ -446,7 +446,7 @@ public abstract class EmillaCommand {
     protected abstract String dupeLabel(); // Todo: replace with icons
 
     protected final CharSequence sentenceName() {
-        return shouldLowercase() ? name().toString().toLowerCase() : name();
+        return shouldLowercase() ? name().toLowerCase() : name();
     }
 
     /**
@@ -479,7 +479,7 @@ public abstract class EmillaCommand {
          * @param res can be used to retrieve the name from string resources.
          * @return the name of the command.
          */
-        CharSequence name(Resources res);
+        String name(Resources res);
         /**
          * The command's title as it should appear in the assistant's action-bar. Usually, this
          * should be the command name followed by a brief description of what it takes as input.

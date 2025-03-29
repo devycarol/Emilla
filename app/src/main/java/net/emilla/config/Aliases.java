@@ -6,7 +6,7 @@ import android.content.res.Resources;
 import androidx.annotation.ArrayRes;
 import androidx.annotation.Nullable;
 
-import net.emilla.app.Apps;
+import net.emilla.app.AppEntry;
 import net.emilla.command.app.AppCommand;
 
 import java.util.Set;
@@ -17,11 +17,10 @@ public final class Aliases {
     public static Set<String> appSet(
         SharedPreferences prefs,
         Resources res,
-        String pkg,
-        String cls
+        AppEntry app
     ) {
-        @ArrayRes int setId = AppCommand.aliases(pkg, cls);
-        String entry = Apps.entry(pkg, cls);
+        @ArrayRes int setId = AppCommand.aliases(app);
+        String entry = app.entry();
         return setId == 0 ? prefs.getStringSet(setKey(entry), null)
                           : coreSet(prefs, res, entry, setId);
     }

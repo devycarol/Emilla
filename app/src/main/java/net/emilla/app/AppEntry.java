@@ -1,6 +1,7 @@
 package net.emilla.app;
 
 import android.content.ComponentName;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -18,22 +19,21 @@ public final class AppEntry implements Comparable<AppEntry> {
 
     public final String pkg;
     public final String cls;
-    public final CharSequence label;
-    private String mLabel;
+    public final String label;
 
     public AppEntry(PackageManager pm, ResolveInfo info) {
         ActivityInfo actInfo = info.activityInfo;
         pkg = actInfo.packageName;
         cls = actInfo.name;
-        label = actInfo.loadLabel(pm);
+        label = actInfo.loadLabel(pm).toString();
         // TODO: this is the biggest performance bottleneck I've found so far. Look into how the
         //  launcher caches labels for ideas on how to improve the performance of this critical
         //  onCreate task. That is, if they do to begin with..
     }
 
-    public static CharSequence[] labels(List<AppEntry> apps) {
+    public static String[] labels(List<AppEntry> apps) {
         int size = apps.size();
-        CharSequence[] labels = new CharSequence[size];
+        String[] labels = new String[size];
 
         for (int i = 0; i < size; ++i) {
             labels[i] = apps.get(i).label;
@@ -44,20 +44,16 @@ public final class AppEntry implements Comparable<AppEntry> {
 
     @Override
     public int compareTo(AppEntry that) {
-        return label().compareToIgnoreCase(that.label());
+        return this.label.compareToIgnoreCase(that.label);
     }
 
     public String entry() {
         return Apps.entry(pkg, cls);
     }
 
-    public String label() {
-        return mLabel != null ? mLabel : (mLabel = label.toString());
-    }
-
     @StringRes
     public int summary() {
-        return AppCommand.summary(pkg, cls);
+        return AppCommand.summary(this);
     }
 
     public Drawable icon(PackageManager pm) { try {
@@ -66,11 +62,15 @@ public final class AppEntry implements Comparable<AppEntry> {
         throw new RuntimeException(e);
     }}
 
-    private ComponentName componentName() {
+    public ComponentName componentName() {
         return new ComponentName(pkg, cls);
     }
 
     public boolean commandEnabled(SharedPreferences prefs) {
         return SettingVals.appEnabled(prefs, pkg, cls);
+    }
+
+    public Intent launchIntent() {
+        return Apps.launchIntent(this);
     }
 }

@@ -30,30 +30,30 @@ public final class AppList implements Iterable<AppEntry> {
     public List<AppEntry> filter(String search) {
         int size = mData.size();
 
-        IndexWindow exacts = mData.windowMatching(app -> search.compareToIgnoreCase(app.label()));
+        IndexWindow exacts = mData.windowMatching(app -> search.compareToIgnoreCase(app.label));
         if (exacts != null) return mData.elements(exacts);
 
         int len = search.length();
-        IndexWindow prefixed = mData.windowMatching(app -> prefixCompare(search, app.label(), len));
+        IndexWindow prefixed = mData.windowMatching(app -> prefixCompare(search, app.label, len));
 
         ArrayList<AppEntry> filtered = new ArrayList<>(size);
         if (prefixed != null) {
             filtered.addAll(0, mData.elements(prefixed));
             for (int i = 0; i < prefixed.start; ++i) {
                 AppEntry app = mData.get(i);
-                if (app.label().contains(search)) {
+                if (app.label.contains(search)) {
                     filtered.add(app);
                 }
             }
             for (int i = prefixed.end; i < size; ++i) {
                 AppEntry app = mData.get(i);
-                if (app.label().contains(search)) {
+                if (app.label.contains(search)) {
                     filtered.add(app);
                 }
             }
         } else {
             for (AppEntry app : mData) {
-                if (app.label().contains(search)) {
+                if (app.label.contains(search)) {
                     filtered.add(app);
                 }
             }

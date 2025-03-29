@@ -77,7 +77,7 @@ public abstract class CoreCommand extends EmillaCommand {
     ) implements Params {
 
         @Override
-        public CharSequence name(Resources res) {
+        public String name(Resources res) {
             return res.getString(name);
         }
 

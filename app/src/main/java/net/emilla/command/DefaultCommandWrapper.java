@@ -35,7 +35,7 @@ public final class DefaultCommandWrapper extends EmillaCommand {
     private record DefaultWrapperParams(EmillaCommand cmd) implements Params {
 
         @Override
-        public CharSequence name(Resources res) {
+        public String name(Resources res) {
             return cmd.name();
         }
 

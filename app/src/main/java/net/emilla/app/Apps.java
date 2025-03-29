@@ -10,7 +10,6 @@ import static android.content.Intent.ACTION_UNINSTALL_PACKAGE;
 import static android.content.Intent.ACTION_VIEW;
 import static android.content.Intent.CATEGORY_LAUNCHER;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -40,17 +39,9 @@ public final class Apps {
         return pm.queryIntentActivities(filter, 0);
     }
 
-    public static Intent launchIntent(AppEntry info) {
-        return launchIntent(info.pkg, info.cls);
-    }
-
-    private static Intent launchIntent(String pkg, String cls) {
-        return launchIntent(new ComponentName(pkg, cls));
-    }
-
-    public static Intent launchIntent(ComponentName cn) {
+    public static Intent launchIntent(AppEntry app) {
         return new Intent(ACTION_MAIN).addCategory(CATEGORY_LAUNCHER)
-                .setPackage(cn.getPackageName()).setComponent(cn);
+                .setPackage(app.pkg).setComponent(app.componentName());
     }
 
     public static Intent categoryTask(String category) {
@@ -117,10 +108,10 @@ public final class Apps {
         return new Intent(ctx, cls);
     }
 
-    public static CharSequence[] labels(AppList appList) {
-        var labels = new CharSequence[appList.size()];
+    public static String[] labels(AppList apps) {
+        var labels = new String[apps.size()];
         int i = 0;
-        for (AppEntry app : appList) {
+        for (AppEntry app : apps) {
             labels[i] = app.label;
             ++i;
         }

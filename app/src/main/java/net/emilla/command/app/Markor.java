@@ -15,9 +15,8 @@ public final class Markor extends AppSendData {
     @StringRes
     public static final int SUMMARY = R.string.summary_note;
 
-    public static AppCommand instance(AssistActivity act, Yielder info) {
-        return info.cls.equals(CLS_MAIN) ? new Markor(act, info)
-                : new AppCommand(act, info);
+    public static AppCommand instance(AssistActivity act, Yielder info, String cls) {
+        return cls.equals(CLS_MAIN) ? new Markor(act, info) : new AppCommand(act, info);
         // Markor can have multiple launchers, only the main should have the 'send' property.
     }
 

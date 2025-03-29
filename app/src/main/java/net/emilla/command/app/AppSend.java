@@ -9,8 +9,8 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.lang.Lang;
 import net.emilla.app.Apps;
+import net.emilla.lang.Lang;
 
 public /*open*/ class AppSend extends AppCommand {
 
@@ -21,8 +21,8 @@ public /*open*/ class AppSend extends AppCommand {
         }
 
         @Override
-        public CharSequence title(Resources res) {
-            return Lang.colonConcat(res, R.string.command_app_send, name);
+        public String title(Resources res) {
+            return Lang.colonConcat(res, R.string.command_app_send, app.label);
         }
     }
 
@@ -69,6 +69,6 @@ public /*open*/ class AppSend extends AppCommand {
 
     @Override
     protected final void run(String message) {
-        appSucceed(Apps.sendToApp(packageName).putExtra(EXTRA_TEXT, message));
+        appSucceed(Apps.sendToApp(app.pkg).putExtra(EXTRA_TEXT, message));
     }
 }

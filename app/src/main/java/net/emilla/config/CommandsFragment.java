@@ -173,7 +173,7 @@ public final class CommandsFragment extends EmillaSettingsFragment {
         for (AppEntry app : AppList.launchers(mPm)) {
             var appPref = new CommandPreference(mActivity, app);
             apps.addPreference(appPref);
-            setupPref(appPref, Aliases.appSet(mPrefs, mRes, app.pkg, app.cls));
+            setupPref(appPref, Aliases.appSet(mPrefs, mRes, app));
         }
     }
 
