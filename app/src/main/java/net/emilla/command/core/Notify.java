@@ -12,7 +12,6 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.ping.PingChannel;
 import net.emilla.ping.Pings;
-import net.emilla.settings.Aliases;
 import net.emilla.util.Permissions;
 
 public final class Notify extends CoreDataCommand {
@@ -22,10 +21,13 @@ public final class Notify extends CoreDataCommand {
     public static final int NAME = R.string.command_notify;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_notify;
-    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     public static Yielder yielder() {
         return new Yielder(true, Notify::new, ENTRY, NAME, ALIASES);
+    }
+
+    public static boolean possible() {
+        return true;
     }
 
     private Notify(AssistActivity act) {

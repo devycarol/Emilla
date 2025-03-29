@@ -27,7 +27,7 @@
             android:key="aliases_torch_text"
             android:summary="@string/summary_torch"
             android:title="@string/command_torch" />
-        <Preference
+        <EditTextPreference
             android:icon="@drawable/ic_find"
             android:key="aliases_find_text"
             android:summary="@string/summary_find"
@@ -102,7 +102,7 @@
             android:key="aliases_timer_text"
             android:summary="@string/summary_timer"
             android:title="@string/command_timer" />
-        <Preference
+        <EditTextPreference
             android:icon="@drawable/ic_note"
             android:key="aliases_note_text"
             android:summary="@string/summary_note"
@@ -117,7 +117,7 @@
             android:key="aliases_notify_text"
             android:summary="@string/summary_notify"
             android:title="@string/command_notify" />
-        <Preference
+        <EditTextPreference
             android:icon="@drawable/ic_settings"
             android:key="aliases_setting_text"
             android:summary="@string/summary_setting"
@@ -160,7 +160,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_custom">
-        <Preference
+        <EditTextPreference
             android:icon="@drawable/ic_todo"
             android:key="aliases_todo_text"
             android:summary="@string/summary_todo"

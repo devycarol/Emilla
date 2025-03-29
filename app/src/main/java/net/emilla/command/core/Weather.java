@@ -3,6 +3,7 @@ package net.emilla.command.core;
 import static android.content.Intent.CATEGORY_APP_WEATHER;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
@@ -11,7 +12,6 @@ import androidx.annotation.StringRes;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.app.Apps;
-import net.emilla.settings.Aliases;
 
 public final class Weather extends CategoryCommand {
 
@@ -20,10 +20,13 @@ public final class Weather extends CategoryCommand {
     public static final int NAME = R.string.command_weather;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_weather;
-    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     public static Yielder yielder() {
         return new Yielder(true, Weather::new, ENTRY, NAME, ALIASES);
+    }
+
+    public static boolean possible(PackageManager pm) {
+        return canDo(pm, Apps.categoryTask(CATEGORY_APP_WEATHER));
     }
 
     private Weather(AssistActivity act) {

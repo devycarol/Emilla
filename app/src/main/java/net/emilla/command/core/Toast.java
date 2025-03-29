@@ -6,7 +6,6 @@ import androidx.annotation.StringRes;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.run.ToastGift;
-import net.emilla.settings.Aliases;
 
 public final class Toast extends CoreDataCommand {
 
@@ -15,10 +14,13 @@ public final class Toast extends CoreDataCommand {
     public static final int NAME = R.string.command_toast;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_toast;
-    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     public static Yielder yielder() {
         return new Yielder(true, Toast::new, ENTRY, NAME, ALIASES);
+    }
+
+    public static boolean possible() {
+        return true;
     }
 
     private Toast(AssistActivity act) {

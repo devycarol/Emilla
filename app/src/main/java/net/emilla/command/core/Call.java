@@ -3,6 +3,7 @@ package net.emilla.command.core;
 import static android.content.Intent.ACTION_CALL;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.view.inputmethod.EditorInfo;
 
@@ -14,7 +15,6 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.contact.fragment.ContactPhonesFragment;
 import net.emilla.content.receive.PhoneReceiver;
-import net.emilla.settings.Aliases;
 import net.emilla.util.Contacts;
 import net.emilla.util.Dialogs;
 import net.emilla.util.Features;
@@ -27,10 +27,13 @@ public final class Call extends CoreCommand implements PhoneReceiver {
     public static final int NAME = R.string.command_call;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_call;
-    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     public static Yielder yielder() {
         return new Yielder(true, Call::new, ENTRY, NAME, ALIASES);
+    }
+
+    public static boolean possible(PackageManager pm) {
+        return Features.phone(pm) || canDo(pm, makeIntent(""));
     }
 
     private ContactPhonesFragment mContactsFragment;

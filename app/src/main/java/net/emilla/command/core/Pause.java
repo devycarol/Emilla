@@ -8,7 +8,6 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.settings.Aliases;
 import net.emilla.util.MediaControl;
 import net.emilla.util.Services;
 
@@ -19,10 +18,13 @@ public final class Pause extends CoreCommand {
     public static final int NAME = R.string.command_pause;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_pause;
-    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     public static Yielder yielder() {
         return new Yielder(false, Pause::new, ENTRY, NAME, ALIASES);
+    }
+
+    public static boolean possible() {
+        return true;
     }
 
     private Pause(AssistActivity act) {

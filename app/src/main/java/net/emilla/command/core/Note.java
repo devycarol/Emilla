@@ -5,7 +5,6 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.settings.Aliases;
 
 public final class Note extends CoreDataCommand {
 
@@ -14,10 +13,13 @@ public final class Note extends CoreDataCommand {
     public static final int NAME = R.string.command_note;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_note;
-    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     public static Yielder yielder() {
         return new Yielder(true, Note::new, ENTRY, NAME, ALIASES);
+    }
+
+    public static boolean possible() {
+        return true;
     }
 
     private Note(AssistActivity act) {

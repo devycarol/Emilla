@@ -4,6 +4,7 @@ import static android.content.Intent.EXTRA_STREAM;
 import static android.content.Intent.EXTRA_TEXT;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents.Insert;
@@ -19,7 +20,6 @@ import net.emilla.command.ActionMap;
 import net.emilla.command.Subcommand;
 import net.emilla.contact.fragment.ContactCardsFragment;
 import net.emilla.content.receive.ContactCardReceiver;
-import net.emilla.settings.Aliases;
 import net.emilla.util.Dialogs;
 
 import java.util.List;
@@ -31,10 +31,16 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
     public static final int NAME = R.string.command_contact;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_contact;
-    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     public static Yielder yielder() {
         return new Yielder(true, Contact::new, ENTRY, NAME, ALIASES);
+    }
+
+    public static boolean possible(PackageManager pm) {
+        return canDo(pm, Apps.viewTask(Contacts.CONTENT_URI, Contacts.CONTENT_TYPE))
+            || canDo(pm, Apps.editTask(Contacts.CONTENT_URI, Contacts.CONTENT_TYPE))
+            || canDo(pm, Apps.sendTask(Contacts.CONTENT_VCARD_TYPE))
+            || canDo(pm, Apps.insertTask(Contacts.CONTENT_TYPE));
     }
 
     private enum Action {

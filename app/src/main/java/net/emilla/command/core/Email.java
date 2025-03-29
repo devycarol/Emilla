@@ -8,6 +8,7 @@ import static android.content.Intent.EXTRA_SUBJECT;
 import static android.content.Intent.EXTRA_TEXT;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 
 import androidx.annotation.ArrayRes;
@@ -22,7 +23,6 @@ import net.emilla.action.field.SubjectField;
 import net.emilla.activity.AssistActivity;
 import net.emilla.contact.fragment.ContactEmailsFragment;
 import net.emilla.content.receive.EmailReceiver;
-import net.emilla.settings.Aliases;
 
 import java.util.ArrayList;
 
@@ -33,10 +33,13 @@ public final class Email extends CoreDataCommand implements EmailReceiver {
     public static final int NAME = R.string.command_email;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_email;
-    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     public static Yielder yielder() {
         return new Yielder(true, Email::new, ENTRY, NAME, ALIASES);
+    }
+
+    public static boolean possible(PackageManager pm) {
+        return canDo(pm, new Intent(ACTION_SENDTO, Uri.parse("mailto:")));
     }
 
     private FieldToggle mSubjectToggle;

@@ -9,6 +9,7 @@ import static android.provider.CalendarContract.Events.TITLE;
 import static java.util.regex.Pattern.CASE_INSENSITIVE;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.provider.CalendarContract.Events;
 
 import androidx.annotation.ArrayRes;
@@ -20,7 +21,6 @@ import net.emilla.action.field.LocationField;
 import net.emilla.action.field.UrlField;
 import net.emilla.activity.AssistActivity;
 import net.emilla.app.Apps;
-import net.emilla.settings.Aliases;
 import net.emilla.util.Time;
 
 import java.util.regex.Pattern;
@@ -32,10 +32,13 @@ public final class Calendar extends CoreDataCommand {
     public static final int NAME = R.string.command_calendar;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_calendar;
-    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     public static Yielder yielder() {
         return new Yielder(true, Calendar::new, ENTRY, NAME, ALIASES);
+    }
+
+    public static boolean possible(PackageManager pm) {
+        return canDo(pm, makeIntent());
     }
 
     private Calendar(AssistActivity act) {

@@ -7,13 +7,13 @@ import static android.provider.AlarmClock.EXTRA_SKIP_UI;
 import static java.util.Locale.ROOT;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 
 import androidx.annotation.ArrayRes;
 import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.settings.Aliases;
 import net.emilla.util.Time;
 
 public final class Timer extends CoreDataCommand {
@@ -23,10 +23,13 @@ public final class Timer extends CoreDataCommand {
     public static final int NAME = R.string.command_timer;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_timer;
-    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     public static Yielder yielder() {
         return new Yielder(true, Timer::new, ENTRY, NAME, ALIASES);
+    }
+
+    public static boolean possible(PackageManager pm) {
+        return canDo(pm, makeIntent());
     }
 
     private Timer(AssistActivity act) {
@@ -38,7 +41,7 @@ public final class Timer extends CoreDataCommand {
               R.string.data_hint_label);
     }
 
-    private Intent makeIntent() {
+    private static Intent makeIntent() {
         return new Intent(ACTION_SET_TIMER);
     }
 

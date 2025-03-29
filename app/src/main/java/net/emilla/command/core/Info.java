@@ -1,5 +1,6 @@
 package net.emilla.command.core;
 
+import android.content.pm.PackageManager;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
@@ -9,7 +10,6 @@ import androidx.appcompat.app.AlertDialog;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.app.Apps;
-import net.emilla.settings.Aliases;
 import net.emilla.util.Dialogs;
 
 public final class Info extends OpenCommand {
@@ -19,10 +19,13 @@ public final class Info extends OpenCommand {
     public static final int NAME = R.string.command_info;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_info;
-    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     public static Yielder yielder() {
         return new Yielder(true, Info::new, ENTRY, NAME, ALIASES);
+    }
+
+    public static boolean possible(PackageManager pm) {
+        return canDo(pm, Apps.infoTask(""));
     }
 
     private Info(AssistActivity act) {

@@ -9,7 +9,6 @@ import net.emilla.action.box.SnippetsFragment;
 import net.emilla.activity.AssistActivity;
 import net.emilla.command.ActionMap;
 import net.emilla.command.Subcommand;
-import net.emilla.settings.Aliases;
 
 import java.util.Set;
 
@@ -20,10 +19,13 @@ public final class Snippets extends CoreDataCommand {
     public static final int NAME = R.string.command_snippets;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_snippets;
-    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     public static Yielder yielder() {
         return new Yielder(true, Snippets::new, ENTRY, NAME, ALIASES);
+    }
+
+    public static boolean possible() {
+        return true;
     }
 
     public enum Action {

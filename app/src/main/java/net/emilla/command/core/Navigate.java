@@ -1,6 +1,7 @@
 package net.emilla.command.core;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.view.inputmethod.EditorInfo;
 
@@ -10,7 +11,6 @@ import androidx.annotation.StringRes;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.app.Apps;
-import net.emilla.settings.Aliases;
 
 public final class Navigate extends CategoryCommand {
 
@@ -19,10 +19,13 @@ public final class Navigate extends CategoryCommand {
     public static final int NAME = R.string.command_navigate;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_navigate;
-    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     public static Yielder yielder() {
         return new Yielder(true, Navigate::new, ENTRY, NAME, ALIASES);
+    }
+
+    public static boolean possible(PackageManager pm) {
+        return canDo(pm, Apps.viewTask("geo:"));
     }
 
     private Navigate(AssistActivity act) {
@@ -36,7 +39,7 @@ public final class Navigate extends CategoryCommand {
 
     @Override
     protected Intent makeFilter() {
-        return Apps.viewTask(Uri.parse("geo:"));
+        return Apps.viewTask("geo:");
     }
 
     @Override

@@ -3,6 +3,7 @@ package net.emilla.run;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 
 import net.emilla.R;
@@ -15,7 +16,7 @@ public final class AppSuccess implements Success {
 
     public AppSuccess(Activity act, Intent intent) {
         mActivity = act;
-        mIntent = intent;
+        mIntent = intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
     }
 
     @Override
@@ -23,9 +24,12 @@ public final class AppSuccess implements Success {
         var pm = mActivity.getPackageManager();
         if (mIntent.resolveActivity(pm) != null) {
             mActivity.finishAndRemoveTask();
-            mActivity.startActivity(mIntent.addFlags(FLAG_ACTIVITY_NEW_TASK));
-        } else throw new EmillaException(R.string.error, R.string.error_no_app);
-        // Todo: handle these at mapping time. Be mindful of commands with multiple intents.
-        //  Handling subcommands will be tricky.
+            mActivity.startActivity(mIntent);
+        } else try {
+            mActivity.startActivity(mIntent);
+            mActivity.finishAndRemoveTask();
+        } catch (ActivityNotFoundException e) {
+            throw new EmillaException(R.string.error, R.string.error_no_app);
+        }
     }
 }

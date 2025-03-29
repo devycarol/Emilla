@@ -7,7 +7,6 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.settings.Aliases;
 
 public final class Setting extends CoreCommand {
 
@@ -16,10 +15,13 @@ public final class Setting extends CoreCommand {
     public static final int NAME = R.string.command_setting;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_setting;
-    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     public static Yielder yielder() {
         return new Yielder(true, Setting::new, ENTRY, NAME, ALIASES);
+    }
+
+    public static boolean possible() {
+        return true;
     }
 
     private Setting(AssistActivity act) {

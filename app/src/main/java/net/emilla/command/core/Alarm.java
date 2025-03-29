@@ -8,6 +8,7 @@ import static android.provider.AlarmClock.EXTRA_MESSAGE;
 import static android.provider.AlarmClock.EXTRA_MINUTES;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 
 import androidx.annotation.ArrayRes;
 import androidx.annotation.StringRes;
@@ -17,7 +18,6 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.lang.Lang;
 import net.emilla.lang.date.HourMin;
 import net.emilla.lang.date.Weekdays;
-import net.emilla.settings.Aliases;
 
 public final class Alarm extends CoreDataCommand {
 
@@ -26,10 +26,13 @@ public final class Alarm extends CoreDataCommand {
     public static final int NAME = R.string.command_alarm;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_alarm;
-    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     public static Yielder yielder() {
         return new Yielder(true, Alarm::new, ENTRY, NAME, ALIASES);
+    }
+
+    public static boolean possible(PackageManager pm) {
+        return canDo(pm, makeIntent()) || canDo(pm, new Intent(ACTION_SET_ALARM));
     }
 
     private Alarm(AssistActivity act) {
@@ -39,23 +42,6 @@ public final class Alarm extends CoreDataCommand {
               R.string.summary_alarm,
               R.string.manual_alarm,
               R.string.data_hint_label);
-    }
-
-    private Intent makeIntent() {
-        return new Intent(ACTION_SHOW_ALARMS);
-    }
-
-    private Intent makeIntent(String timeString) {
-        HourMin time = Lang.time(timeString, activity, NAME);
-        Weekdays days = Lang.weekdays(timeString, NAME);
-        Intent in = makeIntent(time.hour24(), time.minute());
-        return days.empty() ? in : in.putExtra(EXTRA_DAYS, days.days());
-    }
-
-    private static Intent makeIntent(int hour, int minute) {
-        return new Intent(ACTION_SET_ALARM)
-                .putExtra(EXTRA_HOUR, hour)
-                .putExtra(EXTRA_MINUTES, minute);
     }
 
     @Override
@@ -80,5 +66,22 @@ public final class Alarm extends CoreDataCommand {
     @Override
     protected void runWithData(String time, String label) {
         appSucceed(makeIntent(time).putExtra(EXTRA_MESSAGE, label));
+    }
+
+    private static Intent makeIntent() {
+        return new Intent(ACTION_SHOW_ALARMS);
+    }
+
+    private Intent makeIntent(String timeString) {
+        HourMin time = Lang.time(timeString, activity, NAME);
+        Weekdays days = Lang.weekdays(timeString, NAME);
+        Intent in = makeIntent(time.hour24(), time.minute());
+        return days.empty() ? in : in.putExtra(EXTRA_DAYS, days.days());
+    }
+
+    private static Intent makeIntent(int hour, int minute) {
+        return new Intent(ACTION_SET_ALARM)
+                .putExtra(EXTRA_HOUR, hour)
+                .putExtra(EXTRA_MINUTES, minute);
     }
 }

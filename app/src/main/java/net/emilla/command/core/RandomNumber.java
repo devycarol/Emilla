@@ -8,7 +8,6 @@ import androidx.annotation.StringRes;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.lang.Lang;
-import net.emilla.settings.Aliases;
 import net.emilla.util.Dialogs;
 
 import java.util.Random;
@@ -20,10 +19,13 @@ public final class RandomNumber extends CoreCommand {
     public static final int NAME = R.string.command_random_number;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_random_number;
-    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     public static Yielder yielder() {
         return new Yielder(true, RandomNumber::new, ENTRY, NAME, ALIASES);
+    }
+
+    public static boolean possible() {
+        return true;
     }
 
     private RandomNumber(AssistActivity act) {

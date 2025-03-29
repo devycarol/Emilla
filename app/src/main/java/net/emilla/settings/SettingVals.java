@@ -61,6 +61,21 @@ public final class SettingVals {
             ALIASES_CUSTOM = "aliases_custom",
             ALIASES_CUSTOM_TEXT = "aliases_custom_text";
 
+    public static boolean commandEnabled(PackageManager pm, SharedPreferences prefs, String entry) {
+        String key = commandEnabledKey(entry);
+        return prefs.getBoolean(key, prefs.contains(key) || CoreCommand.possible(pm, entry));
+        // don't check 'possible' if a key is already registered. note this demands exhaustively
+        // ensuring command possibility in the *settings screens*, re-checking device properties to
+        // ensure commands haven't been rendered impossible as a result of app or device changes.
+        // examples include apps being installed/removed or moving devices via data backup. this
+        // implies edge cases where commands have become impossible since the last settings visit!
+        // be sure to still write exception-safe code.
+    }
+
+    public static String commandEnabledKey(String entry) {
+        return "cmd_" + entry + "_enabled";
+    }
+
     public static DefaultCommandWrapper.Yielder defaultCommand(
         SharedPreferences prefs,
         CoreCommand.Yielder[] coreYielders
@@ -68,41 +83,46 @@ public final class SettingVals {
         // Todo: allow apps and customs. Make sure to fall back to a core if the app is uninstalled
         //  or the custom is deleted.
         var entry = prefs.getString("default_command", "web");
-        return new DefaultCommandWrapper.Yielder(switch (entry) {
-            case Call.ENTRY -> coreYielders[0];
-            case Dial.ENTRY -> coreYielders[1];
-            case Sms.ENTRY -> coreYielders[2];
-            case Email.ENTRY -> coreYielders[3];
-            case Navigate.ENTRY -> coreYielders[4];
-            case Launch.ENTRY -> coreYielders[5];
-            case Copy.ENTRY -> coreYielders[6];
-            case Snippets.ENTRY -> coreYielders[7];
-            case Share.ENTRY -> coreYielders[8];
-//            case Setting.ENTRY -> coreYielders[];
-//            case Note.ENTRY -> coreYielders[];
-//            case Todo.ENTRY -> coreYielders[];
-            case Web.ENTRY -> coreYielders[9];
-//            case Find.ENTRY -> coreYielders[];
-            case Time.ENTRY -> coreYielders[10];
-            case Alarm.ENTRY -> coreYielders[11];
-            case Timer.ENTRY -> coreYielders[12];
-            case Pomodoro.ENTRY -> coreYielders[13];
-            case Calendar.ENTRY -> coreYielders[14];
-            case Contact.ENTRY -> coreYielders[15];
-            case Notify.ENTRY -> coreYielders[16];
-            case Calculate.ENTRY -> coreYielders[17];
-            case RandomNumber.ENTRY -> coreYielders[18];
-            case Roll.ENTRY -> coreYielders[19];
-            case Bits.ENTRY -> coreYielders[20];
-            case Weather.ENTRY -> coreYielders[21];
-            case Play.ENTRY -> coreYielders[22];
-            case Pause.ENTRY -> coreYielders[23];
-            case Torch.ENTRY -> coreYielders[24];
-            case Info.ENTRY -> coreYielders[25];
-            case Uninstall.ENTRY -> coreYielders[26];
-            case Toast.ENTRY -> coreYielders[27];
-            default -> throw new IllegalArgumentException("No such command \"" + entry + "\".");
-        });
+        CoreCommand.Yielder yielder = coreYielders[yielderIndex(entry)];
+        return new DefaultCommandWrapper.Yielder(yielder);
+    }
+
+    private static int yielderIndex(String cmdEntry) {
+        return switch (cmdEntry) {
+            case Call.ENTRY         ->  0;
+            case Dial.ENTRY         ->  1;
+            case Sms.ENTRY          ->  2;
+            case Email.ENTRY        ->  3;
+            case Navigate.ENTRY     ->  4;
+            case Launch.ENTRY       ->  5;
+            case Copy.ENTRY         ->  6;
+            case Snippets.ENTRY     ->  7;
+            case Share.ENTRY        ->  8;
+//            case Setting.ENTRY      ->   ;
+//            case Note.ENTRY         ->   ;
+//            case Todo.ENTRY         ->   ;
+            case Web.ENTRY          ->  9;
+//            case Find.ENTRY         ->   ;
+            case Time.ENTRY         -> 10;
+            case Alarm.ENTRY        -> 11;
+            case Timer.ENTRY        -> 12;
+            case Pomodoro.ENTRY     -> 13;
+            case Calendar.ENTRY     -> 14;
+            case Contact.ENTRY      -> 15;
+            case Notify.ENTRY       -> 16;
+            case Calculate.ENTRY    -> 17;
+            case RandomNumber.ENTRY -> 18;
+            case Roll.ENTRY         -> 19;
+            case Bits.ENTRY         -> 20;
+            case Weather.ENTRY      -> 21;
+            case Play.ENTRY         -> 22;
+            case Pause.ENTRY        -> 23;
+            case Torch.ENTRY        -> 24;
+            case Info.ENTRY         -> 25;
+            case Uninstall.ENTRY    -> 26;
+            case Toast.ENTRY        -> 27;
+            default -> throw new IllegalArgumentException("No such command \"" + cmdEntry + "\".");
+        };
     }
 
     public static Set<String> customCommands(SharedPreferences prefs) {

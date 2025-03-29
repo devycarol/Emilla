@@ -3,6 +3,7 @@ package net.emilla.command.core;
 import static android.content.Intent.ACTION_WEB_SEARCH;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.ArrayRes;
@@ -10,7 +11,7 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.settings.Aliases;
+import net.emilla.app.Apps;
 import net.emilla.settings.SettingVals;
 import net.emilla.util.SearchEngineParser;
 
@@ -21,10 +22,15 @@ public final class Web extends CoreCommand {
     public static final int NAME = R.string.command_web;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_web;
-    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     public static Yielder yielder() {
         return new Yielder(true, Web::new, ENTRY, NAME, ALIASES);
+    }
+
+    public static boolean possible(PackageManager pm) {
+        return canDo(pm, new Intent(ACTION_WEB_SEARCH))
+            || canDo(pm, Apps.viewTask("https:"))
+            || canDo(pm, Apps.viewTask("http:"));
     }
 
     public static final String DFLT_SEARCH_ENGINES = """

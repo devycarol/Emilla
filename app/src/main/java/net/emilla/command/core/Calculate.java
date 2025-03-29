@@ -13,7 +13,6 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.app.Apps;
 import net.emilla.math.Calculator;
 import net.emilla.math.Maths;
-import net.emilla.settings.Aliases;
 
 public final class Calculate extends CategoryCommand {
 
@@ -22,10 +21,13 @@ public final class Calculate extends CategoryCommand {
     public static final int NAME = R.string.command_calculate;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_calculate;
-    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     public static Yielder yielder() {
         return new Yielder(true, Calculate::new, ENTRY, NAME, ALIASES);
+    }
+
+    public static boolean possible() {
+        return true;
     }
 
     private Calculate(AssistActivity act) {

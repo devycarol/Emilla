@@ -4,6 +4,7 @@ import static android.content.Intent.ACTION_SENDTO;
 import static android.content.Intent.EXTRA_SUBJECT;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 
 import androidx.annotation.ArrayRes;
@@ -14,11 +15,12 @@ import net.emilla.R;
 import net.emilla.action.field.FieldToggle;
 import net.emilla.action.field.SubjectField;
 import net.emilla.activity.AssistActivity;
+import net.emilla.app.Apps;
 import net.emilla.contact.fragment.ContactPhonesFragment;
 import net.emilla.content.receive.PhoneReceiver;
-import net.emilla.settings.Aliases;
 import net.emilla.util.Contacts;
 import net.emilla.util.Dialogs;
+import net.emilla.util.Features;
 
 public final class Sms extends CoreDataCommand implements PhoneReceiver {
 
@@ -27,10 +29,13 @@ public final class Sms extends CoreDataCommand implements PhoneReceiver {
     public static final int NAME = R.string.command_sms;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_sms;
-    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     public static Yielder yielder() {
         return new Yielder(true, Sms::new, ENTRY, NAME, ALIASES);
+    }
+
+    public static boolean possible(PackageManager pm) {
+        return Features.sms(pm) || canDo(pm, Apps.sendTask(Uri.parse("smsto:")));
     }
 
     @Override

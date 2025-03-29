@@ -5,6 +5,7 @@ import static android.content.Intent.EXTRA_TEXT;
 import static net.emilla.chime.Chimer.RESUME;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 
 import androidx.annotation.ArrayRes;
@@ -16,7 +17,6 @@ import net.emilla.action.MediaFetcher;
 import net.emilla.activity.AssistActivity;
 import net.emilla.app.Apps;
 import net.emilla.content.receive.AppChoiceReceiver;
-import net.emilla.settings.Aliases;
 import net.emilla.util.Files.MimeType;
 
 import java.util.ArrayList;
@@ -28,10 +28,13 @@ public final class Share extends CoreDataCommand implements AppChoiceReceiver {
     public static final int NAME = R.string.command_share;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_share;
-    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     public static Yielder yielder() {
         return new Yielder(true, Share::new, ENTRY, NAME, ALIASES);
+    }
+
+    public static boolean possible(PackageManager pm) {
+        return canDo(pm, Apps.sendTask("text/plain"));
     }
 
     private FileFetcher mFileFetcher;

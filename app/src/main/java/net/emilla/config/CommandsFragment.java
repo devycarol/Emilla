@@ -9,7 +9,6 @@ import android.os.Bundle;
 import androidx.annotation.ArrayRes;
 import androidx.annotation.Nullable;
 import androidx.preference.EditTextPreference;
-import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
 
 import net.emilla.R;
@@ -34,6 +33,7 @@ import net.emilla.command.core.Calendar;
 import net.emilla.command.core.Call;
 import net.emilla.command.core.Contact;
 import net.emilla.command.core.Copy;
+import net.emilla.command.core.CoreCommand;
 import net.emilla.command.core.Dial;
 import net.emilla.command.core.Email;
 import net.emilla.command.core.Find;
@@ -57,6 +57,7 @@ import net.emilla.command.core.Todo;
 import net.emilla.command.core.Torch;
 import net.emilla.command.core.Weather;
 import net.emilla.command.core.Web;
+import net.emilla.settings.Aliases;
 import net.emilla.settings.SettingVals;
 
 import java.util.ArrayList;
@@ -82,7 +83,7 @@ public final class CommandsFragment extends EmillaSettingsFragment {
 
         OnPreferenceChangeListener listener = (pref, newVal) -> {
             String textKey = pref.getKey();
-            var setKey = textKey.substring(0, textKey.length() - 5);
+            String setKey = textKey.substring(0, textKey.length() - 5);
             var correctedText = ((String) newVal).trim().toLowerCase();
             var vals = correctedText.split(" *, *");
             Set<String> aliases = Set.of(vals);
@@ -101,46 +102,57 @@ public final class CommandsFragment extends EmillaSettingsFragment {
     }
 
     private void setupCores(OnPreferenceChangeListener listener) {
-        setupCorePref(Call.ALIAS_TEXT_KEY, listener, Call.ALIASES);
-        setupCorePref(Dial.ALIAS_TEXT_KEY, listener, Dial.ALIASES);
-        setupCorePref(Sms.ALIAS_TEXT_KEY, listener, Sms.ALIASES);
-        setupCorePref(Email.ALIAS_TEXT_KEY, listener, Email.ALIASES);
-        setupCorePref(Copy.ALIAS_TEXT_KEY, listener, Copy.ALIASES);
-        setupCorePref(Snippets.ALIAS_TEXT_KEY, listener, Snippets.ALIASES);
-        setupCorePref(Share.ALIAS_TEXT_KEY, listener, Share.ALIASES);
-        setupCorePref(Launch.ALIAS_TEXT_KEY, listener, Launch.ALIASES);
-        deactivate(Setting.ALIAS_TEXT_KEY);
-        deactivate(Note.ALIAS_TEXT_KEY);
-        deactivate(Todo.ALIAS_TEXT_KEY);
-        setupCorePref(Web.ALIAS_TEXT_KEY, listener, Web.ALIASES);
-        deactivate(Find.ALIAS_TEXT_KEY);
-        setupCorePref(Time.ALIAS_TEXT_KEY, listener, Time.ALIASES);
-        setupCorePref(Alarm.ALIAS_TEXT_KEY, listener, Alarm.ALIASES);
-        setupCorePref(Timer.ALIAS_TEXT_KEY, listener, Timer.ALIASES);
-        setupCorePref(Pomodoro.ALIAS_TEXT_KEY, listener, Pomodoro.ALIASES);
-        setupCorePref(Calendar.ALIAS_TEXT_KEY, listener, Calendar.ALIASES);
-        setupCorePref(Contact.ALIAS_TEXT_KEY, listener, Contact.ALIASES);
-        setupCorePref(Notify.ALIAS_TEXT_KEY, listener, Notify.ALIASES);
-        setupCorePref(Calculate.ALIAS_TEXT_KEY, listener, Calculate.ALIASES);
-        setupCorePref(RandomNumber.ALIAS_TEXT_KEY, listener, RandomNumber.ALIASES);
-        setupCorePref(Roll.ALIAS_TEXT_KEY, listener, Roll.ALIASES);
-        setupCorePref(Bits.ALIAS_TEXT_KEY, listener, Bits.ALIASES);
-        setupCorePref(Weather.ALIAS_TEXT_KEY, listener, Weather.ALIASES);
-        setupCorePref(Play.ALIAS_TEXT_KEY, listener, Play.ALIASES);
-        setupCorePref(Pause.ALIAS_TEXT_KEY, listener, Pause.ALIASES);
-        setupCorePref(Torch.ALIAS_TEXT_KEY, listener, Torch.ALIASES);
-        setupCorePref(Info.ALIAS_TEXT_KEY, listener, Info.ALIASES);
-        setupCorePref(Toast.ALIAS_TEXT_KEY, listener, Toast.ALIASES);
+        setupCorePref(Call.ENTRY, listener, Call.ALIASES);
+        setupCorePref(Dial.ENTRY, listener, Dial.ALIASES);
+        setupCorePref(Sms.ENTRY, listener, Sms.ALIASES);
+        setupCorePref(Email.ENTRY, listener, Email.ALIASES);
+        setupCorePref(Copy.ENTRY, listener, Copy.ALIASES);
+        setupCorePref(Snippets.ENTRY, listener, Snippets.ALIASES);
+        setupCorePref(Share.ENTRY, listener, Share.ALIASES);
+        setupCorePref(Launch.ENTRY, listener, Launch.ALIASES);
+        deactivate(Setting.ENTRY, false);
+        deactivate(Note.ENTRY, false);
+        deactivate(Todo.ENTRY, false);
+        setupCorePref(Web.ENTRY, listener, Web.ALIASES);
+        deactivate(Find.ENTRY, false);
+        setupCorePref(Time.ENTRY, listener, Time.ALIASES);
+        setupCorePref(Alarm.ENTRY, listener, Alarm.ALIASES);
+        setupCorePref(Timer.ENTRY, listener, Timer.ALIASES);
+        setupCorePref(Pomodoro.ENTRY, listener, Pomodoro.ALIASES);
+        setupCorePref(Calendar.ENTRY, listener, Calendar.ALIASES);
+        setupCorePref(Contact.ENTRY, listener, Contact.ALIASES);
+        setupCorePref(Notify.ENTRY, listener, Notify.ALIASES);
+        setupCorePref(Calculate.ENTRY, listener, Calculate.ALIASES);
+        setupCorePref(RandomNumber.ENTRY, listener, RandomNumber.ALIASES);
+        setupCorePref(Roll.ENTRY, listener, Roll.ALIASES);
+        setupCorePref(Bits.ENTRY, listener, Bits.ALIASES);
+        setupCorePref(Weather.ENTRY, listener, Weather.ALIASES);
+        setupCorePref(Play.ENTRY, listener, Play.ALIASES);
+        setupCorePref(Pause.ENTRY, listener, Pause.ALIASES);
+        setupCorePref(Torch.ENTRY, listener, Torch.ALIASES);
+        setupCorePref(Info.ENTRY, listener, Info.ALIASES);
+        setupCorePref(Toast.ENTRY, listener, Toast.ALIASES);
     }
 
     private void setupCorePref(
-        String textKey,
+        String entry,
         OnPreferenceChangeListener listener,
         @ArrayRes int aliases
     ) {
-        EditTextPreference cmdPref = preferenceOf(textKey);
-        var setKey = textKey.substring(0, textKey.length() - 5);
-        setupPref(cmdPref, setKey, listener, mRes, aliases);
+        String enabledKey = SettingVals.commandEnabledKey(entry);
+        if (CoreCommand.possible(mPm, entry)) {
+//            if (!mPrefs.contains(enabledKey)) {
+                mPrefs.edit().putBoolean(enabledKey, true).apply();
+                // TODO: actually allow to toggle this setting.
+//            }
+            String textKey = Aliases.textKey(entry);
+            EditTextPreference cmdPref = preferenceOf(textKey);
+            String setKey = textKey.substring(0, textKey.length() - 5);
+            setupPref(cmdPref, setKey, listener, mRes, aliases);
+        } else {
+            mPrefs.edit().putBoolean(enabledKey, false).apply();
+            deactivate(entry, true);
+        }
     }
 
     private void setupPref(
@@ -155,12 +167,21 @@ public final class CommandsFragment extends EmillaSettingsFragment {
         cmdPref.setOnPreferenceChangeListener(listener);
     }
 
-    private void deactivate(String textKey) {
-        Preference cmdPref = preferenceOf(textKey);
-        cmdPref.setOnPreferenceClickListener(pref -> {
-            mActivity.toast("Coming soon!");
-            return false;
-        });
+    private void deactivate(String entry, boolean implemented) {
+        EditTextPreference cmdPref = preferenceOf(Aliases.textKey(entry));
+        cmdPref.setEnabled(false);
+//        if (implemented) cmdPref.setOnPreferenceClickListener(pref -> {
+//            mActivity.toast(R.string.toast_command_unsupported);
+//            /*Your device doesn\'t support this command.*/
+//               TODO: this doesn't work because it's EditTextPreference
+//               Todo: offer to search for apps that may satisfy the command or inform that it's a
+//                hardware issue.
+//            return false;
+//        });
+//        else cmdPref.setOnPreferenceClickListener(pref -> {
+//            mActivity.toast("Coming soon!");
+//            return false;
+//        });
     }
 
     private void setupApps(OnPreferenceChangeListener listener) {

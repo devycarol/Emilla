@@ -12,7 +12,6 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.app.Apps;
 import net.emilla.math.BitwiseCalculator;
-import net.emilla.settings.Aliases;
 
 public final class Bits extends CategoryCommand {
 
@@ -21,10 +20,13 @@ public final class Bits extends CategoryCommand {
     public static final int NAME = R.string.command_bits;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_bits;
-    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     public static Yielder yielder() {
         return new Yielder(true, Bits::new, ENTRY, NAME, ALIASES);
+    }
+
+    public static boolean possible() {
+        return true;
     }
 
     private Bits(AssistActivity act) {

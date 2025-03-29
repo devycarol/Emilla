@@ -53,6 +53,10 @@ public final class Apps {
         return new Intent(ACTION_MAIN).addCategory(CATEGORY_LAUNCHER).addCategory(category);
     }
 
+    public static Intent sendTask(Uri scheme) {
+        return new Intent(ACTION_SEND, scheme);
+    }
+
     public static Intent sendTask(String type) {
         return new Intent(ACTION_SEND).setType(type);
     }
@@ -69,16 +73,24 @@ public final class Apps {
         return new Intent(ACTION_SEARCH).setPackage(pkg);
     }
 
+    public static Intent viewTask(String scheme) {
+        return viewTask(Uri.parse(scheme));
+    }
+
     public static Intent viewTask(Uri uri) {
         return new Intent(ACTION_VIEW, uri);
     }
 
-    public static Intent viewTask(String uriStr) {
-        return viewTask(Uri.parse(uriStr));
+    public static Intent viewTask(Uri data, String type) {
+        return new Intent(ACTION_VIEW).setDataAndType(data, type);
     }
 
     public static Intent editTask(Uri uri) {
         return new Intent(ACTION_EDIT, uri);
+    }
+
+    public static Intent editTask(Uri data, String type) {
+        return new Intent(ACTION_EDIT).setDataAndType(data, type);
     }
 
     public static Intent insertTask(String type) {

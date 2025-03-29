@@ -18,7 +18,6 @@ import androidx.core.content.FileProvider;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.app.Apps;
-import net.emilla.settings.Aliases;
 import net.emilla.util.Files;
 
 import java.io.File;
@@ -33,10 +32,13 @@ public final class Todo extends CoreDataCommand {
     public static final int NAME = R.string.command_todo;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_todo;
-    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     public static Yielder yielder() {
         return new Yielder(true, Todo::new, ENTRY, NAME, ALIASES);
+    }
+
+    public static boolean possible() {
+        return true;
     }
 
     private final File mFile = new File(Environment.getExternalStoragePublicDirectory(DIRECTORY_DOCUMENTS), "todo.txt"); // TODO: allow configurable path and don't require all files permission

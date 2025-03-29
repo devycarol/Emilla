@@ -125,8 +125,12 @@ public abstract class EmillaCommand {
         var map = new CommandMap(SettingVals.defaultCommand(prefs, coreYielders));
 
         for (CoreCommand.Yielder yielder : coreYielders) {
-            map.put(yielder.name(res), yielder);
-            for (String alias : yielder.aliases(prefs, res)) map.put(alias, yielder);
+            if (yielder.enabled(pm, prefs)) {
+                map.put(yielder.name(res), yielder);
+                for (String alias : yielder.aliases(prefs, res)) {
+                    map.put(alias, yielder);
+                }
+            }
         }
 
         for (AppEntry app : appList) {

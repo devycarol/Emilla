@@ -9,7 +9,6 @@ import androidx.appcompat.app.AlertDialog;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.app.Apps;
-import net.emilla.settings.Aliases;
 import net.emilla.util.Dialogs;
 
 public final class Launch extends OpenCommand {
@@ -19,10 +18,13 @@ public final class Launch extends OpenCommand {
     public static final int NAME = R.string.command_launch;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_launch;
-    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     public static Yielder yielder() {
         return new Yielder(true, Launch::new, ENTRY, NAME, ALIASES);
+    }
+
+    public static boolean possible() {
+        return true;
     }
 
     private Launch(AssistActivity act) {

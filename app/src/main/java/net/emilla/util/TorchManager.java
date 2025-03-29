@@ -34,7 +34,6 @@ public final class TorchManager {
         String camId = flashCamId(camMgr);
         if (camId == null) {
             throw new EmillaException(errorTitle, R.string.error_torch_failed);
-            // Todo: prevent the command if no torch feature. quick-action is already blocked.
         }
 
         if (sTorching) {

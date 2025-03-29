@@ -8,7 +8,6 @@ import androidx.annotation.StringRes;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.lang.Lang;
-import net.emilla.settings.Aliases;
 import net.emilla.util.Dialogs;
 
 import java.util.Random;
@@ -20,10 +19,13 @@ public final class Roll extends CoreCommand {
     public static final int NAME = R.string.command_roll;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_roll;
-    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     public static Yielder yielder() {
         return new Yielder(true, Roll::new, ENTRY, NAME, ALIASES);
+    }
+
+    public static boolean possible() {
+        return true;
     }
 
     private Roll(AssistActivity act) {

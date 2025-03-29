@@ -20,7 +20,6 @@ import net.emilla.event.Plan;
 import net.emilla.lang.Lang;
 import net.emilla.ping.PingChannel;
 import net.emilla.ping.Pings;
-import net.emilla.settings.Aliases;
 import net.emilla.settings.SettingVals;
 import net.emilla.util.Permissions;
 
@@ -31,10 +30,13 @@ public final class Pomodoro extends CoreDataCommand {
     public static final int NAME = R.string.command_pomodoro;
     @ArrayRes
     public static final int ALIASES = R.array.aliases_pomodoro;
-    public static final String ALIAS_TEXT_KEY = Aliases.textKey(ENTRY);
 
     public static Yielder yielder() {
         return new Yielder(true, Pomodoro::new, ENTRY, NAME, ALIASES);
+    }
+
+    public static boolean possible() {
+        return true;
     }
 
     private enum Action {
