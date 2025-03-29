@@ -1,19 +1,28 @@
 package net.emilla.command.app;
 
+import static net.emilla.app.AppProperties.ordinaryFree;
+import static net.emilla.app.AppProperties.suppressiveFree;
+
 import androidx.annotation.ArrayRes;
 import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.app.AppProperties;
 
 public final class Markor extends AppSendData {
 
     public static final String PKG = "net.gsantner.markor";
-    public static final String CLS_MAIN = PKG + ".activity.MainActivity";
     @ArrayRes
-    public static final int ALIASES = R.array.aliases_markor;
+    private static final int ALIASES = R.array.aliases_markor;
     @StringRes
-    public static final int SUMMARY = R.string.summary_note;
+    private static final int SUMMARY = R.string.summary_note;
+
+    private static final String CLS_MAIN = PKG + ".activity.MainActivity";
+
+    public static AppProperties meta(String cls) {
+        return cls.equals(CLS_MAIN) ? ordinaryFree(ALIASES, SUMMARY) : suppressiveFree();
+    }
 
     public static AppCommand instance(AssistActivity act, Yielder info, String cls) {
         return cls.equals(CLS_MAIN) ? new Markor(act, info) : new AppCommand(act, info);

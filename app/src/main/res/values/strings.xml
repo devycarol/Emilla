@@ -210,6 +210,8 @@
     <string name="instruction_name_label">name</string>
     <!-- Generic instruction for message text -->
     <string name="instruction_message">message</string>
+    <!-- Generic instruction for search query -->
+    <string name="instruction_search">query</string>
     <!-- Generic instruction for email apps -->
     <string name="instruction_app_email">email body</string>
     <!-- Generic instruction for code issues -->
@@ -255,6 +257,8 @@
     <string name="summary_app">Launch app</string>
     <!-- Generic summary for app-send -->
     <string name="summary_app_send">Send text to app</string>
+    <!-- Generic summary for app-search -->
+    <string name="summary_app_search">Search in app</string>
     <!-- Generic summary for messenger app commands -->
     <string name="summary_messaging">Send messages</string>
     <!-- Generic summary for video app commands -->

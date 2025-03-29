@@ -7,7 +7,6 @@ import androidx.annotation.ArrayRes;
 import androidx.annotation.Nullable;
 
 import net.emilla.app.AppEntry;
-import net.emilla.command.app.AppCommand;
 
 import java.util.Set;
 
@@ -19,7 +18,7 @@ public final class Aliases {
         Resources res,
         AppEntry app
     ) {
-        @ArrayRes int setId = AppCommand.aliases(app);
+        @ArrayRes int setId = app.aliases();
         String entry = app.entry();
         return setId == 0 ? prefs.getStringSet(setKey(entry), null)
                           : coreSet(prefs, res, entry, setId);

@@ -137,7 +137,7 @@ public abstract class EmillaCommand {
         for (AppEntry app : appList) {
             if (app.commandEnabled(prefs)) {
                 // todo: edge case where a mapped app is uninstalled during the activity lifecycle
-                var yielder = new AppCommand.Yielder(app, pm);
+                var yielder = new AppCommand.Yielder(app);
                 map.put(yielder.name(), yielder);
 
                 Set<String> aliases = yielder.aliases(prefs, res);
@@ -163,7 +163,7 @@ public abstract class EmillaCommand {
 
     protected final AssistActivity activity;
     protected final Resources resources;
-    protected final Params params;
+    private final Params params;
 
     @StringRes
     public final int summary, manual;

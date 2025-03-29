@@ -10,7 +10,12 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.app.Apps;
 
-/*internal*/ abstract class AppSearch extends AppCommand {
+/*internal open*/ class AppSearch extends AppCommand {
+
+    public AppSearch(AssistActivity act, Yielder info) {
+        this(act, info, R.string.instruction_search, R.string.summary_app_search);
+        // todo: the 'send' action shouldn't apply when just launching
+    }
 
     public AppSearch(AssistActivity act, Yielder info, @StringRes int instruction,
             @StringRes int summary) {
@@ -27,8 +32,8 @@ import net.emilla.app.Apps;
         //  etc. I assume the G assistant has similar functionality. If requires internet, could use
         //  bookmarks at the very least. Also, this command is broken for YouTube when a video is playing.
         var searchAliases = stringArray(R.array.subcmd_search);
-        var lcQuery = query.toLowerCase();
-        Intent in = Apps.searchTask(app.pkg);
+        String lcQuery = query.toLowerCase();
+        Intent in = Apps.searchToApp(app.pkg);
         for (String alias : searchAliases) {
             if (lcQuery.startsWith(alias)) {
                 // Todo livecmd: visual indication that this will be used

@@ -2,19 +2,16 @@ package net.emilla.command.app;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.ArrayRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.app.AppEntry;
-import net.emilla.app.Apps;
 import net.emilla.command.CommandYielder;
 import net.emilla.command.EmillaCommand;
 import net.emilla.config.Aliases;
@@ -24,63 +21,14 @@ import java.util.Set;
 
 public /*open*/ class AppCommand extends EmillaCommand {
 
-    @ArrayRes
-    public static int aliases(AppEntry app) {
-        return switch (app.pkg) {
-            case AospContacts.PKG -> AospContacts.ALIASES;
-            case Markor.PKG -> app.cls.equals(Markor.CLS_MAIN) ? Markor.ALIASES : 0;
-            // Markor can have multiple launchers, only the main one should have the aliases.
-            case Firefox.PKG -> Firefox.ALIASES;
-            case Tor.PKG -> Tor.ALIASES;
-            case Signal.PKG -> Signal.ALIASES;
-            case Newpipe.PKG -> Newpipe.ALIASES;
-            case Tubular.PKG -> Tubular.ALIASES;
-            case Tasker.PKG -> Tasker.ALIASES;
-            case Github.PKG -> Github.ALIASES;
-            case Youtube.PKG -> Youtube.ALIASES;
-            case Discord.PKG -> Discord.ALIASES;
-            case Outlook.PKG -> Outlook.ALIASES;
-            default -> 0;
-        };
-    }
-
-    @StringRes
-    public static int summary(AppEntry app) {
-        return switch (app.pkg) {
-            case AospContacts.PKG -> AospContacts.SUMMARY;
-            case Markor.PKG -> app.cls.equals(Markor.CLS_MAIN) ? Markor.SUMMARY : 0;
-            case Firefox.PKG -> Firefox.SUMMARY;
-            case Tor.PKG -> Tor.SUMMARY;
-            case Signal.PKG -> Signal.SUMMARY;
-            case Newpipe.PKG -> Newpipe.SUMMARY;
-            case Tubular.PKG -> Tubular.SUMMARY;
-            case Tasker.PKG -> Tasker.SUMMARY;
-            case Github.PKG -> Github.SUMMARY;
-            case Youtube.PKG -> Youtube.SUMMARY;
-            case Discord.PKG -> Discord.SUMMARY;
-            case Outlook.PKG -> Outlook.SUMMARY;
-            default -> 0;
-        };
-    }
-
     public static final class Yielder extends CommandYielder {
 
         private final AppEntry app;
-        private final boolean hasSend;
         private final boolean usesInstruction;
 
-        public Yielder(AppEntry app, PackageManager pm) {
+        public Yielder(AppEntry app) {
             this.app = app;
-            hasSend = Apps.sendToApp(app.pkg).resolveActivity(pm) != null;
-
-            usesInstruction = switch (app.pkg) {
-                case AospContacts.PKG, Firefox.PKG, Youtube.PKG, // search commands
-                     Tasker.PKG -> true;
-                case Tor.PKG -> false; // search/send intents are broken
-                case Markor.PKG -> app.cls.equals(Markor.CLS_MAIN);
-                // Markor can have multiple launchers, only the main should have the 'send' property.
-                default -> hasSend;
-            }; // Todo: handle in a more centralized way, this is tedious and error-prone.
+            usesInstruction = app.usesInstruction();
         }
 
         @Override
@@ -103,9 +51,10 @@ public /*open*/ class AppCommand extends EmillaCommand {
                 case Youtube.PKG -> new Youtube(act, this);
                 case Discord.PKG -> new Discord(act, this);
                 case Outlook.PKG -> new Outlook(act, this);
-                default -> hasSend ? new AppSend(act, this)
-                                   : new AppCommand(act, this);
-                // Todo: generic AppSearchCommand that merges with AppSendCommand
+                default -> app.hasSend() ? new AppSend(act, this)
+                         : app.hasSearch() ? new AppSearch(act, this)
+                         // Todo: merge AppSearchCommand with AppSendCommand
+                         : new AppCommand(act, this);
             };
         }
 

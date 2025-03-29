@@ -1,5 +1,7 @@
 package net.emilla.command.app;
 
+import static net.emilla.app.AppProperties.ordinary;
+
 import android.database.Cursor;
 import android.net.Uri;
 import android.view.inputmethod.EditorInfo;
@@ -11,6 +13,7 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.app.AppProperties;
 import net.emilla.app.TaskerIntent;
 import net.emilla.command.ActionMap;
 import net.emilla.command.DataCommand;
@@ -26,9 +29,13 @@ public final class Tasker extends AppCommand implements DataCommand {
 
     public static final String PKG = TaskerIntent.TASKER_PACKAGE_MARKET;
     @ArrayRes
-    public static final int ALIASES = R.array.aliases_tasker;
+    private static final int ALIASES = R.array.aliases_tasker;
     @StringRes
-    public static final int SUMMARY = R.string.summary_app_tasker;
+    private static final int SUMMARY = R.string.summary_app_tasker;
+
+    public static AppProperties meta() {
+        return ordinary(ALIASES, SUMMARY);
+    }
 
     @Override
     public boolean usesData() {

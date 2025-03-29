@@ -56,15 +56,15 @@ public final class Apps {
         return new Intent(ACTION_SEND).setType(type);
     }
 
-    public static Intent sendMultipleTask(String type) {
-        return new Intent(ACTION_SEND_MULTIPLE).setType(type);
-    }
-
     public static Intent sendToApp(String pkg) {
         return sendTask("text/plain").setPackage(pkg);
     }
 
-    public static Intent searchTask(String pkg) {
+    public static Intent sendMultipleTask(String type) {
+        return new Intent(ACTION_SEND_MULTIPLE).setType(type);
+    }
+
+    public static Intent searchToApp(String pkg) {
         return new Intent(ACTION_SEARCH).setPackage(pkg);
     }
 
