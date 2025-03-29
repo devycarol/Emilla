@@ -1,4 +1,4 @@
-package net.emilla.settings;
+package net.emilla.config;
 
 import static java.util.Objects.requireNonNull;
 

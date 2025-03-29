@@ -57,6 +57,7 @@ import net.emilla.command.core.Torch;
 import net.emilla.command.core.Uninstall;
 import net.emilla.command.core.Weather;
 import net.emilla.command.core.Web;
+import net.emilla.config.SettingVals;
 import net.emilla.ping.PingChannel;
 import net.emilla.run.AppSuccess;
 import net.emilla.run.BroadcastGift;
@@ -69,7 +70,6 @@ import net.emilla.run.Offering;
 import net.emilla.run.PingGift;
 import net.emilla.run.Success;
 import net.emilla.run.TimePickerOffering;
-import net.emilla.settings.SettingVals;
 import net.emilla.util.Dialogs;
 
 import java.util.Objects;

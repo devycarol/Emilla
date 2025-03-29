@@ -56,9 +56,6 @@ import net.emilla.command.core.Todo;
 import net.emilla.command.core.Torch;
 import net.emilla.command.core.Weather;
 import net.emilla.command.core.Web;
-import net.emilla.settings.Aliases;
-import net.emilla.settings.CommandPreference;
-import net.emilla.settings.SettingVals;
 
 import java.util.ArrayList;
 import java.util.HashSet;

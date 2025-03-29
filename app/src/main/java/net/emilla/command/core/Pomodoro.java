@@ -14,13 +14,13 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.command.ActionMap;
 import net.emilla.command.Subcommand;
+import net.emilla.config.SettingVals;
 import net.emilla.event.PingPlan;
 import net.emilla.event.PingScheduler;
 import net.emilla.event.Plan;
 import net.emilla.lang.Lang;
 import net.emilla.ping.PingChannel;
 import net.emilla.ping.Pings;
-import net.emilla.settings.SettingVals;
 import net.emilla.util.Permissions;
 
 public final class Pomodoro extends CoreDataCommand {

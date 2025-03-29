@@ -12,8 +12,8 @@ import net.emilla.R
 import net.emilla.chime.Chimer.Companion.PEND
 import net.emilla.chime.Chimer.Companion.RESUME
 import net.emilla.command.core.Snippets
+import net.emilla.config.SettingVals
 import net.emilla.run.Gift
-import net.emilla.settings.SettingVals
 import net.emilla.util.Dialogs
 
 class SnippetsFragment : ActionBox(R.layout.snippet_item_list) {

@@ -1,4 +1,4 @@
-package net.emilla.settings;
+package net.emilla.config;
 
 import android.content.Context;
 import android.content.SharedPreferences;

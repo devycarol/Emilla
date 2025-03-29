@@ -16,10 +16,10 @@ import androidx.appcompat.content.res.AppCompatResources;
 import net.emilla.activity.AssistActivity;
 import net.emilla.command.CommandYielder;
 import net.emilla.command.EmillaCommand;
+import net.emilla.config.Aliases;
+import net.emilla.config.SettingVals;
 import net.emilla.exception.EmillaException;
 import net.emilla.lang.Lang;
-import net.emilla.settings.Aliases;
-import net.emilla.settings.SettingVals;
 
 import java.util.Set;
 

@@ -5,7 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
-import net.emilla.settings.SettingVals;
+import net.emilla.config.SettingVals;
 
 import java.util.List;
 

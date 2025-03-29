@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import net.emilla.settings.SettingVals;
+import net.emilla.config.SettingVals;
 import net.emilla.util.IndexWindow;
 import net.emilla.util.SortedArray;
 

@@ -10,9 +10,9 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.app.Apps;
 import net.emilla.config.ConfigActivity;
 import net.emilla.run.AppSuccess;
-import net.emilla.app.Apps;
 
 public final class AssistantSettings implements LabeledQuickAction {
 

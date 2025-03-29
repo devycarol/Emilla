@@ -19,8 +19,8 @@ import net.emilla.app.AppEntry;
 import net.emilla.app.Apps;
 import net.emilla.command.CommandYielder;
 import net.emilla.command.EmillaCommand;
+import net.emilla.config.Aliases;
 import net.emilla.lang.Lang;
-import net.emilla.settings.Aliases;
 
 import java.util.Set;
 

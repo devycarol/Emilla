@@ -2,157 +2,157 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory android:title="@string/category_core">
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_web"
             android:key="web"
             android:summary="@string/summary_web"
             android:title="@string/command_web" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_launch"
             android:key="launch"
             android:summary="@string/summary_launch"
             android:title="@string/command_launch" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_play"
             android:key="play"
             android:summary="@string/summary_play"
             android:title="@string/command_play" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_pause"
             android:key="pause"
             android:summary="@string/summary_pause"
             android:title="@string/command_pause" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_torch"
             android:key="torch"
             android:summary="@string/summary_torch"
             android:title="@string/command_torch" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_find"
             android:key="find"
             android:summary="@string/summary_find"
             android:title="@string/command_find" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_call"
             android:key="call"
             android:summary="@string/summary_call"
             android:title="@string/command_call" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_dial"
             android:key="dial"
             android:summary="@string/summary_dial"
             android:title="@string/command_dial" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_sms"
             android:key="sms"
             android:summary="@string/summary_sms"
             android:title="@string/command_sms" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_contact"
             android:key="contact"
             android:summary="@string/summary_contact"
             android:title="@string/command_contact" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_email"
             android:key="email"
             android:summary="@string/summary_email"
             android:title="@string/command_email" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_navigate"
             android:key="navigate"
             android:summary="@string/summary_navigate"
             android:title="@string/command_navigate" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_calculate"
             android:key="calculate"
             android:summary="@string/summary_calculate"
             android:title="@string/command_calculate" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_random_number"
             android:key="random_number"
             android:summary="@string/summary_random_number"
             android:title="@string/command_random_number" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_roll"
             android:key="roll"
             android:summary="@string/summary_roll"
             android:title="@string/command_roll" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_command"
             android:key="bits"
             android:summary="@string/summary_bits"
             android:title="@string/command_bits" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_weather"
             android:key="weather"
             android:summary="@string/summary_weather"
             android:title="@string/command_weather" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_clock"
             android:key="time"
             android:summary="@string/summary_time"
             android:title="@string/command_time" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_alarm"
             android:key="alarm"
             android:summary="@string/summary_alarm"
             android:title="@string/command_alarm" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_timer"
             android:key="timer"
             android:summary="@string/summary_timer"
             android:title="@string/command_timer" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_note"
             android:key="note"
             android:summary="@string/summary_note"
             android:title="@string/command_note" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_calendar"
             android:key="calendar"
             android:summary="@string/summary_calendar"
             android:title="@string/command_calendar" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_notify"
             android:key="notify"
             android:summary="@string/summary_notify"
             android:title="@string/command_notify" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_settings"
             android:key="setting"
             android:summary="@string/summary_setting"
             android:title="@string/command_setting" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_copy"
             android:key="copy"
             android:summary="@string/summary_copy"
             android:title="@string/command_copy" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_snippets"
             android:key="snippets"
             android:summary="@string/summary_snippets"
             android:title="@string/command_snippets" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_share"
             android:key="share"
             android:summary="@string/summary_share"
             android:title="@string/command_share" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_torch"
             android:key="aliases_torch"
             android:summary="@string/summary_torch"
             android:title="@string/command_torch" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_info"
             android:key="info"
             android:summary="@string/summary_info"
             android:title="@string/command_info" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_uninstall"
             android:key="uninstall"
             android:summary="@string/summary_uninstall"
             android:title="@string/command_uninstall" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_toast"
             android:key="toast"
             android:summary="@string/summary_toast"
@@ -160,12 +160,12 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_custom">
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_todo"
             android:key="todo"
             android:summary="@string/summary_todo"
             android:title="@string/command_todo" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_pomodoro"
             android:key="pomodoro"
             android:summary="@string/summary_pomodoro"
@@ -178,41 +178,41 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_apps">
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:key="com.android.contacts"
             android:summary="@string/summary_app_aosp_contacts" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:key="net.gsantner.markor"
             android:summary="@string/summary_note" />
         <!-- TODO: this will break when generic aliasing is added! Must be activity-specific. -->
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:key="org.mozilla.firefox"
             android:summary="@string/summary_web" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:key="org.torproject.torbrowser"
             android:summary="@string/summary_web" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:key="org.thoughtcrime.securesms"
             android:summary="@string/summary_messaging" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:key="org.schabi.newpipe"
             android:summary="@string/summary_video" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:key="org.polymorphicshade.tubular"
             android:summary="@string/summary_video" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:key="net.dinglisch.android.taskerm"
             android:summary="@string/summary_app_tasker" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:key="com.github.android"
             android:summary="@string/summary_issues" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:key="com.google.android.youtube"
             android:summary="@string/summary_video" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:key="com.discord"
             android:summary="@string/summary_messaging" />
-        <net.emilla.settings.CommandPreference
+        <net.emilla.config.CommandPreference
             android:key="com.microsoft.office.outlook"
             android:summary="@string/summary_email" />
     </PreferenceCategory>
