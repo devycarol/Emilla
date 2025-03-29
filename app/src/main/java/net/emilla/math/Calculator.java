@@ -109,7 +109,7 @@ public final class Calculator {
                 BinaryOperator peek = opStk.peek();
                 if (peek == BinaryOperator.LPAREN || op.precedence > peek.precedence
                 ||  op.rightAssociative && op.precedence == peek.precedence) break;
-                else squish(opStk.pop()); // peek is valid, therefore pop is valid.
+                squish(opStk.pop()); // peek is valid, therefore pop is valid.
             }
             opStk.push(op);
         }
@@ -236,7 +236,7 @@ public final class Calculator {
             return new InfixIterator(expression, errorTitle);
         }
 
-        static class InfixIterator implements Iterator<InfixToken> {
+        static final class InfixIterator implements Iterator<InfixToken> {
 
             final char[] expr;
             final int length;

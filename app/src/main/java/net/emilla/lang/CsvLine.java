@@ -134,7 +134,8 @@ public final class CsvLine implements Iterable<String> {
         return mEnforceTrimming ? new TrimmingValIterator() : new ValIterator();
     }
 
-    private sealed class ValIterator implements Iterator<String> permits TrimmingValIterator {
+    private /*inner*/ sealed class ValIterator implements Iterator<String>
+            permits TrimmingValIterator {
 
         protected int pos = mStart;
 
@@ -189,7 +190,7 @@ public final class CsvLine implements Iterable<String> {
         }
     }
 
-    private final class TrimmingValIterator extends ValIterator {
+    private /*inner*/ final class TrimmingValIterator extends ValIterator {
 
         @Override
         protected void advanceToNextVal() {

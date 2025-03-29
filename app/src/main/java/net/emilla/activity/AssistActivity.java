@@ -177,7 +177,7 @@ public final class AssistActivity extends EmillaActivity {
         commandField.requestFocus();
     }
 
-    private final class CommandWatcher implements TextWatcher {
+    private /*inner*/ final class CommandWatcher implements TextWatcher {
 
         @Override
         public void beforeTextChanged(CharSequence text, int start, int count, int after) {}

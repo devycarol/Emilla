@@ -46,7 +46,7 @@ public abstract class Words implements TrieMap.Phrase<String, String> {
         return mPhrase.substring(mPosition);
     }
 
-    private abstract class WordIterator implements Iterator<String> {
+    private /*inner*/ abstract class WordIterator implements Iterator<String> {
 
         int mStartIndex;
 
@@ -71,7 +71,7 @@ public abstract class Words implements TrieMap.Phrase<String, String> {
             return new LatinIterator();
         }
 
-        private final class LatinIterator extends WordIterator {
+        private /*inner*/ final class LatinIterator extends WordIterator {
 
             LatinIterator() {
                 super(Strings.indexOfNonSpace(mPhrase));
@@ -109,7 +109,7 @@ public abstract class Words implements TrieMap.Phrase<String, String> {
             return new GlyphIterator();
         }
 
-        private final class GlyphIterator extends WordIterator {
+        private /*inner*/ final class GlyphIterator extends WordIterator {
 
             GlyphIterator() {
                 super(0);

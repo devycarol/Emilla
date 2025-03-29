@@ -32,7 +32,7 @@ public final class MediaRetriever extends ResultRetriever<PickVisualMediaRequest
         return new MediaCallback();
     }
 
-    private final class MediaCallback extends ResultCallback {
+    private /*inner*/ final class MediaCallback extends ResultCallback {
 
         @Override
         protected void onActivityResult(List<Uri> media, FileReceiver receiver) {

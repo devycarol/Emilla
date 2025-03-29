@@ -140,7 +140,8 @@ public final class Lines implements Iterable<String> {
         return mEnforceTrimming ? new TrimmingLineIterator() : new LineIterator();
     }
 
-    private sealed class LineIterator implements Iterator<String> permits TrimmingLineIterator {
+    private /*inner*/ sealed class LineIterator implements Iterator<String>
+            permits TrimmingLineIterator {
 
         protected int pos = mStart;
 
@@ -194,7 +195,7 @@ public final class Lines implements Iterable<String> {
         }
     }
 
-    private final class TrimmingLineIterator extends LineIterator {
+    private /*inner*/ final class TrimmingLineIterator extends LineIterator {
 
         @Override
         protected void advanceToNextLine() {

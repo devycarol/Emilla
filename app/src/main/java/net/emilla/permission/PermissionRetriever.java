@@ -41,7 +41,8 @@ public final class PermissionRetriever {
         mLauncher.launch(permissions);
     }
 
-    private final class PermissionCallback implements ActivityResultCallback<Map<String, Boolean>> {
+    private /*inner*/ final class PermissionCallback
+            implements ActivityResultCallback<Map<String, Boolean>> {
 
         @Override
         public void onActivityResult(Map<String, Boolean> grants) {

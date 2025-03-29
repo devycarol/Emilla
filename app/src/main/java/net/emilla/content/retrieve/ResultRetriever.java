@@ -58,7 +58,7 @@ import net.emilla.run.MessageFailure;
         mReceiver = null;
     }
 
-    protected abstract class ResultCallback implements ActivityResultCallback<O> {
+    protected /*inner*/ abstract class ResultCallback implements ActivityResultCallback<O> {
 
         @Override
         public final void onActivityResult(O output) {

@@ -57,7 +57,7 @@ public abstract class ContactDataRetriever extends ResultRetriever<Void, String,
         return new DataCallback();
     }
 
-    private final class DataCallback extends ResultCallback {
+    private /*inner*/ final class DataCallback extends ResultCallback {
 
         @Override
         protected void onActivityResult(String data, ContactDataReceiver receiver) {

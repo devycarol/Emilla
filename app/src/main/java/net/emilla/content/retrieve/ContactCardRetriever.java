@@ -24,7 +24,7 @@ public final class ContactCardRetriever extends ResultRetriever<Void, Uri, Conta
         return new ContactCallback();
     }
 
-    private final class ContactCallback extends ResultCallback {
+    private /*inner*/ final class ContactCallback extends ResultCallback {
 
         @Override
         protected void onActivityResult(Uri contact, ContactCardReceiver receiver) {

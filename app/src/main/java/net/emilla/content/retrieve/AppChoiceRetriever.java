@@ -54,7 +54,7 @@ public final class AppChoiceRetriever extends ResultRetriever<Intent, ActivityRe
         return new AppCallback();
     }
 
-    private final class AppCallback extends ResultCallback {
+    private /*inner*/ final class AppCallback extends ResultCallback {
 
         @Override
         protected void onActivityResult(ActivityResult output, AppChoiceReceiver receiver) {
@@ -68,7 +68,7 @@ public final class AppChoiceRetriever extends ResultRetriever<Intent, ActivityRe
     public static final class AppChooserBroadcastReceiver extends BroadcastReceiver {
 
         @Nullable @Deprecated
-        private static AppChoiceRetriever sRetriever = null;
+        private static AppChoiceRetriever sRetriever;
         // Todo: there *has* to be a better way.
 
         @Deprecated

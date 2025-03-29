@@ -95,7 +95,7 @@ public final class BitwiseCalculator {
                 BitwiseOperator peek = opStk.peek();
                 if (peek == BitwiseOperator.LPAREN || op.precedence > peek.precedence
                 ||  op.rightAssociative && op.precedence == peek.precedence) break;
-                else squish(opStk.pop()); // peek is valid, therefore pop is valid.
+                squish(opStk.pop()); // peek is valid, therefore pop is valid.
             }
             opStk.push(op);
         }
@@ -222,7 +222,7 @@ public final class BitwiseCalculator {
             return new BitwiseIterator(expression, errorTitle);
         }
 
-        static class BitwiseIterator implements Iterator<BitwiseToken> {
+        static final class BitwiseIterator implements Iterator<BitwiseToken> {
 
             final char[] expr;
             final int length;

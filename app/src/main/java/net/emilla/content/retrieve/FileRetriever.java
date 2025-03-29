@@ -26,7 +26,7 @@ public final class FileRetriever extends ResultRetriever<String, List<Uri>, File
         return new FileCallback();
     }
 
-    private final class FileCallback extends ResultCallback {
+    private /*inner*/ final class FileCallback extends ResultCallback {
 
         @Override
         protected void onActivityResult(List<Uri> files, FileReceiver receiver) {
