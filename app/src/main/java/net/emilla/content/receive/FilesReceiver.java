@@ -8,12 +8,12 @@ import net.emilla.activity.AssistActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class FileReceiver implements ResultReceiver {
+public final class FilesReceiver implements ResultReceiver {
 
     private final AssistActivity mActivity;
     private final String mCommandEntry;
 
-    public FileReceiver(AssistActivity act, String commandEntry) {
+    public FilesReceiver(AssistActivity act, String commandEntry) {
         mActivity = act;
         mCommandEntry = commandEntry;
     }

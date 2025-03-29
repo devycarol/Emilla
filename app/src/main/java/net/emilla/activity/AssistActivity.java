@@ -61,13 +61,13 @@ import net.emilla.config.SettingVals;
 import net.emilla.content.receive.AppChoiceReceiver;
 import net.emilla.content.receive.ContactCardReceiver;
 import net.emilla.content.receive.EmailReceiver;
-import net.emilla.content.receive.FileReceiver;
+import net.emilla.content.receive.FilesReceiver;
 import net.emilla.content.receive.PhoneReceiver;
 import net.emilla.content.retrieve.AppChoiceRetriever;
 import net.emilla.content.retrieve.ContactCardRetriever;
 import net.emilla.content.retrieve.ContactEmailRetriever;
 import net.emilla.content.retrieve.ContactPhoneRetriever;
-import net.emilla.content.retrieve.FileRetriever;
+import net.emilla.content.retrieve.FilesRetriever;
 import net.emilla.content.retrieve.MediaRetriever;
 import net.emilla.databinding.ActivityAssistBinding;
 import net.emilla.exception.EmillaException;
@@ -88,7 +88,7 @@ import java.util.ArrayList;
 
 public final class AssistActivity extends EmillaActivity {
 
-    private final FileRetriever mFileRetriever = new FileRetriever(this);
+    private final FilesRetriever mFilesRetriever = new FilesRetriever(this);
     private final MediaRetriever mMediaRetriever = new MediaRetriever(this);
     private final ContactCardRetriever mContactCardRetriever = new ContactCardRetriever(this);
     private final ContactPhoneRetriever mContactPhoneRetriever = new ContactPhoneRetriever(this);
@@ -655,11 +655,11 @@ public final class AssistActivity extends EmillaActivity {
         chime(PEND);
     }
 
-    public void offerFiles(FileReceiver receiver, String mimeType) {
-        mFileRetriever.retrieve(receiver, mimeType);
+    public void offerFiles(FilesReceiver receiver, String mimeType) {
+        mFilesRetriever.retrieve(receiver, mimeType);
     }
 
-    public void offerMedia(FileReceiver receiver) {
+    public void offerMedia(FilesReceiver receiver) {
         mMediaRetriever.retrieve(receiver);
         chime(PEND);
     }

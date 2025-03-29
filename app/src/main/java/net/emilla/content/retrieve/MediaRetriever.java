@@ -10,17 +10,17 @@ import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.content.receive.FileReceiver;
+import net.emilla.content.receive.FilesReceiver;
 
 import java.util.List;
 
-public final class MediaRetriever extends ResultRetriever<PickVisualMediaRequest, List<Uri>, FileReceiver> {
+public final class MediaRetriever extends ResultRetriever<PickVisualMediaRequest, List<Uri>, FilesReceiver> {
 
     public MediaRetriever(AssistActivity act) {
         super(act, new PickMultipleVisualMedia());
     }
 
-    public void retrieve(FileReceiver receiver) {
+    public void retrieve(FilesReceiver receiver) {
         if (alreadyHas(receiver)) return;
         launch(new PickVisualMediaRequest.Builder()
                 .setMediaType(PickVisualMedia.ImageAndVideo.INSTANCE)
@@ -35,7 +35,7 @@ public final class MediaRetriever extends ResultRetriever<PickVisualMediaRequest
     private /*inner*/ final class MediaCallback extends ResultCallback {
 
         @Override
-        protected void onActivityResult(List<Uri> media, FileReceiver receiver) {
+        protected void onActivityResult(List<Uri> media, FilesReceiver receiver) {
             if (media.isEmpty()) activity.toast(R.string.toast_media_not_selected);
             else receiver.provide(media);
             activity.chime(RESUME);

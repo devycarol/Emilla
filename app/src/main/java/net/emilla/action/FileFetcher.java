@@ -6,19 +6,19 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.content.receive.FileReceiver;
+import net.emilla.content.receive.FilesReceiver;
 
 public final class FileFetcher implements LabeledQuickAction {
 
     public static final int ID = R.id.action_get_files;
 
     private final AssistActivity mActivity;
-    private final FileReceiver mReceiver;
+    private final FilesReceiver mReceiver;
     private final String mMimeType;
 
     public FileFetcher(AssistActivity act, String commandEntry, String mimeType) {
         mActivity = act;
-        mReceiver = new FileReceiver(act, commandEntry);
+        mReceiver = new FilesReceiver(act, commandEntry);
         mMimeType = mimeType;
     }
 

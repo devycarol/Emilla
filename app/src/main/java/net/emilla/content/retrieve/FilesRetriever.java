@@ -6,17 +6,17 @@ import androidx.activity.result.contract.ActivityResultContracts.GetMultipleCont
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.content.receive.FileReceiver;
+import net.emilla.content.receive.FilesReceiver;
 
 import java.util.List;
 
-public final class FileRetriever extends ResultRetriever<String, List<Uri>, FileReceiver> {
+public final class FilesRetriever extends ResultRetriever<String, List<Uri>, FilesReceiver> {
 
-    public FileRetriever(AssistActivity act) {
+    public FilesRetriever(AssistActivity act) {
         super(act, new GetMultipleContents());
     }
 
-    public void retrieve(FileReceiver receiver, String mimeType) {
+    public void retrieve(FilesReceiver receiver, String mimeType) {
         if (alreadyHas(receiver)) return;
         launch(mimeType);
     }
@@ -29,7 +29,7 @@ public final class FileRetriever extends ResultRetriever<String, List<Uri>, File
     private /*inner*/ final class FileCallback extends ResultCallback {
 
         @Override
-        protected void onActivityResult(List<Uri> files, FileReceiver receiver) {
+        protected void onActivityResult(List<Uri> files, FilesReceiver receiver) {
             if (files.isEmpty()) activity.toast(R.string.toast_files_not_selected);
             else receiver.provide(files);
         }

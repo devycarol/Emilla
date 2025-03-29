@@ -6,18 +6,18 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.content.receive.FileReceiver;
+import net.emilla.content.receive.FilesReceiver;
 
 public final class MediaFetcher implements LabeledQuickAction {
 
     public static final int ID = R.id.action_get_media;
 
     private final AssistActivity mActivity;
-    private final FileReceiver mReceiver;
+    private final FilesReceiver mReceiver;
 
     public MediaFetcher(AssistActivity act, String commandEntry) {
         mActivity = act;
-        mReceiver = new FileReceiver(act, commandEntry);
+        mReceiver = new FilesReceiver(act, commandEntry);
     }
 
     @Override @IdRes
