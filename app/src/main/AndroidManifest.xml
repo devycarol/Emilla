@@ -99,7 +99,7 @@
         </activity>
 
         <service
-            android:name="net.emilla.system.EmillaAccessibilityService"
+            android:name="net.emilla.system.EmillaA11yService"
             android:exported="true"
             android:minSdkVersion="26"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">

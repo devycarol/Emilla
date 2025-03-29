@@ -19,7 +19,7 @@ import net.emilla.R;
 import net.emilla.activity.EmillaActivity;
 import net.emilla.app.Apps;
 import net.emilla.chime.Chimer;
-import net.emilla.system.EmillaAccessibilityService;
+import net.emilla.system.EmillaA11yService;
 import net.emilla.util.Features;
 
 public final class SettingsFragment extends EmillaSettingsFragment {
@@ -214,7 +214,7 @@ public final class SettingsFragment extends EmillaSettingsFragment {
     private void setupAccessibilityButtonPref() {
         Preference accessibilityButton = preferenceOf("accessibility_button");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            var showArgs = Apps.MY_PKG + "/" + EmillaAccessibilityService.class.getName();
+            String showArgs = Apps.MY_PKG + "/" + EmillaA11yService.class.getName();
             var bundle = new Bundle();
             bundle.putString(EXTRA_FRAGMENT_ARG_KEY, showArgs);
             var in = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
