@@ -100,15 +100,17 @@ public final class Calendar extends CoreDataCommand {
     }
 
     private Intent makeIntent(String titleAndDate) {
-        Intent intent = makeIntent();
+        var intent = makeIntent();
 
         // todo: clean this up
-        var m = Pattern.compile(" */all(day)?", CASE_INSENSITIVE).matcher(titleAndDate);
+        var p = Pattern.compile(" */all(day)?", CASE_INSENSITIVE);
+        // TODO LANG
+        var m = p.matcher(titleAndDate);
         if (m.find()) {
             titleAndDate = m.replaceFirst("");
             intent.putExtra(EXTRA_EVENT_ALL_DAY, true);
         }
-        var nameAndTime = titleAndDate.split(" *\\| *");
+        String[] nameAndTime = titleAndDate.split(" *\\| *");
         switch (nameAndTime.length) {
         case 1 -> {}
         case 2 -> {
@@ -130,10 +132,10 @@ public final class Calendar extends CoreDataCommand {
         String url = mUrlToggle.fieldText();
         if (url != null) intent.putExtra("url", url);
         // todo: is there a way to query supported extras?
-        // Todo: action buttons to select availability, access level, and guests—last requires contacts
-        //  stuff. If possible also: reminders, repeats, timezone, event color, and calendar selection.
+        // Todo: action buttons to select availability, access level, and guests—last requires
+        //  contacts stuff. If possible also: reminders, repeats, timezone, event color, and
+        //  calendar selection.
         appSucceed(intent);
-        // todo: etar calendar acts really janky in the recents which causes unwanted event-saving
-        // it also flashes white on start even in the dark (LineageOS black) theme
+        // todo: etar calendar acts janky in the recents
     }
 }

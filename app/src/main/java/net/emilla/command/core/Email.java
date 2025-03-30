@@ -139,7 +139,7 @@ public final class Email extends CoreDataCommand implements EmailReceiver {
         String subject = mSubjectToggle.fieldText();
         if (subject != null) email.putExtra(EXTRA_SUBJECT, subject);
 
-        appSucceed(email);
+        giveApp(email);
     }
 
     @Override

@@ -59,6 +59,7 @@ import net.emilla.command.core.Weather;
 import net.emilla.command.core.Web;
 import net.emilla.config.SettingVals;
 import net.emilla.ping.PingChannel;
+import net.emilla.run.AppGift;
 import net.emilla.run.AppSuccess;
 import net.emilla.run.BroadcastGift;
 import net.emilla.run.DialogRun;
@@ -373,6 +374,10 @@ public abstract class EmillaCommand {
 
     protected final void giveBroadcast(Intent intent) {
         give(new BroadcastGift(activity, intent));
+    }
+
+    protected final void giveApp(Intent intent) {
+        give(new AppGift(activity, intent));
     }
 
     /**
