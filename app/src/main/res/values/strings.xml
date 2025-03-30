@@ -191,7 +191,6 @@
     <string name="instruction_torch">toggle flashlight</string>
     <string name="instruction_todo">task</string>
     <string name="instruction_pomodoro">minutes</string>
-    <string name="instruction_notify">notification title (doesn\'t work yet)</string><!--todo-->
     <string name="instruction_duplicate">choose</string>
     <string name="instruction_custom">description of arguments</string>
     <!-- Generic instruction for contacting a person by name or phone number -->
@@ -208,6 +207,8 @@
     <string name="instruction_text">text</string>
     <!-- Generic instruction for named things -->
     <string name="instruction_name_label">name</string>
+    <!-- Generic instruction for titled things -->
+    <string name="instruction_title">title</string>
     <!-- Generic instruction for message text -->
     <string name="instruction_message">message</string>
     <!-- Generic instruction for search query -->

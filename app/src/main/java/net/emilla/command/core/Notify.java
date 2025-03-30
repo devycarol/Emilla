@@ -32,7 +32,7 @@ public final class Notify extends CoreDataCommand {
 
     private Notify(AssistActivity act) {
         super(act, NAME,
-              R.string.instruction_notify,
+              R.string.instruction_title,
               R.drawable.ic_notify,
               R.string.summary_notify,
               R.string.manual_notify,
