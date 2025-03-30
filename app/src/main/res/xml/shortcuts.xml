@@ -7,14 +7,10 @@
         android:shortcutId="assistant"
         android:shortcutShortLabel="@string/title_assistant"
         tools:targetApi="n_mr1">
+        <!--suppress AndroidDomInspection -->
         <intent
-            android:action="android.intent.action.VIEW"
+            android:action="android.intent.action.VOICE_COMMAND"
             android:targetClass="net.emilla.activity.AssistActivity"
-            android:targetPackage="net.emilla" />
-        <!-- If your shortcut is associated with multiple intents, include them
-             here. The last intent in the list determines what the user sees when
-             they launch this shortcut. -->
-        <categories android:name="android.shortcut.conversation" />
-        <capability-binding android:key="actions.intent.CREATE_MESSAGE" />
+            android:targetPackage="net.emilla.nebula" />
     </shortcut>
 </shortcuts>
