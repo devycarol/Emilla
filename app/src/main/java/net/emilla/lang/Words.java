@@ -1,6 +1,7 @@
 package net.emilla.lang;
 
 import static androidx.annotation.RestrictTo.Scope.SUBCLASSES;
+import static java.lang.Character.isWhitespace;
 
 import androidx.annotation.RestrictTo;
 
@@ -23,40 +24,39 @@ import java.util.Iterator;
 public abstract class Words implements TrieMap.Phrase<String, String> {
 
     @RestrictTo(SUBCLASSES)
-    final String mPhrase;
+    final char[] mPhrase;
     @RestrictTo(SUBCLASSES)
-    int mPosition = 0;
+    final int mLength;
+
+    private int mPosition = 0;
 
     private Words(String phrase) {
-        mPhrase = phrase;
+        mPhrase = phrase.toCharArray();
+        mLength = mPhrase.length;
     }
 
     @Override
     public final void setPosition(Iterator<String> iterator) {
-        mPosition = ((WordIterator) iterator).mStartIndex;
+        mPosition = ((WordIterator) iterator).mPos;
     }
 
     @Override
     public final boolean hasRemainingContents() {
-        return mPosition < mPhrase.length();
+        return mPosition < mLength;
     }
 
     @Override
     public final String remainingContents() {
-        return mPhrase.substring(mPosition);
+        return Strings.substring(mPhrase, mPosition);
     }
 
     private /*inner*/ abstract class WordIterator implements Iterator<String> {
 
-        int mStartIndex;
-
-        WordIterator(int startIndex) {
-            mStartIndex = startIndex;
-        }
+        int mPos = Strings.indexOfNonSpace(mPhrase);
 
         @Override
         public final boolean hasNext() {
-            return mStartIndex < mPhrase.length();
+            return mPos < mLength;
         }
     }
 
@@ -73,27 +73,24 @@ public abstract class Words implements TrieMap.Phrase<String, String> {
 
         private /*inner*/ final class LatinIterator extends WordIterator {
 
-            LatinIterator() {
-                super(Strings.indexOfNonSpace(mPhrase));
-            }
-
             @Override
             public String next() {
-                int endIndex = mStartIndex;
-                int len = mPhrase.length();
+                int start = mPos;
 
-                do if (++endIndex >= len) break;
-                while (!Character.isWhitespace(mPhrase.charAt(endIndex)));
-                String word = mPhrase.substring(mStartIndex, endIndex);
+                do if (++mPos == mLength) break;
+                while (!isWhitespace(mPhrase[mPos]));
 
-                if (endIndex < len) {
-                    do if (++endIndex >= len) break;
-                    while (Character.isWhitespace(mPhrase.charAt(endIndex)));
-                }
-                mStartIndex = endIndex;
+                String word = Strings.substring(mPhrase, start, mPos);
+                advance();
 
                 return word.toLowerCase();
                 // convert to lowercase to ensure TrieMap is case-insensitive
+            }
+
+            private void advance() {
+                while (mPos < mLength && isWhitespace(mPhrase[mPos])) {
+                    ++mPos;
+                }
             }
         }
     }
@@ -111,14 +108,10 @@ public abstract class Words implements TrieMap.Phrase<String, String> {
 
         private /*inner*/ final class GlyphIterator extends WordIterator {
 
-            GlyphIterator() {
-                super(0);
-            }
-
             @Override
             public String next() {
-                int codePoint = mPhrase.codePointAt(mStartIndex);
-                mStartIndex += Character.charCount(codePoint);
+                int codePoint = Character.codePointAt(mPhrase, mPos);
+                mPos += Character.charCount(codePoint);
                 return new String(Character.toChars(codePoint)).toLowerCase();
                 // convert to lowercase to ensure TrieMap is case-insensitive
             }

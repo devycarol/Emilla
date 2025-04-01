@@ -28,5 +28,5 @@ fun CharArray.indexOfNonSpace(): Int {
 }
 
 fun Char.repeat(count: Int): String = String(CharArray(count) { this })
-@JvmOverloads @JvmName("ofRange")
+fun CharArray.substring(start: Int = 0) = substring(start, size)
 fun CharArray.substring(start: Int = 0, end: Int) = String(copyOfRange(start, end))
