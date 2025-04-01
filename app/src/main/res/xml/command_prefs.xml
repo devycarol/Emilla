@@ -73,6 +73,16 @@
             android:summary="@string/summary_random_number"
             android:title="@string/command_random_number" />
         <net.emilla.config.CommandPreference
+            android:icon="@drawable/ic_temperature"
+            android:key="celsius"
+            android:summary="@string/summary_celsius"
+            android:title="@string/command_celsius" />
+        <net.emilla.config.CommandPreference
+            android:icon="@drawable/ic_temperature"
+            android:key="fahrenheit"
+            android:summary="@string/summary_fahrenheit"
+            android:title="@string/command_fahrenheit" />
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_roll"
             android:key="roll"
             android:summary="@string/summary_roll"

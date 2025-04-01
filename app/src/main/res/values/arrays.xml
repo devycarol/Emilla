@@ -107,6 +107,8 @@
         <item>navigate</item>
         <item>calculate</item>
         <item>random_number</item>
+        <item>celsius</item>
+        <item>fahrenheit</item>
         <item>roll</item>
         <item>bits</item>
         <item>weather</item>
@@ -210,6 +212,8 @@
         <item>rand</item>
         <item>rng</item>
     </string-array>
+    <string-array name="aliases_celsius" />
+    <string-array name="aliases_fahrenheit" />
     <string-array name="aliases_roll">
         <item>dice</item>
         <item>flip a coin</item>

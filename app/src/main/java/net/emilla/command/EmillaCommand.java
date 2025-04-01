@@ -33,11 +33,13 @@ import net.emilla.command.core.Bits;
 import net.emilla.command.core.Calculate;
 import net.emilla.command.core.Calendar;
 import net.emilla.command.core.Call;
+import net.emilla.command.core.Celsius;
 import net.emilla.command.core.Contact;
 import net.emilla.command.core.Copy;
 import net.emilla.command.core.CoreCommand;
 import net.emilla.command.core.Dial;
 import net.emilla.command.core.Email;
+import net.emilla.command.core.Fahrenheit;
 import net.emilla.command.core.Info;
 import net.emilla.command.core.Launch;
 import net.emilla.command.core.Navigate;
@@ -103,6 +105,8 @@ public abstract class EmillaCommand {
                 Notify.yielder(),
                 Calculate.yielder(),
                 RandomNumber.yielder(),
+                Celsius.yielder(),
+                Fahrenheit.yielder(),
                 Roll.yielder(),
                 Bits.yielder(),
                 Weather.yielder(),

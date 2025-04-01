@@ -14,8 +14,16 @@
     <string name="never">Never</string>
     <string name="none">None</string>
     <string name="overwrite">Overwrite</string>
+
     <string name="heads">Heads!</string>
     <string name="tails">Tails!</string>
+
+    <string name="celsius">@string/command_celsius</string>
+    <string name="fahrenheit">@string/command_fahrenheit</string>
+    <string name="kelvin">Kelvin</string>
+    <string name="celsius_conversion">%1$s degrees %2$s is %3$s degrees Celsius.</string>
+    <string name="fahrenheit_conversion">%1$s degrees %2$s is %3$s degrees Fahrenheit.</string>
+    <!--todo lang: "1 degrees"-->
 
     <string name="app_name">Emilla</string>
     <string name="activity_assistant">Emilla Assistant</string>
@@ -147,6 +155,8 @@
     <string name="command_navigate">Navigate</string>
     <string name="command_calculate">Calculate</string>
     <string name="command_random_number">Random number</string>
+    <string name="command_celsius">Celsius</string>
+    <string name="command_fahrenheit">Fahrenheit</string>
     <string name="command_roll">Roll</string>
     <string name="command_bits">Bits</string>
     <string name="command_weather">Weather</string>
@@ -201,6 +211,8 @@
     <string name="instruction_file">filename</string>
     <!-- Generic instruction for giving a location -->
     <string name="instruction_location">location</string>
+    <!-- Generic instruction for temperature -->
+    <string name="instruction_temperature">temperature</string>
     <!-- Generic instruction for finding a video by title -->
     <string name="instruction_video">video title</string>
     <!-- Generic instruction for text -->
@@ -233,6 +245,8 @@
     <string name="summary_navigate">Search and navigate to locations</string>
     <string name="summary_calculate">Compute math equations</string>
     <string name="summary_random_number">Generate random numbers</string>
+    <string name="summary_celsius">Convert temperature to Celsius</string>
+    <string name="summary_fahrenheit">Convert temperature to Fahrenheit</string>
     <string name="summary_roll">Roll virtual dice</string>
     <string name="summary_bits">Compute bitwise equations</string>
     <string name="summary_weather">Open a weather app</string>
@@ -397,6 +411,16 @@
         \n
         If no range is given, the default is [-(2^32), 2^32).
     </string><!--todo config-->
+    <!-- "Convert temperature to Celsius" -->
+    <string name="manual_celsius">
+        To convert to Celsius, enter a Fahrenheit temperature as a number. To convert from Kelvin,
+        specify K as the temperature unit after the number.
+    </string>
+    <!-- "Convert temperature to Fahrenheit" -->
+    <string name="manual_fahrenheit">
+        To convert to Fahrenheit, enter a Celsius temperature as a number. To convert from Kelvin,
+        specify K as the temperature unit after the number.
+    </string>
     <!-- "Roll virtual dice" -->
     <string name="manual_roll">
         To roll dice, provide a dice notation expression.\n
@@ -683,6 +707,7 @@
     <string name="error_calc_malformed_expression">Malformed expression!</string>
     <string name="error_calc_undefined">Undefined!</string>
     <string name="error_invalid_number_range">Invalid number range.</string>
+    <string name="error_bad_temperature">Invalid temperature.</string>
     <string name="error_invalid_dice_roll">Invalid dice roll.</string>
     <string name="error_no_contact_phone">The contact doesn\'t have a phone number.</string>
     <!-- Should match @android:string/noApplications. -->

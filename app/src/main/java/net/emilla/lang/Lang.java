@@ -14,6 +14,10 @@ import net.emilla.lang.date.impl.HourMinEN_US;
 import net.emilla.lang.date.impl.WeekdaysEN_US;
 import net.emilla.lang.grammar.ListPhrase;
 import net.emilla.lang.grammar.impl.ListPhraseEN_US;
+import net.emilla.lang.measure.CelsiusConversion;
+import net.emilla.lang.measure.FahrenheitConversion;
+import net.emilla.lang.measure.impl.CelsiusConversionEN_US;
+import net.emilla.lang.measure.impl.FahrenheitConversionEN_US;
 import net.emilla.lang.phrase.Dices;
 import net.emilla.lang.phrase.RandRange;
 import net.emilla.lang.phrase.impl.DicesEN_US;
@@ -86,6 +90,18 @@ public final class Lang {
     public static RandRange randomRange(String range, @StringRes int errorTitle) {
         return switch (-1) {
             default -> RandRangeEN_US.instance(range, errorTitle);
+        };
+    }
+
+    public static CelsiusConversion celsius(String temperature, @StringRes int errorTitle) {
+        return switch (-1) {
+            default -> CelsiusConversionEN_US.instance(temperature, errorTitle);
+        };
+    }
+
+    public static FahrenheitConversion fahrenheit(String temperature, @StringRes int errorTitle) {
+        return switch (-1) {
+            default -> FahrenheitConversionEN_US.instance(temperature, errorTitle);
         };
     }
 

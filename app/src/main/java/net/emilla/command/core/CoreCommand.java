@@ -52,6 +52,8 @@ public abstract class CoreCommand extends EmillaCommand {
             case Notify.ENTRY -> Notify.possible();
             case Calculate.ENTRY -> Calculate.possible();
             case RandomNumber.ENTRY -> RandomNumber.possible();
+            case Celsius.ENTRY -> Celsius.possible();
+            case Fahrenheit.ENTRY -> Fahrenheit.possible();
             case Roll.ENTRY -> Roll.possible();
             case Bits.ENTRY -> Bits.possible();
             case Weather.ENTRY -> Weather.possible(pm);
