@@ -1,6 +1,7 @@
 package net.emilla.util;
 
 import androidx.annotation.Nullable;
+import androidx.core.util.Function;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -14,11 +15,6 @@ import java.util.NoSuchElementException;
  * @param <E> comparable type for the array elements.
  */
 public final class SortedArray<E extends Comparable<E>> implements Iterable<E> {
-
-    @FunctionalInterface
-    public interface Converter<T, E> {
-        E convert(T val);
-    }
 
     private E[] mData;
     private int mSize;
@@ -36,9 +32,9 @@ public final class SortedArray<E extends Comparable<E>> implements Iterable<E> {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> SortedArray(Collection<T> c, Converter<T, E> converter) {
+    public <T> SortedArray(Collection<T> c, Function<T, E> converter) {
         mData = (E[]) new Comparable[c.size()];
-        for (T val : c) addInternal(converter.convert(val));
+        for (T val : c) addInternal(converter.apply(val));
     }
 
     private void ensureCapacity() {
@@ -75,7 +71,7 @@ public final class SortedArray<E extends Comparable<E>> implements Iterable<E> {
 
     public E get(int index) {
         if (index >= mSize) {
-            var msg = "Index " + index + " out of bounds for size " + mSize + ".";
+            String msg = "Index " + index + " out of bounds for size " + mSize + ".";
             throw new IndexOutOfBoundsException(msg);
         }
         return mData[index];
