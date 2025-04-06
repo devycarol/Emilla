@@ -1,6 +1,7 @@
 package net.emilla.math;
 
 import static net.emilla.math.Maths.malformedExpression;
+import static net.emilla.math.Maths.undefined;
 import static java.lang.Character.isWhitespace;
 
 import androidx.annotation.Nullable;
@@ -179,6 +180,7 @@ public final class BitwiseCalculator {
         var opStk = new OpStack(len, errorTitle);
         var result = new ValStack(len, errorTitle);
 
+    try {
         for (BitwiseToken token : new BitwiseTokens(expression, errorTitle)) {
             if (token instanceof BitwiseOperator op) {
                 result.applyOperator(op, opStk);
@@ -204,6 +206,9 @@ public final class BitwiseCalculator {
         }
 
         result.applyRemainingSigns();
+    } catch (ArithmeticException e) {
+        throw undefined(errorTitle);
+    }
 
         return result.value();
     }
@@ -252,13 +257,17 @@ public final class BitwiseCalculator {
             public BitwiseToken next() {
                 return switch (expr[pos]) {
                     case '+', '-' -> switch (prevType) {
-                        case LPAREN, OPERATOR -> extractUnary(Type.OPERATOR);
+                        case LPAREN, OPERATOR -> extractUnary(false);
                         case RPAREN, NUMBER -> extractOperator();
                     };
                     case '~' -> switch (prevType) {
-                        case LPAREN, OPERATOR -> extractUnary(Type.OPERATOR);
+                        case LPAREN, OPERATOR -> extractUnary(false);
                         case RPAREN, NUMBER -> phantomStar();
                         // note that a binary-looking tilde is treated with adjacency multiplication.
+                    };
+                    case '!' -> switch (prevType) {
+                        case LPAREN, OPERATOR -> throw malformedExpression(errorTitle);
+                        case RPAREN, NUMBER -> extractUnary(true);
                     };
                     case '|', '^', '&', '*', '/', '%' -> switch (prevType) {
                         case LPAREN, OPERATOR -> throw malformedExpression(errorTitle);
@@ -295,7 +304,9 @@ public final class BitwiseCalculator {
                 return RParen.INSTANCE;
             }
 
-            private BitwiseSign extractUnary(Type type) {
+            private BitwiseSign extractUnary(boolean postfix) {
+                var type = postfix ? Type.NUMBER : Type.OPERATOR;
+                // postfix unaries are applied immediately, so act like token was a number.
                 return BitwiseSign.of(extractChar(type));
             }
 

@@ -1,6 +1,7 @@
 package net.emilla.math;
 
 import static net.emilla.math.Maths.malformedExpression;
+import static net.emilla.math.Maths.undefined;
 import static java.lang.Character.isWhitespace;
 
 import androidx.annotation.Nullable;
@@ -189,10 +190,13 @@ public final class Calculator {
     }
 
     public static double compute(String expression, @StringRes int errorTitle) {
+        // Todo: use big decimals to reduce overflow, esp. in operations like factorial.
+
         int len = expression.length();
         var opStk = new OpStack(len, errorTitle);
         var result = new ValStack(len, errorTitle);
 
+    try {
         for (InfixToken token : new InfixTokens(expression, errorTitle)) {
             if (token instanceof BinaryOperator op) {
                 result.applyOperator(op, opStk);
@@ -218,6 +222,9 @@ public final class Calculator {
         }
 
         result.applyRemainingSigns();
+    } catch (ArithmeticException e) {
+        throw undefined(errorTitle);
+    }
 
         return result.value();
     }
@@ -269,7 +276,7 @@ public final class Calculator {
                         case LPAREN, OPERATOR -> extractUnary(false);
                         case RPAREN, NUMBER -> extractOperator();
                     };
-                    case '%' -> switch (prevType) {
+                    case '%', '!' -> switch (prevType) {
                         case LPAREN, OPERATOR -> throw malformedExpression(errorTitle);
                         case RPAREN, NUMBER -> extractUnary(true);
                     };

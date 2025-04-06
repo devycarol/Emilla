@@ -18,6 +18,12 @@ package net.emilla.math;
         double apply(double n) {
             return n / 100.0;
         }
+    },
+    FACTORIAL(true) {
+        @Override
+        double apply(double n) {
+            return Maths.factorial(n);
+        }
     };
 
     static final UnaryOperator LPAREN = null;
@@ -27,6 +33,7 @@ package net.emilla.math;
             case '+' -> POSITIVE;
             case '-' -> NEGATIVE;
             case '%' -> PERCENT;
+            case '!' -> FACTORIAL;
             default -> throw new IllegalArgumentException();
         };
     }

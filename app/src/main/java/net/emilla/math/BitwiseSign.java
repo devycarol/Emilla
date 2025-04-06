@@ -1,22 +1,28 @@
 package net.emilla.math;
 
 /*internal*/ enum BitwiseSign implements BitwiseToken {
-    POSITIVE {
+    POSITIVE(false) {
         @Override
         long apply(long n) {
             return n;
         }
     },
-    NEGATIVE {
+    NEGATIVE(false) {
         @Override
         long apply(long n) {
             return -n;
         }
     },
-    NOT {
+    NOT(false) {
         @Override
         long apply(long n) {
             return ~n;
+        }
+    },
+    FACTORIAL(true) {
+        @Override
+        long apply(long n) {
+            return Maths.factorial(n);
         }
     };
 
@@ -27,11 +33,16 @@ package net.emilla.math;
             case '+' -> POSITIVE;
             case '-' -> NEGATIVE;
             case '~' -> NOT;
+            case '!' -> FACTORIAL;
             default -> throw new IllegalArgumentException();
         };
     }
 
-    final boolean postfix = false;
+    final boolean postfix;
+
+    BitwiseSign(boolean postfix) {
+        this.postfix = postfix;
+    }
 
     abstract long apply(long n);
 }

@@ -704,8 +704,8 @@
     <string name="error_invalid_weekday_format">Invalid weekday format.</string>
     <string name="error_excess_weekdays">You can\'t have duplicate weekdays.</string>
     <string name="error_duplicate_tags">You can\'t have duplicate tags.</string>
-    <string name="error_calc_malformed_expression">Malformed expression!</string>
-    <string name="error_calc_undefined">Undefined!</string>
+    <string name="error_calc_malformed_expression">Malformed expression.</string>
+    <string name="error_calc_undefined">Undefined.</string>
     <string name="error_invalid_number_range">Invalid number range.</string>
     <string name="error_bad_temperature">Invalid temperature.</string>
     <string name="error_invalid_dice_roll">Invalid dice roll.</string>
