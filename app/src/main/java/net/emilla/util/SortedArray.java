@@ -146,29 +146,29 @@ public final class SortedArray<E extends Comparable<E>> implements Iterable<E> {
     }
 
     @Nullable
-    public IndexWindow windowMatching(Comparable<E> comparable) {
+    public IndexWindow windowMatching(Comparable<E> searcher) {
         int lo = 0;
         int hi = mSize - 1;
 
         while (lo <= hi) {
             int mid = lo + hi >>> 1;
-            int cmp = comparable.compareTo(mData[mid]);
+            int cmp = searcher.compareTo(mData[mid]);
 
             if (cmp > 0) lo = mid + 1;
             else if (cmp < 0) hi = mid - 1;
-            else return new IndexWindow(firstIndexOf(comparable, lo, mid),
-                                        lastIndexOf(comparable, mid, hi));
+            else return new IndexWindow(firstIndexOf(searcher, lo, mid),
+                                        lastIndexOf(searcher, mid, hi));
         }
 
         return null; // no values found.
     }
 
-    private int firstIndexOf(Comparable<E> comparable, int lo, int hi) {
+    private int firstIndexOf(Comparable<E> searcher, int lo, int hi) {
         int first = -1;
 
         while (lo <= hi) {
             int mid = lo + hi >>> 1;
-            int cmp = comparable.compareTo(mData[mid]);
+            int cmp = searcher.compareTo(mData[mid]);
 
             if (cmp > 0) lo = mid + 1;
             else {
@@ -180,12 +180,12 @@ public final class SortedArray<E extends Comparable<E>> implements Iterable<E> {
         return first;
     }
 
-    private int lastIndexOf(Comparable<E> comparable, int lo, int hi) {
+    private int lastIndexOf(Comparable<E> searcher, int lo, int hi) {
         int last = -1;
 
         while (lo <= hi) {
             int mid = lo + hi >>> 1;
-            int cmp = comparable.compareTo(mData[mid]);
+            int cmp = searcher.compareTo(mData[mid]);
 
             if (cmp < 0) hi = mid - 1;
             else {

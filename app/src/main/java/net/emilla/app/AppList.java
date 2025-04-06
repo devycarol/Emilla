@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
+import net.emilla.util.Chars;
 import net.emilla.util.IndexWindow;
 import net.emilla.util.SortedArray;
+import net.emilla.util.Strings;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -28,32 +30,30 @@ public final class AppList implements Iterable<AppEntry> {
     }
 
     public List<AppEntry> filter(String search) {
-        int size = mData.size();
-
-        IndexWindow exacts = mData.windowMatching(app -> search.compareToIgnoreCase(app.label));
+        IndexWindow exacts = mData.windowMatching(new ExactSearcher(search));
         if (exacts != null) return mData.elements(exacts);
 
-        int len = search.length();
-        IndexWindow prefixed = mData.windowMatching(app -> prefixCompare(search, app.label, len));
+        IndexWindow prefixed = mData.windowMatching(new PrefixSearcher(search));
 
-        ArrayList<AppEntry> filtered = new ArrayList<>(size);
+        int size = mData.size();
+        var filtered = new ArrayList<AppEntry>(size);
         if (prefixed != null) {
             filtered.addAll(0, mData.elements(prefixed));
             for (int i = 0; i < prefixed.start; ++i) {
                 AppEntry app = mData.get(i);
-                if (app.label.contains(search)) {
+                if (Strings.containsIgnoreCase(app.label, search)) {
                     filtered.add(app);
                 }
             }
             for (int i = prefixed.end; i < size; ++i) {
                 AppEntry app = mData.get(i);
-                if (app.label.contains(search)) {
+                if (Strings.containsIgnoreCase(app.label, search)) {
                     filtered.add(app);
                 }
             }
         } else {
             for (AppEntry app : mData) {
-                if (app.label.contains(search)) {
+                if (Strings.containsIgnoreCase(app.label, search)) {
                     filtered.add(app);
                 }
             }
@@ -62,25 +62,43 @@ public final class AppList implements Iterable<AppEntry> {
         return filtered;
     }
 
-    private static int prefixCompare(String prefix, String s, int prefixLen) {
-        int len = s.length();
-        if (prefixLen > len) return prefixLen - len;
+    private static final class ExactSearcher implements Comparable<AppEntry> {
 
-        for (int i = 0; i < prefixLen; ++i) {
-            char a = prefix.charAt(i);
-            char b = s.charAt(i);
-            if (a != b) {
-                a = Character.toUpperCase(a);
-                b = Character.toUpperCase(b);
-                if (a != b) {
-                    a = Character.toLowerCase(a);
-                    b = Character.toLowerCase(b);
-                    if (a != b) return a - b;
-                }
-            }
+        private final String mSearch;
+
+        public ExactSearcher(String search) {
+            mSearch = search;
         }
 
-        return 0;
+        @Override
+        public int compareTo(AppEntry app) {
+            return mSearch.compareToIgnoreCase(app.label);
+        }
+    }
+
+    private static final class PrefixSearcher implements Comparable<AppEntry> {
+
+        private final char[] mPrefix;
+        private final int mLength;
+
+        public PrefixSearcher(String prefix) {
+            mPrefix = prefix.toCharArray();
+            mLength = prefix.length();
+        }
+
+        @Override
+        public int compareTo(AppEntry app) {
+            int len = app.label.length();
+            if (mLength > len) return mLength - len;
+
+            char[] label = app.label.toCharArray();
+            for (int i = 0; i < mLength; ++i) {
+                int cmp = Chars.compareIgnoreCase(mPrefix[i], label[i]);
+                if (cmp != 0) return cmp;
+            }
+
+            return 0;
+        }
     }
 
     public AppEntry get(int index) {
