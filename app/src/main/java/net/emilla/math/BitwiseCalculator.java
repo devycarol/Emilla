@@ -7,6 +7,7 @@ import static java.lang.Character.isWhitespace;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
+import net.emilla.math.CalcToken.BitwiseToken;
 import net.emilla.math.CalcToken.LParen;
 import net.emilla.math.CalcToken.RParen;
 import net.emilla.util.Strings;
@@ -192,7 +193,7 @@ public final class BitwiseCalculator {
             } else if (token instanceof RParen) {
                 result.applyRParen(opStk);
             } else if (token instanceof IntegerNumber num) {
-                result.push(num.val);
+                result.push(num.value);
             }
         }
 
@@ -329,7 +330,7 @@ public final class BitwiseCalculator {
                 ++pos;
                 BitwiseOperator op;
                 if (shiftType == '>' && nextCharIs('>')) {
-                    op = BitwiseOperator.URSHIFT;
+                    op = BitwiseOperator.USHR;
                     advanceImmediate();
                 } else {
                     op = BitwiseOperator.of(Strings.repeat(shiftType, 2));

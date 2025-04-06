@@ -1,58 +1,43 @@
-package net.emilla.math;
+package net.emilla.math
 
-/*internal*/ enum BinaryOperator implements InfixToken {
-    ADD(1, false) {
-        @Override
-        double apply(double a, double b) {
-            return a + b;
-        }
+import net.emilla.math.CalcToken.InfixToken
+import kotlin.math.pow
+
+internal enum class BinaryOperator(
+    @JvmField val precedence: Int,
+    @JvmField val rightAssociative: Boolean
+) : InfixToken {
+    PLUS(1, false) {
+        override fun Double.apply(n: Double) = this + n
     },
-    SUBTRACT(1, false) {
-        @Override
-        double apply(double a, double b) {
-            return a - b;
-        }
+    MINUS(1, false) {
+        override fun Double.apply(n: Double) = this - n
     },
     TIMES(2, false) {
-        @Override
-        double apply(double a, double b) {
-            return a * b;
-        }
+        override fun Double.apply(n: Double) = this * n
     },
     DIV(2, false) {
-        @Override
-        double apply(double a, double b) {
-            return a / b;
-        }
+        override fun Double.apply(n: Double) = this / n
     },
     POW(3, true) {
-        @Override
-        double apply(double a, double b) {
-            return Math.pow(a, b);
-        }
+        override fun Double.apply(n: Double) = pow(n)
     };
 
-    static BinaryOperator of(char token) {
-        // todo: nat-language words like "add", "to the power of", ..
-        return switch (token) {
-            case '+' -> ADD;
-            case '-' -> SUBTRACT;
-            case '*' -> TIMES;
-            case '/' -> DIV;
-            case '^' -> POW;
-            default -> throw new IllegalArgumentException();
-        };
+    abstract fun Double.apply(n: Double): Double
+
+    companion object {
+        @JvmField
+        val LPAREN: BinaryOperator? = null
+
+        @JvmStatic
+        fun of(token: Char) = when (token) {
+            // todo: natural language like "add", "to the power of", ..
+            '+' -> PLUS
+            '-' -> MINUS
+            '*' -> TIMES
+            '/' -> DIV
+            '^' -> POW
+            else -> throw IllegalArgumentException()
+        }
     }
-
-    static final BinaryOperator LPAREN = null;
-
-    final int precedence;
-    final boolean rightAssociative;
-
-    BinaryOperator(int precedence, boolean rightAssociative) {
-        this.precedence = precedence;
-        this.rightAssociative = rightAssociative;
-    }
-
-    abstract double apply(double a, double b);
 }

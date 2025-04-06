@@ -1,18 +1,9 @@
-package net.emilla.math;
+package net.emilla.math
 
-/*internal*/ sealed interface CalcToken permits InfixToken, BitwiseToken {
+internal sealed interface CalcToken {
+    sealed interface InfixToken : CalcToken
+    sealed interface BitwiseToken : CalcToken
 
-    final class LParen implements InfixToken, BitwiseToken {
-
-        static final LParen INSTANCE = new LParen();
-
-        private LParen() {}
-    }
-
-    final class RParen implements InfixToken, BitwiseToken {
-
-        static final RParen INSTANCE = new RParen();
-
-        private RParen() {}
-    }
+    object LParen : InfixToken, BitwiseToken
+    object RParen : InfixToken, BitwiseToken
 }

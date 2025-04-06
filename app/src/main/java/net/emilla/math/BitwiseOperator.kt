@@ -1,99 +1,66 @@
-package net.emilla.math;
+package net.emilla.math
 
-/*internal*/ enum BitwiseOperator implements BitwiseToken {
+import net.emilla.math.CalcToken.BitwiseToken
+
+internal enum class BitwiseOperator(@JvmField val precedence: Int) : BitwiseToken {
     OR(-3) {
-        @Override
-        long apply(long a, long b) {
-            return a | b;
-        }
+        override fun Long.apply(n: Long) = this or n
     },
     XOR(-2) {
-        @Override
-        long apply(long a, long b) {
-            return a ^ b;
-        }
+        override fun Long.apply(n: Long) = this xor n
     },
     AND(-1) {
-        @Override
-        long apply(long a, long b) {
-            return a & b;
-        }
+        override fun Long.apply(n: Long) = this and n
     },
-    LSHIFT(0) {
-        @Override
-        long apply(long a, long b) {
-            return a << b;
-        }
+    SHL(0) {
+        override fun Long.apply(n: Long) = this shl n.toInt()
     },
-    RSHIFT(0) {
-        @Override
-        long apply(long a, long b) {
-            return a >> b;
-        }
+    SHR(0) {
+        override fun Long.apply(n: Long) = this shr n.toInt()
     },
-    URSHIFT(0) {
-        @Override
-        long apply(long a, long b) {
-            return a >>> b;
-        }
+    USHR(0) {
+        override fun Long.apply(n: Long) = this ushr n.toInt()
     },
-    ADD(1) {
-        @Override
-        long apply(long a, long b) {
-            return a + b;
-        }
+    PLUS(1) {
+        override fun Long.apply(n: Long) = this + n
     },
-    SUBTRACT(1) {
-        @Override
-        long apply(long a, long b) {
-            return a - b;
-        }
+    MINUS(1) {
+        override fun Long.apply(n: Long) = this - n
     },
     TIMES(2) {
-        @Override
-        long apply(long a, long b) {
-            return a * b;
-        }
+        override fun Long.apply(n: Long) = this * n
     },
     DIV(2) {
-        @Override
-        long apply(long a, long b) {
-            return a / b;
-        }
+        override fun Long.apply(n: Long) = this / n
     },
     MOD(2) {
-        @Override
-        long apply(long a, long b) {
-            return a % b;
-        }
+        override fun Long.apply(n: Long) = this % n
     };
 
-    static BitwiseOperator of(String token) {
-        // todo: nat-language words like "add", "to the power of", ..
-        return switch (token) {
-            case "|" -> OR;
-            case "^" -> XOR;
-            case "&" -> AND;
-            case "<<" -> LSHIFT;
-            case ">>" -> RSHIFT;
-            case ">>>" -> URSHIFT;
-            case "+" -> ADD;
-            case "-" -> SUBTRACT;
-            case "*" -> TIMES;
-            case "/" -> DIV;
-            case "%" -> MOD;
-            default -> throw new IllegalArgumentException();
-        };
+    @JvmField
+    val rightAssociative: Boolean = false
+
+    abstract fun Long.apply(n: Long): Long
+
+    companion object {
+        @JvmField
+        val LPAREN: BitwiseOperator? = null
+
+        @JvmStatic
+        fun of(token: String) = when (token) {
+            // todo: natural language like "add", "to the power of", ..
+            "|" -> OR
+            "^" -> XOR
+            "&" -> AND
+            "<<" -> SHL
+            ">>" -> SHR
+            ">>>" -> USHR
+            "+" -> PLUS
+            "-" -> MINUS
+            "*" -> TIMES
+            "/" -> DIV
+            "%" -> MOD
+            else -> throw IllegalArgumentException()
+        }
     }
-
-    static final BitwiseOperator LPAREN = null;
-
-    final int precedence;
-    final boolean rightAssociative = false;
-
-    BitwiseOperator(int precedence) {
-        this.precedence = precedence;
-    }
-
-    abstract long apply(long a, long b);
 }

@@ -1,12 +1,9 @@
-package net.emilla.math;
+package net.emilla.math
 
-import androidx.annotation.StringRes;
+import androidx.annotation.StringRes
+import net.emilla.math.CalcToken.InfixToken
 
-/*internal*/ final class FloatingPointNumber implements InfixToken {
-
-    final double val;
-
-    FloatingPointNumber(String num, @StringRes int errorTitle) {
-        val = Maths.tryParseDouble(num, errorTitle);
-    }
+internal class FloatingPointNumber(num: String, @StringRes errorTitle: Int) : InfixToken {
+    @JvmField
+    val value: Double = tryParseDouble(num, errorTitle)
 }

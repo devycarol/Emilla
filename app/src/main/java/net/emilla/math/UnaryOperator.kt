@@ -1,48 +1,35 @@
-package net.emilla.math;
+package net.emilla.math
 
-/*internal*/ enum UnaryOperator implements InfixToken {
+import net.emilla.math.CalcToken.InfixToken
+
+internal enum class UnaryOperator(@JvmField val postfix: Boolean) : InfixToken {
     POSITIVE(false) {
-        @Override
-        double apply(double n) {
-            return n;
-        }
+        override fun Double.apply() = this
     },
     NEGATIVE(false) {
-        @Override
-        double apply(double n) {
-            return -n;
-        }
+        override fun Double.apply() = -this
     },
     PERCENT(true) {
-        @Override
-        double apply(double n) {
-            return n / 100.0;
-        }
+        override fun Double.apply() = this / 100.0
     },
     FACTORIAL(true) {
-        @Override
-        double apply(double n) {
-            return Maths.factorial(n);
-        }
+        override fun Double.apply() = factorial()
     };
 
-    static final UnaryOperator LPAREN = null;
+    abstract fun Double.apply(): Double
 
-    static UnaryOperator of(char token) {
-        return switch (token) {
-            case '+' -> POSITIVE;
-            case '-' -> NEGATIVE;
-            case '%' -> PERCENT;
-            case '!' -> FACTORIAL;
-            default -> throw new IllegalArgumentException();
-        };
+    companion object {
+        @JvmField
+        val LPAREN: UnaryOperator? = null
+
+        @JvmStatic
+        fun of(token: Char) = when (token) {
+            // todo: natural language like "positive", "factorial", ..
+            '+' -> POSITIVE
+            '-' -> NEGATIVE
+            '%' -> PERCENT
+            '!' -> FACTORIAL
+            else -> throw IllegalArgumentException()
+        }
     }
-
-    final boolean postfix;
-
-    UnaryOperator(boolean postfix) {
-        this.postfix = postfix;
-    }
-
-    abstract double apply(double n);
 }

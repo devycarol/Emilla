@@ -1,12 +1,9 @@
-package net.emilla.math;
+package net.emilla.math
 
-import androidx.annotation.StringRes;
+import androidx.annotation.StringRes
+import net.emilla.math.CalcToken.BitwiseToken
 
-/*internal*/ final class IntegerNumber implements BitwiseToken {
-
-    final long val;
-
-    IntegerNumber(String num, @StringRes int errorTitle) {
-        val = Maths.tryParseLong(num, errorTitle);
-    }
+internal class IntegerNumber(num: String, @StringRes errorTitle: Int) : BitwiseToken {
+    @JvmField
+    val value: Long = tryParseLong(num, errorTitle)
 }

@@ -1,48 +1,35 @@
-package net.emilla.math;
+package net.emilla.math
 
-/*internal*/ enum BitwiseSign implements BitwiseToken {
+import net.emilla.math.CalcToken.BitwiseToken
+
+internal enum class BitwiseSign(@JvmField val postfix: Boolean) : BitwiseToken {
     POSITIVE(false) {
-        @Override
-        long apply(long n) {
-            return n;
-        }
+        override fun Long.apply() = this
     },
     NEGATIVE(false) {
-        @Override
-        long apply(long n) {
-            return -n;
-        }
+        override fun Long.apply() = -this
     },
     NOT(false) {
-        @Override
-        long apply(long n) {
-            return ~n;
-        }
+        override fun Long.apply() = inv()
     },
     FACTORIAL(true) {
-        @Override
-        long apply(long n) {
-            return Maths.factorial(n);
-        }
+        override fun Long.apply() = factorial()
     };
 
-    static final BitwiseSign LPAREN = null;
+    abstract fun Long.apply(): Long
 
-    static BitwiseSign of(char token) {
-        return switch (token) {
-            case '+' -> POSITIVE;
-            case '-' -> NEGATIVE;
-            case '~' -> NOT;
-            case '!' -> FACTORIAL;
-            default -> throw new IllegalArgumentException();
-        };
+    companion object {
+        @JvmField
+        val LPAREN: BitwiseSign? = null
+
+        @JvmStatic
+        fun of(token: Char) = when (token) {
+            // todo: natural language like "positive", "factorial", ..
+            '+' -> POSITIVE
+            '-' -> NEGATIVE
+            '~' -> NOT
+            '!' -> FACTORIAL
+            else -> throw IllegalArgumentException()
+        }
     }
-
-    final boolean postfix;
-
-    BitwiseSign(boolean postfix) {
-        this.postfix = postfix;
-    }
-
-    abstract long apply(long n);
 }
