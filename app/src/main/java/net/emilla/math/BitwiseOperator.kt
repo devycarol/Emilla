@@ -1,44 +1,48 @@
 package net.emilla.math
 
 import net.emilla.math.CalcToken.BitwiseToken
+import kotlin.math.pow
 
-internal enum class BitwiseOperator(@JvmField val precedence: Int) : BitwiseToken {
-    OR(-3) {
+internal enum class BitwiseOperator(
+    @JvmField val precedence: Int,
+    @JvmField val rightAssociative: Boolean
+) : BitwiseToken {
+    OR(-3, false) {
         override fun Long.apply(n: Long) = this or n
     },
-    XOR(-2) {
+    XOR(-2, false) {
         override fun Long.apply(n: Long) = this xor n
     },
-    AND(-1) {
+    AND(-1, false) {
         override fun Long.apply(n: Long) = this and n
     },
-    SHL(0) {
+    SHL(0, false) {
         override fun Long.apply(n: Long) = this shl n.toInt()
     },
-    SHR(0) {
+    SHR(0, false) {
         override fun Long.apply(n: Long) = this shr n.toInt()
     },
-    USHR(0) {
+    USHR(0, false) {
         override fun Long.apply(n: Long) = this ushr n.toInt()
     },
-    PLUS(1) {
+    PLUS(1, false) {
         override fun Long.apply(n: Long) = this + n
     },
-    MINUS(1) {
+    MINUS(1, false) {
         override fun Long.apply(n: Long) = this - n
     },
-    TIMES(2) {
+    TIMES(2, false) {
         override fun Long.apply(n: Long) = this * n
     },
-    DIV(2) {
+    DIV(2, false) {
         override fun Long.apply(n: Long) = this / n
     },
-    MOD(2) {
+    MOD(2, false) {
         override fun Long.apply(n: Long) = this % n
+    },
+    POW(3, true) {
+        override fun Long.apply(n: Long) = toDouble().pow(n.toDouble()).toLong()
     };
-
-    @JvmField
-    val rightAssociative: Boolean = false
 
     abstract fun Long.apply(n: Long): Long
 
