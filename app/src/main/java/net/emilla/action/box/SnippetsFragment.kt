@@ -20,7 +20,7 @@ class SnippetsFragment : ActionBox(R.layout.snippet_item_list) {
 
     companion object {
         @JvmStatic
-        fun newInstance(): SnippetsFragment = SnippetsFragment()
+        fun newInstance() = SnippetsFragment()
     }
 
     private val vm: SnippetsViewModel by viewModels<SnippetsViewModel> {

@@ -14,7 +14,7 @@ class Nebula(private val ctx: Context) : Chimer {
 
     override fun chime(id: Byte) {
         // TODO: still encountering occasional sound cracking issues
-        val player: MediaPlayer = MediaPlayer.create(ctx, sound(id))
+        val player = MediaPlayer.create(ctx, sound(id))
         player.setOnCompletionListener(MediaPlayer::release)
         player.start()
     }

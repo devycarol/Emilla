@@ -53,6 +53,6 @@ fun String.containsIgnoreCase(other: String): Boolean {
     return false
 }
 
-fun Char.repeat(count: Int): String = String(CharArray(count) { this })
+fun Char.repeat(count: Int) = String(CharArray(count) { this })
 fun CharArray.substring(start: Int = 0) = substring(start, size)
 fun CharArray.substring(start: Int = 0, end: Int) = String(copyOfRange(start, end))
