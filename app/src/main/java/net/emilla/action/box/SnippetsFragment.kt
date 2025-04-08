@@ -37,7 +37,7 @@ class SnippetsFragment : ActionBox(R.layout.snippet_item_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (view !is RecyclerView) return
+        view as RecyclerView
 
         val mgr = LinearLayoutManager(activity)
         mgr.setStackFromEnd(true)

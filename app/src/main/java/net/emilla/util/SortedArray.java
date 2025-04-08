@@ -6,7 +6,6 @@ import androidx.core.util.Function;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -14,10 +13,10 @@ import java.util.NoSuchElementException;
  *
  * @param <E> comparable type for the array elements.
  */
-public final class SortedArray<E extends Comparable<E>> implements Iterable<E> {
+public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E> {
 
-    private E[] mData;
-    private int mSize;
+    protected E[] mData;
+    protected int mSize;
 
     @SuppressWarnings("unchecked")
     public SortedArray(int initialCapacity) {
@@ -145,62 +144,6 @@ public final class SortedArray<E extends Comparable<E>> implements Iterable<E> {
         return ~lo; // value not found.
     }
 
-    @Nullable
-    public IndexWindow windowMatching(Comparable<E> searcher) {
-        int lo = 0;
-        int hi = mSize - 1;
-
-        while (lo <= hi) {
-            int mid = lo + hi >>> 1;
-            int cmp = searcher.compareTo(mData[mid]);
-
-            if (cmp > 0) lo = mid + 1;
-            else if (cmp < 0) hi = mid - 1;
-            else return new IndexWindow(firstIndexOf(searcher, lo, mid),
-                                        lastIndexOf(searcher, mid, hi));
-        }
-
-        return null; // no values found.
-    }
-
-    private int firstIndexOf(Comparable<E> searcher, int lo, int hi) {
-        int first = -1;
-
-        while (lo <= hi) {
-            int mid = lo + hi >>> 1;
-            int cmp = searcher.compareTo(mData[mid]);
-
-            if (cmp > 0) lo = mid + 1;
-            else {
-                if (cmp == 0) first = mid;
-                hi = mid - 1; // keep searching the lower half.
-            }
-        }
-
-        return first;
-    }
-
-    private int lastIndexOf(Comparable<E> searcher, int lo, int hi) {
-        int last = -1;
-
-        while (lo <= hi) {
-            int mid = lo + hi >>> 1;
-            int cmp = searcher.compareTo(mData[mid]);
-
-            if (cmp < 0) hi = mid - 1;
-            else {
-                if (cmp == 0) last = mid;
-                lo = mid + 1; // keep searching the upper half.
-            }
-        }
-
-        return last;
-    }
-
-    public List<E> elements(IndexWindow window) {
-        return Arrays.asList(Arrays.copyOfRange(mData, window.start, window.end));
-    }
-
     public boolean isEmpty() {
         return mSize == 0;
     }
@@ -226,4 +169,5 @@ public final class SortedArray<E extends Comparable<E>> implements Iterable<E> {
             }
         };
     }
+
 }

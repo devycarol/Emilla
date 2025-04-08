@@ -12,10 +12,11 @@ import androidx.annotation.ArrayRes;
 import androidx.annotation.StringRes;
 
 import net.emilla.config.SettingVals;
+import net.emilla.util.Searchable;
 
 import java.util.List;
 
-public final class AppEntry implements Comparable<AppEntry> {
+public final class AppEntry implements Searchable<AppEntry> {
 
     public final String pkg;
     public final String cls;
@@ -44,11 +45,6 @@ public final class AppEntry implements Comparable<AppEntry> {
         }
 
         return labels;
-    }
-
-    @Override
-    public int compareTo(AppEntry that) {
-        return this.label.compareToIgnoreCase(that.label);
     }
 
     public String entry() {
@@ -93,5 +89,10 @@ public final class AppEntry implements Comparable<AppEntry> {
 
     public Intent launchIntent() {
         return Apps.launchIntent(this);
+    }
+
+    @Override
+    public String ordinal() {
+        return label;
     }
 }
