@@ -16,7 +16,7 @@ import java.util.Set;
     public final SharedPreferences prefs;
     private final SortedArray<String> mLabels;
 
-    public SnippetsViewModel(SharedPreferences prefs) {
+    private SnippetsViewModel(SharedPreferences prefs) {
         this.prefs = prefs;
         Set<String> snippets = SettingVals.snippets(prefs);
         mLabels = new SortedArray<>(snippets);
