@@ -11,9 +11,9 @@ import net.emilla.run.Gift
 import net.emilla.run.MessageGift
 import net.emilla.run.Offering
 
-abstract class ActionBox
-protected constructor(@LayoutRes contentLayoutId: Int)
-    : Fragment (contentLayoutId) {
+abstract class ActionBox protected constructor(
+    @LayoutRes contentLayoutId: Int
+) : Fragment (contentLayoutId) {
 
     protected val activity by lazy { requireActivity() as AssistActivity }
     private val res by lazy { activity.resources }
@@ -25,9 +25,9 @@ protected constructor(@LayoutRes contentLayoutId: Int)
     private fun offer(offering: Offering) = activity.offer(offering)
     protected fun offerDialog(dlg: AlertDialog.Builder) = offer(DialogRun(activity, dlg))
     protected fun give(gift: Gift) = activity.give(gift)
-    protected fun giveMessage(msg: CharSequence) = give(MessageGift(activity, name(), msg))
+    protected fun giveMessage(msg: CharSequence) = give(MessageGift(activity, name, msg))
     protected fun giveCopy(text: String) = give(CopyGift(activity, text))
 
-    @StringRes
-    protected abstract fun name(): Int
+    @get:StringRes
+    protected abstract val name: Int
 }

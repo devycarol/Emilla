@@ -121,5 +121,5 @@ class SnippetsFragment : ActionBox(R.layout.snippet_item_list) {
     }
 
     @StringRes
-    override fun name() = R.string.command_snippets
+    override val name = R.string.command_snippets
 }
