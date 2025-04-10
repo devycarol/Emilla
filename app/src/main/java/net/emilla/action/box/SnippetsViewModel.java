@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import net.emilla.config.SettingVals;
-import net.emilla.util.IndexWindow;
-import net.emilla.util.SortedArray;
+import net.emilla.struct.sort.IndexWindow;
+import net.emilla.struct.sort.SortedArray;
 
 import java.util.Set;
 

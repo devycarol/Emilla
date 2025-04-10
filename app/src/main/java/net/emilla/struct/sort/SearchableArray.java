@@ -1,4 +1,4 @@
-package net.emilla.util;
+package net.emilla.struct.sort;
 
 import androidx.annotation.Nullable;
 import androidx.core.util.Function;

@@ -6,8 +6,8 @@ import androidx.annotation.ArrayRes;
 
 import net.emilla.lang.Lang;
 import net.emilla.lang.Words;
-import net.emilla.util.trie.HashTrieMap;
-import net.emilla.util.trie.TrieMap;
+import net.emilla.struct.trie.HashTrieMap;
+import net.emilla.struct.trie.TrieMap;
 
 public final class ActionMap<A extends Enum<A>> {
 

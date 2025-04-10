@@ -1,4 +1,6 @@
-package net.emilla.util
+package net.emilla.struct.sort
+
+import net.emilla.util.containsIgnoreCase
 
 abstract class Searchable<T : Searchable<T>> : Comparable<T> {
     abstract fun ordinal(): String

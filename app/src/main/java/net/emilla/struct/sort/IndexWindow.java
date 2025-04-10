@@ -1,4 +1,4 @@
-package net.emilla.util;
+package net.emilla.struct.sort;
 
 public final class IndexWindow {
 
@@ -6,7 +6,7 @@ public final class IndexWindow {
     public final int last;
     public final int end;
 
-    public IndexWindow(int start, int last) {
+    /*internal*/ IndexWindow(int start, int last) {
         this.start = start;
         this.last = last;
         this.end = last + 1;

@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
-import net.emilla.util.SearchableArray;
+import net.emilla.struct.sort.SearchableArray;
 
 import java.util.Iterator;
 import java.util.List;

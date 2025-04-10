@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import net.emilla.action.box.SnippetAdapter.SnippetHolder;
 import net.emilla.databinding.SnippetItemBinding;
-import net.emilla.util.SortedArray;
+import net.emilla.struct.sort.SortedArray;
 
 /*internal*/ final class SnippetAdapter extends RecyclerView.Adapter<SnippetHolder> {
 

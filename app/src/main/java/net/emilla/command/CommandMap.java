@@ -3,8 +3,8 @@ package net.emilla.command;
 import net.emilla.activity.AssistActivity;
 import net.emilla.lang.Lang;
 import net.emilla.lang.Words;
-import net.emilla.util.trie.HashTrieMap;
-import net.emilla.util.trie.TrieMap;
+import net.emilla.struct.trie.HashTrieMap;
+import net.emilla.struct.trie.TrieMap;
 
 public final class CommandMap {
 

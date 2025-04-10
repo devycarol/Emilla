@@ -1,7 +1,7 @@
 package net.emilla.command;
 
 import net.emilla.lang.Words;
-import net.emilla.util.trie.TrieMap;
+import net.emilla.struct.trie.TrieMap;
 
 public final class ActionYielder<A extends Enum<A>> implements TrieMap.Value<ActionYielder<A>> {
 

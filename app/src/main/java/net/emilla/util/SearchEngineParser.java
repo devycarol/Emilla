@@ -7,11 +7,11 @@ import android.net.Uri;
 
 import androidx.annotation.Nullable;
 
+import net.emilla.app.Apps;
 import net.emilla.lang.Lang;
 import net.emilla.lang.Words;
-import net.emilla.app.Apps;
-import net.emilla.util.trie.HashTrieMap;
-import net.emilla.util.trie.TrieMap;
+import net.emilla.struct.trie.HashTrieMap;
+import net.emilla.struct.trie.TrieMap;
 
 import java.util.Arrays;
 
@@ -67,9 +67,8 @@ public final class SearchEngineParser {
                 String encodedQuery = Uri.encode(queryWords.remainingContents());
                 Uri uri = Uri.parse(get.searchUrl.replaceFirst("%s", encodedQuery));
                 return Apps.viewTask(uri);
-            } else {
-                return Apps.viewTask(Uri.parse(get.siteUrl));
             }
+            return Apps.viewTask(Uri.parse(get.siteUrl));
         }
         return new Intent(Intent.ACTION_WEB_SEARCH).putExtra(QUERY, query);
     }

@@ -8,7 +8,7 @@ import net.emilla.R;
 import net.emilla.exception.EmillaException;
 import net.emilla.lang.phrase.Dice;
 import net.emilla.lang.phrase.Dices;
-import net.emilla.util.SortedArray;
+import net.emilla.struct.sort.SortedArray;
 
 import java.util.Iterator;
 

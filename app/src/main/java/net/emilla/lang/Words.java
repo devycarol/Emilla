@@ -5,8 +5,8 @@ import static java.lang.Character.isWhitespace;
 
 import androidx.annotation.RestrictTo;
 
+import net.emilla.struct.trie.TrieMap;
 import net.emilla.util.Strings;
-import net.emilla.util.trie.TrieMap;
 
 import java.util.Iterator;
 

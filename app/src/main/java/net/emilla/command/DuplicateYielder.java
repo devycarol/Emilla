@@ -1,7 +1,7 @@
 package net.emilla.command;
 
 import net.emilla.activity.AssistActivity;
-import net.emilla.util.trie.TrieMap;
+import net.emilla.struct.trie.TrieMap;
 
 import java.util.ArrayList;
 import java.util.Iterator;

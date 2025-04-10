@@ -1,4 +1,6 @@
-package net.emilla.util
+package net.emilla.struct.sort
+
+import net.emilla.util.compareToIgnoreCase
 
 class PrefixSearcher<T : Searchable<T>>(prefix: String) : Comparable<T> {
     private val prefChars = prefix.toCharArray()

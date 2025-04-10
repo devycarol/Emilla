@@ -12,7 +12,7 @@ import androidx.annotation.ArrayRes;
 import androidx.annotation.StringRes;
 
 import net.emilla.config.SettingVals;
-import net.emilla.util.Searchable;
+import net.emilla.struct.sort.Searchable;
 
 import java.util.List;
 
