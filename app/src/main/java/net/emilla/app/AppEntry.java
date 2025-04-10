@@ -16,7 +16,7 @@ import net.emilla.util.Searchable;
 
 import java.util.List;
 
-public final class AppEntry implements Searchable<AppEntry> {
+public final class AppEntry extends Searchable<AppEntry> {
 
     public final String pkg;
     public final String cls;

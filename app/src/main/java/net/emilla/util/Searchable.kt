@@ -1,16 +1,10 @@
-package net.emilla.util;
+package net.emilla.util
 
-@FunctionalInterface
-public interface Searchable<T extends Searchable<T>> extends Comparable<T> {
+abstract class Searchable<T : Searchable<T>> : Comparable<T> {
+    abstract fun ordinal(): String
 
-    String ordinal();
+    override fun compareTo(that: T) = compareTo(that.ordinal())
+    fun compareTo(search: String) = ordinal().compareTo(search, ignoreCase = true)
 
-    @Override
-    default int compareTo(T that) {
-        return this.ordinal().compareToIgnoreCase(that.ordinal());
-    }
-
-    default boolean ordinalContains(String search) {
-        return Strings.containsIgnoreCase(ordinal(), search);
-    }
+    fun ordinalContains(search: String) = ordinal().containsIgnoreCase(search)
 }
