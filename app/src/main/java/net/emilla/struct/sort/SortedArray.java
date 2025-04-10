@@ -3,6 +3,8 @@ package net.emilla.struct.sort;
 import androidx.annotation.Nullable;
 import androidx.core.util.Function;
 
+import net.emilla.struct.IndexedStruct;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -13,7 +15,7 @@ import java.util.NoSuchElementException;
  *
  * @param <E> comparable type for the array elements.
  */
-public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E> {
+public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E>, IndexedStruct<E> {
 
     protected E[] mData;
     protected int mSize;
@@ -68,10 +70,12 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
         return pos;
     }
 
+    @Override
     public E get(int index) {
         if (index >= mSize) {
-            String msg = "Index " + index + " out of bounds for size " + mSize + ".";
-            throw new IndexOutOfBoundsException(msg);
+            throw new IndexOutOfBoundsException(
+                "Index " + index + " out of bounds for size " + mSize + "."
+            );
         }
         return mData[index];
     }
@@ -144,12 +148,14 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
         return ~lo; // value not found.
     }
 
-    public boolean isEmpty() {
-        return mSize == 0;
-    }
-
+    @Override
     public int size() {
         return mSize;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return mSize == 0;
     }
 
     @Override
