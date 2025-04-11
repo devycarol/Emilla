@@ -176,4 +176,27 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
         };
     }
 
+    public /*inner*/ final class Window implements IndexedStruct<E> {
+
+        private final IndexWindow window;
+
+        public Window(IndexWindow window) {
+            this.window = window;
+        }
+
+        @Override
+        public E get(int index) {
+            return SortedArray.this.get(window.arrayIndex(index));
+        }
+
+        @Override
+        public int size() {
+            return window.size();
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return window.isEmpty();
+        }
+    }
 }
