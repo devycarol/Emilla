@@ -38,7 +38,7 @@ public /*open*/ class AppCommand extends EmillaCommand {
 
         @Override
         protected EmillaCommand makeCommand(AssistActivity act) {
-            return switch(app.pkg) {
+            return switch (app.pkg) {
                 case AospContacts.PKG -> new AospContacts(act, this);
                 case Markor.PKG -> Markor.instance(act, this, app.cls);
                 case Firefox.PKG -> new Firefox(act, this);
