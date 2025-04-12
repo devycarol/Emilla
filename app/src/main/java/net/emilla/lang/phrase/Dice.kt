@@ -1,57 +1,30 @@
-package net.emilla.lang.phrase;
+package net.emilla.lang.phrase
 
-import java.util.Objects;
-import java.util.Random;
+import net.emilla.util.hash1
+import java.util.Random
 
-public final class Dice implements Comparable<Dice> {
+class Dice(count: Int, val faces: Int) : Comparable<Dice> {
+    var count = count @JvmName("count") get
+        private set
 
-    private int mCount;
-    public final int faces;
-
-    public Dice(int count, int faces) {
-        mCount = count;
-        this.faces = faces;
+    fun add(count: Int) {
+        this.count += count
     }
 
-    public void add(int count) {
-        mCount += count;
-    }
+    fun roll(rand: Random): Int {
+        if (faces == 1) return count
 
-    public int count() {
-        return mCount;
-    }
-
-    public int roll(Random rand) {
-        if (faces == 1) return mCount;
-
-        int result = 0;
-        if (mCount >= 0) {
-            for (int i = 0; i < mCount; ++i) {
-                result += rand.nextInt(faces) + 1;
-            }
-        } else {
-            for (int i = 0; i > mCount; --i) {
-                result -= rand.nextInt(faces) + 1;
-            }
+        var result = 0
+        if (count >= 0) repeat(count) {
+            result += rand.nextInt(faces) + 1
+        } else repeat(count) {
+            result -= rand.nextInt(faces) + 1
         }
 
-        return result;
+        return result
     }
 
-    @Override
-    public int compareTo(Dice that) {
-        return faces - that.faces;
-    }
-
-    @Override
-    public boolean equals(Object that) {
-        return this == that
-            || that instanceof Dice dice
-                && faces == dice.faces;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(faces);
-    }
+    override fun compareTo(that: Dice) = faces - that.faces
+    override fun equals(that: Any?) = this === that || that is Dice && faces == that.faces
+    override fun hashCode() = hash1(faces)
 }
