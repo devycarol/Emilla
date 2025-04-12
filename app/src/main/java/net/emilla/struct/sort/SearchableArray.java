@@ -2,11 +2,9 @@ package net.emilla.struct.sort;
 
 import androidx.annotation.Nullable;
 import androidx.core.util.Function;
+import androidx.core.util.Predicate;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 public final class SearchableArray<E extends Searchable<E>> extends SortedArray<E> {
 
@@ -22,37 +20,72 @@ public final class SearchableArray<E extends Searchable<E>> extends SortedArray<
         super(c, converter);
     }
 
-    public List<E> filter(String search) {
-        IndexWindow exacts = windowMatching(new ExactSearcher<>(search));
-        if (exacts != null) return elements(exacts);
+    private SearchableArray(SearchableArray<E> sarr, Predicate<E> takeIf) {
+        super(sarr, takeIf);
+    }
 
-        IndexWindow prefixed = windowMatching(new PrefixSearcher<>(search));
-        var filtered = new ArrayList<E>(mSize);
-        if (prefixed != null) {
-            filtered.addAll(0, elements(prefixed));
-            E[] data = mData;
-            for (int i = 0; i < prefixed.start; ++i) {
-                E val = data[i];
-                if (val.ordinalContains(search)) filtered.add(val);
-            }
-            for (int i = prefixed.end; i < mSize; ++i) {
-                E val = data[i];
-                if (val.ordinalContains(search)) filtered.add(val);
-            }
-        } else {
-            for (E val : this) {
-                if (val.ordinalContains(search)) filtered.add(val);
-            }
+    private SearchableArray(SearchableArray<E> sarr, Predicate<E> takeIf, IndexWindow exclude) {
+        super(sarr, takeIf, exclude);
+    }
+
+    @Nullable
+    public E get(String search) {
+        int pos = arbitraryIndexOf(new ExactSearcher<>(search));
+        return pos >= 0 ? mData[pos] : null;
+    }
+
+    @Nullable
+    private SearchableArray<E> elements(Predicate<E> takeIf) {
+        return trim(new SearchableArray<>(this, takeIf));
+    }
+
+    @Nullable
+    private SearchableArray<E> elements(Predicate<E> takeIf, IndexWindow exclude) {
+        return trim(new SearchableArray<>(this, takeIf, exclude));
+    }
+
+    public SearchResult<E> filter(String search) {
+        return filter(search, false);
+    }
+
+    public SearchResult<E> filter(String search, boolean isolateExact) {
+        if (isolateExact) {
+            IndexWindow exacts = windowMatching(new ExactSearcher<>(search));
+            if (exacts != null) return new ExactWindowSearch<>(search, new Window(exacts));
         }
 
-        return filtered;
+        IndexWindow prefixed = windowMatching(new PrefixSearcher<>(search));
+        if (prefixed != null) {
+            SearchableArray<E> contains = elementsContaining(search, prefixed);
+            var prefWindow = new Window(prefixed);
+
+            if (contains == null) return new WindowSearch<>(search, prefWindow);
+            return new SectoredSearch<>(search, prefWindow, contains);
+        }
+
+        SearchableArray<E> contains = elementsContaining(search);
+        if (contains == null) return new EmptyFilter<>(search);
+
+        return new SparseSearch<>(search, contains);
+    }
+
+    @Nullable
+    public SearchableArray<E> elementsContaining(String search) {
+        return elements(val -> val.ordinalContains(search));
+    }
+
+    @Nullable
+    private SearchableArray<E> elementsContaining(String search, IndexWindow prefixed) {
+        return elements(val -> val.ordinalContains(search), prefixed);
     }
 
     @Nullable
     private IndexWindow windowMatching(Comparable<E> searcher) {
-        int lo = 0;
-        int hi = mSize - 1;
+        return windowMatching(searcher, 0, mSize - 1);
+    }
 
+    @Nullable
+    private IndexWindow windowMatching(Comparable<E> searcher, int lo, int hi) {
         while (lo <= hi) {
             int mid = lo + hi >>> 1;
             int cmp = searcher.compareTo(mData[mid]);
@@ -73,8 +106,9 @@ public final class SearchableArray<E extends Searchable<E>> extends SortedArray<
             int mid = lo + hi >>> 1;
             int cmp = searcher.compareTo(mData[mid]);
 
-            if (cmp > 0) lo = mid + 1;
-            else {
+            if (cmp > 0) {
+                lo = mid + 1;
+            } else {
                 if (cmp == 0) first = mid;
                 hi = mid - 1; // keep searching the lower half.
             }
@@ -90,8 +124,9 @@ public final class SearchableArray<E extends Searchable<E>> extends SortedArray<
             int mid = lo + hi >>> 1;
             int cmp = searcher.compareTo(mData[mid]);
 
-            if (cmp < 0) hi = mid - 1;
-            else {
+            if (cmp < 0) {
+                hi = mid - 1;
+            } else {
                 if (cmp == 0) last = mid;
                 lo = mid + 1; // keep searching the upper half.
             }
@@ -100,7 +135,20 @@ public final class SearchableArray<E extends Searchable<E>> extends SortedArray<
         return last;
     }
 
-    private List<E> elements(IndexWindow window) {
-        return Arrays.asList(Arrays.copyOfRange(mData, window.start, window.end));
+    public /*inner*/ final class Window extends SortedArray<E>.Window {
+
+        public Window(IndexWindow window) {
+            super(window);
+        }
+
+        @Nullable
+        public Window prefixedBy(String search) {
+            IndexWindow prefixed = windowMatching(
+                new PrefixSearcher<>(search),
+                window.start,
+                window.last
+            );
+            return prefixed != null ? new Window(prefixed) : null;
+        }
     }
 }

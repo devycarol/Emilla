@@ -2,6 +2,7 @@ package net.emilla.struct.sort;
 
 import androidx.annotation.Nullable;
 import androidx.core.util.Function;
+import androidx.core.util.Predicate;
 
 import net.emilla.struct.IndexedStruct;
 
@@ -36,6 +37,25 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
     public <T> SortedArray(Collection<T> c, Function<T, E> converter) {
         mData = (E[]) new Comparable[c.size()];
         for (T val : c) addInternal(converter.apply(val));
+    }
+
+    @SuppressWarnings("unchecked")
+    protected SortedArray(SortedArray<E> sarr, Predicate<E> takeIf) {
+        mData = (E[]) new Comparable[sarr.mSize];
+        for (E val : this) {
+            if (takeIf.test(val)) addInternal(val);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    protected SortedArray(SortedArray<E> sarr, Predicate<E> takeIf, IndexWindow exclude) {
+        mData = (E[]) new Comparable[sarr.mSize];
+        for (int i = 0; i < exclude.start; ++i) {
+            if (takeIf.test(mData[i])) addInternal(mData[i]);
+        }
+        for (int i = exclude.end; i < mSize; ++i) {
+            if (takeIf.test(mData[i])) addInternal(mData[i]);
+        }
     }
 
     private void ensureCapacity() {
@@ -87,7 +107,7 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
     @Nullable
     public E retrieve(E val) {
         int pos = indexOf(val);
-        return pos < 0 ? null : mData[pos];
+        return pos >= 0 ? mData[pos] : null;
     }
 
     @Nullable
@@ -148,6 +168,22 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
         return ~lo; // value not found.
     }
 
+    protected int arbitraryIndexOf(Comparable<E> searcher) {
+        int lo = 0;
+        int hi = mSize - 1;
+
+        while (lo <= hi) {
+            int mid = lo + hi >>> 1;
+            int cmp = searcher.compareTo(mData[mid]);
+
+            if (cmp > 0) lo = mid + 1;
+            else if (cmp < 0) hi = mid - 1;
+            else return mid; // match found.
+        }
+
+        return ~lo; // match not found.
+    }
+
     @Override
     public int size() {
         return mSize;
@@ -156,6 +192,17 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
     @Override
     public boolean isEmpty() {
         return mSize == 0;
+    }
+
+    public void trimToSize() {
+        mData = Arrays.copyOf(mData, mSize);
+    }
+
+    @Nullable
+    protected static <S extends SortedArray<E>, E extends Searchable<E>> S trim(S sarr) {
+        if (sarr.isEmpty()) return null;
+        sarr.trimToSize();
+        return sarr;
     }
 
     @Override
@@ -176,9 +223,9 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
         };
     }
 
-    public /*inner*/ final class Window implements IndexedStruct<E> {
+    public /*inner open*/ class Window implements IndexedStruct<E> {
 
-        private final IndexWindow window;
+        protected final IndexWindow window;
 
         public Window(IndexWindow window) {
             this.window = window;

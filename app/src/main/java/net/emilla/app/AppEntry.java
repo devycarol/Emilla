@@ -12,9 +12,8 @@ import androidx.annotation.ArrayRes;
 import androidx.annotation.StringRes;
 
 import net.emilla.config.SettingVals;
+import net.emilla.struct.IndexedStruct;
 import net.emilla.struct.sort.Searchable;
-
-import java.util.List;
 
 public final class AppEntry extends Searchable<AppEntry> {
 
@@ -36,9 +35,9 @@ public final class AppEntry extends Searchable<AppEntry> {
         mActionFlags = AppActions.of(pm, pkg, mMetadata.actionMask);
     }
 
-    public static String[] labels(List<AppEntry> apps) {
+    public static String[] labels(IndexedStruct<AppEntry> apps) {
         int size = apps.size();
-        String[] labels = new String[size];
+        var labels = new String[size];
 
         for (int i = 0; i < size; ++i) {
             labels[i] = apps.get(i).label;

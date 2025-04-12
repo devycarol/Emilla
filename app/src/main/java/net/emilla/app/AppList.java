@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
+import net.emilla.struct.sort.SearchResult;
 import net.emilla.struct.sort.SearchableArray;
 
 import java.util.Iterator;
@@ -25,8 +26,8 @@ public final class AppList implements Iterable<AppEntry> {
         mData = new SearchableArray<>(resolveInfos, info -> new AppEntry(pm, info));
     }
 
-    public List<AppEntry> filter(String search) {
-        return mData.filter(search);
+    public SearchResult<AppEntry> filter(String search) {
+        return mData.filter(search, true);
     }
 
     public AppEntry get(int index) {

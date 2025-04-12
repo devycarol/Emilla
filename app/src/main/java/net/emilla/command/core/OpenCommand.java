@@ -10,9 +10,8 @@ import androidx.appcompat.app.AlertDialog;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.app.AppEntry;
+import net.emilla.struct.sort.SearchResult;
 import net.emilla.util.Dialogs;
-
-import java.util.List;
 
 public abstract class OpenCommand extends CoreCommand {
 
@@ -50,7 +49,7 @@ public abstract class OpenCommand extends CoreCommand {
     protected abstract AlertDialog.Builder makeChooser();
 
     protected final void appSearchRun(String search, IntentMaker maker) {
-        List<AppEntry> filtered = activity.appList().filter(search);
+        SearchResult<AppEntry> filtered = activity.appList().filter(search);
         switch (filtered.size()) {
         case 0 -> throw badCommand(R.string.error_apps_not_found);
         // Todo: offer to search app store
@@ -60,7 +59,7 @@ public abstract class OpenCommand extends CoreCommand {
         }
     }
 
-    private void open(List<AppEntry> filtered, int which, IntentMaker action) {
+    private void open(SearchResult<AppEntry> filtered, int which, IntentMaker action) {
         AppEntry app = filtered.get(which);
         appSucceed(action.make(app));
     }
