@@ -2,6 +2,8 @@
 
 package net.emilla.util
 
+fun emptyIfNull(s: String?) = s ?: ""
+
 fun String.trimLeading(): String {
     val index = indexOfNonSpace()
     return if (index > 0) substring(index) else this

@@ -20,6 +20,7 @@ import net.emilla.command.DataCommand;
 import net.emilla.lang.Lines;
 import net.emilla.util.Dialogs;
 import net.emilla.util.Permissions;
+import net.emilla.util.Strings;
 
 import java.util.Comparator;
 import java.util.SortedSet;
@@ -105,8 +106,7 @@ public final class Tasker extends AppCommand implements DataCommand {
     }
 
     private String extractAction(String task) {
-        task = mActionMap.get(task).instruction();
-        return task != null ? task : "";
+        return Strings.emptyIfNull(mActionMap.get(task).instruction);
     }
 
     private void trySearchRun(String task, @Nullable String params) {

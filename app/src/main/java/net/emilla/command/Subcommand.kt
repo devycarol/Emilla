@@ -1,5 +1,3 @@
-package net.emilla.command;
+package net.emilla.command
 
-import androidx.annotation.Nullable;
-
-public record Subcommand<A extends Enum<A>>(A action, @Nullable String instruction) {}
+data class Subcommand<A : Enum<A>>(@JvmField val action: A, @JvmField val instruction: String?)

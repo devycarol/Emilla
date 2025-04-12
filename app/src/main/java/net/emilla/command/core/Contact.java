@@ -101,9 +101,9 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
         }
 
         Subcommand<Action> subcmd = mActionMap.get(person);
-        mAction = subcmd.action();
+        mAction = subcmd.action;
 
-        return subcmd.instruction();
+        return subcmd.instruction;
     }
 
     @Override

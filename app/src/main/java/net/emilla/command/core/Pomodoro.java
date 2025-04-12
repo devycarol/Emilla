@@ -87,7 +87,7 @@ public final class Pomodoro extends CoreDataCommand {
     @Override
     protected void run(String minutes) {
         Subcommand<Action> subcmd = mActionMap.get(minutes);
-        tryPomo(subcmd.instruction(), subcmd.action() == Action.BREAK);
+        tryPomo(subcmd.instruction, subcmd.action == Action.BREAK);
     }
 
     @Override
@@ -100,11 +100,11 @@ public final class Pomodoro extends CoreDataCommand {
     protected void runWithData(String minutes, String memo) {
         Subcommand<Action> subcmd = mActionMap.get(minutes);
 
-        boolean isBreak = subcmd.action() == Action.BREAK;
+        boolean isBreak = subcmd.action == Action.BREAK;
         if (isBreak) mBreakMemo = memo;
         else mWorkMemo = memo;
 
-        tryPomo(subcmd.instruction(), isBreak);
+        tryPomo(subcmd.instruction, isBreak);
     }
 
     @SuppressLint("MissingPermission")

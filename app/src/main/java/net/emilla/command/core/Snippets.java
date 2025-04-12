@@ -89,7 +89,7 @@ public final class Snippets extends CoreDataCommand {
     @Override
     protected void run(String label) {
         Subcommand<Action> subcmd = mActionMap.get(label);
-        refreshState(subcmd.action());
+        refreshState(subcmd.action);
         snippet(subcmd);
     }
 
@@ -107,7 +107,7 @@ public final class Snippets extends CoreDataCommand {
     }
 
     private void snippet(Subcommand<Action> subcmd) {
-        String label = subcmd.instruction();
+        String label = subcmd.instruction;
         if (label != null) {
             String lcLabel = label.toLowerCase();
             if (mSnippetsFragment.contains(lcLabel)) {
@@ -123,10 +123,10 @@ public final class Snippets extends CoreDataCommand {
                 }
 
                 mUsedSnippet = label;
-                snippet(label, lcLabel, subcmd.action());
+                snippet(label, lcLabel, subcmd.action);
             } else failMessage(str(R.string.error_no_snippet, label));
         } else if (mSnippetsFragment.isEmpty()) failMessage(R.string.error_no_snippets);
-        else mSnippetsFragment.prime(subcmd.action());
+        else mSnippetsFragment.prime(subcmd.action);
         // TODO: respect the user's letter case for the labels while retaining case-insensitivity
     }
 
