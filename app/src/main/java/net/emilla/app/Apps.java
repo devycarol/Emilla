@@ -16,7 +16,10 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.Settings;
+
+import androidx.annotation.RequiresApi;
 
 import net.emilla.BuildConfig;
 import net.emilla.activity.EmillaActivity;
@@ -102,6 +105,17 @@ public final class Apps {
 
     public static Intent infoTask(String pkg) {
         return new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, pkgUri(pkg));
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static Intent notificationsTask() {
+        return notificationsTask(MY_PKG);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static Intent notificationsTask(String pkg) {
+        return new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+            .putExtra(Settings.EXTRA_APP_PACKAGE, pkg);
     }
 
     public static Intent meTask(Context ctx, Class<? extends EmillaActivity> cls) {

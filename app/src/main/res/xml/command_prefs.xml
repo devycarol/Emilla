@@ -158,6 +158,11 @@
             android:summary="@string/summary_info"
             android:title="@string/command_info" />
         <net.emilla.config.CommandPreference
+            android:icon="@drawable/ic_notifications"
+            android:key="notifications"
+            android:summary="@string/summary_notifications"
+            android:title="@string/command_notifications" />
+        <net.emilla.config.CommandPreference
             android:icon="@drawable/ic_uninstall"
             android:key="uninstall"
             android:summary="@string/summary_uninstall"

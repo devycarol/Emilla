@@ -86,6 +86,7 @@
         <item>@string/command_share</item>
         <item>@string/command_torch</item>
         <item>@string/command_info</item>
+        <item>@string/command_notifications</item>
         <item>@string/command_uninstall</item>
         <item>@string/command_toast</item>
 <!--        <item>@string/command_todo</item>-->
@@ -124,6 +125,7 @@
         <item>share</item>
         <item>torch</item>
         <item>info</item>
+        <item>notifications</item>
         <item>uninstall</item>
         <item>toast</item>
 <!--        <item>todo</item>-->
@@ -229,6 +231,9 @@
     <string-array name="aliases_pause" />
     <string-array name="aliases_torch" />
     <string-array name="aliases_info" />
+    <string-array name="aliases_notifications">
+        <item>pings</item>
+    </string-array>
     <string-array name="aliases_uninstall">
         <item>remove</item>
         <item>delete</item>

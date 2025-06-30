@@ -31,6 +31,7 @@ import net.emilla.command.core.Find;
 import net.emilla.command.core.Info;
 import net.emilla.command.core.Launch;
 import net.emilla.command.core.Note;
+import net.emilla.command.core.Notifications;
 import net.emilla.command.core.Notify;
 import net.emilla.command.core.Pause;
 import net.emilla.command.core.Play;
@@ -123,6 +124,7 @@ public final class CommandsFragment extends EmillaSettingsFragment {
         setupCorePref(Pause.ENTRY, Pause.ALIASES);
         setupCorePref(Torch.ENTRY, Torch.ALIASES);
         setupCorePref(Info.ENTRY, Info.ALIASES);
+        setupCorePref(Notifications.ENTRY, Notifications.ALIASES);
         setupCorePref(Toast.ENTRY, Toast.ALIASES);
     }
 

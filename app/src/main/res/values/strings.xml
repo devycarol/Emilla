@@ -172,6 +172,7 @@
     <string name="command_share">Share</string>
     <string name="command_torch">Torch</string>
     <string name="command_info">Info</string>
+    <string name="command_notifications">Notifications</string>
     <string name="command_uninstall">Uninstall</string>
     <string name="command_toast">Toast</string>
     <string name="command_todo">To-do</string>
@@ -262,6 +263,7 @@
     <string name="summary_share">Send text, images, and files to your apps</string>
     <string name="summary_torch">Toggle the flashlight</string>
     <string name="summary_info">View application details</string>
+    <string name="summary_notifications">Configure app notifications</string>
     <string name="summary_uninstall">Remove installed apps</string>
     <string name="summary_toast">Show a little message!</string>
     <string name="summary_todo">Add tasks to a todo.txt file</string>
@@ -577,6 +579,13 @@
     <!-- "View application details" -->
     <string name="manual_info">
         This opens an app\'s \"App info\" page. If no input is given, Emilla\'s will open.\n
+        \n
+        Otherwise, you\'ll be presented with a list of apps matching your search. An exact match or
+        single result will be opened immediately.
+    </string>
+    <!-- "Configure app notifications" -->
+    <string name="manual_notifications">
+        This opens an app\'s notification settings page. If no input is given, Emilla\'s will open.\n
         \n
         Otherwise, you\'ll be presented with a list of apps matching your search. An exact match or
         single result will be opened immediately.

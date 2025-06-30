@@ -201,8 +201,7 @@ public final class SettingsFragment extends EmillaSettingsFragment {
     private void setupNotificationsPref() {
         Preference appNotifications = preferenceOf("notifications");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            var notifSettings = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
-                    .putExtra(Settings.EXTRA_APP_PACKAGE, Apps.MY_PKG);
+            Intent notifSettings = Apps.notificationsTask();
             if (notifSettings.resolveActivity(mPm) != null) {
                 appNotifications.setIntent(notifSettings);
                 return;

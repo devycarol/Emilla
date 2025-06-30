@@ -43,6 +43,7 @@ import net.emilla.command.core.Fahrenheit;
 import net.emilla.command.core.Info;
 import net.emilla.command.core.Launch;
 import net.emilla.command.core.Navigate;
+import net.emilla.command.core.Notifications;
 import net.emilla.command.core.Notify;
 import net.emilla.command.core.Pause;
 import net.emilla.command.core.Play;
@@ -114,6 +115,7 @@ public abstract class EmillaCommand {
                 Pause.yielder(),
                 Torch.yielder(),
                 Info.yielder(),
+                Notifications.yielder(),
                 Uninstall.yielder(),
                 Toast.yielder(),
         };
