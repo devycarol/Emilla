@@ -20,28 +20,10 @@ public final class SearchableArray<E extends Searchable<E>> extends SortedArray<
         super(c, converter);
     }
 
-    private SearchableArray(SearchableArray<E> sarr, Predicate<E> takeIf) {
-        super(sarr, takeIf);
-    }
-
-    private SearchableArray(SearchableArray<E> sarr, Predicate<E> takeIf, IndexWindow exclude) {
-        super(sarr, takeIf, exclude);
-    }
-
     @Nullable
     public E get(String search) {
         int pos = arbitraryIndexOf(new ExactSearcher<>(search));
         return pos >= 0 ? mData[pos] : null;
-    }
-
-    @Nullable
-    private SearchableArray<E> elements(Predicate<E> takeIf) {
-        return trim(new SearchableArray<>(this, takeIf));
-    }
-
-    @Nullable
-    private SearchableArray<E> elements(Predicate<E> takeIf, IndexWindow exclude) {
-        return trim(new SearchableArray<>(this, takeIf, exclude));
     }
 
     public SearchResult<E> filter(String search) {
@@ -56,26 +38,26 @@ public final class SearchableArray<E extends Searchable<E>> extends SortedArray<
 
         IndexWindow prefixed = windowMatching(new PrefixSearcher<>(search));
         if (prefixed != null) {
-            SearchableArray<E> contains = elementsContaining(search, prefixed);
+            SparseWindow contains = elementsContaining(search, prefixed);
             var prefWindow = new Window(prefixed);
 
             if (contains == null) return new WindowSearch<>(search, prefWindow);
             return new SectoredSearch<>(search, prefWindow, contains);
         }
 
-        SearchableArray<E> contains = elementsContaining(search);
+        SparseWindow contains = elementsContaining(search);
         if (contains == null) return new EmptyFilter<>(search);
 
         return new SparseSearch<>(search, contains);
     }
 
     @Nullable
-    public SearchableArray<E> elementsContaining(String search) {
+    private SparseWindow elementsContaining(String search) {
         return elements(val -> val.ordinalContains(search));
     }
 
     @Nullable
-    private SearchableArray<E> elementsContaining(String search, IndexWindow prefixed) {
+    private SparseWindow elementsContaining(String search, IndexWindow prefixed) {
         return elements(val -> val.ordinalContains(search), prefixed);
     }
 
@@ -149,6 +131,54 @@ public final class SearchableArray<E extends Searchable<E>> extends SortedArray<
                 window.last
             );
             return prefixed != null ? new Window(prefixed) : null;
+        }
+    }
+
+    @Nullable
+    private SparseWindow elements(Predicate<E> takeIf) {
+        var elements = new SparseWindow(takeIf);
+        return elements.isEmpty() ? null : elements;
+    }
+
+    @Nullable
+    private SparseWindow elements(Predicate<E> takeIf, IndexWindow exclude) {
+        var elements = new SparseWindow(takeIf, exclude);
+        return elements.isEmpty() ? null : elements;
+    }
+
+    public /*inner*/ final class SparseWindow extends SortedArray<E>.SparseWindow {
+
+        private SparseWindow(Predicate<E> takeIf) {
+            super(takeIf);
+        }
+
+        private SparseWindow(Predicate<E> takeIf, IndexWindow exclude) {
+            super(takeIf, exclude);
+        }
+
+        private SparseWindow(SparseWindow elements, Predicate<E> takeIf) {
+            super(elements, takeIf);
+        }
+
+        private SparseWindow(SparseWindow elements, Predicate<E> takeIf, IndexWindow exclude) {
+            super(elements, takeIf, exclude);
+        }
+
+        @Nullable
+        private SparseWindow elements(Predicate<E> takeIf) {
+            var elements = new SparseWindow(this, takeIf);
+            return elements.isEmpty() ? null : elements;
+        }
+
+        @Nullable
+        private SparseWindow elements(Predicate<E> takeIf, IndexWindow exclude) {
+            var elements = new SparseWindow(this, takeIf, exclude);
+            return elements.isEmpty() ? null : elements;
+        }
+
+        @Nullable
+        public SparseWindow elementsContaining(String search) {
+            return elements(val -> val.ordinalContains(search));
         }
     }
 }

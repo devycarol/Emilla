@@ -39,25 +39,6 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
         for (T val : c) addInternal(converter.apply(val));
     }
 
-    @SuppressWarnings("unchecked")
-    protected SortedArray(SortedArray<E> sarr, Predicate<E> takeIf) {
-        mData = (E[]) new Comparable[sarr.mSize];
-        for (E val : this) {
-            if (takeIf.test(val)) addInternal(val);
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    protected SortedArray(SortedArray<E> sarr, Predicate<E> takeIf, IndexWindow exclude) {
-        mData = (E[]) new Comparable[sarr.mSize];
-        for (int i = 0; i < exclude.start; ++i) {
-            if (takeIf.test(mData[i])) addInternal(mData[i]);
-        }
-        for (int i = exclude.end; i < mSize; ++i) {
-            if (takeIf.test(mData[i])) addInternal(mData[i]);
-        }
-    }
-
     private void ensureCapacity() {
         if (mSize == mData.length) {
             mData = Arrays.copyOf(mData, mData.length * 3 / 2 + 1);
@@ -198,13 +179,6 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
         mData = Arrays.copyOf(mData, mSize);
     }
 
-    @Nullable
-    protected static <S extends SortedArray<E>, E extends Searchable<E>> S trim(S sarr) {
-        if (sarr.isEmpty()) return null;
-        sarr.trimToSize();
-        return sarr;
-    }
-
     @Override
     public Iterator<E> iterator() {
         return new Iterator<>() {
@@ -225,7 +199,7 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
 
     public /*inner open*/ class Window implements IndexedStruct<E> {
 
-        protected final IndexWindow window;
+        public final IndexWindow window;
 
         public Window(IndexWindow window) {
             this.window = window;
@@ -238,12 +212,97 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
 
         @Override
         public int size() {
-            return window.size();
+            return window.size;
         }
 
         @Override
         public boolean isEmpty() {
             return window.isEmpty();
+        }
+    }
+
+    public /*inner open*/ class SparseWindow implements IndexedStruct<E> {
+
+        private final int[] indices;
+        private final int size;
+
+        protected SparseWindow(Predicate<E> takeIf) {
+            var indices = new int[mSize];
+            int size = 0;
+            for (int i = 0; i < mSize; ++i) {
+                if (takeIf.test(mData[i])) {
+                    indices[size++] = i;
+                }
+            }
+
+            this.indices = Arrays.copyOf(indices, size);
+            this.size = size;
+        }
+
+        protected SparseWindow(Predicate<E> takeIf, IndexWindow exclude) {
+            var indices = new int[mSize];
+            int size = 0;
+            for (int i = 0; i < exclude.start; ++i) {
+                if (takeIf.test(mData[i])) {
+                    indices[size++] = i;
+                }
+            }
+            for (int i = exclude.end; i < mSize; ++i) {
+                if (takeIf.test(mData[i])) {
+                    indices[size++] = i;
+                }
+            }
+
+            this.indices = Arrays.copyOf(indices, size);
+            this.size = size;
+        }
+
+        protected SparseWindow(SparseWindow elements, Predicate<E> takeIf) {
+            int windowSize = elements.size;
+            var indices = new int[windowSize];
+            int size = 0;
+            for (int i = 0; i < windowSize; ++i) {
+                if (takeIf.test(elements.get(i))) {
+                    indices[size++] = elements.indices[i];
+                }
+            }
+
+            this.indices = Arrays.copyOf(indices, size);
+            this.size = size;
+        }
+
+        protected SparseWindow(SparseWindow elements, Predicate<E> takeIf, IndexWindow exclude) {
+            int windowSize = elements.size;
+            var indices = new int[windowSize];
+            int size = 0;
+            for (int i = 0; i < exclude.start; ++i) {
+                if (takeIf.test(elements.get(i))) {
+                    indices[size++] = elements.indices[i];
+                }
+            }
+            for (int i = exclude.end; i < windowSize; ++i) {
+                if (takeIf.test(elements.get(i))) {
+                    indices[size++] = elements.indices[i];
+                }
+            }
+
+            this.indices = Arrays.copyOf(indices, size);
+            this.size = size;
+        }
+
+        @Override
+        public E get(int index) {
+            return mData[indices[index]];
+        }
+
+        @Override
+        public int size() {
+            return size;
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return size == 0;
         }
     }
 }

@@ -3,11 +3,11 @@ package net.emilla.struct.sort
 internal class SectoredSearch<E : Searchable<E>>(
     search: String,
     private val prefixedWindow: SearchableArray<E>.Window,
-    private val containsElements: SearchableArray<E>
+    private val containsElements: SearchableArray<E>.SparseWindow
 ) : SearchResult<E>(search) {
 
     private val prefSize = prefixedWindow.size()
-    private val size = prefSize + containsElements.size()
+    override val size = prefSize + containsElements.size()
 
     init {
         require(prefSize > 0 && size > 1)
@@ -15,18 +15,18 @@ internal class SectoredSearch<E : Searchable<E>>(
 
     override fun get(index: Int): E {
         return if (index < prefSize) {
-            prefixedWindow.get(index)
+            prefixedWindow[index]
         } else {
-            containsElements.get(index - prefSize)
+            containsElements[index - prefSize]
         }
     }
 
-    override fun size() = size
     override fun isEmpty() = false
 
     override fun narrow(prefixedSearch: String): SearchResult<E> {
         val prefixed: SearchableArray<E>.Window? = prefixedWindow.prefixedBy(prefixedSearch)
-        val contains: SearchableArray<E>? = containsElements.elementsContaining(prefixedSearch)
+        val contains: SearchableArray<E>.SparseWindow? =
+            containsElements.elementsContaining(prefixedSearch)
         return if (prefixed != null && contains != null) {
             SectoredSearch(prefixedSearch, prefixed, contains)
         } else if (prefixed != null) {
@@ -37,4 +37,6 @@ internal class SectoredSearch<E : Searchable<E>>(
             EmptyFilter(prefixedSearch)
         }
     }
+
+    override fun onePreferredMatch() = prefSize == 1
 }

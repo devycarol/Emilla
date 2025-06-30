@@ -1,21 +1,50 @@
 package net.emilla.struct.sort
 
-import net.emilla.struct.IndexedStruct
+import androidx.recyclerview.widget.RecyclerView
+import net.emilla.view.notifyTrimmedUntil
 
-abstract class SearchResult<E : Searchable<E>>(
+sealed class SearchResult<E : Searchable<E>>(
     private val search: String
-) : Searchable<SearchResult<E>>(), IndexedStruct<E> {
+) : Searchable<SearchResult<E>>(), FilterResult<E> {
 
-    override fun ordinal() = search
-    /**
-     * Derives a narrower filter result for a search that is prefixed by this result's search term.
-     * This enables more efficient algorithms while the result should still be the same as calling
-     * [SearchableArray.filter] directly. The result will probably be incorrect if [prefixedSearch]
-     * isn't prefixed by [search].
-     *
-     * @param prefixedSearch search query for which this filter result's search term is a
-     * case-insensitive prefix.
-     * @return the appropriate filter result for the more specific search term.
-     */
-    abstract fun narrow(prefixedSearch: String): SearchResult<E>
+    protected abstract val size: Int
+    final override fun size() = size
+
+    final override fun ordinal() = search
+
+    override fun update(adapter: RecyclerView.Adapter<*>, newFilter: FilterResult<E>) {
+        when (newFilter) {
+            is EmptyFilter<E> -> {
+                adapter.notifyTrimmedUntil(size)
+            }
+            is WindowSearch<E> -> {
+                adapter.updateToWindowSearch(newFilter)
+            }
+            is SparseSearch<E> -> {
+                adapter.updateToSparseSearch(newFilter)
+            }
+            is SectoredSearch<E> -> {
+                adapter.updateToSectoredSearch(newFilter)
+            }
+            is Unfilter<E> -> {
+                adapter.updateToUnfilter(newFilter)
+            }
+        }
+    }
+
+    internal open fun RecyclerView.Adapter<*>.updateToWindowSearch(newFilter: WindowSearch<E>) {
+        notifyDataSetChanged()
+    }
+
+    internal open fun RecyclerView.Adapter<*>.updateToSparseSearch(newFilter: SparseSearch<E>) {
+        notifyDataSetChanged()
+    }
+
+    internal open fun RecyclerView.Adapter<*>.updateToSectoredSearch(newFilter: SectoredSearch<E>) {
+        notifyDataSetChanged()
+    }
+
+    internal open fun RecyclerView.Adapter<*>.updateToUnfilter(newFilter: Unfilter<E>) {
+        notifyDataSetChanged()
+    }
 }

@@ -40,7 +40,7 @@ import java.util.Set;
         IndexWindow range = mLabels.replace(label, label);
         if (range == null) return;
 
-        if (range.size() > 1) adapter.notifyItemMoved(range.start, range.last);
+        if (range.size > 1) adapter.notifyItemMoved(range.start, range.last);
         adapter.notifyItemChanged(range.start);
 
         SettingVals.replaceSnippet(prefs, label, text);
