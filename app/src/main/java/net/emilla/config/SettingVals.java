@@ -137,7 +137,7 @@ public final class SettingVals {
             case Notifications.ENTRY -> 28;
             case Uninstall.ENTRY     -> 29;
             case Toast.ENTRY         -> 30;
-            default -> throw new IllegalArgumentException("No such command \"" + cmdEntry + "\".");
+            default -> throw new IllegalArgumentException("No such command \"" + cmdEntry + "\"");
         };
     }
 
