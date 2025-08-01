@@ -6,8 +6,8 @@ class PrefixSearcher<T : Searchable<T>>(prefix: String) : Comparable<T> {
     private val prefChars = prefix.toCharArray()
     private val prefLen = prefChars.size
 
-    override fun compareTo(that: T): Int {
-        val ordinal = that.ordinal()
+    override fun compareTo(other: T): Int {
+        val ordinal = other.ordinal()
         val len = ordinal.length
         if (prefLen > len) return prefLen - len
 

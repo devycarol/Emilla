@@ -21,22 +21,24 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
     protected E[] mData;
     protected int mSize;
 
-    @SuppressWarnings("unchecked")
     public SortedArray(int initialCapacity) {
         if (initialCapacity < 0) throw new IllegalArgumentException();
-        mData = (E[]) new Comparable[initialCapacity];
+        mData = newArray(initialCapacity);
     }
 
-    @SuppressWarnings("unchecked")
     public SortedArray(Collection<E> c) {
-        mData = (E[]) new Comparable[c.size()];
+        mData = newArray(c.size());
         for (E val : c) addInternal(val);
     }
 
-    @SuppressWarnings("unchecked")
     public <T> SortedArray(Collection<T> c, Function<T, E> converter) {
-        mData = (E[]) new Comparable[c.size()];
+        mData = newArray(c.size());
         for (T val : c) addInternal(converter.apply(val));
+    }
+
+    @SuppressWarnings("unchecked")
+    protected /*open*/ E[] newArray(int capacity) {
+        return (E[]) new Comparable[capacity];
     }
 
     private void ensureCapacity() {

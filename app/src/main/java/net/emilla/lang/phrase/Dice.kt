@@ -24,7 +24,7 @@ class Dice(count: Int, val faces: Int) : Comparable<Dice> {
         return result
     }
 
-    override fun compareTo(that: Dice) = faces - that.faces
-    override fun equals(that: Any?) = this === that || that is Dice && faces == that.faces
+    override fun compareTo(other: Dice) = faces - other.faces
+    override fun equals(other: Any?) = this === other || other is Dice && faces == other.faces
     override fun hashCode() = hash1(faces)
 }

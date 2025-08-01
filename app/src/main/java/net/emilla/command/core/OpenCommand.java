@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.app.AppEntry;
+import net.emilla.struct.IndexedStruct;
 import net.emilla.struct.sort.SearchResult;
 import net.emilla.util.Dialogs;
 
@@ -49,17 +50,27 @@ public abstract class OpenCommand extends CoreCommand {
     protected abstract AlertDialog.Builder makeChooser();
 
     protected final void appSearchRun(String search, IntentMaker maker) {
-        SearchResult<AppEntry> filtered = activity.appList().filter(search);
-        switch (filtered.size()) {
-        case 0 -> throw badCommand(R.string.error_apps_not_found);
-        // Todo: offer to search app store
-        case 1 -> open(filtered, 0, maker);
-        default -> offerDialog(Dialogs.list(activity, R.string.dialog_app, AppEntry.labels(filtered),
-                                            (dlg, which) -> open(filtered, which, maker)));
+        SearchResult<AppEntry> result = activity.appList().filter(search);
+        int size = result.size();
+        if (size == 0) {
+            throw badCommand(R.string.error_apps_not_found);
+            // Todo: offer to search app store
+        }
+
+        if (size == 1 || oneExactMatch(result, search)) {
+            open(result, 0, maker);
+        } else {
+            offerDialog(Dialogs.list(activity, R.string.dialog_app, AppEntry.labels(result),
+                                     (dlg, which) -> open(result, which, maker)));
         }
     }
 
-    private void open(SearchResult<AppEntry> filtered, int which, IntentMaker action) {
+    private static boolean oneExactMatch(SearchResult<AppEntry> result, String search) {
+        return result.get(0).ordinalIs(search)
+            && !result.get(1).ordinalIs(search);
+    }
+
+    private void open(IndexedStruct<AppEntry> filtered, int which, IntentMaker action) {
         AppEntry app = filtered.get(which);
         appSucceed(action.make(app));
     }

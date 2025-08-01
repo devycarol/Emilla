@@ -20,6 +20,11 @@ public final class SearchableArray<E extends Searchable<E>> extends SortedArray<
         super(c, converter);
     }
 
+    @Override @SuppressWarnings("unchecked")
+    protected E[] newArray(int capacity) {
+        return (E[]) new Searchable[capacity];
+    }
+
     @Nullable
     public E get(String search) {
         int pos = arbitraryIndexOf(new ExactSearcher<>(search));
@@ -27,38 +32,19 @@ public final class SearchableArray<E extends Searchable<E>> extends SortedArray<
     }
 
     public SearchResult<E> filter(String search) {
-        return filter(search, false);
-    }
+        IndexWindow prefixedWindow = windowMatching(new PrefixSearcher<>(search));
+        SparseWindow containsWindow = elementsContaining(search, prefixedWindow);
+        var prefWindow = prefixedWindow != null ? new Window(prefixedWindow) : null;
 
-    public SearchResult<E> filter(String search, boolean isolateExact) {
-        if (isolateExact) {
-            IndexWindow exacts = windowMatching(new ExactSearcher<>(search));
-            if (exacts != null) return new ExactWindowSearch<>(search, new Window(exacts));
-        }
-
-        IndexWindow prefixed = windowMatching(new PrefixSearcher<>(search));
-        if (prefixed != null) {
-            SparseWindow contains = elementsContaining(search, prefixed);
-            var prefWindow = new Window(prefixed);
-
-            if (contains == null) return new WindowSearch<>(search, prefWindow);
-            return new SectoredSearch<>(search, prefWindow, contains);
-        }
-
-        SparseWindow contains = elementsContaining(search);
-        if (contains == null) return new EmptyFilter<>(search);
-
-        return new SparseSearch<>(search, contains);
+        return new SearchResult<>(search, prefWindow, containsWindow);
     }
 
     @Nullable
-    private SparseWindow elementsContaining(String search) {
-        return elements(val -> val.ordinalContains(search));
-    }
-
-    @Nullable
-    private SparseWindow elementsContaining(String search, IndexWindow prefixed) {
-        return elements(val -> val.ordinalContains(search), prefixed);
+    private SparseWindow elementsContaining(String search, @Nullable IndexWindow exclude) {
+        if (exclude == null) {
+            return elements(val -> val.ordinalContains(search));
+        }
+        return elements(val -> val.ordinalContains(search), exclude);
     }
 
     @Nullable

@@ -27,7 +27,7 @@ public final class AppList implements Iterable<AppEntry> {
     }
 
     public SearchResult<AppEntry> filter(String search) {
-        return mData.filter(search, true);
+        return mData.filter(search);
     }
 
     public AppEntry get(int index) {
