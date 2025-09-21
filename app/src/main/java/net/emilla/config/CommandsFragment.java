@@ -52,7 +52,6 @@ import net.emilla.command.core.Web;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public final class CommandsFragment extends EmillaSettingsFragment {
@@ -194,7 +193,7 @@ public final class CommandsFragment extends EmillaSettingsFragment {
             var newText = (String) newVal;
 
             var reviseBldr = new StringBuilder();
-            Set<String> customEntries = new HashSet<>();
+            var customEntries = new HashSet<String>();
             for (String entry : newText.split(" *\n *")) {
                 String revisedEntry = cleanCommaList(entry);
                 if (revisedEntry != null) {
@@ -225,7 +224,7 @@ public final class CommandsFragment extends EmillaSettingsFragment {
         String[] split = entry.split("( *, *)+");
         int len = split.length;
         if (len >= 2) {
-            List<String> items = new ArrayList<>(len);
+            var items = new ArrayList<String>(len);
 
             int i = 0;
             do if (!split[i].isEmpty()) items.add(split[i]);

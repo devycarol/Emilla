@@ -255,7 +255,7 @@ public final class SettingVals {
     }
 
     public static void addSnippet(SharedPreferences prefs, String label, String text) {
-        Set<String> snippets = new HashSet<>(prefs.getStringSet("snippets", defaultSnippets()));
+        var snippets = new HashSet<String>(prefs.getStringSet("snippets", defaultSnippets()));
         snippets.add(label);
 
         prefs.edit().putString(snippetPref(label), text)
@@ -269,7 +269,7 @@ public final class SettingVals {
     }
 
     public static void removeSnippet(SharedPreferences prefs, String label) {
-        Set<String> snippets = new HashSet<>(prefs.getStringSet("snippets", defaultSnippets()));
+        var snippets = new HashSet<String>(prefs.getStringSet("snippets", defaultSnippets()));
         snippets.remove(label);
 
         prefs.edit().remove(snippetPref(label))

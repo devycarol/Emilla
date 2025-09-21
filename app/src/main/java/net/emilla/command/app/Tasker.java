@@ -23,7 +23,6 @@ import net.emilla.util.Permissions;
 import net.emilla.util.Strings;
 
 import java.util.Comparator;
-import java.util.SortedSet;
 import java.util.TreeSet;
 
 public final class Tasker extends AppCommand implements DataCommand {
@@ -47,8 +46,6 @@ public final class Tasker extends AppCommand implements DataCommand {
     public int dataHint() {
         return R.string.data_hint_app_tasker;
     }
-
-    private static final Uri CONTENT_URI = Uri.parse("content://net.dinglisch.android.tasker/tasks");
 
     private static final String COL_TASK_NAME = "name";
     private static final String COL_PROJECT_NAME = "project_name";
@@ -135,7 +132,7 @@ public final class Tasker extends AppCommand implements DataCommand {
         int nameCol = 0, projectCol = 1;
 
         String lcTask = task.toLowerCase();
-        SortedSet<Task> tasks = new TreeSet<>(taskComparator(lcTask));
+        var tasks = new TreeSet<Task>(taskComparator(lcTask));
 
         while (cur.moveToNext()) {
             var taskName = cur.getString(nameCol);

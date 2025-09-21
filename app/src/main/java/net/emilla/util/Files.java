@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Iterator;
-import java.util.List;
 
 public final class Files {
 
@@ -34,14 +33,15 @@ public final class Files {
     public static final class MimeType {
 
         /**
-         * Returns the union of all MIME types in a list of files. The union of different type-parts
-         * is the wildcard, so this will broaden the scope of the MIME type beyond the simple union.
+         * Returns the union of all MIME types in a sequence of files. The union of different
+         * type-parts is the wildcard, so this will broaden the scope of the MIME type beyond the
+         * simple union.
          *
-         * @param fileUris list of files to get MIME types from.
+         * @param fileUris files to get MIME types from.
          * @return the union of all provided MIME types.
          */
         @Deprecated
-        public static String of(List<Uri> fileUris, Context ctx) {
+        public static String of(Iterable<Uri> fileUris, Context ctx) {
             Iterator<Uri> itr = fileUris.iterator();
             String type = of(itr.next(), ctx);
             while (!type.equals("*/*") && itr.hasNext()) {
@@ -51,15 +51,16 @@ public final class Files {
         }
 
         /**
-         * Returns the union of all MIME types in a list of files. The union of different type-parts
-         * is the wildcard, so this will broaden the scope of the MIME type beyond the simple union.
+         * Returns the union of all MIME types in a sequence of files. The union of different
+         * type-parts is the wildcard, so this will broaden the scope of the MIME type beyond the
+         * simple union.
          *
          * @param type base type to start with.
-         * @param fileUris list of files to get MIME types from.
+         * @param fileUris files to get MIME types from.
          * @return the union of all provided MIME types.
          */
         @Deprecated
-        public static String of(String type, List<Uri> fileUris, Context ctx) {
+        public static String of(String type, Iterable<Uri> fileUris, Context ctx) {
             for (Uri fileUri : fileUris) {
                 type = union(type, of(fileUri, ctx));
                 if (type.equals("*/*")) return "*/*";

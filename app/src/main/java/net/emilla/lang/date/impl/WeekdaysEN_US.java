@@ -24,7 +24,7 @@ public record WeekdaysEN_US(ArrayList<Integer> days, boolean empty) implements W
             timeStr = letterString(timeStr, errorTitle);
         }
 
-        ArrayList<Integer> weekdays = new ArrayList<>(timeStr.length());
+        var weekdays = new ArrayList<Integer>(timeStr.length());
         do {
             char c = timeStr.charAt(0);
             timeStr = timeStr.substring(1);
