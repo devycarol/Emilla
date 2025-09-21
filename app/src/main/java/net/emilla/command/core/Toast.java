@@ -43,7 +43,7 @@ public final class Toast extends CoreDataCommand {
 
     @Override
     protected void run(String message) {
-        var longTag = str(R.string.tag_toast_long); // todo: change this to a button
+        String longTag = str(R.string.tag_toast_long); // todo: change this to a button
         if (message.toLowerCase().endsWith(longTag)) {
             message = message.substring(0, message.length() - longTag.length()).trim();
             toast(message.isEmpty() ? str(R.string.toast_hello) : message, true); // todo: configurable default message
@@ -52,7 +52,7 @@ public final class Toast extends CoreDataCommand {
 
     @Override
     protected void runWithData(String message) {
-        var longTag = str(R.string.tag_toast_long); // todo way later make configurable
+        String longTag = str(R.string.tag_toast_long); // todo way later make configurable
         if (message.toLowerCase().endsWith(longTag)) {
             message = message.substring(0, message.length() - longTag.length()).trim();
             toast(message.isEmpty() ? str(R.string.toast_hello) : message, true); // todo: configurable default message
@@ -61,7 +61,7 @@ public final class Toast extends CoreDataCommand {
 
     @Override
     protected void runWithData(String message, String cont) {
-        var longTag = str(R.string.tag_toast_long); // todo way later make configurable
+        String longTag = str(R.string.tag_toast_long); // todo way later make configurable
         if (message.toLowerCase().endsWith(longTag)) {
             message = message.substring(0, message.length() - longTag.length()).trim() + '\n' + cont;
             toast(message, true);

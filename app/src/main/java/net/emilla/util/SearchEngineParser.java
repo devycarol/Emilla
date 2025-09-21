@@ -43,7 +43,7 @@ public final class SearchEngineParser {
     @Deprecated
     public SearchEngineParser(String engineCsv) {
         for (String entry : engineCsv.split("\\s*\n\\s*")) {
-            var split = entry.split("\\s*,\\s*");
+            String[] split = entry.split("\\s*,\\s*");
             if (split.length < 2) continue;
 
             int lastIdx = split.length - 1;

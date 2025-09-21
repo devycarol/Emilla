@@ -10,7 +10,7 @@ public final class CsvLine implements Iterable<String> {
 
 //    @Nullable
 //    public static String ofObjects(Iterable<Object> iterable) {
-//        var itr = iterable.iterator();
+//        Iterator<Object> itr = iterable.iterator();
 //        if (!itr.hasNext()) return null;
 //
 //        Object next = itr.next();
@@ -28,7 +28,7 @@ public final class CsvLine implements Iterable<String> {
 
     @Nullable
     public static String of(Iterable<String> iterable, boolean useSpaces) {
-        var itr = iterable.iterator();
+        Iterator<String> itr = iterable.iterator();
         if (!itr.hasNext()) return null;
 
         String next = itr.next();
@@ -48,7 +48,7 @@ public final class CsvLine implements Iterable<String> {
 
 //    @Nullable
 //    public static String ofSequences(Iterable<CharSequence> iterable) {
-//        var itr = iterable.iterator();
+//        Iterator<CharSequence> itr = iterable.iterator();
 //        if (!itr.hasNext()) return null;
 //
 //        CharSequence next = itr.next();

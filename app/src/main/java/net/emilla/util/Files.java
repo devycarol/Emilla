@@ -76,16 +76,15 @@ public final class Files {
         public static String of(Uri fileUri, Context ctx) {
             if (ContentResolver.SCHEME_CONTENT.equals(fileUri.getScheme())) {
                 return ctx.getContentResolver().getType(fileUri);
-            } else {
-                String fileExtension = MimeTypeMap.getFileExtensionFromUrl(fileUri.toString());
-                return MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.toLowerCase());
             }
+            String fileExtension = MimeTypeMap.getFileExtensionFromUrl(fileUri.toString());
+            return MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.toLowerCase());
         }
 
         @Deprecated
         private static String union(String type1, String type2) {
-            var parts1 = type1.split("/");
-            var parts2 = type2.split("/");
+            String[] parts1 = type1.split("/");
+            String[] parts2 = type2.split("/");
             return partUnion(parts1[0], parts2[0]) + "/" + partUnion(parts1[1], parts2[1]);
         }
 

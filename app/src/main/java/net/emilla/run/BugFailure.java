@@ -43,7 +43,7 @@ public final class BugFailure extends DialogRun {
         e.printStackTrace(pw);
         var stackTrace = sw.toString();
 
-        var body = "Feel free to describe what was happening when the error occurred:\n\n\n\n"
+        String body = "Feel free to describe what was happening when the error occurred:\n\n\n\n"
                  + "======== exception details ========\n\n";
         if (!TextUtils.isEmpty(message)) {
             body += message + "\n";

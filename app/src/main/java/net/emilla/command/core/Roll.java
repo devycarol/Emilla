@@ -8,6 +8,7 @@ import androidx.annotation.StringRes;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.lang.Lang;
+import net.emilla.lang.phrase.Dices;
 import net.emilla.util.Dialogs;
 
 import java.util.Random;
@@ -46,7 +47,7 @@ public final class Roll extends CoreCommand {
 
     @Override
     protected void run(String roll) {
-        var dices = Lang.dices(roll, NAME);
+        Dices dices = Lang.dices(roll, NAME);
         var rand = new Random();
         var msg = String.valueOf(dices.roll(rand));
         giveDialog(Dialogs.message(activity, NAME, msg));

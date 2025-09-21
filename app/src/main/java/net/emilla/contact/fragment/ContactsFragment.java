@@ -23,11 +23,11 @@ import androidx.loader.content.Loader;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.app.Apps;
 import net.emilla.contact.ContactItemView;
 import net.emilla.contact.MultiSearch;
 import net.emilla.contact.adapter.ContactCursorAdapter;
 import net.emilla.content.receive.ContactReceiver;
-import net.emilla.app.Apps;
 import net.emilla.util.Permissions;
 
 public abstract class ContactsFragment<T> extends Fragment
@@ -122,7 +122,7 @@ public abstract class ContactsFragment<T> extends Fragment
         String selection;
         String[] selectionArgs;
         if (mSearchString != null) {
-            var baseSelection = Contacts.DISPLAY_NAME_PRIMARY + " LIKE ?";
+            String baseSelection = Contacts.DISPLAY_NAME_PRIMARY + " LIKE ?";
             if (mHasMultiSelect) {
                 var ms = MultiSearch.instance(baseSelection, mSearchString);
                 if (ms.hasMultipleTerms()) {
@@ -238,10 +238,9 @@ public abstract class ContactsFragment<T> extends Fragment
                 }
 
                 return contacts.toString();
-            } else {
-                int pos = contactList.getCheckedItemPosition();
-                if (cur.moveToPosition(pos)) return cur.getString(colIndex);
             }
+            int pos = contactList.getCheckedItemPosition();
+            if (cur.moveToPosition(pos)) return cur.getString(colIndex);
         }
 
         return null;

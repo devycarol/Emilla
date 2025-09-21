@@ -66,15 +66,15 @@ public final class CommandsFragment extends EmillaSettingsFragment {
         var cmdPref = (CommandPreference) pref;
         String textKey = cmdPref.getKey();
         String setKey = cmdPref.setKey;
-        var correctedText = ((String) newVal).trim().toLowerCase();
-        var vals = correctedText.split(" *, *");
+        String correctedText = ((String) newVal).trim().toLowerCase();
+        String[] vals = correctedText.split(" *, *");
         Set<String> aliases = Set.of(vals);
         var joined = String.join(", ", aliases);
         cmdPref.setText(joined);
         mPrefs.edit()
-                .putString(textKey, joined)
-                .putStringSet(setKey, aliases)
-                .apply();
+              .putString(textKey, joined)
+              .putStringSet(setKey, aliases)
+              .apply();
         return false;
     };
 
@@ -222,7 +222,7 @@ public final class CommandsFragment extends EmillaSettingsFragment {
 
     @Nullable
     private static String cleanCommaList(String entry) {
-        var split = entry.split("( *, *)+");
+        String[] split = entry.split("( *, *)+");
         int len = split.length;
         if (len >= 2) {
             List<String> items = new ArrayList<>(len);

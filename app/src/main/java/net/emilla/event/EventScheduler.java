@@ -19,7 +19,7 @@ public abstract class EventScheduler<P extends Plan> {
     }
 
     public final void plan(P plan) {
-        var pendingIntent = pendingIntentFor(plan);
+        PendingIntent pendingIntent = pendingIntentFor(plan);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S || mAlarmManager.canScheduleExactAlarms()) {
             mAlarmManager.setExact(AlarmManager.RTC_WAKEUP, plan.time, pendingIntent);
         } else mAlarmManager.set(AlarmManager.RTC_WAKEUP, plan.time, pendingIntent);

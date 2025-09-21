@@ -31,7 +31,7 @@ import net.emilla.app.Apps;
         // Todo YouTube: instantly pull up bookmarked videos, specialized search for channels, playlists,
         //  etc. I assume the G assistant has similar functionality. If requires internet, could use
         //  bookmarks at the very least. Also, this command is broken for YouTube when a video is playing.
-        var searchAliases = stringArray(R.array.subcmd_search);
+        String[] searchAliases = stringArray(R.array.subcmd_search);
         String lcQuery = query.toLowerCase();
         Intent in = Apps.searchToApp(app.pkg);
         for (String alias : searchAliases) {

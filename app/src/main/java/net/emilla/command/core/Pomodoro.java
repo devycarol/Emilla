@@ -152,7 +152,7 @@ public final class Pomodoro extends CoreDataCommand {
         String endMemo
     ) {
         var scheduler = new PingScheduler(activity);
-        var warnMemo = str(R.string.ping_pomodoro_warn_text);
+        String warnMemo = str(R.string.ping_pomodoro_warn_text);
         if (seconds > 60) {
             givePing(startChannel, mainTitle, startMemo);
 

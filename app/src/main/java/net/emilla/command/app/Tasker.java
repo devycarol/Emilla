@@ -133,7 +133,7 @@ public final class Tasker extends AppCommand implements DataCommand {
 
         int nameCol = 0, projectCol = 1;
 
-        var lcTask = task.toLowerCase();
+        String lcTask = task.toLowerCase();
         SortedSet<Task> tasks = new TreeSet<>(taskComparator(lcTask));
 
         while (cur.moveToNext()) {

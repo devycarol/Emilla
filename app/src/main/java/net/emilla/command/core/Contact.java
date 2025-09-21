@@ -180,7 +180,7 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
     }
 
     private void offerCreate(String person, @Nullable String details) {
-        var msg = str(R.string.notice_contact_no_match, person);
+        String msg = str(R.string.notice_contact_no_match, person);
         offerDialog(Dialogs.dual(activity, NAME, msg, R.string.create,
                 (dlg, which) -> create(person, details)));
     }

@@ -160,7 +160,7 @@ public abstract class EmillaCommand {
         //  reciprocally used. that's good for now since that'd be infinite recursion, but this
         //  should be borne in mind when creating a more robust custom command system.
         for (String customEntry : customs) {
-            var split = customEntry.split(", *");
+            String[] split = customEntry.split(", *");
             int lastIdx = split.length - 1;
             for (int i = 0; i < lastIdx; ++i) map.putCustom(split[i], split[lastIdx]);
         }

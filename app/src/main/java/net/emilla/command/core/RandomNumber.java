@@ -8,6 +8,7 @@ import androidx.annotation.StringRes;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.lang.Lang;
+import net.emilla.lang.phrase.RandRange;
 import net.emilla.util.Dialogs;
 
 import java.util.Random;
@@ -46,7 +47,7 @@ public final class RandomNumber extends CoreCommand {
 
     @Override
     protected void run(String range) {
-        var randRange = Lang.randomRange(range, NAME);
+        RandRange randRange = Lang.randomRange(range, NAME);
         int inclusStart = randRange.inclusStart;
         int exclusEnd = randRange.exclusEnd;
 

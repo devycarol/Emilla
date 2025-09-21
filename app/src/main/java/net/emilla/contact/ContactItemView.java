@@ -162,7 +162,7 @@ public final class ContactItemView extends LinearLayout {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) setStateDesc();
 
-        var desc = getResources().getString(selected ? R.string.deselect : R.string.select);
+        String desc = getResources().getString(selected ? R.string.deselect : R.string.select);
         ViewCompat.replaceAccessibilityAction(this, ACTION_CLICK, desc, null);
     }
 }

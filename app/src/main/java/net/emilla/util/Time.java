@@ -131,7 +131,7 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
     }
 
     private static int[] splitDurationString (String dur) {
-        var units = dur.split(" *: *| +");
+        String[] units = dur.split(" *: *| +");
 
         double h = 0.0, m = 0.0, s = 0.0;
         switch (units.length) {
@@ -155,52 +155,50 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
     public static int[] parseDuration(String dur, @StringRes int errorTitle) {
         // TODO: handle 24h time properly
         if (dur.matches("(until|t(ill?|o)) .*")) return parseDurationUntil(dur, errorTitle);
-        else {
-            var timeUnits = new double[4];
-            String[] patterns = {
-                    "\\d*\\.?\\d+ *h((ou)?rs?)?",
-                    "\\d*\\.?\\d+ *m(in(ute)?s?)?",
-                    "\\d*\\.?\\d+ *s(ec(ond)?s?)?"
-            };
+        var timeUnits = new double[4];
+        String[] patterns = {
+                "\\d*\\.?\\d+ *h((ou)?rs?)?",
+                "\\d*\\.?\\d+ *m(in(ute)?s?)?",
+                "\\d*\\.?\\d+ *s(ec(ond)?s?)?"
+        };
 
-            boolean hit = false, notEmpty = true;
-            for (int i = 0; i < 3 && notEmpty; ++i) {
-                String rgx = patterns[i];
-                if (containsRgxIgnoreCase(dur, rgx)) {
-                    hit = true;
+        boolean hit = false, notEmpty = true;
+        for (int i = 0; i < 3 && notEmpty; ++i) {
+            String rgx = patterns[i];
+            if (containsRgxIgnoreCase(dur, rgx)) {
+                hit = true;
 
-                    var sansHrs = dur.split(rgx);
-                    if (sansHrs.length > 2) {
-                        throw new EmillaException(errorTitle, R.string.error_invalid_duration);
-                    }
-
-                    String before = "", after = "";
-                    switch (sansHrs.length) {
-                    case 2: after = sansHrs[1];
-                    // fallthrough
-                    case 1: before = sansHrs[0];
-                    }
-
-                    int start = before.length(), end = dur.length() - after.length();
-
-                    timeUnits[i] = parseDouble(dur.substring(start, end).replaceAll("[^\\d.]", ""));
-                    dur = (before + after).trim();
-
-                    notEmpty = !dur.isEmpty();
+                String[] sansHrs = dur.split(rgx);
+                if (sansHrs.length > 2) {
+                    throw new EmillaException(errorTitle, R.string.error_invalid_duration);
                 }
+
+                String before = "", after = "";
+                switch (sansHrs.length) {
+                case 2: after = sansHrs[1];
+                // fallthrough
+                case 1: before = sansHrs[0];
+                }
+
+                int start = before.length(), end = dur.length() - after.length();
+
+                timeUnits[i] = parseDouble(dur.substring(start, end).replaceAll("[^\\d.]", ""));
+                dur = (before + after).trim();
+
+                notEmpty = !dur.isEmpty();
             }
-
-            if (hit) {
-                if (notEmpty) throw new EmillaException(errorTitle, R.string.error_excess_time_units);
-
-                timeUnits[1] += timeUnits[0] % 1.0 * 60.0;
-                timeUnits[2] += timeUnits[1] % 1.0 * 60.0;
-
-                return new int[]{(int) timeUnits[0], (int) timeUnits[1], (int) timeUnits[2], 0};
-            }
-
-            return splitDurationString(dur);
         }
+
+        if (hit) {
+            if (notEmpty) throw new EmillaException(errorTitle, R.string.error_excess_time_units);
+
+            timeUnits[1] += timeUnits[0] % 1.0 * 60.0;
+            timeUnits[2] += timeUnits[1] % 1.0 * 60.0;
+
+            return new int[]{(int) timeUnits[0], (int) timeUnits[1], (int) timeUnits[2], 0};
+        }
+
+        return splitDurationString(dur);
     }
 
     private static int parseMonth(String month) {
@@ -261,14 +259,14 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
     }
 
     public static long[] parseDateAndTimes(String date, @StringRes int errorTitle) {
-        var dateTime = date.split(" *@ *|(^| +)(at|from) +");
+        String[] dateTime = date.split(" *@ *|(^| +)(at|from) +");
 
         int[] startTime = null, endTime = null;
         boolean endTomorrow = false; // TODO
         int len = dateTime.length;
         if (len == 2) {
             date = dateTime[0];
-            var times = dateTime[1].split(" *(-|t(o|ill?)|until) *");
+            String[] times = dateTime[1].split(" *(-|t(o|ill?)|until) *");
 
             switch (times.length) {
             case 2:

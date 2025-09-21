@@ -98,8 +98,8 @@ public final class Call extends CoreCommand implements PhoneReceiver {
 
         if (number != null) call(number);
         else {
-            var msg = str(R.string.notice_call_not_number, nameOrNumber,
-                    Contacts.phonewordsToNumbers(nameOrNumber));
+            String msg = str(R.string.notice_call_not_number, nameOrNumber,
+                             Contacts.phonewordsToNumbers(nameOrNumber));
             offerDialog(Dialogs.dual(activity, NAME, msg, R.string.call_directly,
                     (dlg, which) -> call(nameOrNumber)));
         }

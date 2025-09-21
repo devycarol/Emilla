@@ -68,7 +68,7 @@ public final class Contacts {
         Uri contentUri = Phone.CONTENT_URI;
         String[] projection = {Phone.NUMBER};
         int IDX_NUMBER = 0;
-        var selection = Phone.CONTACT_ID + " = ?";
+        String selection = Phone.CONTACT_ID + " = ?";
         String[] selectionArgs = {contact.getLastPathSegment()};
         try (Cursor cur = cr.query(contentUri, projection, selection, selectionArgs, null)) {
             if (cur != null && cur.moveToFirst()) {
@@ -83,7 +83,7 @@ public final class Contacts {
         Uri contentUri = Email.CONTENT_URI;
         String[] projection = {Email.ADDRESS};
         int IDX_ADDRESS = 0;
-        var selection = Email.CONTACT_ID + " = ?";
+        String selection = Email.CONTACT_ID + " = ?";
         String[] selectionArgs = {contact.getLastPathSegment()};
         try (Cursor cur = cr.query(contentUri, projection, selection, selectionArgs, null)) {
             if (cur != null && cur.moveToFirst()) return cur.getString(IDX_ADDRESS);

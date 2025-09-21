@@ -119,7 +119,7 @@ public final class Sms extends CoreDataCommand implements PhoneReceiver {
         if (numbers != null) message(numbers, message);
         else {
             String toNumbers = Contacts.phonewordsToNumbers(recipients);
-            var msg = str(R.string.notice_sms_not_numbers, recipients, toNumbers);
+            String msg = str(R.string.notice_sms_not_numbers, recipients, toNumbers);
             // todo: better message.
             offerDialog(Dialogs.dual(activity, NAME, msg, R.string.message_directly,
                     (dlg, which) -> message(toNumbers, message)));
