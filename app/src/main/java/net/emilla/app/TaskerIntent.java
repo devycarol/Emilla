@@ -110,9 +110,6 @@ public final class TaskerIntent extends Intent {
             MIN_PRIORITY = 0,
             MAX_PRIORITY = 10;
 
-    // For generating random names
-    private static final Random rand = new Random();
-
     // Tracking state
     private int mActionCount = 0;
     private int mArgCount;
@@ -303,8 +300,8 @@ public final class TaskerIntent extends Intent {
 
     // -------------------- PRIVATE METHODS -------------------- //
 
-    private String getRandomString() {
-        return Long.toString(rand.nextLong());
+    private static String getRandomString() {
+        return Long.toString(new Random().nextLong());
     }
 
     // so that if multiple TaskerIntents are used in PendingIntents there's virtually no

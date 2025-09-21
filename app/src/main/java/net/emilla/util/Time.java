@@ -31,18 +31,21 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
     private static final String APR = "apr(il)?", MAY = "may", JUN = "june?";
     private static final String JUL = "july?", AUG = "aug(ust)?", SEP = "sep(t(ember)?)?";
     private static final String OCT = "oct(ober)?", NOV = "nov(ember)?", DEC = "dec(ember)?";
-    private static final Pattern MONTH_RGX = Pattern.compile(
-            String.format("(?i)(%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s)",
-            JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC));
-    private static final Pattern DAY_RGX = Pattern.compile("(^| +)\\d?\\d( +|$)");
-    private static final Pattern YEAR_RGX = Pattern.compile("(\\d\\d|')\\d\\d");
 
-    private static final String SUN = "(u|sun(day)?)", MON = "m(on(day)?)?";
-    private static final String TUE = "t(ue(s(day)?)?)?", WED = "w(ed(nesday)?)?";
-    private static final String THU = "(h|th(u(r(s(day)?)?)?)?)";
-    private static final String FRI = "f(ri(day)?)?", SAT = "s(at(urday)?)?";
-    private static final String WEEKDAY_RGX = String.format("(%s|%s|%s|%s|%s|%s|%s)",
-            SUN, MON, TUE, WED, THU, FRI, SAT);
+    private static Pattern monthRegex() {
+        return Pattern.compile(
+            String.format("(?i)(%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s)",
+                          JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC)
+        );
+    }
+
+    private static Pattern dayRegex() {
+        return Pattern.compile("(^| +)\\d?\\d( +|$)");
+    }
+
+    private static Pattern yearRegex() {
+        return Pattern.compile("(\\d\\d|')\\d\\d");
+    }
 
     private static boolean containsRgxIgnoreCase(String s, String rgx) {
         return Pattern.compile(rgx, CASE_INSENSITIVE).matcher(s).find();
@@ -233,19 +236,19 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
             return cal;
         }
 
-        var m = MONTH_RGX.matcher(s);
+        var m = monthRegex().matcher(s);
         if (m.find()) {
             cal.set(MONTH, parseMonth(m.group()));
             if (m.find()) throw new EmillaException(errorTitle, R.string.error_excess_time_units);
         }
 
-        m = DAY_RGX.matcher(s);
+        m = dayRegex().matcher(s);
         if (m.find()) {
             cal.set(DAY_OF_MONTH, parseInt(m.group().trim()));
             if (m.find()) throw new EmillaException(errorTitle, R.string.error_excess_time_units);
         }
 
-        m = YEAR_RGX.matcher(s);
+        m = yearRegex().matcher(s);
         if (m.find()) {
             String y = m.group();
             if (m.find()) throw new EmillaException(errorTitle, R.string.error_excess_time_units);

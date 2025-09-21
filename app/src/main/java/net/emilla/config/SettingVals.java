@@ -247,7 +247,7 @@ public final class SettingVals {
     }
 
     public static Set<String> snippets(SharedPreferences prefs) {
-        return prefs.getStringSet("snippets", Snippets.DFLT_SNIPPETS);
+        return prefs.getStringSet("snippets", defaultSnippets());
     }
 
     public static String snippet(SharedPreferences prefs, String label) {
@@ -255,7 +255,7 @@ public final class SettingVals {
     }
 
     public static void addSnippet(SharedPreferences prefs, String label, String text) {
-        Set<String> snippets = new HashSet<>(prefs.getStringSet("snippets", Snippets.DFLT_SNIPPETS));
+        Set<String> snippets = new HashSet<>(prefs.getStringSet("snippets", defaultSnippets()));
         snippets.add(label);
 
         prefs.edit().putString(snippetPref(label), text)
@@ -269,7 +269,7 @@ public final class SettingVals {
     }
 
     public static void removeSnippet(SharedPreferences prefs, String label) {
-        Set<String> snippets = new HashSet<>(prefs.getStringSet("snippets", Snippets.DFLT_SNIPPETS));
+        Set<String> snippets = new HashSet<>(prefs.getStringSet("snippets", defaultSnippets()));
         snippets.remove(label);
 
         prefs.edit().remove(snippetPref(label))
@@ -277,11 +277,13 @@ public final class SettingVals {
                     .apply();
     }
 
+    private static Set<String> defaultSnippets() {
+        return Set.of();
+    }
+
     private static String snippetPref(String label) {
         return "snippet_" + label;
     }
-
-    private SettingVals() {}
 
     public static int defaultPomoWorkMins(SharedPreferences prefs) {
         return prefs.getInt("pomo_default_work_mins", 25);
@@ -300,4 +302,6 @@ public final class SettingVals {
     public static String defaultPomoBreakMemo(SharedPreferences prefs, Resources res) {
         return prefs.getString("pomo_default_break_memo", res.getString(R.string.ping_pomodoro_break_text));
     }
+
+    private SettingVals() {}
 }

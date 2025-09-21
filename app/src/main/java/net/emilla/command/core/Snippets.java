@@ -10,8 +10,6 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.command.ActionMap;
 import net.emilla.command.Subcommand;
 
-import java.util.Set;
-
 public final class Snippets extends CoreDataCommand {
 
     public static final String ENTRY = "snippets";
@@ -32,8 +30,6 @@ public final class Snippets extends CoreDataCommand {
         PEEK, GET, POP, REMOVE, ADD
         // Todo: 'rename' action
     }
-
-    public static final Set<String> DFLT_SNIPPETS = Set.of();
 
     private SnippetsFragment mSnippetsFragment;
 

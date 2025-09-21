@@ -124,7 +124,8 @@ public final class Tasker extends AppCommand implements DataCommand {
 
     private void searchRun(String task, @Nullable String params) {
         String[] projection = {COL_TASK_NAME, COL_PROJECT_NAME};
-        Cursor cur = contentResolver().query(CONTENT_URI, projection, null, null, null);
+        var contentUri = Uri.parse("content://net.dinglisch.android.tasker/tasks");
+        Cursor cur = contentResolver().query(contentUri, projection, null, null, null);
 
         if (cur == null) {
             failMessage(str(R.string.error_tasker_no_tasks, task));
