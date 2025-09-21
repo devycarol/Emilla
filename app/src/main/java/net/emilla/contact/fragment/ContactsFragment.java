@@ -31,8 +31,8 @@ import net.emilla.content.receive.ContactReceiver;
 import net.emilla.util.Permissions;
 
 public abstract class ContactsFragment<T> extends Fragment
-        implements LoaderManager.LoaderCallbacks<Cursor>,
-        AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
+    implements LoaderManager.LoaderCallbacks<Cursor>,
+    AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
     private ListView mContactList;
     private LinearLayout mPermissionContainer;
