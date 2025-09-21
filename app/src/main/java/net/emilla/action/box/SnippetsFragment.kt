@@ -90,7 +90,7 @@ class SnippetsFragment : ActionBox(R.layout.snippet_item_list) {
         })
     }
 
-    fun peek(label: String) = giveMessage(SettingVals.snippet(vm.prefs, label))
+    fun peek(label: String) = giveText(SettingVals.snippet(vm.prefs, label))
 
     fun get(label: String) = giveCopy(SettingVals.snippet(vm.prefs, label))
 

@@ -46,6 +46,6 @@ public final class Calculate extends CategoryCommand {
 
     @Override
     protected void run(String expression) {
-        giveMessage(Maths.prettyNumber(Calculator.compute(expression, NAME)));
+        giveText(Maths.prettyNumber(Calculator.compute(expression, NAME)));
     }
 }

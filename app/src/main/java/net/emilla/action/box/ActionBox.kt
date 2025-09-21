@@ -8,8 +8,8 @@ import net.emilla.activity.AssistActivity
 import net.emilla.run.CopyGift
 import net.emilla.run.DialogRun
 import net.emilla.run.Gift
-import net.emilla.run.MessageGift
 import net.emilla.run.Offering
+import net.emilla.run.TextGift
 
 abstract class ActionBox protected constructor(
     @LayoutRes contentLayoutId: Int
@@ -25,7 +25,7 @@ abstract class ActionBox protected constructor(
     private fun offer(offering: Offering) = activity.offer(offering)
     protected fun offerDialog(dlg: AlertDialog.Builder) = offer(DialogRun(activity, dlg))
     protected fun give(gift: Gift) = activity.give(gift)
-    protected fun giveMessage(msg: CharSequence) = give(MessageGift(activity, name, msg))
+    protected fun giveText(msg: CharSequence) = give(TextGift(activity, name, msg))
     protected fun giveCopy(text: String) = give(CopyGift(activity, text))
 
     @get:StringRes

@@ -69,10 +69,10 @@ import net.emilla.run.DialogRun;
 import net.emilla.run.Failure;
 import net.emilla.run.Gift;
 import net.emilla.run.MessageFailure;
-import net.emilla.run.MessageGift;
 import net.emilla.run.Offering;
 import net.emilla.run.PingGift;
 import net.emilla.run.Success;
+import net.emilla.run.TextGift;
 import net.emilla.run.TimePickerOffering;
 import net.emilla.util.Dialogs;
 
@@ -369,8 +369,8 @@ public abstract class EmillaCommand {
         give(new DialogRun(activity, builder));
     }
 
-    protected final void giveMessage(CharSequence msg) {
-        give(new MessageGift(activity, name(), msg));
+    protected final void giveText(CharSequence msg) {
+        give(new TextGift(activity, name(), msg));
     }
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)

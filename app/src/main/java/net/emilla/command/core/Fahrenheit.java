@@ -48,6 +48,6 @@ public final class Fahrenheit extends CoreCommand {
         String oldDegrees = Maths.prettyNumber(fahrenheit.degrees);
         String unit = str(fahrenheit.fromKelvin ? R.string.kelvin : R.string.celsius);
         String fahrenheitDegrees = Maths.prettyNumber(fahrenheit.convert());
-        giveMessage(str(R.string.fahrenheit_conversion, oldDegrees, unit, fahrenheitDegrees));
+        giveText(str(R.string.fahrenheit_conversion, oldDegrees, unit, fahrenheitDegrees));
     }
 }

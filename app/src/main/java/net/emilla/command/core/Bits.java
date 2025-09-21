@@ -45,6 +45,6 @@ public final class Bits extends CategoryCommand {
 
     @Override
     protected void run(String expression) {
-        giveMessage(String.valueOf(BitwiseCalculator.compute(expression, NAME)));
+        giveText(String.valueOf(BitwiseCalculator.compute(expression, NAME)));
     }
 }

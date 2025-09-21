@@ -54,7 +54,7 @@ public final class Time extends CoreCommand {
             localTime = str(R.string.toast_local_time, time.format(cal.getTime()));
         }
         // todo: configurable format &/ allow adjustment via the command instruction
-        giveMessage(localTime);
+        giveText(localTime);
     }
 
     @Override

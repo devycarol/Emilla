@@ -48,6 +48,6 @@ public final class Celsius extends CoreCommand {
         String oldDegrees = Maths.prettyNumber(celsius.degrees);
         String unit = str(celsius.fromKelvin ? R.string.kelvin : R.string.fahrenheit);
         String celsiusDegrees = Maths.prettyNumber(celsius.convert());
-        giveMessage(str(R.string.celsius_conversion, oldDegrees, unit, celsiusDegrees));
+        giveText(str(R.string.celsius_conversion, oldDegrees, unit, celsiusDegrees));
     }
 }
