@@ -18,6 +18,11 @@ public final class MessageFailure extends DialogRun {
                 .setNeutralButton(R.string.leave, (dlg, which) -> act.cancel()));
     }
 
+    public MessageFailure(AssistActivity act, @StringRes int title, CharSequence msg) {
+        super(act, Dialogs.message(act, title, msg)
+                .setNeutralButton(R.string.leave, (dlg, which) -> act.cancel()));
+    }
+
     public MessageFailure(AssistActivity act, CharSequence title, @StringRes int msg) {
         super(act, Dialogs.message(act, title, msg)
                 .setNeutralButton(R.string.leave, (dlg, which) -> act.cancel()));

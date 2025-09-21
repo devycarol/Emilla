@@ -91,8 +91,8 @@ public final class Dialogs {
         DialogInterface.OnClickListener onChoose
     ) {
         return base(act, title, android.R.string.cancel).setItems(labels, (dlg, which) -> {
-            onChoose.onClick(dlg, which);
             act.onCloseDialog(); // Todo: don't require this.
+            onChoose.onClick(dlg, which);
         });
         // TODO ACC: the cancel button is destroyed when the list is bigger than the screen for some
         //  reason
@@ -107,8 +107,8 @@ public final class Dialogs {
     ) {
         return base(act, title, msg, android.R.string.cancel)
                 .setPositiveButton(yesLabel, (dlg, which) -> {
-            yesClick.onClick(dlg, which);
             act.onCloseDialog(); // Todo: don't require this.
+            yesClick.onClick(dlg, which);
         });
     }
 
@@ -121,8 +121,8 @@ public final class Dialogs {
     ) {
         return base(act, title, msg, android.R.string.cancel)
                 .setPositiveButton(yesLabel, (dlg, which) -> {
-            yesClick.onClick(dlg, which);
             act.onCloseDialog(); // Todo: don't require this.
+            yesClick.onClick(dlg, which);
         });
     }
 
@@ -135,8 +135,8 @@ public final class Dialogs {
     ) {
         return base(act, title, msg, android.R.string.cancel)
                 .setPositiveButton(yesLabel, (dlg, which) -> {
-            yesClick.onClick(dlg, which);
             act.onCloseDialog(); // Todo: don't require this.
+            yesClick.onClick(dlg, which);
         });
     }
 

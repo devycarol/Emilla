@@ -9,7 +9,6 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.lang.Lang;
 import net.emilla.lang.phrase.RandRange;
-import net.emilla.util.Dialogs;
 
 import java.util.Random;
 
@@ -41,8 +40,7 @@ public final class RandomNumber extends CoreCommand {
     @Override
     protected void run() {
         var rand = new Random();
-        var msg = String.valueOf(rand.nextLong());
-        giveDialog(Dialogs.message(activity, NAME, msg));
+        giveText(String.valueOf(rand.nextLong()));
     }
 
     @Override
@@ -62,7 +60,6 @@ public final class RandomNumber extends CoreCommand {
         var rand = new Random();
         int randVal = negativeOffset + inclusStart
                     + rand.nextInt(exclusEnd - inclusStart);
-        var msg = String.valueOf(randVal);
-        giveDialog(Dialogs.message(activity, NAME, msg));
+        giveText(String.valueOf(randVal));
     }
 }

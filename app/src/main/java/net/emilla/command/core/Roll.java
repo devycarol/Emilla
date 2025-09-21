@@ -9,7 +9,6 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.lang.Lang;
 import net.emilla.lang.phrase.Dices;
-import net.emilla.util.Dialogs;
 
 import java.util.Random;
 
@@ -41,15 +40,13 @@ public final class Roll extends CoreCommand {
     @Override
     protected void run() {
         var rand = new Random();
-        @StringRes int msg = rand.nextBoolean() ? R.string.heads : R.string.tails;
-        giveDialog(Dialogs.message(activity, NAME, msg));
+        giveText(rand.nextBoolean() ? R.string.heads : R.string.tails);
     }
 
     @Override
     protected void run(String roll) {
         Dices dices = Lang.dices(roll, NAME);
         var rand = new Random();
-        var msg = String.valueOf(dices.roll(rand));
-        giveDialog(Dialogs.message(activity, NAME, msg));
+        giveText(String.valueOf(dices.roll(rand)));
     }
 }

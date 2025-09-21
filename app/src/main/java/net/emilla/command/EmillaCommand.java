@@ -365,8 +365,8 @@ public abstract class EmillaCommand {
         activity.give(gift);
     }
 
-    protected final void giveDialog(AlertDialog.Builder builder) {
-        give(new DialogRun(activity, builder));
+    protected final void giveText(@StringRes int msg) {
+        give(new TextGift(activity, name(), msg));
     }
 
     protected final void giveText(CharSequence msg) {
