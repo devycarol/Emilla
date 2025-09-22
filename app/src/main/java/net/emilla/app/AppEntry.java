@@ -31,7 +31,7 @@ public final class AppEntry extends Searchable<AppEntry> {
         // TODO: this is the biggest performance bottleneck I've found so far. Look into how the
         //  launcher caches labels for ideas on how to improve the performance of this critical
         //  onCreate task. That is, if they do to begin with..
-        mMetadata = AppProperties.of(this);
+        mMetadata = AppProperties.of(pkg, cls);
         mActionFlags = AppActions.of(pm, pkg, mMetadata.actionMask);
     }
 

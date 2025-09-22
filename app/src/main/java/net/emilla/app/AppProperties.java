@@ -22,13 +22,14 @@ public final class AppProperties {
      * Metadata for an app entry containing resources and behavior rules. If an app-command isn't
      * registered for the app, this method returns the basic properties to treat generic apps with.
      *
-     * @param app app entry to get properties for.
+     * @param pkg package name of the app.
+     * @param cls class name of the app.
      * @return the app properties associated with the given app.
      */
-    public static AppProperties of(AppEntry app) {
-        return switch (app.pkg) {
+    public static AppProperties of(String pkg, String cls) {
+        return switch (pkg) {
             case AospContacts.PKG -> AospContacts.meta();
-            case Markor.PKG -> Markor.meta(app.cls);
+            case Markor.PKG -> Markor.meta(cls);
             case Firefox.PKG -> Firefox.meta();
             case Tor.PKG -> Tor.meta();
             case Signal.PKG -> Signal.meta();
