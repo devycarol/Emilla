@@ -133,13 +133,13 @@ public final class Snippets extends CoreDataCommand {
         case POP -> mSnippetsFragment.pop(label, lcLabel);
         case REMOVE -> {
             mSnippetsFragment.remove(label, lcLabel);
-            give(() -> {});
+            give(act -> {});
         }}
     }
 
     public void remove(String label, String lcLabel) {
         mSnippetsFragment.remove(label, lcLabel);
-        give(() -> {});
+        give(act -> {});
     }
 
     @Override

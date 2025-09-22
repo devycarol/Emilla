@@ -1,5 +1,7 @@
 package net.emilla.run;
 
+import android.content.Context;
+
 import androidx.annotation.StringRes;
 
 import net.emilla.activity.AssistActivity;
@@ -7,35 +9,34 @@ import net.emilla.util.Dialogs;
 
 public final class TextGift extends DialogRun {
 
-    public TextGift(AssistActivity act, @StringRes int title, @StringRes int text) {
-        super(act, Dialogs.message(act, title, text)
-            .setNeutralButton(android.R.string.copy, (dlg, which) -> {
-                act.onCloseDialog(); // Todo: don't require this.
-                act.give(new CopyGift(act, text));
-            }));
+    private final CharSequence mText;
+
+    public TextGift(Context ctx, @StringRes int title, @StringRes int text) {
+        super(Dialogs.message(ctx, title, text));
+        mText = ctx.getString(text);
     }
 
-    public TextGift(AssistActivity act, @StringRes int title, CharSequence text) {
-        super(act, Dialogs.message(act, title, text)
-            .setNeutralButton(android.R.string.copy, (dlg, which) -> {
-                act.onCloseDialog(); // Todo: don't require this.
-                act.give(new CopyGift(act, text));
-            }));
+    public TextGift(Context ctx, @StringRes int title, CharSequence text) {
+        super(Dialogs.message(ctx, title, text));
+        mText = text;
     }
 
-    public TextGift(AssistActivity act, CharSequence title, @StringRes int text) {
-        super(act, Dialogs.message(act, title, text)
-            .setNeutralButton(android.R.string.copy, (dlg, which) -> {
-                act.onCloseDialog(); // Todo: don't require this.
-                act.give(new CopyGift(act, text));
-            }));
+    public TextGift(Context ctx, CharSequence title, @StringRes int text) {
+        super(Dialogs.message(ctx, title, text));
+        mText = ctx.getString(text);
     }
 
-    public TextGift(AssistActivity act, CharSequence title, CharSequence text) {
-        super(act, Dialogs.message(act, title, text)
-            .setNeutralButton(android.R.string.copy, (dlg, which) -> {
-                act.onCloseDialog(); // Todo: don't require this.
-                act.give(new CopyGift(act, text));
-            }));
+    public TextGift(Context ctx, CharSequence title, CharSequence text) {
+        super(Dialogs.message(ctx, title, text));
+        mText = text;
+    }
+
+    @Override
+    public void run(AssistActivity act) {
+        dialog.setNeutralButton(android.R.string.copy, (dlg, which) -> {
+            act.onCloseDialog(); // Todo: don't require this.
+            act.give(new CopyGift(mText));
+        });
+        super.run(act);
     }
 }

@@ -56,7 +56,7 @@ public final class BugFailure extends DialogRun {
                 // TODO: open an actual email account
                 .putExtra(EXTRA_SUBJECT, "[Android bug] " + errorHeader)
                 .putExtra(EXTRA_TEXT, body);
-        act.succeed(new AppSuccess(act, email));
+        act.succeed(new AppSuccess(email));
     }
 
     private static String deviceInfo() {
@@ -110,7 +110,7 @@ public final class BugFailure extends DialogRun {
     }
 
     public BugFailure(AssistActivity act, RuntimeException e, CharSequence commandName) {
-        super(act, makeDialog(act, e, commandName));
+        super(makeDialog(act, e, commandName));
         Log.e(TAG, "unknown error in the " + commandName + " command", e);
     }
 }

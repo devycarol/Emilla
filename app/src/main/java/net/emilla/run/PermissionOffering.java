@@ -16,25 +16,23 @@ import net.emilla.activity.AssistActivity;
  * permission(s) being requested.</p>
  */
 @RequiresApi(api = Build.VERSION_CODES.M)
-public final class PermissionOffering implements Runnable {
+public final class PermissionOffering implements CommandRun {
 
-    private final AssistActivity mActivity;
     private final String[] mPermissions;
     @Nullable
     private final Runnable mOnGrant;
 
-    public PermissionOffering(AssistActivity act, String permission, @Nullable Runnable onGrant) {
-        this(act, new String[]{permission}, onGrant);
+    public PermissionOffering(String permission, @Nullable Runnable onGrant) {
+        this(new String[]{permission}, onGrant);
     }
 
-    public PermissionOffering(AssistActivity act, String[] permissions, @Nullable Runnable onGrant) {
-        mActivity = act;
+    public PermissionOffering(String[] permissions, @Nullable Runnable onGrant) {
         mPermissions = permissions;
         mOnGrant = onGrant;
     }
 
     @Override
-    public void run() {
-        mActivity.offerPermissions(mPermissions, mOnGrant);
+    public void run(AssistActivity act) {
+        act.offerPermissions(mPermissions, mOnGrant);
     }
 }

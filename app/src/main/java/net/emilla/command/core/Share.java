@@ -122,9 +122,9 @@ public final class Share extends CoreDataCommand implements AppChoiceReceiver {
 
     @Override
     public void provide(boolean chosen) {
-        if (chosen) succeed(() -> {
-            activity.finishAndRemoveTask();
-            activity.suppressPendChime();
+        if (chosen) succeed(act -> {
+            act.finishAndRemoveTask();
+            act.suppressPendChime();
         });
         else chime(RESUME);
     }

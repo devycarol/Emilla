@@ -33,7 +33,7 @@ public final class Toast extends CoreDataCommand {
     }
 
     private void toast(String message, boolean longToast) {
-        give(new ToastGift(activity, message, longToast));
+        give(new ToastGift(message, longToast));
     }
 
     @Override

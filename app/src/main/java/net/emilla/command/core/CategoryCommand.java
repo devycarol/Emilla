@@ -33,7 +33,7 @@ public abstract class CategoryCommand extends CoreCommand {
     }
 
     private AppList mAppList;
-    private AlertDialog mChooser;
+    private AlertDialog.Builder mChooser;
 
     @Override @CallSuper
     protected void onInit() {
@@ -41,7 +41,7 @@ public abstract class CategoryCommand extends CoreCommand {
 
         if (mAppList == null) mAppList = new AppList(pm(), makeFilter());
         if (mAppList.size() > 1) {
-            mChooser = Dialogs.appLaunches(activity, mAppList).create();
+            mChooser = Dialogs.appLaunches(activity, mAppList);
         }
     }
 

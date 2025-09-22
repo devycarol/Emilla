@@ -2,28 +2,26 @@ package net.emilla.run;
 
 import android.Manifest;
 import android.app.Notification;
-import android.content.Context;
 
 import androidx.annotation.RequiresPermission;
 
+import net.emilla.activity.AssistActivity;
 import net.emilla.ping.PingChannel;
 import net.emilla.ping.Pinger;
 
-public final class PingGift implements Runnable {
+public final class PingGift implements CommandRun {
 
-    private final Context mContext;
     private final Notification mPing;
     private final PingChannel mChannel;
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
-    public PingGift(Context ctx, Notification ping, PingChannel channel) {
-        mContext = ctx;
+    public PingGift(Notification ping, PingChannel channel) {
         mPing = ping;
         mChannel = channel;
     }
 
     @Override @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
-    public void run() {
-        Pinger.of(mContext, mPing, mChannel).ping();
+    public void run(AssistActivity act) {
+        Pinger.of(act, mPing, mChannel).ping();
     }
 }

@@ -40,7 +40,7 @@ public final class Pause extends CoreCommand {
     protected void run() {
         AudioManager am = Services.audio(activity);
         MediaControl.sendPauseEvent(am);
-        give(() -> {});
+        give(act -> {});
     }
 
     @Override

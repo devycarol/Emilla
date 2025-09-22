@@ -38,7 +38,7 @@ public final class Fahrenheit extends CoreCommand {
 
     @Override
     protected void run() {
-        offer(() -> {});
+        offer(act -> {});
     }
 
     @Override

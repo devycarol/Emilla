@@ -63,6 +63,6 @@ public final class Copy extends CoreCommand {
             return;
         }
         mCopiedText = text;
-        give(new CopyGift(activity, text));
+        give(new CopyGift(text));
     }
 }

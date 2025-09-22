@@ -15,9 +15,9 @@ import androidx.annotation.RequiresApi;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.app.TaskerIntent;
 import net.emilla.run.PermissionFailure;
 import net.emilla.run.PermissionOffering;
-import net.emilla.app.TaskerIntent;
 
 public final class Permissions {
 
@@ -44,7 +44,7 @@ public final class Permissions {
             return;
         }
 
-        if (callPrompt(act)) act.offer(new PermissionOffering(act, CALL, onGrant));
+        if (callPrompt(act)) act.offer(new PermissionOffering(CALL, onGrant));
         else act.fail(new PermissionFailure(act, R.string.perm_calling));
     }
 
@@ -62,7 +62,7 @@ public final class Permissions {
     public static boolean callFlow(AssistActivity act, @Nullable Runnable onGrant) {
         if (call(act)) return true;
 
-        if (callPrompt(act)) act.offer(new PermissionOffering(act, CALL, onGrant));
+        if (callPrompt(act)) act.offer(new PermissionOffering(CALL, onGrant));
         else act.fail(new PermissionFailure(act, R.string.perm_calling));
 
         return false;
@@ -87,7 +87,7 @@ public final class Permissions {
     ) {
         if (call(act)) return true;
 
-        if (callPrompt(act)) act.offer(new PermissionOffering(act, CALL, onGrant));
+        if (callPrompt(act)) act.offer(new PermissionOffering(CALL, onGrant));
         else onNoPrompt.run();
 
         return false;
@@ -136,7 +136,7 @@ public final class Permissions {
             return;
         }
 
-        if (contactsPrompt(act)) act.offer(new PermissionOffering(act, CONTACTS, onGrant));
+        if (contactsPrompt(act)) act.offer(new PermissionOffering(CONTACTS, onGrant));
         else act.fail(new PermissionFailure(act, R.string.perm_contacts));
     }
 
@@ -164,7 +164,7 @@ public final class Permissions {
             return;
         }
 
-        if (contactsPrompt(act)) act.offer(new PermissionOffering(act, CONTACTS, () -> {
+        if (contactsPrompt(act)) act.offer(new PermissionOffering(CONTACTS, () -> {
             onGrant.run();
             afterGrant.run();
         }));
@@ -185,7 +185,7 @@ public final class Permissions {
     public static boolean contactsFlow(AssistActivity act, @Nullable Runnable onGrant) {
         if (contacts(act)) return true;
 
-        if (contactsPrompt(act)) act.offer(new PermissionOffering(act, CONTACTS, onGrant));
+        if (contactsPrompt(act)) act.offer(new PermissionOffering(CONTACTS, onGrant));
         else act.fail(new PermissionFailure(act, R.string.perm_contacts));
 
         return false;
@@ -210,7 +210,7 @@ public final class Permissions {
     ) {
         if (contacts(act)) return true;
 
-        if (contactsPrompt(act)) act.offer(new PermissionOffering(act, CONTACTS, onGrant));
+        if (contactsPrompt(act)) act.offer(new PermissionOffering(CONTACTS, onGrant));
         else onNoPrompt.run();
 
         return false;
@@ -261,7 +261,7 @@ public final class Permissions {
             return;
         }
 
-        if (pingsPrompt(act)) act.offer(new PermissionOffering(act, PINGS, onGrant));
+        if (pingsPrompt(act)) act.offer(new PermissionOffering(PINGS, onGrant));
         else act.fail(new PermissionFailure(act, R.string.perm_notifications));
     }
 
@@ -304,7 +304,7 @@ public final class Permissions {
     public static boolean taskerFlow(AssistActivity act, @Nullable Runnable onGrant) {
         if (tasker(act)) return true;
 
-        if (taskerPrompt(act)) act.offer(new PermissionOffering(act, TASKER, onGrant));
+        if (taskerPrompt(act)) act.offer(new PermissionOffering(TASKER, onGrant));
         else act.fail(new PermissionFailure(act, R.string.perm_tasker));
 
         return false;
@@ -329,7 +329,7 @@ public final class Permissions {
     ) {
         if (tasker(act)) return true;
 
-        if (taskerPrompt(act)) act.offer(new PermissionOffering(act, TASKER, onGrant));
+        if (taskerPrompt(act)) act.offer(new PermissionOffering(TASKER, onGrant));
         else onNoPrompt.run();
 
         return false;

@@ -154,7 +154,7 @@ public final class Dialogs {
         // a choice between list and grid layout would be cool
         Intent[] intents = Apps.launches(appList);
         return list(act, R.string.dialog_app, Apps.labels(appList),
-                (dlg, which) -> act.succeed(new AppSuccess(act, intents[which])));
+                (dlg, which) -> act.succeed(new AppSuccess(intents[which])));
     }
 
     public static AlertDialog.Builder appUninstalls(AssistActivity act) {
@@ -167,7 +167,7 @@ public final class Dialogs {
                                             R.string.error_cant_uninstall));
                 // Todo: instead handle at mapping somehow
             } else {
-                act.succeed(new AppSuccess(act, intents[which]));
+                act.succeed(new AppSuccess(intents[which]));
             }
         });
     }

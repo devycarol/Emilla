@@ -66,7 +66,7 @@ public final class Todo extends CoreDataCommand {
     protected void run(String task) {
         // todo: newline handling unnecessary in this case
         todo(task); // TODO
-        give(() -> toast(quantityString(R.plurals.toast_tasks_created, 1)));
+        give(act -> toast(quantityString(R.plurals.toast_tasks_created, 1)));
     }
 
     @Override
@@ -78,7 +78,7 @@ public final class Todo extends CoreDataCommand {
             if (!t.isBlank()) ++taskCount;
         }
         toast(quantityString(R.plurals.toast_tasks_created, taskCount));
-        give(() -> {});
+        give(act -> {});
     }
 
     @Override
@@ -90,7 +90,7 @@ public final class Todo extends CoreDataCommand {
             if (!t.isBlank()) ++taskCount;
         }
         toast(quantityString(R.plurals.toast_tasks_created, taskCount));
-        give(() -> {});
+        give(act -> {});
     }
 
     private void todo(String task) { try {

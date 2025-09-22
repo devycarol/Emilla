@@ -1,20 +1,19 @@
 package net.emilla.run;
 
-import android.content.Context;
 import android.content.Intent;
 
-public final class BroadcastGift implements Runnable {
+import net.emilla.activity.AssistActivity;
 
-    private final Context mContext;
+public final class BroadcastGift implements CommandRun {
+
     private final Intent mIntent;
 
-    public BroadcastGift(Context ctx, Intent intent) {
-        mContext = ctx;
+    public BroadcastGift(Intent intent) {
         mIntent = intent;
     }
 
     @Override
-    public void run() {
-        mContext.sendBroadcast(mIntent);
+    public void run(AssistActivity act) {
+        act.sendBroadcast(mIntent);
     }
 }

@@ -3,6 +3,7 @@ package net.emilla.command;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Notification;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.ContentResolver;
@@ -65,6 +66,7 @@ import net.emilla.ping.PingChannel;
 import net.emilla.run.AppGift;
 import net.emilla.run.AppSuccess;
 import net.emilla.run.BroadcastGift;
+import net.emilla.run.CommandRun;
 import net.emilla.run.DialogRun;
 import net.emilla.run.MessageFailure;
 import net.emilla.run.PingGift;
@@ -327,7 +329,7 @@ public abstract class EmillaCommand {
      * Simply close the assistant :)
      */
     protected final void succeed() {
-        activity.succeed(activity::finishAndRemoveTask);
+        activity.succeed(Activity::finishAndRemoveTask);
     }
 
     /**
@@ -336,7 +338,7 @@ public abstract class EmillaCommand {
      *
      * @param success finishes the work of the assistant.
      */
-    protected final void succeed(Runnable success) {
+    protected final void succeed(CommandRun success) {
         activity.succeed(success);
     }
 
@@ -348,7 +350,7 @@ public abstract class EmillaCommand {
      *               resolvable, else an ANF exception will occur.
      */
     protected final void appSucceed(Intent intent) {
-        succeed(new AppSuccess(activity, intent));
+        succeed(new AppSuccess(intent));
     }
 
     /**
@@ -357,7 +359,7 @@ public abstract class EmillaCommand {
      *
      * @param gift gadget for the user.
      */
-    protected final void give(Runnable gift) {
+    protected final void give(CommandRun gift) {
         activity.give(gift);
     }
 
@@ -371,15 +373,15 @@ public abstract class EmillaCommand {
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     protected final void givePing(Notification ping, PingChannel channel) {
-        give(new PingGift(activity, ping, channel));
+        give(new PingGift(ping, channel));
     }
 
     protected final void giveBroadcast(Intent intent) {
-        give(new BroadcastGift(activity, intent));
+        give(new BroadcastGift(intent));
     }
 
     protected final void giveApp(Intent intent) {
-        give(new AppGift(activity, intent));
+        give(new AppGift(intent));
     }
 
     /**
@@ -389,20 +391,16 @@ public abstract class EmillaCommand {
      *
      * @param offering tool for the user.
      */
-    protected final void offer(Runnable offering) {
+    protected final void offer(CommandRun offering) {
         activity.offer(offering);
     }
 
     protected final void offerDialog(AlertDialog.Builder builder) {
-        offer(new DialogRun(activity, builder));
-    }
-
-    protected final void offerDialog(AlertDialog dialog) {
-        offer(new DialogRun(activity, dialog));
+        offer(new DialogRun(builder));
     }
 
     protected final void offerTimePicker(OnTimeSetListener timeSet) {
-        offer(new TimePickerOffering(activity, timeSet));
+        offer(new TimePickerOffering(timeSet));
     }
 
     protected final void offerApp(Intent intent, boolean newTask) {
@@ -417,7 +415,7 @@ public abstract class EmillaCommand {
      *
      * @param failure tool for the user to resolve the issue.
      */
-    protected final void fail(Runnable failure) {
+    protected final void fail(CommandRun failure) {
         activity.fail(failure);
     }
 
@@ -426,7 +424,7 @@ public abstract class EmillaCommand {
         @StringRes int yesLabel,
         DialogInterface.OnClickListener yesClick
     ) {
-        fail(new DialogRun(activity, Dialogs.dual(activity, name(), msg, yesLabel, yesClick)));
+        fail(new DialogRun(Dialogs.dual(activity, name(), msg, yesLabel, yesClick)));
     }
 
     protected final void failMessage(@StringRes int msg) {

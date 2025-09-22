@@ -9,7 +9,6 @@ import androidx.appcompat.app.AlertDialog;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.command.EmillaCommand;
-import net.emilla.run.DialogRun;
 import net.emilla.util.Dialogs;
 
 public final class Help implements LabeledQuickAction {
@@ -52,6 +51,7 @@ public final class Help implements LabeledQuickAction {
         AlertDialog manual = Dialogs.message(mActivity, cmd.name(), msg)
                 .setOnDismissListener(dlg -> mActivity.setManual(null))
                 .setOnKeyListener((dlg, keyCode, event) -> {
+                    // this is necessary because the AlertDialog becomes the consumer of key-events
                     if (keyCode == KEYCODE_MENU && event.getAction() == ACTION_UP) {
                         dlg.cancel();
                         return true;
@@ -59,6 +59,13 @@ public final class Help implements LabeledQuickAction {
                     return false;
                 }).create();
         mActivity.setManual(manual);
-        mActivity.offer(new DialogRun(mActivity, manual));
+        mActivity.offer(act -> {
+            manual.setOnCancelListener(dlg -> {
+                act.onCloseDialog(); // Todo: don't require this
+                act.resume();
+            });
+            act.prepareForDialog();
+            manual.show();
+        });
     }
 }

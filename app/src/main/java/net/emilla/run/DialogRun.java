@@ -4,28 +4,21 @@ import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.activity.AssistActivity;
 
-public /*open*/ class DialogRun implements Runnable {
+public /*open*/ class DialogRun implements CommandRun {
 
-    private final AssistActivity mActivity;
-    private final AlertDialog mDialog;
+    protected final AlertDialog.Builder dialog;
 
-    public DialogRun(AssistActivity act, AlertDialog.Builder builder) {
-        this(act, builder.create());
-    }
-
-    public DialogRun(AssistActivity act, AlertDialog dialog) {
-        mActivity = act;
-        dialog.setOnCancelListener(dlg -> {
-            mActivity.onCloseDialog();
-            mActivity.resume();
-        });
-        // Todo: don't require this
-        mDialog = dialog;
+    public DialogRun(AlertDialog.Builder dialog) {
+        this.dialog = dialog;
     }
 
     @Override
-    public final void run() {
-        mActivity.prepareForDialog();
-        mDialog.show();
+    public /*open*/ void run(AssistActivity act) {
+        dialog.setOnCancelListener(dlg -> {
+            act.onCloseDialog(); // Todo: don't require this
+            act.resume();
+        });
+        act.prepareForDialog();
+        dialog.show();
     }
 }

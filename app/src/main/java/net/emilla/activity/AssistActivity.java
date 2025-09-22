@@ -74,6 +74,7 @@ import net.emilla.exception.EmillaException;
 import net.emilla.lang.Lang;
 import net.emilla.permission.PermissionRetriever;
 import net.emilla.run.BugFailure;
+import net.emilla.run.CommandRun;
 import net.emilla.run.DialogRun;
 import net.emilla.run.MessageFailure;
 import net.emilla.util.Dialogs;
@@ -445,7 +446,7 @@ public final class AssistActivity extends EmillaActivity {
         switch (keyCode) {
         case KEYCODE_BACK -> cancelIfWarranted(); // todo config? command history?
         case KEYCODE_MENU -> mMenuKeyAction.perform();
-        case KEYCODE_SEARCH -> give(() -> {}); // todo config
+        case KEYCODE_SEARCH -> give(act -> {}); // todo config
         default -> { return false; }
         }
         return true;
@@ -622,7 +623,7 @@ public final class AssistActivity extends EmillaActivity {
         if (!mVm.askTryCancel()) return;
 
         if (shouldCancel()) cancel();
-        else offer(new DialogRun(this, cancelDialog()));
+        else offer(new DialogRun(cancelDialog()));
     }
 
     private AlertDialog.Builder cancelDialog() {
@@ -646,8 +647,8 @@ public final class AssistActivity extends EmillaActivity {
         mBinding.submitButton.setEnabled(false);
     }
 
-    public void offer(Runnable offering) {
-        offering.run();
+    public void offer(CommandRun offering) {
+        offering.run(this);
         chime(PEND);
     }
 
@@ -682,19 +683,19 @@ public final class AssistActivity extends EmillaActivity {
         mPermissionRetriever.retrieve(permissions, onGrant);
     }
 
-    public void give(Runnable gift) {
+    public void give(CommandRun gift) {
         focusedEditBox().selectAll();
-        gift.run();
+        gift.run(this);
         chime(ACT);
     }
 
-    public void succeed(Runnable success) {
-        success.run();
+    public void succeed(CommandRun success) {
+        success.run(this);
         if (mVm.askChimeSuccess()) chime(SUCCEED);
     }
 
-    public void fail(Runnable failure) {
-        failure.run();
+    public void fail(CommandRun failure) {
+        failure.run(this);
         chime(FAIL);
     }
 

@@ -28,6 +28,6 @@ public final class PermissionFailure extends DialogRun {
     }
 
     public PermissionFailure(AssistActivity act, @StringRes int permissionName) {
-        super(act, dialog(act, permissionName));
+        super(dialog(act, permissionName));
     }
 }

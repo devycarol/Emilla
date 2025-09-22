@@ -38,7 +38,7 @@ public final class Celsius extends CoreCommand {
 
     @Override
     protected void run() {
-        offer(() -> {});
+        offer(act -> {});
     }
 
     @Override
