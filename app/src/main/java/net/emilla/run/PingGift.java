@@ -9,7 +9,7 @@ import androidx.annotation.RequiresPermission;
 import net.emilla.ping.PingChannel;
 import net.emilla.ping.Pinger;
 
-public final class PingGift implements Gift {
+public final class PingGift implements Runnable {
 
     private final Context mContext;
     private final Notification mPing;

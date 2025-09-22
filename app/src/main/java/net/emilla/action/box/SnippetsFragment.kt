@@ -13,7 +13,6 @@ import net.emilla.chime.Chimer.Companion.PEND
 import net.emilla.chime.Chimer.Companion.RESUME
 import net.emilla.command.core.Snippets
 import net.emilla.config.SettingVals
-import net.emilla.run.Gift
 import net.emilla.util.Dialogs
 
 class SnippetsFragment : ActionBox(R.layout.snippet_item_list) {
@@ -71,7 +70,7 @@ class SnippetsFragment : ActionBox(R.layout.snippet_item_list) {
             Snippets.Action.REMOVE -> { pos ->
                 val label = vm.labelAt(pos)
                 remove(label, label)
-                give(Gift {})
+                give {}
                 resetItemClickListener()
             }
             Snippets.Action.ADD -> { pos ->
@@ -111,7 +110,7 @@ class SnippetsFragment : ActionBox(R.layout.snippet_item_list) {
             )
         } else {
             vm.addSnippet(label, text, adapter)
-            give(Gift { toast(R.string.toast_saved) })
+            give { toast(R.string.toast_saved) }
         }
     }
 

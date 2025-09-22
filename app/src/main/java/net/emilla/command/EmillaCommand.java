@@ -66,12 +66,8 @@ import net.emilla.run.AppGift;
 import net.emilla.run.AppSuccess;
 import net.emilla.run.BroadcastGift;
 import net.emilla.run.DialogRun;
-import net.emilla.run.Failure;
-import net.emilla.run.Gift;
 import net.emilla.run.MessageFailure;
-import net.emilla.run.Offering;
 import net.emilla.run.PingGift;
-import net.emilla.run.Success;
 import net.emilla.run.TextGift;
 import net.emilla.run.TimePickerOffering;
 import net.emilla.util.Dialogs;
@@ -340,7 +336,7 @@ public abstract class EmillaCommand {
      *
      * @param success finishes the work of the assistant.
      */
-    protected final void succeed(Success success) {
+    protected final void succeed(Runnable success) {
         activity.succeed(success);
     }
 
@@ -361,7 +357,7 @@ public abstract class EmillaCommand {
      *
      * @param gift gadget for the user.
      */
-    protected final void give(Gift gift) {
+    protected final void give(Runnable gift) {
         activity.give(gift);
     }
 
@@ -393,7 +389,7 @@ public abstract class EmillaCommand {
      *
      * @param offering tool for the user.
      */
-    protected final void offer(Offering offering) {
+    protected final void offer(Runnable offering) {
         activity.offer(offering);
     }
 
@@ -421,7 +417,7 @@ public abstract class EmillaCommand {
      *
      * @param failure tool for the user to resolve the issue.
      */
-    protected final void fail(Failure failure) {
+    protected final void fail(Runnable failure) {
         activity.fail(failure);
     }
 

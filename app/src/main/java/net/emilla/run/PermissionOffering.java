@@ -16,7 +16,7 @@ import net.emilla.activity.AssistActivity;
  * permission(s) being requested.</p>
  */
 @RequiresApi(api = Build.VERSION_CODES.M)
-public final class PermissionOffering implements Offering {
+public final class PermissionOffering implements Runnable {
 
     private final AssistActivity mActivity;
     private final String[] mPermissions;

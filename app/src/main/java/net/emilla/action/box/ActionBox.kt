@@ -7,8 +7,6 @@ import androidx.fragment.app.Fragment
 import net.emilla.activity.AssistActivity
 import net.emilla.run.CopyGift
 import net.emilla.run.DialogRun
-import net.emilla.run.Gift
-import net.emilla.run.Offering
 import net.emilla.run.TextGift
 
 abstract class ActionBox protected constructor(
@@ -22,9 +20,9 @@ abstract class ActionBox protected constructor(
     protected fun toast(msg: CharSequence) = activity.toast(msg)
     protected fun toast(@StringRes msg: Int, vararg formatArgs: Any) = activity.toast(str(msg, *formatArgs))
     protected fun str(@StringRes id: Int, vararg formatArgs: Any) = res.getString(id, *formatArgs)
-    private fun offer(offering: Offering) = activity.offer(offering)
+    private fun offer(offering: Runnable) = activity.offer(offering)
     protected fun offerDialog(dlg: AlertDialog.Builder) = offer(DialogRun(activity, dlg))
-    protected fun give(gift: Gift) = activity.give(gift)
+    protected fun give(gift: Runnable) = activity.give(gift)
     protected fun giveText(msg: CharSequence) = give(TextGift(activity, name, msg))
     protected fun giveCopy(text: String) = give(CopyGift(activity, text))
 

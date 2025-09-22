@@ -9,7 +9,7 @@ import android.content.Intent;
 import net.emilla.R;
 import net.emilla.exception.EmillaException;
 
-public final class AppSuccess implements Success {
+public final class AppSuccess implements Runnable {
 
     private final Activity mActivity;
     private final Intent mIntent;

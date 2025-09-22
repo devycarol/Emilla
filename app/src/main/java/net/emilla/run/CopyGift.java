@@ -8,7 +8,7 @@ import androidx.annotation.StringRes;
 import net.emilla.activity.AssistActivity;
 import net.emilla.util.Services;
 
-public final class CopyGift implements Gift {
+public final class CopyGift implements Runnable {
 
     private final AssistActivity mActivity;
     private final CharSequence mText;

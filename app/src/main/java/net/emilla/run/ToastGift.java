@@ -2,7 +2,7 @@ package net.emilla.run;
 
 import net.emilla.activity.AssistActivity;
 
-public final class ToastGift implements Gift {
+public final class ToastGift implements Runnable {
 
     private final AssistActivity mActivity;
     private final CharSequence mMessage;

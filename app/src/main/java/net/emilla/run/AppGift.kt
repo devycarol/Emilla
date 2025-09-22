@@ -7,7 +7,7 @@ import net.emilla.activity.DummyActivity
 import net.emilla.app.Apps
 import net.emilla.exception.EmillaException
 
-class AppGift(private val activity: Activity, private val intent: Intent) : Gift {
+class AppGift(private val activity: Activity, private val intent: Intent) : Runnable {
 
     override fun run() {
         if (intent.resolveActivity(activity.packageManager) != null) {

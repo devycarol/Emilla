@@ -75,11 +75,7 @@ import net.emilla.lang.Lang;
 import net.emilla.permission.PermissionRetriever;
 import net.emilla.run.BugFailure;
 import net.emilla.run.DialogRun;
-import net.emilla.run.Failure;
-import net.emilla.run.Gift;
 import net.emilla.run.MessageFailure;
-import net.emilla.run.Offering;
-import net.emilla.run.Success;
 import net.emilla.util.Dialogs;
 import net.emilla.util.Strings;
 import net.emilla.view.ActionButton;
@@ -650,7 +646,7 @@ public final class AssistActivity extends EmillaActivity {
         mBinding.submitButton.setEnabled(false);
     }
 
-    public void offer(Offering offering) {
+    public void offer(Runnable offering) {
         offering.run();
         chime(PEND);
     }
@@ -686,18 +682,18 @@ public final class AssistActivity extends EmillaActivity {
         mPermissionRetriever.retrieve(permissions, onGrant);
     }
 
-    public void give(Gift gift) {
+    public void give(Runnable gift) {
         focusedEditBox().selectAll();
         gift.run();
         chime(ACT);
     }
 
-    public void succeed(Success success) {
+    public void succeed(Runnable success) {
         success.run();
         if (mVm.askChimeSuccess()) chime(SUCCEED);
     }
 
-    public void fail(Failure failure) {
+    public void fail(Runnable failure) {
         failure.run();
         chime(FAIL);
     }
