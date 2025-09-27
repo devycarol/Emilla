@@ -74,7 +74,7 @@ public final class Alarm extends CoreDataCommand {
     }
 
     private Intent makeIntent(String timeString) {
-        HourMin time = Lang.time(timeString, activity, NAME);
+        HourMin time = Lang.time(timeString, pActivity, NAME);
         Weekdays days = Lang.weekdays(timeString, NAME);
         Intent in = makeIntent(time.hour24(), time.minute());
         return days.empty() ? in : in.putExtra(EXTRA_DAYS, days.days());

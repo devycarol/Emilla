@@ -33,24 +33,24 @@ public abstract class OpenCommand extends CoreCommand {
               imeAction);
     }
 
-    protected AlertDialog.Builder appChooser;
+    protected AlertDialog.Builder pAppChooser;
 
     @Override @CallSuper
     protected void onInit() {
         super.onInit();
-        appChooser = makeChooser();
+        pAppChooser = makeChooser();
     }
 
     @Override @CallSuper
     protected void onClean() {
         super.onClean();
-        appChooser = null;
+        pAppChooser = null;
     }
 
     protected abstract AlertDialog.Builder makeChooser();
 
     protected final void appSearchRun(String search, IntentMaker maker) {
-        SearchResult<AppEntry> result = activity.appList().filter(search);
+        SearchResult<AppEntry> result = pActivity.appList().filter(search);
         int size = result.size();
         if (size == 0) {
             throw badCommand(R.string.error_apps_not_found);
@@ -60,7 +60,7 @@ public abstract class OpenCommand extends CoreCommand {
         if (size == 1 || oneExactMatch(result, search)) {
             open(result, 0, maker);
         } else {
-            offerDialog(Dialogs.list(activity, R.string.dialog_app, AppEntry.labels(result),
+            offerDialog(Dialogs.list(pActivity, R.string.dialog_app, AppEntry.labels(result),
                                      (dlg, which) -> open(result, which, maker)));
         }
     }

@@ -33,7 +33,7 @@ import net.emilla.app.Apps;
         //  bookmarks at the very least. Also, this command is broken for YouTube when a video is playing.
         String[] searchAliases = stringArray(R.array.subcmd_search);
         String lcQuery = query.toLowerCase();
-        Intent in = Apps.searchToApp(app.pkg);
+        Intent in = Apps.searchToApp(pApp.pkg);
         for (String alias : searchAliases) {
             if (lcQuery.startsWith(alias)) {
                 // Todo livecmd: visual indication that this will be used

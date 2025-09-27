@@ -29,9 +29,9 @@ public final class ContactCardRetriever extends ResultRetriever<Void, Uri, Conta
         @Override
         protected void onActivityResult(Uri contact, ContactCardReceiver receiver) {
             if (contact != null) {
-                activity.suppressResumeChime();
+                pActivity.suppressResumeChime();
                 receiver.provide(contact);
-            } else activity.toast(R.string.toast_contact_not_selected);
+            } else pActivity.toast(R.string.toast_contact_not_selected);
         }
     }
 }

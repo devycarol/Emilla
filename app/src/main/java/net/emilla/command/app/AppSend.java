@@ -22,7 +22,7 @@ public /*open*/ class AppSend extends AppCommand {
 
         @Override
         public String title(Resources res) {
-            return Lang.colonConcat(res, R.string.command_app_send, app.label);
+            return Lang.colonConcat(res, R.string.command_app_send, pApp.label);
         }
     }
 
@@ -69,6 +69,6 @@ public /*open*/ class AppSend extends AppCommand {
 
     @Override
     protected final void run(String message) {
-        appSucceed(Apps.sendToApp(app.pkg).putExtra(EXTRA_TEXT, message));
+        appSucceed(Apps.sendToApp(pApp.pkg).putExtra(EXTRA_TEXT, message));
     }
 }

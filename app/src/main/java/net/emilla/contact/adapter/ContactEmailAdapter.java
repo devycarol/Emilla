@@ -55,9 +55,9 @@ public final class ContactEmailAdapter extends ContactCursorAdapter {
         int type = cur.getInt(IDX_TYPE);
         var customLabel = cur.getString(IDX_LABEL);
 
-        CharSequence typeText = Email.getTypeLabel(resources, type, customLabel);
+        CharSequence typeText = Email.getTypeLabel(pResources, type, customLabel);
         var address = cur.getString(IDX_ADDRESS);
 
-        item.setContactDetail(Lang.colonConcat(resources, typeText, address));
+        item.setContactDetail(Lang.colonConcat(pResources, typeText, address));
     }
 }

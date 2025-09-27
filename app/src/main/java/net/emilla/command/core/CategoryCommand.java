@@ -41,7 +41,7 @@ public abstract class CategoryCommand extends CoreCommand {
 
         if (mAppList == null) mAppList = new AppList(pm(), makeFilter());
         if (mAppList.size() > 1) {
-            mChooser = Dialogs.appLaunches(activity, mAppList);
+            mChooser = Dialogs.appLaunches(pActivity, mAppList);
         }
     }
 

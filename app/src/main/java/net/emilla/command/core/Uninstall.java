@@ -46,16 +46,16 @@ public final class Uninstall extends OpenCommand {
 
     @Override
     protected void run() {
-        offerDialog(appChooser);
+        offerDialog(pAppChooser);
     }
 
     @Override
     protected void run(String app) {
-        appSearchRun(app, (appEntry) -> Apps.uninstallIntent(appEntry.pkg, pm()));
+        appSearchRun(app, appEntry -> Apps.uninstallIntent(appEntry.pkg, pm()));
     }
 
     @Override
     protected AlertDialog.Builder makeChooser() {
-        return Dialogs.appUninstalls(activity);
+        return Dialogs.appUninstalls(pActivity);
     }
 }

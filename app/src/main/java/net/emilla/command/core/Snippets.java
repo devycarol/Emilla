@@ -52,15 +52,15 @@ public final class Snippets extends CoreDataCommand {
         super.onInit();
 
         if (mSnippetsFragment == null) mSnippetsFragment = SnippetsFragment.newInstance();
-        activity.giveActionBox(mSnippetsFragment);
+        pActivity.giveActionBox(mSnippetsFragment);
 
         if (mActionMap == null) {
             mActionMap = new ActionMap<>(Action.GET);
 
-            mActionMap.put(resources, Action.PEEK, R.array.subcmd_snippet_peek, true);
-            mActionMap.put(resources, Action.GET, R.array.subcmd_snippet_get, true);
-            mActionMap.put(resources, Action.POP, R.array.subcmd_snippet_pop, true);
-            mActionMap.put(resources, Action.REMOVE, R.array.subcmd_snippet_remove, true);
+            mActionMap.put(pResources, Action.PEEK, R.array.subcmd_snippet_peek, true);
+            mActionMap.put(pResources, Action.GET, R.array.subcmd_snippet_get, true);
+            mActionMap.put(pResources, Action.POP, R.array.subcmd_snippet_pop, true);
+            mActionMap.put(pResources, Action.REMOVE, R.array.subcmd_snippet_remove, true);
         }
     }
 
@@ -68,7 +68,7 @@ public final class Snippets extends CoreDataCommand {
     protected void onClean() {
         super.onClean();
 
-        activity.removeActionBox(mSnippetsFragment);
+        pActivity.removeActionBox(mSnippetsFragment);
         mSnippetsFragment = null;
 
         mUsedSnippet = null;

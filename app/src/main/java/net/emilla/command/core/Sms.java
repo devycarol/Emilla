@@ -60,9 +60,9 @@ public final class Sms extends CoreDataCommand implements PhoneReceiver {
         super.onInit();
 
         if (mContactsFragment == null) mContactsFragment = ContactPhonesFragment.newInstance(true);
-        activity.giveActionBox(mContactsFragment);
+        pActivity.giveActionBox(mContactsFragment);
 
-        if (mSubjectToggle == null) mSubjectToggle = new SubjectField(activity);
+        if (mSubjectToggle == null) mSubjectToggle = new SubjectField(pActivity);
         else if (mSubjectToggle.activated()) reshowField(SubjectField.FIELD_ID);
         giveAction(mSubjectToggle);
         // Todo: attachments
@@ -78,7 +78,7 @@ public final class Sms extends CoreDataCommand implements PhoneReceiver {
     protected void onClean() {
         super.onClean();
 
-        activity.removeActionBox(mContactsFragment);
+        pActivity.removeActionBox(mContactsFragment);
 
         removeAction(SubjectField.ACTION_ID);
         hideField(SubjectField.FIELD_ID);
@@ -121,7 +121,7 @@ public final class Sms extends CoreDataCommand implements PhoneReceiver {
             String toNumbers = Contacts.phonewordsToNumbers(recipients);
             String msg = str(R.string.notice_sms_not_numbers, recipients, toNumbers);
             // todo: better message.
-            offerDialog(Dialogs.dual(activity, NAME, msg, R.string.message_directly,
+            offerDialog(Dialogs.dual(pActivity, NAME, msg, R.string.message_directly,
                     (dlg, which) -> message(toNumbers, message)));
         }
     }
@@ -142,6 +142,6 @@ public final class Sms extends CoreDataCommand implements PhoneReceiver {
 
     @Override
     public void provide(String phoneNumber) {
-        message(phoneNumber, activity.dataText());
+        message(phoneNumber, pActivity.dataText());
     }
 }

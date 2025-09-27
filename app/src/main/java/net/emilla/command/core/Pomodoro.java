@@ -62,12 +62,12 @@ public final class Pomodoro extends CoreDataCommand {
 
         if (mActionMap == null) {
             mActionMap = new ActionMap<>(Action.WORK);
-            mActionMap.put(resources, Action.BREAK, R.array.subcmd_pomodoro_break, true);
+            mActionMap.put(pResources, Action.BREAK, R.array.subcmd_pomodoro_break, true);
         }
 
         if (mWorkMemo == null || mBreakMemo == null) {
-            mWorkMemo = SettingVals.defaultPomoWorkMemo(prefs(), resources);
-            mBreakMemo = SettingVals.defaultPomoBreakMemo(prefs(), resources);
+            mWorkMemo = SettingVals.defaultPomoWorkMemo(prefs(), pResources);
+            mBreakMemo = SettingVals.defaultPomoBreakMemo(prefs(), pResources);
         }
     }
 
@@ -110,7 +110,7 @@ public final class Pomodoro extends CoreDataCommand {
     @SuppressLint("MissingPermission")
     private void tryPomo(@Nullable String minutes, boolean isBreak) {
         int seconds = seconds(minutes, isBreak);
-        Permissions.withPings(activity, () -> pomo(seconds, mWorkMemo, mBreakMemo, isBreak));
+        Permissions.withPings(pActivity, () -> pomo(seconds, mWorkMemo, mBreakMemo, isBreak));
     }
 
     private int seconds(@Nullable String minutes, boolean isBreak) {
@@ -151,7 +151,7 @@ public final class Pomodoro extends CoreDataCommand {
         String endTitle,
         String endMemo
     ) {
-        var scheduler = new PingScheduler(activity);
+        var scheduler = new PingScheduler(pActivity);
         String warnMemo = str(R.string.ping_pomodoro_warn_text);
         if (seconds > 60) {
             givePing(startChannel, mainTitle, startMemo);
@@ -177,6 +177,6 @@ public final class Pomodoro extends CoreDataCommand {
     }
 
     private Notification makePing(String channel, String title, String memo) {
-        return Pings.make(activity, channel, title, memo, R.drawable.ic_pomodoro);
+        return Pings.make(pActivity, channel, title, memo, R.drawable.ic_pomodoro);
     }
 }

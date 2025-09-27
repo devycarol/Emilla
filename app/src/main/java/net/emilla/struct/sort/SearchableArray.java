@@ -28,7 +28,7 @@ public final class SearchableArray<E extends Searchable<E>> extends SortedArray<
     @Nullable
     public E get(String search) {
         int pos = arbitraryIndexOf(new ExactSearcher<>(search));
-        return pos >= 0 ? mData[pos] : null;
+        return pos >= 0 ? pData[pos] : null;
     }
 
     public SearchResult<E> filter(String search) {
@@ -49,14 +49,14 @@ public final class SearchableArray<E extends Searchable<E>> extends SortedArray<
 
     @Nullable
     private IndexWindow windowMatching(Comparable<E> searcher) {
-        return windowMatching(searcher, 0, mSize - 1);
+        return windowMatching(searcher, 0, pSize - 1);
     }
 
     @Nullable
     private IndexWindow windowMatching(Comparable<E> searcher, int lo, int hi) {
         while (lo <= hi) {
             int mid = lo + hi >>> 1;
-            int cmp = searcher.compareTo(mData[mid]);
+            int cmp = searcher.compareTo(pData[mid]);
 
             if (cmp > 0) lo = mid + 1;
             else if (cmp < 0) hi = mid - 1;
@@ -72,7 +72,7 @@ public final class SearchableArray<E extends Searchable<E>> extends SortedArray<
 
         while (lo <= hi) {
             int mid = lo + hi >>> 1;
-            int cmp = searcher.compareTo(mData[mid]);
+            int cmp = searcher.compareTo(pData[mid]);
 
             if (cmp > 0) {
                 lo = mid + 1;
@@ -90,7 +90,7 @@ public final class SearchableArray<E extends Searchable<E>> extends SortedArray<
 
         while (lo <= hi) {
             int mid = lo + hi >>> 1;
-            int cmp = searcher.compareTo(mData[mid]);
+            int cmp = searcher.compareTo(pData[mid]);
 
             if (cmp < 0) {
                 hi = mid - 1;

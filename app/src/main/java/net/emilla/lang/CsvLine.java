@@ -137,11 +137,11 @@ public final class CsvLine implements Iterable<String> {
     private /*inner*/ sealed class ValIterator implements Iterator<String>
             permits TrimmingValIterator {
 
-        protected int pos = mStart;
+        protected int pPos = mStart;
 
         @Override
         public final boolean hasNext() {
-            return pos < mLen;
+            return pPos < mLen;
         }
 
         @Override @Nullable
@@ -150,8 +150,8 @@ public final class CsvLine implements Iterable<String> {
             boolean escape = false;
 
             char c;
-            while (pos < mLen) {
-                switch (c = mLine.charAt(pos)) {
+            while (pPos < mLen) {
+                switch (c = mLine.charAt(pPos)) {
                 case '\\' -> {
                     if (escape) {
                         sb.append('\\');
@@ -173,7 +173,7 @@ public final class CsvLine implements Iterable<String> {
                     sb.append(c);
                     escape = false;
                 }}
-                ++pos;
+                ++pPos;
             }
 
             // End of line reached
@@ -181,7 +181,7 @@ public final class CsvLine implements Iterable<String> {
         }
 
         protected /*open*/ void advanceToNextVal() {
-            ++pos; // not worrying about spaces
+            ++pPos; // not worrying about spaces
         }
 
         @Nullable
@@ -194,14 +194,14 @@ public final class CsvLine implements Iterable<String> {
 
         @Override
         protected void advanceToNextVal() {
-            do ++pos;
+            do ++pPos;
             // advance past the comma
-            while (pos < mLen && isWhitespace(mLine.charAt(pos)));
+            while (pPos < mLen && isWhitespace(mLine.charAt(pPos)));
             // continue advancing as needed
         }
 
         @Override @Nullable
-        protected String makeVal(StringBuilder sb)  {
+        protected String makeVal(StringBuilder sb) {
             int len = sb.length();
             while (len > 0 && isWhitespace(sb.charAt(len - 1))) {
                 --len;

@@ -62,17 +62,17 @@ public final class Email extends CoreDataCommand implements EmailReceiver {
         super.onInit();
 
         if (mContactsFragment == null) mContactsFragment = ContactEmailsFragment.newInstance(true);
-        activity.giveActionBox(mContactsFragment);
+        pActivity.giveActionBox(mContactsFragment);
 
-        if (mSubjectToggle == null) mSubjectToggle = new SubjectField(activity);
+        if (mSubjectToggle == null) mSubjectToggle = new SubjectField(pActivity);
         else if (mSubjectToggle.activated()) reshowField(SubjectField.FIELD_ID);
         giveAction(mSubjectToggle);
 
-        if (mFileFetcher == null) mFileFetcher = new FileFetcher(activity, ENTRY, "*/*");
+        if (mFileFetcher == null) mFileFetcher = new FileFetcher(pActivity, ENTRY, "*/*");
         // TODO: Thunderbird doesn't like certain filetypes. See if you can find a type statement
         //  that's consistently email-friendly.
         giveAction(mFileFetcher);
-        if (mMediaFetcher == null) mMediaFetcher = new MediaFetcher(activity, ENTRY);
+        if (mMediaFetcher == null) mMediaFetcher = new MediaFetcher(pActivity, ENTRY);
         giveAction(mMediaFetcher);
     }
 
@@ -86,7 +86,7 @@ public final class Email extends CoreDataCommand implements EmailReceiver {
     protected void onClean() {
         super.onClean();
 
-        activity.removeActionBox(mContactsFragment);
+        pActivity.removeActionBox(mContactsFragment);
         mContactsFragment = null;
 
         removeAction(FileFetcher.ID);
@@ -121,7 +121,7 @@ public final class Email extends CoreDataCommand implements EmailReceiver {
     }
 
     private void email(String addresses, @Nullable String body) {
-        ArrayList<Uri> attachments = activity.attachments(ENTRY);
+        ArrayList<Uri> attachments = pActivity.attachments(ENTRY);
 
         Intent email;
         var sendTo = new Intent(ACTION_SENDTO, Uri.parse("mailto:"));
@@ -144,6 +144,6 @@ public final class Email extends CoreDataCommand implements EmailReceiver {
 
     @Override
     public void provide(String emailAddress) {
-        email(emailAddress, activity.dataText());
+        email(emailAddress, pActivity.dataText());
     }
 }

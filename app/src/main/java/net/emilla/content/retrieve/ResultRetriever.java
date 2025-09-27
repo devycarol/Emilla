@@ -19,14 +19,14 @@ import net.emilla.run.MessageFailure;
 
     private static final String TAG = ResultRetriever.class.getSimpleName();
 
-    protected final AssistActivity activity;
+    protected final AssistActivity pActivity;
     private final ActivityResultLauncher<I> mLauncher;
     @Nullable
     @Deprecated // Todo: incorporate these in the launchers directly if possible.
     private C mReceiver;
 
     protected ResultRetriever(AssistActivity act, ActivityResultContract<I, O> contract) {
-        this.activity = act;
+        pActivity = act;
         mLauncher = act.registerForActivityResult(contract, makeCallback());
     }
 
@@ -45,7 +45,7 @@ import net.emilla.run.MessageFailure;
     protected final void launch(@Nullable I input) { try {
         mLauncher.launch(input);
     } catch (ActivityNotFoundException e) {
-        activity.fail(new MessageFailure(activity, R.string.error, R.string.error_no_app));
+        pActivity.fail(new MessageFailure(pActivity, R.string.error, R.string.error_no_app));
     }}
 
     @Deprecated @Nullable

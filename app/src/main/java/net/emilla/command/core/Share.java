@@ -53,9 +53,9 @@ public final class Share extends CoreDataCommand implements AppChoiceReceiver {
     protected void onInit() {
         super.onInit();
 
-        if (mFileFetcher == null) mFileFetcher = new FileFetcher(activity, ENTRY, "*/*");
+        if (mFileFetcher == null) mFileFetcher = new FileFetcher(pActivity, ENTRY, "*/*");
         giveAction(mFileFetcher);
-        if (mMediaFetcher == null) mMediaFetcher = new MediaFetcher(activity, ENTRY);
+        if (mMediaFetcher == null) mMediaFetcher = new MediaFetcher(pActivity, ENTRY);
         giveAction(mMediaFetcher);
     }
 
@@ -68,30 +68,30 @@ public final class Share extends CoreDataCommand implements AppChoiceReceiver {
     }
 
     private Intent makeIntent() {
-        ArrayList<Uri> attachments = activity.attachments(ENTRY);
+        ArrayList<Uri> attachments = pActivity.attachments(ENTRY);
 
         if (attachments == null) return Apps.sendTask("text/plain");
         if (attachments.size() == 1) {
             Intent in = Apps.sendTask("text/plain").putExtra(EXTRA_STREAM, attachments.get(0));
-            in.setSelector(Apps.sendTask(MimeType.of(attachments, activity)));
+            in.setSelector(Apps.sendTask(MimeType.of(attachments, pActivity)));
             return in;
         }
         Intent in = Apps.sendMultipleTask("text/plain").putExtra(EXTRA_STREAM, attachments);
-        in.setSelector(Apps.sendMultipleTask(MimeType.of(attachments, activity)));
+        in.setSelector(Apps.sendMultipleTask(MimeType.of(attachments, pActivity)));
         return in;
     }
 
     private Intent makeIntent(String text) {
-        ArrayList<Uri> attachments = activity.attachments(ENTRY);
+        ArrayList<Uri> attachments = pActivity.attachments(ENTRY);
 
         if (attachments == null) return Apps.sendTask("text/plain").putExtra(EXTRA_TEXT, text);
         Intent in;
         if (attachments.size() == 1) {
             in = Apps.sendTask("text/plain").putExtra(EXTRA_STREAM, attachments.get(0));
-            in.setSelector(Apps.sendTask(MimeType.of("text/plain", attachments, activity)));
+            in.setSelector(Apps.sendTask(MimeType.of("text/plain", attachments, pActivity)));
         } else {
             in = Apps.sendMultipleTask("text/plain").putExtra(EXTRA_STREAM, attachments);
-            in.setSelector(Apps.sendMultipleTask(MimeType.of("text/plain", attachments, activity)));
+            in.setSelector(Apps.sendMultipleTask(MimeType.of("text/plain", attachments, pActivity)));
         }
         // Todo: this is essentially saying "good luck" to the user with wildcard MIME types any
         //  time there's more than one kind of attachment. Specifically targeting apps that support
@@ -102,7 +102,7 @@ public final class Share extends CoreDataCommand implements AppChoiceReceiver {
 
     @Override
     protected void run() {
-        activity.offerChooser(this, makeIntent(), NAME);
+        pActivity.offerChooser(this, makeIntent(), NAME);
     }
 
     @Override
@@ -112,7 +112,7 @@ public final class Share extends CoreDataCommand implements AppChoiceReceiver {
 
     @Override
     protected void runWithData(String text) {
-        activity.offerChooser(this, makeIntent(text), NAME);
+        pActivity.offerChooser(this, makeIntent(text), NAME);
     }
 
     @Override

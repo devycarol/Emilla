@@ -66,15 +66,15 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
         super.onInit();
 
         if (mContactsFragment == null) mContactsFragment = ContactCardsFragment.newInstance();
-        activity.giveActionBox(mContactsFragment);
+        pActivity.giveActionBox(mContactsFragment);
 
         if (mActionMap == null) {
             mActionMap = new ActionMap<>(Action.VIEW);
 
-            mActionMap.put(resources, Action.VIEW, R.array.subcmd_edit, true);
-            mActionMap.put(resources, Action.EDIT, R.array.subcmd_edit, true);
-            mActionMap.put(resources, Action.SHARE, R.array.subcmd_share, true);
-            mActionMap.put(resources, Action.CREATE, R.array.subcmd_create, true);
+            mActionMap.put(pResources, Action.VIEW, R.array.subcmd_edit, true);
+            mActionMap.put(pResources, Action.EDIT, R.array.subcmd_edit, true);
+            mActionMap.put(pResources, Action.SHARE, R.array.subcmd_share, true);
+            mActionMap.put(pResources, Action.CREATE, R.array.subcmd_create, true);
         }
     }
 
@@ -89,7 +89,7 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
     protected void onClean() {
         super.onClean();
 
-        activity.removeActionBox(mContactsFragment);
+        pActivity.removeActionBox(mContactsFragment);
         mContactsFragment = null;
     }
 
@@ -108,7 +108,7 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
 
     @Override
     protected void run() {
-        activity.offerContactCards(this);
+        pActivity.offerContactCards(this);
     }
 
     @Override
@@ -131,7 +131,7 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
                 case EDIT -> edit(contact);
                 case SHARE -> send(contact, null);
             } else if (person != null) offerCreate(person, null);
-            else activity.offerContactCards(this);
+            else pActivity.offerContactCards(this);
         }
         case CREATE -> create(person, null);
         }
@@ -153,7 +153,7 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
         // Todo: dynamic data hint
         if (mAction != Action.SHARE) create(person, details);
         else if (person != null) offerCreate(person, details);
-        else activity.offerContactCards(this);
+        else pActivity.offerContactCards(this);
     }
 
     private void view(Uri contact) {
@@ -181,7 +181,7 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
 
     private void offerCreate(String person, @Nullable String details) {
         String msg = str(R.string.notice_contact_no_match, person);
-        offerDialog(Dialogs.dual(activity, NAME, msg, R.string.create,
+        offerDialog(Dialogs.dual(pActivity, NAME, msg, R.string.create,
                 (dlg, which) -> create(person, details)));
     }
 
@@ -197,7 +197,7 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
     public void provide(Uri contact) {
         switch (mAction) {
         case EDIT -> edit(contact);
-        case SHARE -> send(contact, activity.dataText());
+        case SHARE -> send(contact, pActivity.dataText());
         default -> view(contact);
         }
     }

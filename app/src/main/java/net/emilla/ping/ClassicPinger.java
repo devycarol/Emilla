@@ -17,12 +17,12 @@ import net.emilla.util.Services;
         return --sSlot;
     }
 
-    protected final NotificationManager pingManager;
+    protected final NotificationManager pPingManager;
     private final Notification mPing;
     private final int mSlot;
 
     public ClassicPinger(Context ctx, Notification ping, PingChannel channel) {
-        pingManager = Services.notification(ctx);
+        pPingManager = Services.notification(ctx);
         mPing = ping;
         mSlot = channel.slot;
     }
@@ -31,6 +31,6 @@ import net.emilla.util.Services;
     public /*open*/ void ping() {
         int id = mSlot == PingChannel.SLOT_UNLIMITED ? uniqueSlot() : mSlot;
         // this can be used to edit or remove the notification later.
-        pingManager.notify(id, mPing);
+        pPingManager.notify(id, mPing);
     }
 }

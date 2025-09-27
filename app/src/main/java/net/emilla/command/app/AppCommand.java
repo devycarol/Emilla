@@ -70,25 +70,25 @@ public /*open*/ class AppCommand extends EmillaCommand {
 
     protected static /*open*/ class AppParams implements Params {
 
-        protected final AppEntry app;
+        protected final AppEntry pApp;
 
         protected AppParams(Yielder info) {
-            app = info.app;
+            pApp = info.app;
         }
 
         @Override
         public final String name(Resources res) {
-            return app.label;
+            return pApp.label;
         }
 
         @Override
         public final Drawable icon(Context ctx) {
-            return app.icon(ctx.getPackageManager());
+            return pApp.icon(ctx.getPackageManager());
         }
 
         @Override
         public /*open*/ String title(Resources res) {
-            return Lang.colonConcat(res, R.string.command_app, app.label);
+            return Lang.colonConcat(res, R.string.command_app, pApp.label);
         }
     }
 
@@ -104,11 +104,11 @@ public /*open*/ class AppCommand extends EmillaCommand {
 
         @Override
         public String title(Resources res) {
-            return Lang.colonConcat(res, app.label, mInstruction);
+            return Lang.colonConcat(res, pApp.label, mInstruction);
         }
     }
 
-    protected final AppEntry app;
+    protected final AppEntry pApp;
 
     public AppCommand(AssistActivity act, Yielder info) {
         this(act, new AppParams(info),
@@ -125,7 +125,7 @@ public /*open*/ class AppCommand extends EmillaCommand {
         int imeAction
     ) {
         super(act, params, summary, manual, imeAction);
-        app = params.app;
+        pApp = params.pApp;
     }
 
     @Override
@@ -135,7 +135,7 @@ public /*open*/ class AppCommand extends EmillaCommand {
 
     @Override @Deprecated
     protected final String dupeLabel() {
-        return app.label + " (" + app.pkg + ")";
+        return pApp.label + " (" + pApp.pkg + ")";
     }
 
     @Override
@@ -145,7 +145,7 @@ public /*open*/ class AppCommand extends EmillaCommand {
 
     @Override
     protected final void run() {
-        appSucceed(app.launchIntent());
+        appSucceed(pApp.launchIntent());
     }
 
     @Override

@@ -13,6 +13,6 @@ public final class PingScheduler extends EventScheduler<PingPlan> {
 
     @Override
     protected Intent intentFor(PingPlan plan) {
-        return new PingIntent(context, plan.ping, plan.channel);
+        return new PingIntent(pContext, plan.ping, plan.channel);
     }
 }

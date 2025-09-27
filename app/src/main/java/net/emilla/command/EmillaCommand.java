@@ -166,8 +166,8 @@ public abstract class EmillaCommand {
         return map;
     }
 
-    protected final AssistActivity activity;
-    protected final Resources resources;
+    protected final AssistActivity pActivity;
+    protected final Resources pResources;
     private final Params params;
 
     @StringRes
@@ -178,7 +178,7 @@ public abstract class EmillaCommand {
      * magnifying glass, SEND is usually a paper airplane, and DONE is usually a checkmark. NEXT is
      * the 'tab' function and should be used when the data field is available.
      */
-    protected final int imeAction;
+    protected final int pImeAction;
     // todo: you should be able to long-click the enter key in the command or data field to
     //  submit the command, using an appropriate action icon.
     // requires changing the input method code directly
@@ -196,13 +196,13 @@ public abstract class EmillaCommand {
         @StringRes int manual,
         int imeAction
     ) {
-        this.activity = act;
-        this.resources = act.getResources();
+        pActivity = act;
+        pResources = act.getResources();
 
         this.params = params;
         this.summary = summary;
         this.manual = manual;
-        this.imeAction = imeAction;
+        pImeAction = imeAction;
     }
 
     final EmillaCommand instruct(@Nullable String instruction) {
@@ -227,10 +227,10 @@ public abstract class EmillaCommand {
     }
 
     public final void decorate(boolean setIcon) {
-        activity.updateTitle(title());
-        activity.updateDataHint();
-        activity.setImeAction(imeAction);
-        if (setIcon) activity.setSubmitIcon(icon(), usesAppIcon());
+        pActivity.updateTitle(title());
+        pActivity.updateDataHint();
+        pActivity.setImeAction(pImeAction);
+        if (setIcon) pActivity.setSubmitIcon(icon(), usesAppIcon());
     }
 
     public final void init() {
@@ -259,31 +259,31 @@ public abstract class EmillaCommand {
     }
 
     protected final String str(@StringRes int id) {
-        return resources.getString(id);
+        return pResources.getString(id);
     }
 
     protected final String str(@StringRes int id, Object ... formatArgs) {
-        return resources.getString(id, formatArgs);
+        return pResources.getString(id, formatArgs);
     }
 
     protected final String quantityString(@PluralsRes int id, int quantity) {
-        return resources.getQuantityString(id, quantity, quantity);
+        return pResources.getQuantityString(id, quantity, quantity);
     }
 
     protected final String[] stringArray(@ArrayRes int id) {
-        return resources.getStringArray(id);
+        return pResources.getStringArray(id);
     }
 
     protected final SharedPreferences prefs() {
-        return activity.prefs();
+        return pActivity.prefs();
     }
 
     protected final PackageManager pm() {
-        return activity.getPackageManager();
+        return pActivity.getPackageManager();
     }
 
     protected final ContentResolver contentResolver() {
-        return activity.getContentResolver();
+        return pActivity.getContentResolver();
     }
 
     public final void execute() {
@@ -298,27 +298,27 @@ public abstract class EmillaCommand {
      *             text.
      */
     protected final void toast(CharSequence text) {
-        activity.toast(text);
+        pActivity.toast(text);
     }
 
     protected final void chime(byte id) {
-        activity.chime(id);
+        pActivity.chime(id);
     }
 
     protected final void giveAction(QuickAction action) {
-        activity.addAction(action);
+        pActivity.addAction(action);
     }
 
     protected final void reshowField(@IdRes int id) {
-        activity.reshowField(id);
+        pActivity.reshowField(id);
     }
 
     protected final void hideField(@IdRes int id) {
-        activity.hideField(id);
+        pActivity.hideField(id);
     }
 
     protected final void removeAction(@IdRes int id) {
-        activity.removeAction(id);
+        pActivity.removeAction(id);
     }
 
     /*======================================================================================*
@@ -329,7 +329,7 @@ public abstract class EmillaCommand {
      * Simply close the assistant :)
      */
     protected final void succeed() {
-        activity.succeed(Activity::finishAndRemoveTask);
+        pActivity.succeed(Activity::finishAndRemoveTask);
     }
 
     /**
@@ -339,7 +339,7 @@ public abstract class EmillaCommand {
      * @param success finishes the work of the assistant.
      */
     protected final void succeed(CommandRun success) {
-        activity.succeed(success);
+        pActivity.succeed(success);
     }
 
     /**
@@ -360,15 +360,15 @@ public abstract class EmillaCommand {
      * @param gift gadget for the user.
      */
     protected final void give(CommandRun gift) {
-        activity.give(gift);
+        pActivity.give(gift);
     }
 
     protected final void giveText(@StringRes int msg) {
-        give(new TextGift(activity, name(), msg));
+        give(new TextGift(pActivity, name(), msg));
     }
 
     protected final void giveText(CharSequence msg) {
-        give(new TextGift(activity, name(), msg));
+        give(new TextGift(pActivity, name(), msg));
     }
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
@@ -392,7 +392,7 @@ public abstract class EmillaCommand {
      * @param offering tool for the user.
      */
     protected final void offer(CommandRun offering) {
-        activity.offer(offering);
+        pActivity.offer(offering);
     }
 
     protected final void offerDialog(AlertDialog.Builder builder) {
@@ -405,8 +405,8 @@ public abstract class EmillaCommand {
 
     protected final void offerApp(Intent intent, boolean newTask) {
         if (newTask) intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-        else activity.suppressBackCancellation();
-        activity.startActivity(intent);
+        else pActivity.suppressBackCancellation();
+        pActivity.startActivity(intent);
     }
 
     /**
@@ -416,7 +416,7 @@ public abstract class EmillaCommand {
      * @param failure tool for the user to resolve the issue.
      */
     protected final void fail(CommandRun failure) {
-        activity.fail(failure);
+        pActivity.fail(failure);
     }
 
     protected final void failDialog(
@@ -424,15 +424,15 @@ public abstract class EmillaCommand {
         @StringRes int yesLabel,
         DialogInterface.OnClickListener yesClick
     ) {
-        fail(new DialogRun(Dialogs.dual(activity, name(), msg, yesLabel, yesClick)));
+        fail(new DialogRun(Dialogs.dual(pActivity, name(), msg, yesLabel, yesClick)));
     }
 
     protected final void failMessage(@StringRes int msg) {
-        fail(new MessageFailure(activity, name(), msg));
+        fail(new MessageFailure(pActivity, name(), msg));
     }
 
     protected final void failMessage(CharSequence msg) {
-        fail(new MessageFailure(activity, name(), msg));
+        fail(new MessageFailure(pActivity, name(), msg));
     }
 
     /*==========================*
@@ -444,7 +444,7 @@ public abstract class EmillaCommand {
     }
 
     public final String name() {
-        return params.name(resources);
+        return params.name(pResources);
     }
 
     @Deprecated
@@ -462,11 +462,11 @@ public abstract class EmillaCommand {
     protected abstract boolean shouldLowercase();
 
     protected final CharSequence title() {
-        return params.title(resources);
+        return params.title(pResources);
     }
 
     protected final Drawable icon() {
-        return mIcon == null ? mIcon = params.icon(activity) : mIcon;
+        return mIcon == null ? mIcon = params.icon(pActivity) : mIcon;
     }
 
     /**

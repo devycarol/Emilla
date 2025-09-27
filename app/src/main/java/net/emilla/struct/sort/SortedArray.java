@@ -18,21 +18,21 @@ import java.util.NoSuchElementException;
  */
 public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E>, IndexedStruct<E> {
 
-    protected E[] mData;
-    protected int mSize;
+    protected E[] pData;
+    protected int pSize;
 
     public SortedArray(int initialCapacity) {
         if (initialCapacity < 0) throw new IllegalArgumentException();
-        mData = newArray(initialCapacity);
+        pData = newArray(initialCapacity);
     }
 
     public SortedArray(Collection<E> c) {
-        mData = newArray(c.size());
+        pData = newArray(c.size());
         for (E val : c) addInternal(val);
     }
 
     public <T> SortedArray(Collection<T> c, Function<T, E> converter) {
-        mData = newArray(c.size());
+        pData = newArray(c.size());
         for (T val : c) addInternal(converter.apply(val));
     }
 
@@ -42,8 +42,8 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
     }
 
     private void ensureCapacity() {
-        if (mSize == mData.length) {
-            mData = Arrays.copyOf(mData, mData.length * 3 / 2 + 1);
+        if (pSize == pData.length) {
+            pData = Arrays.copyOf(pData, pData.length * 3 / 2 + 1);
         }
     }
 
@@ -60,27 +60,27 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
 
     private int addInternal(E val) {
         int pos;
-        if (mSize == 0 || mData[mSize - 1].compareTo(val) < 0) {
-            pos = mSize;
+        if (pSize == 0 || pData[pSize - 1].compareTo(val) < 0) {
+            pos = pSize;
         } else {
             pos = indexFor(val);
-            System.arraycopy(mData, pos, mData, pos + 1, mSize - pos);
+            System.arraycopy(pData, pos, pData, pos + 1, pSize - pos);
         }
 
-        mData[pos] = val;
-        ++mSize;
+        pData[pos] = val;
+        ++pSize;
 
         return pos;
     }
 
     @Override
     public E get(int index) {
-        if (index >= mSize) {
+        if (index >= pSize) {
             throw new IndexOutOfBoundsException(
-                "Index " + index + " out of bounds for size " + mSize + "."
+                "Index " + index + " out of bounds for size " + pSize + "."
             );
         }
-        return mData[index];
+        return pData[index];
     }
 
     public boolean contains(E val) {
@@ -90,7 +90,7 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
     @Nullable
     public E retrieve(E val) {
         int pos = indexOf(val);
-        return pos >= 0 ? mData[pos] : null;
+        return pos >= 0 ? pData[pos] : null;
     }
 
     @Nullable
@@ -101,12 +101,12 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
         int repl = indexFor(replacement);
         if (pos < repl) {
             int shiftLen = repl - pos - 1;
-            System.arraycopy(mData, pos + 1, mData, pos, shiftLen);
+            System.arraycopy(pData, pos + 1, pData, pos, shiftLen);
         } else if (repl < pos) {
             int shiftLen = pos - repl - 1;
-            System.arraycopy(mData, repl, mData, repl + 1, shiftLen);
+            System.arraycopy(pData, repl, pData, repl + 1, shiftLen);
         }
-        mData[repl] = replacement;
+        pData[repl] = replacement;
 
         return new IndexWindow(pos, repl);
     }
@@ -122,9 +122,9 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
         int pos = indexOf(val);
 
         if (pos >= 0) {
-            --mSize;
-            System.arraycopy(mData, pos + 1, mData, pos, mSize - pos);
-            mData[mSize] = null;
+            --pSize;
+            System.arraycopy(pData, pos + 1, pData, pos, pSize - pos);
+            pData[pSize] = null;
         }
 
         return pos;
@@ -137,11 +137,11 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
 
     private int indexOf(E val) {
         int lo = 0;
-        int hi = mSize - 1;
+        int hi = pSize - 1;
 
         while (lo <= hi) {
             int mid = lo + hi >>> 1;
-            int cmp = mData[mid].compareTo(val);
+            int cmp = pData[mid].compareTo(val);
 
             if (cmp < 0) lo = mid + 1;
             else if (cmp > 0) hi = mid - 1;
@@ -153,11 +153,11 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
 
     protected int arbitraryIndexOf(Comparable<E> searcher) {
         int lo = 0;
-        int hi = mSize - 1;
+        int hi = pSize - 1;
 
         while (lo <= hi) {
             int mid = lo + hi >>> 1;
-            int cmp = searcher.compareTo(mData[mid]);
+            int cmp = searcher.compareTo(pData[mid]);
 
             if (cmp > 0) lo = mid + 1;
             else if (cmp < 0) hi = mid - 1;
@@ -169,16 +169,16 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
 
     @Override
     public int size() {
-        return mSize;
+        return pSize;
     }
 
     @Override
     public boolean isEmpty() {
-        return mSize == 0;
+        return pSize == 0;
     }
 
     public void trimToSize() {
-        mData = Arrays.copyOf(mData, mSize);
+        pData = Arrays.copyOf(pData, pSize);
     }
 
     @Override
@@ -188,13 +188,13 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
 
             @Override
             public boolean hasNext() {
-                return pos < mSize;
+                return pos < pSize;
             }
 
             @Override
             public E next() {
                 if (!hasNext()) throw new NoSuchElementException();
-                return mData[pos++];
+                return pData[pos++];
             }
         };
     }
@@ -229,10 +229,10 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
         private final int size;
 
         protected SparseWindow(Predicate<E> takeIf) {
-            var indices = new int[mSize];
+            var indices = new int[pSize];
             int size = 0;
-            for (int i = 0; i < mSize; ++i) {
-                if (takeIf.test(mData[i])) {
+            for (int i = 0; i < pSize; ++i) {
+                if (takeIf.test(pData[i])) {
                     indices[size++] = i;
                 }
             }
@@ -242,15 +242,15 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
         }
 
         protected SparseWindow(Predicate<E> takeIf, IndexWindow exclude) {
-            var indices = new int[mSize];
+            var indices = new int[pSize];
             int size = 0;
             for (int i = 0; i < exclude.start; ++i) {
-                if (takeIf.test(mData[i])) {
+                if (takeIf.test(pData[i])) {
                     indices[size++] = i;
                 }
             }
-            for (int i = exclude.end; i < mSize; ++i) {
-                if (takeIf.test(mData[i])) {
+            for (int i = exclude.end; i < pSize; ++i) {
+                if (takeIf.test(pData[i])) {
                     indices[size++] = i;
                 }
             }
@@ -294,7 +294,7 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
 
         @Override
         public E get(int index) {
-            return mData[indices[index]];
+            return pData[indices[index]];
         }
 
         @Override

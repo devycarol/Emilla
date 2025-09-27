@@ -143,11 +143,11 @@ public final class Lines implements Iterable<String> {
     private /*inner*/ sealed class LineIterator implements Iterator<String>
             permits TrimmingLineIterator {
 
-        protected int pos = mStart;
+        protected int pPos = mStart;
 
         @Override
         public final boolean hasNext() {
-            return pos < mLen;
+            return pPos < mLen;
         }
 
         @Override
@@ -156,8 +156,8 @@ public final class Lines implements Iterable<String> {
             boolean escape = false;
 
             char c;
-            while (pos < mLen) {
-                switch (c = mText.charAt(pos)) {
+            while (pPos < mLen) {
+                switch (c = mText.charAt(pPos)) {
                 case '\\' -> {
                     if (escape) {
                         sb.append('\\');
@@ -179,7 +179,7 @@ public final class Lines implements Iterable<String> {
                     sb.append(c);
                     escape = false;
                 }}
-                ++pos;
+                ++pPos;
             }
 
             // End of text reached
@@ -187,7 +187,7 @@ public final class Lines implements Iterable<String> {
         }
 
         protected /*open*/ void advanceToNextLine() {
-            ++pos; // not worrying about spaces
+            ++pPos; // not worrying about spaces
         }
 
         protected /*open*/ String makeLine(StringBuilder sb) {
@@ -199,9 +199,9 @@ public final class Lines implements Iterable<String> {
 
         @Override
         protected void advanceToNextLine() {
-            do ++pos;
+            do ++pPos;
             // advance past the newline
-            while (pos < mLen && Chars.isNonLineSpace(mText.charAt(pos)));
+            while (pPos < mLen && Chars.isNonLineSpace(mText.charAt(pPos)));
             // continue advancing as needed
         }
 
