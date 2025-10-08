@@ -31,7 +31,7 @@ public final class EmillaA11yService extends AccessibilityService {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private /*inner*/ class AssistButtonCallback extends AccessibilityButtonCallback {
+    private /*inner*/ final class AssistButtonCallback extends AccessibilityButtonCallback {
 
         @Override
         public void onClicked(AccessibilityButtonController controller) {
