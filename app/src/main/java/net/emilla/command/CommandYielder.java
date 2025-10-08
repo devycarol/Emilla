@@ -8,19 +8,15 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.lang.Words;
 import net.emilla.struct.trie.TrieMap;
 
-/**
- * <p>
- * This container enables storage of commands in the {@link TrieMap} data structure.</p>
- * <p>
- * It contains a lazily-initialized {@link EmillaCommand} generated upon being yielded by a
- * {@link CommandMap}.</p>
- * <p>
- * Implementations should provide the command's name and aliases, which are used as its phrase-keys
- * for the trie.</p>
- * <p>
- * They are required to report whether the command uses any instruction input via the
- * {@code isPrefixable()} method.</p>
- */
+/// This container enables storage of commands in the [TrieMap] data structure.
+///
+/// It contains a lazily-initialized [EmillaCommand] generated upon being yielded by a [CommandMap].
+///
+/// Implementations should provide the command's name and aliases, which are used as its phrase-keys
+/// for the trie.
+///
+/// They are required to report whether the command uses any instruction input via the
+/// `isPrefixable()` method.
 public abstract class CommandYielder implements TrieMap.Value<CommandYielder> {
 
     private EmillaCommand mCommand;
@@ -29,15 +25,12 @@ public abstract class CommandYielder implements TrieMap.Value<CommandYielder> {
         return mCommand == null ? mCommand = makeCommand(act) : mCommand;
     }
 
-    /**
-     * The yielder's command with user instruction text applied.
-     *
-     * @param act used to build the command, if necessary.
-     * @param commandPhrase determines substring of the full command to use as the command
-     *                      instruction, upon having its position set by the TrieMap's {@code get()}
-     *                      method.
-     * @return the command, with instruction text from {@code commandPhrase}.
-     */
+    /// The yielder's command with user instruction text applied.
+    ///
+    /// @param act used to build the command, if necessary.
+    /// @param commandPhrase determines substring of the full command to use as the command
+    /// instruction, upon having its position set by the TrieMap's `get()` method.
+    /// @return the command, with instruction text from `commandPhrase`.
     final EmillaCommand command(AssistActivity act, Words commandPhrase) {
         if (!isPrefixable()) return mCommand == null ? mCommand = makeCommand(act) : mCommand;
 
@@ -48,15 +41,12 @@ public abstract class CommandYielder implements TrieMap.Value<CommandYielder> {
         return (mCommand == null ? mCommand = makeCommand(act) : mCommand).instruct(instruction);
     }
 
-    /**
-     * <p>
-     * Generates a new command instance.</p>
-     * <p>
-     * This method is called upon the yielder's first retrieval from a {@link CommandMap}.</p>
-     *
-     * @param act used to build the command.
-     * @return a new command specified by the yielder implementation.
-     */
+    /// Generates a new command instance.
+    ///
+    /// This method is called upon the yielder's first retrieval from a [CommandMap].
+    ///
+    /// @param act used to build the command.
+    /// @return a new command specified by the yielder implementation.
     @RestrictTo(SUBCLASSES)
     protected abstract EmillaCommand makeCommand(AssistActivity act);
 

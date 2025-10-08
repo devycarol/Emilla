@@ -105,12 +105,11 @@ public final class Lang {
         };
     }
 
-    /**
-     * Constructs a dice set from dice notation.
-     *
-     * @param roll a dice notation string, e.g. "d4 + 2d6".
-     * @return the set of dices represented by {@code roll}.
-     */
+    /// Constructs a dice set from dice notation.
+    ///
+    /// @param roll a dice notation string, e.g. "d4 + 2d6".
+    /// @param errorTitle title of the error pop-up for ill-formatted dice.
+    /// @return the set of dices represented by `roll`.
     public static Dices dices(String roll, @StringRes int errorTitle) {
         return switch (-1) {
             default -> DicesEN_US.instance(roll, errorTitle);

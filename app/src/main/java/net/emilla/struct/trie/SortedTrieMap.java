@@ -23,13 +23,11 @@ public final class SortedTrieMap<K extends Comparable<K>, V extends TrieMap.Valu
         return new SortedTrieNode<>();
     }
 
-    /**
-     * Sorted list of elements that start with a given prefix.
-     *
-     * @param prefix phrase to get prefixed values of.
-     * @return list of elements that start with {@code prefix} in sorted depth-first order, or
-     *         {@code null} if no such values exist.
-     */
+    /// Sorted list of elements that start with a given prefix.
+    ///
+    /// @param prefix phrase to get prefixed values of.
+    /// @return list of elements that start with `prefix` in sorted depth-first order, or `null` if
+    /// no such values exist.
     @Nullable
     public List<V> elementsWithPrefix(Phrase<K, ?> prefix) {
         TrieNode<K, V> current = root;

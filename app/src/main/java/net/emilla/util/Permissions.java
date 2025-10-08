@@ -27,17 +27,14 @@ public final class Permissions {
     public static final String PINGS = POST_NOTIFICATIONS;
     public static final String TASKER = TaskerIntent.PERMISSION_RUN_TASKS;
 
-    /**
-     * <p>
-     * Performs the given action if phone call permission is granted and triggers request flow if
-     * not. If the user then grants permission, the action will be performed at that point.</p>
-     * <p>
-     * If the system permission request is suppressed, a fail dialog will link the user to the app
-     * info screen where they can manually grant permission.</p>
-     *
-     * @param act is used to perform permission checks and construct dialogs as needed.
-     * @param onGrant action to perform if permission granted.
-     */
+    /// Performs the given action if phone call permission is granted and triggers request flow if
+    /// not. If the user then grants permission, the action will be performed at that point.
+    ///
+    /// If the system permission request is suppressed, a fail dialog will link the user to the app
+    /// info screen where they can manually grant permission.
+    ///
+    /// @param act is used to perform permission checks and construct dialogs as needed.
+    /// @param onGrant action to perform if permission granted.
     public static void withCall(AssistActivity act, Runnable onGrant) {
         if (call(act)) {
             onGrant.run();
@@ -48,17 +45,14 @@ public final class Permissions {
         else act.fail(new PermissionFailure(act, R.string.perm_calling));
     }
 
-    /**
-     * <p>
-     * Checks if phone call permission is granted and triggers request flow if not.</p>
-     * <p>
-     * If the system permission request is suppressed, a fail dialog will link the user to the app
-     * info screen where they can manually grant permission.</p>
-     *
-     * @param act is used to perform permission checks and construct dialogs as needed.
-     * @param onGrant optional action to perform if permission granted.
-     * @return true if calling permission is granted, false if not.
-     */
+    /// Checks if phone call permission is granted and triggers request flow if not.
+    ///
+    /// If the system permission request is suppressed, a fail dialog will link the user to the app
+    /// info screen where they can manually grant permission.
+    ///
+    /// @param act is used to perform permission checks and construct dialogs as needed.
+    /// @param onGrant optional action to perform if permission granted.
+    /// @return true if calling permission is granted, false if not.
     public static boolean callFlow(AssistActivity act, @Nullable Runnable onGrant) {
         if (call(act)) return true;
 
@@ -68,18 +62,15 @@ public final class Permissions {
         return false;
     }
 
-    /**
-     * <p>
-     * Checks if phone call permission is granted and triggers request flow if not.</p>
-     * <p>
-     * If permission is denied and the request dialog suppressed, the {@code onNoPrompt} function
-     * will run.</p>
-     *
-     * @param act is used to perform permission checks and requests as needed.
-     * @param onGrant optional action to perform if permission granted.
-     * @param onNoPrompt action to perform if permission is denied and can't be requested.
-     * @return true if calling permission is granted, false if not.
-     */
+    /// Checks if phone call permission is granted and triggers request flow if not.
+    ///
+    /// If permission is denied and the request dialog suppressed, the `onNoPrompt` function will
+    /// run.
+    ///
+    /// @param act is used to perform permission checks and requests as needed.
+    /// @param onGrant optional action to perform if permission granted.
+    /// @param onNoPrompt action to perform if permission is denied and can't be requested.
+    /// @return true if calling permission is granted, false if not.
     public static boolean callFlow(
         AssistActivity act,
         @Nullable Runnable onGrant,
@@ -93,43 +84,35 @@ public final class Permissions {
         return false;
     }
 
-    /**
-     * Checks if phone call permission is granted.
-     *
-     * @param ctx is used to perform permission checks.
-     * @return true if calling permission is granted, false if not.
-     * @see Permissions#callFlow(AssistActivity, Runnable)
-     */
+    /// Checks if phone call permission is granted.
+    ///
+    /// @param ctx is used to perform permission checks.
+    /// @return true if calling permission is granted, false if not.
+    /// @see Permissions#callFlow(AssistActivity, Runnable)
     public static boolean call(Context ctx) {
         return Build.VERSION.SDK_INT < Build.VERSION_CODES.M
             || ctx.checkSelfPermission(CALL) == PERMISSION_GRANTED;
     }
 
-    /**
-     * <p>
-     * Checks if the phone call permission prompt is available.</p>
-     * <p>
-     * This should only be used when permission isn't granted.</p>
-     *
-     * @param act is used to perform permission checks.
-     * @return true if the call prompt is available, false otherwise.
-     */
+    /// Checks if the phone call permission prompt is available.
+    ///
+    /// This should only be used when permission isn't granted.
+    ///
+    /// @param act is used to perform permission checks.
+    /// @return true if the call prompt is available, false otherwise.
     @RequiresApi(api = Build.VERSION_CODES.M)
     private static boolean callPrompt(Activity act) {
         return prompt(act, CALL);
     }
 
-    /**
-     * <p>
-     * Performs the given action if read/write contacts permission is granted and triggers request
-     * flow if not. If the user then grants permission, the action will be performed at that point.</p>
-     * <p>
-     * If the system permission request is suppressed, a fail dialog will link the user to the app
-     * info screen where they can manually grant permission.</p>
-     *
-     * @param act is used to perform permission checks and construct dialogs as needed.
-     * @param onGrant action to perform if permission granted.
-     */
+    /// Performs the given action if read/write contacts permission is granted and triggers request
+    /// flow if not. If the user then grants permission, the action will be performed at that point.
+    ///
+    /// If the system permission request is suppressed, a fail dialog will link the user to the app
+    /// info screen where they can manually grant permission.
+    ///
+    /// @param act is used to perform permission checks and construct dialogs as needed.
+    /// @param onGrant action to perform if permission granted.
     public static void withContacts(AssistActivity act, Runnable onGrant) {
         if (contacts(act)) {
             onGrant.run();
@@ -140,19 +123,16 @@ public final class Permissions {
         else act.fail(new PermissionFailure(act, R.string.perm_contacts));
     }
 
-    /**
-     * <p>
-     * Performs the given action if read/write contacts permission is granted and triggers request
-     * flow if not. If the user then grants permission, the action will be performed at that point.</p>
-     * <p>
-     * If permission is denied and the request dialog suppressed, the {@code onNoPrompt} function
-     * will run.</p>
-     *
-     * @param act is used to perform permission checks and construct dialogs as needed.
-     * @param onGrant action to perform if permission granted.
-     * @param onNoPrompt action to perform if permission is denied and can't be requested.
-     * @param afterGrant action to perform if permission is requested and granted.
-     */
+    /// Performs the given action if read/write contacts permission is granted and triggers request
+    /// flow if not. If the user then grants permission, the action will be performed at that point.
+    ///
+    /// If permission is denied and the request dialog suppressed, the `onNoPrompt` function will
+    /// run.
+    ///
+    /// @param act is used to perform permission checks and construct dialogs as needed.
+    /// @param onGrant action to perform if permission granted.
+    /// @param onNoPrompt action to perform if permission is denied and can't be requested.
+    /// @param afterGrant action to perform if permission is requested and granted.
     public static void withContacts(
         AssistActivity act,
         Runnable onGrant,
@@ -171,17 +151,15 @@ public final class Permissions {
         else onNoPrompt.run();
     }
 
-    /**
-     * <p>
-     * Checks if read/write contacts permission is granted and triggers request flow if not.</p>
-     * <p>
-     * If the system permission request is suppressed, a fail dialog will link the user to the app
-     * info screen where they can manually grant permission.</p>
-     *
-     * @param act is used to perform permission checks and construct dialogs as needed.
-     * @param onGrant optional action to perform if permission granted.
-     * @return true if contacts permission is granted, false if not.
-     */
+    ///
+    /// Checks if read/write contacts permission is granted and triggers request flow if not.
+    ///
+    /// If the system permission request is suppressed, a fail dialog will link the user to the app
+    /// info screen where they can manually grant permission.
+    ///
+    /// @param act is used to perform permission checks and construct dialogs as needed.
+    /// @param onGrant optional action to perform if permission granted.
+    /// @return true if contacts permission is granted, false if not.
     public static boolean contactsFlow(AssistActivity act, @Nullable Runnable onGrant) {
         if (contacts(act)) return true;
 
@@ -191,18 +169,15 @@ public final class Permissions {
         return false;
     }
 
-    /**
-     * <p>
-     * Checks if read/write contacts permission is granted and triggers request flow if not.</p>
-     * <p>
-     * If permission is denied and the request dialog suppressed, the {@code onNoPrompt} function
-     * will run.</p>
-     *
-     * @param act is used to perform permission checks and requests as needed.
-     * @param onGrant optional action to perform if permission granted.
-     * @param onNoPrompt action to perform if permission is denied and can't be requested.
-     * @return true if contacts permission is granted, false if not.
-     */
+    /// Checks if read/write contacts permission is granted and triggers request flow if not.
+    ///
+    /// If permission is denied and the request dialog suppressed, the `onNoPrompt` function will
+    /// run.
+    ///
+    /// @param act is used to perform permission checks and requests as needed.
+    /// @param onGrant optional action to perform if permission granted.
+    /// @param onNoPrompt action to perform if permission is denied and can't be requested.
+    /// @return true if contacts permission is granted, false if not.
     public static boolean contactsFlow(
         AssistActivity act,
         @Nullable Runnable onGrant,
@@ -216,45 +191,37 @@ public final class Permissions {
         return false;
     }
 
-    /**
-     * Checks if read/write contacts permission is granted.
-     *
-     * @param ctx is used to perform permission checks.
-     * @return true if contacts permission is granted, false if not.
-     * @see Permissions#contactsFlow(AssistActivity, Runnable)
-     */
+    /// Checks if read/write contacts permission is granted.
+    ///
+    /// @param ctx is used to perform permission checks.
+    /// @return true if contacts permission is granted, false if not.
+    /// @see Permissions#contactsFlow(AssistActivity, Runnable)
     public static boolean contacts(Context ctx) {
         return Build.VERSION.SDK_INT < Build.VERSION_CODES.M
             || ctx.checkSelfPermission(READ_CONTACTS) == PERMISSION_GRANTED
             && ctx.checkSelfPermission(WRITE_CONTACTS) == PERMISSION_GRANTED;
     }
 
-    /**
-     * <p>
-     * Checks if the read/write contacts permission prompt is available.</p>
-     * <p>
-     * This should only be used when permission isn't granted.</p>
-     *
-     * @param act is used to perform permission checks.
-     * @return true if the contacts prompt is available, false otherwise.
-     */
+    /// Checks if the read/write contacts permission prompt is available.
+    ///
+    /// This should only be used when permission isn't granted.
+    ///
+    /// @param act is used to perform permission checks.
+    /// @return true if the contacts prompt is available, false otherwise.
     @RequiresApi(api = Build.VERSION_CODES.M)
     private static boolean contactsPrompt(Activity act) {
         return prompt(act, READ_CONTACTS)
             && prompt(act, WRITE_CONTACTS);
     }
 
-    /**
-     * <p>
-     * Performs the given action if notifications permission is granted and triggers request flow if
-     * not. If the user then grants permission, the action will be performed at that point.</p>
-     * <p>
-     * If the system permission request is suppressed, a fail dialog will link the user to the app
-     * info screen where they can manually grant permission.</p>
-     *
-     * @param act is used to perform permission checks and construct dialogs as needed.
-     * @param onGrant action to perform if permission granted.
-     */
+    /// Performs the given action if notifications permission is granted and triggers request flow
+    /// if not. If the user then grants permission, the action will be performed at that point.
+    ///
+    /// If the system permission request is suppressed, a fail dialog will link the user to the app
+    /// info screen where they can manually grant permission.
+    ///
+    /// @param act is used to perform permission checks and construct dialogs as needed.
+    /// @param onGrant action to perform if permission granted.
     public static void withPings(AssistActivity act, Runnable onGrant) {
         if (pings(act)) {
             onGrant.run();
@@ -265,42 +232,34 @@ public final class Permissions {
         else act.fail(new PermissionFailure(act, R.string.perm_notifications));
     }
 
-    /**
-     * Checks if notifications permission is granted.
-     *
-     * @param ctx is used to perform permission checks.
-     * @return true if contacts permission is granted, false if not.
-     */
+    /// Checks if notifications permission is granted.
+    ///
+    /// @param ctx is used to perform permission checks.
+    /// @return true if contacts permission is granted, false if not.
     public static boolean pings(Context ctx) {
         return Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU
             || ctx.checkSelfPermission(PINGS) == PERMISSION_GRANTED;
     }
 
-    /**
-     * <p>
-     * Checks if the notifications permission prompt is available.</p>
-     * <p>
-     * This should only be used when permission isn't granted.</p>
-     *
-     * @param act is used to perform permission checks.
-     * @return true if the contacts prompt is available, false otherwise.
-     */
+    /// Checks if the notifications permission prompt is available.
+    ///
+    /// This should only be used when permission isn't granted.
+    ///
+    /// @param act is used to perform permission checks.
+    /// @return true if the contacts prompt is available, false otherwise.
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     private static boolean pingsPrompt(Activity act) {
         return prompt(act, PINGS);
     }
 
-    /**
-     * <p>
-     * Checks if run Tasker tasks permission is granted and triggers request flow if not.</p>
-     * <p>
-     * If the system permission request is suppressed, a fail dialog will link the user to the app
-     * info screen where they can manually grant permission.</p>
-     *
-     * @param act is used to perform permission checks and construct dialogs as needed.
-     * @param onGrant optional action to perform if permission granted.
-     * @return true if Tasker permission is granted, false if not.
-     */
+    /// Checks if run Tasker tasks permission is granted and triggers request flow if not.
+    ///
+    /// If the system permission request is suppressed, a fail dialog will link the user to the app
+    /// info screen where they can manually grant permission.
+    ///
+    /// @param act is used to perform permission checks and construct dialogs as needed.
+    /// @param onGrant optional action to perform if permission granted.
+    /// @return true if Tasker permission is granted, false if not.
     public static boolean taskerFlow(AssistActivity act, @Nullable Runnable onGrant) {
         if (tasker(act)) return true;
 
@@ -310,18 +269,15 @@ public final class Permissions {
         return false;
     }
 
-    /**
-     * <p>
-     * Checks if run Tasker tasks permission is granted and triggers request flow if not.</p>
-     * <p>
-     * If permission is denied and the request dialog suppressed, the {@code onNoPrompt} function
-     * will run.</p>
-     *
-     * @param act is used to perform permission checks and requests as needed.
-     * @param onGrant optional action to perform if permission granted.
-     * @param onNoPrompt action to perform if permission is denied and can't be requested.
-     * @return true if Tasker permission is granted, false if not.
-     */
+    /// Checks if run Tasker tasks permission is granted and triggers request flow if not.
+    ///
+    /// If permission is denied and the request dialog suppressed, the `onNoPrompt` function will
+    /// run.
+    ///
+    /// @param act is used to perform permission checks and requests as needed.
+    /// @param onGrant optional action to perform if permission granted.
+    /// @param onNoPrompt action to perform if permission is denied and can't be requested.
+    /// @return true if Tasker permission is granted, false if not.
     public static boolean taskerFlow(
         AssistActivity act,
         @Nullable Runnable onGrant,
@@ -335,27 +291,22 @@ public final class Permissions {
         return false;
     }
 
-    /**
-     * Checks if run Tasker tasks permission is granted.
-     *
-     * @param ctx is used to perform permission checks.
-     * @return true if Tasker permission is granted, false if not.
-     * @see Permissions#taskerFlow(AssistActivity, Runnable)
-     */
+    /// Checks if run Tasker tasks permission is granted.
+    ///
+    /// @param ctx is used to perform permission checks.
+    /// @return true if Tasker permission is granted, false if not.
+    /// @see Permissions#taskerFlow(AssistActivity, Runnable)
     public static boolean tasker(Context ctx) {
         return Build.VERSION.SDK_INT < Build.VERSION_CODES.M
             || ctx.checkSelfPermission(TASKER) == PERMISSION_GRANTED;
     }
 
-    /**
-     * <p>
-     * Checks if the run Tasker tasks permission prompt is available.</p>
-     * <p>
-     * This should only be used when permission isn't granted.</p>
-     *
-     * @param act is used to perform permission checks.
-     * @return true if the Tasker prompt is available, false otherwise.
-     */
+    /// Checks if the run Tasker tasks permission prompt is available.
+    ///
+    /// This should only be used when permission isn't granted.
+    ///
+    /// @param act is used to perform permission checks.
+    /// @return true if the Tasker prompt is available, false otherwise.
     @RequiresApi(api = Build.VERSION_CODES.M)
     private static boolean taskerPrompt(Activity act) {
         return prompt(act, TASKER);

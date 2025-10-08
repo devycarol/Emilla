@@ -11,11 +11,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-/**
- * A simple growable array that sorts at insertion. This structure is not size-overflow safe!
- *
- * @param <E> comparable type for the array elements.
- */
+/// A simple growable array that sorts at insertion. This structure is not size-overflow safe!
+///
+/// @param <E> comparable type for the array elements.
 public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E>, IndexedStruct<E> {
 
     protected E[] pData;
@@ -47,12 +45,10 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
         }
     }
 
-    /**
-     * Adds {@code val} to the array, maintaining sorted order.
-     *
-     * @param val value to insert.
-     * @return position the item was inserted at.
-     */
+    /// Adds `val` to the array, maintaining sorted order.
+    ///
+    /// @param val value to insert.
+    /// @return position the item was inserted at.
     public int add(E val) {
         ensureCapacity();
         return addInternal(val);
@@ -111,13 +107,11 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
         return new IndexWindow(pos, repl);
     }
 
-    /**
-     * Removes {@code val} from the array.
-     *
-     * @param val value to remove.
-     * @return the former position of the value, or -index - 1 of where the value would have been
-     *         if the value wasn't found
-     */
+    /// Removes `val` from the array.
+    ///
+    /// @param val value to remove.
+    /// @return the former position of the value, or -index - 1 of where the value would have been
+    /// if the value wasn't found
     public int remove(E val) {
         int pos = indexOf(val);
 

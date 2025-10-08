@@ -19,15 +19,12 @@ public final class CommandMap {
         mTrieMap.put(Lang.words(command), yielder);
     }
 
-    /**
-     * <p>
-     * Tries to map {@code alias} to a command associated with {@code commandName}.</p>
-     * <p>
-     * If no such command is in the map, the alias is discarded.</p>
-     *
-     * @param alias name for the custom command.
-     * @param commandName exact name of command to map {@code alias} to.
-     */
+    /// Tries to map `alias` to a command associated with `commandName`.
+    ///
+    /// If no such command is in the map, the alias is discarded.
+    ///
+    /// @param alias name for the custom command.
+    /// @param commandName exact name of command to map `alias` to.
     void putCustom(String alias, String commandName) {
         CommandYielder exact = mTrieMap.getExact(Lang.words(commandName));
         if (exact != null) mTrieMap.put(Lang.words(alias), exact);

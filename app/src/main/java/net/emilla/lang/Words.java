@@ -10,17 +10,14 @@ import net.emilla.util.Strings;
 
 import java.util.Iterator;
 
-/**
- * <p>
- * This class tokenizes strings into their constituent words, allowing iteration. Word-separation
- * varies by language.</p>
- * <p>
- * The {@code Iterator.next()} methods always yield a lowercase string. This is to ensure
- * case-insensitivity in the TrieMap data structure, for which this class is a valid phrase.</p>
- * <p>
- * Note: punctuations may be included in a "word". This construct is chiefly concerned with the
- * means of word-separation.</p>
- */
+/// This class tokenizes strings into their constituent words, allowing iteration. Word-separation
+/// varies by language.
+///
+/// The `Iterator.next()` methods always yield a lowercase string. This is to ensure
+/// case-insensitivity in the TrieMap data structure, for which this class is a valid phrase.
+///
+/// Note: punctuations may be included in a "word". This construct is chiefly concerned with the
+/// means of word-separation.
 public abstract class Words implements TrieMap.Phrase<String, String> {
 
     @RestrictTo(SUBCLASSES)

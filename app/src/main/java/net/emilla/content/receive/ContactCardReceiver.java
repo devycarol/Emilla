@@ -18,8 +18,8 @@ public interface ContactCardReceiver extends ContactReceiver {
         provide(ContactsContract.Contacts.getLookupUri(id, key));
     }
 
-    /**
-     * @param contact is provided to the object.
-     */
+    /// Provides the receiver with a contact.
+    ///
+    /// @param contact is provided to the receiver.
     void provide(Uri contact);
 }

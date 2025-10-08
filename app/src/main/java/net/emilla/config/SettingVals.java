@@ -221,13 +221,11 @@ public final class SettingVals {
         };
     }
 
-    /**
-     * The user's preferred chimer for audio feedback.
-     *
-     * @param appCtx it's important to use the application context to avoid memory leaks!
-     * @param prefs used to build the chimer from user settings.
-     * @return the user's chosen chimer.
-     */
+    /// The user's preferred chimer for audio feedback.
+    ///
+    /// @param appCtx it's important to use the application context to avoid memory leaks!
+    /// @param prefs used to build the chimer from user settings.
+    /// @return the user's chosen chimer.
     public static Chimer chimer(Context appCtx, SharedPreferences prefs) {
         return switch (soundSet(prefs)) {
             case Chimer.NONE -> new Silence();

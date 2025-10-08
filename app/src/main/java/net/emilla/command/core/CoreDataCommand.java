@@ -41,10 +41,9 @@ public abstract class CoreDataCommand extends CoreCommand implements DataCommand
         return mHint;
     }
 
-    /**
-     * Executes the command with data. This should only be called externally!
-     * @param data contents of command data field.
-     */
+    /// Executes the command with data. This should only be called externally!
+    ///
+    /// @param data contents of command data field.
     @Override
     public final void execute(String data) {
         String instruction = instruction();

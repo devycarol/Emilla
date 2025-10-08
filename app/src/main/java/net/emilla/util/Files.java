@@ -32,14 +32,12 @@ public final class Files {
 
     public static final class MimeType {
 
-        /**
-         * Returns the union of all MIME types in a sequence of files. The union of different
-         * type-parts is the wildcard, so this will broaden the scope of the MIME type beyond the
-         * simple union.
-         *
-         * @param fileUris files to get MIME types from.
-         * @return the union of all provided MIME types.
-         */
+        /// Returns the union of all MIME types in a sequence of files. The union of different
+        /// type-parts is the wildcard, so this will broaden the scope of the MIME type beyond the
+        /// simple union.
+        ///
+        /// @param fileUris files to get MIME types from.
+        /// @return the union of all provided MIME types.
         @Deprecated
         public static String of(Iterable<Uri> fileUris, Context ctx) {
             Iterator<Uri> itr = fileUris.iterator();
@@ -50,15 +48,13 @@ public final class Files {
             return type;
         }
 
-        /**
-         * Returns the union of all MIME types in a sequence of files. The union of different
-         * type-parts is the wildcard, so this will broaden the scope of the MIME type beyond the
-         * simple union.
-         *
-         * @param type base type to start with.
-         * @param fileUris files to get MIME types from.
-         * @return the union of all provided MIME types.
-         */
+        /// Returns the union of all MIME types in a sequence of files. The union of different
+        /// type-parts is the wildcard, so this will broaden the scope of the MIME type beyond the
+        /// simple union.
+        ///
+        /// @param type base type to start with.
+        /// @param fileUris files to get MIME types from.
+        /// @return the union of all provided MIME types.
         @Deprecated
         public static String of(String type, Iterable<Uri> fileUris, Context ctx) {
             for (Uri fileUri : fileUris) {
@@ -68,12 +64,10 @@ public final class Files {
             return type;
         }
 
-        /**
-         * Returns the MIME type of a file from its URI.
-         *
-         * @param fileUri file to get MIME type from
-         * @return the MIME type of the given file.
-         */
+        /// Returns the MIME type of a file from its URI.
+        ///
+        /// @param fileUri file to get MIME type from
+        /// @return the MIME type of the given file.
         public static String of(Uri fileUri, Context ctx) {
             if (ContentResolver.SCHEME_CONTENT.equals(fileUri.getScheme())) {
                 return ctx.getContentResolver().getType(fileUri);

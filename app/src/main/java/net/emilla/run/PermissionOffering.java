@@ -1,5 +1,6 @@
 package net.emilla.run;
 
+import android.app.Activity;
 import android.os.Build;
 
 import androidx.annotation.Nullable;
@@ -7,14 +8,10 @@ import androidx.annotation.RequiresApi;
 
 import net.emilla.activity.AssistActivity;
 
-/**
- * <p>
- * Presents the user with a system permission request.</p>
- * <p>
- * This can only be used when
- * {@link android.app.Activity#shouldShowRequestPermissionRationale(String)} is true for the
- * permission(s) being requested.</p>
- */
+/// Presents the user with a system permission request.
+///
+/// This can only be used when [Activity#shouldShowRequestPermissionRationale(String)] is true for
+/// the permission(s) being requested.
 @RequiresApi(api = Build.VERSION_CODES.M)
 public final class PermissionOffering implements CommandRun {
 

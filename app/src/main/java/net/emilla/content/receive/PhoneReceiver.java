@@ -12,8 +12,8 @@ public interface PhoneReceiver extends ContactDataReceiver {
         provide(cur.getString(IDX_NUMBER));
     }
 
-    /**
-     * @param phoneNumber is provided to the object.
-     */
+    /// Provides the receiver with a phone number.
+    ///
+    /// @param phoneNumber is provided to the receiver.
     void provide(String phoneNumber);
 }

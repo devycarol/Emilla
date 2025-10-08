@@ -362,12 +362,10 @@ public final class AssistActivity extends EmillaActivity {
         return box;
     }
 
-    /**
-     * Toggles the visibility of an input field.
-     *
-     * @param id the field to toggle.
-     * @return true if the field is visible now, false if it's hidden.
-     */
+    /// Toggles the visibility of an input field.
+    ///
+    /// @param id the field to toggle.
+    /// @return true if the field is visible now, false if it's hidden.
     public boolean toggleField(@IdRes int id) {
         // Todo: it's vague which field is which. First step: make them ordered consistently.
         EditText box = findViewById(id);

@@ -2,8 +2,8 @@ package net.emilla.content.receive;
 
 public interface ContactDataReceiver extends ContactReceiver {
 
-    /**
-     * @param data is provided to the object.
-     */
+    /// Provides the receiver with contact data.
+    ///
+    /// @param data is provided to the receiver.
     void provide(String data);
 }

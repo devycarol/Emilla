@@ -12,8 +12,8 @@ public interface EmailReceiver extends ContactDataReceiver {
         provide(cur.getString(IDX_ADDRESS));
     }
 
-    /**
-     * @param emailAddress is provided to the object.
-     */
+    /// Provides the receiver with an email address.
+    ///
+    /// @param emailAddress is provided to the receiver.
     void provide(String emailAddress);
 }

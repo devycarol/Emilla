@@ -85,17 +85,20 @@ public final class TaskerIntent extends Intent {
     private static final String // To query whether Tasker is enabled and external access is enabled
             TASKER_PREFS_URI = "content://" + TASKER_PACKAGE + "/prefs";
 
-    // result values for TestSend
 
-    // NOT_ENABLED: Tasker is not enabled
-    // NO_ACCESS: user prefs disallow external access
-    // NO_PERMISSION: calling app does not have permission PERMISSION_RUN_TASKS
-    // NO_RECEIVER: Tasker has not created a listener for external access (probably a Tasker bug)
-    // OK: you should be able to send a task to run. Still need to listen for result for e.g. task
-    //     not found
-
+    /// result values for testStatus
     public enum Status {
-        NOT_ENABLED, NO_ACCESS, NO_PERMISSION, NO_RECEIVER, OK
+        /// Tasker is not enabled.
+        NOT_ENABLED,
+        /// User prefs disallow external access.
+        NO_ACCESS,
+        /// Calling app does not have permission PERMISSION_RUN_TASKS.
+        NO_PERMISSION,
+        /// Tasker has not created a listener for external access (probably a Tasker bug).
+        NO_RECEIVER,
+        /// You should be able to send a task to run. Still need to listen for result for e.g. task
+        /// not found.
+        OK
     }
 
     // -------------------------- PRIVATE VARS ---------------------------- //

@@ -172,12 +172,10 @@ public abstract class EmillaCommand {
 
     @StringRes
     public final int summary, manual;
-    /**
-     * The command's "IME action." This determines the soft keyboard's enter key icon. The options
-     * are GO, SEARCH, SEND, DONE, and NEXT. GO is usually a forward arrow, SEARCH is usually a
-     * magnifying glass, SEND is usually a paper airplane, and DONE is usually a checkmark. NEXT is
-     * the 'tab' function and should be used when the data field is available.
-     */
+    /// The command's "IME action." This determines the soft keyboard's enter key icon. The options
+    /// are GO, SEARCH, SEND, DONE, and NEXT. GO is usually a forward arrow, SEARCH is usually a
+    /// magnifying glass, SEND is usually a paper airplane, and DONE is usually a checkmark. NEXT is
+    /// the 'tab' function and should be used when the data field is available.
     protected final int pImeAction;
     // todo: you should be able to long-click the enter key in the command or data field to
     //  submit the command, using an appropriate action icon.
@@ -291,12 +289,10 @@ public abstract class EmillaCommand {
         else run(mInstruction);
     }
 
-    /**
-     * Show a little message.
-     *
-     * @param text is shown as a toast notification at the bottom of the screen. Don't hard-code
-     *             text.
-     */
+    /// Show a little message.
+    ///
+    /// @param text is shown as a toast notification at the bottom of the screen. Don't hard-code
+    /// text.
     protected final void toast(CharSequence text) {
         pActivity.toast(text);
     }
@@ -325,40 +321,32 @@ public abstract class EmillaCommand {
      * IMPORTANT: One of the following methods should be called at the end of each command. *
      *======================================================================================*/
 
-    /**
-     * Simply close the assistant :)
-     */
+    /// Simply close the assistant :)
     protected final void succeed() {
         pActivity.succeed(Activity::finishAndRemoveTask);
     }
 
-    /**
-     * Completes the work that the user wants from the assistant and closes it. Typically entails
-     * opening another app window, handing work to another program.
-     *
-     * @param success finishes the work of the assistant.
-     */
+    /// Completes the work that the user wants from the assistant and closes it. Typically entails
+    /// opening another app window, handing work to another program.
+    ///
+    /// @param success finishes the work of the assistant.
     protected final void succeed(CommandRun success) {
         pActivity.succeed(success);
     }
 
-    /**
-     * Tells the AssistActivity to close and start the `intent` activity. The succeeding activity
-     * must never be excluded from the recents.
-     *
-     * @param intent is launched after the assistant closes. It's very important that this is
-     *               resolvable, else an ANF exception will occur.
-     */
+    /// Tells the AssistActivity to close and start the `intent` activity. The succeeding activity
+    /// must never be excluded from the recents.
+    ///
+    /// @param intent is launched after the assistant closes. It's very important that this is
+    /// resolvable, else an ANF exception will occur.
     protected final void appSucceed(Intent intent) {
         succeed(new AppSuccess(intent));
     }
 
-    /**
-     * Gives the user a gadget to play with. The assistant is done with its work for now and the
-     * user can use the gadget for whatever they need it for.
-     *
-     * @param gift gadget for the user.
-     */
+    /// Gives the user a gadget to play with. The assistant is done with its work for now and the
+    /// user can use the gadget for whatever they need it for.
+    ///
+    /// @param gift gadget for the user.
     protected final void give(CommandRun gift) {
         pActivity.give(gift);
     }
@@ -384,13 +372,11 @@ public abstract class EmillaCommand {
         give(new AppGift(intent));
     }
 
-    /**
-     * Offers the user a tool to complete their command. Successful use of the tool should lead to a
-     * prompt 'success', whereas canceled use should lead to a full reset of the command and UI to
-     * their pre-offer state.
-     *
-     * @param offering tool for the user.
-     */
+    /// Offers the user a tool to complete their command. Successful use of the tool should lead to
+    /// a prompt 'success', whereas canceled use should lead to a full reset of the command and UI
+    /// to their pre-offer state.
+    ///
+    /// @param offering tool for the user.
     protected final void offer(CommandRun offering) {
         pActivity.offer(offering);
     }
@@ -409,12 +395,10 @@ public abstract class EmillaCommand {
         pActivity.startActivity(intent);
     }
 
-    /**
-     * Stops the command in its tracks because something has gone wrong. Offers the user a tool to
-     * help fix the problem.
-     *
-     * @param failure tool for the user to resolve the issue.
-     */
+    /// Stops the command in its tracks because something has gone wrong. Offers the user a tool to
+    /// help fix the problem.
+    ///
+    /// @param failure tool for the user to resolve the issue.
     protected final void fail(CommandRun failure) {
         pActivity.fail(failure);
     }
@@ -454,11 +438,9 @@ public abstract class EmillaCommand {
         return shouldLowercase() ? name().toLowerCase() : name();
     }
 
-    /**
-     * Whether the command should be lowercased mid-sentence.
-     *
-     * @return true if the command is a common noun, false if the command is a proper noun.
-     */
+    /// Whether the command should be lowercased mid-sentence.
+    ///
+    /// @return true if the command is a common noun, false if the command is a proper noun.
     protected abstract boolean shouldLowercase();
 
     protected final CharSequence title() {
@@ -469,44 +451,36 @@ public abstract class EmillaCommand {
         return mIcon == null ? mIcon = params.icon(pActivity) : mIcon;
     }
 
-    /**
-     * Whether the command's icon is an app icon.
-     *
-     * @return true if the command uses an app's icon, false if it just uses clip art.
-     */
+    /// Whether the command's icon is an app icon.
+    ///
+    /// @return true if the command uses an app's icon, false if it just uses clip art.
     protected abstract boolean usesAppIcon();
 
     protected interface Params {
 
-        /**
-         * The command's name in Title Case.
-         *
-         * @param res can be used to retrieve the name from string resources.
-         * @return the name of the command.
-         */
+        /// The command's name in Title Case.
+        ///
+        /// @param res can be used to retrieve the name from string resources.
+        /// @return the name of the command.
         String name(Resources res);
-        /**
-         * The command's title as it should appear in the assistant's action-bar. Usually, this
-         * should be the command name followed by a brief description of what it takes as input.
-         *
-         * @param res can be used to retrieve the title from string resources.
-         * @return the command's slightly detailed title.
-         */
+        /// The command's title as it should appear in the assistant's action-bar. Usually, this
+        /// should be the command name followed by a brief description of what it takes as input.
+        ///
+        /// @param res can be used to retrieve the title from string resources.
+        /// @return the command's slightly detailed title.
         CharSequence title(Resources res);
 
-        /**
-         * The command's icon for the submit button.
-         *
-         * @param ctx can be used to retrieve the icon from drawable resources.
-         * @return the command's icon drawable.
-         */
+        /// The command's icon for the submit button.
+        ///
+        /// @param ctx can be used to retrieve the icon from drawable resources.
+        /// @return the command's icon drawable.
         Drawable icon(Context ctx);
     }
 
+    /// Runs the command.
     protected abstract void run();
-    /**
-     * @param instruction is provided after in the command field after the command's name. It's always
-     *                    space-trimmed should remain as such.
-     */
+    /// Runs the command with instruction.
+    /// @param instruction is provided after in the command field after the command's name. It's
+    /// always space-trimmed and should remain as such.
     protected abstract void run(String instruction);
 }
