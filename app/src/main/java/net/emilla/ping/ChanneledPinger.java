@@ -10,12 +10,12 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.RequiresPermission;
 
 @RequiresApi(Build.VERSION_CODES.O)
-/*internal*/ final class ModernPinger extends ClassicPinger {
+/*internal*/ final class ChanneledPinger extends Pinger {
 
     private final PingChannel mChannel;
     private final Resources mRes;
 
-    public ModernPinger(Context ctx, Notification ping, PingChannel channel) {
+    /*internal*/ ChanneledPinger(Context ctx, Notification ping, PingChannel channel) {
         super(ctx, ping, channel);
 
         mChannel = channel;
