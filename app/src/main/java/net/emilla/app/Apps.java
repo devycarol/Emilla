@@ -31,7 +31,7 @@ public final class Apps {
     public static final String MY_PKG = BuildConfig.APPLICATION_ID;
 
     public static String entry(String pkg, String cls) {
-        return pkg + "/" + cls;
+        return pkg + '/' + cls;
     }
 
     public static List<ResolveInfo> resolveList(PackageManager pm) {

@@ -135,7 +135,7 @@ public /*open*/ class AppCommand extends EmillaCommand {
 
     @Override @Deprecated
     protected final String dupeLabel() {
-        return pApp.label + " (" + pApp.pkg + ")";
+        return pApp.label + " (" + pApp.pkg + ')';
     }
 
     @Override

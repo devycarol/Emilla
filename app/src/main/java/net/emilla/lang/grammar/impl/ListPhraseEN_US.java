@@ -21,7 +21,7 @@ public final class ListPhraseEN_US implements ListPhrase {
 
         var coordination = Pattern.compile(COORDINATION);
         if (coordination.matcher(phrase).find()) {
-            mItems = phrase.split(SERIAL + "|" + COORDINATION);
+            mItems = phrase.split(SERIAL + '|' + COORDINATION);
             return;
         }
 

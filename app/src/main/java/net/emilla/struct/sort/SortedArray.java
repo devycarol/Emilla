@@ -73,7 +73,7 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
     public E get(int index) {
         if (index >= pSize) {
             throw new IndexOutOfBoundsException(
-                "Index " + index + " out of bounds for size " + pSize + "."
+                "Index " + index + " out of bounds for size " + pSize + '.'
             );
         }
         return pData[index];

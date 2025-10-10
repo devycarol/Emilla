@@ -46,9 +46,9 @@ public final class BugFailure extends DialogRun {
         String body = "Feel free to describe what was happening when the error occurred:\n\n\n\n"
                  + "======== exception details ========\n\n";
         if (!TextUtils.isEmpty(message)) {
-            body += message + "\n";
+            body += message + '\n';
         }
-        body += stackTrace + "\n"
+        body += stackTrace + '\n'
                 + "======== more helpful stuff ========\n\n"
                 + deviceInfo();
 

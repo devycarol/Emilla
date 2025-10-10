@@ -213,7 +213,7 @@ public final class SettingsFragment extends EmillaSettingsFragment {
     private void setupAccessibilityButtonPref() {
         Preference accessibilityButton = preferenceOf("accessibility_button");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String showArgs = Apps.MY_PKG + "/" + EmillaA11yService.class.getName();
+            String showArgs = Apps.MY_PKG + '/' + EmillaA11yService.class.getName();
             var bundle = new Bundle();
             bundle.putString(EXTRA_FRAGMENT_ARG_KEY, showArgs);
             var in = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)

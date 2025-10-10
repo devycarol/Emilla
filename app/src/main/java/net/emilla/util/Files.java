@@ -80,7 +80,7 @@ public final class Files {
         private static String union(String type1, String type2) {
             String[] parts1 = type1.split("/");
             String[] parts2 = type2.split("/");
-            return partUnion(parts1[0], parts2[0]) + "/" + partUnion(parts1[1], parts2[1]);
+            return partUnion(parts1[0], parts2[0]) + '/' + partUnion(parts1[1], parts2[1]);
         }
 
         @Deprecated

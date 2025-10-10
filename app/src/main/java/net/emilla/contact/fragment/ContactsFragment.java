@@ -132,7 +132,7 @@ public abstract class ContactsFragment<T> extends Fragment
 
             uri = mCursorAdapter.filterUri(mSearchString);
             selection = baseSelection;
-            selectionArgs = new String[]{"%" + mSearchString + "%"};
+            selectionArgs = new String[]{'%' + mSearchString + '%'};
         } else {
             uri = mCursorAdapter.contentUri();
             selection = null;

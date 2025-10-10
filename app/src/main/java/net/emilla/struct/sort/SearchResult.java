@@ -26,7 +26,7 @@ public final class SearchResult<E extends Searchable<E>> extends Searchable<Sear
     public SearchResult<E> narrow(String prefixedSearch) {
         if (DEBUG && !prefixedSearch.startsWith(mSearch)) {
             throw new IllegalArgumentException(
-                "\"" + prefixedSearch + "\" does not start with \"" + mSearch + "\""
+                '"' + prefixedSearch + "\" does not start with \"" + mSearch + '"'
             );
         }
 

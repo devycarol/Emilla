@@ -64,7 +64,7 @@ public abstract class CoreCommand extends EmillaCommand {
             case Notifications.ENTRY -> Notifications.possible(pm);
             case Uninstall.ENTRY -> Uninstall.possible(pm);
             case Toast.ENTRY -> Toast.possible();
-            default -> throw new IllegalArgumentException("No such command \"" + entry + "\"");
+            default -> throw new IllegalArgumentException("No such command: " + entry);
         };
     }
 

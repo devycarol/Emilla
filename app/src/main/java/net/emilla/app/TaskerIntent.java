@@ -32,7 +32,7 @@ public final class TaskerIntent extends Intent {
 
     public static final String // 2 Tasker versions (Emilla only supports taskerm)
             TASKER_PACKAGE = "net.dinglisch.android.tasker",
-            TASKER_PACKAGE_MARKET = TASKER_PACKAGE + "m";
+            TASKER_PACKAGE_MARKET = TASKER_PACKAGE + 'm';
 
     public static final String // Intent actions
             ACTION_TASK = TASKER_PACKAGE + ".ACTION_TASK",
@@ -183,7 +183,7 @@ public final class TaskerIntent extends Intent {
 
     public TaskerIntent setTaskPriority(int priority) {
         if (validatePriority(priority)) putExtra(EXTRA_TASK_PRIORITY, priority);
-        else if (DEBUG) Log.e(TAG, "priority out of range: " + MIN_PRIORITY + ":" + MAX_PRIORITY);
+        else if (DEBUG) Log.e(TAG, "priority out of range: " + MIN_PRIORITY + ':' + MAX_PRIORITY);
 
         return this;
     }
@@ -200,7 +200,7 @@ public final class TaskerIntent extends Intent {
 
         if (DEBUG) Log.d(TAG, "index: " + index);
 
-        addLocalVariable("%" + PARAM_VAR_NAME_PREFIX + index, value);
+        addLocalVariable('%' + PARAM_VAR_NAME_PREFIX + index, value);
 
         return this;
     }
@@ -280,7 +280,7 @@ public final class TaskerIntent extends Intent {
         Bundle b = getActionBundle();
 
         if (b != null) {
-            String builder = APP_ARG_PREFIX + pkg + "," + cls;
+            String builder = APP_ARG_PREFIX + pkg + ',' + cls;
             b.putString(ARG_INDEX_PREFIX + mArgCount, builder);
             mArgCount++;
         }
@@ -310,7 +310,7 @@ public final class TaskerIntent extends Intent {
     // so that if multiple TaskerIntents are used in PendingIntents there's virtually no
     // clash chance
     private void setRandomData() {
-        setData(Uri.parse(TASK_ID_SCHEME + ":" + getRandomString()));
+        setData(Uri.parse(TASK_ID_SCHEME + ':' + getRandomString()));
     }
 
     @Nullable
@@ -318,7 +318,7 @@ public final class TaskerIntent extends Intent {
         Bundle actionBundle = null;
 
         if (mArgCount > MAX_ARGS) {
-            if (DEBUG) Log.e(TAG, "maximum number of arguments exceeded (" + MAX_ARGS + ")");
+            if (DEBUG) Log.e(TAG, "maximum number of arguments exceeded (" + MAX_ARGS + ')');
         } else {
             String key = EXTRA_ACTION_INDEX_PREFIX + mActionCount;
 

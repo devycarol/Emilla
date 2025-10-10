@@ -8,9 +8,9 @@ public record MultiSearch(String selection, String[] selectionArgs, boolean hasM
         String[] terms = Lang.list(search).items();
 
         var selection = new StringBuilder(baseSelection);
-        terms[0] = "%" + terms[0] + "%";
+        terms[0] = '%' + terms[0] + '%';
         for (int i = 1; i < terms.length; i++) {
-            terms[i] = "%" + terms[i] + "%";
+            terms[i] = '%' + terms[i] + '%';
             selection.append(" OR ").append(baseSelection);
         }
 
