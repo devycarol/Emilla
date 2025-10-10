@@ -9,12 +9,12 @@ public final class HashTrieMap<K, V extends TrieMap.Value<V>> extends TrieMap<K,
 
         @Override
         Map<K, TrieNode<K, V>> newMap() {
-            return new HashMap<>();
+            return new HashMap<K, TrieNode<K, V>>();
         }
     }
 
     @Override
     TrieNode<K, V> newNode() {
-        return new HashTrieNode<>();
+        return new HashTrieNode<K, V>();
     }
 }

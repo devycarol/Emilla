@@ -35,7 +35,7 @@ public final class SearchResult<E extends Searchable<E>> extends Searchable<Sear
         SearchableArray<E>.SparseWindow newContainsWindow =
             mContainsWindow != null ? mContainsWindow.elementsContaining(prefixedSearch) : null;
 
-        return new SearchResult<>(prefixedSearch, newPrefixedWindow, newContainsWindow);
+        return new SearchResult<E>(prefixedSearch, newPrefixedWindow, newContainsWindow);
     }
 
     @Override

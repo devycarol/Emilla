@@ -23,7 +23,7 @@ public final class AppList implements Iterable<AppEntry> {
     }
 
     private AppList(List<ResolveInfo> resolveInfos, PackageManager pm) {
-        mData = new SearchableArray<>(resolveInfos, info -> new AppEntry(pm, info));
+        mData = new SearchableArray<AppEntry>(resolveInfos, info -> new AppEntry(pm, info));
     }
 
     public SearchResult<AppEntry> filter(String search) {

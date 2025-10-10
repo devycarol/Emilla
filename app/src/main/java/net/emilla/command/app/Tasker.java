@@ -68,7 +68,7 @@ public final class Tasker extends AppCommand implements DataCommand {
         super.onInit();
 
         if (mActionMap == null) {
-            mActionMap = new ActionMap<>(Action.RUN);
+            mActionMap = new ActionMap<Action>(Action.RUN);
 
             mActionMap.put(pResources, Action.RUN, R.array.subcmd_tasker_run, true);
             mActionMap.put(pResources, Action.LIST, R.array.subcmd_tasker_list, false);

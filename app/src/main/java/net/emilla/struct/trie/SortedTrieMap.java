@@ -14,13 +14,13 @@ public final class SortedTrieMap<K extends Comparable<K>, V extends TrieMap.Valu
 
         @Override
         Map<K, TrieNode<K, V>> newMap() {
-            return new TreeMap<>();
+            return new TreeMap<K, TrieNode<K, V>>();
         }
     }
 
     @Override
     TrieNode<K, V> newNode() {
-        return new SortedTrieNode<>();
+        return new SortedTrieNode<K, V>();
     }
 
     /// Sorted list of elements that start with a given prefix.

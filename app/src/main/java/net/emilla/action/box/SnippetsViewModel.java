@@ -19,7 +19,7 @@ import java.util.Set;
     private SnippetsViewModel(SharedPreferences prefs) {
         this.prefs = prefs;
         Set<String> snippets = SettingVals.snippets(prefs);
-        mLabels = new SortedArray<>(snippets);
+        mLabels = new SortedArray<String>(snippets);
     }
 
     public SortedArray<String> snippetLabels() {

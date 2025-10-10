@@ -22,7 +22,7 @@ public final class FilesReceiver implements ResultReceiver {
         if (attachments.isEmpty()) return;
 
         ArrayList<Uri> attaches = mActivity.attachments(mCommandEntry);
-        if (attaches == null) attaches = new ArrayList<>(attachments);
+        if (attaches == null) attaches = new ArrayList<Uri>(attachments);
         else for (Uri attachment : attachments) {
             int index = attaches.indexOf(attachment);
             if (index == -1) attaches.add(attachment);

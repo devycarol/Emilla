@@ -14,7 +14,7 @@ public record WeekdaysEN_US(ArrayList<Integer> days, boolean empty) implements W
     public static WeekdaysEN_US instance(String timeStr, @StringRes int errorTitle) {
         timeStr = timeStr.toLowerCase().replaceFirst(HourMinEN_US.REGEX, "").trim();
         if (timeStr.isEmpty()) {
-            return new WeekdaysEN_US(new ArrayList<>(), true);
+            return new WeekdaysEN_US(new ArrayList<Integer>(), true);
         }
 
         if (!timeStr.matches("\\w+( +\\w+){0,6}")) {

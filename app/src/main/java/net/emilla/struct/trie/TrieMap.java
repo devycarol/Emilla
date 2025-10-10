@@ -37,7 +37,7 @@ import java.util.Map;
     ///
     /// @return All the node's child values, including its own value, in depth-first order.
     final List<V> values() {
-        return valuesRec(this, new ArrayList<>(children.size() + 1));
+        return valuesRec(this, new ArrayList<V>(children.size() + 1));
     }
 
     private static <K, V extends TrieMap.Value<V>> List<V> valuesRec(

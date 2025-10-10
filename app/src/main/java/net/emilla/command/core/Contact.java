@@ -69,7 +69,7 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
         pActivity.giveActionBox(mContactsFragment);
 
         if (mActionMap == null) {
-            mActionMap = new ActionMap<>(Action.VIEW);
+            mActionMap = new ActionMap<Action>(Action.VIEW);
 
             mActionMap.put(pResources, Action.VIEW, R.array.subcmd_edit, true);
             mActionMap.put(pResources, Action.EDIT, R.array.subcmd_edit, true);

@@ -55,7 +55,7 @@ public final class Snippets extends CoreDataCommand {
         pActivity.giveActionBox(mSnippetsFragment);
 
         if (mActionMap == null) {
-            mActionMap = new ActionMap<>(Action.GET);
+            mActionMap = new ActionMap<Action>(Action.GET);
 
             mActionMap.put(pResources, Action.PEEK, R.array.subcmd_snippet_peek, true);
             mActionMap.put(pResources, Action.GET, R.array.subcmd_snippet_get, true);
@@ -79,7 +79,7 @@ public final class Snippets extends CoreDataCommand {
     @Override
     protected void run() {
         refreshState(Action.GET);
-        snippet(new Subcommand<>(Action.GET, null));
+        snippet(new Subcommand<Action>(Action.GET, null));
     }
 
     @Override

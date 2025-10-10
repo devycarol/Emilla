@@ -19,7 +19,7 @@ public final class ActionMap<A extends Enum<A>> {
     }
 
     public void put(Resources res, A action, @ArrayRes int names, boolean usesInstruction) {
-        var yielder = new ActionYielder<>(action, usesInstruction);
+        var yielder = new ActionYielder<A>(action, usesInstruction);
         for (String name : res.getStringArray(names)) {
             mTrieMap.put(Lang.words(name), yielder);
         }
@@ -28,6 +28,6 @@ public final class ActionMap<A extends Enum<A>> {
     public Subcommand<A> get(String instruction) {
         Words words = Lang.words(instruction);
         ActionYielder<A> get = mTrieMap.get(words);
-        return get == null ? new Subcommand<>(mDefaultAction, instruction) : get.action(words);
+        return get == null ? new Subcommand<A>(mDefaultAction, instruction) : get.action(words);
     }
 }

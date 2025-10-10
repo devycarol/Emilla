@@ -209,13 +209,13 @@ public final class TaskerIntent extends Intent {
     public TaskerIntent addLocalVariable(String name, String value) {
         ArrayList<String> names = getStringArrayListExtra(EXTRA_VAR_NAMES_LIST);
         if (names == null) {
-            names = new ArrayList<>();
+            names = new ArrayList<String>();
             putStringArrayListExtra(EXTRA_VAR_NAMES_LIST, names);
         }
 
         ArrayList<String> values = getStringArrayListExtra(EXTRA_VAR_VALUES_LIST);
         if (values == null) {
-            values = new ArrayList<>();
+            values = new ArrayList<String>();
             putStringArrayListExtra(EXTRA_VAR_VALUES_LIST, values);
         }
 

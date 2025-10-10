@@ -32,7 +32,7 @@ public final class DicesEN_US {
     }
 
     private static Iterable<Dice> dices(String roll, @StringRes int errorTitle) {
-        return () -> new Iterator<>() {
+        return () -> new Iterator<Dice>() {
             private boolean negative = roll.charAt(0) == '-';
             private int pos = negative ? 1 : 0;
             private final int length = roll.length();

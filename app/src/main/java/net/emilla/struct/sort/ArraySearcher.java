@@ -8,12 +8,12 @@ public final class ArraySearcher<E extends Searchable<E>> {
     private final SearchableArray<SearchResult<E>> mSearchCache;
 
     public ArraySearcher(Collection<E> c) {
-        mData = new SearchableArray<>(c);
-        mSearchCache = new SearchableArray<>(16);
+        mData = new SearchableArray<E>(c);
+        mSearchCache = new SearchableArray<SearchResult<E>>(16);
     }
 
     public FilterResult<E> search(String query) {
-        if (query == null) return new Unfilter<>(mData);
+        if (query == null) return new Unfilter<E>(mData);
 
         SearchResult<E> cachedResult = mSearchCache.get(query);
         if (cachedResult != null) return cachedResult;

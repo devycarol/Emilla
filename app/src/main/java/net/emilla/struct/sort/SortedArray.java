@@ -177,7 +177,7 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
 
     @Override
     public Iterator<E> iterator() {
-        return new Iterator<>() {
+        return new Iterator<E>() {
             private int pos = 0;
 
             @Override

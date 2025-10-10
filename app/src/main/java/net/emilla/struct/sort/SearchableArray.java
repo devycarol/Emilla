@@ -27,16 +27,16 @@ public final class SearchableArray<E extends Searchable<E>> extends SortedArray<
 
     @Nullable
     public E get(String search) {
-        int pos = arbitraryIndexOf(new ExactSearcher<>(search));
+        int pos = arbitraryIndexOf(new ExactSearcher<E>(search));
         return pos >= 0 ? pData[pos] : null;
     }
 
     public SearchResult<E> filter(String search) {
-        IndexWindow prefixedWindow = windowMatching(new PrefixSearcher<>(search));
+        IndexWindow prefixedWindow = windowMatching(new PrefixSearcher<E>(search));
         SparseWindow containsWindow = elementsContaining(search, prefixedWindow);
         var prefWindow = prefixedWindow != null ? new Window(prefixedWindow) : null;
 
-        return new SearchResult<>(search, prefWindow, containsWindow);
+        return new SearchResult<E>(search, prefWindow, containsWindow);
     }
 
     @Nullable
@@ -112,7 +112,7 @@ public final class SearchableArray<E extends Searchable<E>> extends SortedArray<
         @Nullable
         public Window prefixedBy(String search) {
             IndexWindow prefixed = windowMatching(
-                new PrefixSearcher<>(search),
+                new PrefixSearcher<E>(search),
                 window.start,
                 window.last
             );

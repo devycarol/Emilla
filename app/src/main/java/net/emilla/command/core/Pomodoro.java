@@ -61,7 +61,7 @@ public final class Pomodoro extends CoreDataCommand {
         super.onInit();
 
         if (mActionMap == null) {
-            mActionMap = new ActionMap<>(Action.WORK);
+            mActionMap = new ActionMap<Action>(Action.WORK);
             mActionMap.put(pResources, Action.BREAK, R.array.subcmd_pomodoro_break, true);
         }
 
