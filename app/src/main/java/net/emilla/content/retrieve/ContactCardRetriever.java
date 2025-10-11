@@ -31,7 +31,9 @@ public final class ContactCardRetriever extends ResultRetriever<Void, Uri, Conta
             if (contact != null) {
                 pActivity.suppressResumeChime();
                 receiver.provide(contact);
-            } else pActivity.toast(R.string.toast_contact_not_selected);
+            } else {
+                pActivity.toast(R.string.toast_contact_not_selected);
+            }
         }
     }
 }

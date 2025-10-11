@@ -52,7 +52,10 @@ public final class Call extends CoreCommand implements PhoneReceiver {
     protected void onInit() {
         super.onInit();
 
-        if (mContactsFragment == null) mContactsFragment = ContactPhonesFragment.newInstance(false);
+        if (mContactsFragment == null) {
+            mContactsFragment = ContactPhonesFragment.newInstance(false);
+        }
+
         pActivity.giveActionBox(mContactsFragment);
     }
 
@@ -77,8 +80,11 @@ public final class Call extends CoreCommand implements PhoneReceiver {
 
     private void tryCall() {
         String number = mContactsFragment.selectedContacts();
-        if (number != null) call(number);
-        else pActivity.offerContactPhones(this);
+        if (number != null) {
+            call(number);
+        } else {
+            pActivity.offerContactPhones(this);
+        }
     }
 
     @Override
@@ -94,14 +100,21 @@ public final class Call extends CoreCommand implements PhoneReceiver {
 
     private void tryCall(String nameOrNumber) {
         String number = mContactsFragment.selectedContacts();
-        if (number == null && Contacts.isPhoneNumbers(nameOrNumber)) number = nameOrNumber;
 
-        if (number != null) call(number);
-        else {
-            String msg = str(R.string.notice_call_not_number, nameOrNumber,
-                             Contacts.phonewordsToNumbers(nameOrNumber));
+        if (number == null && Contacts.isPhoneNumbers(nameOrNumber)) {
+            number = nameOrNumber;
+        }
+
+        if (number != null) {
+            call(number);
+        } else {
+            String msg = str(
+                R.string.notice_call_not_number,
+                nameOrNumber,
+                Contacts.phonewordsToNumbers(nameOrNumber)
+            );
             offerDialog(Dialogs.dual(pActivity, NAME, msg, R.string.call_directly,
-                    (dlg, which) -> call(nameOrNumber)));
+                                     (dlg, which) -> call(nameOrNumber)));
         }
     }
 

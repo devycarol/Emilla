@@ -67,8 +67,11 @@ public abstract class ContactsFragment<T> extends Fragment
 
         mActivity = (AssistActivity) requireActivity();
 
-        if (Permissions.contacts(requireContext())) populateContacts();
-        else deactivateContacts();
+        if (Permissions.contacts(requireContext())) {
+            populateContacts();
+        } else {
+            deactivateContacts();
+        }
     }
 
     protected final boolean hasMultiSelect() {
@@ -95,8 +98,10 @@ public abstract class ContactsFragment<T> extends Fragment
     private void populateContacts() {
         mCursorAdapter = cursorAdapter();
 
-        if (mHasMultiSelect) mContactList.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
-        else mContactList.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
+        int choiceMode = mHasMultiSelect
+            ? AbsListView.CHOICE_MODE_MULTIPLE
+            : AbsListView.CHOICE_MODE_SINGLE;
+        mContactList.setChoiceMode(choiceMode);
 
         mContactList.setOnItemClickListener(this);
         mContactList.setOnItemLongClickListener(this);
@@ -176,7 +181,9 @@ public abstract class ContactsFragment<T> extends Fragment
 
             var receiver = (ContactReceiver) mActivity.command();
             receiver.useContact(cur);
-        } else if (mHasMultiSelect) item.markSelected(mContactList.isItemChecked(pos));
+        } else if (mHasMultiSelect) {
+            item.markSelected(mContactList.isItemChecked(pos));
+        }
         // TODO ACC: have this feedback for single-selection as well.
         // TODO BUG: in multi-selection, selecting 2 then deselecting 2 doesn't properly deselect
         //  them—they still get included in selectedContacts(). All these uppercase issues probably
@@ -239,8 +246,11 @@ public abstract class ContactsFragment<T> extends Fragment
 
                 return contacts.toString();
             }
+
             int pos = contactList.getCheckedItemPosition();
-            if (cur.moveToPosition(pos)) return cur.getString(colIndex);
+            if (cur.moveToPosition(pos)) {
+                return cur.getString(colIndex);
+            }
         }
 
         return null;

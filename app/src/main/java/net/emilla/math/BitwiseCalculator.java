@@ -89,14 +89,19 @@ public final class BitwiseCalculator {
             if (op.postfix) {
                 int last = size - 1;
                 vals[last] = op.apply(vals[last]);
-            } else if (op != BitwiseSign.POSITIVE) signs.push(op);
+            } else if (op != BitwiseSign.POSITIVE) {
+                signs.push(op);
+            }
         }
 
         void applyOperator(BitwiseOperator op, OpStack opStk) {
             while (opStk.notEmpty()) {
                 BitwiseOperator peek = opStk.peek();
-                if (peek == BitwiseOperator.LPAREN || op.precedence > peek.precedence
-                ||  op.rightAssociative && op.precedence == peek.precedence) break;
+                if (peek == BitwiseOperator.LPAREN
+                    || op.precedence > peek.precedence
+                    || op.rightAssociative && op.precedence == peek.precedence) {
+                    break;
+                }
                 squish(opStk.pop()); // peek is valid, therefore pop is valid.
             }
             opStk.push(op);
@@ -199,10 +204,14 @@ public final class BitwiseCalculator {
 
         while (opStk.notEmpty()) {
             BitwiseOperator pop = opStk.pop();
-            if (pop != BitwiseOperator.LPAREN) result.squish(pop);
-            else while (opStk.notEmpty()) {
-                if (opStk.peek() == BitwiseOperator.LPAREN) opStk.pop();
-                else result.applyRParen(opStk);
+            if (pop != BitwiseOperator.LPAREN) {
+                result.squish(pop);
+            } else while (opStk.notEmpty()) {
+                if (opStk.peek() == BitwiseOperator.LPAREN) {
+                    opStk.pop();
+                } else {
+                    result.applyRParen(opStk);
+                }
             }
         }
 
@@ -356,9 +365,7 @@ public final class BitwiseCalculator {
             }
 
             private void advance() {
-                while (pos < length && isWhitespace(expr[pos])) {
-                    ++pos;
-                }
+                while (pos < length && isWhitespace(expr[pos])) ++pos;
             }
 
             private IntegerNumber extractNumber() {

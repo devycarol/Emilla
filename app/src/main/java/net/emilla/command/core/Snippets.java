@@ -36,7 +36,9 @@ public final class Snippets extends CoreDataCommand {
     private ActionMap<Action> mActionMap;
     private Action mAction = Action.GET;
     @Nullable
-    private String mUsedSnippet, mUsedText;
+    private String mUsedSnippet;
+    @Nullable
+    private String mUsedText;
 
     private Snippets(AssistActivity act) {
         super(act, NAME,
@@ -120,9 +122,14 @@ public final class Snippets extends CoreDataCommand {
 
                 mUsedSnippet = label;
                 snippet(label, lcLabel, subcmd.action);
-            } else failMessage(str(R.string.error_no_snippet, label));
-        } else if (mSnippetsFragment.isEmpty()) failMessage(R.string.error_no_snippets);
-        else mSnippetsFragment.prime(subcmd.action);
+            } else {
+                failMessage(str(R.string.error_no_snippet, label));
+            }
+        } else if (mSnippetsFragment.isEmpty()) {
+            failMessage(R.string.error_no_snippets);
+        } else {
+            mSnippetsFragment.prime(subcmd.action);
+        }
         // TODO: respect the user's letter case for the labels while retaining case-insensitivity
     }
 

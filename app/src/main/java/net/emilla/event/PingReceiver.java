@@ -18,7 +18,10 @@ public final class PingReceiver extends BroadcastReceiver {
 
     @Override @SuppressLint("MissingPermission")
     public void onReceive(Context ctx, Intent intent) {
-        if (Permissions.pings(ctx)) Pinger.of(ctx, new PingIntent(intent)).ping();
-        else if (DEBUG) Log.e(TAG, "Unable to ping due to lack of permission.");
+        if (Permissions.pings(ctx)) {
+            Pinger.of(ctx, new PingIntent(intent)).ping();
+        } else if (DEBUG) {
+            Log.e(TAG, "Unable to ping due to lack of permission.");
+        }
     }
 }

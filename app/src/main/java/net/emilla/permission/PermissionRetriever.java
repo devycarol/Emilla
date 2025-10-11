@@ -60,8 +60,11 @@ public final class PermissionRetriever {
                 }
             }
             // permission granted.
-            if (onGrant != null) onGrant.run();
-            else mActivity.chime(RESUME);
+            if (onGrant != null) {
+                onGrant.run();
+            } else {
+                mActivity.chime(RESUME);
+            }
         }
     }
 }

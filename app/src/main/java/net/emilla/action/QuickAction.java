@@ -7,20 +7,20 @@ import androidx.annotation.IdRes;
 
 public interface QuickAction {
 
-    String // Preference keys
-           PREF_NO_COMMAND = "action_no_command",
-           PREF_LONG_SUBMIT = "action_long_submit",
-           PREF_DOUBLE_ASSIST = "action_double_assist",
-           PREF_MENU_KEY = "action_menu";
+    // Preference keys
+    String PREF_NO_COMMAND = "action_no_command";
+    String PREF_LONG_SUBMIT = "action_long_submit";
+    String PREF_DOUBLE_ASSIST = "action_double_assist";
+    String PREF_MENU_KEY = "action_menu";
 
-    String // Action values
-           NONE = "none",
-           FLASHLIGHT = "torch",
-           ASSISTANT_SETTINGS = "config",
-           CURSOR_START = "cursor_start",
-           SELECT_ALL = "select_all",
-           PLAY_PAUSE = "play_pause",
-           HELP = "help";
+    // Action values
+    String NONE = "none";
+    String FLASHLIGHT = "torch";
+    String ASSISTANT_SETTINGS = "config";
+    String CURSOR_START = "cursor_start";
+    String SELECT_ALL = "select_all";
+    String PLAY_PAUSE = "play_pause";
+    String HELP = "help";
 
     @IdRes
     int id();

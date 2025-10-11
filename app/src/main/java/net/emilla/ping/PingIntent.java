@@ -8,9 +8,8 @@ import net.emilla.event.PingReceiver;
 
 public final class PingIntent extends Intent {
 
-    private static final String
-            EXTRA_PING = "ping",
-            EXTRA_CHANNEL = "channel";
+    private static final String EXTRA_PING = "ping";
+    private static final String EXTRA_CHANNEL = "channel";
 
     public PingIntent(Intent intent) {
         super(intent);

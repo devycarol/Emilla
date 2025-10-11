@@ -45,11 +45,15 @@ import java.util.Map;
         List<V> values
     ) {
         if (node.hasChildren()) {
-            if (node.val != null) addValues(values, node.val);
+            if (node.val != null) {
+                addValues(values, node.val);
+            }
             for (TrieNode<K, V> next : node.children.values()) {
                 valuesRec(next, values);
             }
-        } else addValues(values, node.val);
+        } else {
+            addValues(values, node.val);
+        }
         // a leaf node always has a value.
 
         return values;
@@ -60,7 +64,9 @@ import java.util.Map;
             for (V dupe : (TrieMap.Duplicate<V>) value) {
                 values.add(dupe);
             }
-        } else values.add(value);
+        } else {
+            values.add(value);
+        }
     }
 }
 
@@ -172,12 +178,18 @@ public abstract class TrieMap<K, V extends TrieMap.Value<V>> {
             Map<K, TrieNode<K, V>> children = current.children();
 
             TrieNode<K, V> get = children.get(item);
-            if (get == null) children.put(item, current = newNode());
-            else current = get;
+            if (get == null) {
+                children.put(item, current = newNode());
+            } else {
+                current = get;
+            }
         }
 
-        if (current.val == null) current.val = value;
-        else current.val = current.val.duplicate(value);
+        if (current.val == null) {
+            current.val = value;
+        } else {
+            current.val = current.val.duplicate(value);
+        }
     }
 
     /// Retrieves the value associated with longest entry in the trie that prefixes `phrase`, or
@@ -237,8 +249,9 @@ public abstract class TrieMap<K, V extends TrieMap.Value<V>> {
     /// @param phrase is evaluated for the number of trie values it has as prefixes.
     /// @return the count of the trie's values existing in `phrase` as nested prefixes.
     public final int count(Phrase<K, ?> phrase) {
-        TrieNode<K, V> current = root;
         int count = 0;
+
+        TrieNode<K, V> current = root;
 
         Iterator<K> iterator = phrase.iterator();
         while (iterator.hasNext()) {

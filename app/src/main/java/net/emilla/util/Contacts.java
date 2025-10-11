@@ -21,8 +21,9 @@ public final class Contacts {
         var sb = new StringBuilder();
         for (int i = 0; i < namesOrNumbers.length(); ++i) {
             char c = namesOrNumbers.charAt(i);
-            if (isAcceptablePhoneChar(c)) sb.append(c);
-            else {
+            if (isPhoneChar(c)) {
+                sb.append(c);
+            } else {
                 int letterDigit = keypadNumber(c);
                 if (letterDigit != -1) {
                     sb.append(letterDigit);
@@ -34,7 +35,7 @@ public final class Contacts {
         return sb.toString();
     }
 
-    private static boolean isAcceptablePhoneChar(char c) {
+    private static boolean isPhoneChar(char c) {
         return switch (c) {
             case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
                  '#', '*', '(', ')', ' ', '-', '.', '/', ',', ';' -> true;
@@ -43,8 +44,9 @@ public final class Contacts {
     }
 
     private static int keypadNumber(char letter) {
-        if ('A' <= letter && letter <= 'Z') return letterDigit(letter);
-        return letterDigit((char) (letter - 'a' + 'A'));
+        char uppercaseLetter = 'A' <= letter && letter <= 'Z'
+            ? letter : (char) (letter - 'a' + 'A');
+        return letterDigit(uppercaseLetter);
     }
 
     private static int letterDigit(char uppercaseLetter) {
@@ -84,7 +86,9 @@ public final class Contacts {
         String selection = Email.CONTACT_ID + " = ?";
         String[] selectionArgs = {contact.getLastPathSegment()};
         try (Cursor cur = cr.query(contentUri, projection, selection, selectionArgs, null)) {
-            if (cur != null && cur.moveToFirst()) return cur.getString(IDX_ADDRESS);
+            if (cur != null && cur.moveToFirst()) {
+                return cur.getString(IDX_ADDRESS);
+            }
         }
         return null;
     }

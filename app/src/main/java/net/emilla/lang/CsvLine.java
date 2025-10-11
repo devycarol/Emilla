@@ -34,13 +34,14 @@ public final class CsvLine implements Iterable<String> {
         String next = itr.next();
         var sb = next != null ? new StringBuilder(encodeVal(next)) : new StringBuilder();
         while (itr.hasNext()) {
-            if (useSpaces) sb.append(", ");
-            else sb.append(',');
+            if (useSpaces) {
+                sb.append(", ");
+            } else {
+                sb.append(',');
+            }
 
             next = itr.next();
-            if (next != null) {
-                sb.append(encodeVal(next));
-            }
+            if (next != null) sb.append(encodeVal(next));
         }
 
         return sb.toString();
@@ -95,11 +96,10 @@ public final class CsvLine implements Iterable<String> {
 
     @Nullable
     public static String trim(String line) {
-        var sb = new StringBuilder(line.length());
-
-        var itr = new CsvLine(line, true).iterator();
+        Iterator<String> itr = new CsvLine(line, true).iterator();
         if (!itr.hasNext()) return null;
 
+        var sb = new StringBuilder(line.length());
         sb.append(itr.next());
         while (itr.hasNext()) {
             sb.append(',').append(itr.next());
@@ -121,12 +121,13 @@ public final class CsvLine implements Iterable<String> {
     }
 
     private static int valStart(String s) {
-        for (int i = 0; i < s.length(); ++i) {
+        int length = s.length();
+        for (int i = 0; i < length; ++i) {
             if (!isWhitespace(s.charAt(i))) {
                 return i;
             }
         }
-        return s.length();
+        return length;
     }
 
     @Override
@@ -203,9 +204,7 @@ public final class CsvLine implements Iterable<String> {
         @Override @Nullable
         protected String makeVal(StringBuilder sb) {
             int len = sb.length();
-            while (len > 0 && isWhitespace(sb.charAt(len - 1))) {
-                --len;
-            }
+            while (len > 0 && isWhitespace(sb.charAt(len - 1))) --len;
             sb.setLength(len);
             // remove trailing whitespaces, leading ones are handled by `advanceToNextVal()` and
             // `valStart(String)`.

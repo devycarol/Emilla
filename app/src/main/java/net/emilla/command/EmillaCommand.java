@@ -160,7 +160,9 @@ public abstract class EmillaCommand {
         for (String customEntry : customs) {
             String[] split = customEntry.split(", *");
             int lastIdx = split.length - 1;
-            for (int i = 0; i < lastIdx; ++i) map.putCustom(split[i], split[lastIdx]);
+            for (int i = 0; i < lastIdx; ++i) {
+                map.putCustom(split[i], split[lastIdx]);
+            }
         }
 
         return map;
@@ -171,7 +173,9 @@ public abstract class EmillaCommand {
     private final Params params;
 
     @StringRes
-    public final int summary, manual;
+    public final int summary;
+    @StringRes
+    public final int manual;
     /// The command's "IME action." This determines the soft keyboard's enter key icon. The options
     /// are GO, SEARCH, SEND, DONE, and NEXT. GO is usually a forward arrow, SEARCH is usually a
     /// magnifying glass, SEND is usually a paper airplane, and DONE is usually a checkmark. NEXT is
@@ -220,8 +224,11 @@ public abstract class EmillaCommand {
 
     @Deprecated
     protected final void instructAppend(String data) {
-        if (mInstruction == null) mInstruction = data;
-        else mInstruction += '\n' + data;
+        if (mInstruction == null) {
+            mInstruction = data;
+        } else {
+            mInstruction += '\n' + data;
+        }
     }
 
     public final void decorate(boolean setIcon) {
@@ -285,8 +292,11 @@ public abstract class EmillaCommand {
     }
 
     public final void execute() {
-        if (mInstruction == null) run();
-        else run(mInstruction);
+        if (mInstruction != null) {
+            run(mInstruction);
+        } else {
+            run();
+        }
     }
 
     /// Show a little message.
@@ -390,8 +400,12 @@ public abstract class EmillaCommand {
     }
 
     protected final void offerApp(Intent intent, boolean newTask) {
-        if (newTask) intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-        else pActivity.suppressBackCancellation();
+        if (newTask) {
+            intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+        } else {
+            pActivity.suppressBackCancellation();
+        }
+
         pActivity.startActivity(intent);
     }
 

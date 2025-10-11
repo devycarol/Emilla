@@ -163,8 +163,7 @@ public final class Dialogs {
         Intent[] intents = Apps.uninstalls(appList, pm);
         return list(act, R.string.dialog_app, Apps.labels(appList), (dlg, which) -> {
             if (intents[which] == null) {
-                act.fail(new MessageFailure(act, R.string.command_uninstall,
-                                            R.string.error_cant_uninstall));
+                act.fail(new MessageFailure(act, R.string.command_uninstall, R.string.error_cant_uninstall));
                 // Todo: instead handle at mapping somehow
             } else {
                 act.succeed(new AppSuccess(intents[which]));

@@ -16,14 +16,13 @@ public final class PingChannel {
     public static final int SLOT_UNLIMITED = 0;
     private static final int SLOT_POMODORO = 1;
 
-    public static final String
-            COMMAND = "command",
-            POMODORO_START = "pomodoro_start",
-            POMODORO_WARN = "pomodoro_warn",
-            POMODORO_END = "pomodoro_end",
-            POMODORO_BREAK_START = "pomodoro_break_start",
-            POMODORO_BREAK_WARN = "pomodoro_break_warn",
-            POMODORO_BREAK_END = "pomodoro_break_end";
+    public static final String COMMAND = "command";
+    public static final String POMODORO_START = "pomodoro_start";
+    public static final String POMODORO_WARN = "pomodoro_warn";
+    public static final String POMODORO_END = "pomodoro_end";
+    public static final String POMODORO_BREAK_START = "pomodoro_break_start";
+    public static final String POMODORO_BREAK_WARN = "pomodoro_break_warn";
+    public static final String POMODORO_BREAK_END = "pomodoro_break_end";
 
     public static PingChannel of(String id) {
         return switch (id) {
@@ -83,7 +82,9 @@ public final class PingChannel {
     public final String id;
     public final int slot;
     @StringRes
-    private final int mName, mDescription;
+    private final int mName;
+    @StringRes
+    private final int mDescription;
 
     private PingChannel(String id, int slot, @StringRes int name, @StringRes int desc) {
         this.id = id;

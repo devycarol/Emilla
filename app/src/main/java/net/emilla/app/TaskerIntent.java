@@ -30,28 +30,28 @@ import java.util.Random;
 
 public final class TaskerIntent extends Intent {
 
-    public static final String // 2 Tasker versions (Emilla only supports taskerm)
-            TASKER_PACKAGE = "net.dinglisch.android.tasker",
-            TASKER_PACKAGE_MARKET = TASKER_PACKAGE + 'm';
+    // 2 Tasker versions (Emilla only supports taskerm)
+    public static final String TASKER_PACKAGE = "net.dinglisch.android.tasker";
+    public static final String TASKER_PACKAGE_MARKET = TASKER_PACKAGE + 'm';
 
-    public static final String // Intent actions
-            ACTION_TASK = TASKER_PACKAGE + ".ACTION_TASK",
-            ACTION_TASK_COMPLETE = TASKER_PACKAGE + ".ACTION_TASK_COMPLETE",
-            ACTION_TASK_SELECT = TASKER_PACKAGE + ".ACTION_TASK_SELECT";
+    // Intent actions
+    public static final String ACTION_TASK = TASKER_PACKAGE + ".ACTION_TASK";
+    public static final String ACTION_TASK_COMPLETE = TASKER_PACKAGE + ".ACTION_TASK_COMPLETE";
+    public static final String ACTION_TASK_SELECT = TASKER_PACKAGE + ".ACTION_TASK_SELECT";
 
-    public static final String // Intent parameters
-            EXTRA_ACTION_INDEX_PREFIX = "action",
-            TASK_NAME_DATA_SCHEME = "task",
-            EXTRA_TASK_NAME = "task_name",
-            EXTRA_TASK_PRIORITY = "task_priority",
-            EXTRA_SUCCESS_FLAG = "success",
-            EXTRA_VAR_NAMES_LIST = "varNames",
-            EXTRA_VAR_VALUES_LIST = "varValues",
-            EXTRA_TASK_OUTPUT = "output";
+    // Intent parameters
+    public static final String EXTRA_ACTION_INDEX_PREFIX = "action";
+    public static final String TASK_NAME_DATA_SCHEME = "task";
+    public static final String EXTRA_TASK_NAME = "task_name";
+    public static final String EXTRA_TASK_PRIORITY = "task_priority";
+    public static final String EXTRA_SUCCESS_FLAG = "success";
+    public static final String EXTRA_VAR_NAMES_LIST = "varNames";
+    public static final String EXTRA_VAR_VALUES_LIST = "varValues";
+    public static final String EXTRA_TASK_OUTPUT = "output";
 
-    public static final String // Content provider columns
-            PROVIDER_COL_NAME_EXTERNAL_ACCESS = "ext_access",
-            PROVIDER_COL_NAME_ENABLED = "enabled";
+    // Content provider columns
+    public static final String PROVIDER_COL_NAME_EXTERNAL_ACCESS = "ext_access";
+    public static final String PROVIDER_COL_NAME_ENABLED = "enabled";
 
     @Deprecated // use EXTRA_VAR_NAMES_LIST, EXTRA_VAR_VALUES_LIST
     public static final String EXTRA_PARAM_LIST = "params";
@@ -67,23 +67,22 @@ public final class TaskerIntent extends Intent {
     public static final int MAX_ARGS = 10;
 
     // Bundle keys—only useful for Tasker
-    public static final String
-            ACTION_CODE = "action",
-            APP_ARG_PREFIX = "app:",
-            ICON_ARG_PREFIX = "icn:",
-            ARG_INDEX_PREFIX = "arg:",
-            PARAM_VAR_NAME_PREFIX = "par";
+    public static final String ACTION_CODE = "action";
+    public static final String APP_ARG_PREFIX = "app:";
+    public static final String ICON_ARG_PREFIX = "icn:";
+    public static final String ARG_INDEX_PREFIX = "arg:";
+    public static final String PARAM_VAR_NAME_PREFIX = "par";
 
     // Misc
 
     public static final String PERMISSION_RUN_TASKS = TASKER_PACKAGE + ".PERMISSION_RUN_TASKS";
 
-    public static final String  ACTION_OPEN_PREFS = TASKER_PACKAGE + ".ACTION_OPEN_PREFS";
-    public static final String  EXTRA_OPEN_PREFS_TAB_NO = "tno";
-    private static final int    MISC_PREFS_TAB_NO = 3;  // 0 based
+    public static final String ACTION_OPEN_PREFS = TASKER_PACKAGE + ".ACTION_OPEN_PREFS";
+    public static final String EXTRA_OPEN_PREFS_TAB_NO = "tno";
+    private static final int MISC_PREFS_TAB_NO = 3;  // 0 based
 
-    private static final String // To query whether Tasker is enabled and external access is enabled
-            TASKER_PREFS_URI = "content://" + TASKER_PACKAGE + "/prefs";
+    // To query whether Tasker is enabled and external access is enabled
+    private static final String TASKER_PREFS_URI = "content://" + TASKER_PACKAGE + "/prefs";
 
 
     /// result values for testStatus
@@ -105,13 +104,12 @@ public final class TaskerIntent extends Intent {
 
     private static final String TAG = "TaskerIntent";
 
-    private static final String
-            EXTRA_INTENT_VERSION_NUMBER = "version_number",
-            INTENT_VERSION_NUMBER = "1.1";
+    private static final String EXTRA_INTENT_VERSION_NUMBER = "version_number";
+    private static final String INTENT_VERSION_NUMBER = "1.1";
 
-    public static final int // Inclusive values
-            MIN_PRIORITY = 0,
-            MAX_PRIORITY = 10;
+    // Inclusive values
+    public static final int MIN_PRIORITY = 0;
+    public static final int MAX_PRIORITY = 10;
 
     // Tracking state
     private int mActionCount = 0;
@@ -182,8 +180,11 @@ public final class TaskerIntent extends Intent {
     }
 
     public TaskerIntent setTaskPriority(int priority) {
-        if (validatePriority(priority)) putExtra(EXTRA_TASK_PRIORITY, priority);
-        else if (DEBUG) Log.e(TAG, "priority out of range: " + MIN_PRIORITY + ':' + MAX_PRIORITY);
+        if (validatePriority(priority)) {
+            putExtra(EXTRA_TASK_PRIORITY, priority);
+        } else if (DEBUG) {
+            Log.e(TAG, "priority out of range: " + MIN_PRIORITY + ':' + MAX_PRIORITY);
+        }
 
         return this;
     }
@@ -195,7 +196,9 @@ public final class TaskerIntent extends Intent {
         Bundle extras = getExtras();
         if (extras != null && extras.containsKey(EXTRA_VAR_NAMES_LIST)) {
             ArrayList<String> varNames = extras.getStringArrayList(EXTRA_VAR_NAMES_LIST);
-            if (varNames != null) index = varNames.size() + 1;
+            if (varNames != null) {
+                index = varNames.size() + 1;
+            }
         }
 
         if (DEBUG) Log.d(TAG, "index: " + index);
@@ -322,8 +325,11 @@ public final class TaskerIntent extends Intent {
         } else {
             String key = EXTRA_ACTION_INDEX_PREFIX + mActionCount;
 
-            if (this.hasExtra(key)) actionBundle = getBundleExtra(key);
-            else if (DEBUG) Log.e(TAG, "no actions added yet");
+            if (this.hasExtra(key)) {
+                actionBundle = getBundleExtra(key);
+            } else if (DEBUG) {
+                Log.e(TAG, "no actions added yet");
+            }
         }
 
         return actionBundle;

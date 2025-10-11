@@ -21,11 +21,10 @@ public final class ContactEmailAdapter extends ContactCursorAdapter {
 
     private static final String[] PROJECTION = projection(ADD_COLS);
 
-    public static final int
-            IDX_CONTACT_ID = PROJECTION.length - 4,
-            IDX_ADDRESS = PROJECTION.length - 3,
-            IDX_TYPE = PROJECTION.length - 2,
-            IDX_LABEL = PROJECTION.length - 1;
+    public static final int IDX_CONTACT_ID = PROJECTION.length - 4;
+    public static final int IDX_ADDRESS = PROJECTION.length - 3;
+    public static final int IDX_TYPE = PROJECTION.length - 2;
+    public static final int IDX_LABEL = PROJECTION.length - 1;
 
     public ContactEmailAdapter(Context ctx) {
         super(ctx);

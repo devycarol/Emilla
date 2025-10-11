@@ -48,7 +48,8 @@ public final class CursorStart implements LabeledQuickAction {
             mActivity.chime(PEND);
             return;
         }
-        int start = box.getSelectionStart(), end = box.getSelectionEnd();
+        int start = box.getSelectionStart();
+        int end = box.getSelectionEnd();
         if (max(start, end) == 0) {
             box.setSelection(len);
             mActivity.chime(RESUME);

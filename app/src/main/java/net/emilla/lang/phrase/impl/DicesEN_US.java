@@ -24,8 +24,11 @@ public final class DicesEN_US {
 
         for (Dice dice : dices(actualRoll, errorTitle)) {
             Dice retrieve = dices.retrieve(dice);
-            if (retrieve == null) dices.add(dice);
-            else retrieve.add(dice.count());
+            if (retrieve == null) {
+                dices.add(dice);
+            } else {
+                retrieve.add(dice.count());
+            }
         }
 
         return new Dices(dices);
@@ -52,7 +55,9 @@ public final class DicesEN_US {
                     if (faces < 1) {
                         throw new EmillaException(errorTitle, R.string.error_invalid_dice_roll);
                     }
-                } else faces = 1; // just adding `count` as a constant—"d1"
+                } else {
+                    faces = 1; // just adding `count` as a constant—"d1"
+                }
 
                 if (hasNext()) {
                     negative = roll.charAt(pos) == '-';

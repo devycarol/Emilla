@@ -50,17 +50,25 @@ public final class Calendar extends CoreDataCommand {
               R.string.data_hint_calendar);
     }
 
-    private FieldToggle mLocationToggle, mUrlToggle;
+    private FieldToggle mLocationToggle;
+    private FieldToggle mUrlToggle;
 
     @Override
     protected void onInit() {
         super.onInit();
 
-        if (mLocationToggle == null) mLocationToggle = new LocationField(pActivity);
-        else if (mLocationToggle.activated()) reshowField(LocationField.FIELD_ID);
+        if (mLocationToggle == null) {
+            mLocationToggle = new LocationField(pActivity);
+        } else if (mLocationToggle.activated()) {
+            reshowField(LocationField.FIELD_ID);
+        }
         giveAction(mLocationToggle);
-        if (mUrlToggle == null) mUrlToggle = new UrlField(pActivity);
-        else if (mUrlToggle.activated()) reshowField(UrlField.FIELD_ID);
+
+        if (mUrlToggle == null) {
+            mUrlToggle = new UrlField(pActivity);
+        } else if (mUrlToggle.activated()) {
+            reshowField(UrlField.FIELD_ID);
+        }
         giveAction(mUrlToggle);
     }
 
@@ -117,11 +125,16 @@ public final class Calendar extends CoreDataCommand {
             titleAndDate = nameAndTime[0];
             long[] times = Time.parseDateAndTimes(nameAndTime[1], NAME);
             intent.putExtra(EXTRA_EVENT_BEGIN_TIME, times[0]);
-            if (times[1] != 0) intent.putExtra(EXTRA_EVENT_END_TIME, times[1]);
+            if (times[1] != 0L) {
+                intent.putExtra(EXTRA_EVENT_END_TIME, times[1]);
+            }
         }
         default -> throw badCommand(R.string.error_multiple_dates);
         }
-        if (!titleAndDate.isEmpty()) intent.putExtra(TITLE, titleAndDate);
+
+        if (!titleAndDate.isEmpty()) {
+            intent.putExtra(TITLE, titleAndDate);
+        }
 
         return intent;
     }
@@ -129,8 +142,10 @@ public final class Calendar extends CoreDataCommand {
     private void calendar(Intent intent) {
         String location = mLocationToggle.fieldText();
         if (location != null) intent.putExtra(EVENT_LOCATION, location);
+
         String url = mUrlToggle.fieldText();
         if (url != null) intent.putExtra("url", url);
+
         // todo: is there a way to query supported extras?
         // Todo: action buttons to select availability, access level, and guests—last requires
         //  contacts stuff. If possible also: reminders, repeats, timezone, event color, and

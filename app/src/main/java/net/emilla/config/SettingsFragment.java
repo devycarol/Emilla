@@ -24,9 +24,8 @@ import net.emilla.util.Features;
 
 public final class SettingsFragment extends EmillaSettingsFragment {
 
-    private static final String
-            EXTRA_FRAGMENT_ARG_KEY = ":settings:fragment_args_key",
-            EXTRA_SHOW_FRAGMENT_ARGUMENTS = ":settings:show_fragment_args";
+    private static final String EXTRA_FRAGMENT_ARG_KEY = ":settings:fragment_args_key";
+    private static final String EXTRA_SHOW_FRAGMENT_ARGUMENTS = ":settings:show_fragment_args";
 
 //    @StringRes
 //    private static int resourceOf(String prefKey) {
@@ -231,8 +230,11 @@ public final class SettingsFragment extends EmillaSettingsFragment {
     private void setupAppInfoPref() {
         Preference systemAppInfo = preferenceOf("app_info");
         Intent in = Apps.infoTask();
-        if (in.resolveActivity(mPm) != null) systemAppInfo.setIntent(in);
-        else systemAppInfo.setVisible(false);
+        if (in.resolveActivity(mPm) != null) {
+            systemAppInfo.setIntent(in);
+        } else {
+            systemAppInfo.setVisible(false);
+        }
     }
 
     private boolean caveat(CharSequence text, boolean longToast) { // Todo: remove these

@@ -103,14 +103,19 @@ public final class Calculator {
             if (op.postfix) {
                 int last = size - 1;
                 vals[last] = op.apply(vals[last]);
-            } else if (op != UnaryOperator.POSITIVE) signs.push(op);
+            } else if (op != UnaryOperator.POSITIVE) {
+                signs.push(op);
+            }
         }
 
         void applyOperator(BinaryOperator op, OpStack opStk) {
             while (opStk.notEmpty()) {
                 BinaryOperator peek = opStk.peek();
-                if (peek == BinaryOperator.LPAREN || op.precedence > peek.precedence
-                ||  op.rightAssociative && op.precedence == peek.precedence) break;
+                if (peek == BinaryOperator.LPAREN
+                    || op.precedence > peek.precedence
+                    || op.rightAssociative && op.precedence == peek.precedence) {
+                    break;
+                }
                 squish(opStk.pop()); // peek is valid, therefore pop is valid.
             }
             opStk.push(op);
@@ -215,10 +220,14 @@ public final class Calculator {
 
         while (opStk.notEmpty()) {
             BinaryOperator pop = opStk.pop();
-            if (pop != BinaryOperator.LPAREN) result.squish(pop);
-            else while (opStk.notEmpty()) {
-                if (opStk.peek() == BinaryOperator.LPAREN) opStk.pop();
-                else result.applyRParen(opStk);
+            if (pop != BinaryOperator.LPAREN) {
+                result.squish(pop);
+            } else while (opStk.notEmpty()) {
+                if (opStk.peek() == BinaryOperator.LPAREN) {
+                    opStk.pop();
+                } else {
+                    result.applyRParen(opStk);
+                }
             }
         }
 
@@ -294,7 +303,7 @@ public final class Calculator {
                         case RPAREN, NUMBER -> extractRParen();
                     };
                     case '.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> switch (prevType) {
-                        case LPAREN, OPERATOR -> extractNumber(pos);
+                        case LPAREN, OPERATOR -> extractNumber();
                         case RPAREN, NUMBER -> phantomStar();
                         // note that this treats space-separated numbers as multiplication.
                     };
@@ -340,12 +349,12 @@ public final class Calculator {
             }
 
             private void advance() {
-                while (pos < length && isWhitespace(expr[pos])) {
-                    ++pos;
-                }
+                while (pos < length && isWhitespace(expr[pos])) ++pos;
             }
 
-            private FloatingPointNumber extractNumber(int start) {
+            private FloatingPointNumber extractNumber() {
+                int start = pos;
+
                 do ++pos;
                 while (pos < length && isNumberChar(expr[pos]));
 

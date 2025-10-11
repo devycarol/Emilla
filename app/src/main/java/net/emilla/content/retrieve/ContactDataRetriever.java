@@ -34,7 +34,9 @@ public abstract class ContactDataRetriever extends ResultRetriever<Void, String,
         public final String parseResult(int resultCode, @Nullable Intent intent) {
             if (resultCode == Activity.RESULT_OK && intent != null) {
                 Uri contact = intent.getData();
-                if (contact != null) return parseData(contact, mContext.getContentResolver());
+                if (contact != null) {
+                    return parseData(contact, mContext.getContentResolver());
+                }
             }
             return null;
         }
@@ -64,7 +66,9 @@ public abstract class ContactDataRetriever extends ResultRetriever<Void, String,
             if (data != null) {
                 pActivity.suppressResumeChime();
                 receiver.provide(data);
-            } else pActivity.toast(R.string.toast_contact_not_selected);
+            } else {
+                pActivity.toast(R.string.toast_contact_not_selected);
+            }
         }
     }
 }

@@ -22,9 +22,11 @@ public final class MediaRetriever extends ResultRetriever<PickVisualMediaRequest
 
     public void retrieve(FilesReceiver receiver) {
         if (alreadyHas(receiver)) return;
-        launch(new PickVisualMediaRequest.Builder()
+        launch(
+            new PickVisualMediaRequest.Builder()
                 .setMediaType(PickVisualMedia.ImageAndVideo.INSTANCE)
-                .build());
+                .build()
+        );
     }
 
     @Override
@@ -36,8 +38,12 @@ public final class MediaRetriever extends ResultRetriever<PickVisualMediaRequest
 
         @Override
         protected void onActivityResult(List<Uri> media, FilesReceiver receiver) {
-            if (media.isEmpty()) pActivity.toast(R.string.toast_media_not_selected);
-            else receiver.provide(media);
+            if (media.isEmpty()) {
+                pActivity.toast(R.string.toast_media_not_selected);
+            } else {
+                receiver.provide(media);
+            }
+
             pActivity.chime(RESUME);
         }
     }

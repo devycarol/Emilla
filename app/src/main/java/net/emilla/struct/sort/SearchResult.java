@@ -64,7 +64,9 @@ public final class SearchResult<E extends Searchable<E>> extends Searchable<Sear
             throw new IndexOutOfBoundsException("Index " + index + " out of range for size " + size);
         }
 
-        if (index < prefCount) return mPrefixedWindow.get(index);
+        if (index < prefCount) {
+            return mPrefixedWindow.get(index);
+        }
         return mContainsWindow.get(index - prefCount);
     }
 

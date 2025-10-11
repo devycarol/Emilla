@@ -45,7 +45,9 @@ public final class Pomodoro extends CoreDataCommand {
 
     private ActionMap<Action> mActionMap;
     @Nullable
-    private String mWorkMemo, mBreakMemo;
+    private String mWorkMemo;
+    @Nullable
+    private String mBreakMemo;
 
     private Pomodoro(AssistActivity act) {
         super(act, NAME,
@@ -115,8 +117,9 @@ public final class Pomodoro extends CoreDataCommand {
 
     private int seconds(@Nullable String minutes, boolean isBreak) {
         if (minutes == null) {
-            if (isBreak) return SettingVals.defaultPomoBreakMins(prefs()) * 60;
-            return SettingVals.defaultPomoWorkMins(prefs()) * 60;
+            return isBreak
+                ? SettingVals.defaultPomoBreakMins(prefs()) * 60
+                : SettingVals.defaultPomoWorkMins(prefs()) * 60;
         }
 
         return Lang.duration(minutes, NAME).seconds;
@@ -162,7 +165,9 @@ public final class Pomodoro extends CoreDataCommand {
                     makePing(warnChannel, mainTitle, warnMemo),
                     warnChannel));
 
-        } else givePing(warnChannel, mainTitle, warnMemo);
+        } else {
+            givePing(warnChannel, mainTitle, warnMemo);
+        }
 
         scheduler.plan(PingPlan.afterSeconds(
                 Plan.POMODORO_ENDED,

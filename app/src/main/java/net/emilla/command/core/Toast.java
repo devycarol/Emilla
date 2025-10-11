@@ -47,7 +47,9 @@ public final class Toast extends CoreDataCommand {
         if (message.toLowerCase().endsWith(longTag)) {
             message = message.substring(0, message.length() - longTag.length()).trim();
             toast(message.isEmpty() ? str(R.string.toast_hello) : message, true); // todo: configurable default message
-        } else toast(message, false);
+        } else {
+            toast(message, false);
+        }
     }
 
     @Override
@@ -56,7 +58,9 @@ public final class Toast extends CoreDataCommand {
         if (message.toLowerCase().endsWith(longTag)) {
             message = message.substring(0, message.length() - longTag.length()).trim();
             toast(message.isEmpty() ? str(R.string.toast_hello) : message, true); // todo: configurable default message
-        } else toast(message, false);
+        } else {
+            toast(message, false);
+        }
     }
 
     @Override
@@ -68,7 +72,8 @@ public final class Toast extends CoreDataCommand {
         } else if (cont.toLowerCase().endsWith(longTag)) {
             message = message + '\n' + cont.substring(0, message.length() - longTag.length());
             toast(message, true);
+        } else {
+            toast(message + '\n' + cont, false);
         }
-        else toast(message + '\n' + cont, false);
     }
 }

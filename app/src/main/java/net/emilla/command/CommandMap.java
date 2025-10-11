@@ -27,12 +27,14 @@ public final class CommandMap {
     /// @param commandName exact name of command to map `alias` to.
     void putCustom(String alias, String commandName) {
         CommandYielder exact = mTrieMap.getExact(Lang.words(commandName));
-        if (exact != null) mTrieMap.put(Lang.words(alias), exact);
+        if (exact != null) {
+            mTrieMap.put(Lang.words(alias), exact);
+        }
     }
 
     public EmillaCommand get(AssistActivity act, String fullCommand) {
         Words words = Lang.words(fullCommand);
         CommandYielder get = mTrieMap.get(words);
-        return get == null ? mDefaultYielder.command(act, words) : get.command(act, words);
+        return (get == null ? mDefaultYielder : get).command(act, words);
     }
 }

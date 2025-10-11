@@ -199,8 +199,9 @@ public final class CommandsFragment extends EmillaSettingsFragment {
                 if (revisedEntry != null) {
                     reviseBldr.append(revisedEntry).append('\n');
                     customEntries.add(revisedEntry);
+                } else {
+                    reviseBldr.append('\n');
                 }
-                else reviseBldr.append('\n');
             }
 
             int len = reviseBldr.length();

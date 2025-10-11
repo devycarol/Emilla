@@ -78,9 +78,9 @@ public final class BugFailure extends DialogRun {
         }
         os.append(versionCodename());
 
-        var app = new StringBuilder(BuildConfig.APPLICATION_NAME).append(' ')
-                .append(BuildConfig.VERSION_NAME).append(' ')
-                .append(BuildConfig.VERSION_CODENAME);
+        var app = new StringBuilder(BuildConfig.APPLICATION_NAME)
+            .append(' ').append(BuildConfig.VERSION_NAME)
+            .append(' ').append(BuildConfig.VERSION_CODENAME);
         if (BuildConfig.DEBUG) app.append(" (debug)");
 
         return "Device || " + device + "\nOS || " + os + "\nApp || " + app;

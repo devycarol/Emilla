@@ -27,10 +27,18 @@ import java.util.regex.Pattern;
 // Todo: this class is utterly unreadable
 public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
 
-    private static final String JAN = "jan(uary)?", FEB = "feb(ruary)?", MAR = "mar(ch)?";
-    private static final String APR = "apr(il)?", MAY = "may", JUN = "june?";
-    private static final String JUL = "july?", AUG = "aug(ust)?", SEP = "sep(t(ember)?)?";
-    private static final String OCT = "oct(ober)?", NOV = "nov(ember)?", DEC = "dec(ember)?";
+    private static final String JAN = "jan(uary)?";
+    private static final String FEB = "feb(ruary)?";
+    private static final String MAR = "mar(ch)?";
+    private static final String APR = "apr(il)?";
+    private static final String MAY = "may";
+    private static final String JUN = "june?";
+    private static final String JUL = "july?";
+    private static final String AUG = "aug(ust)?";
+    private static final String SEP = "sep(t(ember)?)?";
+    private static final String OCT = "oct(ober)?";
+    private static final String NOV = "nov(ember)?";
+    private static final String DEC = "dec(ember)?";
 
     private static Pattern monthRegex() {
         return Pattern.compile(
@@ -57,7 +65,9 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
             throw new EmillaException(errorTitle, R.string.error_invalid_time);
         }
 
-        int h = 0, m = 0, s = 0;
+        int h = 0;
+        int m = 0;
+        int s = 0;
         int len = time.length();
         switch ((len + 1) / 2) {
         case 1 -> h = parseInt(time);
@@ -81,7 +91,9 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         else meridiem = -1;
 
         int[] units = timeUnits(time, errorTitle);
-        int h = units[0], m = units[1], s = units[2];
+        int h = units[0];
+        int m = units[1];
+        int s = units[2];
 
         if (meridiem == -1) {
             if (act != null) {
@@ -103,12 +115,19 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
 
     private static int[] parseDurationUntil(String until, @StringRes int errorTitle) {
         int[] endUnits = parseTime(until, null, errorTitle);
-        int endHour = endUnits[0], endMin = endUnits[1], endSec = endUnits[2];
+        int endHour = endUnits[0];
+        int endMin = endUnits[1];
+        int endSec = endUnits[2];
 
         var cal = Calendar.getInstance();
-        int curHour = cal.get(HOUR_OF_DAY), curMin = cal.get(MINUTE), curSec = cal.get(SECOND);
+        int curHour = cal.get(HOUR_OF_DAY);
+        int curMin = cal.get(MINUTE);
+        int curSec = cal.get(SECOND);
 
-        int h = 0, m = 0, s = 0, warn = 0;
+        int h = 0;
+        int m = 0;
+        int s = 0;
+        int warn = 0;
 
         s = endSec - curSec;
         if (s < 0) {
@@ -136,7 +155,9 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
     private static int[] splitDurationString (String dur) {
         String[] units = dur.split(" *: *| +");
 
-        double h = 0.0, m = 0.0, s = 0.0;
+        double h = 0.0;
+        double m = 0.0;
+        double s = 0.0;
         switch (units.length) {
         case 3:
             s = parseDouble(units[2]);
@@ -165,7 +186,8 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
                 "\\d*\\.?\\d+ *s(ec(ond)?s?)?"
         };
 
-        boolean hit = false, notEmpty = true;
+        boolean hit = false;
+        boolean notEmpty = true;
         for (int i = 0; i < 3 && notEmpty; ++i) {
             String rgx = patterns[i];
             if (containsRgxIgnoreCase(dur, rgx)) {
@@ -176,14 +198,16 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
                     throw new EmillaException(errorTitle, R.string.error_invalid_duration);
                 }
 
-                String before = "", after = "";
+                String before = "";
+                String after = "";
                 switch (sansHrs.length) {
                 case 2: after = sansHrs[1];
                 // fallthrough
                 case 1: before = sansHrs[0];
                 }
 
-                int start = before.length(), end = dur.length() - after.length();
+                int start = before.length();
+                int end = dur.length() - after.length();
 
                 timeUnits[i] = parseDouble(dur.substring(start, end).replaceAll("[^\\d.]", ""));
                 dur = (before + after).trim();
@@ -264,7 +288,8 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
     public static long[] parseDateAndTimes(String date, @StringRes int errorTitle) {
         String[] dateTime = date.split(" *@ *|(^| +)(at|from) +");
 
-        int[] startTime = null, endTime = null;
+        int[] startTime = null;
+        int[] endTime = null;
         boolean endTomorrow = false; // TODO
         int len = dateTime.length;
         if (len == 2) {

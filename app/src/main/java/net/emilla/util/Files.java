@@ -20,7 +20,8 @@ public final class Files {
         var reader = new BufferedReader(new InputStreamReader(istream));
         // todo: what.
 
-        int c, lastChar = '\n';
+        int c;
+        int lastChar = '\n';
         while ((c = reader.read()) != -1) {
             lastChar = c;
         }

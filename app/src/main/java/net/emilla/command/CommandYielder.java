@@ -21,6 +21,8 @@ public abstract class CommandYielder implements TrieMap.Value<CommandYielder> {
 
     private EmillaCommand mCommand;
 
+    protected CommandYielder() {}
+
     final EmillaCommand command(AssistActivity act) {
         return mCommand == null ? mCommand = makeCommand(act) : mCommand;
     }
@@ -32,13 +34,14 @@ public abstract class CommandYielder implements TrieMap.Value<CommandYielder> {
     /// instruction, upon having its position set by the TrieMap's `get()` method.
     /// @return the command, with instruction text from `commandPhrase`.
     final EmillaCommand command(AssistActivity act, Words commandPhrase) {
-        if (!isPrefixable()) return mCommand == null ? mCommand = makeCommand(act) : mCommand;
+        EmillaCommand command = mCommand == null ? mCommand = makeCommand(act) : mCommand;
+        if (!isPrefixable()) return command;
 
-        String instruction;
-        if (commandPhrase.hasRemainingContents()) instruction = commandPhrase.remainingContents();
-        else instruction = null;
+        String instruction = commandPhrase.hasRemainingContents()
+            ? commandPhrase.remainingContents()
+            : null;
 
-        return (mCommand == null ? mCommand = makeCommand(act) : mCommand).instruct(instruction);
+        return command.instruct(instruction);
     }
 
     /// Generates a new command instance.

@@ -22,7 +22,9 @@ public abstract class EventScheduler<P extends Plan> {
         PendingIntent pendingIntent = pendingIntentFor(plan);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S || mAlarmManager.canScheduleExactAlarms()) {
             mAlarmManager.setExact(AlarmManager.RTC_WAKEUP, plan.time, pendingIntent);
-        } else mAlarmManager.set(AlarmManager.RTC_WAKEUP, plan.time, pendingIntent);
+        } else {
+            mAlarmManager.set(AlarmManager.RTC_WAKEUP, plan.time, pendingIntent);
+        }
         // Todo: communicate which will happen in the settings.
     }
 

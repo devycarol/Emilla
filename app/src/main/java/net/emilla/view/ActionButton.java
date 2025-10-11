@@ -56,8 +56,11 @@ public final class ActionButton extends AppCompatImageButton implements View.OnT
         if (mHasAppIcon != isAppIcon) {
             mHasAppIcon = isAppIcon;
             var res = getResources();
-            if (isAppIcon) applyAppIconBackground(res);
-            else applyNormalIconBackground(res);
+            if (isAppIcon) {
+                applyAppIconBackground(res);
+            } else {
+                applyNormalIconBackground(res);
+            }
         }
     }
 
@@ -69,8 +72,12 @@ public final class ActionButton extends AppCompatImageButton implements View.OnT
 
         mLongIcon = AppCompatResources.getDrawable(getContext(), action.icon());
 
-        ViewCompat.replaceAccessibilityAction(this, AccessibilityActionCompat.ACTION_LONG_CLICK,
-                action.description(res), null);
+        ViewCompat.replaceAccessibilityAction(
+            this,
+            AccessibilityActionCompat.ACTION_LONG_CLICK,
+            action.description(res),
+            null
+        );
 
         mHasLongPress = true;
     }
@@ -83,7 +90,11 @@ public final class ActionButton extends AppCompatImageButton implements View.OnT
             case MotionEvent.ACTION_DOWN -> {
                 setPressed(true);
                 performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP);
-                if (mHasLongPress) postDelayed(mOnLongPress, ViewConfiguration.getLongPressTimeout());
+
+                if (mHasLongPress) {
+                    postDelayed(mOnLongPress, ViewConfiguration.getLongPressTimeout());
+                }
+
                 return true;
             }
             case MotionEvent.ACTION_MOVE -> {
@@ -95,7 +106,9 @@ public final class ActionButton extends AppCompatImageButton implements View.OnT
                                 ? HapticFeedbackConstants.GESTURE_END : HapticFeedbackConstants.KEYBOARD_TAP);
                         resetIcon();
                         mLongTouching = false;
-                    } else if (mHasLongPress) getHandler().removeCallbacks(mOnLongPress);
+                    } else if (mHasLongPress) {
+                        getHandler().removeCallbacks(mOnLongPress);
+                    }
                 }
                 return true;
             }
@@ -107,7 +120,10 @@ public final class ActionButton extends AppCompatImageButton implements View.OnT
                         resetIcon();
                         performLongClick();
                     } else {
-                        if (mHasLongPress) getHandler().removeCallbacks(mOnLongPress);
+                        if (mHasLongPress) {
+                            getHandler().removeCallbacks(mOnLongPress);
+                        }
+
                         playSoundEffect(SoundEffectConstants.CLICK);
                         callOnClick();
                     }
@@ -121,7 +137,9 @@ public final class ActionButton extends AppCompatImageButton implements View.OnT
 
     private void resetIcon() {
         setImageDrawable(mIcon);
-        if (mHasAppIcon) applyAppIconBackground(getResources());
+        if (mHasAppIcon) {
+            applyAppIconBackground(getResources());
+        }
     }
 
     private void applyAppIconBackground(Resources res) {

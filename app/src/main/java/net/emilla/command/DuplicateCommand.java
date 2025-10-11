@@ -85,8 +85,9 @@ public final class DuplicateCommand extends EmillaCommand implements DataCommand
             mCommands[which].init();
             // Todo: this surely looks janky and will behave as such. Don't execute dupe commands
             //  immediately, disambiguate prior to execution.
-            if (mCommands[which].usesData()) ((DataCommand) mCommands[which]).execute(data);
-            else { // Todo: disambiguate when data is used.
+            if (mCommands[which].usesData()) {
+                ((DataCommand) mCommands[which]).execute(data);
+            } else { // Todo: disambiguate when data is used.
                 mCommands[which].instructAppend(data);
                 mCommands[which].execute();
             }

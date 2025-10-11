@@ -19,19 +19,18 @@ import java.util.Arrays;
 public abstract class ContactCursorAdapter extends CursorAdapter {
 
     protected static final String[] BASE_COLS = {
-            Contacts._ID,
-            Contacts.LOOKUP_KEY,
-            Contacts.DISPLAY_NAME_PRIMARY,
-            Contacts.PHOTO_THUMBNAIL_URI,
-            Contacts.STARRED,
+        Contacts._ID,
+        Contacts.LOOKUP_KEY,
+        Contacts.DISPLAY_NAME_PRIMARY,
+        Contacts.PHOTO_THUMBNAIL_URI,
+        Contacts.STARRED,
     };
 
-    public static final int
-            IDX_ID = 0,
-            IDX_KEY = 1,
-            IDX_NAME = 2,
-            IDX_PHOTO = 3,
-            IDX_STARRED = 4;
+    public static final int IDX_ID = 0;
+    public static final int IDX_KEY = 1;
+    public static final int IDX_NAME = 2;
+    public static final int IDX_PHOTO = 3;
+    public static final int IDX_STARRED = 4;
 
     protected static String[] projection(String[] addCols) {
         String[] fromCols = ContactCursorAdapter.BASE_COLS;

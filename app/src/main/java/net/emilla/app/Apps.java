@@ -167,8 +167,10 @@ public final class Apps {
             return new Intent(ACTION_UNINSTALL_PACKAGE, pkgUri(pkg));
             // Todo: ACTION_UNINSTALL_PACKAGE is deprecated.
         }
+
         Intent appInfo = infoTask(pkg);
         if (appInfo.resolveActivity(pm) != null) return appInfo;
+
         var settings = new Intent(Settings.ACTION_SETTINGS);
         if (appInfo.resolveActivity(pm) != null) return settings;
     } catch (PackageManager.NameNotFoundException ignored) {}

@@ -5,7 +5,7 @@ import static net.emilla.contact.adapter.ContactCursorAdapter.IDX_KEY;
 
 import android.database.Cursor;
 import android.net.Uri;
-import android.provider.ContactsContract.Contacts;
+import android.provider.ContactsContract;
 import android.widget.ListView;
 
 import androidx.annotation.Nullable;
@@ -28,13 +28,12 @@ public final class ContactCardsFragment extends ContactsFragment<Uri> {
     protected Uri selectedContactsInternal(ListView contactList, Cursor cur) {
         if (cur.getCount() == 1) {
             cur.moveToFirst();
-            return Contacts.getLookupUri(cur.getLong(IDX_ID), cur.getString(IDX_KEY));
+            return ContactsContract.Contacts.getLookupUri(cur.getLong(IDX_ID), cur.getString(IDX_KEY));
         }
 
         int pos = contactList.getCheckedItemPosition();
-        if (cur.moveToPosition(pos)) return Contacts.getLookupUri(cur.getLong(IDX_ID),
-                cur.getString(IDX_KEY));
-
-        return null;
+        return cur.moveToPosition(pos)
+            ? ContactsContract.Contacts.getLookupUri(cur.getLong(IDX_ID), cur.getString(IDX_KEY))
+            : null;
     }
 }

@@ -61,9 +61,8 @@ import java.util.Set;
 
 public final class SettingVals {
 
-    public static final String
-            ALIASES_CUSTOM = "aliases_custom",
-            ALIASES_CUSTOM_TEXT = "aliases_custom_text";
+    public static final String ALIASES_CUSTOM = "aliases_custom";
+    public static final String ALIASES_CUSTOM_TEXT = "aliases_custom_text";
 
     public static boolean commandEnabled(PackageManager pm, SharedPreferences prefs, String entry) {
         String key = commandEnabledKey(entry);

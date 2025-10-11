@@ -6,10 +6,9 @@ import java.util.regex.Pattern;
 
 public final class ListPhraseEN_US implements ListPhrase {
 
-    private static final String
-            CONJUNCTION = "(?i)(?<=[^\\s,])\\s+(and|&)\\s+(?=[^\\s,])",
-            COORDINATION = "(?<=[^\\s,]),[\\s,]*(?=[^\\s,])",
-            SERIAL = "(?i)(?<=\\S),[\\s,]*(and|&)\\s+(?=[^\\s,])";
+    private static final String CONJUNCTION = "(?i)(?<=[^\\s,])\\s+(and|&)\\s+(?=[^\\s,])";
+    private static final String COORDINATION = "(?<=[^\\s,]),[\\s,]*(?=[^\\s,])";
+    private static final String SERIAL = "(?i)(?<=\\S),[\\s,]*(and|&)\\s+(?=[^\\s,])";
 
     private final String[] mItems;
 

@@ -25,7 +25,9 @@ public final class ConfigActivity extends EmillaActivity {
 
         mBinding.navView.setOnItemReselectedListener(item -> {
             boolean assistantItem = item.getItemId() == R.id.nav_assistant;
-            if (assistantItem) startActivity(Apps.meTask(this, AssistActivity.class));
+            if (assistantItem) {
+                startActivity(Apps.meTask(this, AssistActivity.class));
+            }
         });
         var navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host_fragment_activity_config);

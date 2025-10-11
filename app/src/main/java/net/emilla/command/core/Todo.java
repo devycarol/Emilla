@@ -96,8 +96,11 @@ public final class Todo extends CoreDataCommand {
     private void todo(String task) { try {
         var cr = contentResolver();
 
-        if (Files.endsWithNewline(cr, mUri)) task = '\n' + task + '\n';
-        else task += '\n';
+        if (Files.endsWithNewline(cr, mUri)) {
+            task = '\n' + task + '\n';
+        } else {
+            task += '\n';
+        }
 
         ParcelFileDescriptor pfd = cr.openFileDescriptor(mUri, "wa");
         if (pfd == null) throw new FileNotFoundException();

@@ -65,7 +65,9 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
     protected void onInit() {
         super.onInit();
 
-        if (mContactsFragment == null) mContactsFragment = ContactCardsFragment.newInstance();
+        if (mContactsFragment == null) {
+            mContactsFragment = ContactCardsFragment.newInstance();
+        }
         pActivity.giveActionBox(mContactsFragment);
 
         if (mActionMap == null) {
@@ -130,8 +132,11 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
                 case VIEW -> view(contact);
                 case EDIT -> edit(contact);
                 case SHARE -> send(contact, null);
-            } else if (person != null) offerCreate(person, null);
-            else pActivity.offerContactCards(this);
+            } else if (person != null) {
+                offerCreate(person, null);
+            } else {
+                pActivity.offerContactCards(this);
+            }
         }
         case CREATE -> create(person, null);
         }
@@ -151,9 +156,13 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
 
     private void contact(@Nullable String person, String details) {
         // Todo: dynamic data hint
-        if (mAction != Action.SHARE) create(person, details);
-        else if (person != null) offerCreate(person, details);
-        else pActivity.offerContactCards(this);
+        if (mAction != Action.SHARE) {
+            create(person, details);
+        } else if (person != null) {
+            offerCreate(person, details);
+        } else {
+            pActivity.offerContactCards(this);
+        }
     }
 
     private void view(Uri contact) {

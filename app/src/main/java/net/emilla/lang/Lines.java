@@ -104,7 +104,7 @@ public final class Lines implements Iterable<String> {
     public static String trim(String text) {
         var sb = new StringBuilder(text.length());
 
-        var itr = new Lines(text, true).iterator();
+        Iterator<String> itr = new Lines(text, true).iterator();
         if (!itr.hasNext()) return null;
 
         sb.append(itr.next());
@@ -208,9 +208,7 @@ public final class Lines implements Iterable<String> {
         @Override
         protected String makeLine(StringBuilder sb)  {
             int len = sb.length();
-            while (len > 0 && Chars.isNonLineSpace(sb.charAt(len - 1))) {
-                --len;
-            }
+            while (len > 0 && Chars.isNonLineSpace(sb.charAt(len - 1))) --len;
             sb.setLength(len);
             // remove trailing non-line spaces, leading ones are handled by `advanceToNextLine()`
             // and `textStart(String)`.

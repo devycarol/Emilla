@@ -5,7 +5,9 @@ import androidx.annotation.StringRes;
 public final class EmillaException extends RuntimeException {
 
     @StringRes
-    public final int title, message;
+    public final int title;
+    @StringRes
+    public final int message;
 
     public EmillaException(@StringRes int title, @StringRes int message) {
         super();

@@ -61,18 +61,28 @@ public final class Email extends CoreDataCommand implements EmailReceiver {
     protected void onInit() {
         super.onInit();
 
-        if (mContactsFragment == null) mContactsFragment = ContactEmailsFragment.newInstance(true);
+        if (mContactsFragment == null) {
+            mContactsFragment = ContactEmailsFragment.newInstance(true);
+        }
         pActivity.giveActionBox(mContactsFragment);
 
-        if (mSubjectToggle == null) mSubjectToggle = new SubjectField(pActivity);
-        else if (mSubjectToggle.activated()) reshowField(SubjectField.FIELD_ID);
+        if (mSubjectToggle == null) {
+            mSubjectToggle = new SubjectField(pActivity);
+        } else if (mSubjectToggle.activated()) {
+            reshowField(SubjectField.FIELD_ID);
+        }
         giveAction(mSubjectToggle);
 
-        if (mFileFetcher == null) mFileFetcher = new FileFetcher(pActivity, ENTRY, "*/*");
+        if (mFileFetcher == null) {
+            mFileFetcher = new FileFetcher(pActivity, ENTRY, "*/*");
+        }
+        giveAction(mFileFetcher);
         // TODO: Thunderbird doesn't like certain filetypes. See if you can find a type statement
         //  that's consistently email-friendly.
-        giveAction(mFileFetcher);
-        if (mMediaFetcher == null) mMediaFetcher = new MediaFetcher(pActivity, ENTRY);
+
+        if (mMediaFetcher == null) {
+            mMediaFetcher = new MediaFetcher(pActivity, ENTRY);
+        }
         giveAction(mMediaFetcher);
     }
 
@@ -115,8 +125,9 @@ public final class Email extends CoreDataCommand implements EmailReceiver {
 
     private void tryEmail(String recipients, @Nullable String body) {
         String addresses = mContactsFragment.selectedContacts();
-        if (addresses != null) email(addresses, body);
-        else email(recipients, body);
+        if (addresses != null) recipients = addresses;
+
+        email(recipients, body);
         // todo: validate the raw recipients
     }
 

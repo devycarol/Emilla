@@ -57,7 +57,8 @@ public final class Timer extends CoreDataCommand {
         int[] timeUnits = Time.parseDuration(duration, NAME);
         int warn = timeUnits[3];
         if (warn > 0) { // todo: replace with a confirm/set-default dialog - reduces localization woes
-            String curPeriod, nextPeriod;
+            String curPeriod;
+            String nextPeriod;
             if (warn == 1) {
                 nextPeriod = "AM";
                 curPeriod = "PM";

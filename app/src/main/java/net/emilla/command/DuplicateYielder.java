@@ -43,7 +43,10 @@ public final class DuplicateYielder extends CommandYielder implements TrieMap.Du
         if (mPruned) return this;
 
         for (int i = mYielders.size() - 1; i >= 0 ; --i) {
-            if (!mYielders.get(i).isPrefixable()) mYielders.remove(i--);
+            if (!mYielders.get(i).isPrefixable()) {
+                mYielders.remove(i);
+                --i;
+            }
         }
 
         mUsesInstruction = true;
@@ -59,7 +62,9 @@ public final class DuplicateYielder extends CommandYielder implements TrieMap.Du
         if (mCommand == null) {
             int dupeCount = mYielders.size();
             var cmds = new EmillaCommand[dupeCount];
-            for (int i = 0; i < dupeCount; ++i) cmds[i] = mYielders.get(i).makeCommand(act);
+            for (int i = 0; i < dupeCount; ++i) {
+                cmds[i] = mYielders.get(i).makeCommand(act);
+            }
             mCommand = new DuplicateCommand(act, cmds);
         }
         return mCommand;

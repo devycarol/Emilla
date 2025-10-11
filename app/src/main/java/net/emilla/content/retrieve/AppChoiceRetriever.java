@@ -34,7 +34,9 @@ public final class AppChoiceRetriever extends ResultRetriever<Intent, ActivityRe
                     new Intent(pActivity, AppChooserBroadcastReceiver.class), flags).getIntentSender();
 
             chooser = Intent.createChooser(target, pActivity.getString(title), sender);
-        } else chooser = Intent.createChooser(target, pActivity.getString(title));
+        } else {
+            chooser = Intent.createChooser(target, pActivity.getString(title));
+        }
 
         launch(chooser);
     }

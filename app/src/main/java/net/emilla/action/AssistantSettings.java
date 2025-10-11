@@ -45,8 +45,9 @@ public final class AssistantSettings implements LabeledQuickAction {
     @Override
     public void perform() {
         Intent config = Apps.meTask(mActivity, ConfigActivity.class);
-        if (mActivity.shouldCancel()) mActivity.succeed(new AppSuccess(config));
-        else {
+        if (mActivity.shouldCancel()) {
+            mActivity.succeed(new AppSuccess(config));
+        } else {
             mActivity.suppressPendChime();
             mActivity.startActivity(config.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             mActivity.chime(ACT);

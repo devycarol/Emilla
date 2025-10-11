@@ -59,11 +59,16 @@ public final class Sms extends CoreDataCommand implements PhoneReceiver {
     protected void onInit() {
         super.onInit();
 
-        if (mContactsFragment == null) mContactsFragment = ContactPhonesFragment.newInstance(true);
+        if (mContactsFragment == null) {
+            mContactsFragment = ContactPhonesFragment.newInstance(true);
+        }
         pActivity.giveActionBox(mContactsFragment);
 
-        if (mSubjectToggle == null) mSubjectToggle = new SubjectField(pActivity);
-        else if (mSubjectToggle.activated()) reshowField(SubjectField.FIELD_ID);
+        if (mSubjectToggle == null) {
+            mSubjectToggle = new SubjectField(pActivity);
+        } else if (mSubjectToggle.activated()) {
+            reshowField(SubjectField.FIELD_ID);
+        }
         giveAction(mSubjectToggle);
         // Todo: attachments
     }
@@ -116,8 +121,9 @@ public final class Sms extends CoreDataCommand implements PhoneReceiver {
         String numbers = mContactsFragment.selectedContacts();
         if (numbers == null && Contacts.isPhoneNumbers(recipients)) numbers = recipients;
 
-        if (numbers != null) message(numbers, message);
-        else {
+        if (numbers != null) {
+            message(numbers, message);
+        } else {
             String toNumbers = Contacts.phonewordsToNumbers(recipients);
             String msg = str(R.string.notice_sms_not_numbers, recipients, toNumbers);
             // todo: better message.

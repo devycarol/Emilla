@@ -198,7 +198,9 @@ public final class AssistActivity extends EmillaActivity {
                 }
 
                 boolean dataAvailable = noCommand || mCommand.usesData();
-                if (dataAvailable != mVm.dataAvailable) updateDataAvailability(dataAvailable);
+                if (dataAvailable != mVm.dataAvailable) {
+                    updateDataAvailability(dataAvailable);
+                }
             }
         }
 
@@ -293,7 +295,8 @@ public final class AssistActivity extends EmillaActivity {
         EditText commandField = mBinding.commandField;
         EditText dataField = mBinding.dataField;
 
-        int start, end;
+        int start;
+        int end;
         boolean dataFocused = dataField.hasFocus();
         if (dataFocused) {
             int dataLen = dataField.length();
@@ -307,14 +310,22 @@ public final class AssistActivity extends EmillaActivity {
         if (dataField.length() > 0) {
             Editable commandText = commandField.getText();
             Editable dataText = dataField.getText();
+
             int len = commandText.length();
-            if (len == 0 || isWhitespace(commandText.charAt(len - 1))) commandField.append(dataText);
-            else commandField.append(Lang.wordConcat(mVm.res, "", dataText));
+            if (len == 0 || isWhitespace(commandText.charAt(len - 1))) {
+                commandField.append(dataText);
+            } else {
+                commandField.append(Lang.wordConcat(mVm.res, "", dataText));
+            }
+
             dataField.setText(null);
         }
         int newLen = commandField.length();
-        if (dataFocused) commandField.setSelection(newLen + start, newLen + end);
-        else commandField.setSelection(start, end);
+        if (dataFocused) {
+            commandField.setSelection(newLen + start, newLen + end);
+        } else {
+            commandField.setSelection(start, end);
+        }
 
         dataField.setVisibility(View.GONE);
         mVm.dataVisible = false;
@@ -328,9 +339,15 @@ public final class AssistActivity extends EmillaActivity {
         SharedPreferences prefs = mVm.prefs;
         // TODO: save state hell
         // Todo: put these in an editor.
-        if (SettingVals.showCursorStartButton(prefs)) addAction(new CursorStart(this));
-        if (SettingVals.showHelpButton(prefs)) addAction(new Help(this));
-        if (SettingVals.showPlayPauseButton(prefs)) addAction(new PlayPause(this));
+        if (SettingVals.showCursorStartButton(prefs)) {
+            addAction(new CursorStart(this));
+        }
+        if (SettingVals.showHelpButton(prefs)) {
+            addAction(new Help(this));
+        }
+        if (SettingVals.showPlayPauseButton(prefs)) {
+            addAction(new PlayPause(this));
+        }
     }
 
     public void addAction(QuickAction action) {
@@ -517,15 +534,18 @@ public final class AssistActivity extends EmillaActivity {
 
     public void giveActionBox(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.action_box, fragment)
-                .commit();
+            .replace(R.id.action_box, fragment)
+            .commit();
     }
 
     public void removeActionBox(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-        if (mDefaultActionBox == null) transaction.remove(fragment);
-        else transaction.replace(R.id.action_box, mDefaultActionBox);
+        if (mDefaultActionBox == null) {
+            transaction.remove(fragment);
+        } else {
+            transaction.replace(R.id.action_box, mDefaultActionBox);
+        }
 
         transaction.commit();
     }
@@ -553,9 +573,8 @@ public final class AssistActivity extends EmillaActivity {
     }
 
     public void setImeAction(int action) {
-        if (mVm.noCommand) {
-            action = IME_ACTION_NEXT;
-        }
+        if (mVm.noCommand) action = IME_ACTION_NEXT;
+
         if (action != mVm.imeAction) {
             mBinding.commandField.setImeOptions(action);
             mVm.imeAction = action;
@@ -620,8 +639,11 @@ public final class AssistActivity extends EmillaActivity {
     private void cancelIfWarranted() {
         if (!mVm.askTryCancel()) return;
 
-        if (shouldCancel()) cancel();
-        else offer(new DialogRun(cancelDialog()));
+        if (shouldCancel()) {
+            cancel();
+        } else {
+            offer(new DialogRun(cancelDialog()));
+        }
     }
 
     private AlertDialog.Builder cancelDialog() {

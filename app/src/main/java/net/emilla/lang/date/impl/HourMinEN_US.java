@@ -14,9 +14,8 @@ import java.util.Calendar;
 public record HourMinEN_US(int hour24, int minute) implements HourMin {
 
     public static final String REGEX = "(?i)([01]?[0-9]|2[0-3])(:?[0-5][0-9])? *([AP]M?)?";
-    private static final String
-            RGX_AM = "(?i).*\\d *A.*",
-            RGX_PM = "(?i).*\\d *P.*";
+    private static final String RGX_AM = "(?i).*\\d *A.*";
+    private static final String RGX_PM = "(?i).*\\d *P.*";
 
     public static HourMin instance(String timeStr, Context ctx, @StringRes int errorTitle) {
         int meridiem;
@@ -29,7 +28,8 @@ public record HourMinEN_US(int hour24, int minute) implements HourMin {
             throw new EmillaException(errorTitle, R.string.error_invalid_time);
         }
 
-        int hour, minute;
+        int hour;
+        int minute;
         int len = timeStr.length();
         if (len > 2) {
             hour = Integer.parseInt(timeStr.substring(0, len - 2));

@@ -57,7 +57,10 @@ import net.emilla.command.DataCommand;
     @Override
     public final void execute(String data) {
         String instruction = instruction();
-        if (instruction == null) runWithData(data);
-        else runWithData(instruction, data);
+        if (instruction != null) {
+            runWithData(instruction, data);
+        } else {
+            runWithData(data);
+        }
     }
 }

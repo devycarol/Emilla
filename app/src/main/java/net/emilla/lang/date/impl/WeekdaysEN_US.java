@@ -39,7 +39,9 @@ public record WeekdaysEN_US(ArrayList<Integer> days, boolean empty) implements W
                 case 'f' -> weekdays.add(Calendar.FRIDAY);
                 case 's' -> weekdays.add(Calendar.SATURDAY);
                 }
-            } else throw new EmillaException(errorTitle, R.string.error_excess_weekdays);
+            } else {
+                throw new EmillaException(errorTitle, R.string.error_excess_weekdays);
+            }
         } while (!timeStr.isEmpty());
 
         return new WeekdaysEN_US(weekdays, false);

@@ -90,8 +90,11 @@ public final class Tasker extends AppCommand implements DataCommand {
     @Override
     public void execute(String data) {
         String instruction = instruction();
-        if (instruction == null) runWithData(data);
-        else runWithData(instruction, data);
+        if (instruction != null) {
+            runWithData(instruction, data);
+        } else {
+            runWithData(data);
+        }
     }
 
     private void runWithData(String params) {
@@ -129,7 +132,8 @@ public final class Tasker extends AppCommand implements DataCommand {
             return;
         }
 
-        int nameCol = 0, projectCol = 1;
+        int nameCol = 0;
+        int projectCol = 1;
 
         String lcTask = task.toLowerCase();
         var tasks = new TreeSet<Task>(taskComparator(lcTask));
@@ -194,10 +198,12 @@ public final class Tasker extends AppCommand implements DataCommand {
     }
 
     private void runTask(String taskName, @Nullable String params) {
-        var in = new TaskerIntent(taskName);
+        var intent = new TaskerIntent(taskName);
         if (params != null) {
-            for (String param : new Lines(params, false)) in.addParameter(param);
+            for (String param : new Lines(params, false)) {
+                intent.addParameter(param);
+            }
         }
-        giveBroadcast(in);
+        giveBroadcast(intent);
     }
 }

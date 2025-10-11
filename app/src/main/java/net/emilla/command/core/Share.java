@@ -83,8 +83,8 @@ public final class Share extends CoreDataCommand implements AppChoiceReceiver {
 
     private Intent makeIntent(String text) {
         ArrayList<Uri> attachments = pActivity.attachments(ENTRY);
-
         if (attachments == null) return Apps.sendTask("text/plain").putExtra(EXTRA_TEXT, text);
+
         Intent in;
         if (attachments.size() == 1) {
             in = Apps.sendTask("text/plain").putExtra(EXTRA_STREAM, attachments.get(0));

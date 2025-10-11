@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.annotation.StringRes;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
 import androidx.core.view.accessibility.AccessibilityViewCommand;
@@ -97,8 +98,11 @@ public final class ContactItemView extends LinearLayout {
         TextView nameLabel = findViewById(R.id.ctct_name_label);
         nameLabel.setText(name);
 
-        if (photoUri == null) mPhoto.setImageResource(R.drawable.ic_person);
-        else mPhoto.setImageURI(Uri.parse(photoUri));
+        if (photoUri == null) {
+            mPhoto.setImageResource(R.drawable.ic_person);
+        } else {
+            mPhoto.setImageURI(Uri.parse(photoUri));
+        }
 
         setStarred(starred);
     }
@@ -136,9 +140,12 @@ public final class ContactItemView extends LinearLayout {
     @RequiresApi(api = Build.VERSION_CODES.R)
     private void setStateDesc() {
         var res = getResources();
-        if (mSelected) setStateDescription(res.getString(mStarred ? R.string.selected_and_starred
-                : R.string.selected));
-        else setStateDescription(mStarred ? getResources().getString(R.string.starred) : null);
+        if (mSelected) {
+            @StringRes int stateDesc = mStarred ? R.string.selected_and_starred : R.string.selected;
+            setStateDescription(res.getString(stateDesc));
+        } else {
+            setStateDescription(mStarred ? res.getString(R.string.starred) : null);
+        }
     }
 
     private String starActionLabel() {
