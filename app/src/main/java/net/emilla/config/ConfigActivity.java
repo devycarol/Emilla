@@ -14,7 +14,7 @@ import net.emilla.databinding.ActivityConfigBinding;
 
 public final class ConfigActivity extends EmillaActivity {
 
-    private ActivityConfigBinding mBinding;
+    private ActivityConfigBinding mBinding = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

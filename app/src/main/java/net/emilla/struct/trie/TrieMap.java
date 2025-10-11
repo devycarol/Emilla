@@ -9,8 +9,8 @@ import java.util.Map;
 
 /*internal*/ abstract class TrieNode<K, V extends TrieMap.Value<V>> {
 
-    /*internal*/ V mVal;
-    private Map<K, TrieNode<K, V>> mChildren;
+    /*internal*/ V mVal = null;
+    private Map<K, TrieNode<K, V>> mChildren = null;
 
     final Map<K, TrieNode<K, V>> children() {
         return mChildren == null ? mChildren = newMap() : mChildren;

@@ -187,9 +187,9 @@ public abstract class EmillaCommand {
     // it's also proven cumbersome to get the key icon to actually update to begin with..
 
     @Nullable
-    private String mInstruction;
-    private boolean mInitialized;
-    private Drawable mIcon;
+    private String mInstruction = null;
+    private boolean mInitialized = false;
+    private Drawable mIcon = null;
 
     protected EmillaCommand(
         AssistActivity act,

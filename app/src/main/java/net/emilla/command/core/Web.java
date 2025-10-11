@@ -41,7 +41,7 @@ public final class Web extends CoreCommand {
             DuckDuckGo, ddg, dd, d, https://duckduckgo.com/?q=%s
             DuckDuckGo Images, duckimages, duckimage, duckimg, ddgimages, ddgimage, ddgimg, ddgi, ddimages, ddimage, ddimg, ddi, dimages, dimage, dimg, https://duckduckgo.com/?q=%s&ia=images&iax=images""";
 
-    private SearchEngineParser mSearchEngineMap;
+    private SearchEngineParser mSearchEngineMap = null;
 
     private Web(AssistActivity act) {
         super(act, NAME,

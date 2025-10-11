@@ -43,10 +43,10 @@ public final class Email extends CoreDataCommand implements EmailReceiver {
         return Apps.canDo(pm, new Intent(ACTION_SENDTO, Uri.parse("mailto:")));
     }
 
-    private FieldToggle mSubjectToggle;
-    private FileFetcher mFileFetcher;
-    private MediaFetcher mMediaFetcher;
-    private ContactEmailsFragment mContactsFragment;
+    private FieldToggle mSubjectToggle = null;
+    private FileFetcher mFileFetcher = null;
+    private MediaFetcher mMediaFetcher = null;
+    private ContactEmailsFragment mContactsFragment = null;
 
     private Email(AssistActivity act) {
         super(act, NAME,

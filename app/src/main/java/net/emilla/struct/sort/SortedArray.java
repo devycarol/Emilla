@@ -17,7 +17,7 @@ import java.util.NoSuchElementException;
 public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E>, IndexedStruct<E> {
 
     protected E[] pData;
-    protected int pSize;
+    protected int pSize = 0;
 
     public SortedArray(int initialCapacity) {
         if (initialCapacity < 0) throw new IllegalArgumentException();

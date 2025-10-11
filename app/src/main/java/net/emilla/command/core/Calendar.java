@@ -50,8 +50,8 @@ public final class Calendar extends CoreDataCommand {
               R.string.data_hint_calendar);
     }
 
-    private FieldToggle mLocationToggle;
-    private FieldToggle mUrlToggle;
+    private FieldToggle mLocationToggle = null;
+    private FieldToggle mUrlToggle = null;
 
     @Override
     protected void onInit() {

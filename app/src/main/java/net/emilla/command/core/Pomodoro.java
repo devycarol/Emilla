@@ -43,11 +43,11 @@ public final class Pomodoro extends CoreDataCommand {
         WORK, BREAK
     }
 
-    private ActionMap<Action> mActionMap;
+    private ActionMap<Action> mActionMap = null;
     @Nullable
-    private String mWorkMemo;
+    private String mWorkMemo = null;
     @Nullable
-    private String mBreakMemo;
+    private String mBreakMemo = null;
 
     private Pomodoro(AssistActivity act) {
         super(act, NAME,

@@ -31,14 +31,14 @@ public final class Snippets extends CoreDataCommand {
         // Todo: 'rename' action
     }
 
-    private SnippetsFragment mSnippetsFragment;
+    private SnippetsFragment mSnippetsFragment = null;
 
-    private ActionMap<Action> mActionMap;
+    private ActionMap<Action> mActionMap = null;
     private Action mAction = Action.GET;
     @Nullable
-    private String mUsedSnippet;
+    private String mUsedSnippet = null;
     @Nullable
-    private String mUsedText;
+    private String mUsedText = null;
 
     private Snippets(AssistActivity act) {
         super(act, NAME,

@@ -113,7 +113,7 @@ public final class TaskerIntent extends Intent {
 
     // Tracking state
     private int mActionCount = 0;
-    private int mArgCount;
+    private int mArgCount = 0;
 
     // -------------------------- PUBLIC METHODS ---------------------------- //
 

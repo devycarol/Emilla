@@ -37,7 +37,7 @@ public final class Call extends CoreCommand implements PhoneReceiver {
         return Features.phone(pm) || Apps.canDo(pm, makeIntent(""));
     }
 
-    private ContactPhonesFragment mContactsFragment;
+    private ContactPhonesFragment mContactsFragment = null;
 
     private Call(AssistActivity act) {
         super(act, NAME,

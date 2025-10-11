@@ -32,8 +32,8 @@ public abstract class CategoryCommand extends CoreCommand {
               imeAction);
     }
 
-    private AppList mAppList;
-    private AlertDialog.Builder mChooser;
+    private AppList mAppList = null;
+    private AlertDialog.Builder mChooser = null;
 
     @Override @CallSuper
     protected void onInit() {

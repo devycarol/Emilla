@@ -30,7 +30,7 @@ public abstract class FieldToggle implements QuickAction {
     private final AssistActivity mActivity;
 
     private boolean mActivated = false;
-    private EditText mField;
+    private EditText mField = null;
 
     public FieldToggle(
         AssistActivity act,

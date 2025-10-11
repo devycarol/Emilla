@@ -54,7 +54,7 @@ public final class Tasker extends AppCommand implements DataCommand {
         RUN, LIST
     }
 
-    private ActionMap<Action> mActionMap;
+    private ActionMap<Action> mActionMap = null;
 
     public Tasker(AssistActivity act, Yielder info) {
         super(act, new InstructyParams(info, R.string.instruction_app_tasker),

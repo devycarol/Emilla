@@ -19,7 +19,7 @@ import net.emilla.struct.trie.TrieMap;
 /// `isPrefixable()` method.
 public abstract class CommandYielder implements TrieMap.Value<CommandYielder> {
 
-    private EmillaCommand mCommand;
+    private EmillaCommand mCommand = null;
 
     protected CommandYielder() {}
 

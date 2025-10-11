@@ -47,9 +47,9 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
         VIEW, EDIT, SHARE, CREATE
     }
 
-    private ContactCardsFragment mContactsFragment;
+    private ContactCardsFragment mContactsFragment = null;
 
-    private ActionMap<Action> mActionMap;
+    private ActionMap<Action> mActionMap = null;
     private Action mAction = Action.VIEW;
 
     private Contact(AssistActivity act) {

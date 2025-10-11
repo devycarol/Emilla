@@ -43,8 +43,8 @@ public final class Sms extends CoreDataCommand implements PhoneReceiver {
         return false; // the initials "SMS" shouldn't be lowercased
     }
 
-    private FieldToggle mSubjectToggle;
-    private ContactPhonesFragment mContactsFragment;
+    private FieldToggle mSubjectToggle = null;
+    private ContactPhonesFragment mContactsFragment = null;
 
     private Sms(AssistActivity act) {
         super(act, NAME,

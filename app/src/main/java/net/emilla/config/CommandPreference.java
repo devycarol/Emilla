@@ -45,7 +45,7 @@ public final class CommandPreference extends EditTextPreference {
         setIcon(app.icon(ctx.getPackageManager()));
     }
 
-    private boolean mChecked;
+    private boolean mChecked = false;
 
     @Override
     public void onBindViewHolder(PreferenceViewHolder holder) {

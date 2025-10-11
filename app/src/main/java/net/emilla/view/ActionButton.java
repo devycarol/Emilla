@@ -28,7 +28,7 @@ public final class ActionButton extends AppCompatImageButton implements View.OnT
     private boolean mHasLongPress = false;
     private boolean mLongTouching = false;
     private Drawable mIcon;
-    private Drawable mLongIcon;
+    private Drawable mLongIcon = null;
     private boolean mHasAppIcon = false;
     private final Drawable mBackground;
 

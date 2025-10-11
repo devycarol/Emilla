@@ -37,8 +37,8 @@ public final class Share extends CoreDataCommand implements AppChoiceReceiver {
         return Apps.canDo(pm, Apps.sendTask("text/plain"));
     }
 
-    private FileFetcher mFileFetcher;
-    private MediaFetcher mMediaFetcher;
+    private FileFetcher mFileFetcher = null;
+    private MediaFetcher mMediaFetcher = null;
 
     private Share(AssistActivity act) {
         super(act, NAME,

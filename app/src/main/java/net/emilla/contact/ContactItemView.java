@@ -26,15 +26,15 @@ import net.emilla.R;
 
 public final class ContactItemView extends LinearLayout {
 
-    private long mContactId;
-    private String mLookupKey;
+    private long mContactId = 0L;
+    private String mLookupKey = null;
     private boolean mStarred = false;
     private boolean mSelected = false;
 
-    private ImageView mPhoto;
-    private CheckBox mStar;
+    private ImageView mPhoto = null;
+    private CheckBox mStar = null;
 
-    private AccessibilityActionCompat mStarAction;
+    private AccessibilityActionCompat mStarAction = null;
     private final AccessibilityViewCommand mStarCommand = (v, args) -> {
         mStar.toggle();
         return true;

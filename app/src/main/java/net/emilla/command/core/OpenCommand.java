@@ -33,7 +33,7 @@ public abstract class OpenCommand extends CoreCommand {
               imeAction);
     }
 
-    protected AlertDialog.Builder appChooser;
+    protected AlertDialog.Builder appChooser = null;
 
     @Override @CallSuper
     protected void onInit() {

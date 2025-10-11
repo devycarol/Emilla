@@ -12,7 +12,7 @@ public final class DuplicateYielder extends CommandYielder implements TrieMap.Du
     private boolean mUsesInstruction = false;
     private boolean mPruned = true;
 
-    private DuplicateCommand mCommand;
+    private DuplicateCommand mCommand = null;
 
     public DuplicateYielder(CommandYielder a, CommandYielder b) {
         addYielders(a);
