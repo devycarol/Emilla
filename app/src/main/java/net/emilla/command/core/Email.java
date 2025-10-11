@@ -64,24 +64,24 @@ public final class Email extends CoreDataCommand implements EmailReceiver {
         if (mContactsFragment == null) {
             mContactsFragment = ContactEmailsFragment.newInstance(true);
         }
-        pActivity.giveActionBox(mContactsFragment);
+        this.activity.giveActionBox(mContactsFragment);
 
         if (mSubjectToggle == null) {
-            mSubjectToggle = new SubjectField(pActivity);
+            mSubjectToggle = new SubjectField(this.activity);
         } else if (mSubjectToggle.activated()) {
             reshowField(SubjectField.FIELD_ID);
         }
         giveAction(mSubjectToggle);
 
         if (mFileFetcher == null) {
-            mFileFetcher = new FileFetcher(pActivity, ENTRY, "*/*");
+            mFileFetcher = new FileFetcher(this.activity, ENTRY, "*/*");
         }
         giveAction(mFileFetcher);
         // TODO: Thunderbird doesn't like certain filetypes. See if you can find a type statement
         //  that's consistently email-friendly.
 
         if (mMediaFetcher == null) {
-            mMediaFetcher = new MediaFetcher(pActivity, ENTRY);
+            mMediaFetcher = new MediaFetcher(this.activity, ENTRY);
         }
         giveAction(mMediaFetcher);
     }
@@ -96,7 +96,7 @@ public final class Email extends CoreDataCommand implements EmailReceiver {
     protected void onClean() {
         super.onClean();
 
-        pActivity.removeActionBox(mContactsFragment);
+        this.activity.removeActionBox(mContactsFragment);
         mContactsFragment = null;
 
         removeAction(FileFetcher.ID);
@@ -132,7 +132,7 @@ public final class Email extends CoreDataCommand implements EmailReceiver {
     }
 
     private void email(String addresses, @Nullable String body) {
-        ArrayList<Uri> attachments = pActivity.attachments(ENTRY);
+        ArrayList<Uri> attachments = this.activity.attachments(ENTRY);
 
         Intent email;
         var sendTo = new Intent(ACTION_SENDTO, Uri.parse("mailto:"));
@@ -155,6 +155,6 @@ public final class Email extends CoreDataCommand implements EmailReceiver {
 
     @Override
     public void provide(String emailAddress) {
-        email(emailAddress, pActivity.dataText());
+        email(emailAddress, this.activity.dataText());
     }
 }

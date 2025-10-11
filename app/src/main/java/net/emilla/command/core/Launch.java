@@ -38,7 +38,7 @@ public final class Launch extends OpenCommand {
 
     @Override
     protected void run() {
-        offerDialog(pAppChooser);
+        offerDialog(this.appChooser);
     }
 
     @Override
@@ -48,6 +48,6 @@ public final class Launch extends OpenCommand {
 
     @Override
     protected AlertDialog.Builder makeChooser() {
-        return Dialogs.appLaunches(pActivity);
+        return Dialogs.appLaunches(this.activity);
     }
 }

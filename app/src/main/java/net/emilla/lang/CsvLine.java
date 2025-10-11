@@ -138,11 +138,11 @@ public final class CsvLine implements Iterable<String> {
     private /*inner*/ sealed class ValIterator implements Iterator<String>
             permits TrimmingValIterator {
 
-        protected int pPos = mStart;
+        protected int pos = mStart;
 
         @Override
         public final boolean hasNext() {
-            return pPos < mLen;
+            return this.pos < mLen;
         }
 
         @Override @Nullable
@@ -151,8 +151,8 @@ public final class CsvLine implements Iterable<String> {
             boolean escape = false;
 
             char c;
-            while (pPos < mLen) {
-                switch (c = mLine.charAt(pPos)) {
+            while (this.pos < mLen) {
+                switch (c = mLine.charAt(this.pos)) {
                 case '\\' -> {
                     if (escape) {
                         sb.append('\\');
@@ -174,7 +174,7 @@ public final class CsvLine implements Iterable<String> {
                     sb.append(c);
                     escape = false;
                 }}
-                ++pPos;
+                ++this.pos;
             }
 
             // End of line reached
@@ -182,7 +182,7 @@ public final class CsvLine implements Iterable<String> {
         }
 
         protected /*open*/ void advanceToNextVal() {
-            ++pPos; // not worrying about spaces
+            ++this.pos; // not worrying about spaces
         }
 
         @Nullable
@@ -195,9 +195,9 @@ public final class CsvLine implements Iterable<String> {
 
         @Override
         protected void advanceToNextVal() {
-            do ++pPos;
+            do ++this.pos;
             // advance past the comma
-            while (pPos < mLen && isWhitespace(mLine.charAt(pPos)));
+            while (this.pos < mLen && isWhitespace(mLine.charAt(this.pos)));
             // continue advancing as needed
         }
 

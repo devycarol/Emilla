@@ -61,12 +61,12 @@ public final class Notify extends CoreDataCommand {
 
     @SuppressLint("MissingPermission")
     private void tryPing(String title, @Nullable String text) {
-        Permissions.withPings(pActivity, () -> ping(title, text));
+        Permissions.withPings(this.activity, () -> ping(title, text));
     }
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     private void ping(String title, @Nullable String text) {
-        givePing(Pings.make(pActivity, PingChannel.COMMAND, title, text, R.drawable.ic_notify),
+        givePing(Pings.make(this.activity, PingChannel.COMMAND, title, text, R.drawable.ic_notify),
                  PingChannel.command());
     }
 }

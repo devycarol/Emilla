@@ -10,11 +10,11 @@ import net.emilla.util.Services;
 
 public abstract class EventScheduler<P extends Plan> {
 
-    protected final Context pContext;
+    protected final Context context;
     private final AlarmManager mAlarmManager;
 
     public EventScheduler(Context ctx) {
-        pContext = ctx;
+        this.context = ctx;
         mAlarmManager = Services.alarm(ctx);
     }
 
@@ -35,7 +35,7 @@ public abstract class EventScheduler<P extends Plan> {
     private PendingIntent pendingIntentFor(P plan) {
         int flags = PendingIntent.FLAG_UPDATE_CURRENT
                   | PendingIntent.FLAG_IMMUTABLE;
-        return PendingIntent.getBroadcast(pContext, plan.slot, intentFor(plan), flags);
+        return PendingIntent.getBroadcast(this.context, plan.slot, intentFor(plan), flags);
     }
 
     protected abstract Intent intentFor(P plan);

@@ -31,7 +31,7 @@ public final class FilesRetriever extends ResultRetriever<String, List<Uri>, Fil
         @Override
         protected void onActivityResult(List<Uri> files, FilesReceiver receiver) {
             if (files.isEmpty()) {
-                pActivity.toast(R.string.toast_files_not_selected);
+                FilesRetriever.this.activity.toast(R.string.toast_files_not_selected);
             } else {
                 receiver.provide(files);
             }

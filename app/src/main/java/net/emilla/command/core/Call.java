@@ -56,7 +56,7 @@ public final class Call extends CoreCommand implements PhoneReceiver {
             mContactsFragment = ContactPhonesFragment.newInstance(false);
         }
 
-        pActivity.giveActionBox(mContactsFragment);
+        this.activity.giveActionBox(mContactsFragment);
     }
 
     @Override
@@ -69,13 +69,13 @@ public final class Call extends CoreCommand implements PhoneReceiver {
     protected void onClean() {
         super.onClean();
 
-        pActivity.removeActionBox(mContactsFragment);
+        this.activity.removeActionBox(mContactsFragment);
         mContactsFragment = null;
     }
 
     @Override
     protected void run() {
-        Permissions.withContacts(pActivity, this::tryCall);
+        Permissions.withContacts(this.activity, this::tryCall);
     }
 
     private void tryCall() {
@@ -83,7 +83,7 @@ public final class Call extends CoreCommand implements PhoneReceiver {
         if (number != null) {
             call(number);
         } else {
-            pActivity.offerContactPhones(this);
+            this.activity.offerContactPhones(this);
         }
     }
 
@@ -95,7 +95,7 @@ public final class Call extends CoreCommand implements PhoneReceiver {
         //  transfer. it shouldn't disable the "command enabled" pref, it should just be its own
         //  element of an "is the command enabled" check similar to HeliBoard's handling in its
         //  "SettingsValues" class.
-        Permissions.withCall(pActivity, () -> tryCall(nameOrNumber));
+        Permissions.withCall(this.activity, () -> tryCall(nameOrNumber));
     }
 
     private void tryCall(String nameOrNumber) {
@@ -113,13 +113,13 @@ public final class Call extends CoreCommand implements PhoneReceiver {
                 nameOrNumber,
                 Contacts.phonewordsToNumbers(nameOrNumber)
             );
-            offerDialog(Dialogs.dual(pActivity, NAME, msg, R.string.call_directly,
+            offerDialog(Dialogs.dual(this.activity, NAME, msg, R.string.call_directly,
                                      (dlg, which) -> call(nameOrNumber)));
         }
     }
 
     private void call(String nameOrNumber) {
-        pActivity.suppressSuccessChime();
+        this.activity.suppressSuccessChime();
         appSucceed(makeIntent(nameOrNumber));
     }
 
@@ -129,6 +129,6 @@ public final class Call extends CoreCommand implements PhoneReceiver {
 
     @Override
     public void provide(String phoneNumber) {
-        Permissions.withCall(pActivity, () -> call(phoneNumber));
+        Permissions.withCall(this.activity, () -> call(phoneNumber));
     }
 }

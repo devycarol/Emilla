@@ -69,7 +69,7 @@ public final class DefaultCommandWrapper extends EmillaCommand {
 
     private DefaultCommandWrapper(AssistActivity act, EmillaCommand cmd) {
         super(act, new DefaultWrapperParams(cmd),
-              cmd.summary, cmd.manual, cmd.pImeAction
+              cmd.summary, cmd.manual, cmd.imeAction
         );
         mCmd = cmd;
     }

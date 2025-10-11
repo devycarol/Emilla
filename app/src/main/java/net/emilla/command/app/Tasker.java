@@ -70,8 +70,8 @@ public final class Tasker extends AppCommand implements DataCommand {
         if (mActionMap == null) {
             mActionMap = new ActionMap<Action>(Action.RUN);
 
-            mActionMap.put(pResources, Action.RUN, R.array.subcmd_tasker_run, true);
-            mActionMap.put(pResources, Action.LIST, R.array.subcmd_tasker_list, false);
+            mActionMap.put(this.resources, Action.RUN, R.array.subcmd_tasker_run, true);
+            mActionMap.put(this.resources, Action.LIST, R.array.subcmd_tasker_list, false);
             // todo: list with search—when you do, change usesInstruction from false to true.
             // todo: in the far future, you could have a rudimentary UI for creating tasks
         }
@@ -110,14 +110,14 @@ public final class Tasker extends AppCommand implements DataCommand {
     }
 
     private void trySearchRun(String task, @Nullable String params) {
-        switch (TaskerIntent.testStatus(pActivity)) {
+        switch (TaskerIntent.testStatus(this.activity)) {
         case OK -> searchRun(task, params);
         case NOT_ENABLED -> failDialog(R.string.error_tasker_not_enabled,
                 R.string.dlg_yes_tasker_open, (dlg, which) -> offerApp(pApp.launchIntent(), true));
         case NO_ACCESS -> failDialog(R.string.error_tasker_blocked,
                 R.string.dlg_yes_tasker_external_access_settings,
                 (dlg, which) -> offerApp(TaskerIntent.getExternalAccessPrefsIntent(), false));
-        case NO_PERMISSION -> Permissions.taskerFlow(pActivity, () -> trySearchRun(task, params));
+        case NO_PERMISSION -> Permissions.taskerFlow(this.activity, () -> trySearchRun(task, params));
         case NO_RECEIVER -> failMessage(R.string.error_tasker_no_receiver);
         }
     }
@@ -171,7 +171,7 @@ public final class Tasker extends AppCommand implements DataCommand {
             ++i;
         }
 
-        offerDialog(Dialogs.list(pActivity, R.string.dialog_tasker_select_task, taskLabels,
+        offerDialog(Dialogs.list(this.activity, R.string.dialog_tasker_select_task, taskLabels,
                                  (dlg, which) -> runTask(taskNames[which], params)));
         // todo: see if it's possible to display task/project icons
     }

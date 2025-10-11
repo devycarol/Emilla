@@ -46,7 +46,7 @@ public final class Uninstall extends OpenCommand {
 
     @Override
     protected void run() {
-        offerDialog(pAppChooser);
+        offerDialog(this.appChooser);
     }
 
     @Override
@@ -56,6 +56,6 @@ public final class Uninstall extends OpenCommand {
 
     @Override
     protected AlertDialog.Builder makeChooser() {
-        return Dialogs.appUninstalls(pActivity);
+        return Dialogs.appUninstalls(this.activity);
     }
 }

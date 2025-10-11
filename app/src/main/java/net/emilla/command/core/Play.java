@@ -38,7 +38,7 @@ public final class Play extends CoreCommand {
 
     @Override
     protected void run() {
-        AudioManager am = Services.audio(pActivity);
+        AudioManager am = Services.audio(this.activity);
         MediaControl.sendPlayEvent(am);
         give(act -> {});
     }

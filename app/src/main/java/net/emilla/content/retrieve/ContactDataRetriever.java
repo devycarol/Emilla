@@ -64,10 +64,10 @@ public abstract class ContactDataRetriever extends ResultRetriever<Void, String,
         @Override
         protected void onActivityResult(String data, ContactDataReceiver receiver) {
             if (data != null) {
-                pActivity.suppressResumeChime();
+                ContactDataRetriever.this.activity.suppressResumeChime();
                 receiver.provide(data);
             } else {
-                pActivity.toast(R.string.toast_contact_not_selected);
+                ContactDataRetriever.this.activity.toast(R.string.toast_contact_not_selected);
             }
         }
     }

@@ -6,19 +6,19 @@ import net.emilla.activity.AssistActivity;
 
 public /*open*/ class DialogRun implements CommandRun {
 
-    protected final AlertDialog.Builder pDialog;
+    protected final AlertDialog.Builder dialog;
 
     public DialogRun(AlertDialog.Builder dialog) {
-        pDialog = dialog;
+        this.dialog = dialog;
     }
 
     @Override
     public /*open*/ void run(AssistActivity act) {
-        pDialog.setOnCancelListener(dlg -> {
+        this.dialog.setOnCancelListener(dlg -> {
             act.onCloseDialog(); // Todo: don't require this
             act.resume();
         });
         act.prepareForDialog();
-        pDialog.show();
+        this.dialog.show();
     }
 }

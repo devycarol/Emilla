@@ -58,14 +58,14 @@ public final class Calendar extends CoreDataCommand {
         super.onInit();
 
         if (mLocationToggle == null) {
-            mLocationToggle = new LocationField(pActivity);
+            mLocationToggle = new LocationField(this.activity);
         } else if (mLocationToggle.activated()) {
             reshowField(LocationField.FIELD_ID);
         }
         giveAction(mLocationToggle);
 
         if (mUrlToggle == null) {
-            mUrlToggle = new UrlField(pActivity);
+            mUrlToggle = new UrlField(this.activity);
         } else if (mUrlToggle.activated()) {
             reshowField(UrlField.FIELD_ID);
         }

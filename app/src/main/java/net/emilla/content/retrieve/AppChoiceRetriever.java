@@ -30,12 +30,16 @@ public final class AppChoiceRetriever extends ResultRetriever<Intent, ActivityRe
         Intent chooser;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             int flags = PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_UPDATE_CURRENT;
-            var sender = PendingIntent.getBroadcast(pActivity, 0,
-                    new Intent(pActivity, AppChooserBroadcastReceiver.class), flags).getIntentSender();
+            var sender = PendingIntent.getBroadcast(
+                this.activity,
+                0,
+                new Intent(this.activity, AppChooserBroadcastReceiver.class),
+                flags
+            ).getIntentSender();
 
-            chooser = Intent.createChooser(target, pActivity.getString(title), sender);
+            chooser = Intent.createChooser(target, this.activity.getString(title), sender);
         } else {
-            chooser = Intent.createChooser(target, pActivity.getString(title));
+            chooser = Intent.createChooser(target, this.activity.getString(title));
         }
 
         launch(chooser);

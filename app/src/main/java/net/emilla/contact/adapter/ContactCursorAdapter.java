@@ -52,13 +52,13 @@ public abstract class ContactCursorAdapter extends CursorAdapter {
                 .build();
     }
 
-    protected final Resources pResources;
+    protected final Resources resources;
     private final LayoutInflater mInflater;
 
     protected ContactCursorAdapter(Context ctx) {
         super(ctx, null, 0);
 
-        pResources = ctx.getResources();
+        this.resources = ctx.getResources();
         mInflater = LayoutInflater.from(ctx);
     }
 

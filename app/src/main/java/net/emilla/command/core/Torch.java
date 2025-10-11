@@ -38,7 +38,7 @@ public final class Torch extends CoreCommand {
 
     @Override
     protected void run() {
-        TorchManager.toggle(pActivity, NAME);
+        TorchManager.toggle(this.activity, NAME);
     }
 
     @Override

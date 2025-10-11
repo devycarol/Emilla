@@ -39,12 +39,12 @@ public final class MediaRetriever extends ResultRetriever<PickVisualMediaRequest
         @Override
         protected void onActivityResult(List<Uri> media, FilesReceiver receiver) {
             if (media.isEmpty()) {
-                pActivity.toast(R.string.toast_media_not_selected);
+                MediaRetriever.this.activity.toast(R.string.toast_media_not_selected);
             } else {
                 receiver.provide(media);
             }
 
-            pActivity.chime(RESUME);
+            MediaRetriever.this.activity.chime(RESUME);
         }
     }
 }

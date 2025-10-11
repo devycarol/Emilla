@@ -70,25 +70,25 @@ public /*open*/ class AppCommand extends EmillaCommand {
 
     protected static /*open*/ class AppParams implements Params {
 
-        protected final AppEntry pApp;
+        protected final AppEntry app;
 
         protected AppParams(Yielder info) {
-            pApp = info.app;
+            this.app = info.app;
         }
 
         @Override
         public final String name(Resources res) {
-            return pApp.label;
+            return this.app.label;
         }
 
         @Override
         public final Drawable icon(Context ctx) {
-            return pApp.icon(ctx.getPackageManager());
+            return this.app.icon(ctx.getPackageManager());
         }
 
         @Override
         public /*open*/ String title(Resources res) {
-            return Lang.colonConcat(res, R.string.command_app, pApp.label);
+            return Lang.colonConcat(res, R.string.command_app, this.app.label);
         }
     }
 
@@ -104,7 +104,7 @@ public /*open*/ class AppCommand extends EmillaCommand {
 
         @Override
         public String title(Resources res) {
-            return Lang.colonConcat(res, pApp.label, mInstruction);
+            return Lang.colonConcat(res, this.app.label, mInstruction);
         }
     }
 
@@ -125,7 +125,7 @@ public /*open*/ class AppCommand extends EmillaCommand {
         int imeAction
     ) {
         super(act, params, summary, manual, imeAction);
-        pApp = params.pApp;
+        pApp = params.app;
     }
 
     @Override

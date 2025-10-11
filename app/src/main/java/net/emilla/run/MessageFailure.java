@@ -33,7 +33,7 @@ public final class MessageFailure extends DialogRun {
 
     @Override
     public void run(AssistActivity act) {
-        pDialog.setNeutralButton(R.string.leave, (dlg, which) -> act.cancel());
+        this.dialog.setNeutralButton(R.string.leave, (dlg, which) -> act.cancel());
         super.run(act);
     }
 }

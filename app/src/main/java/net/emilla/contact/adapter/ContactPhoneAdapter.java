@@ -57,9 +57,9 @@ public final class ContactPhoneAdapter extends ContactCursorAdapter {
         int type = cur.getInt(IDX_TYPE);
         var customLabel = cur.getString(IDX_LABEL);
 
-        CharSequence typeText = Phone.getTypeLabel(pResources, type, customLabel);
+        CharSequence typeText = Phone.getTypeLabel(this.resources, type, customLabel);
         var number = cur.getString(IDX_NUMBER);
 
-        item.setContactDetail(Lang.colonConcat(pResources, typeText, number));
+        item.setContactDetail(Lang.colonConcat(this.resources, typeText, number));
     }
 }
