@@ -15,5 +15,6 @@ public interface PhoneReceiver extends ContactDataReceiver {
     /// Provides the receiver with a phone number.
     ///
     /// @param phoneNumber is provided to the receiver.
+    @Override
     void provide(String phoneNumber);
 }

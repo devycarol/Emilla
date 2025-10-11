@@ -15,6 +15,7 @@ public final class AssistantFragment extends Fragment {
     @Nullable
     private FragmentAssistantBinding mBinding;
 
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBinding = FragmentAssistantBinding.inflate(inflater, container, false);
         return mBinding.getRoot();

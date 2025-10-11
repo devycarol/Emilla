@@ -15,5 +15,6 @@ public interface EmailReceiver extends ContactDataReceiver {
     /// Provides the receiver with an email address.
     ///
     /// @param emailAddress is provided to the receiver.
+    @Override
     void provide(String emailAddress);
 }

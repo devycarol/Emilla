@@ -45,12 +45,12 @@ public final class AppChoiceRetriever extends ResultRetriever<Intent, ActivityRe
         launch(chooser);
     }
 
-    @Deprecated
+    @Override @Deprecated
     public AppChoiceReceiver receiver() {
         return super.receiver();
     }
 
-    @Deprecated
+    @Override @Deprecated
     public void deleteReceiver() {
         super.deleteReceiver();
     }

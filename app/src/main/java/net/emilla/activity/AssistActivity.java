@@ -444,6 +444,7 @@ public final class AssistActivity extends EmillaActivity {
 
     private boolean mLaunched = false;
 
+    @Override
     protected void onResume() {
         super.onResume();
         if (!mOpen) {
