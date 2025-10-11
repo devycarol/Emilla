@@ -246,7 +246,7 @@ public final class AssistActivity extends EmillaActivity {
                         focusDataField();
                         yield true;
                     }
-                    // fall
+                    // fallthrough
                 case IME_ACTION_GO, IME_ACTION_SEARCH, IME_ACTION_SEND, IME_ACTION_DONE:
                     submitCommand();
                     yield true;

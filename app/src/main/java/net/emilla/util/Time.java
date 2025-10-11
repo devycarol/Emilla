@@ -161,7 +161,7 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         switch (units.length) {
         case 3:
             s = parseDouble(units[2]);
-            // fall
+            // fallthrough
         case 2:
             h = parseDouble(units[0]);
             m = parseDouble(units[1]);
