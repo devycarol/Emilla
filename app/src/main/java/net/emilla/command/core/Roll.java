@@ -30,7 +30,7 @@ public final class Roll extends CoreCommand {
 
     private Roll(AssistActivity act) {
         super(act, NAME,
-              R.string.instruction_text,
+              R.string.instruction_roll,
               R.drawable.ic_roll,
               R.string.summary_roll,
               R.string.manual_roll,
