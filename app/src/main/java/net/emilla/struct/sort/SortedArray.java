@@ -288,17 +288,17 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
 
         @Override
         public E get(int index) {
-            return pData[indices[index]];
+            return pData[this.indices[index]];
         }
 
         @Override
         public int size() {
-            return size;
+            return this.size;
         }
 
         @Override
         public boolean isEmpty() {
-            return size == 0;
+            return this.size == 0;
         }
     }
 }

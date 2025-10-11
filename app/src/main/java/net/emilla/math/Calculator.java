@@ -39,29 +39,29 @@ public final class Calculator {
         final int errorTitle;
 
         OpStack(int capacity, @StringRes int errorTitle) {
-            arr = new BinaryOperator[capacity];
+            this.arr = new BinaryOperator[capacity];
 
             this.errorTitle = errorTitle;
         }
 
         void push(@Nullable BinaryOperator val) {
-            arr[size++] = val;
+            this.arr[this.size++] = val;
         }
 
         @Nullable
         BinaryOperator peek() {
-            if (size < 1) throw malformedExpression(errorTitle);
-            return arr[size - 1];
+            if (this.size < 1) throw malformedExpression(this.errorTitle);
+            return this.arr[this.size - 1];
         }
 
         @Nullable
         BinaryOperator pop() {
-            if (size < 1) throw malformedExpression(errorTitle);
-            return arr[--size];
+            if (this.size < 1) throw malformedExpression(this.errorTitle);
+            return this.arr[--this.size];
         }
 
         boolean notEmpty() {
-            return size > 0;
+            return this.size > 0;
         }
     }
 
@@ -75,36 +75,36 @@ public final class Calculator {
         final int errorTitle;
 
         ValStack(int capacity, @StringRes int errorTitle) {
-            vals = new double[capacity];
-            signs = new SignStack(capacity, errorTitle);
+            this.vals = new double[capacity];
+            this.signs = new SignStack(capacity, errorTitle);
 
             this.errorTitle = errorTitle;
         }
 
         void push(double operand) {
-            while (signs.notEmpty()) {
-                if (signs.peek() == UnaryOperator.LPAREN) break;
-                operand = signs.pop().apply(operand);
+            while (this.signs.notEmpty()) {
+                if (this.signs.peek() == UnaryOperator.LPAREN) break;
+                operand = this.signs.pop().apply(operand);
                 // peek is valid, therefore pop is valid.
             }
 
-            vals[size] = operand;
-            ++size;
+            this.vals[this.size] = operand;
+            ++this.size;
         }
 
         void squish(BinaryOperator op) {
-            if (size < 2) throw malformedExpression(errorTitle);
+            if (this.size < 2) throw malformedExpression(this.errorTitle);
 
-            --size;
-            vals[size - 1] = op.apply(vals[size - 1], vals[size]);
+            --this.size;
+            this.vals[this.size - 1] = op.apply(this.vals[this.size - 1], this.vals[this.size]);
         }
 
         void applyOperator(UnaryOperator op) {
             if (op.postfix) {
-                int last = size - 1;
-                vals[last] = op.apply(vals[last]);
+                int last = this.size - 1;
+                this.vals[last] = op.apply(this.vals[last]);
             } else if (op != UnaryOperator.POSITIVE) {
-                signs.push(op);
+                this.signs.push(op);
             }
         }
 
@@ -122,7 +122,7 @@ public final class Calculator {
         }
 
         void applyLParen() {
-            signs.push(UnaryOperator.LPAREN);
+            this.signs.push(UnaryOperator.LPAREN);
         }
 
         void applyRParen(OpStack opStk) {
@@ -133,30 +133,30 @@ public final class Calculator {
                 squish(pop);
             }
 
-            if (signs.notEmpty()) closeSignParen();
+            if (this.signs.notEmpty()) closeSignParen();
         }
 
         void applyRemainingSigns() {
-            while (signs.notEmpty()) closeSignParen();
+            while (this.signs.notEmpty()) closeSignParen();
         }
 
         private void closeSignParen() {
-            if (signs.peek() == UnaryOperator.LPAREN) {
-                signs.pop();
-                int last = size - 1;
-                while (signs.notEmpty()) {
-                    UnaryOperator peek = signs.peek();
+            if (this.signs.peek() == UnaryOperator.LPAREN) {
+                this.signs.pop();
+                int last = this.size - 1;
+                while (this.signs.notEmpty()) {
+                    UnaryOperator peek = this.signs.peek();
                     if (peek == UnaryOperator.LPAREN) break;
 
-                    vals[last] = signs.pop().apply(vals[last]);
+                    this.vals[last] = this.signs.pop().apply(this.vals[last]);
                     // peek is valid, therefore pop is valid.
                 }
             }
         }
 
         double value() {
-            if (size != 1) throw malformedExpression(errorTitle);
-            return vals[0];
+            if (this.size != 1) throw malformedExpression(this.errorTitle);
+            return this.vals[0];
         }
     }
 
@@ -264,7 +264,7 @@ public final class Calculator {
             // field nullity.
 
             @StringRes
-            private final int errorTitle;
+            final int errorTitle;
 
             InfixIterator(String expression, @StringRes int errorTitle) {
                 expr = expression.toCharArray();

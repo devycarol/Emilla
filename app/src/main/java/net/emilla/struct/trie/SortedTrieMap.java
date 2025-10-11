@@ -7,10 +7,10 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public final class SortedTrieMap<K extends Comparable<K>, V extends TrieMap.Value<V>>
-        extends TrieMap<K, V> {
+    extends TrieMap<K, V> {
 
     private static final class SortedTrieNode<K extends Comparable<K>, V extends Value<V>>
-            extends TrieNode<K, V> {
+        extends TrieNode<K, V> {
 
         @Override
         Map<K, TrieNode<K, V>> newMap() {
@@ -30,7 +30,7 @@ public final class SortedTrieMap<K extends Comparable<K>, V extends TrieMap.Valu
     /// no such values exist.
     @Nullable
     public List<V> elementsWithPrefix(Phrase<K, ?> prefix) {
-        TrieNode<K, V> current = root;
+        TrieNode<K, V> current = mRoot;
         for (K item : prefix) {
             TrieNode<K, V> get = current.children().get(item);
             if (get == null) return null;

@@ -9,35 +9,35 @@ import java.util.Map;
 
 /*internal*/ abstract class TrieNode<K, V extends TrieMap.Value<V>> {
 
-    V val;
-    private Map<K, TrieNode<K, V>> children;
+    /*internal*/ V mVal;
+    private Map<K, TrieNode<K, V>> mChildren;
 
     final Map<K, TrieNode<K, V>> children() {
-        return children == null ? children = newMap() : children;
+        return mChildren == null ? mChildren = newMap() : mChildren;
     }
 
     final boolean hasChildren() {
-        return children != null && !children.isEmpty();
+        return mChildren != null && !mChildren.isEmpty();
     }
 
     abstract Map<K, TrieNode<K, V>> newMap();
 
     final boolean canYieldValue(Iterator<K> iterator) {
-        return val != null && (val.isPrefixable() || !iterator.hasNext());
+        return mVal != null && (mVal.isPrefixable() || !iterator.hasNext());
     }
 
     final V restrainedValue(Iterator<K> iterator) {
-        if (val instanceof TrieMap.Duplicate<?> dupeVal && iterator.hasNext()) {
+        if (mVal instanceof TrieMap.Duplicate<?> dupeVal && iterator.hasNext()) {
             return (V) dupeVal.prune();
         }
-        return val;
+        return mVal;
     }
 
     /// A list of all values under this node. Duplicates are split into their individual values.
     ///
     /// @return All the node's child values, including its own value, in depth-first order.
     final List<V> values() {
-        return valuesRec(this, new ArrayList<V>(children.size() + 1));
+        return valuesRec(this, new ArrayList<V>(mChildren.size() + 1));
     }
 
     private static <K, V extends TrieMap.Value<V>> List<V> valuesRec(
@@ -45,14 +45,14 @@ import java.util.Map;
         List<V> values
     ) {
         if (node.hasChildren()) {
-            if (node.val != null) {
-                addValues(values, node.val);
+            if (node.mVal != null) {
+                addValues(values, node.mVal);
             }
-            for (TrieNode<K, V> next : node.children.values()) {
+            for (TrieNode<K, V> next : node.mChildren.values()) {
                 valuesRec(next, values);
             }
         } else {
-            addValues(values, node.val);
+            addValues(values, node.mVal);
         }
         // a leaf node always has a value.
 
@@ -159,7 +159,7 @@ public abstract class TrieMap<K, V extends TrieMap.Value<V>> {
         V prune();
     }
 
-    final TrieNode<K, V> root = newNode();
+    /*internal*/ final TrieNode<K, V> mRoot = newNode();
 
     abstract TrieNode<K, V> newNode();
 
@@ -172,7 +172,7 @@ public abstract class TrieMap<K, V extends TrieMap.Value<V>> {
     /// @param phrase the value's prefix key, whose values will be used for retrieval.
     /// @param value the corresponding value to put in the trie.
     public final void put(Phrase<K, ?> phrase, V value) {
-        TrieNode<K, V> current = root;
+        TrieNode<K, V> current = mRoot;
 
         for (K item : phrase) {
             Map<K, TrieNode<K, V>> children = current.children();
@@ -185,10 +185,10 @@ public abstract class TrieMap<K, V extends TrieMap.Value<V>> {
             }
         }
 
-        if (current.val == null) {
-            current.val = value;
+        if (current.mVal == null) {
+            current.mVal = value;
         } else {
-            current.val = current.val.duplicate(value);
+            current.mVal = current.mVal.duplicate(value);
         }
     }
 
@@ -205,7 +205,7 @@ public abstract class TrieMap<K, V extends TrieMap.Value<V>> {
     /// or `null` if no such prefix was found.
     @Nullable
     public final V get(Phrase<K, ?> phrase) {
-        TrieNode<K, V> current = root;
+        TrieNode<K, V> current = mRoot;
         V currentVal = null;
 
         Iterator<K> iterator = phrase.iterator();
@@ -233,13 +233,13 @@ public abstract class TrieMap<K, V extends TrieMap.Value<V>> {
     /// @return the value associated with `phrase`, or `null` if no value is found.
     @Nullable
     public final V getExact(Phrase<K, ?> phrase) {
-        TrieNode<K, V> current = root;
+        TrieNode<K, V> current = mRoot;
         for (K item : phrase) {
             TrieNode<K, V> get = current.children().get(item);
             if (get == null) return null;
             current = get;
         }
-        return current.val;
+        return current.mVal;
     }
 
     /// Sometimes, values in the trie will be shadowed by others that start with their item sequence.
@@ -251,7 +251,7 @@ public abstract class TrieMap<K, V extends TrieMap.Value<V>> {
     public final int count(Phrase<K, ?> phrase) {
         int count = 0;
 
-        TrieNode<K, V> current = root;
+        TrieNode<K, V> current = mRoot;
 
         Iterator<K> iterator = phrase.iterator();
         while (iterator.hasNext()) {
@@ -275,7 +275,7 @@ public abstract class TrieMap<K, V extends TrieMap.Value<V>> {
     /// @param prefix phrase to determine if the trie contains it as a prefix.
     /// @return true if the prefix is part of an entry in the trie, false otherwise.
     public final boolean containsPrefix(Phrase<K, ?> prefix) {
-        TrieNode<K, V> current = root;
+        TrieNode<K, V> current = mRoot;
         for (K item : prefix) {
             TrieNode<K, V> get = current.children().get(item);
             if (get == null) return false;

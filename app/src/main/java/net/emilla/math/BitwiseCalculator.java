@@ -248,59 +248,59 @@ public final class BitwiseCalculator {
             // field nullity.
 
             @StringRes
-            private final int errorTitle;
+            final int errorTitle;
 
             BitwiseIterator(String expression, @StringRes int errorTitle) {
-                expr = expression.toCharArray();
-                length = expr.length;
-                pos = Strings.indexOfNonSpace(expr);
+                this.expr = expression.toCharArray();
+                this.length = this.expr.length;
+                this.pos = Strings.indexOfNonSpace(this.expr);
 
                 this.errorTitle = errorTitle;
             }
 
             @Override
             public boolean hasNext() {
-                return pos < length;
+                return this.pos < this.length;
             }
 
             @Override
             public BitwiseToken next() {
-                return switch (expr[pos]) {
-                    case '+', '-' -> switch (prevType) {
+                return switch (this.expr[this.pos]) {
+                    case '+', '-' -> switch (this.prevType) {
                         case LPAREN, OPERATOR -> extractUnary(false);
                         case RPAREN, NUMBER -> extractOperator();
                     };
-                    case '~' -> switch (prevType) {
+                    case '~' -> switch (this.prevType) {
                         case LPAREN, OPERATOR -> extractUnary(false);
                         case RPAREN, NUMBER -> phantomStar();
                         // note that a binary-looking tilde is treated with adjacency multiplication.
                     };
-                    case '!' -> switch (prevType) {
-                        case LPAREN, OPERATOR -> throw malformedExpression(errorTitle);
+                    case '!' -> switch (this.prevType) {
+                        case LPAREN, OPERATOR -> throw malformedExpression(this.errorTitle);
                         case RPAREN, NUMBER -> extractUnary(true);
                     };
-                    case '|', '^', '&', '*', '/', '%' -> switch (prevType) {
-                        case LPAREN, OPERATOR -> throw malformedExpression(errorTitle);
+                    case '|', '^', '&', '*', '/', '%' -> switch (this.prevType) {
+                        case LPAREN, OPERATOR -> throw malformedExpression(this.errorTitle);
                         case RPAREN, NUMBER -> extractOperator();
                     };
-                    case '<', '>' -> switch (prevType) {
-                        case LPAREN, OPERATOR -> throw malformedExpression(errorTitle);
+                    case '<', '>' -> switch (this.prevType) {
+                        case LPAREN, OPERATOR -> throw malformedExpression(this.errorTitle);
                         case RPAREN, NUMBER -> extractShift();
                     };
-                    case '(' -> switch (prevType) {
+                    case '(' -> switch (this.prevType) {
                         case LPAREN, OPERATOR -> extractLParen();
                         case RPAREN, NUMBER -> phantomStar();
                     };
-                    case ')' -> switch (prevType) {
-                        case LPAREN, OPERATOR -> throw malformedExpression(errorTitle);
+                    case ')' -> switch (this.prevType) {
+                        case LPAREN, OPERATOR -> throw malformedExpression(this.errorTitle);
                         case RPAREN, NUMBER -> extractRParen();
                     };
-                    case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> switch (prevType) {
+                    case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> switch (this.prevType) {
                         case LPAREN, OPERATOR -> extractNumber();
                         case RPAREN, NUMBER -> phantomStar();
                         // note that this treats space-separated numbers as multiplication.
                     };
-                    default -> throw malformedExpression(errorTitle);
+                    default -> throw malformedExpression(this.errorTitle);
                 };
             }
 
@@ -325,18 +325,18 @@ public final class BitwiseCalculator {
             }
 
             private char extractChar(Type type) {
-                char c = expr[pos];
+                char c = this.expr[this.pos];
                 advanceImmediate();
-                prevType = type;
+                this.prevType = type;
                 return c;
             }
 
             private BitwiseOperator extractShift() {
-                char shiftType = expr[pos];
-                ++pos;
-                if (!nextCharIs(shiftType)) throw malformedExpression(errorTitle);
+                char shiftType = this.expr[this.pos];
+                ++this.pos;
+                if (!nextCharIs(shiftType)) throw malformedExpression(this.errorTitle);
 
-                ++pos;
+                ++this.pos;
                 BitwiseOperator op;
                 if (shiftType == '>' && nextCharIs('>')) {
                     op = BitwiseOperator.USHR;
@@ -346,39 +346,39 @@ public final class BitwiseCalculator {
                     advance();
                 }
 
-                prevType = Type.OPERATOR;
+                this.prevType = Type.OPERATOR;
                 return op;
             }
 
             private boolean nextCharIs(char c) {
-                return pos < length && expr[pos] == c;
+                return this.pos < this.length && this.expr[this.pos] == c;
             }
 
             private BitwiseOperator phantomStar() {
-                prevType = Type.OPERATOR;
+                this.prevType = Type.OPERATOR;
                 return BitwiseOperator.TIMES;
             }
 
             private void advanceImmediate() {
-                do ++pos;
-                while (pos < length && isWhitespace(expr[pos]));
+                do ++this.pos;
+                while (this.pos < this.length && isWhitespace(this.expr[this.pos]));
             }
 
             private void advance() {
-                while (pos < length && isWhitespace(expr[pos])) ++pos;
+                while (this.pos < this.length && isWhitespace(this.expr[this.pos])) ++this.pos;
             }
 
             private IntegerNumber extractNumber() {
-                int start = pos;
+                int start = this.pos;
 
-                do ++pos;
-                while (pos < length && isNumberChar(expr[pos]));
+                do ++this.pos;
+                while (this.pos < this.length && isNumberChar(this.expr[this.pos]));
 
-                var s = new String(Arrays.copyOfRange(expr, start, pos));
+                var s = new String(Arrays.copyOfRange(this.expr, start, this.pos));
                 advance();
 
-                prevType = Type.NUMBER;
-                return new IntegerNumber(s, errorTitle);
+                this.prevType = Type.NUMBER;
+                return new IntegerNumber(s, this.errorTitle);
             }
 
             private static boolean isNumberChar(char c) {

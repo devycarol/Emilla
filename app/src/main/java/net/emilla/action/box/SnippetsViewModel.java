@@ -64,7 +64,7 @@ import java.util.Set;
 
         @Override
         public <T extends ViewModel> T create(Class<T> modelClass) {
-            return (T) new SnippetsViewModel(prefs);
+            return (T) new SnippetsViewModel(this.prefs);
         }
     }
 }

@@ -28,19 +28,19 @@ public /*open*/ class AppCommand extends EmillaCommand {
 
         public Yielder(AppEntry app) {
             this.app = app;
-            usesInstruction = app.usesInstruction();
+            this.usesInstruction = app.usesInstruction();
         }
 
         @Override
         public boolean isPrefixable() {
-            return usesInstruction;
+            return this.usesInstruction;
         }
 
         @Override
         protected EmillaCommand makeCommand(AssistActivity act) {
-            return switch (app.pkg) {
+            return switch (this.app.pkg) {
                 case AospContacts.PKG -> new AospContacts(act, this);
-                case Markor.PKG -> Markor.instance(act, this, app.cls);
+                case Markor.PKG -> Markor.instance(act, this, this.app.cls);
                 case Firefox.PKG -> new Firefox(act, this);
                 case Tor.PKG -> new Tor(act, this);
                 case Signal.PKG -> new Signal(act, this);
@@ -51,20 +51,20 @@ public /*open*/ class AppCommand extends EmillaCommand {
                 case Youtube.PKG -> new Youtube(act, this);
                 case Discord.PKG -> new Discord(act, this);
                 case Outlook.PKG -> new Outlook(act, this);
-                default -> app.hasSend() ? new AppSend(act, this)
-                         : app.hasSearch() ? new AppSearch(act, this)
+                default -> this.app.hasSend() ? new AppSend(act, this)
+                         : this.app.hasSearch() ? new AppSearch(act, this)
                          // Todo: merge AppSearchCommand with AppSendCommand
                          : new AppCommand(act, this);
             };
         }
 
         public String name() {
-            return app.label;
+            return this.app.label;
         }
 
         @Nullable
         public Set<String> aliases(SharedPreferences prefs, Resources res) {
-            return Aliases.appSet(prefs, res, app);
+            return Aliases.appSet(prefs, res, this.app);
         }
     }
 
@@ -97,7 +97,7 @@ public /*open*/ class AppCommand extends EmillaCommand {
         @StringRes
         private final int mInstruction;
 
-        InstructyParams(Yielder info, @StringRes int instruction) {
+        protected InstructyParams(Yielder info, @StringRes int instruction) {
             super(info);
             mInstruction = instruction;
         }

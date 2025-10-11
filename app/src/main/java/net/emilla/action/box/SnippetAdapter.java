@@ -49,7 +49,7 @@ import net.emilla.struct.sort.SortedArray;
 
         public SnippetHolder(SnippetItemBinding binding) {
             super(binding.getRoot());
-            labelView = binding.snippetLabel;
+            this.labelView = binding.snippetLabel;
         }
     }
 
