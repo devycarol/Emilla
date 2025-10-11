@@ -12,12 +12,12 @@ import net.emilla.app.Apps;
 
 /*internal open*/ class AppSearch extends AppCommand {
 
-    public AppSearch(AssistActivity act, Yielder info) {
+    /*internal*/ AppSearch(AssistActivity act, Yielder info) {
         this(act, info, R.string.instruction_search, R.string.summary_app_search);
         // todo: the 'send' action shouldn't apply when just launching
     }
 
-    public AppSearch(AssistActivity act, Yielder info, @StringRes int instruction,
+    /*internal*/ AppSearch(AssistActivity act, Yielder info, @StringRes int instruction,
             @StringRes int summary) {
         super(act, new InstructyParams(info, instruction),
               summary,

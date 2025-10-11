@@ -5,7 +5,7 @@ import net.emilla.activity.AssistActivity;
 
 /*internal*/ abstract class MultilineMessenger extends AppSendData {
 
-    public MultilineMessenger(AssistActivity act, Yielder info) {
+    /*internal*/ MultilineMessenger(AssistActivity act, Yielder info) {
         super(act, info,
               R.string.instruction_message,
               R.string.summary_messaging,

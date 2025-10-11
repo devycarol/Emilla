@@ -15,7 +15,7 @@ import net.emilla.struct.sort.SortedArray;
     private final SortedArray<String> mLabels;
     private OnItemClickListener mItemClickAction;
 
-    public SnippetAdapter(SortedArray<String> labels, OnItemClickListener itemClickAction) {
+    /*internal*/ SnippetAdapter(SortedArray<String> labels, OnItemClickListener itemClickAction) {
         mLabels = labels;
         mItemClickAction = itemClickAction;
     }

@@ -7,7 +7,7 @@ import net.emilla.activity.AssistActivity;
 
 /*internal*/ abstract class VideoSearchBySend extends AppSend {
 
-    public VideoSearchBySend(AssistActivity act, Yielder info) {
+    /*internal*/ VideoSearchBySend(AssistActivity act, Yielder info) {
         super(act, info,
               R.string.instruction_video,
               R.string.summary_video,

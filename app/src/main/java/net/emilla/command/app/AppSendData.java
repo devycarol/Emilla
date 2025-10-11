@@ -13,7 +13,7 @@ import net.emilla.command.DataCommand;
     @StringRes
     private final int mHint;
 
-    public AppSendData(AssistActivity act, Yielder info, @StringRes int hint) {
+    /*internal*/ AppSendData(AssistActivity act, Yielder info, @StringRes int hint) {
         super(act, info,
               R.string.summary_app_send,
               R.string.manual_app_send_data,

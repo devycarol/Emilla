@@ -59,7 +59,7 @@ public abstract class Words implements TrieMap.Phrase<String, String> {
 
     /*internal*/ static final class Latin extends Words {
 
-        public Latin(String phrase) {
+        /*internal*/ Latin(String phrase) {
             super(phrase);
         }
 
@@ -94,7 +94,7 @@ public abstract class Words implements TrieMap.Phrase<String, String> {
 
     /*internal*/ static final class Glyph extends Words {
 
-        public Glyph(String phrase) {
+        /*internal*/ Glyph(String phrase) {
             super(phrase);
         }
 
