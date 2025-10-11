@@ -32,7 +32,7 @@ public final class ActionButton extends AppCompatImageButton implements View.OnT
     private boolean mHasAppIcon = false;
     private final Drawable mBackground;
 
-    private final Runnable onLongPress = () -> {
+    private final Runnable mOnLongPress = () -> {
         mLongTouching = true;
         performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
         setImageDrawable(mLongIcon);
@@ -83,7 +83,7 @@ public final class ActionButton extends AppCompatImageButton implements View.OnT
             case MotionEvent.ACTION_DOWN -> {
                 setPressed(true);
                 performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP);
-                if (mHasLongPress) postDelayed(onLongPress, ViewConfiguration.getLongPressTimeout());
+                if (mHasLongPress) postDelayed(mOnLongPress, ViewConfiguration.getLongPressTimeout());
                 return true;
             }
             case MotionEvent.ACTION_MOVE -> {
@@ -95,7 +95,7 @@ public final class ActionButton extends AppCompatImageButton implements View.OnT
                                 ? HapticFeedbackConstants.GESTURE_END : HapticFeedbackConstants.KEYBOARD_TAP);
                         resetIcon();
                         mLongTouching = false;
-                    } else if (mHasLongPress) getHandler().removeCallbacks(onLongPress);
+                    } else if (mHasLongPress) getHandler().removeCallbacks(mOnLongPress);
                 }
                 return true;
             }
@@ -107,7 +107,7 @@ public final class ActionButton extends AppCompatImageButton implements View.OnT
                         resetIcon();
                         performLongClick();
                     } else {
-                        if (mHasLongPress) getHandler().removeCallbacks(onLongPress);
+                        if (mHasLongPress) getHandler().removeCallbacks(mOnLongPress);
                         playSoundEffect(SoundEffectConstants.CLICK);
                         callOnClick();
                     }
