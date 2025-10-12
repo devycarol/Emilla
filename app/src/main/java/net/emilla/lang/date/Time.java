@@ -1,4 +1,4 @@
-package net.emilla.util;
+package net.emilla.lang.date;
 
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
