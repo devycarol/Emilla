@@ -23,7 +23,8 @@ import net.emilla.lang.phrase.RandRange;
 import net.emilla.lang.phrase.impl.DicesEN_US;
 import net.emilla.lang.phrase.impl.RandRangeEN_US;
 
-public final class Lang {
+public enum Lang {
+    EN_US;
 
     public static String wordConcat(Resources res, Object a, Object b) {
         return res.getString(R.string.word_concatenation, a, b);
@@ -115,6 +116,4 @@ public final class Lang {
             default -> DicesEN_US.instance(roll, errorTitle);
         };
     }
-
-    private Lang() {}
 }
