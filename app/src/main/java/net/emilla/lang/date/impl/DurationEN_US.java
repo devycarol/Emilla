@@ -1,7 +1,5 @@
 package net.emilla.lang.date.impl;
 
-import static java.lang.Double.parseDouble;
-
 import androidx.annotation.StringRes;
 
 import net.emilla.R;
@@ -12,7 +10,7 @@ public final class DurationEN_US {
 
     public static Duration instance(String minutes, @StringRes int errorTitle) {
         try {
-            int seconds = (int) (parseDouble(minutes) * 60.0);
+            int seconds = (int) (Double.parseDouble(minutes) * 60.0);
             // Todo: other time units, clock notation.
             return new Duration(seconds, errorTitle);
         } catch (NumberFormatException e) {

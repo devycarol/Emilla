@@ -1,9 +1,5 @@
 package net.emilla.math;
 
-import static net.emilla.math.Maths.malformedExpression;
-import static net.emilla.math.Maths.undefined;
-import static java.lang.Character.isWhitespace;
-
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
@@ -36,13 +32,13 @@ public final class BitwiseCalculator {
 
         @Nullable
         BitwiseOperator peek() {
-            if (size < 1) throw malformedExpression(errorTitle);
+            if (size < 1) throw Maths.malformedExpression(errorTitle);
             return arr[size - 1];
         }
 
         @Nullable
         BitwiseOperator pop() {
-            if (size < 1) throw malformedExpression(errorTitle);
+            if (size < 1) throw Maths.malformedExpression(errorTitle);
             return arr[--size];
         }
 
@@ -79,7 +75,7 @@ public final class BitwiseCalculator {
         }
 
         void squish(BitwiseOperator op) {
-            if (size < 2) throw malformedExpression(errorTitle);
+            if (size < 2) throw Maths.malformedExpression(errorTitle);
 
             --size;
             vals[size - 1] = op.apply(vals[size - 1], vals[size]);
@@ -141,7 +137,7 @@ public final class BitwiseCalculator {
         }
 
         long value() {
-            if (size != 1) throw malformedExpression(errorTitle);
+            if (size != 1) throw Maths.malformedExpression(errorTitle);
             return vals[0];
         }
     }
@@ -166,13 +162,13 @@ public final class BitwiseCalculator {
 
         @Nullable
         BitwiseSign peek() {
-            if (size < 1) throw malformedExpression(errorTitle);
+            if (size < 1) throw Maths.malformedExpression(errorTitle);
             return arr[size - 1];
         }
 
         @Nullable
         BitwiseSign pop() {
-            if (size < 1) throw malformedExpression(errorTitle);
+            if (size < 1) throw Maths.malformedExpression(errorTitle);
             return arr[--size];
         }
 
@@ -217,7 +213,7 @@ public final class BitwiseCalculator {
 
         result.applyRemainingSigns();
     } catch (ArithmeticException e) {
-        throw undefined(errorTitle);
+        throw Maths.undefined(errorTitle);
     }
 
         return result.value();
@@ -276,15 +272,15 @@ public final class BitwiseCalculator {
                         // note that a binary-looking tilde is treated with adjacency multiplication.
                     };
                     case '!' -> switch (this.prevType) {
-                        case LPAREN, OPERATOR -> throw malformedExpression(this.errorTitle);
+                        case LPAREN, OPERATOR -> throw Maths.malformedExpression(this.errorTitle);
                         case RPAREN, NUMBER -> extractUnary(true);
                     };
                     case '|', '^', '&', '*', '/', '%' -> switch (this.prevType) {
-                        case LPAREN, OPERATOR -> throw malformedExpression(this.errorTitle);
+                        case LPAREN, OPERATOR -> throw Maths.malformedExpression(this.errorTitle);
                         case RPAREN, NUMBER -> extractOperator();
                     };
                     case '<', '>' -> switch (this.prevType) {
-                        case LPAREN, OPERATOR -> throw malformedExpression(this.errorTitle);
+                        case LPAREN, OPERATOR -> throw Maths.malformedExpression(this.errorTitle);
                         case RPAREN, NUMBER -> extractShift();
                     };
                     case '(' -> switch (this.prevType) {
@@ -292,7 +288,7 @@ public final class BitwiseCalculator {
                         case RPAREN, NUMBER -> phantomStar();
                     };
                     case ')' -> switch (this.prevType) {
-                        case LPAREN, OPERATOR -> throw malformedExpression(this.errorTitle);
+                        case LPAREN, OPERATOR -> throw Maths.malformedExpression(this.errorTitle);
                         case RPAREN, NUMBER -> extractRParen();
                     };
                     case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> switch (this.prevType) {
@@ -300,7 +296,7 @@ public final class BitwiseCalculator {
                         case RPAREN, NUMBER -> phantomStar();
                         // note that this treats space-separated numbers as multiplication.
                     };
-                    default -> throw malformedExpression(this.errorTitle);
+                    default -> throw Maths.malformedExpression(this.errorTitle);
                 };
             }
 
@@ -334,7 +330,7 @@ public final class BitwiseCalculator {
             private BitwiseOperator extractShift() {
                 char shiftType = this.expr[this.pos];
                 ++this.pos;
-                if (!nextCharIs(shiftType)) throw malformedExpression(this.errorTitle);
+                if (!nextCharIs(shiftType)) throw Maths.malformedExpression(this.errorTitle);
 
                 ++this.pos;
                 BitwiseOperator op;
@@ -361,11 +357,11 @@ public final class BitwiseCalculator {
 
             private void advanceImmediate() {
                 do ++this.pos;
-                while (this.pos < this.length && isWhitespace(this.expr[this.pos]));
+                while (this.pos < this.length && Character.isWhitespace(this.expr[this.pos]));
             }
 
             private void advance() {
-                while (this.pos < this.length && isWhitespace(this.expr[this.pos])) ++this.pos;
+                while (this.pos < this.length && Character.isWhitespace(this.expr[this.pos])) ++this.pos;
             }
 
             private IntegerNumber extractNumber() {

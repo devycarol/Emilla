@@ -1,8 +1,5 @@
 package net.emilla.app;
 
-import static net.emilla.app.Apps.searchToApp;
-import static net.emilla.app.Apps.sendToApp;
-
 import android.content.pm.PackageManager;
 
 import net.emilla.command.app.Tasker;
@@ -18,11 +15,11 @@ public final class AppActions {
 
         int flags = 0;
 
-        if ((mask & FLAG_SEND) != 0 && Apps.canDo(pm, sendToApp(pkg))) {
+        if ((mask & FLAG_SEND) != 0 && Apps.canDo(pm, Apps.sendToApp(pkg))) {
             flags |= FLAG_SEND;
         }
 
-        if ((mask & FLAG_SEARCH) != 0 && Apps.canDo(pm, searchToApp(pkg))) {
+        if ((mask & FLAG_SEARCH) != 0 && Apps.canDo(pm, Apps.searchToApp(pkg))) {
             flags |= FLAG_SEARCH;
         }
 

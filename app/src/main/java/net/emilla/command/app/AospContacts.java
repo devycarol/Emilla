@@ -1,7 +1,5 @@
 package net.emilla.command.app;
 
-import static net.emilla.app.AppProperties.ordinaryFree;
-
 import androidx.annotation.ArrayRes;
 import androidx.annotation.StringRes;
 
@@ -18,7 +16,7 @@ public final class AospContacts extends AppSearch {
     private static final int SUMMARY = R.string.summary_app_aosp_contacts;
 
     public static AppProperties meta() {
-        return ordinaryFree(ALIASES, SUMMARY);
+        return AppProperties.ordinaryFree(ALIASES, SUMMARY);
     }
 
     public AospContacts(AssistActivity act, Yielder info) {

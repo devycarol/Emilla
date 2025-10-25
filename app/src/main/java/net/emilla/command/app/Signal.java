@@ -1,7 +1,5 @@
 package net.emilla.command.app;
 
-import static net.emilla.app.AppProperties.ordinaryFree;
-
 import androidx.annotation.ArrayRes;
 import androidx.annotation.StringRes;
 
@@ -18,7 +16,7 @@ public final class Signal extends MultilineMessenger {
     private static final int SUMMARY = R.string.summary_messaging;
 
     public static AppProperties meta() {
-        return ordinaryFree(ALIASES, SUMMARY);
+        return AppProperties.ordinaryFree(ALIASES, SUMMARY);
     }
 
     public Signal(AssistActivity act, Yielder info) {

@@ -1,7 +1,5 @@
 package net.emilla.command.app;
 
-import static net.emilla.app.AppProperties.ordinary;
-
 import androidx.annotation.ArrayRes;
 import androidx.annotation.StringRes;
 
@@ -18,7 +16,7 @@ public final class Outlook extends AppSendData {
     private static final int SUMMARY = R.string.summary_email;
 
     public static AppProperties meta() {
-        return ordinary(ALIASES, SUMMARY);
+        return AppProperties.ordinary(ALIASES, SUMMARY);
     }
 
     public Outlook(AssistActivity act, Yielder info) {

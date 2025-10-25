@@ -1,7 +1,5 @@
 package net.emilla.command.app;
 
-import static net.emilla.app.AppProperties.suppressiveFree;
-
 import androidx.annotation.ArrayRes;
 import androidx.annotation.StringRes;
 
@@ -19,7 +17,7 @@ public final class Tor extends AppCommand {
     private static final int SUMMARY = R.string.summary_web;
 
     public static AppProperties meta() {
-        return suppressiveFree(ALIASES, SUMMARY, AppActions.FLAG_SEND | AppActions.FLAG_SEARCH);
+        return AppProperties.suppressiveFree(ALIASES, SUMMARY, AppActions.FLAG_SEND | AppActions.FLAG_SEARCH);
         // search/send intents are broken.
     }
 

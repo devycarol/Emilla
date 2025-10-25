@@ -1,7 +1,5 @@
 package net.emilla.config;
 
-import static java.util.Objects.requireNonNull;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.AttributeSet;
@@ -15,6 +13,8 @@ import androidx.preference.PreferenceViewHolder;
 
 import net.emilla.R;
 import net.emilla.app.AppEntry;
+
+import java.util.Objects;
 
 public final class CommandPreference extends EditTextPreference {
 
@@ -85,7 +85,7 @@ public final class CommandPreference extends EditTextPreference {
     }
 
     private SharedPreferences prefs() {
-        return requireNonNull(getSharedPreferences());
+        return Objects.requireNonNull(getSharedPreferences());
     }
 
     @Override

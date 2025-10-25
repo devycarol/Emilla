@@ -1,7 +1,5 @@
 package net.emilla.lang;
 
-import static java.lang.Character.isWhitespace;
-
 import androidx.annotation.Nullable;
 
 import java.util.Iterator;
@@ -123,7 +121,7 @@ public final class CsvLine implements Iterable<String> {
     private static int valStart(String s) {
         int length = s.length();
         for (int i = 0; i < length; ++i) {
-            if (!isWhitespace(s.charAt(i))) {
+            if (!Character.isWhitespace(s.charAt(i))) {
                 return i;
             }
         }
@@ -197,14 +195,14 @@ public final class CsvLine implements Iterable<String> {
         protected void advanceToNextVal() {
             do ++this.pos;
             // advance past the comma
-            while (this.pos < mLen && isWhitespace(mLine.charAt(this.pos)));
+            while (this.pos < mLen && Character.isWhitespace(mLine.charAt(this.pos)));
             // continue advancing as needed
         }
 
         @Override @Nullable
         protected String makeVal(StringBuilder sb) {
             int len = sb.length();
-            while (len > 0 && isWhitespace(sb.charAt(len - 1))) --len;
+            while (len > 0 && Character.isWhitespace(sb.charAt(len - 1))) --len;
             sb.setLength(len);
             // remove trailing whitespaces, leading ones are handled by `advanceToNextVal()` and
             // `valStart(String)`.

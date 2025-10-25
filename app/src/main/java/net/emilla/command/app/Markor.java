@@ -1,8 +1,5 @@
 package net.emilla.command.app;
 
-import static net.emilla.app.AppProperties.ordinaryFree;
-import static net.emilla.app.AppProperties.suppressiveFree;
-
 import androidx.annotation.ArrayRes;
 import androidx.annotation.StringRes;
 
@@ -21,7 +18,7 @@ public final class Markor extends AppSendData {
     private static final String CLS_MAIN = PKG + ".activity.MainActivity";
 
     public static AppProperties meta(String cls) {
-        return cls.equals(CLS_MAIN) ? ordinaryFree(ALIASES, SUMMARY) : suppressiveFree();
+        return cls.equals(CLS_MAIN) ? AppProperties.ordinaryFree(ALIASES, SUMMARY) : AppProperties.suppressiveFree();
     }
 
     public static AppCommand instance(AssistActivity act, Yielder info, String cls) {

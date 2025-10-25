@@ -13,4 +13,8 @@ public final class Duration {
         if (seconds <= 0) throw new EmillaException(errorTitle, R.string.error_bad_minutes);
         this.seconds = seconds;
     }
+
+    /*internal*/ Duration(int hours, int minutes, int seconds) {
+        this.seconds = hours * 60 * 60 + minutes * 60 + seconds;
+    }
 }

@@ -20,8 +20,6 @@ import static net.emilla.chime.Chimer.FAIL;
 import static net.emilla.chime.Chimer.PEND;
 import static net.emilla.chime.Chimer.RESUME;
 import static net.emilla.chime.Chimer.SUCCEED;
-import static java.lang.Character.isWhitespace;
-import static java.util.Objects.requireNonNull;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -82,6 +80,7 @@ import net.emilla.util.Strings;
 import net.emilla.view.ActionButton;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public final class AssistActivity extends EmillaActivity {
 
@@ -119,13 +118,16 @@ public final class AssistActivity extends EmillaActivity {
 
     private boolean mOpen = false;
 
+    public AssistActivity() {
+        super(R.layout.activity_assist);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mInflater = getLayoutInflater();
         mBinding = ActivityAssistBinding.inflate(mInflater);
-        setContentView(mBinding.getRoot());
 
         var factory = new AssistViewModel.Factory(getApplicationContext());
         var provider = new ViewModelProvider(this, factory);
@@ -137,7 +139,7 @@ public final class AssistActivity extends EmillaActivity {
 
         SharedPreferences prefs = mVm.prefs;
 
-        ActionBar actionBar = requireNonNull(getSupportActionBar());
+        ActionBar actionBar = Objects.requireNonNull(getSupportActionBar());
         if (mVm.noTitlebar) {
             actionBar.hide();
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.bg_assistant));
@@ -175,6 +177,8 @@ public final class AssistActivity extends EmillaActivity {
     }
 
     private /*inner*/ final class CommandWatcher implements TextWatcher {
+
+        CommandWatcher() {}
 
         @Override
         public void beforeTextChanged(CharSequence text, int start, int count, int after) {}
@@ -312,7 +316,7 @@ public final class AssistActivity extends EmillaActivity {
             Editable dataText = dataField.getText();
 
             int len = commandText.length();
-            if (len == 0 || isWhitespace(commandText.charAt(len - 1))) {
+            if (len == 0 || Character.isWhitespace(commandText.charAt(len - 1))) {
                 commandField.append(dataText);
             } else {
                 commandField.append(Lang.wordConcat(mVm.res, "", dataText));
@@ -554,7 +558,7 @@ public final class AssistActivity extends EmillaActivity {
     public void updateTitle(CharSequence title) {
         if (mVm.noTitlebar) return;
 
-        ActionBar actionBar = requireNonNull(getSupportActionBar());
+        ActionBar actionBar = Objects.requireNonNull(getSupportActionBar());
         if (mVm.noCommand) title = mVm.motd;
 
         actionBar.setTitle(title);
@@ -721,21 +725,24 @@ public final class AssistActivity extends EmillaActivity {
     }
 
     private void submitCommand() {
-        var fullCommand = mBinding.commandField.getText().toString().trim();
+        String fullCommand = mBinding.commandField.getText().toString().trim();
+
         if (fullCommand.isEmpty()) {
             mNoCommandAction.perform();
             return;
         }
-    try {
-        EditText dataField = mBinding.dataField;
-        if (mCommand.usesData() && dataField.length() > 0) {
-            ((DataCommand) mCommand).execute(dataField.getText().toString());
-        } else {
-            mCommand.execute();
+
+        try {
+            EditText dataField = mBinding.dataField;
+            if (mCommand.usesData() && dataField.length() > 0) {
+                ((DataCommand) mCommand).execute(dataField.getText().toString());
+            } else {
+                mCommand.execute();
+            }
+        } catch (EmillaException e) {
+            fail(new MessageFailure(this, e));
+        } catch (RuntimeException e) {
+            fail(new BugFailure(this, e, mCommand.name()));
         }
-    } catch (EmillaException e) {
-        fail(new MessageFailure(this, e));
-    } catch (RuntimeException e) {
-        fail(new BugFailure(this, e, mCommand.name()));
-    }}
+    }
 }

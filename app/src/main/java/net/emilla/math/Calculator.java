@@ -1,9 +1,5 @@
 package net.emilla.math;
 
-import static net.emilla.math.Maths.malformedExpression;
-import static net.emilla.math.Maths.undefined;
-import static java.lang.Character.isWhitespace;
-
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
@@ -50,13 +46,13 @@ public final class Calculator {
 
         @Nullable
         BinaryOperator peek() {
-            if (this.size < 1) throw malformedExpression(this.errorTitle);
+            if (this.size < 1) throw Maths.malformedExpression(this.errorTitle);
             return this.arr[this.size - 1];
         }
 
         @Nullable
         BinaryOperator pop() {
-            if (this.size < 1) throw malformedExpression(this.errorTitle);
+            if (this.size < 1) throw Maths.malformedExpression(this.errorTitle);
             return this.arr[--this.size];
         }
 
@@ -93,7 +89,7 @@ public final class Calculator {
         }
 
         void squish(BinaryOperator op) {
-            if (this.size < 2) throw malformedExpression(this.errorTitle);
+            if (this.size < 2) throw Maths.malformedExpression(this.errorTitle);
 
             --this.size;
             this.vals[this.size - 1] = op.apply(this.vals[this.size - 1], this.vals[this.size]);
@@ -155,7 +151,7 @@ public final class Calculator {
         }
 
         double value() {
-            if (this.size != 1) throw malformedExpression(this.errorTitle);
+            if (this.size != 1) throw Maths.malformedExpression(this.errorTitle);
             return this.vals[0];
         }
     }
@@ -180,13 +176,13 @@ public final class Calculator {
 
         @Nullable
         UnaryOperator peek() {
-            if (size < 1) throw malformedExpression(errorTitle);
+            if (size < 1) throw Maths.malformedExpression(errorTitle);
             return arr[size - 1];
         }
 
         @Nullable
         UnaryOperator pop() {
-            if (size < 1) throw malformedExpression(errorTitle);
+            if (size < 1) throw Maths.malformedExpression(errorTitle);
             return arr[--size];
         }
 
@@ -233,7 +229,7 @@ public final class Calculator {
 
         result.applyRemainingSigns();
     } catch (ArithmeticException e) {
-        throw undefined(errorTitle);
+        throw Maths.undefined(errorTitle);
     }
 
         return result.value();
@@ -287,11 +283,11 @@ public final class Calculator {
                         case RPAREN, NUMBER -> extractOperator();
                     };
                     case '%', '!' -> switch (prevType) {
-                        case LPAREN, OPERATOR -> throw malformedExpression(errorTitle);
+                        case LPAREN, OPERATOR -> throw Maths.malformedExpression(errorTitle);
                         case RPAREN, NUMBER -> extractUnary(true);
                     };
                     case '*', '/', '^' -> switch (prevType) {
-                        case LPAREN, OPERATOR -> throw malformedExpression(errorTitle);
+                        case LPAREN, OPERATOR -> throw Maths.malformedExpression(errorTitle);
                         case RPAREN, NUMBER -> extractOperator();
                     };
                     case '(' -> switch (prevType) {
@@ -299,7 +295,7 @@ public final class Calculator {
                         case RPAREN, NUMBER -> phantomStar();
                     };
                     case ')' -> switch (prevType) {
-                        case LPAREN, OPERATOR -> throw malformedExpression(errorTitle);
+                        case LPAREN, OPERATOR -> throw Maths.malformedExpression(errorTitle);
                         case RPAREN, NUMBER -> extractRParen();
                     };
                     case '.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> switch (prevType) {
@@ -307,7 +303,7 @@ public final class Calculator {
                         case RPAREN, NUMBER -> phantomStar();
                         // note that this treats space-separated numbers as multiplication.
                     };
-                    default -> throw malformedExpression(errorTitle);
+                    default -> throw Maths.malformedExpression(errorTitle);
                 };
             }
 
@@ -345,11 +341,11 @@ public final class Calculator {
 
             private void advanceImmediate() {
                 do ++pos;
-                while (pos < length && isWhitespace(expr[pos]));
+                while (pos < length && Character.isWhitespace(expr[pos]));
             }
 
             private void advance() {
-                while (pos < length && isWhitespace(expr[pos])) ++pos;
+                while (pos < length && Character.isWhitespace(expr[pos])) ++pos;
             }
 
             private FloatingPointNumber extractNumber() {

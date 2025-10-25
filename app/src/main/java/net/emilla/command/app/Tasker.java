@@ -1,7 +1,5 @@
 package net.emilla.command.app;
 
-import static net.emilla.app.AppProperties.ordinary;
-
 import android.database.Cursor;
 import android.net.Uri;
 import android.view.inputmethod.EditorInfo;
@@ -34,7 +32,7 @@ public final class Tasker extends AppCommand implements DataCommand {
     private static final int SUMMARY = R.string.summary_app_tasker;
 
     public static AppProperties meta() {
-        return ordinary(ALIASES, SUMMARY);
+        return AppProperties.ordinary(ALIASES, SUMMARY);
     }
 
     @Override

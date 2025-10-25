@@ -1,7 +1,5 @@
 package net.emilla.command.app;
 
-import static net.emilla.app.AppProperties.suppressiveFree;
-
 import androidx.annotation.ArrayRes;
 import androidx.annotation.StringRes;
 
@@ -19,7 +17,7 @@ public final class Firefox extends AppSearch {
     private static final int SUMMARY = R.string.summary_web;
 
     public static AppProperties meta() {
-        return suppressiveFree(ALIASES, SUMMARY, AppActions.FLAG_SEND);
+        return AppProperties.suppressiveFree(ALIASES, SUMMARY, AppActions.FLAG_SEND);
         // 'send' is redundant for Firefox, it just searches.
     }
 

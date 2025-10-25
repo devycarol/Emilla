@@ -1,8 +1,5 @@
 package net.emilla.lang.date;
 
-import static java.lang.Double.parseDouble;
-import static java.lang.Integer.parseInt;
-import static java.lang.Math.max;
 import static java.util.Calendar.AM;
 import static java.util.Calendar.DAY_OF_MONTH;
 import static java.util.Calendar.HOUR_OF_DAY;
@@ -70,21 +67,27 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         int s = 0;
         int len = time.length();
         switch ((len + 1) / 2) {
-        case 1 -> h = parseInt(time);
+        case 1 -> {
+            h = Integer.parseInt(time);
+        }
         case 2 -> {
-            h = parseInt(time.substring(0, len - 2));
-            m = parseInt(time.substring(len - 2));
+            h = Integer.parseInt(time.substring(0, len - 2));
+            m = Integer.parseInt(time.substring(len - 2));
         }
         case 3 -> {
-            h = parseInt(time.substring(0, len - 4));
-            m = parseInt(time.substring(len - 4, len - 2));
-            s = parseInt(time.substring(len - 2));
+            h = Integer.parseInt(time.substring(0, len - 4));
+            m = Integer.parseInt(time.substring(len - 4, len - 2));
+            s = Integer.parseInt(time.substring(len - 2));
         }}
 
         return new int[]{h, m, s};
     }
 
-    public static int[] parseTime(String time, @Nullable EmillaActivity act /*todo jesus christ*/, @StringRes int errorTitle) {
+    private static int[] parseTime(
+        String time,
+        @Nullable EmillaActivity act, /*todo jesus christ*/
+        @StringRes int errorTitle
+    ) {
         int meridiem;
         if (time.matches("(?i).*\\d *A.*")) meridiem = AM;
         else if (time.matches("(?i).*\\d *P.*")) meridiem = PM;
@@ -106,14 +109,14 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
             if (meridiem == PM) h += 12;
         }
 
-        if (h > 23 || max(m, s) > 59) {
+        if (h > 23 || Math.max(m, s) > 59) {
             throw new EmillaException(errorTitle, R.string.error_invalid_time);
         }
 
         return new int[]{h, m, s};
     }
 
-    private static int[] parseDurationUntil(String until, @StringRes int errorTitle) {
+    private static Duration parseDurationUntil(String until, @StringRes int errorTitle) {
         int[] endUnits = parseTime(until, null, errorTitle);
         int endHour = endUnits[0];
         int endMin = endUnits[1];
@@ -127,32 +130,35 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         int h = 0;
         int m = 0;
         int s = 0;
-        int warn = 0;
 
         s = endSec - curSec;
         if (s < 0) {
             s += 60;
             --m;
         }
+
         m += endMin - curMin;
         if (m < 0) {
             m += 60;
             --h;
         }
+
         h += endHour - curHour;
-        if (h < 0) h += 24;
-
-        if (!containsRgxIgnoreCase(until, "\\d *[AP]")) {
-            if (h < 12) warn = 1;
-            else warn = 2;
-
-            if (h > 12 || h == 12 && max(m, s) > 0) h -= 12;
+        if (h < 0) {
+            h += 24;
         }
 
-        return new int[]{h, m, s, warn, endHour, endMin};
+        if (!containsRgxIgnoreCase(until, "\\d *[AP]")) {
+            if (h > 12 || h == 12 && Math.max(m, s) > 0) {
+                h -= 12;
+            }
+        }
+
+        return new Duration(h, m, s - 1);
+        // we subtract 1 to give an extra second of leeway
     }
 
-    private static int[] splitDurationString (String dur) {
+    private static Duration splitDurationString (String dur) {
         String[] units = dur.split(" *: *| +");
 
         double h = 0.0;
@@ -160,30 +166,33 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         double s = 0.0;
         switch (units.length) {
         case 3:
-            s = parseDouble(units[2]);
+            s = Double.parseDouble(units[2]);
             // fallthrough
         case 2:
-            h = parseDouble(units[0]);
-            m = parseDouble(units[1]);
+            h = Double.parseDouble(units[0]);
+            m = Double.parseDouble(units[1]);
             break;
         case 1:
-            m = parseDouble(dur);
+            m = Double.parseDouble(dur);
         }
 
         m += h % 1.0 * 60.0;
         s += m % 1.0 * 60.0;
 
-        return new int[]{(int) h, (int) m, (int) s, 0};
+        return new Duration((int) h, (int) m, (int) s);
     }
 
-    public static int[] parseDuration(String dur, @StringRes int errorTitle) {
+    public static Duration parseDuration(String dur, @StringRes int errorTitle) {
         // TODO: handle 24h time properly
-        if (dur.matches("(until|t(ill?|o)) .*")) return parseDurationUntil(dur, errorTitle);
-        var timeUnits = new double[4];
+        if (dur.matches("(until|t(ill?|o)) .*")) {
+            return parseDurationUntil(dur, errorTitle);
+        }
+
+        var timeUnits = new double[3];
         String[] patterns = {
-                "\\d*\\.?\\d+ *h((ou)?rs?)?",
-                "\\d*\\.?\\d+ *m(in(ute)?s?)?",
-                "\\d*\\.?\\d+ *s(ec(ond)?s?)?"
+            "\\d*\\.?\\d+ *h((ou)?rs?)?",
+            "\\d*\\.?\\d+ *m(in(ute)?s?)?",
+            "\\d*\\.?\\d+ *s(ec(ond)?s?)?"
         };
 
         boolean hit = false;
@@ -193,23 +202,23 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
             if (containsRgxIgnoreCase(dur, rgx)) {
                 hit = true;
 
-                String[] sansHrs = dur.split(rgx);
-                if (sansHrs.length > 2) {
+                String[] withoutHours = dur.split(rgx);
+                if (withoutHours.length > 2) {
                     throw new EmillaException(errorTitle, R.string.error_invalid_duration);
                 }
 
                 String before = "";
                 String after = "";
-                switch (sansHrs.length) {
-                case 2: after = sansHrs[1];
+                switch (withoutHours.length) {
+                case 2: after = withoutHours[1];
                 // fallthrough
-                case 1: before = sansHrs[0];
+                case 1: before = withoutHours[0];
                 }
 
                 int start = before.length();
                 int end = dur.length() - after.length();
 
-                timeUnits[i] = parseDouble(dur.substring(start, end).replaceAll("[^\\d.]", ""));
+                timeUnits[i] = Double.parseDouble(dur.substring(start, end).replaceAll("[^\\d.]", ""));
                 dur = (before + after).trim();
 
                 notEmpty = !dur.isEmpty();
@@ -217,12 +226,14 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         }
 
         if (hit) {
-            if (notEmpty) throw new EmillaException(errorTitle, R.string.error_excess_time_units);
+            if (notEmpty) {
+                throw new EmillaException(errorTitle, R.string.error_excess_time_units);
+            }
 
             timeUnits[1] += timeUnits[0] % 1.0 * 60.0;
             timeUnits[2] += timeUnits[1] % 1.0 * 60.0;
 
-            return new int[]{(int) timeUnits[0], (int) timeUnits[1], (int) timeUnits[2], 0};
+            return new Duration((int) timeUnits[0], (int) timeUnits[1], (int) timeUnits[2]);
         }
 
         return splitDurationString(dur);
@@ -268,7 +279,7 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
 
         m = dayRegex().matcher(s);
         if (m.find()) {
-            cal.set(DAY_OF_MONTH, parseInt(m.group().trim()));
+            cal.set(DAY_OF_MONTH, Integer.parseInt(m.group().trim()));
             if (m.find()) throw new EmillaException(errorTitle, R.string.error_excess_time_units);
         }
 
@@ -278,8 +289,8 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
             if (m.find()) throw new EmillaException(errorTitle, R.string.error_excess_time_units);
 
             int tickIdx = y.indexOf('\'');
-            if (tickIdx == -1) cal.set(YEAR, parseInt(y));
-            else cal.set(YEAR, cal.get(YEAR) / 100 * 100 + parseInt(y.substring(tickIdx + 1)));
+            if (tickIdx == -1) cal.set(YEAR, Integer.parseInt(y));
+            else cal.set(YEAR, cal.get(YEAR) / 100 * 100 + Integer.parseInt(y.substring(tickIdx + 1)));
         }
 
         return cal;
@@ -308,9 +319,12 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
             case 1:
                 startTime = parseTime(times[0], null, errorTitle);
                 break;
-            default: throw new EmillaException(errorTitle, R.string.error_excess_timespan);
+            default:
+                throw new EmillaException(errorTitle, R.string.error_excess_timespan);
             }
-        } else if (len != 1) throw new EmillaException(errorTitle, R.string.error_excess_timespans);
+        } else if (len != 1) {
+            throw new EmillaException(errorTitle, R.string.error_excess_timespans);
+        }
 
         Calendar cal = parseDate(date, errorTitle);
         Calendar endCal = null;

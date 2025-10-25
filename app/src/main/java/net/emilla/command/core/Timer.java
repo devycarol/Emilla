@@ -4,7 +4,6 @@ import static android.provider.AlarmClock.ACTION_SET_TIMER;
 import static android.provider.AlarmClock.EXTRA_LENGTH;
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 import static android.provider.AlarmClock.EXTRA_SKIP_UI;
-import static java.util.Locale.ROOT;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -46,32 +45,11 @@ public final class Timer extends CoreDataCommand {
         return new Intent(ACTION_SET_TIMER);
     }
 
-    private Intent makeIntent(String duration) {
+    private static Intent makeIntent(String duration) {
+        int durationSeconds = Time.parseDuration(duration, NAME).seconds;
         return makeIntent()
-                .putExtra(EXTRA_SKIP_UI, true)
-                .putExtra(EXTRA_LENGTH, seconds(duration));
-    }
-
-    private int seconds(String duration) {
-        // todo: cleanup this logic
-        int[] timeUnits = Time.parseDuration(duration, NAME);
-        int warn = timeUnits[3];
-        if (warn > 0) { // todo: replace with a confirm/set-default dialog - reduces localization woes
-            String curPeriod;
-            String nextPeriod;
-            if (warn == 1) {
-                nextPeriod = "AM";
-                curPeriod = "PM";
-            } else {
-                nextPeriod = "PM";
-                curPeriod = "AM";
-            }
-            var endTime = String.format(ROOT, "%d:%02d%s", timeUnits[4], timeUnits[5], nextPeriod);
-            toast(String.format(ROOT, "Warning! Timer set for %s, not %s.", endTime, curPeriod));
-            // TODO: not good...
-        }
-        int offset = timeUnits.length == 6 ? 1 : 0; // remind me what this means??
-        return timeUnits[0] * 60 * 60 + timeUnits[1] * 60 + timeUnits[2] - offset;
+            .putExtra(EXTRA_SKIP_UI, true)
+            .putExtra(EXTRA_LENGTH, durationSeconds);
     }
 
     @Override

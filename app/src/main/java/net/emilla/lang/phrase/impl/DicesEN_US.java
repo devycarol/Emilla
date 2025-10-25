@@ -1,7 +1,5 @@
 package net.emilla.lang.phrase.impl;
 
-import static java.lang.Character.isDigit;
-
 import androidx.annotation.StringRes;
 
 import net.emilla.R;
@@ -84,7 +82,7 @@ public final class DicesEN_US {
             private int nextInt() {
                 int n = 0;
                 char c;
-                while (hasNext() && isDigit(c = roll.charAt(pos))) {
+                while (hasNext() && Character.isDigit(c = roll.charAt(pos))) {
                     n = n * 10 + c - '0';
                     ++pos;
                 }

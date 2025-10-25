@@ -2,10 +2,19 @@ package net.emilla.activity;
 
 import android.widget.Toast;
 
+import androidx.annotation.LayoutRes;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 
 public abstract class EmillaActivity extends AppCompatActivity {
+
+    protected EmillaActivity() {
+        super();
+    }
+
+    protected EmillaActivity(@LayoutRes int contentLayout) {
+        super(contentLayout);
+    }
 
     public final void toast(CharSequence message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();

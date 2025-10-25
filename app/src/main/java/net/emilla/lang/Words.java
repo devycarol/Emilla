@@ -1,7 +1,6 @@
 package net.emilla.lang;
 
 import static androidx.annotation.RestrictTo.Scope.SUBCLASSES;
-import static java.lang.Character.isWhitespace;
 
 import androidx.annotation.RestrictTo;
 
@@ -75,7 +74,7 @@ public abstract class Words implements TrieMap.Phrase<String, String> {
                 int start = mPos;
 
                 do if (++mPos == mLength) break;
-                while (!isWhitespace(mPhrase[mPos]));
+                while (!Character.isWhitespace(mPhrase[mPos]));
 
                 String word = Strings.substring(mPhrase, start, mPos);
                 advance();
@@ -85,7 +84,7 @@ public abstract class Words implements TrieMap.Phrase<String, String> {
             }
 
             private void advance() {
-                while (mPos < mLength && isWhitespace(mPhrase[mPos])) {
+                while (mPos < mLength && Character.isWhitespace(mPhrase[mPos])) {
                     ++mPos;
                 }
             }

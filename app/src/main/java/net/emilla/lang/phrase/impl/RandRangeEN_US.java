@@ -1,7 +1,5 @@
 package net.emilla.lang.phrase.impl;
 
-import static java.lang.Integer.parseInt;
-
 import androidx.annotation.StringRes;
 
 import net.emilla.R;
@@ -22,9 +20,9 @@ public final class RandRangeEN_US {
 
             String[] split = range.split(",\\s*");
 
-            int inclusStart = parseInt(split[0]);
+            int inclusStart = Integer.parseInt(split[0]);
 
-            int exclusEnd = parseInt(split[1]);
+            int exclusEnd = Integer.parseInt(split[1]);
             if (inclusStart > exclusEnd) {
                 int tmp1 = inclusStart;
                 inclusStart = exclusEnd;
@@ -49,7 +47,7 @@ public final class RandRangeEN_US {
             return new RandRange(inclusStart, inclusEnd + 1);
         } else if (range.matches("-?\\d+")) {
             // simple number
-            int inclusEnd = parseInt(range);
+            int inclusEnd = Integer.parseInt(range);
             return new RandRange(inclusEnd, errorTitle);
         } else throw new EmillaException(errorTitle, R.string.error_invalid_number_range);
     }

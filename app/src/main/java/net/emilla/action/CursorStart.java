@@ -3,7 +3,6 @@ package net.emilla.action;
 import static net.emilla.chime.Chimer.ACT;
 import static net.emilla.chime.Chimer.PEND;
 import static net.emilla.chime.Chimer.RESUME;
-import static java.lang.Math.max;
 
 import android.widget.EditText;
 
@@ -50,7 +49,7 @@ public final class CursorStart implements LabeledQuickAction {
         }
         int start = box.getSelectionStart();
         int end = box.getSelectionEnd();
-        if (max(start, end) == 0) {
+        if (Math.max(start, end) == 0) {
             box.setSelection(len);
             mActivity.chime(RESUME);
         } else {
