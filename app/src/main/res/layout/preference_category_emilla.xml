@@ -13,8 +13,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp">
+        android:paddingTop="@dimen/margin_narrow"
+        android:paddingBottom="@dimen/margin_narrow">
 
         <TextView
             android:id="@android:id/title"
