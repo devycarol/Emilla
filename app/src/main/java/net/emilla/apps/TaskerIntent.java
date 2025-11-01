@@ -229,7 +229,7 @@ public final class TaskerIntent extends Intent {
     }
 
     public TaskerIntent addAction(int code) {
-        mActionCount++;
+        ++mActionCount;
         mArgCount = 1;
 
         var actionBundle = new Bundle();
@@ -248,7 +248,7 @@ public final class TaskerIntent extends Intent {
 
         if (b != null) {
             b.putString(ARG_INDEX_PREFIX + mArgCount, arg);
-            mArgCount++;
+            ++mArgCount;
         }
 
         return this;
@@ -260,7 +260,7 @@ public final class TaskerIntent extends Intent {
 
         if (b != null) {
             b.putInt(ARG_INDEX_PREFIX + mArgCount, arg);
-            mArgCount++;
+            ++mArgCount;
         }
 
         return this;
@@ -272,7 +272,7 @@ public final class TaskerIntent extends Intent {
 
         if (b != null) {
             b.putBoolean(ARG_INDEX_PREFIX + mArgCount, arg);
-            mArgCount++;
+            ++mArgCount;
         }
 
         return this;
@@ -285,7 +285,7 @@ public final class TaskerIntent extends Intent {
         if (b != null) {
             String builder = APP_ARG_PREFIX + pkg + ',' + cls;
             b.putString(ARG_INDEX_PREFIX + mArgCount, builder);
-            mArgCount++;
+            ++mArgCount;
         }
 
         return this;
