@@ -9,7 +9,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.app.AppEntry;
+import net.emilla.apps.AppEntry;
 import net.emilla.struct.IndexedStruct;
 import net.emilla.struct.sort.SearchResult;
 import net.emilla.util.Dialogs;

@@ -8,7 +8,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
-import net.emilla.app.AppList
+import net.emilla.apps.AppList
 import net.emilla.chime.Chimer.Companion.START
 import net.emilla.config.SettingVals
 

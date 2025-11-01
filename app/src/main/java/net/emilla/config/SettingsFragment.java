@@ -17,7 +17,7 @@ import androidx.preference.Preference;
 
 import net.emilla.R;
 import net.emilla.activity.EmillaActivity;
-import net.emilla.app.Apps;
+import net.emilla.apps.Apps;
 import net.emilla.chime.Chimer;
 import net.emilla.system.EmillaA11yService;
 import net.emilla.util.Features;

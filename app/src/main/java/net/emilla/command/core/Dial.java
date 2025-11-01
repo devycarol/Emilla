@@ -12,7 +12,7 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.app.Apps;
+import net.emilla.apps.Apps;
 
 public final class Dial extends CoreCommand {
 

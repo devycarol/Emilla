@@ -11,8 +11,8 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.app.AppProperties;
-import net.emilla.app.TaskerIntent;
+import net.emilla.apps.AppProperties;
+import net.emilla.apps.TaskerIntent;
 import net.emilla.command.ActionMap;
 import net.emilla.command.DataCommand;
 import net.emilla.lang.Lines;

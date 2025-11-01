@@ -6,7 +6,7 @@ import android.content.res.Resources;
 import androidx.annotation.ArrayRes;
 import androidx.annotation.Nullable;
 
-import net.emilla.app.AppEntry;
+import net.emilla.apps.AppEntry;
 
 import java.util.Set;
 

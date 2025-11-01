@@ -13,7 +13,7 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.app.Apps;
+import net.emilla.apps.Apps;
 import net.emilla.lang.date.Time;
 
 public final class Timer extends CoreDataCommand {

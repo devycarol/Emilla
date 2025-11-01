@@ -1,14 +1,14 @@
 // Version 1.3.3 (Emilla-modified)
 // For usage examples see http://tasker.dinglisch.net/invoketasks.html
 
-package net.emilla.app;
+package net.emilla.apps;
 
 import static net.emilla.BuildConfig.DEBUG;
-import static net.emilla.app.TaskerIntent.Status.NOT_ENABLED;
-import static net.emilla.app.TaskerIntent.Status.NO_ACCESS;
-import static net.emilla.app.TaskerIntent.Status.NO_PERMISSION;
-import static net.emilla.app.TaskerIntent.Status.NO_RECEIVER;
-import static net.emilla.app.TaskerIntent.Status.OK;
+import static net.emilla.apps.TaskerIntent.Status.NOT_ENABLED;
+import static net.emilla.apps.TaskerIntent.Status.NO_ACCESS;
+import static net.emilla.apps.TaskerIntent.Status.NO_PERMISSION;
+import static net.emilla.apps.TaskerIntent.Status.NO_RECEIVER;
+import static net.emilla.apps.TaskerIntent.Status.OK;
 
 import android.content.Context;
 import android.content.Intent;

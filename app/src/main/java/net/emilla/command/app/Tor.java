@@ -5,8 +5,8 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.app.AppActions;
-import net.emilla.app.AppProperties;
+import net.emilla.apps.AppActions;
+import net.emilla.apps.AppProperties;
 
 public final class Tor extends AppCommand {
 

@@ -51,7 +51,7 @@ import net.emilla.action.CursorStart;
 import net.emilla.action.Help;
 import net.emilla.action.PlayPause;
 import net.emilla.action.QuickAction;
-import net.emilla.app.AppList;
+import net.emilla.apps.AppList;
 import net.emilla.command.CommandMap;
 import net.emilla.command.DataCommand;
 import net.emilla.command.EmillaCommand;

@@ -5,7 +5,7 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.app.AppProperties;
+import net.emilla.apps.AppProperties;
 
 public final class Signal extends MultilineMessenger {
 

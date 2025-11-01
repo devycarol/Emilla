@@ -13,8 +13,8 @@ import androidx.preference.PreferenceCategory;
 
 import net.emilla.R;
 import net.emilla.activity.EmillaActivity;
-import net.emilla.app.AppEntry;
-import net.emilla.app.AppList;
+import net.emilla.apps.AppEntry;
+import net.emilla.apps.AppList;
 import net.emilla.command.core.Alarm;
 import net.emilla.command.core.Bits;
 import net.emilla.command.core.Calculate;

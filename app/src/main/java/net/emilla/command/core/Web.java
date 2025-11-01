@@ -11,7 +11,7 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.app.Apps;
+import net.emilla.apps.Apps;
 import net.emilla.config.SettingVals;
 import net.emilla.util.SearchEngineParser;
 

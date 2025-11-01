@@ -9,8 +9,8 @@ import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.app.AppList;
-import net.emilla.app.Apps;
+import net.emilla.apps.AppList;
+import net.emilla.apps.Apps;
 import net.emilla.util.Dialogs;
 
 public abstract class CategoryCommand extends CoreCommand {

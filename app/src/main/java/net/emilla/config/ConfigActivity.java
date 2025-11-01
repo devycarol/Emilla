@@ -9,7 +9,7 @@ import androidx.navigation.ui.NavigationUI;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.activity.EmillaActivity;
-import net.emilla.app.Apps;
+import net.emilla.apps.Apps;
 import net.emilla.databinding.ActivityConfigBinding;
 
 public final class ConfigActivity extends EmillaActivity {

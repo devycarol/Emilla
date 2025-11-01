@@ -7,7 +7,7 @@ import android.net.Uri;
 
 import androidx.annotation.Nullable;
 
-import net.emilla.app.Apps;
+import net.emilla.apps.Apps;
 import net.emilla.lang.Lang;
 import net.emilla.lang.Words;
 import net.emilla.struct.trie.HashTrieMap;

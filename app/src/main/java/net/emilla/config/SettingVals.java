@@ -15,7 +15,7 @@ import net.emilla.action.PlayPause;
 import net.emilla.action.QuickAction;
 import net.emilla.action.SelectAll;
 import net.emilla.activity.AssistActivity;
-import net.emilla.app.Apps;
+import net.emilla.apps.Apps;
 import net.emilla.chime.Chimer;
 import net.emilla.chime.Custom;
 import net.emilla.chime.Nebula;

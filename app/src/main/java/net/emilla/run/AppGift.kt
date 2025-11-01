@@ -4,7 +4,7 @@ import android.content.Intent
 import net.emilla.R
 import net.emilla.activity.AssistActivity
 import net.emilla.activity.DummyActivity
-import net.emilla.app.Apps
+import net.emilla.apps.Apps
 import net.emilla.exception.EmillaException
 
 class AppGift(private val intent: Intent) : CommandRun {

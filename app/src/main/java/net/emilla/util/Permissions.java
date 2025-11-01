@@ -15,7 +15,7 @@ import androidx.annotation.RequiresApi;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.app.TaskerIntent;
+import net.emilla.apps.TaskerIntent;
 import net.emilla.run.PermissionFailure;
 import net.emilla.run.PermissionOffering;
 

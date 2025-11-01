@@ -12,7 +12,7 @@ import androidx.preference.EditTextPreference;
 import androidx.preference.PreferenceViewHolder;
 
 import net.emilla.R;
-import net.emilla.app.AppEntry;
+import net.emilla.apps.AppEntry;
 
 import java.util.Objects;
 

@@ -23,7 +23,7 @@ import androidx.loader.content.Loader;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.app.Apps;
+import net.emilla.apps.Apps;
 import net.emilla.contact.ContactItemView;
 import net.emilla.contact.MultiSearch;
 import net.emilla.contact.adapter.ContactCursorAdapter;

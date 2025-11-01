@@ -26,8 +26,8 @@ import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.action.QuickAction;
 import net.emilla.activity.AssistActivity;
-import net.emilla.app.AppEntry;
-import net.emilla.app.AppList;
+import net.emilla.apps.AppEntry;
+import net.emilla.apps.AppList;
 import net.emilla.command.app.AppCommand;
 import net.emilla.command.core.Alarm;
 import net.emilla.command.core.Bits;

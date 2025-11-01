@@ -1,4 +1,4 @@
-package net.emilla.app;
+package net.emilla.apps;
 
 import android.content.pm.PackageManager;
 
