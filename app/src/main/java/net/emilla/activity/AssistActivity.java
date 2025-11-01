@@ -91,7 +91,7 @@ public final class AssistActivity extends EmillaActivity {
     private final ContactEmailRetriever mContactEmailRetriever = new ContactEmailRetriever(this);
     private final AppChoiceRetriever mAppChoiceRetriever = new AppChoiceRetriever(this);
     private final PermissionRetriever mPermissionRetriever;
-    {
+    /*init*/ {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             mPermissionRetriever = new PermissionRetriever(this);
         } else {
