@@ -15,7 +15,7 @@ class Custom(private val ctx: Context, prefs: SharedPreferences) : Chimer {
     private val uris: Array<Uri?> = Chimer.customSounds(prefs)
 
     override fun chime(id: Byte) {
-        var player = MediaPlayer.create(ctx, uris[id.toInt()])
+        val player = MediaPlayer.create(ctx, uris[id.toInt()])
             ?: MediaPlayer.create(ctx, Nebula.sound(id))
         // fall back to nebula URI is broken or null
         player.setOnCompletionListener(MediaPlayer::release)
