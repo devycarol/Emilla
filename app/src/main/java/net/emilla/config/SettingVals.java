@@ -1,6 +1,5 @@
 package net.emilla.config;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -17,10 +16,6 @@ import net.emilla.action.SelectAll;
 import net.emilla.activity.AssistActivity;
 import net.emilla.apps.Apps;
 import net.emilla.chime.Chimer;
-import net.emilla.chime.Custom;
-import net.emilla.chime.Nebula;
-import net.emilla.chime.Redial;
-import net.emilla.chime.Silence;
 import net.emilla.command.DefaultCommandWrapper;
 import net.emilla.command.core.Alarm;
 import net.emilla.command.core.Bits;
@@ -60,6 +55,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public final class SettingVals {
+
+    public static final String CHIMER = "sound_set";
 
     public static final String ALIASES_CUSTOM = "aliases_custom";
     public static final String ALIASES_CUSTOM_TEXT = "aliases_custom_text";
@@ -220,23 +217,8 @@ public final class SettingVals {
         };
     }
 
-    /// The user's preferred chimer for audio feedback.
-    ///
-    /// @param appCtx it's important to use the application context to avoid memory leaks!
-    /// @param prefs used to build the chimer from user settings.
-    /// @return the user's chosen chimer.
-    public static Chimer chimer(Context appCtx, SharedPreferences prefs) {
-        return switch (soundSet(prefs)) {
-            case Chimer.NONE -> new Silence();
-            case Chimer.NEBULA -> new Nebula(appCtx);
-            case Chimer.VOICE_DIALER -> new Redial();
-            case Chimer.CUSTOM -> new Custom(appCtx, prefs);
-            default -> throw new IllegalArgumentException();
-        };
-    }
-
-    public static String soundSet(SharedPreferences prefs) {
-        return prefs.getString(Chimer.SOUND_SET, Chimer.NEBULA);
+    public static String chimerId(SharedPreferences prefs) {
+        return prefs.getString(CHIMER, Chimer.NEBULA);
     }
 
     public static String searchEngineCsv(SharedPreferences prefs) {

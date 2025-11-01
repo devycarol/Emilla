@@ -1,8 +1,8 @@
 package net.emilla.action;
 
-import static net.emilla.chime.Chimer.ACT;
-import static net.emilla.chime.Chimer.PEND;
-import static net.emilla.chime.Chimer.RESUME;
+import static net.emilla.chime.Chime.ACT;
+import static net.emilla.chime.Chime.PEND;
+import static net.emilla.chime.Chime.RESUME;
 
 import android.widget.EditText;
 

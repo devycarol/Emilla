@@ -28,6 +28,7 @@ import net.emilla.action.QuickAction;
 import net.emilla.activity.AssistActivity;
 import net.emilla.apps.AppEntry;
 import net.emilla.apps.AppList;
+import net.emilla.chime.Chime;
 import net.emilla.command.app.AppCommand;
 import net.emilla.command.core.Alarm;
 import net.emilla.command.core.Bits;
@@ -307,8 +308,8 @@ public abstract class EmillaCommand {
         this.activity.toast(text);
     }
 
-    protected final void chime(byte id) {
-        this.activity.chime(id);
+    protected final void chime(Chime chime) {
+        this.activity.chime(chime);
     }
 
     protected final void giveAction(QuickAction action) {

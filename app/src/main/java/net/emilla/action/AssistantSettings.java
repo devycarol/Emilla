@@ -1,6 +1,6 @@
 package net.emilla.action;
 
-import static net.emilla.chime.Chimer.ACT;
+import static net.emilla.chime.Chime.ACT;
 
 import android.content.Intent;
 

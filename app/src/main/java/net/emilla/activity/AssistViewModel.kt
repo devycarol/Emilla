@@ -9,28 +9,31 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import net.emilla.apps.AppList
-import net.emilla.chime.Chimer.Companion.START
+import net.emilla.chime.Chime
+import net.emilla.chime.Chime.START
+import net.emilla.chime.Chimer
 import net.emilla.config.SettingVals
 
-internal class AssistViewModel private constructor(appCtx: Context) : ViewModel() {
+internal class AssistViewModel private constructor(private val appContext: Context) : ViewModel() {
 
     /**
      * A factory for the assistant view model.
      *
-     * @param appCtx it's important to use the application context to avoid memory leaks!
+     * @param appContext it's important to use the application context to avoid memory leaks!
      */
-    class Factory(private val appCtx: Context) : ViewModelProvider.Factory {
+    class Factory(private val appContext: Context) : ViewModelProvider.Factory {
 
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return AssistViewModel(appCtx) as T
+            return AssistViewModel(appContext) as T
         }
+
     }
 
     @JvmField
-    val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(appCtx)
+    val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(appContext)
     @JvmField
-    val res: Resources = appCtx.resources
+    val res: Resources = appContext.resources
 
     @JvmField
     val noTitlebar = !SettingVals.showTitlebar(prefs, res)
@@ -40,9 +43,9 @@ internal class AssistViewModel private constructor(appCtx: Context) : ViewModel(
     @JvmField
     val motd: String? = if (noTitlebar) null else SettingVals.motd(prefs, res)
     @JvmField
-    val appList = AppList.launchers(appCtx.packageManager)
+    val appList = AppList.launchers(appContext.packageManager)
 
-    val attachmentMap: HashMap<String, ArrayList<Uri>?> by lazy { HashMap<String, ArrayList<Uri>?>() }
+    val attachmentMap = HashMap<String, ArrayList<Uri>?>()
         @JvmName("attachmentMap") get
 
     @JvmField
@@ -59,7 +62,7 @@ internal class AssistViewModel private constructor(appCtx: Context) : ViewModel(
     var imeAction = EditorInfo.IME_ACTION_NEXT
     // IME action is next with an empty command field
 
-    private val chimer = SettingVals.chimer(appCtx, prefs)
+    private val chimer = Chimer.of(prefs)
 
     private var dontChimePend = false
     private var dontChimeResume = false
@@ -70,7 +73,7 @@ internal class AssistViewModel private constructor(appCtx: Context) : ViewModel(
         chime(START)
     }
 
-    fun chime(id: Byte) = chimer.chime(id)
+    fun chime(chime: Chime) = chimer.chime(appContext, chime)
 
     fun suppressPendChime() {
         dontChimePend = true

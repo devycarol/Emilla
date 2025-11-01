@@ -1,6 +1,6 @@
 package net.emilla.contact.fragment;
 
-import static net.emilla.chime.Chimer.RESUME;
+import static net.emilla.chime.Chime.RESUME;
 
 import android.database.Cursor;
 import android.net.Uri;

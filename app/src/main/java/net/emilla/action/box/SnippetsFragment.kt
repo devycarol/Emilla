@@ -9,8 +9,8 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import net.emilla.R
-import net.emilla.chime.Chimer.Companion.PEND
-import net.emilla.chime.Chimer.Companion.RESUME
+import net.emilla.chime.Chime.PEND
+import net.emilla.chime.Chime.RESUME
 import net.emilla.command.core.Snippets
 import net.emilla.config.SettingVals
 import net.emilla.util.Dialogs

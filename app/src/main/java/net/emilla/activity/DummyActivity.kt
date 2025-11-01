@@ -10,9 +10,8 @@ import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.preference.PreferenceManager
+import net.emilla.chime.Chime.SUCCEED
 import net.emilla.chime.Chimer
-import net.emilla.chime.Chimer.Companion.SUCCEED
-import net.emilla.config.SettingVals
 
 class DummyActivity : EmillaActivity() {
 
@@ -20,7 +19,7 @@ class DummyActivity : EmillaActivity() {
 
     private val callback = ActivityResultCallback<ActivityResult> {
         finishAndRemoveTask()
-        chimer.chime(SUCCEED)
+        chimer.chime(this, SUCCEED)
     }
 
     private val resultLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
@@ -32,9 +31,9 @@ class DummyActivity : EmillaActivity() {
 
         val intent = intent.getParcelableExtra<Intent>(EXTRA_INTENT) ?: return
 
-        val appCtx: Context = applicationContext
-        val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(appCtx)
-        chimer = SettingVals.chimer(appCtx, prefs)
+        val appContext: Context = applicationContext
+        val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(appContext)
+        chimer = Chimer.of(prefs)
 
         resultLauncher.launch(intent)
     }

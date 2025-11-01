@@ -2,7 +2,7 @@ package net.emilla.command.core;
 
 import static android.content.Intent.EXTRA_STREAM;
 import static android.content.Intent.EXTRA_TEXT;
-import static net.emilla.chime.Chimer.RESUME;
+import static net.emilla.chime.Chime.RESUME;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;

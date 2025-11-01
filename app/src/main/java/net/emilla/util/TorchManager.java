@@ -1,7 +1,7 @@
 package net.emilla.util;
 
-import static net.emilla.chime.Chimer.ACT;
-import static net.emilla.chime.Chimer.RESUME;
+import static net.emilla.chime.Chime.ACT;
+import static net.emilla.chime.Chime.RESUME;
 
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;

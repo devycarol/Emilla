@@ -1,7 +1,7 @@
 package net.emilla.action.field;
 
-import static net.emilla.chime.Chimer.ACT;
-import static net.emilla.chime.Chimer.RESUME;
+import static net.emilla.chime.Chime.ACT;
+import static net.emilla.chime.Chime.RESUME;
 
 import android.content.res.Resources;
 import android.view.View;

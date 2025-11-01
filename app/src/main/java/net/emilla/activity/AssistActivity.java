@@ -14,12 +14,12 @@ import static android.view.inputmethod.EditorInfo.IME_ACTION_PREVIOUS;
 import static android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH;
 import static android.view.inputmethod.EditorInfo.IME_ACTION_SEND;
 import static android.view.inputmethod.EditorInfo.IME_ACTION_UNSPECIFIED;
-import static net.emilla.chime.Chimer.ACT;
-import static net.emilla.chime.Chimer.EXIT;
-import static net.emilla.chime.Chimer.FAIL;
-import static net.emilla.chime.Chimer.PEND;
-import static net.emilla.chime.Chimer.RESUME;
-import static net.emilla.chime.Chimer.SUCCEED;
+import static net.emilla.chime.Chime.ACT;
+import static net.emilla.chime.Chime.EXIT;
+import static net.emilla.chime.Chime.FAIL;
+import static net.emilla.chime.Chime.PEND;
+import static net.emilla.chime.Chime.RESUME;
+import static net.emilla.chime.Chime.SUCCEED;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -52,6 +52,7 @@ import net.emilla.action.Help;
 import net.emilla.action.PlayPause;
 import net.emilla.action.QuickAction;
 import net.emilla.apps.AppList;
+import net.emilla.chime.Chime;
 import net.emilla.command.CommandMap;
 import net.emilla.command.DataCommand;
 import net.emilla.command.EmillaCommand;
@@ -617,8 +618,8 @@ public final class AssistActivity extends EmillaActivity {
      * Command Processing *
      *====================*/
 
-    public void chime(byte id) {
-        mVm.chime(id);
+    public void chime(Chime chime) {
+        mVm.chime(chime);
     }
 
     public void resume() {

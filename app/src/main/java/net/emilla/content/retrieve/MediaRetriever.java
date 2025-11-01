@@ -1,6 +1,6 @@
 package net.emilla.content.retrieve;
 
-import static net.emilla.chime.Chimer.RESUME;
+import static net.emilla.chime.Chime.RESUME;
 
 import android.net.Uri;
 

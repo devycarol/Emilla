@@ -18,6 +18,7 @@ import androidx.preference.Preference;
 import net.emilla.R;
 import net.emilla.activity.EmillaActivity;
 import net.emilla.apps.Apps;
+import net.emilla.chime.Chime;
 import net.emilla.chime.Chimer;
 import net.emilla.system.EmillaA11yService;
 import net.emilla.util.Features;
@@ -70,8 +71,8 @@ public final class SettingsFragment extends EmillaSettingsFragment {
             }
         });
 
-        setupSoundSetPref();
-        mCustomSounds = SettingVals.soundSet(mPrefs).equals(Chimer.CUSTOM);
+        setupChimerPref();
+        mCustomSounds = SettingVals.chimerId(mPrefs).equals(Chimer.CUSTOM);
         setupCustomSoundPrefs(mCustomSounds);
         setupFavoriteCommandsPref();
         boolean noTorch = !Features.torch(mPm);
@@ -85,9 +86,9 @@ public final class SettingsFragment extends EmillaSettingsFragment {
         setupAppInfoPref();
     }
 
-    private void setupSoundSetPref() {
-        Preference soundSetPref = preferenceOf(Chimer.SOUND_SET);
-        soundSetPref.setOnPreferenceChangeListener((pref, newVal) -> {
+    private void setupChimerPref() {
+        Preference chimerPref = preferenceOf(SettingVals.CHIMER);
+        chimerPref.setOnPreferenceChangeListener((pref, newVal) -> {
             boolean customSounds = newVal.equals(Chimer.CUSTOM);
             if (mCustomSounds != customSounds) {
                 updateCustomSoundPrefs(customSounds);
@@ -98,13 +99,13 @@ public final class SettingsFragment extends EmillaSettingsFragment {
     }
 
     private void setupCustomSoundPrefs(boolean enabled) {
-        setupCustomSoundPref(Chimer.PREF_START, enabled/*, R.string.chime_start*/);
-        setupCustomSoundPref(Chimer.PREF_ACT, enabled/*, R.string.chime_act*/);
-        setupCustomSoundPref(Chimer.PREF_PEND, enabled/*, R.string.chime_pend*/);
-        setupCustomSoundPref(Chimer.PREF_RESUME, enabled/*, R.string.chime_resume*/);
-        setupCustomSoundPref(Chimer.PREF_EXIT, enabled/*, R.string.chime_exit*/);
-        setupCustomSoundPref(Chimer.PREF_SUCCEED, enabled/*, R.string.chime_succeed*/);
-        setupCustomSoundPref(Chimer.PREF_FAIL, enabled/*, R.string.chime_fail*/);
+        setupCustomSoundPref(Chime.START.preferenceKey, enabled/*, R.string.chime_start*/);
+        setupCustomSoundPref(Chime.ACT.preferenceKey, enabled/*, R.string.chime_act*/);
+        setupCustomSoundPref(Chime.PEND.preferenceKey, enabled/*, R.string.chime_pend*/);
+        setupCustomSoundPref(Chime.RESUME.preferenceKey, enabled/*, R.string.chime_resume*/);
+        setupCustomSoundPref(Chime.EXIT.preferenceKey, enabled/*, R.string.chime_exit*/);
+        setupCustomSoundPref(Chime.SUCCEED.preferenceKey, enabled/*, R.string.chime_succeed*/);
+        setupCustomSoundPref(Chime.FAIL.preferenceKey, enabled/*, R.string.chime_fail*/);
     }
 
     private void setupCustomSoundPref(
@@ -143,13 +144,13 @@ public final class SettingsFragment extends EmillaSettingsFragment {
     }
 
     private void updateCustomSoundPrefs(boolean enabled) {
-        updateCustomSoundPref(Chimer.PREF_START, enabled/*, R.string.chime_start*/);
-        updateCustomSoundPref(Chimer.PREF_ACT, enabled/*, R.string.chime_act*/);
-        updateCustomSoundPref(Chimer.PREF_PEND, enabled/*, R.string.chime_pend*/);
-        updateCustomSoundPref(Chimer.PREF_RESUME, enabled/*, R.string.chime_resume*/);
-        updateCustomSoundPref(Chimer.PREF_EXIT, enabled/*, R.string.chime_exit*/);
-        updateCustomSoundPref(Chimer.PREF_SUCCEED, enabled/*, R.string.chime_succeed*/);
-        updateCustomSoundPref(Chimer.PREF_FAIL, enabled/*, R.string.chime_fail*/);
+        updateCustomSoundPref(Chime.START.preferenceKey, enabled/*, R.string.chime_start*/);
+        updateCustomSoundPref(Chime.ACT.preferenceKey, enabled/*, R.string.chime_act*/);
+        updateCustomSoundPref(Chime.PEND.preferenceKey, enabled/*, R.string.chime_pend*/);
+        updateCustomSoundPref(Chime.RESUME.preferenceKey, enabled/*, R.string.chime_resume*/);
+        updateCustomSoundPref(Chime.EXIT.preferenceKey, enabled/*, R.string.chime_exit*/);
+        updateCustomSoundPref(Chime.SUCCEED.preferenceKey, enabled/*, R.string.chime_succeed*/);
+        updateCustomSoundPref(Chime.FAIL.preferenceKey, enabled/*, R.string.chime_fail*/);
     }
 
     private void updateCustomSoundPref(String prefKey, boolean enabled) {

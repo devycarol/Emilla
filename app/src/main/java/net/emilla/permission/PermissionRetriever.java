@@ -1,7 +1,7 @@
 package net.emilla.permission;
 
 import static net.emilla.BuildConfig.DEBUG;
-import static net.emilla.chime.Chimer.RESUME;
+import static net.emilla.chime.Chime.RESUME;
 
 import android.os.Build;
 import android.util.Log;

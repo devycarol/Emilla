@@ -5,6 +5,7 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import net.emilla.activity.AssistActivity
+import net.emilla.chime.Chime
 import net.emilla.run.CommandRun
 import net.emilla.run.CopyGift
 import net.emilla.run.DialogRun
@@ -17,7 +18,7 @@ abstract class ActionBox protected constructor(
     protected val activity by lazy { requireActivity() as AssistActivity }
     private val res by lazy { activity.resources }
 
-    protected fun chime(id: Byte) = activity.chime(id)
+    protected fun chime(chime: Chime) = activity.chime(chime)
     protected fun toast(msg: CharSequence) = activity.toast(msg)
     protected fun toast(@StringRes msg: Int, vararg formatArgs: Any) = activity.toast(str(msg, *formatArgs))
     protected fun str(@StringRes id: Int, vararg formatArgs: Any) = res.getString(id, *formatArgs)

@@ -1,7 +1,12 @@
 package net.emilla.chime;
 
-public final class Silence implements Chimer {
+import android.content.Context;
+
+/*internal*/ final class Silence implements Chimer {
+
+    /*internal*/ Silence() {}
 
     @Override
-    public void chime(byte id) {} // do nothing
+    public void chime(Context ctx, Chime chime) {}
+
 }

@@ -1,6 +1,6 @@
 package net.emilla.action;
 
-import static net.emilla.chime.Chimer.PEND;
+import static net.emilla.chime.Chime.PEND;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
