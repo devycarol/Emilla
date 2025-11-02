@@ -8,13 +8,9 @@ import net.emilla.lang.phrase.RandRange;
 
 import java.util.Random;
 
-public final class RandomNumber extends CoreCommand {
+/*internal*/ final class RandomNumber extends CoreCommand {
 
     public static final String ENTRY = "random_number";
-
-    public static Yielder yielder() {
-        return new Yielder(CoreEntry.RANDOM_NUMBER, true);
-    }
 
     public static boolean possible() {
         return true;
@@ -49,4 +45,5 @@ public final class RandomNumber extends CoreCommand {
                     + rand.nextInt(exclusEnd - inclusStart);
         giveText(String.valueOf(randVal));
     }
+
 }

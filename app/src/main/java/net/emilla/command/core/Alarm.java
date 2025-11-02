@@ -17,13 +17,9 @@ import net.emilla.lang.Lang;
 import net.emilla.lang.date.HourMin;
 import net.emilla.lang.date.Weekdays;
 
-public final class Alarm extends CoreDataCommand {
+/*internal*/ final class Alarm extends CoreDataCommand {
 
     public static final String ENTRY = "alarm";
-
-    public static Yielder yielder() {
-        return new Yielder(CoreEntry.ALARM, true);
-    }
 
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, makeIntent()) || Apps.canDo(pm, new Intent(ACTION_SET_ALARM));
@@ -73,4 +69,5 @@ public final class Alarm extends CoreDataCommand {
                 .putExtra(EXTRA_HOUR, hour)
                 .putExtra(EXTRA_MINUTES, minute);
     }
+
 }

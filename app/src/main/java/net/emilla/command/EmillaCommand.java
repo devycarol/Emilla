@@ -28,7 +28,6 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.apps.AppList;
 import net.emilla.chime.Chime;
 import net.emilla.command.app.AppEntry;
-import net.emilla.command.core.CoreCommand;
 import net.emilla.command.core.CoreEntry;
 import net.emilla.config.SettingVals;
 import net.emilla.ping.PingChannel;
@@ -54,27 +53,23 @@ public abstract class EmillaCommand {
         PackageManager pm,
         AppList appList
     ) {
-        CoreEntry[] coreEntries = CoreEntry.values();
-
-        int coreCount = coreEntries.length;
-        var coreYielders = new CoreCommand.Yielder[coreCount];
-
-        for (int i = 0; i < coreCount; ++i) {
-            coreYielders[i] = coreEntries[i].yielder();
-        }
-
         var map = new CommandMap(SettingVals.defaultCommand(prefs));
 
-        for (CoreCommand.Yielder yielder : coreYielders) {
-            if (yielder == null) continue;
-            // Todo: no yielder should be null once all commands are implemented
+        for (var coreEntry : CoreEntry.values()) {
+            if (!coreEntry.enabled(pm, prefs)) {
+                continue;
+            }
 
-            if (yielder.enabled(pm, prefs)) {
-                map.put(yielder.name(res), yielder);
+            CommandYielder yielder = coreEntry.yielder();
+            map.put(coreEntry.name(res), yielder);
 
-                Set<String> aliases = yielder.aliases(prefs, res);
-                if (aliases == null) continue;
-                for (String alias : aliases) map.put(alias, yielder);
+            Set<String> aliases = coreEntry.aliases(prefs, res);
+            if (aliases == null) {
+                continue;
+            }
+
+            for (String alias : aliases) {
+                map.put(alias, yielder);
             }
         }
 
@@ -148,7 +143,7 @@ public abstract class EmillaCommand {
     }
 
     protected EmillaCommand(AssistActivity act, CoreEntry coreEntry, int imeAction) {
-        this(act, coreEntry.params(), coreEntry.summary, coreEntry.manual, imeAction);
+        this(act, coreEntry, coreEntry.summary, coreEntry.manual, imeAction);
     }
 
     protected EmillaCommand(AssistActivity act, AppEntry appEntry, int imeAction) {

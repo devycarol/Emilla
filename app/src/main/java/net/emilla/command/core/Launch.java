@@ -8,13 +8,9 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.apps.Apps;
 import net.emilla.util.Dialogs;
 
-public final class Launch extends OpenCommand {
+/*internal*/ final class Launch extends OpenCommand {
 
     public static final String ENTRY = "launch";
-
-    public static Yielder yielder() {
-        return new Yielder(CoreEntry.LAUNCH, true);
-    }
 
     public static boolean possible() {
         return true;
@@ -38,4 +34,5 @@ public final class Launch extends OpenCommand {
     protected AlertDialog.Builder makeChooser() {
         return Dialogs.appLaunches(this.activity);
     }
+
 }

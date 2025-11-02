@@ -5,13 +5,9 @@ import android.view.inputmethod.EditorInfo;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 
-public final class Find extends CoreCommand {
+/*internal*/ final class Find extends CoreCommand {
 
     public static final String ENTRY = "find";
-
-    public static Yielder yielder() {
-        return new Yielder(CoreEntry.FIND, true);
-    }
 
     public static boolean possible() {
         return true;
@@ -32,4 +28,5 @@ public final class Find extends CoreCommand {
         throw badCommand(R.string.error_unfinished_file_search);
         // where all should I be searching for files? shared storage? external drives?
     }
+
 }

@@ -34,7 +34,7 @@ public abstract class CommandYielder implements TrieMap.Value<CommandYielder> {
     /// instruction, upon having its position set by the TrieMap's `get()` method.
     /// @return the command, with instruction text from `commandPhrase`.
     /*internal*/ final EmillaCommand command(AssistActivity act, Words commandPhrase) {
-        EmillaCommand command = mCommand == null ? mCommand = makeCommand(act) : mCommand;
+        EmillaCommand command = command(act);
         if (!isPrefixable()) return command;
 
         String instruction = commandPhrase.hasRemainingContents()

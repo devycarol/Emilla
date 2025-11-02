@@ -10,13 +10,9 @@ import android.view.inputmethod.EditorInfo;
 import net.emilla.activity.AssistActivity;
 import net.emilla.apps.Apps;
 
-public final class Dial extends CoreCommand {
+/*internal*/ final class Dial extends CoreCommand {
 
     public static final String ENTRY = "dial";
-
-    public static Yielder yielder() {
-        return new Yielder(CoreEntry.DIAL, true);
-    }
 
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, new Intent(ACTION_DIAL));
@@ -35,4 +31,5 @@ public final class Dial extends CoreCommand {
     protected void run(String numberOrPhoneword) {
         appSucceed(new Intent(ACTION_DIAL).setData(Uri.parse("tel:" + numberOrPhoneword)));
     }
+
 }

@@ -4,13 +4,9 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.run.ToastGift;
 
-public final class Toast extends CoreDataCommand {
+/*internal*/ final class Toast extends CoreDataCommand {
 
     public static final String ENTRY = "toast";
-
-    public static Yielder yielder() {
-        return new Yielder(CoreEntry.TOAST, true);
-    }
 
     public static boolean possible() {
         return true;
@@ -64,4 +60,5 @@ public final class Toast extends CoreDataCommand {
             toast(message + '\n' + cont, false);
         }
     }
+
 }

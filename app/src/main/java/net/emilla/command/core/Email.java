@@ -25,13 +25,9 @@ import net.emilla.content.receive.EmailReceiver;
 
 import java.util.ArrayList;
 
-public final class Email extends CoreDataCommand implements EmailReceiver {
+/*internal*/ final class Email extends CoreDataCommand implements EmailReceiver {
 
     public static final String ENTRY = "email";
-
-    public static Yielder yielder() {
-        return new Yielder(CoreEntry.EMAIL, true);
-    }
 
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, new Intent(ACTION_SENDTO, Uri.parse("mailto:")));
@@ -146,4 +142,5 @@ public final class Email extends CoreDataCommand implements EmailReceiver {
     public void provide(String emailAddress) {
         email(emailAddress, this.activity.dataText());
     }
+
 }

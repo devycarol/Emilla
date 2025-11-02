@@ -8,13 +8,9 @@ import net.emilla.lang.Lang;
 import net.emilla.lang.measure.CelsiusConversion;
 import net.emilla.math.Maths;
 
-public final class Celsius extends CoreCommand {
+/*internal*/ final class Celsius extends CoreCommand {
 
     public static final String ENTRY = "celsius";
-
-    public static Yielder yielder() {
-        return new Yielder(CoreEntry.CELSIUS, true);
-    }
 
     public static boolean possible() {
         return true;
@@ -38,4 +34,5 @@ public final class Celsius extends CoreCommand {
         String celsiusDegrees = Maths.prettyNumber(celsius.convert());
         giveText(str(R.string.celsius_conversion, oldDegrees, unit, celsiusDegrees));
     }
+
 }

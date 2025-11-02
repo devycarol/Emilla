@@ -12,13 +12,9 @@ import androidx.appcompat.app.AlertDialog;
 import net.emilla.activity.AssistActivity;
 import net.emilla.apps.Apps;
 
-public final class Notifications extends OpenCommand {
+/*internal*/ final class Notifications extends OpenCommand {
 
     public static final String ENTRY = "notifications";
-
-    public static Yielder yielder() {
-        return new Yielder(CoreEntry.NOTIFICATIONS, true);
-    }
 
     public static boolean possible(PackageManager pm) {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
@@ -44,4 +40,5 @@ public final class Notifications extends OpenCommand {
         // TODO: this isn't needed.
         return null;
     }
+
 }

@@ -8,10 +8,9 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.command.core.CoreParams;
 import net.emilla.util.Dialogs;
 
-public final class DuplicateCommand extends EmillaCommand implements DataCommand {
+/*internal*/ final class DuplicateCommand extends EmillaCommand implements DataCommand {
 
     @Override
     protected boolean shouldLowercase() {
@@ -45,11 +44,7 @@ public final class DuplicateCommand extends EmillaCommand implements DataCommand
     public DuplicateCommand(AssistActivity act, EmillaCommand[] cmds) {
         super(
             act,
-            new CoreParams(
-                R.string.command_duplicate,
-                R.string.instruction_duplicate,
-                R.drawable.ic_command
-            ),
+            new DuplicateParams(),
             R.string.summary_duplicate,
             R.string.manual_duplicate,
             EditorInfo.IME_ACTION_NEXT

@@ -8,13 +8,9 @@ import androidx.appcompat.app.AlertDialog;
 import net.emilla.activity.AssistActivity;
 import net.emilla.apps.Apps;
 
-public final class Info extends OpenCommand {
+/*internal*/ final class Info extends OpenCommand {
 
     public static final String ENTRY = "info";
-
-    public static Yielder yielder() {
-        return new Yielder(CoreEntry.INFO, true);
-    }
 
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, Apps.infoTask(""));
@@ -41,4 +37,5 @@ public final class Info extends OpenCommand {
         // TODO: this isn't needed
         return null;
     }
+
 }

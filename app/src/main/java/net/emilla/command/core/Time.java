@@ -10,13 +10,9 @@ import net.emilla.activity.AssistActivity;
 
 import java.text.Format;
 
-public final class Time extends CoreCommand {
+/*internal*/ final class Time extends CoreCommand {
 
     public static final String ENTRY = "time";
-
-    public static Yielder yielder() {
-        return new Yielder(CoreEntry.TIME, true);
-    }
 
     public static boolean possible() {
         return true;
@@ -49,4 +45,5 @@ public final class Time extends CoreCommand {
     protected void run(String location) {
         throw badCommand(R.string.error_unfinished_time_location_elapse); // TODO
     }
+
 }

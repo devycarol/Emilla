@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import net.emilla.R
 import net.emilla.chime.Chime.PEND
 import net.emilla.chime.Chime.RESUME
-import net.emilla.command.core.Snippets
+import net.emilla.command.core.SnippetAction
 import net.emilla.config.SettingVals
 import net.emilla.util.Dialogs
 
@@ -49,31 +49,31 @@ class SnippetsFragment : ActionBox(R.layout.snippet_item_list) {
 
     val isEmpty get() = vm.snippetLabels().isEmpty
 
-    fun prime(action: Snippets.Action) {
+    fun prime(action: SnippetAction) {
         activity.chime(PEND)
 
         adapter.setItemClickAction(
         when (action) {
-            Snippets.Action.PEEK -> { pos ->
+            SnippetAction.PEEK -> { pos ->
                 peek(vm.labelAt(pos))
             }
-            Snippets.Action.GET -> { pos ->
+            SnippetAction.GET -> { pos ->
                 val label = vm.labelAt(pos)
                 get(label)
                 resetItemClickListener()
             }
-            Snippets.Action.POP -> { pos ->
+            SnippetAction.POP -> { pos ->
                 val label = vm.labelAt(pos)
                 pop(label, label)
                 resetItemClickListener()
             }
-            Snippets.Action.REMOVE -> { pos ->
+            SnippetAction.REMOVE -> { pos ->
                 val label = vm.labelAt(pos)
                 remove(label, label)
                 give {}
                 resetItemClickListener()
             }
-            Snippets.Action.ADD -> { pos ->
+            SnippetAction.ADD -> { pos ->
                 val label = vm.labelAt(pos)
                 val text = activity.dataText()
                 if (text != null) tryAdd(label, text)
@@ -84,9 +84,9 @@ class SnippetsFragment : ActionBox(R.layout.snippet_item_list) {
     }
 
     private fun resetItemClickListener() {
-        adapter.setItemClickAction(SnippetAdapter.OnItemClickListener { pos ->
+        adapter.setItemClickAction { pos ->
             peek(vm.labelAt(pos))
-        })
+        }
     }
 
     fun peek(label: String) = giveText(SettingVals.snippet(vm.prefs, label))

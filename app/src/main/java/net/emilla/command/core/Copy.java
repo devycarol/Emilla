@@ -8,13 +8,9 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.run.CopyGift;
 
-public final class Copy extends CoreCommand {
+/*internal*/ final class Copy extends CoreCommand {
 
     public static final String ENTRY = "copy";
-
-    public static Yielder yielder() {
-        return new Yielder(CoreEntry.COPY, true);
-    }
 
     public static boolean possible() {
         return true;
@@ -54,4 +50,5 @@ public final class Copy extends CoreCommand {
         mCopiedText = text;
         give(new CopyGift(text));
     }
+
 }

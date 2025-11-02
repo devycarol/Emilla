@@ -9,13 +9,9 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.apps.Apps;
 import net.emilla.math.BitwiseCalculator;
 
-public final class Bits extends CategoryCommand {
+/*internal*/ final class Bits extends CategoryCommand {
 
     public static final String ENTRY = "bits";
-
-    public static Yielder yielder() {
-        return new Yielder(CoreEntry.BITS, true);
-    }
 
     public static boolean possible() {
         return true;
@@ -34,4 +30,5 @@ public final class Bits extends CategoryCommand {
     protected void run(String expression) {
         giveText(String.valueOf(BitwiseCalculator.compute(expression, CoreEntry.BITS.name)));
     }
+
 }

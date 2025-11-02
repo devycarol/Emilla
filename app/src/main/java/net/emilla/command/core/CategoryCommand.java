@@ -11,9 +11,9 @@ import net.emilla.apps.AppList;
 import net.emilla.apps.Apps;
 import net.emilla.util.Dialogs;
 
-public abstract class CategoryCommand extends CoreCommand {
+/*internal*/ abstract class CategoryCommand extends CoreCommand {
 
-    protected CategoryCommand(AssistActivity act, CoreEntry coreEntry, int imeAction) {
+    /*internal*/ CategoryCommand(AssistActivity act, CoreEntry coreEntry, int imeAction) {
         super(act, coreEntry, imeAction);
     }
 
@@ -58,4 +58,5 @@ public abstract class CategoryCommand extends CoreCommand {
         // those special launches ifwhen a dedicated "tasker" command is added.
         }
     }
+
 }

@@ -12,13 +12,9 @@ import net.emilla.ping.PingChannel;
 import net.emilla.ping.Pings;
 import net.emilla.util.Permissions;
 
-public final class Notify extends CoreDataCommand {
+/*internal*/ final class Notify extends CoreDataCommand {
 
     public static final String ENTRY = "notify";
-
-    public static Yielder yielder() {
-        return new Yielder(CoreEntry.NOTIFY, true);
-    }
 
     public static boolean possible() {
         return true;
@@ -55,7 +51,16 @@ public final class Notify extends CoreDataCommand {
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     private void ping(String title, @Nullable String text) {
-        givePing(Pings.make(this.activity, PingChannel.COMMAND, title, text, R.drawable.ic_notify),
-                 PingChannel.command());
+        givePing(
+            Pings.make(
+                this.activity,
+                PingChannel.COMMAND,
+                title, text,
+
+                R.drawable.ic_notify
+            ),
+            PingChannel.command()
+        );
     }
+
 }

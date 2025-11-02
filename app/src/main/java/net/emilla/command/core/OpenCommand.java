@@ -12,7 +12,7 @@ import net.emilla.struct.IndexedStruct;
 import net.emilla.struct.sort.SearchResult;
 import net.emilla.util.Dialogs;
 
-public abstract class OpenCommand extends CoreCommand {
+/*internal*/ abstract class OpenCommand extends CoreCommand {
 
     protected OpenCommand(AssistActivity act, CoreEntry coreEntry, int imeAction) {
         super(act, coreEntry, imeAction);

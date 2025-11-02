@@ -7,13 +7,9 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.util.Features;
 import net.emilla.util.TorchManager;
 
-public final class Torch extends CoreCommand {
+/*internal*/ final class Torch extends CoreCommand {
 
     public static final String ENTRY = "torch";
-
-    public static Yielder yielder() {
-        return new Yielder(CoreEntry.TORCH, false);
-    }
 
     public static boolean possible(PackageManager pm) {
         return Features.torch(pm);
@@ -32,4 +28,5 @@ public final class Torch extends CoreCommand {
     protected void run(String ignored) {
         run(); // Todo: remove this from the interface for non-instructables.
     }
+
 }

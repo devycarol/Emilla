@@ -21,13 +21,9 @@ import net.emilla.ping.PingChannel;
 import net.emilla.ping.Pings;
 import net.emilla.util.Permissions;
 
-public final class Pomodoro extends CoreDataCommand {
+/*internal*/ final class Pomodoro extends CoreDataCommand {
 
     public static final String ENTRY = "pomodoro";
-
-    public static Yielder yielder() {
-        return new Yielder(CoreEntry.POMODORO, true);
-    }
 
     public static boolean possible() {
         return true;
@@ -173,4 +169,5 @@ public final class Pomodoro extends CoreDataCommand {
     private Notification makePing(String channel, String title, String memo) {
         return Pings.make(this.activity, channel, title, memo, R.drawable.ic_pomodoro);
     }
+
 }

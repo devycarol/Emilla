@@ -10,13 +10,9 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.apps.Apps;
 
-public final class Weather extends CategoryCommand {
+/*internal*/ final class Weather extends CategoryCommand {
 
     public static final String ENTRY = "weather";
-
-    public static Yielder yielder() {
-        return new Yielder(CoreEntry.WEATHER, true);
-    }
 
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, Apps.categoryTask(CATEGORY_APP_WEATHER));
@@ -36,4 +32,5 @@ public final class Weather extends CategoryCommand {
     protected void run(String location) {
         throw badCommand(R.string.error_unfinished_categorical_app_search); // Todo
     }
+
 }

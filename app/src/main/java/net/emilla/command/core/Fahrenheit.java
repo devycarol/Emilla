@@ -8,13 +8,9 @@ import net.emilla.lang.Lang;
 import net.emilla.lang.measure.FahrenheitConversion;
 import net.emilla.math.Maths;
 
-public final class Fahrenheit extends CoreCommand {
+/*internal*/ final class Fahrenheit extends CoreCommand {
 
     public static final String ENTRY = "fahrenheit";
-
-    public static Yielder yielder() {
-        return new Yielder(CoreEntry.FAHRENHEIT, true);
-    }
 
     public static boolean possible() {
         return true;
@@ -38,4 +34,5 @@ public final class Fahrenheit extends CoreCommand {
         String fahrenheitDegrees = Maths.prettyNumber(fahrenheit.convert());
         giveText(str(R.string.fahrenheit_conversion, oldDegrees, unit, fahrenheitDegrees));
     }
+
 }

@@ -23,13 +23,9 @@ import net.emilla.lang.date.Time;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public final class Calendar extends CoreDataCommand {
+/*internal*/ final class Calendar extends CoreDataCommand {
 
     public static final String ENTRY = "calendar";
-
-    public static Yielder yielder() {
-        return new Yielder(CoreEntry.CALENDAR, true);
-    }
 
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, makeIntent());
@@ -142,4 +138,5 @@ public final class Calendar extends CoreDataCommand {
         appSucceed(intent);
         // todo: etar calendar acts janky in the recents
     }
+
 }

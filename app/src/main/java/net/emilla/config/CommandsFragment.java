@@ -67,12 +67,11 @@ public final class CommandsFragment extends EmillaSettingsFragment {
     private void setupCorePref(CoreEntry coreEntry) {
         String entry = coreEntry.entry;
         @ArrayRes int aliases = coreEntry.aliases;
-        boolean isImplemented = coreEntry.isImplemented;
 
         String enabledKey = SettingVals.commandEnabledKey(entry);
         CommandPreference cmdPref = preferenceOf(Aliases.textKey(entry));
 
-        if (isImplemented && coreEntry.isPossible(mPm)) {
+        if (coreEntry.isImplemented && coreEntry.isPossible(mPm)) {
             if (!mPrefs.contains(enabledKey)) {
                 mPrefs.edit().putBoolean(enabledKey, true).apply();
                 // TODO: actually allow to toggle this setting.

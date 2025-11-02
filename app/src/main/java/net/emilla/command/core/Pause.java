@@ -7,13 +7,9 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.util.MediaControl;
 import net.emilla.util.Services;
 
-public final class Pause extends CoreCommand {
+/*internal*/ final class Pause extends CoreCommand {
 
     public static final String ENTRY = "pause";
-
-    public static Yielder yielder() {
-        return new Yielder(CoreEntry.PAUSE, false);
-    }
 
     public static boolean possible() {
         return true;
@@ -34,4 +30,5 @@ public final class Pause extends CoreCommand {
     protected void run(String ignored) {
         run(); // Todo: remove this from the interface for non-instructables.
     }
+
 }

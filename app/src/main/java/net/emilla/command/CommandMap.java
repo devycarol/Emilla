@@ -9,13 +9,13 @@ import net.emilla.struct.trie.TrieMap;
 public final class CommandMap {
 
     private final TrieMap<String, CommandYielder> mTrieMap = new HashTrieMap<>();
-    private final DefaultCommandWrapper.Yielder mDefaultYielder;
+    private final DefaultCommandWrapperYielder mDefaultYielder;
 
-    CommandMap(DefaultCommandWrapper.Yielder defaultYielder) {
+    /*internal*/ CommandMap(DefaultCommandWrapperYielder defaultYielder) {
         mDefaultYielder = defaultYielder;
     }
 
-    void put(String command, CommandYielder yielder) {
+    /*internal*/ void put(String command, CommandYielder yielder) {
         mTrieMap.put(Lang.words(command), yielder);
     }
 
@@ -25,7 +25,7 @@ public final class CommandMap {
     ///
     /// @param alias name for the custom command.
     /// @param commandName exact name of command to map `alias` to.
-    void putCustom(String alias, String commandName) {
+    /*internal*/ void putCustom(String alias, String commandName) {
         CommandYielder exact = mTrieMap.getExact(Lang.words(commandName));
         if (exact != null) {
             mTrieMap.put(Lang.words(alias), exact);
@@ -37,4 +37,5 @@ public final class CommandMap {
         CommandYielder get = mTrieMap.get(words);
         return (get == null ? mDefaultYielder : get).command(act, words);
     }
+
 }

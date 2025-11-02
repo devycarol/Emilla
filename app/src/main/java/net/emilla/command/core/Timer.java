@@ -8,25 +8,14 @@ import static android.provider.AlarmClock.EXTRA_SKIP_UI;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 
-import androidx.annotation.ArrayRes;
-import androidx.annotation.StringRes;
-
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.apps.Apps;
 import net.emilla.lang.date.Time;
 
-public final class Timer extends CoreDataCommand {
+/*internal*/ final class Timer extends CoreDataCommand {
 
     public static final String ENTRY = "timer";
-    @StringRes
-    public static final int NAME = R.string.command_timer;
-    @ArrayRes
-    public static final int ALIASES = R.array.aliases_timer;
-
-    public static Yielder yielder() {
-        return new Yielder(CoreEntry.TIMER, true);
-    }
 
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, makeIntent());
@@ -41,7 +30,7 @@ public final class Timer extends CoreDataCommand {
     }
 
     private static Intent makeIntent(String duration) {
-        int durationSeconds = Time.parseDuration(duration, NAME).seconds;
+        int durationSeconds = Time.parseDuration(duration, CoreEntry.TIMER.name).seconds;
         return makeIntent()
             .putExtra(EXTRA_SKIP_UI, true)
             .putExtra(EXTRA_LENGTH, durationSeconds);
@@ -70,4 +59,5 @@ public final class Timer extends CoreDataCommand {
     protected void runWithData(String duration, String title) {
         appSucceed(makeIntent(duration).putExtra(EXTRA_MESSAGE, title));
     }
+
 }

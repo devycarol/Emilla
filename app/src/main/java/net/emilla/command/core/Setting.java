@@ -5,13 +5,9 @@ import android.view.inputmethod.EditorInfo;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 
-public final class Setting extends CoreCommand {
+/*internal*/ final class Setting extends CoreCommand {
 
     public static final String ENTRY = "setting";
-
-    public static Yielder yielder() {
-        return new Yielder(CoreEntry.SETTING, true);
-    }
 
     public static boolean possible() {
         return true;
@@ -30,4 +26,5 @@ public final class Setting extends CoreCommand {
     protected void run(String query) {
         throw badCommand(R.string.error_unfinished_setting);
     }
+
 }

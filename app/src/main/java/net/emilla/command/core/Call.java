@@ -19,13 +19,9 @@ import net.emilla.util.Dialogs;
 import net.emilla.util.Features;
 import net.emilla.util.Permissions;
 
-public final class Call extends CoreCommand implements PhoneReceiver {
+/*internal*/ final class Call extends CoreCommand implements PhoneReceiver {
 
     public static final String ENTRY = "call";
-
-    public static Yielder yielder() {
-        return new Yielder(CoreEntry.CALL, true);
-    }
 
     public static boolean possible(PackageManager pm) {
         return Features.phone(pm) || Apps.canDo(pm, makeIntent(""));
@@ -127,4 +123,5 @@ public final class Call extends CoreCommand implements PhoneReceiver {
     public void provide(String phoneNumber) {
         Permissions.withCall(this.activity, () -> call(phoneNumber));
     }
+
 }

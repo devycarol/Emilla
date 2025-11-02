@@ -11,27 +11,15 @@ import net.emilla.apps.Apps;
 import net.emilla.config.SettingVals;
 import net.emilla.util.SearchEngineParser;
 
-public final class Web extends CoreCommand {
+/*internal*/ final class Web extends CoreCommand {
 
     public static final String ENTRY = "web";
-
-    public static Yielder yielder() {
-        return new Yielder(CoreEntry.WEB, true);
-    }
 
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, new Intent(ACTION_WEB_SEARCH))
             || Apps.canDo(pm, Apps.viewTask("https:"))
             || Apps.canDo(pm, Apps.viewTask("http:"));
     }
-
-    public static final String DFLT_SEARCH_ENGINES = """
-            Wikipedia, wiki, w, https://wikipedia.org/wiki/%s
-            Google, g, https://www.google.com/search?q=%s
-            Google Images, gimages, gimage, gimg, gi, https://www.google.com/search?q=%s&udm=2
-            YouTube, yt, y, https://www.youtube.com/results?search_query=%s
-            DuckDuckGo, ddg, dd, d, https://duckduckgo.com/?q=%s
-            DuckDuckGo Images, duckimages, duckimage, duckimg, ddgimages, ddgimage, ddgimg, ddgi, ddimages, ddimage, ddimg, ddi, dimages, dimage, dimg, https://duckduckgo.com/?q=%s&ia=images&iax=images""";
 
     private SearchEngineParser mSearchEngineMap = null;
 
@@ -66,4 +54,5 @@ public final class Web extends CoreCommand {
         //      probably do that themself.
         appSucceed(mSearchEngineMap.intent(query));
     }
+
 }

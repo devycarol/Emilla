@@ -9,13 +9,9 @@ import net.emilla.lang.phrase.Dices;
 
 import java.util.Random;
 
-public final class Roll extends CoreCommand {
+/*internal*/ final class Roll extends CoreCommand {
 
     public static final String ENTRY = "roll";
-
-    public static Yielder yielder() {
-        return new Yielder(CoreEntry.ROLL, true);
-    }
 
     public static boolean possible() {
         return true;
@@ -37,4 +33,5 @@ public final class Roll extends CoreCommand {
         var rand = new Random();
         giveText(String.valueOf(dices.roll(rand)));
     }
+
 }

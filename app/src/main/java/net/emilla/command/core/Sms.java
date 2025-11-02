@@ -20,13 +20,9 @@ import net.emilla.util.Contacts;
 import net.emilla.util.Dialogs;
 import net.emilla.util.Features;
 
-public final class Sms extends CoreDataCommand implements PhoneReceiver {
+/*internal*/ final class Sms extends CoreDataCommand implements PhoneReceiver {
 
     public static final String ENTRY = "sms";
-
-    public static Yielder yielder() {
-        return new Yielder(CoreEntry.SMS, true);
-    }
 
     public static boolean possible(PackageManager pm) {
         return Features.sms(pm) || Apps.canDo(pm, Apps.sendTask(Uri.parse("smsto:")));
@@ -146,4 +142,5 @@ public final class Sms extends CoreDataCommand implements PhoneReceiver {
     public void provide(String phoneNumber) {
         message(phoneNumber, this.activity.dataText());
     }
+
 }

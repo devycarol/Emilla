@@ -24,13 +24,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public final class Todo extends CoreDataCommand {
+/*internal*/ final class Todo extends CoreDataCommand {
 
     public static final String ENTRY = "todo";
-
-    public static Yielder yielder() {
-        return new Yielder(CoreEntry.TODO, true);
-    }
 
     public static boolean possible() {
         return true;
@@ -104,4 +100,5 @@ public final class Todo extends CoreDataCommand {
     } catch (IOException e) {
         throw badCommand(R.string.error_cant_use_file);
     }}
+
 }

@@ -22,13 +22,9 @@ import net.emilla.util.Dialogs;
 
 import java.util.List;
 
-public final class Contact extends CoreDataCommand implements ContactCardReceiver {
+/*internal*/ final class Contact extends CoreDataCommand implements ContactCardReceiver {
 
     public static final String ENTRY = "contact";
-
-    public static Yielder yielder() {
-        return new Yielder(CoreEntry.CONTACT, true);
-    }
 
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, Apps.viewTask(Contacts.CONTENT_URI, Contacts.CONTENT_TYPE))
@@ -199,4 +195,5 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
         default -> view(contact);
         }
     }
+
 }

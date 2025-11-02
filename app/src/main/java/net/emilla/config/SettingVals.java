@@ -21,9 +21,8 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.apps.Apps;
 import net.emilla.chime.Chime;
 import net.emilla.chime.Chimer;
-import net.emilla.command.DefaultCommandWrapper;
+import net.emilla.command.DefaultCommandWrapperYielder;
 import net.emilla.command.core.CoreEntry;
-import net.emilla.command.core.Web;
 import net.emilla.util.Features;
 
 import java.util.HashSet;
@@ -35,6 +34,14 @@ public final class SettingVals {
 
     public static final String ALIASES_CUSTOM = "aliases_custom";
     public static final String ALIASES_CUSTOM_TEXT = "aliases_custom_text";
+
+    private static final String DEFAULT_SEARCH_ENGINES = """
+        Wikipedia, wiki, w, https://wikipedia.org/wiki/%s
+        Google, g, https://www.google.com/search?q=%s
+        Google Images, gimages, gimage, gimg, gi, https://www.google.com/search?q=%s&udm=2
+        YouTube, yt, y, https://www.youtube.com/results?search_query=%s
+        DuckDuckGo, ddg, dd, d, https://duckduckgo.com/?q=%s
+        DuckDuckGo Images, duckimages, duckimage, duckimg, ddgimages, ddgimage, ddgimg, ddgi, ddimages, ddimage, ddimg, ddi, dimages, dimage, dimg, https://duckduckgo.com/?q=%s&ia=images&iax=images""";
 
     public static boolean commandEnabled(
         PackageManager pm,
@@ -64,11 +71,11 @@ public final class SettingVals {
         return "cmd_" + entry + "_enabled";
     }
 
-    public static DefaultCommandWrapper.Yielder defaultCommand(SharedPreferences prefs) {
+    public static DefaultCommandWrapperYielder defaultCommand(SharedPreferences prefs) {
         // Todo: allow apps and customs. Make sure to fall back to a core if the app is uninstalled
         //  or the custom is deleted.
         String entry = prefs.getString("default_command", "web");
-        return new DefaultCommandWrapper.Yielder(CoreEntry.of(entry).yielder());
+        return new DefaultCommandWrapperYielder(CoreEntry.of(entry));
     }
 
     public static Set<String> customCommands(SharedPreferences prefs) {
@@ -173,7 +180,7 @@ public final class SettingVals {
     }
 
     public static String searchEngineCsv(SharedPreferences prefs) {
-        return prefs.getString("search_engines", Web.DFLT_SEARCH_ENGINES);
+        return prefs.getString("search_engines", DEFAULT_SEARCH_ENGINES);
     }
 
     public static Set<String> snippets(SharedPreferences prefs) {

@@ -8,13 +8,9 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.util.MediaControl;
 import net.emilla.util.Services;
 
-public final class Play extends CoreCommand {
+/*internal*/ final class Play extends CoreCommand {
 
     public static final String ENTRY = "play";
-
-    public static Yielder yielder() {
-        return new Yielder(CoreEntry.PLAY, true);
-    }
 
     public static boolean possible() {
         return true;
@@ -35,4 +31,5 @@ public final class Play extends CoreCommand {
     protected void run(String media) {
         throw badCommand(R.string.error_unfinished_feature);
     }
+
 }

@@ -13,13 +13,9 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.apps.Apps;
 import net.emilla.util.Dialogs;
 
-public final class Uninstall extends OpenCommand {
+/*internal*/ final class Uninstall extends OpenCommand {
 
     public static final String ENTRY = "uninstall";
-
-    public static Yielder yielder() {
-        return new Yielder(CoreEntry.UNINSTALL, true);
-    }
 
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, new Intent(ACTION_UNINSTALL_PACKAGE, Apps.pkgUri("")))
@@ -46,4 +42,5 @@ public final class Uninstall extends OpenCommand {
     protected AlertDialog.Builder makeChooser() {
         return Dialogs.appUninstalls(this.activity);
     }
+
 }

@@ -18,13 +18,9 @@ import net.emilla.util.Files.MimeType;
 
 import java.util.ArrayList;
 
-public final class Share extends CoreDataCommand implements AppChoiceReceiver {
+/*internal*/ final class Share extends CoreDataCommand implements AppChoiceReceiver {
 
     public static final String ENTRY = "share";
-
-    public static Yielder yielder() {
-        return new Yielder(CoreEntry.SHARE, true);
-    }
 
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, Apps.sendTask("text/plain"));
@@ -116,4 +112,5 @@ public final class Share extends CoreDataCommand implements AppChoiceReceiver {
         });
         else chime(RESUME);
     }
+
 }

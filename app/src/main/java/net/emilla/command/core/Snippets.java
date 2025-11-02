@@ -8,27 +8,18 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.command.ActionMap;
 import net.emilla.command.Subcommand;
 
-public final class Snippets extends CoreDataCommand {
+/*internal*/ final class Snippets extends CoreDataCommand {
 
     public static final String ENTRY = "snippets";
-
-    public static Yielder yielder() {
-        return new Yielder(CoreEntry.SNIPPETS, true);
-    }
 
     public static boolean possible() {
         return true;
     }
 
-    public enum Action {
-        PEEK, GET, POP, REMOVE, ADD
-        // Todo: 'rename' action
-    }
-
     private SnippetsFragment mSnippetsFragment = null;
 
-    private ActionMap<Action> mActionMap = null;
-    private Action mAction = Action.GET;
+    private ActionMap<SnippetAction> mActionMap = null;
+    private SnippetAction mAction = SnippetAction.GET;
     @Nullable
     private String mUsedSnippet = null;
     @Nullable
@@ -46,12 +37,12 @@ public final class Snippets extends CoreDataCommand {
         this.activity.giveActionBox(mSnippetsFragment);
 
         if (mActionMap == null) {
-            mActionMap = new ActionMap<Action>(Action.GET);
+            mActionMap = new ActionMap<SnippetAction>(SnippetAction.GET);
 
-            mActionMap.put(this.resources, Action.PEEK, R.array.subcmd_snippet_peek, true);
-            mActionMap.put(this.resources, Action.GET, R.array.subcmd_snippet_get, true);
-            mActionMap.put(this.resources, Action.POP, R.array.subcmd_snippet_pop, true);
-            mActionMap.put(this.resources, Action.REMOVE, R.array.subcmd_snippet_remove, true);
+            mActionMap.put(this.resources, SnippetAction.PEEK, R.array.subcmd_snippet_peek, true);
+            mActionMap.put(this.resources, SnippetAction.GET, R.array.subcmd_snippet_get, true);
+            mActionMap.put(this.resources, SnippetAction.POP, R.array.subcmd_snippet_pop, true);
+            mActionMap.put(this.resources, SnippetAction.REMOVE, R.array.subcmd_snippet_remove, true);
         }
     }
 
@@ -69,31 +60,31 @@ public final class Snippets extends CoreDataCommand {
 
     @Override
     protected void run() {
-        refreshState(Action.GET);
-        snippet(new Subcommand<Action>(Action.GET, null));
+        refreshState(SnippetAction.GET);
+        snippet(new Subcommand<SnippetAction>(SnippetAction.GET, null));
     }
 
     @Override
     protected void run(String label) {
-        Subcommand<Action> subcmd = mActionMap.get(label);
+        Subcommand<SnippetAction> subcmd = mActionMap.get(label);
         refreshState(subcmd.action);
         snippet(subcmd);
     }
 
-    private void refreshState(Action action) {
+    private void refreshState(SnippetAction action) {
         if (mAction != action) {
             mAction = action;
             mUsedSnippet = null;
             mUsedText = null;
             // forget the used snippet
-        } else if (action == Action.PEEK) {
+        } else if (action == SnippetAction.PEEK) {
             mUsedSnippet = null;
             mUsedText = null;
             // forget the used snippet
         }
     }
 
-    private void snippet(Subcommand<Action> subcmd) {
+    private void snippet(Subcommand<SnippetAction> subcmd) {
         String label = subcmd.instruction;
         if (label != null) {
             String lcLabel = label.toLowerCase();
@@ -122,7 +113,7 @@ public final class Snippets extends CoreDataCommand {
         // TODO: respect the user's letter case for the labels while retaining case-insensitivity
     }
 
-    private void snippet(String label, String lcLabel, Action action) {
+    private void snippet(String label, String lcLabel, SnippetAction action) {
         switch (action) {
         case PEEK -> mSnippetsFragment.peek(lcLabel);
         case GET -> mSnippetsFragment.get(lcLabel);
@@ -145,12 +136,12 @@ public final class Snippets extends CoreDataCommand {
             return;
         }
 
-        mSnippetsFragment.prime(Action.ADD);
+        mSnippetsFragment.prime(SnippetAction.ADD);
     }
 
     @Override
     protected void runWithData(String label, String text) {
-        mAction = Action.ADD;
+        mAction = SnippetAction.ADD;
 
         if (label.equals(mUsedSnippet) && text.equals(mUsedText)) {
             // todo: you could change the submit icon to indicate this behavior. it would
@@ -168,4 +159,5 @@ public final class Snippets extends CoreDataCommand {
         mUsedSnippet = label;
         mUsedText = text;
     }
+
 }
