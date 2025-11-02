@@ -12,7 +12,6 @@ import androidx.preference.PreferenceViewHolder;
 
 import net.emilla.R;
 import net.emilla.command.app.AppEntry;
-import net.emilla.command.app.AppProperties;
 
 import java.util.Objects;
 
@@ -40,12 +39,7 @@ public final class CommandPreference extends EditTextPreference {
         mEnabledKey = SettingVals.appEnabledKey(app.pkg, app.cls);
 
         setTitle(app.label);
-
-        AppProperties properties = app.properties;
-        if (properties != null) {
-            setSummary(properties.summary);
-        }
-
+        setSummary(app.summary());
         setIcon(app.icon(ctx));
     }
 

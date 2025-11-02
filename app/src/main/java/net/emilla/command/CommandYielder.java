@@ -57,4 +57,5 @@ public abstract class CommandYielder implements TrieMap.Value<CommandYielder> {
     public final CommandYielder duplicate(CommandYielder value) {
         return new DuplicateYielder(this, value);
     }
+
 }
