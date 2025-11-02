@@ -12,7 +12,7 @@ import java.util.List;
 
 public final class AppList implements Iterable<AppEntry> {
 
-    private final SearchableArray<AppEntry> mData;
+    private final SearchableArray<AppEntry> mApps;
 
     public static AppList launchers(PackageManager pm) {
         return new AppList(Apps.resolveList(pm), pm);
@@ -23,23 +23,23 @@ public final class AppList implements Iterable<AppEntry> {
     }
 
     private AppList(List<ResolveInfo> resolveInfos, PackageManager pm) {
-        mData = new SearchableArray<AppEntry>(resolveInfos, info -> new AppEntry(pm, info));
+        mApps = new SearchableArray<AppEntry>(resolveInfos, info -> new AppEntry(pm, info));
     }
 
     public SearchResult<AppEntry> filter(String search) {
-        return mData.filter(search);
+        return mApps.filter(search);
     }
 
     public AppEntry get(int index) {
-        return mData.get(index);
+        return mApps.get(index);
     }
 
     public int size() {
-        return mData.size();
+        return mApps.size();
     }
 
     @Override
     public Iterator<AppEntry> iterator() {
-        return mData.iterator();
+        return mApps.iterator();
     }
 }
