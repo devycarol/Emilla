@@ -137,9 +137,9 @@ public final class Tasker extends AppCommand implements DataCommand {
         var tasks = new TreeSet<Task>(taskComparator(lcTask));
 
         while (cur.moveToNext()) {
-            var taskName = cur.getString(nameCol);
+            String taskName = cur.getString(nameCol);
             if (taskName.toLowerCase().contains(task.toLowerCase())) {
-                var projectName = cur.getString(projectCol);
+                String projectName = cur.getString(projectCol);
                 tasks.add(new Task(projectName, taskName));
             }
         }

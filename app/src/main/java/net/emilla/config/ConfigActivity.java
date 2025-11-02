@@ -2,6 +2,7 @@ package net.emilla.config;
 
 import android.os.Bundle;
 
+import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -36,9 +37,12 @@ public final class ConfigActivity extends EmillaActivity {
         var navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host_fragment_activity_config);
         if (navHostFragment == null) return;
-        var navController = navHostFragment.getNavController();
-        var appBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_commands,
-                R.id.nav_assistant, R.id.nav_settings).build();
+        NavController navController = navHostFragment.getNavController();
+        var appBarConfiguration = new AppBarConfiguration.Builder(
+            R.id.nav_commands,
+            R.id.nav_assistant,
+            R.id.nav_settings
+        ).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(mBinding.navView, navController);
     }

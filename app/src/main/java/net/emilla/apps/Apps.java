@@ -162,7 +162,7 @@ public final class Apps {
 
     public static Intent uninstallIntent(String pkg, PackageManager pm) {
     try {
-        var info = pm.getApplicationInfo(pkg, 0);
+        ApplicationInfo info = pm.getApplicationInfo(pkg, 0);
         if ((info.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
             return new Intent(ACTION_UNINSTALL_PACKAGE, pkgUri(pkg));
             // Todo: ACTION_UNINSTALL_PACKAGE is deprecated.

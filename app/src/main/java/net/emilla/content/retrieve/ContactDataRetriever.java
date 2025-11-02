@@ -1,5 +1,7 @@
 package net.emilla.content.retrieve;
 
+import static android.content.Intent.ACTION_PICK;
+
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -25,7 +27,7 @@ public abstract class ContactDataRetriever extends ResultRetriever<Void, String,
 
         @Override
         public final Intent createIntent(Context ctx, Void unused) {
-            return new Intent(Intent.ACTION_PICK).setType(contentType());
+            return new Intent(ACTION_PICK).setType(contentType());
         }
 
         protected abstract String contentType();

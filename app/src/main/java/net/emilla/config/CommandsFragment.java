@@ -208,7 +208,7 @@ public final class CommandsFragment extends EmillaSettingsFragment {
             if (len > 0) reviseBldr.setLength(len - 1);
             // snip trailing newline
 
-            var revisedText = reviseBldr.toString();
+            String revisedText = reviseBldr.toString();
             ((EditTextPreference) pref).setText(revisedText);
 
             mPrefs.edit()

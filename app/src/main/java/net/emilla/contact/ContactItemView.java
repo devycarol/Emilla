@@ -1,7 +1,9 @@
 package net.emilla.contact;
 
+import static android.content.Intent.ACTION_VIEW;
 import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_CLICK;
 
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -80,8 +82,8 @@ public final class ContactItemView extends LinearLayout {
     }
 
     private void viewContactDetails() {
-        var uri = Contacts.getLookupUri(mContactId, mLookupKey);
-        var viewContact = new Intent(Intent.ACTION_VIEW, uri);
+        Uri uri = Contacts.getLookupUri(mContactId, mLookupKey);
+        var viewContact = new Intent(ACTION_VIEW, uri);
         getContext().startActivity(viewContact);
     }
 
@@ -128,7 +130,7 @@ public final class ContactItemView extends LinearLayout {
         values.put(Contacts.STARRED, starred ? 1 : 0);
 
         var ctx = getContext();
-        var cr = ctx.getContentResolver();
+        ContentResolver cr = ctx.getContentResolver();
         String[] selectionArgs = {String.valueOf(mContactId)};
         cr.update(Contacts.CONTENT_URI, values, Contacts._ID + " = ?", selectionArgs);
 

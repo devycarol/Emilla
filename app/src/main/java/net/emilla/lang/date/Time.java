@@ -19,6 +19,7 @@ import net.emilla.activity.EmillaActivity;
 import net.emilla.exception.EmillaException;
 
 import java.util.Calendar;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 // Todo: this class is utterly unreadable
@@ -271,7 +272,7 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
             return cal;
         }
 
-        var m = monthRegex().matcher(s);
+        Matcher m = monthRegex().matcher(s);
         if (m.find()) {
             cal.set(MONTH, parseMonth(m.group()));
             if (m.find()) throw new EmillaException(errorTitle, R.string.error_excess_time_units);

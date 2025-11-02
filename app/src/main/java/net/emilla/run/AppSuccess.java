@@ -4,6 +4,7 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
@@ -19,7 +20,7 @@ public final class AppSuccess implements CommandRun {
 
     @Override
     public void run(AssistActivity act) {
-        var pm = act.getPackageManager();
+        PackageManager pm = act.getPackageManager();
         if (mIntent.resolveActivity(pm) != null) {
             act.finishAndRemoveTask();
             act.startActivity(mIntent);

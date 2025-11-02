@@ -135,7 +135,7 @@ public final class SettingsFragment extends EmillaSettingsFragment {
                 .putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION)
                 .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true)
                 .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, false);
-        var uriStr = mPrefs.getString(prefKey, null);
+        String uriStr = mPrefs.getString(prefKey, null);
         soundPicker.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI,
                 uriStr != null ? Uri.parse(uriStr) : null);
         mPrefKey = prefKey;

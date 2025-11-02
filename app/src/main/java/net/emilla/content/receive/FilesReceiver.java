@@ -1,5 +1,6 @@
 package net.emilla.content.receive;
 
+import android.content.res.Resources;
 import android.net.Uri;
 
 import net.emilla.R;
@@ -35,7 +36,7 @@ public final class FilesReceiver implements ResultReceiver {
 
         mActivity.putAttachments(mCommandEntry, attaches);
 
-        var res = mActivity.getResources();
+        Resources res = mActivity.getResources();
         mActivity.toast(res.getQuantityString(R.plurals.toast_files_attached, size, size));
         // Todo: better feedback.
     }

@@ -41,7 +41,7 @@ public final class BugFailure extends DialogRun {
         var sw = new StringWriter();
         var pw = new PrintWriter(sw);
         e.printStackTrace(pw);
-        var stackTrace = sw.toString();
+        String stackTrace = sw.toString();
 
         String body = "Feel free to describe what was happening when the error occurred:\n\n\n\n"
                  + "======== exception details ========\n\n";

@@ -55,10 +55,10 @@ public final class ContactPhoneAdapter extends ContactCursorAdapter {
                 cur.getString(IDX_NAME), cur.getString(IDX_PHOTO), cur.getInt(IDX_STARRED) != 0);
 
         int type = cur.getInt(IDX_TYPE);
-        var customLabel = cur.getString(IDX_LABEL);
+        String customLabel = cur.getString(IDX_LABEL);
 
         CharSequence typeText = Phone.getTypeLabel(this.resources, type, customLabel);
-        var number = cur.getString(IDX_NUMBER);
+        String number = cur.getString(IDX_NUMBER);
 
         item.setContactDetail(Lang.colonConcat(this.resources, typeText, number));
     }

@@ -3,6 +3,7 @@ package net.emilla.config;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.util.DisplayMetrics;
 
 import net.emilla.R;
 import net.emilla.action.AssistantSettings;
@@ -91,7 +92,7 @@ public final class SettingVals {
     ) {
         // Todo: allow apps and customs. Make sure to fall back to a core if the app is uninstalled
         //  or the custom is deleted.
-        var entry = prefs.getString("default_command", "web");
+        String entry = prefs.getString("default_command", "web");
         CoreCommand.Yielder yielder = coreYielders[yielderIndex(entry)];
         return new DefaultCommandWrapper.Yielder(yielder);
     }
@@ -147,7 +148,7 @@ public final class SettingVals {
             //  should change if it's still default. back:prefs.xml
             case "never" -> false;
             case "portrait" -> {
-                var metrics = res.getDisplayMetrics();
+                DisplayMetrics metrics = res.getDisplayMetrics();
                 yield metrics.widthPixels < metrics.heightPixels;
             }
             default /*"always"*/ -> true;

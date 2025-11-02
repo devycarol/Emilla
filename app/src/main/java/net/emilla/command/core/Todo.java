@@ -6,6 +6,7 @@ import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
 import static android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
 import static android.os.Environment.DIRECTORY_DOCUMENTS;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
@@ -94,7 +95,7 @@ public final class Todo extends CoreDataCommand {
     }
 
     private void todo(String task) { try {
-        var cr = contentResolver();
+        ContentResolver cr = contentResolver();
 
         if (Files.endsWithNewline(cr, mUri)) {
             task = '\n' + task + '\n';

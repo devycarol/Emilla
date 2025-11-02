@@ -176,7 +176,7 @@ public abstract class ContactsFragment<T> extends Fragment
             // TODO ACC: replace double-tap with accessibility action when a service is in
             //  use.
             var adapter = (CursorAdapter) parent.getAdapter();
-            var cur = adapter.getCursor();
+            Cursor cur = adapter.getCursor();
             cur.moveToPosition(pos);
 
             var receiver = (ContactReceiver) mActivity.command();
@@ -231,7 +231,7 @@ public abstract class ContactsFragment<T> extends Fragment
 
                 int firstPos = selecteds.keyAt(0);
                 cur.moveToPosition(firstPos);
-                var firstContact = cur.getString(colIndex);
+                String firstContact = cur.getString(colIndex);
 
                 if (selectedCount == 1) return firstContact;
 

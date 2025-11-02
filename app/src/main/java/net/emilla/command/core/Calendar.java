@@ -23,6 +23,7 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.apps.Apps;
 import net.emilla.lang.date.Time;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class Calendar extends CoreDataCommand {
@@ -108,12 +109,12 @@ public final class Calendar extends CoreDataCommand {
     }
 
     private Intent makeIntent(String titleAndDate) {
-        var intent = makeIntent();
+        Intent intent = makeIntent();
 
         // todo: clean this up
         var p = Pattern.compile(" */all(day)?", CASE_INSENSITIVE);
         // TODO LANG
-        var m = p.matcher(titleAndDate);
+        Matcher m = p.matcher(titleAndDate);
         if (m.find()) {
             titleAndDate = m.replaceFirst("");
             intent.putExtra(EXTRA_EVENT_ALL_DAY, true);

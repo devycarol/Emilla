@@ -1,5 +1,6 @@
 package net.emilla.action.box;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -26,7 +27,7 @@ import net.emilla.struct.sort.SortedArray;
 
     @Override
     public SnippetHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        var ctx = parent.getContext();
+        Context ctx = parent.getContext();
         var inflater = LayoutInflater.from(ctx);
         var binding = SnippetItemBinding.inflate(inflater, parent, false);
         return new SnippetHolder(binding);

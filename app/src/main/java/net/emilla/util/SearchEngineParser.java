@@ -1,6 +1,7 @@
 package net.emilla.util;
 
 import static android.app.SearchManager.QUERY;
+import static android.content.Intent.ACTION_WEB_SEARCH;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -48,8 +49,9 @@ public final class SearchEngineParser {
             String[] aliases = Arrays.copyOf(split, lastIdx);
             String url = split[lastIdx];
 
-            var engine = url.contains("%s") ? new Website(url.replaceFirst("%s", ""), url)
-                    : new Website(url, null);
+            var engine = url.contains("%s")
+                ? new Website(url.replaceFirst("%s", ""), url)
+                : new Website(url, null);
 
             for (String alias : aliases) {
                 mEngineMap.put(Lang.words(alias), engine);
@@ -68,6 +70,6 @@ public final class SearchEngineParser {
             }
             return Apps.viewTask(Uri.parse(get.siteUrl));
         }
-        return new Intent(Intent.ACTION_WEB_SEARCH).putExtra(QUERY, query);
+        return new Intent(ACTION_WEB_SEARCH).putExtra(QUERY, query);
     }
 }

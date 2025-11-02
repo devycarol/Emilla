@@ -4,6 +4,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Build;
 
 import androidx.activity.result.ActivityResult;
@@ -30,9 +31,9 @@ public final class AppChoiceRetriever extends ResultRetriever<Intent, ActivityRe
         Intent chooser;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             int flags = PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_UPDATE_CURRENT;
-            var sender = PendingIntent.getBroadcast(
-                this.activity,
-                0,
+            IntentSender sender = PendingIntent.getBroadcast(
+                this.activity, 0,
+
                 new Intent(this.activity, AppChooserBroadcastReceiver.class),
                 flags
             ).getIntentSender();

@@ -3,6 +3,7 @@ package net.emilla.util;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
@@ -159,7 +160,7 @@ public final class Dialogs {
 
     public static AlertDialog.Builder appUninstalls(AssistActivity act) {
         AppList appList = act.appList();
-        var pm = act.getPackageManager();
+        PackageManager pm = act.getPackageManager();
         Intent[] intents = Apps.uninstalls(appList, pm);
         return list(act, R.string.dialog_app, Apps.labels(appList), (dlg, which) -> {
             if (intents[which] == null) {
