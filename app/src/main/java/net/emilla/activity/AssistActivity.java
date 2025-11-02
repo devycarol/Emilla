@@ -120,7 +120,7 @@ public final class AssistActivity extends EmillaActivity {
     private boolean mOpen = false;
 
     public AssistActivity() {
-        super(R.layout.activity_assist);
+        super();
     }
 
     @Override
@@ -129,6 +129,7 @@ public final class AssistActivity extends EmillaActivity {
 
         mInflater = getLayoutInflater();
         mBinding = ActivityAssistBinding.inflate(mInflater);
+        setContentView(mBinding.getRoot());
 
         var factory = new AssistViewModel.Factory(getApplicationContext());
         var provider = new ViewModelProvider(this, factory);

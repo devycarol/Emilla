@@ -17,7 +17,7 @@ public final class ConfigActivity extends EmillaActivity {
     private ActivityConfigBinding mBinding = null;
 
     public ConfigActivity() {
-        super(R.layout.activity_config);
+        super();
     }
 
     @Override
@@ -25,6 +25,7 @@ public final class ConfigActivity extends EmillaActivity {
         super.onCreate(savedInstanceState);
 
         mBinding = ActivityConfigBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
 
         mBinding.navView.setOnItemReselectedListener(item -> {
             boolean assistantItem = item.getItemId() == R.id.nav_assistant;
