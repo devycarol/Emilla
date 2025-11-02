@@ -15,7 +15,7 @@ import net.emilla.config.SettingVals;
 import net.emilla.struct.IndexedStruct;
 import net.emilla.struct.sort.Searchable;
 
-public final class AppEntry extends Searchable<AppEntry> {
+public final class AppEntry implements Searchable<AppEntry> {
 
     public final String pkg;
     public final String cls;
@@ -94,4 +94,5 @@ public final class AppEntry extends Searchable<AppEntry> {
     public String ordinal() {
         return label;
     }
+
 }

@@ -4,8 +4,8 @@ import static net.emilla.BuildConfig.DEBUG;
 
 import androidx.annotation.Nullable;
 
-public final class SearchResult<E extends Searchable<E>> extends Searchable<SearchResult<E>>
-    implements FilterResult<E> {
+public final class SearchResult<E extends Searchable<E>>
+    implements Searchable<SearchResult<E>>, FilterResult<E> {
 
     private final String mSearch;
     @Nullable
