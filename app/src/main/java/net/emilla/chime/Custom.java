@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.net.Uri;
 
+import net.emilla.config.SettingVals;
+
 /*internal*/ final class Custom implements Chimer {
 
     private final Uri[] mUris;
@@ -15,10 +17,7 @@ import android.net.Uri;
         var uris = new Uri[chimeCount];
 
         for (int i = 0; i < chimeCount; ++i) {
-            String soundUri = prefs.getString(chimes[i].preferenceKey, null);
-            if (soundUri != null) {
-                uris[i] = Uri.parse(soundUri);
-            }
+            uris[i] = SettingVals.customChimeSoundUri(prefs, chimes[i]);
         }
 
         mUris = uris;
@@ -33,10 +32,10 @@ import android.net.Uri;
             player = MediaPlayer.create(ctx, uri);
             if (player == null) {
                 // URI is broken
-                player = MediaPlayer.create(ctx, chime.nebulaSound);
+                player = Nebula.mediaPlayer(ctx, chime);
             }
         } else {
-            player = MediaPlayer.create(ctx, chime.nebulaSound);
+            player = Nebula.mediaPlayer(ctx, chime);
         }
 
         player.setOnCompletionListener(MediaPlayer::release);

@@ -10,9 +10,13 @@ import android.media.MediaPlayer;
 
     @Override
     public void chime(Context ctx, Chime chime) {
-        var player = MediaPlayer.create(ctx, chime.nebulaSound);
+        MediaPlayer player = mediaPlayer(ctx, chime);
         player.setOnCompletionListener(MediaPlayer::release);
         player.start();
+    }
+
+    public static MediaPlayer mediaPlayer(Context ctx, Chime chime) {
+        return MediaPlayer.create(ctx, chime.nebulaSound);
     }
 
 }

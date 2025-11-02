@@ -1,9 +1,10 @@
 package net.emilla.config;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -11,15 +12,18 @@ import android.os.Bundle;
 import android.provider.Settings;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 
 import net.emilla.R;
+import net.emilla.action.QuickAction;
 import net.emilla.activity.EmillaActivity;
 import net.emilla.apps.Apps;
 import net.emilla.chime.Chime;
 import net.emilla.chime.Chimer;
+import net.emilla.lang.Lang;
+import net.emilla.result.ChimeSoundResult;
+import net.emilla.result.GetChimeSound;
 import net.emilla.system.EmillaA11yService;
 import net.emilla.util.Features;
 
@@ -28,28 +32,32 @@ public final class SettingsFragment extends EmillaSettingsFragment {
     private static final String EXTRA_FRAGMENT_ARG_KEY = ":settings:fragment_args_key";
     private static final String EXTRA_SHOW_FRAGMENT_ARGUMENTS = ":settings:show_fragment_args";
 
-//    @StringRes
-//    private static int resourceOf(String prefKey) {
-//        return switch (prefKey) {
-//        case SettingVals.CHIME_START -> R.string.chime_start;
-//        case SettingVals.CHIME_ACT -> R.string.chime_act;
-//        case SettingVals.CHIME_PEND -> R.string.chime_pend;
-//        case SettingVals.CHIME_RESUME -> R.string.chime_resume;
-//        case SettingVals.CHIME_EXIT -> R.string.chime_exit;
-//        case SettingVals.CHIME_SUCCEED -> R.string.chime_succeed;
-//        case SettingVals.CHIME_FAIL -> R.string.chime_fail;
-//        default -> 0;
-//        };
-//    }
-
     private EmillaActivity mActivity;
     private SharedPreferences mPrefs;
-//    private Resources mRes;
+    private Resources mRes;
     private PackageManager mPm;
 
-    private boolean mCustomSounds;
-    private ActivityResultLauncher<Intent> mResultLauncher;
-    private String mPrefKey;
+    private boolean mUsingCustomSounds;
+
+    private final ActivityResultLauncher<Chime> mSoundPickerLauncher = registerForActivityResult(
+        new GetChimeSound(),
+        this::onPickChimeSound
+    );
+
+    private void onPickChimeSound(ChimeSoundResult chimeSoundResult) {
+        if (chimeSoundResult == null) return;
+
+        Chime chime = chimeSoundResult.chime;
+        Uri soundUri = chimeSoundResult.soundUri;
+
+        if (soundUri != null) {
+            SettingVals.setCustomSound(mPrefs, chime, soundUri);
+        } else {
+            SettingVals.deleteCustomChimeSound(mPrefs, chime);
+        }
+
+        preferenceOf(chime.preferenceKey).setSummary(customSoundTitle(chime));
+    }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -57,29 +65,21 @@ public final class SettingsFragment extends EmillaSettingsFragment {
 
         mActivity = emillaActivity();
         mPrefs = prefs();
-//        mRes = getResources();
+        mRes = getResources();
         mPm = mActivity.getPackageManager();
 
-        mResultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(), result -> {
-            if (result.getResultCode() == Activity.RESULT_OK) {
-                Intent data = result.getData();
-                if (data == null) return;
-                Uri uri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-                mPrefs.edit().putString(mPrefKey, uri == null ? null : uri.toString()).apply();
-                updateCustomSoundPref(mPrefKey, true/*, resourceOf(mPrefKey)*/);
-            }
-        });
-
         setupChimerPref();
-        mCustomSounds = SettingVals.chimerId(mPrefs).equals(Chimer.CUSTOM);
-        setupCustomSoundPrefs(mCustomSounds);
+        mUsingCustomSounds = SettingVals.chimerId(mPrefs).equals(Chimer.CUSTOM);
+        setupCustomSoundPrefs(mUsingCustomSounds);
         setupFavoriteCommandsPref();
-        boolean noTorch = !Features.torch(mPm);
-        setupActionPref(preferenceOf("action_no_command"), noTorch, true);
-        setupDoubleAssistPref(noTorch);
-        setupActionPref(preferenceOf("action_long_submit"), noTorch, false);
-        setupActionPref(preferenceOf("action_menu"), noTorch, false);
+
+        if (!Features.torch(mPm)) {
+            removeTorch(preferenceOf(QuickAction.PREF_NO_COMMAND));
+            removeTorch(preferenceOf(QuickAction.PREF_DOUBLE_ASSIST));
+            removeTorch(preferenceOf(QuickAction.PREF_LONG_SUBMIT));
+            removeTorch(preferenceOf(QuickAction.PREF_MENU_KEY));
+        }
+
         setupDefaultAssistantPref();
         setupNotificationsPref();
         setupAccessibilityButtonPref();
@@ -87,104 +87,97 @@ public final class SettingsFragment extends EmillaSettingsFragment {
     }
 
     private void setupChimerPref() {
-        Preference chimerPref = preferenceOf(SettingVals.CHIMER);
-        chimerPref.setOnPreferenceChangeListener((pref, newVal) -> {
-            boolean customSounds = newVal.equals(Chimer.CUSTOM);
-            if (mCustomSounds != customSounds) {
-                updateCustomSoundPrefs(customSounds);
-                mCustomSounds = customSounds;
+        preferenceOf(SettingVals.CHIMER).setOnPreferenceChangeListener(
+            (pref, newVal) -> {
+                boolean usingCustomSounds = newVal.equals(Chimer.CUSTOM);
+
+                if (mUsingCustomSounds != usingCustomSounds) {
+                    for (var chime : Chime.values()) {
+                        Preference customSoundPref = preferenceOf(chime.preferenceKey);
+                        customSoundPref.setVisible(usingCustomSounds);
+                        activateCustomSoundPref(customSoundPref, chime);
+                    }
+                    mUsingCustomSounds = usingCustomSounds;
+                }
+
+                return true;
             }
-            return true;
+        );
+    }
+
+    private void setupCustomSoundPrefs(boolean isEnabled) {
+        for (var chime : Chime.values()) {
+            Preference customSoundPref = preferenceOf(chime.preferenceKey);
+            if (isEnabled) {
+                activateCustomSoundPref(customSoundPref, chime);
+            } else {
+                customSoundPref.setVisible(false);
+            }
+        }
+    }
+
+    private void activateCustomSoundPref(Preference customSoundPref, Chime chime) {
+        customSoundPref.setOnPreferenceClickListener(pref -> {
+            mSoundPickerLauncher.launch(chime);
+            return false;
         });
+
+        customSoundPref.setSummary(customSoundTitle(chime));
     }
 
-    private void setupCustomSoundPrefs(boolean enabled) {
-        setupCustomSoundPref(Chime.START.preferenceKey, enabled/*, R.string.chime_start*/);
-        setupCustomSoundPref(Chime.ACT.preferenceKey, enabled/*, R.string.chime_act*/);
-        setupCustomSoundPref(Chime.PEND.preferenceKey, enabled/*, R.string.chime_pend*/);
-        setupCustomSoundPref(Chime.RESUME.preferenceKey, enabled/*, R.string.chime_resume*/);
-        setupCustomSoundPref(Chime.EXIT.preferenceKey, enabled/*, R.string.chime_exit*/);
-        setupCustomSoundPref(Chime.SUCCEED.preferenceKey, enabled/*, R.string.chime_succeed*/);
-        setupCustomSoundPref(Chime.FAIL.preferenceKey, enabled/*, R.string.chime_fail*/);
-    }
+    private String customSoundTitle(Chime chime) {
+        Uri soundUri = SettingVals.customChimeSoundUri(mPrefs, chime);
 
-    private void setupCustomSoundPref(
-        String prefKey,
-        boolean enabled/*,
-        @StringRes int resId*/
-    ) {
-        Preference soundPref = preferenceOf(prefKey);
-        soundPref.setOnPreferenceClickListener(pref -> onClickCustomSoundPref(prefKey));
-        if (!enabled) soundPref.setVisible(false);
-    //    soundPref.setSummaryProvider(new Preference.SummaryProvider<>() {
-    //        @Nullable @Override
-    //        public CharSequence provideSummary(Preference pref) {
-    //            var uriStr = mPrefs.getString(prefKey, null);
-    //            if (uriStr != null) {
-    //                var ringtone = RingtoneManager.getRingtone(mActivity, Uri.parse(uriStr));
-    //                if (ringtone != null) return ringtone.getTitle(mActivity);
-    //            }
-    //            return Lang.wordConcat(mRes, R.string.sound_set_nebula, resId);
-    //        }
-    //    });
-        // Too laggy for now.
-    }
+        if (soundUri != null) {
+            Ringtone ringtone = RingtoneManager.getRingtone(mActivity, soundUri);
+            if (ringtone != null) {
+                return ringtone.getTitle(mActivity);
+            }
+        }
 
-    private boolean onClickCustomSoundPref(String prefKey) {
-        var soundPicker = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER)
-                .putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION)
-                .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true)
-                .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, false);
-        String uriStr = mPrefs.getString(prefKey, null);
-        soundPicker.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI,
-                uriStr != null ? Uri.parse(uriStr) : null);
-        mPrefKey = prefKey;
-        mResultLauncher.launch(soundPicker);
-        return false;
-    }
-
-    private void updateCustomSoundPrefs(boolean enabled) {
-        updateCustomSoundPref(Chime.START.preferenceKey, enabled/*, R.string.chime_start*/);
-        updateCustomSoundPref(Chime.ACT.preferenceKey, enabled/*, R.string.chime_act*/);
-        updateCustomSoundPref(Chime.PEND.preferenceKey, enabled/*, R.string.chime_pend*/);
-        updateCustomSoundPref(Chime.RESUME.preferenceKey, enabled/*, R.string.chime_resume*/);
-        updateCustomSoundPref(Chime.EXIT.preferenceKey, enabled/*, R.string.chime_exit*/);
-        updateCustomSoundPref(Chime.SUCCEED.preferenceKey, enabled/*, R.string.chime_succeed*/);
-        updateCustomSoundPref(Chime.FAIL.preferenceKey, enabled/*, R.string.chime_fail*/);
-    }
-
-    private void updateCustomSoundPref(String prefKey, boolean enabled) {
-        Preference soundPref = preferenceOf(prefKey);
-        soundPref.setVisible(enabled);
+        return Lang.wordConcat(mRes, R.string.sound_set_nebula, chime.name);
     }
 
     private void setupFavoriteCommandsPref() {
         Preference favoriteCommmands = preferenceOf("favorite_commands");
-        favoriteCommmands.setOnPreferenceClickListener(pref -> caveat("Coming soon!", false)); // todo
-    }
-
-    private boolean mShouldToast = true;
-    private void setupActionPref(ListPreference actionPref, boolean noTorch, boolean noSelectAll) {
-        if (noTorch) {
-            var entries = noSelectAll ? new CharSequence[]{"None", "These settings"}
-                    : new CharSequence[]{"None", "These settings", "Select whole command"}; // TODO LANG: remove
-            actionPref.setEntries(entries);
-            CharSequence[] values = {"none", "config", "select_all"};
-            actionPref.setEntryValues(values);
-        }
-        actionPref.setOnPreferenceClickListener(pref -> { // todo
-            if (mShouldToast) {
-                caveat("More actions (commands ;) coming soon!", true);
-                mShouldToast = false;
-            }
+        favoriteCommmands.setOnPreferenceClickListener(pref -> {
+            mActivity.toast("Coming soon!", false);
+            // Todo
             return false;
         });
     }
 
-    private void setupDoubleAssistPref(boolean noTorch) {
-        ListPreference doubleAction = preferenceOf("action_double_assist");
-        setupActionPref(doubleAction, noTorch, false);
-        if (noTorch) doubleAction.setDefaultValue("config");
+    private static void removeTorch(ListPreference actionPref) {
+        if (actionPref.getValue().equals(QuickAction.FLASHLIGHT)) {
+            actionPref.setValue(QuickAction.ASSISTANT_SETTINGS);
+            actionPref.setDefaultValue(QuickAction.ASSISTANT_SETTINGS);
+        }
+
+        CharSequence[] entries = actionPref.getEntries();
+        CharSequence[] values = actionPref.getEntryValues();
+
+        int index = -1;
+
+        int entryCount = entries.length;
+        for (int i = 0; i < entryCount; ++i) {
+            if (QuickAction.FLASHLIGHT.equals(values[i].toString())) {
+                index = i;
+                break;
+            }
+        }
+
+        actionPref.setEntries(arrayWithout(entries, index));
+        actionPref.setEntryValues(arrayWithout(values, index));
+    }
+
+    private static CharSequence[] arrayWithout(CharSequence[] array, int index) {
+        int last = array.length - 1;
+        var without = new CharSequence[last];
+
+        System.arraycopy(array, 0, without, 0, index);
+        System.arraycopy(array, index + 1, without, index, last - index);
+
+        return without;
     }
 
     private void setupDefaultAssistantPref() {
@@ -242,4 +235,5 @@ public final class SettingsFragment extends EmillaSettingsFragment {
         mActivity.toast(text, longToast);
         return false;
     }
+
 }

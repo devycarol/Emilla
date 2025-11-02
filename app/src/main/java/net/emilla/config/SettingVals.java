@@ -3,7 +3,10 @@ package net.emilla.config;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.util.DisplayMetrics;
+
+import androidx.annotation.Nullable;
 
 import net.emilla.R;
 import net.emilla.action.AssistantSettings;
@@ -16,6 +19,7 @@ import net.emilla.action.QuickAction;
 import net.emilla.action.SelectAll;
 import net.emilla.activity.AssistActivity;
 import net.emilla.apps.Apps;
+import net.emilla.chime.Chime;
 import net.emilla.chime.Chimer;
 import net.emilla.command.DefaultCommandWrapper;
 import net.emilla.command.core.Alarm;
@@ -220,6 +224,23 @@ public final class SettingVals {
 
     public static String chimerId(SharedPreferences prefs) {
         return prefs.getString(CHIMER, Chimer.NEBULA);
+    }
+
+    public static void setCustomSound(SharedPreferences prefs, Chime chime, Uri soundUri) {
+        prefs.edit().putString(chime.preferenceKey, soundUri.toString()).apply();
+    }
+
+    @Nullable
+    public static Uri customChimeSoundUri(SharedPreferences prefs, Chime chime) {
+        String uriString = prefs.getString(chime.preferenceKey, null);
+        if (uriString != null) {
+            return Uri.parse(uriString);
+        }
+        return null;
+    }
+
+    public static void deleteCustomChimeSound(SharedPreferences prefs, Chime chime) {
+        prefs.edit().remove(chime.preferenceKey).apply();
     }
 
     public static String searchEngineCsv(SharedPreferences prefs) {
