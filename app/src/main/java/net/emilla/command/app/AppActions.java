@@ -14,13 +14,13 @@ public final class AppActions {
     public static final int FLAG_TASKER         = 0x8;
     public static final int FLAG_SEARCH         = 0x4;
     public static final int FLAG_SEND_MULTILINE = 0x2;
-    public static final int FLAGS_SEND          = 0x1 | FLAG_SEND_MULTILINE;
+    public static final int FLAGS_SEND_TEXT = 0x1 | FLAG_SEND_MULTILINE;
 
     private static int flags(PackageManager pm, String pkg, @Nullable AppProperties properties) {
-        int mask = properties != null ? properties.actionMask : 0;
+        int mask = properties != null ? properties.actionMask : ~0;
         int flags = 0;
 
-        int sendMasked = mask & FLAGS_SEND;
+        int sendMasked = mask & FLAGS_SEND_TEXT;
         if (sendMasked != 0 && Apps.canDo(pm, Apps.sendToApp(pkg))) {
             flags |= sendMasked;
         }
@@ -46,10 +46,10 @@ public final class AppActions {
     }
 
     public boolean hasSend() {
-        return (mFlags & FLAGS_SEND) != 0;
+        return (mFlags & FLAGS_SEND_TEXT) != 0;
     }
 
-    private boolean hasSearch() {
+    public boolean hasSearch() {
         return (mFlags & FLAG_SEARCH) != 0;
     }
 

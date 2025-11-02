@@ -72,6 +72,9 @@ public final class AppEntry extends CommandYielder implements Params, Searchable
         if (actions.hasSend()) {
             return Lang.colonConcat(res, R.string.command_app_send, label);
         }
+        if (actions.hasSearch()) {
+            return Lang.colonConcat(res, R.string.command_app_search, label);
+        }
         if (actions.usesInstruction() && properties != null) {
             return Lang.colonConcat(res, label, properties.instruction);
         }

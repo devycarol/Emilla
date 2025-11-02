@@ -9,9 +9,9 @@ import net.emilla.R;
 public enum AppProperties {
     AOSP_CONTACTS(AospContacts::instance, R.string.instruction_contact, R.array.aliases_aosp_contacts, R.string.summary_app_aosp_contacts, true),
     MARKOR(Markor::instance, R.string.instruction_text, R.array.aliases_markor, R.string.summary_note, true),
-    FIREFOX(Firefox::instance, R.string.instruction_web, R.array.aliases_firefox, R.string.summary_web, true, AppActions.FLAGS_SEND),
+    FIREFOX(Firefox::instance, R.string.instruction_web, R.array.aliases_firefox, R.string.summary_web, true, AppActions.FLAGS_SEND_TEXT),
     // 'send' is redundant for Firefox, it just searches
-    TOR(Tor::instance, 0, R.array.aliases_tor, R.string.summary_web, true, AppActions.FLAGS_SEND | AppActions.FLAG_SEARCH),
+    TOR(Tor::instance, 0, R.array.aliases_tor, R.string.summary_web, true, AppActions.FLAGS_SEND_TEXT | AppActions.FLAG_SEARCH),
     // search/send intents are broken, therefore no instruction
     SIGNAL(Signal::instance, R.string.instruction_message, R.array.aliases_signal, R.string.summary_messaging, true),
     NEWPIPE(NewPipe::instance, R.string.instruction_video, R.array.aliases_newpipe, R.string.summary_video, true),
