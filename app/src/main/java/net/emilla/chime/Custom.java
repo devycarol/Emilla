@@ -26,9 +26,16 @@ import android.net.Uri;
 
     @Override
     public void chime(Context ctx, Chime chime) {
-        var player = MediaPlayer.create(ctx, mUris[chime.ordinal()]);
-        if (player == null) {
-            // URI is broken or null
+        Uri uri = mUris[chime.ordinal()];
+
+        MediaPlayer player;
+        if (uri != null) {
+            player = MediaPlayer.create(ctx, uri);
+            if (player == null) {
+                // URI is broken
+                player = MediaPlayer.create(ctx, chime.nebulaSound);
+            }
+        } else {
             player = MediaPlayer.create(ctx, chime.nebulaSound);
         }
 
