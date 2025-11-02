@@ -15,40 +15,7 @@ import net.emilla.R;
 import net.emilla.activity.EmillaActivity;
 import net.emilla.apps.AppEntry;
 import net.emilla.apps.AppList;
-import net.emilla.command.core.Alarm;
-import net.emilla.command.core.Bits;
-import net.emilla.command.core.Calculate;
-import net.emilla.command.core.Calendar;
-import net.emilla.command.core.Call;
-import net.emilla.command.core.Celsius;
-import net.emilla.command.core.Contact;
-import net.emilla.command.core.Copy;
-import net.emilla.command.core.CoreCommand;
-import net.emilla.command.core.Dial;
-import net.emilla.command.core.Email;
-import net.emilla.command.core.Fahrenheit;
-import net.emilla.command.core.Find;
-import net.emilla.command.core.Info;
-import net.emilla.command.core.Launch;
-import net.emilla.command.core.Note;
-import net.emilla.command.core.Notifications;
-import net.emilla.command.core.Notify;
-import net.emilla.command.core.Pause;
-import net.emilla.command.core.Play;
-import net.emilla.command.core.Pomodoro;
-import net.emilla.command.core.RandomNumber;
-import net.emilla.command.core.Roll;
-import net.emilla.command.core.Setting;
-import net.emilla.command.core.Share;
-import net.emilla.command.core.Sms;
-import net.emilla.command.core.Snippets;
-import net.emilla.command.core.Time;
-import net.emilla.command.core.Timer;
-import net.emilla.command.core.Toast;
-import net.emilla.command.core.Todo;
-import net.emilla.command.core.Torch;
-import net.emilla.command.core.Weather;
-import net.emilla.command.core.Web;
+import net.emilla.command.core.CoreEntry;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -92,84 +59,50 @@ public final class CommandsFragment extends EmillaSettingsFragment {
     }
 
     private void setupCores() {
-        setupCorePref(Call.ENTRY, Call.ALIASES);
-        setupCorePref(Dial.ENTRY, Dial.ALIASES);
-        setupCorePref(Sms.ENTRY, Sms.ALIASES);
-        setupCorePref(Email.ENTRY, Email.ALIASES);
-        setupCorePref(Copy.ENTRY, Copy.ALIASES);
-        setupCorePref(Snippets.ENTRY, Snippets.ALIASES);
-        setupCorePref(Share.ENTRY, Share.ALIASES);
-        setupCorePref(Launch.ENTRY, Launch.ALIASES);
-        deactivate(Setting.ENTRY, false);
-        deactivate(Note.ENTRY, false);
-        deactivate(Todo.ENTRY, false);
-        setupCorePref(Web.ENTRY, Web.ALIASES);
-        deactivate(Find.ENTRY, false);
-        setupCorePref(Time.ENTRY, Time.ALIASES);
-        setupCorePref(Alarm.ENTRY, Alarm.ALIASES);
-        setupCorePref(Timer.ENTRY, Timer.ALIASES);
-        setupCorePref(Pomodoro.ENTRY, Pomodoro.ALIASES);
-        setupCorePref(Calendar.ENTRY, Calendar.ALIASES);
-        setupCorePref(Contact.ENTRY, Contact.ALIASES);
-        setupCorePref(Notify.ENTRY, Notify.ALIASES);
-        setupCorePref(Calculate.ENTRY, Calculate.ALIASES);
-        setupCorePref(RandomNumber.ENTRY, RandomNumber.ALIASES);
-        setupCorePref(Celsius.ENTRY, Celsius.ALIASES);
-        setupCorePref(Fahrenheit.ENTRY, Fahrenheit.ALIASES);
-        setupCorePref(Roll.ENTRY, Roll.ALIASES);
-        setupCorePref(Bits.ENTRY, Bits.ALIASES);
-        setupCorePref(Weather.ENTRY, Weather.ALIASES);
-        setupCorePref(Play.ENTRY, Play.ALIASES);
-        setupCorePref(Pause.ENTRY, Pause.ALIASES);
-        setupCorePref(Torch.ENTRY, Torch.ALIASES);
-        setupCorePref(Info.ENTRY, Info.ALIASES);
-        setupCorePref(Notifications.ENTRY, Notifications.ALIASES);
-        setupCorePref(Toast.ENTRY, Toast.ALIASES);
+        for (var coreEntry : CoreEntry.values()) {
+            setupCorePref(coreEntry);
+        }
     }
 
-    private void setupCorePref(
-        String entry,
-        @ArrayRes int aliases
-    ) {
+    private void setupCorePref(CoreEntry coreEntry) {
+        String entry = coreEntry.entry;
+        @ArrayRes int aliases = coreEntry.aliases;
+        boolean isImplemented = coreEntry.isImplemented;
+
         String enabledKey = SettingVals.commandEnabledKey(entry);
-        if (CoreCommand.possible(mPm, entry)) {
+        CommandPreference cmdPref = preferenceOf(Aliases.textKey(entry));
+
+        if (isImplemented && coreEntry.isPossible(mPm)) {
             if (!mPrefs.contains(enabledKey)) {
                 mPrefs.edit().putBoolean(enabledKey, true).apply();
                 // TODO: actually allow to toggle this setting.
             }
-            String textKey = Aliases.textKey(entry);
-            CommandPreference cmdPref = preferenceOf(textKey);
             Set<String> aliasSet = Aliases.coreSet(mPrefs, mRes, entry, aliases);
             setupPref(cmdPref, aliasSet);
         } else {
             mPrefs.edit().putBoolean(enabledKey, false).apply();
-            deactivate(entry, true);
+            cmdPref.setEnabled(false);
+//            if (isImplemented) {
+//                cmdPref.setOnPreferenceClickListener(pref -> {
+//                    mActivity.toast(R.string.toast_command_unsupported);
+//                    /*Your device doesn\'t support this command.*/
+//                    // TODO: this doesn't work because it's EditTextPreference
+//                    // Todo: offer to search for apps that may satisfy the command or inform that
+//                        it's a hardware issue.
+//                    return false;
+//                });
+//            } else {
+//                cmdPref.setOnPreferenceClickListener(pref -> {
+//                    mActivity.toast("Coming soon!");
+//                    return false;
+//                });
+//            }
         }
     }
 
-    private void setupPref(
-        CommandPreference cmdPref,
-        @Nullable Set<String> aliases
-    ) {
+    private void setupPref(CommandPreference cmdPref, @Nullable Set<String> aliases) {
         cmdPref.setText(aliases != null ? String.join(", ", aliases) : null);
         cmdPref.setOnPreferenceChangeListener(mListener);
-    }
-
-    private void deactivate(String entry, boolean implemented) {
-        CommandPreference cmdPref = preferenceOf(Aliases.textKey(entry));
-        cmdPref.setEnabled(false);
-//        if (implemented) cmdPref.setOnPreferenceClickListener(pref -> {
-//            mActivity.toast(R.string.toast_command_unsupported);
-//            /*Your device doesn\'t support this command.*/
-//               TODO: this doesn't work because it's EditTextPreference
-//               Todo: offer to search for apps that may satisfy the command or inform that it's a
-//                hardware issue.
-//            return false;
-//        });
-//        else cmdPref.setOnPreferenceClickListener(pref -> {
-//            mActivity.toast("Coming soon!");
-//            return false;
-//        });
     }
 
     private void setupApps() {

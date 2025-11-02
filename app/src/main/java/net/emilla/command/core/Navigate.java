@@ -21,20 +21,15 @@ public final class Navigate extends CategoryCommand {
     public static final int ALIASES = R.array.aliases_navigate;
 
     public static Yielder yielder() {
-        return new Yielder(true, Navigate::new, ENTRY, NAME, ALIASES);
+        return new Yielder(CoreEntry.NAVIGATE, true);
     }
 
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, Apps.viewTask("geo:"));
     }
 
-    private Navigate(AssistActivity act) {
-        super(act, NAME,
-              R.string.instruction_location,
-              R.drawable.ic_navigate,
-              R.string.summary_navigate,
-              R.string.manual_navigate,
-              EditorInfo.IME_ACTION_GO);
+    /*internal*/ Navigate(AssistActivity act) {
+        super(act, CoreEntry.NAVIGATE, EditorInfo.IME_ACTION_SEARCH);
     }
 
     @Override

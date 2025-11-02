@@ -7,9 +7,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.ArrayRes;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
@@ -24,13 +22,9 @@ import net.emilla.util.Permissions;
 public final class Call extends CoreCommand implements PhoneReceiver {
 
     public static final String ENTRY = "call";
-    @StringRes
-    public static final int NAME = R.string.command_call;
-    @ArrayRes
-    public static final int ALIASES = R.array.aliases_call;
 
     public static Yielder yielder() {
-        return new Yielder(true, Call::new, ENTRY, NAME, ALIASES);
+        return new Yielder(CoreEntry.CALL, true);
     }
 
     public static boolean possible(PackageManager pm) {
@@ -39,13 +33,8 @@ public final class Call extends CoreCommand implements PhoneReceiver {
 
     private ContactPhonesFragment mContactsFragment = null;
 
-    private Call(AssistActivity act) {
-        super(act, NAME,
-              R.string.instruction_phone,
-              R.drawable.ic_call,
-              R.string.summary_call,
-              R.string.manual_call,
-              EditorInfo.IME_ACTION_GO);
+    /*internal*/ Call(AssistActivity act) {
+        super(act, CoreEntry.CALL, EditorInfo.IME_ACTION_GO);
     }
 
     @Override
@@ -113,8 +102,15 @@ public final class Call extends CoreCommand implements PhoneReceiver {
                 nameOrNumber,
                 Contacts.phonewordsToNumbers(nameOrNumber)
             );
-            offerDialog(Dialogs.dual(this.activity, NAME, msg, R.string.call_directly,
-                                     (dlg, which) -> call(nameOrNumber)));
+            offerDialog(
+                Dialogs.dual(
+                    this.activity,
+                    CoreEntry.CALL.name,
+                    msg, R.string.call_directly,
+
+                    (dlg, which) -> call(nameOrNumber)
+                )
+            );
         }
     }
 

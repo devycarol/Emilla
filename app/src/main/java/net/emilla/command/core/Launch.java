@@ -2,11 +2,8 @@ package net.emilla.command.core;
 
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.ArrayRes;
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
-import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.apps.Apps;
 import net.emilla.util.Dialogs;
@@ -14,26 +11,17 @@ import net.emilla.util.Dialogs;
 public final class Launch extends OpenCommand {
 
     public static final String ENTRY = "launch";
-    @StringRes
-    public static final int NAME = R.string.command_launch;
-    @ArrayRes
-    public static final int ALIASES = R.array.aliases_launch;
 
     public static Yielder yielder() {
-        return new Yielder(true, Launch::new, ENTRY, NAME, ALIASES);
+        return new Yielder(CoreEntry.LAUNCH, true);
     }
 
     public static boolean possible() {
         return true;
     }
 
-    private Launch(AssistActivity act) {
-        super(act, NAME,
-              R.string.instruction_app,
-              R.drawable.ic_launch,
-              R.string.summary_launch,
-              R.string.manual_launch,
-              EditorInfo.IME_ACTION_GO);
+    /*internal*/ Launch(AssistActivity act) {
+        super(act, CoreEntry.LAUNCH, EditorInfo.IME_ACTION_GO);
     }
 
     @Override

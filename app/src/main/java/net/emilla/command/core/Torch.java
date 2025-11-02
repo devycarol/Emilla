@@ -3,10 +3,6 @@ package net.emilla.command.core;
 import android.content.pm.PackageManager;
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.ArrayRes;
-import androidx.annotation.StringRes;
-
-import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.util.Features;
 import net.emilla.util.TorchManager;
@@ -14,31 +10,22 @@ import net.emilla.util.TorchManager;
 public final class Torch extends CoreCommand {
 
     public static final String ENTRY = "torch";
-    @StringRes
-    public static final int NAME = R.string.command_torch;
-    @ArrayRes
-    public static final int ALIASES = R.array.aliases_torch;
 
     public static Yielder yielder() {
-        return new Yielder(false, Torch::new, ENTRY, NAME, ALIASES);
+        return new Yielder(CoreEntry.TORCH, false);
     }
 
     public static boolean possible(PackageManager pm) {
         return Features.torch(pm);
     }
 
-    private Torch(AssistActivity act) {
-        super(act, NAME,
-              R.string.instruction_torch,
-              R.drawable.ic_torch,
-              R.string.summary_torch,
-              R.string.manual_torch,
-              EditorInfo.IME_ACTION_DONE);
+    /*internal*/ Torch(AssistActivity act) {
+        super(act, CoreEntry.TORCH, EditorInfo.IME_ACTION_DONE);
     }
 
     @Override
     protected void run() {
-        TorchManager.toggle(this.activity, NAME);
+        TorchManager.toggle(this.activity, CoreEntry.TORCH.name);
     }
 
     @Override

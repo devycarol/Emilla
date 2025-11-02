@@ -12,8 +12,6 @@ import android.net.Uri;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 
-import androidx.annotation.ArrayRes;
-import androidx.annotation.StringRes;
 import androidx.core.content.FileProvider;
 
 import net.emilla.R;
@@ -29,13 +27,9 @@ import java.io.IOException;
 public final class Todo extends CoreDataCommand {
 
     public static final String ENTRY = "todo";
-    @StringRes
-    public static final int NAME = R.string.command_todo;
-    @ArrayRes
-    public static final int ALIASES = R.array.aliases_todo;
 
     public static Yielder yielder() {
-        return new Yielder(true, Todo::new, ENTRY, NAME, ALIASES);
+        return new Yielder(CoreEntry.TODO, true);
     }
 
     public static boolean possible() {
@@ -49,13 +43,8 @@ public final class Todo extends CoreDataCommand {
             .putExtra(EXTRA_STREAM, mUri)
             .putExtra("EXTRA_FILEPATH", mFile.getAbsolutePath());
 
-    private Todo(AssistActivity act) {
-        super(act, NAME,
-              R.string.instruction_todo,
-              R.drawable.ic_todo,
-              R.string.summary_todo,
-              R.string.manual_todo,
-              R.string.data_hint_todo);
+    /*internal*/ Todo(AssistActivity act) {
+        super(act, CoreEntry.TODO, R.string.data_hint_todo);
     }
 
     @Override

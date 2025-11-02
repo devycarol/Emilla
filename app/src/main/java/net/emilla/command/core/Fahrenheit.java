@@ -2,9 +2,6 @@ package net.emilla.command.core;
 
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.ArrayRes;
-import androidx.annotation.StringRes;
-
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.lang.Lang;
@@ -14,26 +11,17 @@ import net.emilla.math.Maths;
 public final class Fahrenheit extends CoreCommand {
 
     public static final String ENTRY = "fahrenheit";
-    @StringRes
-    public static final int NAME = R.string.command_fahrenheit;
-    @ArrayRes
-    public static final int ALIASES = R.array.aliases_fahrenheit;
 
     public static Yielder yielder() {
-        return new Yielder(true, Fahrenheit::new, ENTRY, NAME, ALIASES);
+        return new Yielder(CoreEntry.FAHRENHEIT, true);
     }
 
     public static boolean possible() {
         return true;
     }
 
-    private Fahrenheit(AssistActivity act) {
-        super(act, NAME,
-              R.string.instruction_temperature,
-              R.drawable.ic_temperature,
-              R.string.summary_fahrenheit,
-              R.string.manual_fahrenheit,
-              EditorInfo.IME_ACTION_DONE);
+    /*internal*/ Fahrenheit(AssistActivity act) {
+        super(act, CoreEntry.FAHRENHEIT, EditorInfo.IME_ACTION_DONE);
     }
 
     @Override
@@ -43,7 +31,7 @@ public final class Fahrenheit extends CoreCommand {
 
     @Override
     protected void run(String temperature) {
-        FahrenheitConversion fahrenheit = Lang.fahrenheit(temperature, NAME);
+        FahrenheitConversion fahrenheit = Lang.fahrenheit(temperature, CoreEntry.FAHRENHEIT.name);
 
         String oldDegrees = Maths.prettyNumber(fahrenheit.degrees);
         String unit = str(fahrenheit.fromKelvin ? R.string.kelvin : R.string.celsius);

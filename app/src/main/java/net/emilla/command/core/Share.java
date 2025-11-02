@@ -8,9 +8,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 
-import androidx.annotation.ArrayRes;
-import androidx.annotation.StringRes;
-
 import net.emilla.R;
 import net.emilla.action.FileFetcher;
 import net.emilla.action.MediaFetcher;
@@ -24,13 +21,9 @@ import java.util.ArrayList;
 public final class Share extends CoreDataCommand implements AppChoiceReceiver {
 
     public static final String ENTRY = "share";
-    @StringRes
-    public static final int NAME = R.string.command_share;
-    @ArrayRes
-    public static final int ALIASES = R.array.aliases_share;
 
     public static Yielder yielder() {
-        return new Yielder(true, Share::new, ENTRY, NAME, ALIASES);
+        return new Yielder(CoreEntry.SHARE, true);
     }
 
     public static boolean possible(PackageManager pm) {
@@ -40,13 +33,8 @@ public final class Share extends CoreDataCommand implements AppChoiceReceiver {
     private FileFetcher mFileFetcher = null;
     private MediaFetcher mMediaFetcher = null;
 
-    private Share(AssistActivity act) {
-        super(act, NAME,
-              R.string.instruction_app,
-              R.drawable.ic_share,
-              R.string.summary_share,
-              R.string.manual_share,
-              R.string.data_hint_text);
+    /*internal*/ Share(AssistActivity act) {
+        super(act, CoreEntry.SHARE, R.string.data_hint_text);
     }
 
     @Override
@@ -102,7 +90,7 @@ public final class Share extends CoreDataCommand implements AppChoiceReceiver {
 
     @Override
     protected void run() {
-        this.activity.offerChooser(this, makeIntent(), NAME);
+        this.activity.offerChooser(this, makeIntent(), CoreEntry.SHARE.name);
     }
 
     @Override
@@ -112,7 +100,7 @@ public final class Share extends CoreDataCommand implements AppChoiceReceiver {
 
     @Override
     protected void runWithData(String text) {
-        this.activity.offerChooser(this, makeIntent(text), NAME);
+        this.activity.offerChooser(this, makeIntent(text), CoreEntry.SHARE.name);
     }
 
     @Override

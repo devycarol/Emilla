@@ -22,37 +22,7 @@ import net.emilla.apps.Apps;
 import net.emilla.chime.Chime;
 import net.emilla.chime.Chimer;
 import net.emilla.command.DefaultCommandWrapper;
-import net.emilla.command.core.Alarm;
-import net.emilla.command.core.Bits;
-import net.emilla.command.core.Calculate;
-import net.emilla.command.core.Calendar;
-import net.emilla.command.core.Call;
-import net.emilla.command.core.Celsius;
-import net.emilla.command.core.Contact;
-import net.emilla.command.core.Copy;
-import net.emilla.command.core.CoreCommand;
-import net.emilla.command.core.Dial;
-import net.emilla.command.core.Email;
-import net.emilla.command.core.Fahrenheit;
-import net.emilla.command.core.Info;
-import net.emilla.command.core.Launch;
-import net.emilla.command.core.Navigate;
-import net.emilla.command.core.Notifications;
-import net.emilla.command.core.Notify;
-import net.emilla.command.core.Pause;
-import net.emilla.command.core.Play;
-import net.emilla.command.core.Pomodoro;
-import net.emilla.command.core.RandomNumber;
-import net.emilla.command.core.Roll;
-import net.emilla.command.core.Share;
-import net.emilla.command.core.Sms;
-import net.emilla.command.core.Snippets;
-import net.emilla.command.core.Time;
-import net.emilla.command.core.Timer;
-import net.emilla.command.core.Toast;
-import net.emilla.command.core.Torch;
-import net.emilla.command.core.Uninstall;
-import net.emilla.command.core.Weather;
+import net.emilla.command.core.CoreEntry;
 import net.emilla.command.core.Web;
 import net.emilla.util.Features;
 
@@ -66,9 +36,13 @@ public final class SettingVals {
     public static final String ALIASES_CUSTOM = "aliases_custom";
     public static final String ALIASES_CUSTOM_TEXT = "aliases_custom_text";
 
-    public static boolean commandEnabled(PackageManager pm, SharedPreferences prefs, String entry) {
-        String key = commandEnabledKey(entry);
-        return prefs.getBoolean(key, prefs.contains(key) || CoreCommand.possible(pm, entry));
+    public static boolean commandEnabled(
+        PackageManager pm,
+        SharedPreferences prefs,
+        CoreEntry coreEntry
+    ) {
+        String key = commandEnabledKey(coreEntry.entry);
+        return prefs.getBoolean(key, prefs.contains(key) || coreEntry.isPossible(pm));
         // don't check 'possible' if a key is already registered. note this demands exhaustively
         // ensuring command possibility in the *settings screens*, re-checking device properties to
         // ensure commands haven't been rendered impossible as a result of app or device changes.
@@ -90,56 +64,11 @@ public final class SettingVals {
         return "cmd_" + entry + "_enabled";
     }
 
-    public static DefaultCommandWrapper.Yielder defaultCommand(
-        SharedPreferences prefs,
-        CoreCommand.Yielder[] coreYielders
-    ) {
+    public static DefaultCommandWrapper.Yielder defaultCommand(SharedPreferences prefs) {
         // Todo: allow apps and customs. Make sure to fall back to a core if the app is uninstalled
         //  or the custom is deleted.
         String entry = prefs.getString("default_command", "web");
-        CoreCommand.Yielder yielder = coreYielders[yielderIndex(entry)];
-        return new DefaultCommandWrapper.Yielder(yielder);
-    }
-
-    private static int yielderIndex(String cmdEntry) {
-        return switch (cmdEntry) {
-            case Call.ENTRY          ->  0;
-            case Dial.ENTRY          ->  1;
-            case Sms.ENTRY           ->  2;
-            case Email.ENTRY         ->  3;
-            case Navigate.ENTRY      ->  4;
-            case Launch.ENTRY        ->  5;
-            case Copy.ENTRY          ->  6;
-            case Snippets.ENTRY      ->  7;
-            case Share.ENTRY         ->  8;
-//            case Setting.ENTRY       ->   ;
-//            case Note.ENTRY          ->   ;
-//            case Todo.ENTRY          ->   ;
-            case Web.ENTRY           ->  9;
-//            case Find.ENTRY          ->   ;
-            case Time.ENTRY          -> 10;
-            case Alarm.ENTRY         -> 11;
-            case Timer.ENTRY         -> 12;
-            case Pomodoro.ENTRY      -> 13;
-            case Calendar.ENTRY      -> 14;
-            case Contact.ENTRY       -> 15;
-            case Notify.ENTRY        -> 16;
-            case Calculate.ENTRY     -> 17;
-            case RandomNumber.ENTRY  -> 18;
-            case Celsius.ENTRY       -> 19;
-            case Fahrenheit.ENTRY    -> 20;
-            case Roll.ENTRY          -> 21;
-            case Bits.ENTRY          -> 22;
-            case Weather.ENTRY       -> 23;
-            case Play.ENTRY          -> 24;
-            case Pause.ENTRY         -> 25;
-            case Torch.ENTRY         -> 26;
-            case Info.ENTRY          -> 27;
-            case Notifications.ENTRY -> 28;
-            case Uninstall.ENTRY     -> 29;
-            case Toast.ENTRY         -> 30;
-            default -> throw new IllegalArgumentException("No such command: " + cmdEntry);
-        };
+        return new DefaultCommandWrapper.Yielder(CoreEntry.of(entry).yielder());
     }
 
     public static Set<String> customCommands(SharedPreferences prefs) {

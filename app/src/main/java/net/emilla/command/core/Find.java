@@ -2,35 +2,23 @@ package net.emilla.command.core;
 
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.ArrayRes;
-import androidx.annotation.StringRes;
-
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 
 public final class Find extends CoreCommand {
 
     public static final String ENTRY = "find";
-    @StringRes
-    public static final int NAME = R.string.command_find;
-    @ArrayRes
-    public static final int ALIASES = R.array.aliases_find;
 
     public static Yielder yielder() {
-        return new Yielder(true, Find::new, ENTRY, NAME, ALIASES);
+        return new Yielder(CoreEntry.FIND, true);
     }
 
     public static boolean possible() {
         return true;
     }
 
-    private Find(AssistActivity act) {
-        super(act, NAME,
-              R.string.instruction_find,
-              R.drawable.ic_find,
-              R.string.summary_find,
-              R.string.manual_find,
-              EditorInfo.IME_ACTION_SEARCH);
+    /*internal*/ Find(AssistActivity act) {
+        super(act, CoreEntry.FIND, EditorInfo.IME_ACTION_SEARCH);
     }
 
     @Override

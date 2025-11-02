@@ -25,20 +25,15 @@ public final class Timer extends CoreDataCommand {
     public static final int ALIASES = R.array.aliases_timer;
 
     public static Yielder yielder() {
-        return new Yielder(true, Timer::new, ENTRY, NAME, ALIASES);
+        return new Yielder(CoreEntry.TIMER, true);
     }
 
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, makeIntent());
     }
 
-    private Timer(AssistActivity act) {
-        super(act, NAME,
-              R.string.instruction_timer,
-              R.drawable.ic_timer,
-              R.string.summary_timer,
-              R.string.manual_timer,
-              R.string.data_hint_label);
+    /*internal*/ Timer(AssistActivity act) {
+        super(act, CoreEntry.TIMER, R.string.data_hint_label);
     }
 
     private static Intent makeIntent() {

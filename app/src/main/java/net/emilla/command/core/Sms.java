@@ -7,9 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 
-import androidx.annotation.ArrayRes;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.action.field.FieldToggle;
@@ -25,13 +23,9 @@ import net.emilla.util.Features;
 public final class Sms extends CoreDataCommand implements PhoneReceiver {
 
     public static final String ENTRY = "sms";
-    @StringRes
-    public static final int NAME = R.string.command_sms;
-    @ArrayRes
-    public static final int ALIASES = R.array.aliases_sms;
 
     public static Yielder yielder() {
-        return new Yielder(true, Sms::new, ENTRY, NAME, ALIASES);
+        return new Yielder(CoreEntry.SMS, true);
     }
 
     public static boolean possible(PackageManager pm) {
@@ -46,13 +40,8 @@ public final class Sms extends CoreDataCommand implements PhoneReceiver {
     private FieldToggle mSubjectToggle = null;
     private ContactPhonesFragment mContactsFragment = null;
 
-    private Sms(AssistActivity act) {
-        super(act, NAME,
-              R.string.instruction_phone,
-              R.drawable.ic_sms,
-              R.string.summary_sms,
-              R.string.manual_sms,
-              R.string.data_hint_message);
+    /*internal*/ Sms(AssistActivity act) {
+        super(act, CoreEntry.SMS, R.string.data_hint_message);
     }
 
     @Override
@@ -127,8 +116,15 @@ public final class Sms extends CoreDataCommand implements PhoneReceiver {
             String toNumbers = Contacts.phonewordsToNumbers(recipients);
             String msg = str(R.string.notice_sms_not_numbers, recipients, toNumbers);
             // todo: better message.
-            offerDialog(Dialogs.dual(this.activity, NAME, msg, R.string.message_directly,
-                                     (dlg, which) -> message(toNumbers, message)));
+            offerDialog(
+                Dialogs.dual(
+                    this.activity,
+                    CoreEntry.SMS.name,
+                    msg, R.string.message_directly,
+
+                    (dlg, which) -> message(toNumbers, message)
+                )
+            );
         }
     }
 

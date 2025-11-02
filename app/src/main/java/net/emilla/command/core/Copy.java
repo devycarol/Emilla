@@ -2,9 +2,7 @@ package net.emilla.command.core;
 
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.ArrayRes;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
@@ -13,13 +11,9 @@ import net.emilla.run.CopyGift;
 public final class Copy extends CoreCommand {
 
     public static final String ENTRY = "copy";
-    @StringRes
-    public static final int NAME = R.string.command_copy;
-    @ArrayRes
-    public static final int ALIASES = R.array.aliases_copy;
 
     public static Yielder yielder() {
-        return new Yielder(true, Copy::new, ENTRY, NAME, ALIASES);
+        return new Yielder(CoreEntry.COPY, true);
     }
 
     public static boolean possible() {
@@ -29,13 +23,8 @@ public final class Copy extends CoreCommand {
     @Nullable
     private String mCopiedText = null;
 
-    private Copy(AssistActivity act) {
-        super(act, NAME,
-              R.string.instruction_text,
-              R.drawable.ic_copy,
-              R.string.summary_copy,
-              R.string.manual_copy,
-              EditorInfo.IME_ACTION_DONE);
+    /*internal*/ Copy(AssistActivity act) {
+        super(act, CoreEntry.COPY, EditorInfo.IME_ACTION_DONE);
     }
 
     @Override

@@ -6,25 +6,18 @@ import android.os.Build;
 import android.provider.Settings;
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.ArrayRes;
 import androidx.annotation.RequiresApi;
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
-import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.apps.Apps;
 
 public final class Notifications extends OpenCommand {
 
     public static final String ENTRY = "notifications";
-    @StringRes
-    public static final int NAME = R.string.command_notifications;
-    @ArrayRes
-    public static final int ALIASES = R.array.aliases_notifications;
 
     public static Yielder yielder() {
-        return new Yielder(true, Notifications::new, ENTRY, NAME, ALIASES);
+        return new Yielder(CoreEntry.NOTIFICATIONS, true);
     }
 
     public static boolean possible(PackageManager pm) {
@@ -32,13 +25,8 @@ public final class Notifications extends OpenCommand {
             && Apps.canDo(pm, new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS));
     }
 
-    private Notifications(AssistActivity act) {
-        super(act, NAME,
-              R.string.instruction_app,
-              R.drawable.ic_notifications,
-              R.string.summary_notifications,
-              R.string.manual_notifications,
-              EditorInfo.IME_ACTION_GO);
+    /*internal*/ Notifications(AssistActivity act) {
+        super(act, CoreEntry.NOTIFICATIONS, EditorInfo.IME_ACTION_GO);
     }
 
     @Override @RequiresApi(api = Build.VERSION_CODES.O)

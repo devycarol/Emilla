@@ -23,20 +23,15 @@ public final class Calculate extends CategoryCommand {
     public static final int ALIASES = R.array.aliases_calculate;
 
     public static Yielder yielder() {
-        return new Yielder(true, Calculate::new, ENTRY, NAME, ALIASES);
+        return new Yielder(CoreEntry.CALCULATE, true);
     }
 
     public static boolean possible() {
         return true;
     }
 
-    private Calculate(AssistActivity act) {
-        super(act, NAME,
-              R.string.instruction_calculate,
-              R.drawable.ic_calculate,
-              R.string.summary_calculate,
-              R.string.manual_calculate,
-              EditorInfo.IME_ACTION_DONE);
+    /*internal*/ Calculate(AssistActivity act) {
+        super(act, CoreEntry.CALCULATE, EditorInfo.IME_ACTION_DONE);
     }
 
     @Override

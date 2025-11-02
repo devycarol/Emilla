@@ -5,9 +5,6 @@ import android.icu.util.Calendar;
 import android.os.Build;
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.ArrayRes;
-import androidx.annotation.StringRes;
-
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 
@@ -16,26 +13,17 @@ import java.text.Format;
 public final class Time extends CoreCommand {
 
     public static final String ENTRY = "time";
-    @StringRes
-    public static final int NAME = R.string.command_time;
-    @ArrayRes
-    public static final int ALIASES = R.array.aliases_time;
 
     public static Yielder yielder() {
-        return new Yielder(true, Time::new, ENTRY, NAME, ALIASES);
+        return new Yielder(CoreEntry.TIME, true);
     }
 
     public static boolean possible() {
         return true;
     }
 
-    private Time(AssistActivity act) {
-        super(act, NAME,
-              R.string.instruction_location,
-              R.drawable.ic_clock,
-              R.string.summary_time,
-              R.string.manual_time,
-              EditorInfo.IME_ACTION_DONE);
+    /*internal*/ Time(AssistActivity act) {
+        super(act, CoreEntry.TIME, EditorInfo.IME_ACTION_DONE);
     }
 
     @Override

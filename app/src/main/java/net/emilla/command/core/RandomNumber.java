@@ -2,10 +2,6 @@ package net.emilla.command.core;
 
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.ArrayRes;
-import androidx.annotation.StringRes;
-
-import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.lang.Lang;
 import net.emilla.lang.phrase.RandRange;
@@ -15,26 +11,17 @@ import java.util.Random;
 public final class RandomNumber extends CoreCommand {
 
     public static final String ENTRY = "random_number";
-    @StringRes
-    public static final int NAME = R.string.command_random_number;
-    @ArrayRes
-    public static final int ALIASES = R.array.aliases_random_number;
 
     public static Yielder yielder() {
-        return new Yielder(true, RandomNumber::new, ENTRY, NAME, ALIASES);
+        return new Yielder(CoreEntry.RANDOM_NUMBER, true);
     }
 
     public static boolean possible() {
         return true;
     }
 
-    private RandomNumber(AssistActivity act) {
-        super(act, NAME,
-              R.string.instruction_text,
-              R.drawable.ic_random_number,
-              R.string.summary_random_number,
-              R.string.manual_random_number,
-              EditorInfo.IME_ACTION_DONE);
+    /*internal*/ RandomNumber(AssistActivity act) {
+        super(act, CoreEntry.RANDOM_NUMBER, EditorInfo.IME_ACTION_DONE);
     }
 
     @Override
@@ -45,7 +32,7 @@ public final class RandomNumber extends CoreCommand {
 
     @Override
     protected void run(String range) {
-        RandRange randRange = Lang.randomRange(range, NAME);
+        RandRange randRange = Lang.randomRange(range, CoreEntry.RANDOM_NUMBER.name);
         int inclusStart = randRange.inclusStart;
         int exclusEnd = randRange.exclusEnd;
 

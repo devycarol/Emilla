@@ -2,7 +2,6 @@ package net.emilla.command.core;
 
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
 
 import net.emilla.activity.AssistActivity;
@@ -18,22 +17,9 @@ public abstract class CoreDataCommand extends CoreCommand implements DataCommand
     @StringRes
     private final int mHint;
 
-    protected CoreDataCommand(
-        AssistActivity act,
-        @StringRes int name,
-        @StringRes int instruction,
-        @DrawableRes int icon,
-        @StringRes int summary,
-        @StringRes int manual,
-        @StringRes int hint
-    ) {
-        super(act, name,
-              instruction,
-              icon,
-              summary,
-              manual,
-              EditorInfo.IME_ACTION_NEXT);
-        mHint = hint;
+    protected CoreDataCommand(AssistActivity act, CoreEntry coreEntry, @StringRes int dataHint) {
+        super(act, coreEntry, EditorInfo.IME_ACTION_NEXT);
+        mHint = dataHint;
     }
 
     @Override @StringRes

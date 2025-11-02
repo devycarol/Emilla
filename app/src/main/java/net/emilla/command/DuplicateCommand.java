@@ -43,12 +43,17 @@ public final class DuplicateCommand extends EmillaCommand implements DataCommand
     private final boolean mUsesData;
 
     public DuplicateCommand(AssistActivity act, EmillaCommand[] cmds) {
-        super(act, new CoreParams(R.string.command_duplicate,
-                                  R.string.instruction_duplicate,
-                                  R.drawable.ic_command),
-              R.string.summary_duplicate,
-              R.string.manual_duplicate,
-              EditorInfo.IME_ACTION_NEXT);
+        super(
+            act,
+            new CoreParams(
+                R.string.command_duplicate,
+                R.string.instruction_duplicate,
+                R.drawable.ic_command
+            ),
+            R.string.summary_duplicate,
+            R.string.manual_duplicate,
+            EditorInfo.IME_ACTION_NEXT
+        );
 
         mLabels = new String[cmds.length];
         mCommands = cmds;

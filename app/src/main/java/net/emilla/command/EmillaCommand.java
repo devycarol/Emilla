@@ -30,38 +30,8 @@ import net.emilla.apps.AppEntry;
 import net.emilla.apps.AppList;
 import net.emilla.chime.Chime;
 import net.emilla.command.app.AppCommand;
-import net.emilla.command.core.Alarm;
-import net.emilla.command.core.Bits;
-import net.emilla.command.core.Calculate;
-import net.emilla.command.core.Calendar;
-import net.emilla.command.core.Call;
-import net.emilla.command.core.Celsius;
-import net.emilla.command.core.Contact;
-import net.emilla.command.core.Copy;
 import net.emilla.command.core.CoreCommand;
-import net.emilla.command.core.Dial;
-import net.emilla.command.core.Email;
-import net.emilla.command.core.Fahrenheit;
-import net.emilla.command.core.Info;
-import net.emilla.command.core.Launch;
-import net.emilla.command.core.Navigate;
-import net.emilla.command.core.Notifications;
-import net.emilla.command.core.Notify;
-import net.emilla.command.core.Pause;
-import net.emilla.command.core.Play;
-import net.emilla.command.core.Pomodoro;
-import net.emilla.command.core.RandomNumber;
-import net.emilla.command.core.Roll;
-import net.emilla.command.core.Share;
-import net.emilla.command.core.Sms;
-import net.emilla.command.core.Snippets;
-import net.emilla.command.core.Time;
-import net.emilla.command.core.Timer;
-import net.emilla.command.core.Toast;
-import net.emilla.command.core.Torch;
-import net.emilla.command.core.Uninstall;
-import net.emilla.command.core.Weather;
-import net.emilla.command.core.Web;
+import net.emilla.command.core.CoreEntry;
 import net.emilla.config.SettingVals;
 import net.emilla.ping.PingChannel;
 import net.emilla.run.AppGift;
@@ -81,43 +51,16 @@ import java.util.Set;
 public abstract class EmillaCommand {
 
     private static CoreCommand.Yielder[] coreYielders() {
-        return new CoreCommand.Yielder[] {
-                Call.yielder(),
-                Dial.yielder(),
-                Sms.yielder(),
-                Email.yielder(),
-                Navigate.yielder(),
-                Launch.yielder(),
-                Copy.yielder(),
-                Snippets.yielder(),
-                Share.yielder(),
-//                Setting.yielder(),
-//                Note.yielder(),
-//                Todo.yielder(),
-                Web.yielder(),
-//                Find.yielder(),
-                Time.yielder(),
-                Alarm.yielder(),
-                Timer.yielder(),
-                Pomodoro.yielder(),
-                Calendar.yielder(),
-                Contact.yielder(),
-                Notify.yielder(),
-                Calculate.yielder(),
-                RandomNumber.yielder(),
-                Celsius.yielder(),
-                Fahrenheit.yielder(),
-                Roll.yielder(),
-                Bits.yielder(),
-                Weather.yielder(),
-                Play.yielder(),
-                Pause.yielder(),
-                Torch.yielder(),
-                Info.yielder(),
-                Notifications.yielder(),
-                Uninstall.yielder(),
-                Toast.yielder(),
-        };
+        CoreEntry[] coreEntries = CoreEntry.values();
+
+        int coreCount = coreEntries.length;
+        var coreYielders = new CoreCommand.Yielder[coreCount];
+
+        for (int i = 0; i < coreCount; ++i) {
+            coreYielders[i] = coreEntries[i].yielder();
+        }
+
+        return coreYielders;
     }
 
     public static CommandMap map(
@@ -128,7 +71,7 @@ public abstract class EmillaCommand {
     ) {
         CoreCommand.Yielder[] coreYielders = coreYielders();
 
-        var map = new CommandMap(SettingVals.defaultCommand(prefs, coreYielders));
+        var map = new CommandMap(SettingVals.defaultCommand(prefs));
 
         for (CoreCommand.Yielder yielder : coreYielders) {
             if (yielder.enabled(pm, prefs)) {

@@ -3,8 +3,6 @@ package net.emilla.command.core;
 import android.content.Intent;
 
 import androidx.annotation.CallSuper;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.R;
@@ -16,21 +14,8 @@ import net.emilla.util.Dialogs;
 
 public abstract class OpenCommand extends CoreCommand {
 
-    protected OpenCommand(
-        AssistActivity act,
-        @StringRes int name,
-        @StringRes int instruction,
-        @DrawableRes int icon,
-        @StringRes int summary,
-        @StringRes int manual,
-        int imeAction
-    ) {
-        super(act, name,
-              instruction,
-              icon,
-              summary,
-              manual,
-              imeAction);
+    protected OpenCommand(AssistActivity act, CoreEntry coreEntry, int imeAction) {
+        super(act, coreEntry, imeAction);
     }
 
     protected AlertDialog.Builder appChooser = null;

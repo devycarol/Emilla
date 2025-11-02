@@ -6,10 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.ArrayRes;
-import androidx.annotation.StringRes;
-
-import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.apps.Apps;
 import net.emilla.config.SettingVals;
@@ -18,13 +14,9 @@ import net.emilla.util.SearchEngineParser;
 public final class Web extends CoreCommand {
 
     public static final String ENTRY = "web";
-    @StringRes
-    public static final int NAME = R.string.command_web;
-    @ArrayRes
-    public static final int ALIASES = R.array.aliases_web;
 
     public static Yielder yielder() {
-        return new Yielder(true, Web::new, ENTRY, NAME, ALIASES);
+        return new Yielder(CoreEntry.WEB, true);
     }
 
     public static boolean possible(PackageManager pm) {
@@ -43,13 +35,8 @@ public final class Web extends CoreCommand {
 
     private SearchEngineParser mSearchEngineMap = null;
 
-    private Web(AssistActivity act) {
-        super(act, NAME,
-              R.string.instruction_web,
-              R.drawable.ic_web,
-              R.string.summary_web,
-              R.string.manual_web,
-              EditorInfo.IME_ACTION_SEARCH);
+    /*internal*/ Web(AssistActivity act) {
+        super(act, CoreEntry.WEB, EditorInfo.IME_ACTION_SEARCH);
     }
 
     @Override

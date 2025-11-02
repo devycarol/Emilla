@@ -4,11 +4,9 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Notification;
 
-import androidx.annotation.ArrayRes;
 import androidx.annotation.CallSuper;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
-import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
@@ -26,13 +24,9 @@ import net.emilla.util.Permissions;
 public final class Pomodoro extends CoreDataCommand {
 
     public static final String ENTRY = "pomodoro";
-    @StringRes
-    public static final int NAME = R.string.command_pomodoro;
-    @ArrayRes
-    public static final int ALIASES = R.array.aliases_pomodoro;
 
     public static Yielder yielder() {
-        return new Yielder(true, Pomodoro::new, ENTRY, NAME, ALIASES);
+        return new Yielder(CoreEntry.POMODORO, true);
     }
 
     public static boolean possible() {
@@ -49,13 +43,8 @@ public final class Pomodoro extends CoreDataCommand {
     @Nullable
     private String mBreakMemo = null;
 
-    private Pomodoro(AssistActivity act) {
-        super(act, NAME,
-              R.string.instruction_pomodoro,
-              R.drawable.ic_pomodoro,
-              R.string.summary_pomodoro,
-              R.string.manual_pomodoro,
-              R.string.data_hint_pomodoro);
+    /*internal*/ Pomodoro(AssistActivity act) {
+        super(act, CoreEntry.POMODORO, R.string.data_hint_pomodoro);
     }
 
     @Override @CallSuper
@@ -122,7 +111,7 @@ public final class Pomodoro extends CoreDataCommand {
                 : SettingVals.defaultPomoWorkMins(prefs()) * 60;
         }
 
-        return Lang.duration(minutes, NAME).seconds;
+        return Lang.duration(minutes, CoreEntry.POMODORO.name).seconds;
     }
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)

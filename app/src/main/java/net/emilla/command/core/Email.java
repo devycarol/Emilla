@@ -11,9 +11,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 
-import androidx.annotation.ArrayRes;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.action.FileFetcher;
@@ -30,13 +28,9 @@ import java.util.ArrayList;
 public final class Email extends CoreDataCommand implements EmailReceiver {
 
     public static final String ENTRY = "email";
-    @StringRes
-    public static final int NAME = R.string.command_email;
-    @ArrayRes
-    public static final int ALIASES = R.array.aliases_email;
 
     public static Yielder yielder() {
-        return new Yielder(true, Email::new, ENTRY, NAME, ALIASES);
+        return new Yielder(CoreEntry.EMAIL, true);
     }
 
     public static boolean possible(PackageManager pm) {
@@ -48,13 +42,8 @@ public final class Email extends CoreDataCommand implements EmailReceiver {
     private MediaFetcher mMediaFetcher = null;
     private ContactEmailsFragment mContactsFragment = null;
 
-    private Email(AssistActivity act) {
-        super(act, NAME,
-              R.string.instruction_email,
-              R.drawable.ic_email,
-              R.string.summary_email,
-              R.string.manual_email,
-              R.string.data_hint_email);
+    /*internal*/ Email(AssistActivity act) {
+        super(act, CoreEntry.EMAIL, R.string.data_hint_email);
     }
 
     @Override

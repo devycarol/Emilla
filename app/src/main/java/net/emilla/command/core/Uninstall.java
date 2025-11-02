@@ -7,11 +7,8 @@ import android.content.pm.PackageManager;
 import android.provider.Settings;
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.ArrayRes;
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
-import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.apps.Apps;
 import net.emilla.util.Dialogs;
@@ -19,13 +16,9 @@ import net.emilla.util.Dialogs;
 public final class Uninstall extends OpenCommand {
 
     public static final String ENTRY = "uninstall";
-    @StringRes
-    public static final int NAME = R.string.command_uninstall;
-    @ArrayRes
-    public static final int ALIASES = R.array.aliases_uninstall;
 
     public static Yielder yielder() {
-        return new Yielder(true, Uninstall::new, ENTRY, NAME, ALIASES);
+        return new Yielder(CoreEntry.UNINSTALL, true);
     }
 
     public static boolean possible(PackageManager pm) {
@@ -35,13 +28,8 @@ public final class Uninstall extends OpenCommand {
             || Apps.canDo(pm, new Intent(Settings.ACTION_SETTINGS));
     }
 
-    private Uninstall(AssistActivity act) {
-        super(act, NAME,
-              R.string.instruction_app,
-              R.drawable.ic_uninstall,
-              R.string.summary_uninstall,
-              R.string.manual_uninstall,
-              EditorInfo.IME_ACTION_GO);
+    /*internal*/ Uninstall(AssistActivity act) {
+        super(act, CoreEntry.UNINSTALL, EditorInfo.IME_ACTION_GO);
     }
 
     @Override

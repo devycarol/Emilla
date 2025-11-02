@@ -3,37 +3,25 @@ package net.emilla.command.core;
 import android.content.pm.PackageManager;
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.ArrayRes;
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
-import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.apps.Apps;
 
 public final class Info extends OpenCommand {
 
     public static final String ENTRY = "info";
-    @StringRes
-    public static final int NAME = R.string.command_info;
-    @ArrayRes
-    public static final int ALIASES = R.array.aliases_info;
 
     public static Yielder yielder() {
-        return new Yielder(true, Info::new, ENTRY, NAME, ALIASES);
+        return new Yielder(CoreEntry.INFO, true);
     }
 
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, Apps.infoTask(""));
     }
 
-    private Info(AssistActivity act) {
-        super(act, NAME,
-              R.string.instruction_app,
-              R.drawable.ic_info,
-              R.string.summary_info,
-              R.string.manual_info,
-              EditorInfo.IME_ACTION_GO);
+    /*internal*/ Info(AssistActivity act) {
+        super(act, CoreEntry.INFO, EditorInfo.IME_ACTION_GO);
     }
 
     @Override

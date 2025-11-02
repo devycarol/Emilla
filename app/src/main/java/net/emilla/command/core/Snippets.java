@@ -1,8 +1,6 @@
 package net.emilla.command.core;
 
-import androidx.annotation.ArrayRes;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.action.box.SnippetsFragment;
@@ -13,13 +11,9 @@ import net.emilla.command.Subcommand;
 public final class Snippets extends CoreDataCommand {
 
     public static final String ENTRY = "snippets";
-    @StringRes
-    public static final int NAME = R.string.command_snippets;
-    @ArrayRes
-    public static final int ALIASES = R.array.aliases_snippets;
 
     public static Yielder yielder() {
-        return new Yielder(true, Snippets::new, ENTRY, NAME, ALIASES);
+        return new Yielder(CoreEntry.SNIPPETS, true);
     }
 
     public static boolean possible() {
@@ -40,13 +34,8 @@ public final class Snippets extends CoreDataCommand {
     @Nullable
     private String mUsedText = null;
 
-    private Snippets(AssistActivity act) {
-        super(act, NAME,
-              R.string.instruction_name_label,
-              R.drawable.ic_snippets,
-              R.string.summary_snippets,
-              R.string.manual_snippets,
-              R.string.data_hint_text);
+    /*internal*/ Snippets(AssistActivity act) {
+        super(act, CoreEntry.SNIPPETS, R.string.data_hint_text);
     }
 
     @Override

@@ -9,9 +9,7 @@ import android.net.Uri;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents.Insert;
 
-import androidx.annotation.ArrayRes;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
@@ -27,13 +25,9 @@ import java.util.List;
 public final class Contact extends CoreDataCommand implements ContactCardReceiver {
 
     public static final String ENTRY = "contact";
-    @StringRes
-    public static final int NAME = R.string.command_contact;
-    @ArrayRes
-    public static final int ALIASES = R.array.aliases_contact;
 
     public static Yielder yielder() {
-        return new Yielder(true, Contact::new, ENTRY, NAME, ALIASES);
+        return new Yielder(CoreEntry.CONTACT, true);
     }
 
     public static boolean possible(PackageManager pm) {
@@ -52,13 +46,8 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
     private ActionMap<Action> mActionMap = null;
     private Action mAction = Action.VIEW;
 
-    private Contact(AssistActivity act) {
-        super(act, NAME,
-              R.string.instruction_contact,
-              R.drawable.ic_contact,
-              R.string.summary_contact,
-              R.string.manual_contact,
-              R.string.data_hint_contact);
+    /*internal*/ Contact(AssistActivity act) {
+        super(act, CoreEntry.CONTACT, R.string.data_hint_contact);
     }
 
     @Override
@@ -185,12 +174,12 @@ public final class Contact extends CoreDataCommand implements ContactCardReceive
         if (message != null) send.putExtra(EXTRA_TEXT, message);
         // todo: see if it's possible to detect when apps won't accept this.
 
-        appSucceed(Intent.createChooser(send, str(NAME)));
+        appSucceed(Intent.createChooser(send, str(CoreEntry.CONTACT.name)));
     }
 
     private void offerCreate(String person, @Nullable String details) {
         String msg = str(R.string.notice_contact_no_match, person);
-        offerDialog(Dialogs.dual(this.activity, NAME, msg, R.string.create,
+        offerDialog(Dialogs.dual(this.activity, CoreEntry.CONTACT.name, msg, R.string.create,
                                  (dlg, which) -> create(person, details)));
     }
 

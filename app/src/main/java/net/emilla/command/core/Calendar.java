@@ -12,9 +12,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.provider.CalendarContract.Events;
 
-import androidx.annotation.ArrayRes;
-import androidx.annotation.StringRes;
-
 import net.emilla.R;
 import net.emilla.action.field.FieldToggle;
 import net.emilla.action.field.LocationField;
@@ -29,26 +26,17 @@ import java.util.regex.Pattern;
 public final class Calendar extends CoreDataCommand {
 
     public static final String ENTRY = "calendar";
-    @StringRes
-    public static final int NAME = R.string.command_calendar;
-    @ArrayRes
-    public static final int ALIASES = R.array.aliases_calendar;
 
     public static Yielder yielder() {
-        return new Yielder(true, Calendar::new, ENTRY, NAME, ALIASES);
+        return new Yielder(CoreEntry.CALENDAR, true);
     }
 
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, makeIntent());
     }
 
-    private Calendar(AssistActivity act) {
-        super(act, NAME,
-              R.string.instruction_calendar,
-              R.drawable.ic_calendar,
-              R.string.summary_calendar,
-              R.string.manual_calendar,
-              R.string.data_hint_calendar);
+    /*internal*/ Calendar(AssistActivity act) {
+        super(act, CoreEntry.CALENDAR, R.string.data_hint_calendar);
     }
 
     private FieldToggle mLocationToggle = null;
@@ -124,7 +112,7 @@ public final class Calendar extends CoreDataCommand {
         case 1 -> {}
         case 2 -> {
             titleAndDate = nameAndTime[0];
-            long[] times = Time.parseDateAndTimes(nameAndTime[1], NAME);
+            long[] times = Time.parseDateAndTimes(nameAndTime[1], CoreEntry.CALENDAR.name);
             intent.putExtra(EXTRA_EVENT_BEGIN_TIME, times[0]);
             if (times[1] != 0L) {
                 intent.putExtra(EXTRA_EVENT_END_TIME, times[1]);

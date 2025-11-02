@@ -2,9 +2,6 @@ package net.emilla.command.core;
 
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.ArrayRes;
-import androidx.annotation.StringRes;
-
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.lang.Lang;
@@ -15,26 +12,17 @@ import java.util.Random;
 public final class Roll extends CoreCommand {
 
     public static final String ENTRY = "roll";
-    @StringRes
-    public static final int NAME = R.string.command_roll;
-    @ArrayRes
-    public static final int ALIASES = R.array.aliases_roll;
 
     public static Yielder yielder() {
-        return new Yielder(true, Roll::new, ENTRY, NAME, ALIASES);
+        return new Yielder(CoreEntry.ROLL, true);
     }
 
     public static boolean possible() {
         return true;
     }
 
-    private Roll(AssistActivity act) {
-        super(act, NAME,
-              R.string.instruction_roll,
-              R.drawable.ic_roll,
-              R.string.summary_roll,
-              R.string.manual_roll,
-              EditorInfo.IME_ACTION_DONE);
+    /*internal*/ Roll(AssistActivity act) {
+        super(act, CoreEntry.ROLL, EditorInfo.IME_ACTION_DONE);
     }
 
     @Override
@@ -45,7 +33,7 @@ public final class Roll extends CoreCommand {
 
     @Override
     protected void run(String roll) {
-        Dices dices = Lang.dices(roll, NAME);
+        Dices dices = Lang.dices(roll, CoreEntry.ROLL.name);
         var rand = new Random();
         giveText(String.valueOf(dices.roll(rand)));
     }

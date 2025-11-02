@@ -2,35 +2,23 @@ package net.emilla.command.core;
 
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.ArrayRes;
-import androidx.annotation.StringRes;
-
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 
 public final class Setting extends CoreCommand {
 
     public static final String ENTRY = "setting";
-    @StringRes
-    public static final int NAME = R.string.command_setting;
-    @ArrayRes
-    public static final int ALIASES = R.array.aliases_setting;
 
     public static Yielder yielder() {
-        return new Yielder(true, Setting::new, ENTRY, NAME, ALIASES);
+        return new Yielder(CoreEntry.SETTING, true);
     }
 
     public static boolean possible() {
         return true;
     }
 
-    private Setting(AssistActivity act) {
-        super(act, NAME,
-              R.string.instruction_setting,
-              R.drawable.ic_settings,
-              R.string.summary_setting,
-              R.string.manual_setting,
-              EditorInfo.IME_ACTION_DONE);
+    /*internal*/ Setting(AssistActivity act) {
+        super(act, CoreEntry.SETTING, EditorInfo.IME_ACTION_DONE);
     }
 
     @Override
