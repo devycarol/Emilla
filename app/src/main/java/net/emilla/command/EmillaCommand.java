@@ -7,7 +7,6 @@ import android.app.Activity;
 import android.app.Notification;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -50,7 +49,12 @@ import java.util.Set;
 
 public abstract class EmillaCommand {
 
-    private static CoreCommand.Yielder[] coreYielders() {
+    public static CommandMap map(
+        SharedPreferences prefs,
+        Resources res,
+        PackageManager pm,
+        AppList appList
+    ) {
         CoreEntry[] coreEntries = CoreEntry.values();
 
         int coreCount = coreEntries.length;
@@ -60,21 +64,13 @@ public abstract class EmillaCommand {
             coreYielders[i] = coreEntries[i].yielder();
         }
 
-        return coreYielders;
-    }
-
-    public static CommandMap map(
-        SharedPreferences prefs,
-        Resources res,
-        PackageManager pm,
-        AppList appList
-    ) {
-        CoreCommand.Yielder[] coreYielders = coreYielders();
-
         var map = new CommandMap(SettingVals.defaultCommand(prefs));
 
         for (CoreCommand.Yielder yielder : coreYielders) {
-            if (yielder != null && yielder.enabled(pm, prefs)) {
+            if (yielder == null) continue;
+            // Todo: no yielder should be null once all commands are implemented
+
+            if (yielder.enabled(pm, prefs)) {
                 map.put(yielder.name(res), yielder);
 
                 Set<String> aliases = yielder.aliases(prefs, res);
@@ -151,7 +147,11 @@ public abstract class EmillaCommand {
         this.imeAction = imeAction;
     }
 
-    final EmillaCommand instruct(@Nullable String instruction) {
+    protected EmillaCommand(AssistActivity act, CoreEntry coreEntry, int imeAction) {
+        this(act, coreEntry.params(), coreEntry.summary, coreEntry.manual, imeAction);
+    }
+
+    /*internal*/ final EmillaCommand instruct(@Nullable String instruction) {
         if (!Objects.equals(mInstruction, instruction)) {
             // we don't assume this is true because input editor bugs may cause onTextChanged() to
             // be called repeatedly for the same text.
@@ -413,27 +413,6 @@ public abstract class EmillaCommand {
     ///
     /// @return true if the command uses an app's icon, false if it just uses clip art.
     protected abstract boolean usesAppIcon();
-
-    protected interface Params {
-
-        /// The command's name in Title Case.
-        ///
-        /// @param res can be used to retrieve the name from string resources.
-        /// @return the name of the command.
-        String name(Resources res);
-        /// The command's title as it should appear in the assistant's action-bar. Usually, this
-        /// should be the command name followed by a brief description of what it takes as input.
-        ///
-        /// @param res can be used to retrieve the title from string resources.
-        /// @return the command's slightly detailed title.
-        CharSequence title(Resources res);
-
-        /// The command's icon for the submit button.
-        ///
-        /// @param ctx can be used to retrieve the icon from drawable resources.
-        /// @return the command's icon drawable.
-        Drawable icon(Context ctx);
-    }
 
     /// Runs the command.
     protected abstract void run();

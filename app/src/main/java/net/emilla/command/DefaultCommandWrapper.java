@@ -68,9 +68,8 @@ public final class DefaultCommandWrapper extends EmillaCommand {
     private final EmillaCommand mCmd; // Todo: allow app and data commands
 
     private DefaultCommandWrapper(AssistActivity act, EmillaCommand cmd) {
-        super(act, new DefaultWrapperParams(cmd),
-              cmd.summary, cmd.manual, cmd.imeAction
-        );
+        super(act, new DefaultWrapperParams(cmd), cmd.summary, cmd.manual, cmd.imeAction);
+
         mCmd = cmd;
     }
 

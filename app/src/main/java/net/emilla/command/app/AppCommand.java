@@ -14,6 +14,7 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.apps.AppEntry;
 import net.emilla.command.CommandYielder;
 import net.emilla.command.EmillaCommand;
+import net.emilla.command.Params;
 import net.emilla.config.Aliases;
 import net.emilla.lang.Lang;
 

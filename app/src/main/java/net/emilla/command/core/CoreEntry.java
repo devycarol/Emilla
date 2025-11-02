@@ -517,6 +517,17 @@ public enum CoreEntry {
         this.isImplemented = isImplemented;
     }
 
+    @Nullable
+    public abstract CoreCommand.Yielder yielder();
+    public abstract boolean isPossible(PackageManager pm);
+    // todo: be more granular about deactivating certain command elements based on which intents
+    //  are/n't doable. currently these methods are generally permissive if just one of their
+    //  intents is doable.
+
+    public final CoreParams params() {
+        return new CoreParams(name, instruction, icon);
+    }
+
     public static CoreEntry of(String entry) {
         return switch (entry) {
             case Call.ENTRY -> CALL;
@@ -557,12 +568,5 @@ public enum CoreEntry {
             default -> throw new IllegalArgumentException("Invalid command entry");
         };
     }
-
-    @Nullable
-    public abstract CoreCommand.Yielder yielder();
-    public abstract boolean isPossible(PackageManager pm);
-    // todo: be more granular about deactivating certain command elements based on which intents
-    //  are/n't doable. currently these methods are generally permissive if just one of their
-    //  intents is doable.
 
 }

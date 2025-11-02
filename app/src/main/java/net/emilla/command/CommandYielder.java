@@ -23,7 +23,7 @@ public abstract class CommandYielder implements TrieMap.Value<CommandYielder> {
 
     protected CommandYielder() {}
 
-    final EmillaCommand command(AssistActivity act) {
+    /*internal*/ final EmillaCommand command(AssistActivity act) {
         return mCommand == null ? mCommand = makeCommand(act) : mCommand;
     }
 
@@ -33,7 +33,7 @@ public abstract class CommandYielder implements TrieMap.Value<CommandYielder> {
     /// @param commandPhrase determines substring of the full command to use as the command
     /// instruction, upon having its position set by the TrieMap's `get()` method.
     /// @return the command, with instruction text from `commandPhrase`.
-    final EmillaCommand command(AssistActivity act, Words commandPhrase) {
+    /*internal*/ final EmillaCommand command(AssistActivity act, Words commandPhrase) {
         EmillaCommand command = mCommand == null ? mCommand = makeCommand(act) : mCommand;
         if (!isPrefixable()) return command;
 

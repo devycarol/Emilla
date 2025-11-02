@@ -8,7 +8,7 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.command.core.CoreCommand.CoreParams;
+import net.emilla.command.core.CoreParams;
 import net.emilla.util.Dialogs;
 
 public final class DuplicateCommand extends EmillaCommand implements DataCommand {
@@ -55,13 +55,18 @@ public final class DuplicateCommand extends EmillaCommand implements DataCommand
             EditorInfo.IME_ACTION_NEXT
         );
 
-        mLabels = new String[cmds.length];
+        int cmdCount = cmds.length;
+        mLabels = new String[cmdCount];
         mCommands = cmds;
+
         boolean usesData = false;
-        for (int i = 0; i < cmds.length; ++i) {
-            if (!usesData && cmds[i].usesData()) usesData = true;
+        for (int i = 0; i < cmdCount; ++i) {
+            if (!usesData && cmds[i].usesData()) {
+                usesData = true;
+            }
             mLabels[i] = cmds[i].dupeLabel();
         }
+
         mUsesData = usesData;
     }
 
@@ -103,4 +108,5 @@ public final class DuplicateCommand extends EmillaCommand implements DataCommand
     private void chooseCommand(DialogInterface.OnClickListener onChoose) {
         offerDialog(Dialogs.list(this.activity, R.string.dialog_command, mLabels, onChoose));
     }
+
 }
