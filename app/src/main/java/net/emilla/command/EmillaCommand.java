@@ -74,7 +74,7 @@ public abstract class EmillaCommand {
         var map = new CommandMap(SettingVals.defaultCommand(prefs));
 
         for (CoreCommand.Yielder yielder : coreYielders) {
-            if (yielder.enabled(pm, prefs)) {
+            if (yielder != null && yielder.enabled(pm, prefs)) {
                 map.put(yielder.name(res), yielder);
 
                 Set<String> aliases = yielder.aliases(prefs, res);
