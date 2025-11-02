@@ -6,22 +6,23 @@ import android.content.res.Resources;
 import androidx.annotation.ArrayRes;
 import androidx.annotation.Nullable;
 
-import net.emilla.apps.AppEntry;
+import net.emilla.command.app.AppEntry;
+import net.emilla.command.app.AppProperties;
 
 import java.util.Set;
 
 public final class Aliases {
 
     @Nullable
-    public static Set<String> appSet(
-        SharedPreferences prefs,
-        Resources res,
-        AppEntry app
-    ) {
-        @ArrayRes int setId = app.aliases();
+    public static Set<String> appSet(SharedPreferences prefs, Resources res, AppEntry app) {
         String entry = app.entry();
-        return setId == 0 ? prefs.getStringSet(setKey(entry), null)
-                          : coreSet(prefs, res, entry, setId);
+
+        AppProperties properties = app.properties;
+        if (properties != null) {
+            return coreSet(prefs, res, entry, properties.aliases);
+        }
+
+        return prefs.getStringSet(setKey(entry), null);
     }
 
     @Nullable
@@ -31,8 +32,10 @@ public final class Aliases {
         String entry,
         @ArrayRes int setId
     ) {
-        Set<String> set = Set.of(res.getStringArray(setId));
-        set = prefs.getStringSet(setKey(entry), set);
+        Set<String> set = prefs.getStringSet(
+            setKey(entry),
+            Set.of(res.getStringArray(setId))
+        );
         return set.isEmpty() ? null : set;
     }
 
@@ -45,4 +48,5 @@ public final class Aliases {
     }
 
     private Aliases() {}
+
 }

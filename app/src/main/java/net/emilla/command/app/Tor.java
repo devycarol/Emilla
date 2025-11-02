@@ -1,27 +1,15 @@
 package net.emilla.command.app;
 
-import androidx.annotation.ArrayRes;
-import androidx.annotation.StringRes;
-
-import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.apps.AppActions;
-import net.emilla.apps.AppProperties;
 
-public final class Tor extends AppCommand {
+/*internal*/ final class Tor {
 
     public static final String PKG = "org.torproject.torbrowser";
-    @ArrayRes
-    private static final int ALIASES = R.array.aliases_tor;
-    @StringRes
-    private static final int SUMMARY = R.string.summary_web;
 
-    public static AppProperties meta() {
-        return AppProperties.suppressiveFree(ALIASES, SUMMARY, AppActions.FLAG_SEND | AppActions.FLAG_SEARCH);
-        // search/send intents are broken.
+    /*internal*/ static AppCommand instance(AssistActivity act, AppEntry appEntry) {
+        return new AppCommand(act, appEntry);
     }
 
-    public Tor(AssistActivity act, Yielder info) {
-        super(act, info);
-    }
+    private Tor() {}
+
 }

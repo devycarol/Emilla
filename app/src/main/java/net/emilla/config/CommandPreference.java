@@ -6,13 +6,13 @@ import android.util.AttributeSet;
 import android.widget.CompoundButton;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.preference.EditTextPreference;
 import androidx.preference.PreferenceViewHolder;
 
 import net.emilla.R;
-import net.emilla.apps.AppEntry;
+import net.emilla.command.app.AppEntry;
+import net.emilla.command.app.AppProperties;
 
 import java.util.Objects;
 
@@ -40,9 +40,13 @@ public final class CommandPreference extends EditTextPreference {
         mEnabledKey = SettingVals.appEnabledKey(app.pkg, app.cls);
 
         setTitle(app.label);
-        @StringRes int summary = app.summary();
-        if (summary != 0) setSummary(summary);
-        setIcon(app.icon(ctx.getPackageManager()));
+
+        AppProperties properties = app.properties;
+        if (properties != null) {
+            setSummary(properties.summary);
+        }
+
+        setIcon(app.icon(ctx));
     }
 
     private boolean mChecked = false;
@@ -92,4 +96,5 @@ public final class CommandPreference extends EditTextPreference {
     public boolean shouldDisableDependents() {
         return !mChecked || !isEnabled();
     }
+
 }

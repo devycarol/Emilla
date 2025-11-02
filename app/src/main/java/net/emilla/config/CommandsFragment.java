@@ -13,8 +13,8 @@ import androidx.preference.PreferenceCategory;
 
 import net.emilla.R;
 import net.emilla.activity.EmillaActivity;
-import net.emilla.apps.AppEntry;
 import net.emilla.apps.AppList;
+import net.emilla.command.app.AppEntry;
 import net.emilla.command.core.CoreEntry;
 
 import java.util.ArrayList;
@@ -169,4 +169,5 @@ public final class CommandsFragment extends EmillaSettingsFragment {
 
         return null;
     }
+
 }

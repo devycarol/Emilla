@@ -2,16 +2,12 @@ package net.emilla.command.app;
 
 import android.view.inputmethod.EditorInfo;
 
-import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 
-/*internal*/ abstract class VideoSearchBySend extends AppSend {
+/*internal*/ final class VideoSearchBySend extends AppSend {
 
-    /*internal*/ VideoSearchBySend(AssistActivity act, Yielder info) {
-        super(act, info,
-              R.string.instruction_video,
-              R.string.summary_video,
-              R.string.manual_app_send,
-              EditorInfo.IME_ACTION_SEARCH);
+    /*internal*/ VideoSearchBySend(AssistActivity act, AppEntry appEntry) {
+        super(act, appEntry, EditorInfo.IME_ACTION_SEARCH);
     }
+
 }

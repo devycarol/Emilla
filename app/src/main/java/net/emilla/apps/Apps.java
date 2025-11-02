@@ -23,6 +23,7 @@ import androidx.annotation.RequiresApi;
 
 import net.emilla.BuildConfig;
 import net.emilla.activity.EmillaActivity;
+import net.emilla.command.app.AppEntry;
 
 import java.util.List;
 
@@ -178,4 +179,5 @@ public final class Apps {
     }
 
     private Apps() {}
+
 }

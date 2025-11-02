@@ -4,14 +4,12 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.ArrayRes;
 import androidx.annotation.CallSuper;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.apps.AppProperties;
 import net.emilla.apps.TaskerIntent;
 import net.emilla.command.ActionMap;
 import net.emilla.command.DataCommand;
@@ -23,17 +21,9 @@ import net.emilla.util.Strings;
 import java.util.Comparator;
 import java.util.TreeSet;
 
-public final class Tasker extends AppCommand implements DataCommand {
+/*internal*/ final class Tasker extends AppCommand implements DataCommand {
 
     public static final String PKG = TaskerIntent.TASKER_PACKAGE_MARKET;
-    @ArrayRes
-    private static final int ALIASES = R.array.aliases_tasker;
-    @StringRes
-    private static final int SUMMARY = R.string.summary_app_tasker;
-
-    public static AppProperties meta() {
-        return AppProperties.ordinary(ALIASES, SUMMARY);
-    }
 
     @Override
     public boolean usesData() {
@@ -54,11 +44,8 @@ public final class Tasker extends AppCommand implements DataCommand {
 
     private ActionMap<Action> mActionMap = null;
 
-    public Tasker(AssistActivity act, Yielder info) {
-        super(act, new InstructyParams(info, R.string.instruction_app_tasker),
-              R.string.summary_app_tasker,
-              R.string.manual_app_tasker,
-              EditorInfo.IME_ACTION_NEXT);
+    /*internal*/ Tasker(AssistActivity act, AppEntry appEntry) {
+        super(act, appEntry, EditorInfo.IME_ACTION_NEXT);
     }
 
     @Override @CallSuper
@@ -110,11 +97,16 @@ public final class Tasker extends AppCommand implements DataCommand {
     private void trySearchRun(String task, @Nullable String params) {
         switch (TaskerIntent.testStatus(this.activity)) {
         case OK -> searchRun(task, params);
-        case NOT_ENABLED -> failDialog(R.string.error_tasker_not_enabled,
-                R.string.dlg_yes_tasker_open, (dlg, which) -> offerApp(pApp.launchIntent(), true));
-        case NO_ACCESS -> failDialog(R.string.error_tasker_blocked,
-                R.string.dlg_yes_tasker_external_access_settings,
-                (dlg, which) -> offerApp(TaskerIntent.getExternalAccessPrefsIntent(), false));
+        case NOT_ENABLED -> failDialog(
+            R.string.error_tasker_not_enabled,
+            R.string.dlg_yes_tasker_open,
+            (dlg, which) -> offerApp(this.appEntry.launchIntent(), true)
+        );
+        case NO_ACCESS -> failDialog(
+            R.string.error_tasker_blocked,
+            R.string.dlg_yes_tasker_external_access_settings,
+            (dlg, which) -> offerApp(TaskerIntent.getExternalAccessPrefsIntent(), false)
+        );
         case NO_PERMISSION -> Permissions.taskerFlow(this.activity, () -> trySearchRun(task, params));
         case NO_RECEIVER -> failMessage(R.string.error_tasker_no_receiver);
         }
@@ -204,4 +196,5 @@ public final class Tasker extends AppCommand implements DataCommand {
         }
         giveBroadcast(intent);
     }
+
 }

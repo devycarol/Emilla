@@ -299,6 +299,7 @@
     </string-array>
     <string-array name="subcmd_search">
         <item>search</item>
+        <!--TODO: AppSearch depends on this being lowercase. This should *not* be the case.-->
         <item>srch</item>
         <item>find</item>
     </string-array>

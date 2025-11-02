@@ -1,27 +1,15 @@
 package net.emilla.command.app;
 
-import androidx.annotation.ArrayRes;
-import androidx.annotation.StringRes;
-
-import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.apps.AppProperties;
 
-public final class Discord extends AppSend {
+/*internal*/ final class Discord {
 
     public static final String PKG = "com.discord";
-    @ArrayRes
-    private static final int ALIASES = R.array.aliases_discord;
-    @StringRes
-    private static final int SUMMARY = R.string.summary_messaging;
 
-    public static AppProperties meta() {
-        return AppProperties.ordinary(ALIASES, SUMMARY);
+    /*internal*/ static AppSend instance(AssistActivity act, AppEntry appEntry) {
+        return new AppSend(act, appEntry);
     }
 
-    public Discord(AssistActivity act, Yielder info) {
-        super(act, info,
-              R.string.instruction_message,
-              R.string.summary_messaging);
-    }
+    private Discord() {}
+
 }

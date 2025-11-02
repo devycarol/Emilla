@@ -13,26 +13,13 @@ import net.emilla.command.DataCommand;
     @StringRes
     private final int mHint;
 
-    /*internal*/ AppSendData(AssistActivity act, Yielder info, @StringRes int hint) {
-        super(act, info,
-              R.string.summary_app_send,
-              R.string.manual_app_send_data,
-              EditorInfo.IME_ACTION_NEXT);
-        mHint = hint;
+    /*internal*/ AppSendData(AssistActivity act, AppEntry appEntry) {
+        this(act, appEntry, R.string.data_hint_text);
     }
 
-    protected AppSendData(
-        AssistActivity act,
-        Yielder info,
-        @StringRes int instruction,
-        @StringRes int summary,
-        @StringRes int hint
-    ) {
-        super(act, info,
-              instruction,
-              summary,
-              R.string.manual_app_send_data,
-              EditorInfo.IME_ACTION_NEXT);
+    /*internal*/ AppSendData(AssistActivity act, AppEntry appEntry, @StringRes int hint) {
+        super(act, appEntry, EditorInfo.IME_ACTION_NEXT);
+
         mHint = hint;
     }
 
@@ -63,4 +50,5 @@ import net.emilla.command.DataCommand;
             runWithData(data);
         }
     }
+
 }

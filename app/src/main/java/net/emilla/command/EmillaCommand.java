@@ -25,10 +25,9 @@ import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.action.QuickAction;
 import net.emilla.activity.AssistActivity;
-import net.emilla.apps.AppEntry;
 import net.emilla.apps.AppList;
 import net.emilla.chime.Chime;
-import net.emilla.command.app.AppCommand;
+import net.emilla.command.app.AppEntry;
 import net.emilla.command.core.CoreCommand;
 import net.emilla.command.core.CoreEntry;
 import net.emilla.config.SettingVals;
@@ -80,14 +79,15 @@ public abstract class EmillaCommand {
         }
 
         for (AppEntry app : appList) {
-            if (app.commandEnabled(prefs)) {
+            if (app.isEnabled(prefs)) {
                 // todo: edge case where a mapped app is uninstalled during the activity lifecycle
-                var yielder = new AppCommand.Yielder(app);
-                map.put(yielder.name(), yielder);
+                map.put(app.label, app);
 
-                Set<String> aliases = yielder.aliases(prefs, res);
+                Set<String> aliases = app.aliases(prefs, res);
                 if (aliases == null) continue;
-                for (String alias : aliases) map.put(alias, yielder);
+                for (String alias : aliases) {
+                    map.put(alias, app);
+                }
             }
         }
 
@@ -149,6 +149,10 @@ public abstract class EmillaCommand {
 
     protected EmillaCommand(AssistActivity act, CoreEntry coreEntry, int imeAction) {
         this(act, coreEntry.params(), coreEntry.summary, coreEntry.manual, imeAction);
+    }
+
+    protected EmillaCommand(AssistActivity act, AppEntry appEntry, int imeAction) {
+        this(act, appEntry, appEntry.summary(), appEntry.actions.manual(), imeAction);
     }
 
     /*internal*/ final EmillaCommand instruct(@Nullable String instruction) {
@@ -420,4 +424,5 @@ public abstract class EmillaCommand {
     /// @param instruction is provided after in the command field after the command's name. It's
     /// always space-trimmed and should remain as such.
     protected abstract void run(String instruction);
+
 }

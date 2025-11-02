@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
+import net.emilla.command.app.AppEntry;
 import net.emilla.struct.sort.SearchResult;
 import net.emilla.struct.sort.SearchableArray;
 
@@ -42,4 +43,5 @@ public final class AppList implements Iterable<AppEntry> {
     public Iterator<AppEntry> iterator() {
         return mApps.iterator();
     }
+
 }
