@@ -30,6 +30,7 @@ import java.util.Set;
 
 public final class SettingVals {
 
+    public static final String DEFAULT_COMMAND = "default_command";
     public static final String CHIMER = "sound_set";
 
     public static final String ALIASES_CUSTOM = "aliases_custom";
@@ -74,7 +75,7 @@ public final class SettingVals {
     public static DefaultCommandWrapperYielder defaultCommand(SharedPreferences prefs) {
         // Todo: allow apps and customs. Make sure to fall back to a core if the app is uninstalled
         //  or the custom is deleted.
-        String entry = prefs.getString("default_command", "web");
+        String entry = prefs.getString(DEFAULT_COMMAND, "web");
         return new DefaultCommandWrapperYielder(CoreEntry.of(entry));
     }
 

@@ -21,6 +21,7 @@ import net.emilla.activity.EmillaActivity;
 import net.emilla.apps.Apps;
 import net.emilla.chime.Chime;
 import net.emilla.chime.Chimer;
+import net.emilla.command.core.CoreEntry;
 import net.emilla.lang.Lang;
 import net.emilla.result.ChimeSoundResult;
 import net.emilla.result.GetChimeSound;
@@ -68,6 +69,8 @@ public final class SettingsFragment extends EmillaSettingsFragment {
         mRes = getResources();
         mPm = mActivity.getPackageManager();
 
+        setupDefaultCommandPref();
+
         setupChimerPref();
         mUsingCustomSounds = SettingVals.chimerId(mPrefs).equals(Chimer.CUSTOM);
         setupCustomSoundPrefs(mUsingCustomSounds);
@@ -84,6 +87,13 @@ public final class SettingsFragment extends EmillaSettingsFragment {
         setupNotificationsPref();
         setupAccessibilityButtonPref();
         setupAppInfoPref();
+    }
+
+    private void setupDefaultCommandPref() {
+        ListPreference defaultCommand = preferenceOf(SettingVals.DEFAULT_COMMAND);
+        defaultCommand.setEntries(CoreEntry.entryNames(mRes));
+        defaultCommand.setEntryValues(CoreEntry.entryValues());
+        // todo: allow apps
     }
 
     private void setupChimerPref() {

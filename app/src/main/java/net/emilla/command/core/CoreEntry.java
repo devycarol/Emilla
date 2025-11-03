@@ -18,9 +18,26 @@ import net.emilla.config.Aliases;
 import net.emilla.config.SettingVals;
 import net.emilla.lang.Lang;
 
+import java.util.Arrays;
 import java.util.Set;
 
 public enum CoreEntry implements Params {
+    WEB(Web.ENTRY, Web::new, R.string.command_web, R.array.aliases_web, R.string.instruction_web, R.drawable.ic_web, R.string.summary_web, R.string.manual_web) {
+
+        @Override
+        public boolean isPossible(PackageManager pm) {
+            return Web.possible(pm);
+        }
+
+    },
+    LAUNCH(Launch.ENTRY, Launch::new, R.string.command_launch, R.array.aliases_launch, R.string.instruction_app, R.drawable.ic_launch, R.string.summary_launch, R.string.manual_launch) {
+
+        @Override
+        public boolean isPossible(PackageManager pm) {
+            return Launch.possible();
+        }
+
+    },
     CALL(Call.ENTRY, Call::new, R.string.command_call, R.array.aliases_call, R.string.instruction_phone, R.drawable.ic_call, R.string.summary_call, R.string.manual_call) {
 
         @Override
@@ -45,11 +62,27 @@ public enum CoreEntry implements Params {
         }
 
     },
-    EMAIL(Email.ENTRY, Email::new, R.string.command_email, R.array.aliases_email, R.string.instruction_email, R.drawable.ic_email, R.string.summary_email, R.string.manual_email) {
+    CONTACT(Contact.ENTRY, Contact::new, R.string.command_contact, R.array.aliases_contact, R.string.instruction_contact, R.drawable.ic_contact, R.string.summary_contact, R.string.manual_contact) {
 
         @Override
         public boolean isPossible(PackageManager pm) {
-            return Email.possible(pm);
+            return Contact.possible(pm);
+        }
+
+    },
+    PLAY(Play.ENTRY, Play::new, R.string.command_play, R.array.aliases_play, R.string.instruction_play, R.drawable.ic_play, R.string.summary_play, R.string.manual_play) {
+
+        @Override
+        public boolean isPossible(PackageManager pm) {
+            return Play.possible();
+        }
+
+    },
+    PAUSE(Pause.ENTRY, Pause::new, R.string.command_pause, R.array.aliases_pause, R.string.instruction_pause, R.drawable.ic_pause, R.string.summary_pause, R.string.manual_pause, false, true) {
+
+        @Override
+        public boolean isPossible(PackageManager pm) {
+            return Pause.possible();
         }
 
     },
@@ -61,43 +94,11 @@ public enum CoreEntry implements Params {
         }
 
     },
-    COPY(Copy.ENTRY, Copy::new, R.string.command_copy, R.array.aliases_copy, R.string.instruction_text, R.drawable.ic_copy, R.string.summary_copy, R.string.manual_copy) {
+    WEATHER(Weather.ENTRY, Weather::new, R.string.command_weather, R.array.aliases_weather, R.string.instruction_app, R.drawable.ic_weather, R.string.summary_weather, R.string.manual_weather) {
 
         @Override
         public boolean isPossible(PackageManager pm) {
-            return Copy.possible();
-        }
-
-    },
-    SNIPPETS(Snippets.ENTRY, Snippets::new, R.string.command_snippets, R.array.aliases_snippets, R.string.instruction_name_label, R.drawable.ic_snippets, R.string.summary_snippets, R.string.manual_snippets) {
-
-        @Override
-        public boolean isPossible(PackageManager pm) {
-            return Snippets.possible();
-        }
-
-    },
-    SHARE(Share.ENTRY, Share::new, R.string.command_share, R.array.aliases_share, R.string.instruction_app, R.drawable.ic_share, R.string.summary_share, R.string.manual_share) {
-
-        @Override
-        public boolean isPossible(PackageManager pm) {
-            return Share.possible(pm);
-        }
-
-    },
-    LAUNCH(Launch.ENTRY, Launch::new, R.string.command_launch, R.array.aliases_launch, R.string.instruction_app, R.drawable.ic_launch, R.string.summary_launch, R.string.manual_launch) {
-
-        @Override
-        public boolean isPossible(PackageManager pm) {
-            return Launch.possible();
-        }
-
-    },
-    SETTING(Setting.ENTRY, Setting::new, R.string.command_setting, R.array.aliases_setting, R.string.instruction_setting, R.drawable.ic_settings, R.string.summary_setting, R.string.manual_setting, true, false) {
-
-        @Override
-        public boolean isPossible(PackageManager pm) {
-            return false/*Setting.possible()*/;
+            return Weather.possible(pm);
         }
 
     },
@@ -117,19 +118,43 @@ public enum CoreEntry implements Params {
         }
 
     },
-    WEB(Web.ENTRY, Web::new, R.string.command_web, R.array.aliases_web, R.string.instruction_web, R.drawable.ic_web, R.string.summary_web, R.string.manual_web) {
-
-        @Override
-        public boolean isPossible(PackageManager pm) {
-            return Web.possible(pm);
-        }
-
-    },
     FIND(Find.ENTRY, Find::new, R.string.command_find, R.array.aliases_find, R.string.instruction_find, R.drawable.ic_find, R.string.summary_find, R.string.manual_find, true, false) {
 
         @Override
         public boolean isPossible(PackageManager pm) {
             return false/*Find.possible()*/;
+        }
+
+    },
+    EMAIL(Email.ENTRY, Email::new, R.string.command_email, R.array.aliases_email, R.string.instruction_email, R.drawable.ic_email, R.string.summary_email, R.string.manual_email) {
+
+        @Override
+        public boolean isPossible(PackageManager pm) {
+            return Email.possible(pm);
+        }
+
+    },
+    SHARE(Share.ENTRY, Share::new, R.string.command_share, R.array.aliases_share, R.string.instruction_app, R.drawable.ic_share, R.string.summary_share, R.string.manual_share) {
+
+        @Override
+        public boolean isPossible(PackageManager pm) {
+            return Share.possible(pm);
+        }
+
+    },
+    TORCH(Torch.ENTRY, Torch::new, R.string.command_torch, R.array.aliases_torch, R.string.instruction_torch, R.drawable.ic_torch, R.string.summary_torch, R.string.manual_torch, false, true) {
+
+        @Override
+        public boolean isPossible(PackageManager pm) {
+            return Torch.possible(pm);
+        }
+
+    },
+    CALCULATE(Calculate.ENTRY, Calculate::new, R.string.command_calculate, R.array.aliases_calculate, R.string.instruction_calculate, R.drawable.ic_calculate, R.string.summary_calculate, R.string.manual_calculate) {
+
+        @Override
+        public boolean isPossible(PackageManager pm) {
+            return Calculate.possible();
         }
 
     },
@@ -173,14 +198,6 @@ public enum CoreEntry implements Params {
         }
 
     },
-    CONTACT(Contact.ENTRY, Contact::new, R.string.command_contact, R.array.aliases_contact, R.string.instruction_contact, R.drawable.ic_contact, R.string.summary_contact, R.string.manual_contact) {
-
-        @Override
-        public boolean isPossible(PackageManager pm) {
-            return Contact.possible(pm);
-        }
-
-    },
     NOTIFY(Notify.ENTRY, Notify::new, R.string.command_notify, R.array.aliases_notify, R.string.instruction_title, R.drawable.ic_notify, R.string.summary_notify, R.string.manual_notify) {
 
         @Override
@@ -189,19 +206,27 @@ public enum CoreEntry implements Params {
         }
 
     },
-    CALCULATE(Calculate.ENTRY, Calculate::new, R.string.command_calculate, R.array.aliases_calculate, R.string.instruction_calculate, R.drawable.ic_calculate, R.string.summary_calculate, R.string.manual_calculate) {
+    COPY(Copy.ENTRY, Copy::new, R.string.command_copy, R.array.aliases_copy, R.string.instruction_text, R.drawable.ic_copy, R.string.summary_copy, R.string.manual_copy) {
 
         @Override
         public boolean isPossible(PackageManager pm) {
-            return Calculate.possible();
+            return Copy.possible();
         }
 
     },
-    RANDOM_NUMBER(RandomNumber.ENTRY, RandomNumber::new, R.string.command_random_number, R.array.aliases_random_number, R.string.instruction_text, R.drawable.ic_random_number, R.string.summary_random_number, R.string.manual_random_number) {
+    SNIPPETS(Snippets.ENTRY, Snippets::new, R.string.command_snippets, R.array.aliases_snippets, R.string.instruction_name_label, R.drawable.ic_snippets, R.string.summary_snippets, R.string.manual_snippets) {
 
         @Override
         public boolean isPossible(PackageManager pm) {
-            return RandomNumber.possible();
+            return Snippets.possible();
+        }
+
+    },
+    SETTING(Setting.ENTRY, Setting::new, R.string.command_setting, R.array.aliases_setting, R.string.instruction_setting, R.drawable.ic_settings, R.string.summary_setting, R.string.manual_setting, true, false) {
+
+        @Override
+        public boolean isPossible(PackageManager pm) {
+            return false/*Setting.possible()*/;
         }
 
     },
@@ -229,43 +254,11 @@ public enum CoreEntry implements Params {
         }
 
     },
-    BITS(Bits.ENTRY, Bits::new, R.string.command_bits, R.array.aliases_bits, R.string.instruction_calculate, R.drawable.ic_command, R.string.summary_bits, R.string.manual_bits) {
+    RANDOM_NUMBER(RandomNumber.ENTRY, RandomNumber::new, R.string.command_random_number, R.array.aliases_random_number, R.string.instruction_text, R.drawable.ic_random_number, R.string.summary_random_number, R.string.manual_random_number) {
 
         @Override
         public boolean isPossible(PackageManager pm) {
-            return Bits.possible();
-        }
-
-    },
-    WEATHER(Weather.ENTRY, Weather::new, R.string.command_weather, R.array.aliases_weather, R.string.instruction_app, R.drawable.ic_weather, R.string.summary_weather, R.string.manual_weather) {
-
-        @Override
-        public boolean isPossible(PackageManager pm) {
-            return Weather.possible(pm);
-        }
-
-    },
-    PLAY(Play.ENTRY, Play::new, R.string.command_play, R.array.aliases_play, R.string.instruction_play, R.drawable.ic_play, R.string.summary_play, R.string.manual_play) {
-
-        @Override
-        public boolean isPossible(PackageManager pm) {
-            return Play.possible();
-        }
-
-    },
-    PAUSE(Pause.ENTRY, Pause::new, R.string.command_pause, R.array.aliases_pause, R.string.instruction_pause, R.drawable.ic_pause, R.string.summary_pause, R.string.manual_pause, false, true) {
-
-        @Override
-        public boolean isPossible(PackageManager pm) {
-            return Pause.possible();
-        }
-
-    },
-    TORCH(Torch.ENTRY, Torch::new, R.string.command_torch, R.array.aliases_torch, R.string.instruction_torch, R.drawable.ic_torch, R.string.summary_torch, R.string.manual_torch, false, true) {
-
-        @Override
-        public boolean isPossible(PackageManager pm) {
-            return Torch.possible(pm);
+            return RandomNumber.possible();
         }
 
     },
@@ -298,6 +291,14 @@ public enum CoreEntry implements Params {
         @Override
         public boolean isPossible(PackageManager pm) {
             return Toast.possible();
+        }
+
+    },
+    BITS(Bits.ENTRY, Bits::new, R.string.command_bits, R.array.aliases_bits, R.string.instruction_calculate, R.drawable.ic_command, R.string.summary_bits, R.string.manual_bits) {
+
+        @Override
+        public boolean isPossible(PackageManager pm) {
+            return Bits.possible();
         }
 
     };
@@ -387,6 +388,20 @@ public enum CoreEntry implements Params {
     @Override
     public final Drawable icon(Context ctx) {
         return AppCompatResources.getDrawable(ctx, icon);
+    }
+
+    public static String[] entryNames(Resources res) {
+        return Arrays.stream(values())
+            .filter(coreEntry -> coreEntry.isImplemented)
+            .map(coreEntry -> coreEntry.name(res))
+            .toArray(String[]::new);
+    }
+
+    public static String[] entryValues() {
+        return Arrays.stream(values())
+            .filter(coreEntry -> coreEntry.isImplemented)
+            .map(coreEntry -> coreEntry.entry)
+            .toArray(String[]::new);
     }
 
     public static CoreEntry of(String entry) {

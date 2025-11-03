@@ -3,8 +3,6 @@
     <PreferenceCategory app:title="@string/header_general">
         <ListPreference
             app:defaultValue="web"
-            app:entries="@array/command_entries"
-            app:entryValues="@array/command_values"
             app:key="default_command"
             app:title="@string/command_default"
             app:useSimpleSummaryProvider="true" />

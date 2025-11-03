@@ -59,30 +59,33 @@ public final class CommandsFragment extends EmillaSettingsFragment {
     }
 
     private void setupCores() {
+        PreferenceCategory cores = preferenceOf("category_cores");
         for (var coreEntry : CoreEntry.values()) {
-            setupCorePref(coreEntry);
+            var corePref = new CommandPreference(mActivity, coreEntry);
+            cores.addPreference(corePref);
+            setupCorePref(coreEntry, corePref);
         }
     }
 
-    private void setupCorePref(CoreEntry coreEntry) {
+    private void setupCorePref(CoreEntry coreEntry, CommandPreference corePref) {
         String entry = coreEntry.entry;
         @ArrayRes int aliases = coreEntry.aliases;
 
         String enabledKey = SettingVals.commandEnabledKey(entry);
-        CommandPreference cmdPref = preferenceOf(Aliases.textKey(entry));
 
-        if (coreEntry.isImplemented && coreEntry.isPossible(mPm)) {
+        boolean isImplemented = coreEntry.isImplemented;
+        if (isImplemented && coreEntry.isPossible(mPm)) {
             if (!mPrefs.contains(enabledKey)) {
                 mPrefs.edit().putBoolean(enabledKey, true).apply();
                 // TODO: actually allow to toggle this setting.
             }
             Set<String> aliasSet = Aliases.coreSet(mPrefs, mRes, entry, aliases);
-            setupPref(cmdPref, aliasSet);
+            setupPref(corePref, aliasSet);
         } else {
             mPrefs.edit().putBoolean(enabledKey, false).apply();
-            cmdPref.setEnabled(false);
+            corePref.setEnabled(false);
 //            if (isImplemented) {
-//                cmdPref.setOnPreferenceClickListener(pref -> {
+//                corePref.setOnPreferenceClickListener(pref -> {
 //                    mActivity.toast(R.string.toast_command_unsupported);
 //                    /*Your device doesn\'t support this command.*/
 //                    // TODO: this doesn't work because it's EditTextPreference
@@ -91,7 +94,7 @@ public final class CommandsFragment extends EmillaSettingsFragment {
 //                    return false;
 //                });
 //            } else {
-//                cmdPref.setOnPreferenceClickListener(pref -> {
+//                corePref.setOnPreferenceClickListener(pref -> {
 //                    mActivity.toast("Coming soon!");
 //                    return false;
 //                });

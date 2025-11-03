@@ -12,6 +12,7 @@ import androidx.preference.PreferenceViewHolder;
 
 import net.emilla.R;
 import net.emilla.command.app.AppEntry;
+import net.emilla.command.core.CoreEntry;
 
 import java.util.Objects;
 
@@ -22,25 +23,36 @@ public final class CommandPreference extends EditTextPreference {
     private final String mEnabledKey;
 
     public CommandPreference(Context ctx, @Nullable AttributeSet attrs) {
-        super(ctx, attrs, R.attr.commandPreferenceStyle, 0);
-
-        String entry = getKey();
-        setKey(Aliases.textKey(entry));
-        setKey = Aliases.setKey(entry);
-        mEnabledKey = SettingVals.commandEnabledKey(entry);
+        this(ctx, attrs, null);
     }
 
-    /*internal*/ CommandPreference(Context ctx, AppEntry app) {
-        super(ctx, null, R.attr.commandPreferenceStyle, 0);
+    /*internal*/ CommandPreference(Context ctx, CoreEntry coreEntry) {
+        this(ctx, null, coreEntry.entry);
 
-        String entry = app.entry();
+        setTitle(coreEntry.name);
+        setSummary(coreEntry.summary);
+        setIcon(coreEntry.icon(ctx));
+    }
+
+    /*internal*/ CommandPreference(Context ctx, AppEntry appEntry) {
+        this(ctx, null, appEntry.entry());
+
+        setTitle(appEntry.label);
+        setSummary(appEntry.summary());
+        setIcon(appEntry.icon(ctx));
+    }
+
+    private CommandPreference(Context ctx, @Nullable AttributeSet attrs, @Nullable String entry) {
+        super(ctx, attrs, R.attr.commandPreferenceStyle, 0);
+
+        if (entry == null) {
+            entry = getKey();
+        }
+
         setKey(Aliases.textKey(entry));
         setKey = Aliases.setKey(entry);
-        mEnabledKey = SettingVals.appEnabledKey(app.pkg, app.cls);
 
-        setTitle(app.label);
-        setSummary(app.summary());
-        setIcon(app.icon(ctx));
+        mEnabledKey = SettingVals.commandEnabledKey(entry);
     }
 
     private boolean mChecked = false;
