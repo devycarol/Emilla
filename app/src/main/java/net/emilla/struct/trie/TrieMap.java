@@ -171,7 +171,7 @@ public abstract class TrieMap<K, V extends TrieMap.Value<V>> {
     ///
     /// @param phrase the value's prefix key, whose values will be used for retrieval.
     /// @param value the corresponding value to put in the trie.
-    public final void put(Phrase<K, ?> phrase, V value) {
+    public final void put(Phrase<? extends K, ?> phrase, V value) {
         TrieNode<K, V> current = mRoot;
 
         for (K item : phrase) {
@@ -232,7 +232,7 @@ public abstract class TrieMap<K, V extends TrieMap.Value<V>> {
     /// @param phrase phrase to query the trie for a mapped value.
     /// @return the value associated with `phrase`, or `null` if no value is found.
     @Nullable
-    public final V getExact(Phrase<K, ?> phrase) {
+    public final V getExact(Phrase<? extends K, ?> phrase) {
         TrieNode<K, V> current = mRoot;
         for (K item : phrase) {
             TrieNode<K, V> get = current.children().get(item);
@@ -274,7 +274,7 @@ public abstract class TrieMap<K, V extends TrieMap.Value<V>> {
     ///
     /// @param prefix phrase to determine if the trie contains it as a prefix.
     /// @return true if the prefix is part of an entry in the trie, false otherwise.
-    public final boolean containsPrefix(Phrase<K, ?> prefix) {
+    public final boolean containsPrefix(Phrase<? extends K, ?> prefix) {
         TrieNode<K, V> current = mRoot;
         for (K item : prefix) {
             TrieNode<K, V> get = current.children().get(item);

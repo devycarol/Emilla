@@ -39,7 +39,6 @@ import net.emilla.run.MessageFailure;
 import net.emilla.run.PingGift;
 import net.emilla.run.TextGift;
 import net.emilla.run.TimePickerOffering;
-import net.emilla.util.AppList;
 import net.emilla.util.Dialogs;
 
 import java.util.Objects;
@@ -51,7 +50,7 @@ public abstract class EmillaCommand {
         SharedPreferences prefs,
         Resources res,
         PackageManager pm,
-        AppList appList
+        Iterable<AppEntry> appList
     ) {
         var map = new CommandMap(SettingVals.defaultCommand(prefs));
 

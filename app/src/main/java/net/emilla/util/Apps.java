@@ -10,6 +10,7 @@ import android.net.Uri;
 
 import net.emilla.BuildConfig;
 import net.emilla.command.app.AppEntry;
+import net.emilla.struct.IndexedStruct;
 
 import java.util.List;
 
@@ -33,7 +34,7 @@ public final class Apps {
         return pm.resolveActivity(intent, 0) != null;
     }
 
-    public static String[] labels(AppList apps) {
+    public static String[] labels(IndexedStruct<AppEntry> apps) {
         var labels = new String[apps.size()];
         int i = 0;
         for (AppEntry app : apps) {

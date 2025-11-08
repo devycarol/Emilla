@@ -19,7 +19,7 @@ public final class FilesReceiver implements ResultReceiver {
         mCommandEntry = commandEntry;
     }
 
-    public void provide(List<Uri> attachments) {
+    public void provide(List<? extends Uri> attachments) {
         if (attachments.isEmpty()) return;
 
         ArrayList<Uri> attaches = mActivity.attachments(mCommandEntry);

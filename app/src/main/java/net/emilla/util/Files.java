@@ -57,7 +57,7 @@ public final class Files {
         /// @param fileUris files to get MIME types from.
         /// @return the union of all provided MIME types.
         @Deprecated
-        public static String of(String type, Iterable<Uri> fileUris, Context ctx) {
+        public static String of(String type, Iterable<? extends Uri> fileUris, Context ctx) {
             for (Uri fileUri : fileUris) {
                 type = union(type, of(fileUri, ctx));
                 if (type.equals("*/*")) return "*/*";

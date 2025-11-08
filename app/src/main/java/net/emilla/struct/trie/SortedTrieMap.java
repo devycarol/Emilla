@@ -29,7 +29,7 @@ public final class SortedTrieMap<K extends Comparable<K>, V extends TrieMap.Valu
     /// @return list of elements that start with `prefix` in sorted depth-first order, or `null` if
     /// no such values exist.
     @Nullable
-    public List<V> elementsWithPrefix(Phrase<K, ?> prefix) {
+    public List<V> elementsWithPrefix(Phrase<? extends K, ?> prefix) {
         TrieNode<K, V> current = mRoot;
         for (K item : prefix) {
             TrieNode<K, V> get = current.children().get(item);

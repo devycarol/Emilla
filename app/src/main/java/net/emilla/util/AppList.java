@@ -25,7 +25,7 @@ public final class AppList implements IndexedStruct<AppEntry> {
         this(Apps.resolveList(pm, filter), pm);
     }
 
-    private AppList(List<ResolveInfo> resolveInfos, PackageManager pm) {
+    private AppList(List<? extends ResolveInfo> resolveInfos, PackageManager pm) {
         mApps = new SearchableArray<AppEntry>(resolveInfos, info -> new AppEntry(pm, info));
     }
 

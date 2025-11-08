@@ -24,12 +24,12 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
         pData = newArray(initialCapacity);
     }
 
-    public SortedArray(Collection<E> c) {
+    public SortedArray(Collection<? extends E> c) {
         pData = newArray(c.size());
         for (E val : c) addInternal(val);
     }
 
-    public <T> SortedArray(Collection<T> c, Function<T, E> converter) {
+    public <T> SortedArray(Collection<T> c, Function<T, ? extends E> converter) {
         pData = newArray(c.size());
         for (T val : c) addInternal(converter.apply(val));
     }
@@ -150,7 +150,7 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
         return ~lo; // value not found.
     }
 
-    protected final int arbitraryIndexOf(Comparable<E> searcher) {
+    protected final int arbitraryIndexOf(Comparable<? super E> searcher) {
         int lo = 0;
         int hi = pSize - 1;
 

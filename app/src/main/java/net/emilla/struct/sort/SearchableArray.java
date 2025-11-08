@@ -11,11 +11,11 @@ public final class SearchableArray<E extends Searchable<E>> extends SortedArray<
         super(initialCapacity);
     }
 
-    public SearchableArray(Collection<E> c) {
+    public SearchableArray(Collection<? extends E> c) {
         super(c);
     }
 
-    public <T> SearchableArray(Collection<T> c, Function<T, E> converter) {
+    public <T> SearchableArray(Collection<T> c, Function<T, ? extends E> converter) {
         super(c, converter);
     }
 
