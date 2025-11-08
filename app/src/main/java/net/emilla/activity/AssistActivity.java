@@ -91,14 +91,10 @@ public final class AssistActivity extends EmillaActivity {
     private final ContactPhoneRetriever mContactPhoneRetriever = new ContactPhoneRetriever(this);
     private final ContactEmailRetriever mContactEmailRetriever = new ContactEmailRetriever(this);
     private final AppChoiceRetriever mAppChoiceRetriever = new AppChoiceRetriever(this);
-    private final PermissionRetriever mPermissionRetriever;
-    /*init*/ {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mPermissionRetriever = new PermissionRetriever(this);
-        } else {
-            mPermissionRetriever = null;
-        }
-    }
+    private final PermissionRetriever mPermissionRetriever
+        = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+            ? new PermissionRetriever(this)
+            : null;
 
     private LayoutInflater mInflater;
     private ActivityAssistBinding mBinding;
