@@ -208,6 +208,7 @@ public final class AssistActivity extends EmillaActivity {
 
         @Override
         public void afterTextChanged(Editable s) {}
+
     }
 
     private void updateDataAvailability(boolean available) {
@@ -426,8 +427,8 @@ public final class AssistActivity extends EmillaActivity {
         }
 
         switch (action) {
-            case ACTION_ASSIST -> acknowledgeAssistIntent(true);
-            case ACTION_VOICE_COMMAND -> mDoubleAssistAction.perform();
+        case ACTION_ASSIST -> acknowledgeAssistIntent(true);
+        case ACTION_VOICE_COMMAND -> mDoubleAssistAction.perform();
         }
     }
 
@@ -465,8 +466,9 @@ public final class AssistActivity extends EmillaActivity {
         case KEYCODE_BACK -> cancelIfWarranted(); // todo config? command history?
         case KEYCODE_MENU -> mMenuKeyAction.perform();
         case KEYCODE_SEARCH -> give(act -> {}); // todo config
-        default -> { return false; }
-        }
+        default -> {
+            return false;
+        }}
         return true;
     }
 
@@ -536,9 +538,7 @@ public final class AssistActivity extends EmillaActivity {
     }
 
     public void giveActionBox(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction()
-            .replace(R.id.action_box, fragment)
-            .commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.action_box, fragment).commit();
     }
 
     public void removeActionBox(Fragment fragment) {
@@ -650,9 +650,13 @@ public final class AssistActivity extends EmillaActivity {
     }
 
     private AlertDialog.Builder cancelDialog() {
-        return Dialogs.dual(this, R.string.exit, R.string.dlg_msg_exit, R.string.leave,
-                (dlg, which) -> cancel())
-                .setOnKeyListener((dlg, keyCode, event) -> {
+        return Dialogs.dual(
+            this,
+            R.string.exit,
+            R.string.dlg_msg_exit,
+            R.string.leave,
+            (dlg, which) -> cancel()
+        ).setOnKeyListener((dlg, keyCode, event) -> {
             if (keyCode == KEYCODE_BACK && event.getAction() == ACTION_UP) {
                 cancel();
                 return true;
