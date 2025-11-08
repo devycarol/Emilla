@@ -304,7 +304,7 @@ public enum CoreEntry implements Params {
     };
 
     public final String entry;
-    /*internal*/ final CoreMaker maker;
+    /*internal*/ final CoreMaker mMaker;
     @StringRes
     public final int name;
     @ArrayRes
@@ -346,7 +346,7 @@ public enum CoreEntry implements Params {
         boolean isImplemented
     ) {
         this.entry = entry;
-        this.maker = maker;
+        mMaker = maker;
         this.name = name;
         this.aliases = aliases;
         this.instruction = instruction;

@@ -19,7 +19,7 @@ import net.emilla.command.EmillaCommand;
 
     @Override
     protected EmillaCommand makeCommand(AssistActivity act) {
-        return mCoreEntry.maker.make(act);
+        return mCoreEntry.mMaker.make(act);
     }
 
 }
