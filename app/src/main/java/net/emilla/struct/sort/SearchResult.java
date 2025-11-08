@@ -4,6 +4,9 @@ import static net.emilla.BuildConfig.DEBUG;
 
 import androidx.annotation.Nullable;
 
+import java.util.Iterator;
+import java.util.stream.Stream;
+
 public final class SearchResult<E extends Searchable<E>>
     implements Searchable<SearchResult<E>>, FilterResult<E> {
 
@@ -36,6 +39,14 @@ public final class SearchResult<E extends Searchable<E>>
             mContainsWindow != null ? mContainsWindow.elementsContaining(prefixedSearch) : null;
 
         return new SearchResult<E>(prefixedSearch, newPrefixedWindow, newContainsWindow);
+    }
+
+    private int prefixedCount() {
+        return mPrefixedWindow != null ? mPrefixedWindow.size() : 0;
+    }
+
+    private int containsCount() {
+        return mContainsWindow != null ? mContainsWindow.size() : 0;
     }
 
     @Override
@@ -80,11 +91,23 @@ public final class SearchResult<E extends Searchable<E>>
         return size() == 0;
     }
 
-    private int prefixedCount() {
-        return mPrefixedWindow != null ? mPrefixedWindow.size() : 0;
+    @Override
+    public Stream<E> stream() {
+        if (mPrefixedWindow != null && mContainsWindow != null) {
+            return Stream.concat(mPrefixedWindow.stream(), mContainsWindow.stream());
+        }
+        if (mPrefixedWindow != null) {
+            return mPrefixedWindow.stream();
+        }
+        if (mContainsWindow != null) {
+            return mContainsWindow.stream();
+        }
+        return Stream.empty();
     }
 
-    private int containsCount() {
-        return mContainsWindow != null ? mContainsWindow.size() : 0;
+    @Override
+    public Iterator<E> iterator() {
+        return stream().iterator();
     }
+
 }

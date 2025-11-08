@@ -2,12 +2,20 @@ package net.emilla.struct.sort;
 
 import net.emilla.struct.IndexedStruct;
 
+import java.util.Iterator;
+import java.util.stream.Stream;
+
 public final class Unfilter<E> implements FilterResult<E> {
 
     private final IndexedStruct<E> mData;
 
     public Unfilter(IndexedStruct<E> data) {
         mData = data;
+    }
+
+    @Override
+    public boolean onePreferredMatch() {
+        return size() == 1;
     }
 
     @Override
@@ -26,7 +34,13 @@ public final class Unfilter<E> implements FilterResult<E> {
     }
 
     @Override
-    public boolean onePreferredMatch() {
-        return size() == 1;
+    public Stream<E> stream() {
+        return mData.stream();
     }
+
+    @Override
+    public Iterator<E> iterator() {
+        return mData.iterator();
+    }
+
 }

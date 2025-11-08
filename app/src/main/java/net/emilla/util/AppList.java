@@ -11,8 +11,9 @@ import net.emilla.struct.sort.SearchableArray;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Stream;
 
-public final class AppList implements Iterable<AppEntry>, IndexedStruct<AppEntry> {
+public final class AppList implements IndexedStruct<AppEntry> {
 
     private final SearchableArray<AppEntry> mApps;
 
@@ -45,6 +46,11 @@ public final class AppList implements Iterable<AppEntry>, IndexedStruct<AppEntry
     @Override
     public boolean isEmpty() {
         return mApps.isEmpty();
+    }
+
+    @Override
+    public Stream<AppEntry> stream() {
+        return mApps.stream();
     }
 
     @Override

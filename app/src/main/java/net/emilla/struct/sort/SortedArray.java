@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.stream.Stream;
 
 /// A simple growable array that sorts at insertion. This structure is not size-overflow safe!
 ///
@@ -161,22 +162,27 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
         return ~lo; // match not found.
     }
 
-    @Override
-    public int size() {
-        return pSize;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return pSize == 0;
-    }
-
-    public void trimToSize() {
+    public final void trimToSize() {
         pData = Arrays.copyOf(pData, pSize);
     }
 
     @Override
-    public Iterator<E> iterator() {
+    public final int size() {
+        return pSize;
+    }
+
+    @Override
+    public final boolean isEmpty() {
+        return pSize == 0;
+    }
+
+    @Override
+    public final Stream<E> stream() {
+        return Arrays.stream(pData, 0, pSize);
+    }
+
+    @Override
+    public final Iterator<E> iterator() {
         return new Iterator<E>() {
             private int pos = 0;
 
@@ -202,19 +208,30 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
         }
 
         @Override
-        public E get(int index) {
+        public final E get(int index) {
             return SortedArray.this.get(window.arrayIndex(index));
         }
 
         @Override
-        public int size() {
+        public final int size() {
             return window.size;
         }
 
         @Override
-        public boolean isEmpty() {
+        public final boolean isEmpty() {
             return window.isEmpty();
         }
+
+        @Override
+        public final Stream<E> stream() {
+            return Arrays.stream(pData, window.start, window.end);
+        }
+
+        @Override
+        public final Iterator<E> iterator() {
+            return stream().iterator();
+        }
+
     }
 
     public /*inner open*/ class SparseWindow implements IndexedStruct<E> {
@@ -287,18 +304,30 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
         }
 
         @Override
-        public E get(int index) {
+        public final E get(int index) {
             return pData[this.indices[index]];
         }
 
         @Override
-        public int size() {
+        public final int size() {
             return this.size;
         }
 
         @Override
-        public boolean isEmpty() {
+        public final boolean isEmpty() {
             return this.size == 0;
         }
+
+        @Override
+        public final Stream<E> stream() {
+            throw new RuntimeException(); // TODO
+        }
+
+        @Override
+        public final Iterator<E> iterator() {
+            return stream().iterator();
+        }
+
     }
+
 }

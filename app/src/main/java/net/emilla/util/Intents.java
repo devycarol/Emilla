@@ -108,27 +108,15 @@ public final class Intents {
     }
 
     public static Intent[] appLaunches(AppList appList) {
-        int appCount = appList.size();
-        var intents = new Intent[appCount];
-
-        for (int i = 0; i < appCount; ++i) {
-            AppEntry app = appList.get(i);
-            intents[i] = launchApp(app);
-        }
-
-        return intents;
+        return appList.stream()
+            .map(Intents::launchApp)
+            .toArray(Intent[]::new);
     }
 
     public static Intent[] appUninstalls(AppList appList, PackageManager pm) {
-        int appCount = appList.size();
-        var intents = new Intent[appCount];
-
-        for (int i = 0; i < appCount; ++i) {
-            AppEntry app = appList.get(i);
-            intents[i] = uninstallApp(app.pkg, pm);
-        }
-
-        return intents;
+        return appList.stream()
+            .map(appEntry -> uninstallApp(appEntry.pkg, pm))
+            .toArray(Intent[]::new);
     }
 
     public static Intent uninstallApp(String pkg, PackageManager pm) {
