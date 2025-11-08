@@ -7,8 +7,8 @@ import android.content.pm.PackageManager;
 import android.view.inputmethod.EditorInfo;
 
 import net.emilla.activity.AssistActivity;
-import net.emilla.apps.Apps;
 import net.emilla.config.SettingVals;
+import net.emilla.util.Apps;
 import net.emilla.util.SearchEngineParser;
 
 /*internal*/ final class Web extends CoreCommand {

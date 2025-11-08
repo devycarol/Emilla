@@ -8,7 +8,7 @@ import android.net.Uri;
 import android.view.inputmethod.EditorInfo;
 
 import net.emilla.activity.AssistActivity;
-import net.emilla.apps.Apps;
+import net.emilla.util.Apps;
 
 /*internal*/ final class Dial extends CoreCommand {
 

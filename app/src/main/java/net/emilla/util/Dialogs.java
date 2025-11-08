@@ -10,8 +10,6 @@ import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.apps.AppList;
-import net.emilla.apps.Apps;
 import net.emilla.run.AppSuccess;
 import net.emilla.run.MessageFailure;
 

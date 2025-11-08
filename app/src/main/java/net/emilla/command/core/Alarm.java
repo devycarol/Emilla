@@ -12,10 +12,10 @@ import android.content.pm.PackageManager;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.apps.Apps;
 import net.emilla.lang.Lang;
 import net.emilla.lang.date.HourMin;
 import net.emilla.lang.date.Weekdays;
+import net.emilla.util.Apps;
 
 /*internal*/ final class Alarm extends CoreDataCommand {
 

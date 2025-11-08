@@ -12,8 +12,8 @@ import net.emilla.R;
 import net.emilla.action.FileFetcher;
 import net.emilla.action.MediaFetcher;
 import net.emilla.activity.AssistActivity;
-import net.emilla.apps.Apps;
 import net.emilla.content.receive.AppChoiceReceiver;
+import net.emilla.util.Apps;
 import net.emilla.util.Files.MimeType;
 
 import java.util.ArrayList;

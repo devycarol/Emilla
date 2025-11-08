@@ -23,11 +23,11 @@ import androidx.loader.content.Loader;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.apps.Apps;
 import net.emilla.contact.ContactItemView;
 import net.emilla.contact.MultiSearch;
 import net.emilla.contact.adapter.ContactCursorAdapter;
 import net.emilla.content.receive.ContactReceiver;
+import net.emilla.util.Apps;
 import net.emilla.util.Permissions;
 
 public abstract class ContactsFragment<T> extends Fragment

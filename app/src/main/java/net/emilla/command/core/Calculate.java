@@ -6,9 +6,9 @@ import android.content.Intent;
 import android.view.inputmethod.EditorInfo;
 
 import net.emilla.activity.AssistActivity;
-import net.emilla.apps.Apps;
 import net.emilla.math.Calculator;
 import net.emilla.math.Maths;
+import net.emilla.util.Apps;
 
 /*internal*/ final class Calculate extends CategoryCommand {
 

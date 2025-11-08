@@ -5,7 +5,7 @@ import static android.content.Intent.EXTRA_TEXT;
 import android.view.inputmethod.EditorInfo;
 
 import net.emilla.activity.AssistActivity;
-import net.emilla.apps.Apps;
+import net.emilla.util.Apps;
 
 /*internal open*/ class AppSend extends AppCommand {
 

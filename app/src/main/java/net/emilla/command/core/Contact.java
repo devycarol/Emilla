@@ -13,11 +13,11 @@ import androidx.annotation.Nullable;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.apps.Apps;
 import net.emilla.command.ActionMap;
 import net.emilla.command.Subcommand;
 import net.emilla.contact.fragment.ContactCardsFragment;
 import net.emilla.content.receive.ContactCardReceiver;
+import net.emilla.util.Apps;
 import net.emilla.util.Dialogs;
 
 import java.util.List;

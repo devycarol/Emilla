@@ -10,13 +10,13 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.apps.TaskerIntent;
 import net.emilla.command.ActionMap;
 import net.emilla.command.DataCommand;
 import net.emilla.lang.Lines;
 import net.emilla.util.Dialogs;
 import net.emilla.util.Permissions;
 import net.emilla.util.Strings;
+import net.emilla.util.TaskerIntent;
 
 import java.util.Comparator;
 import java.util.TreeSet;

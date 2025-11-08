@@ -17,8 +17,8 @@ import net.emilla.action.field.FieldToggle;
 import net.emilla.action.field.LocationField;
 import net.emilla.action.field.UrlField;
 import net.emilla.activity.AssistActivity;
-import net.emilla.apps.Apps;
 import net.emilla.lang.date.Time;
+import net.emilla.util.Apps;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

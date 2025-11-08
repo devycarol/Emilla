@@ -7,7 +7,7 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.apps.Apps;
+import net.emilla.util.Apps;
 
 public final class AppActions {
 

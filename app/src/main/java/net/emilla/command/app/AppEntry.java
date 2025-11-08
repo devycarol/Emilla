@@ -15,7 +15,6 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.apps.Apps;
 import net.emilla.command.CommandYielder;
 import net.emilla.command.Params;
 import net.emilla.config.Aliases;
@@ -23,6 +22,7 @@ import net.emilla.config.SettingVals;
 import net.emilla.lang.Lang;
 import net.emilla.struct.IndexedStruct;
 import net.emilla.struct.sort.Searchable;
+import net.emilla.util.Apps;
 
 import java.util.Set;
 

@@ -11,9 +11,9 @@ import androidx.annotation.Nullable;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.apps.Apps;
 import net.emilla.contact.fragment.ContactPhonesFragment;
 import net.emilla.content.receive.PhoneReceiver;
+import net.emilla.util.Apps;
 import net.emilla.util.Contacts;
 import net.emilla.util.Dialogs;
 import net.emilla.util.Features;

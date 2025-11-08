@@ -18,7 +18,6 @@ import androidx.preference.Preference;
 import net.emilla.R;
 import net.emilla.action.QuickAction;
 import net.emilla.activity.EmillaActivity;
-import net.emilla.apps.Apps;
 import net.emilla.chime.Chime;
 import net.emilla.chime.Chimer;
 import net.emilla.command.core.CoreEntry;
@@ -26,6 +25,7 @@ import net.emilla.lang.Lang;
 import net.emilla.result.ChimeSoundResult;
 import net.emilla.result.GetChimeSound;
 import net.emilla.system.EmillaA11yService;
+import net.emilla.util.Apps;
 import net.emilla.util.Features;
 
 public final class SettingsFragment extends EmillaSettingsFragment {

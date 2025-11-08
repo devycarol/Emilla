@@ -10,8 +10,8 @@ import android.content.pm.PackageManager;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.apps.Apps;
 import net.emilla.lang.date.Time;
+import net.emilla.util.Apps;
 
 /*internal*/ final class Timer extends CoreDataCommand {
 

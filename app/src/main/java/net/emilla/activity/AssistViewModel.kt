@@ -8,11 +8,11 @@ import android.view.inputmethod.EditorInfo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
-import net.emilla.apps.AppList
 import net.emilla.chime.Chime
 import net.emilla.chime.Chime.START
 import net.emilla.chime.Chimer
 import net.emilla.config.SettingVals
+import net.emilla.util.AppList
 
 internal class AssistViewModel private constructor(private val appContext: Context) : ViewModel() {
 

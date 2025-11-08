@@ -6,7 +6,7 @@ import android.view.inputmethod.EditorInfo;
 import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.activity.AssistActivity;
-import net.emilla.apps.Apps;
+import net.emilla.util.Apps;
 
 /*internal*/ final class Info extends OpenCommand {
 

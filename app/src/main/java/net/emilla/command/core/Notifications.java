@@ -10,7 +10,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.activity.AssistActivity;
-import net.emilla.apps.Apps;
+import net.emilla.util.Apps;
 
 /*internal*/ final class Notifications extends OpenCommand {
 

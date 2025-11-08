@@ -13,9 +13,9 @@ import androidx.preference.PreferenceCategory;
 
 import net.emilla.R;
 import net.emilla.activity.EmillaActivity;
-import net.emilla.apps.AppList;
 import net.emilla.command.app.AppEntry;
 import net.emilla.command.core.CoreEntry;
+import net.emilla.util.AppList;
 
 import java.util.ArrayList;
 import java.util.HashSet;

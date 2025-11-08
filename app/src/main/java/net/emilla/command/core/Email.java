@@ -19,9 +19,9 @@ import net.emilla.action.MediaFetcher;
 import net.emilla.action.field.FieldToggle;
 import net.emilla.action.field.SubjectField;
 import net.emilla.activity.AssistActivity;
-import net.emilla.apps.Apps;
 import net.emilla.contact.fragment.ContactEmailsFragment;
 import net.emilla.content.receive.EmailReceiver;
+import net.emilla.util.Apps;
 
 import java.util.ArrayList;
 

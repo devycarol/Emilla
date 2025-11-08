@@ -25,7 +25,6 @@ import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.action.QuickAction;
 import net.emilla.activity.AssistActivity;
-import net.emilla.apps.AppList;
 import net.emilla.chime.Chime;
 import net.emilla.command.app.AppEntry;
 import net.emilla.command.core.CoreEntry;
@@ -40,6 +39,7 @@ import net.emilla.run.MessageFailure;
 import net.emilla.run.PingGift;
 import net.emilla.run.TextGift;
 import net.emilla.run.TimePickerOffering;
+import net.emilla.util.AppList;
 import net.emilla.util.Dialogs;
 
 import java.util.Objects;

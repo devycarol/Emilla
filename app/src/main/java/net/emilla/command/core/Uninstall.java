@@ -10,7 +10,7 @@ import android.view.inputmethod.EditorInfo;
 import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.activity.AssistActivity;
-import net.emilla.apps.Apps;
+import net.emilla.util.Apps;
 import net.emilla.util.Dialogs;
 
 /*internal*/ final class Uninstall extends OpenCommand {
