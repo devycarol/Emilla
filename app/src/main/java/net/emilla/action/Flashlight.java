@@ -42,9 +42,12 @@ public final class Flashlight implements LabeledQuickAction {
     }
 
     @Override
-    public void perform() { try {
-        TorchManager.toggle(mActivity, NAME);
-    } catch (EmillaException e) {
-        mActivity.fail(new MessageFailure(mActivity, e));
-    }}
+    public void perform() {
+        try {
+            TorchManager.toggle(mActivity, NAME);
+        } catch (EmillaException e) {
+            mActivity.fail(new MessageFailure(mActivity, e));
+        }
+    }
+
 }

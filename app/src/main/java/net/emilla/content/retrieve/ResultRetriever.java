@@ -42,11 +42,15 @@ import net.emilla.run.MessageFailure;
         return false;
     }
 
-    protected final void launch(@Nullable I input) { try {
-        mLauncher.launch(input);
-    } catch (ActivityNotFoundException e) {
-        this.activity.fail(new MessageFailure(this.activity, R.string.error, R.string.error_no_app));
-    }}
+    protected final void launch(@Nullable I input) {
+        try {
+            mLauncher.launch(input);
+        } catch (ActivityNotFoundException e) {
+            this.activity.fail(
+                new MessageFailure(this.activity, R.string.error, R.string.error_no_app)
+            );
+        }
+    }
 
     @Deprecated @Nullable
     protected /*open*/ C receiver() {
@@ -68,5 +72,7 @@ import net.emilla.run.MessageFailure;
         }
 
         protected abstract void onActivityResult(O output, @Nullable C receiver);
+
     }
+
 }

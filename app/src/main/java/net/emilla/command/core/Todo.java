@@ -81,26 +81,28 @@ import java.io.IOException;
         give(act -> {});
     }
 
-    private void todo(String task) { try {
-        ContentResolver cr = contentResolver();
+    private void todo(String task) {
+        try {
+            ContentResolver cr = contentResolver();
 
-        if (Files.endsWithNewline(cr, mUri)) {
-            task = '\n' + task + '\n';
-        } else {
-            task += '\n';
+            if (Files.endsWithNewline(cr, mUri)) {
+                task = '\n' + task + '\n';
+            } else {
+                task += '\n';
+            }
+
+            ParcelFileDescriptor pfd = cr.openFileDescriptor(mUri, "wa");
+            if (pfd == null) throw new FileNotFoundException();
+            var fos = new FileOutputStream(pfd.getFileDescriptor());
+
+            fos.write(task.getBytes());
+            fos.close();
+            pfd.close();
+        } catch (FileNotFoundException e) {
+            throw badCommand(R.string.error_cant_find_file);
+        } catch (IOException e) {
+            throw badCommand(R.string.error_cant_use_file);
         }
-
-        ParcelFileDescriptor pfd = cr.openFileDescriptor(mUri, "wa");
-        if (pfd == null) throw new FileNotFoundException();
-        var fos = new FileOutputStream(pfd.getFileDescriptor());
-
-        fos.write(task.getBytes());
-        fos.close();
-        pfd.close();
-    } catch (FileNotFoundException e) {
-        throw badCommand(R.string.error_cant_find_file);
-    } catch (IOException e) {
-        throw badCommand(R.string.error_cant_use_file);
-    }}
+    }
 
 }
