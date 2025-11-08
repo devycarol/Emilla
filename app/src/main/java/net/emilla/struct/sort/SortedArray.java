@@ -50,7 +50,7 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
     ///
     /// @param val value to insert.
     /// @return position the item was inserted at.
-    public int add(E val) {
+    public final int add(E val) {
         ensureCapacity();
         return addInternal(val);
     }
@@ -71,7 +71,7 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
     }
 
     @Override
-    public E get(int index) {
+    public final E get(int index) {
         if (index >= pSize) {
             throw new IndexOutOfBoundsException(
                 "Index " + index + " out of bounds for size " + pSize + '.'
@@ -80,18 +80,18 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
         return pData[index];
     }
 
-    public boolean contains(E val) {
+    public final boolean contains(E val) {
         return indexOf(val) >= 0;
     }
 
     @Nullable
-    public E retrieve(E val) {
+    public final E retrieve(E val) {
         int pos = indexOf(val);
         return pos >= 0 ? pData[pos] : null;
     }
 
     @Nullable
-    public IndexWindow replace(E val, E replacement) {
+    public final IndexWindow replace(E val, E replacement) {
         int pos = indexOf(val);
         if (pos < 0) return null;
 
@@ -113,7 +113,7 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
     /// @param val value to remove.
     /// @return the former position of the value, or -index - 1 of where the value would have been
     /// if the value wasn't found
-    public int remove(E val) {
+    public final int remove(E val) {
         int pos = indexOf(val);
 
         if (pos >= 0) {
@@ -146,7 +146,7 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
         return ~lo; // value not found.
     }
 
-    protected int arbitraryIndexOf(Comparable<E> searcher) {
+    protected final int arbitraryIndexOf(Comparable<E> searcher) {
         int lo = 0;
         int hi = pSize - 1;
 

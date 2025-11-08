@@ -125,7 +125,7 @@ public abstract class ContactsFragment<T> extends Fragment
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
+    public final Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
         Uri uri;
         String selection;
         String[] selectionArgs;

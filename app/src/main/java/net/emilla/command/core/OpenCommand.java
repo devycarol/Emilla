@@ -21,13 +21,13 @@ import net.emilla.util.Dialogs;
     protected AlertDialog.Builder appChooser = null;
 
     @Override @CallSuper
-    protected void onInit() {
+    protected final void onInit() {
         super.onInit();
         this.appChooser = makeChooser();
     }
 
     @Override @CallSuper
-    protected void onClean() {
+    protected final void onClean() {
         super.onClean();
         this.appChooser = null;
     }

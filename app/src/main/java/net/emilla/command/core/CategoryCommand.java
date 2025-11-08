@@ -21,7 +21,7 @@ import net.emilla.util.Intents;
     private AlertDialog.Builder mChooser = null;
 
     @Override @CallSuper
-    protected void onInit() {
+    protected final void onInit() {
         super.onInit();
 
         if (mAppList == null) {
@@ -36,7 +36,7 @@ import net.emilla.util.Intents;
     protected abstract Intent makeFilter();
 
     @Override @CallSuper
-    protected void onClean() {
+    protected final void onClean() {
         super.onClean();
 
         mAppList = null;
