@@ -63,7 +63,7 @@ public final class Apps {
     }
 
     public static Intent sendToApp(String pkg) {
-        return sendTask("text/plain").setPackage(pkg);
+        return sendTask(MimeTypes.PLAIN_TEXT).setPackage(pkg);
     }
 
     public static Intent sendMultipleTask(String type) {

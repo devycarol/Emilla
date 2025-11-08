@@ -18,6 +18,7 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.util.Apps;
 import net.emilla.util.Files;
+import net.emilla.util.MimeTypes;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -34,10 +35,11 @@ import java.io.IOException;
 
     private final File mFile = new File(Environment.getExternalStoragePublicDirectory(DIRECTORY_DOCUMENTS), "todo.txt"); // TODO: allow configurable path and don't require all files permission
     private final Uri mUri = FileProvider.getUriForFile(this.activity, Apps.MY_PKG + ".fileprovider", mFile);
-    private final Intent mViewIntent = new Intent(ACTION_VIEW).setDataAndType(mUri, "text/plain")
-            .addFlags(FLAG_GRANT_READ_URI_PERMISSION | FLAG_GRANT_WRITE_URI_PERMISSION)
-            .putExtra(EXTRA_STREAM, mUri)
-            .putExtra("EXTRA_FILEPATH", mFile.getAbsolutePath());
+    private final Intent mViewIntent = new Intent(ACTION_VIEW)
+        .setDataAndType(mUri, MimeTypes.PLAIN_TEXT)
+        .addFlags(FLAG_GRANT_READ_URI_PERMISSION | FLAG_GRANT_WRITE_URI_PERMISSION)
+        .putExtra(EXTRA_STREAM, mUri)
+        .putExtra("EXTRA_FILEPATH", mFile.getAbsolutePath());
 
     /*internal*/ Todo(AssistActivity act) {
         super(act, CoreEntry.TODO, R.string.data_hint_todo);
