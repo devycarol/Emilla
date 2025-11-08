@@ -14,16 +14,16 @@ public final class SearchResult<E extends Searchable<E>>
     @Nullable
     private final SearchableArray<E>.Window mPrefixedWindow;
     @Nullable
-    private final SearchableArray<E>.SparseWindow mContainsWindow;
+    private final SearchableArray<E> mContainsElements;
 
     public SearchResult(
         String search,
         @Nullable SearchableArray<E>.Window prefixedWindow,
-        @Nullable SearchableArray<E>.SparseWindow containsWindow
+        @Nullable SearchableArray<E> containsElements
     ) {
         mSearch = search;
         mPrefixedWindow = prefixedWindow;
-        mContainsWindow = containsWindow;
+        mContainsElements = containsElements;
     }
 
     public SearchResult<E> narrow(String prefixedSearch) {
@@ -33,12 +33,14 @@ public final class SearchResult<E extends Searchable<E>>
             );
         }
 
-        SearchableArray<E>.Window newPrefixedWindow =
-            mPrefixedWindow != null ? mPrefixedWindow.prefixedBy(prefixedSearch) : null;
-        SearchableArray<E>.SparseWindow newContainsWindow =
-            mContainsWindow != null ? mContainsWindow.elementsContaining(prefixedSearch) : null;
+        SearchableArray<E>.Window newPrefixedWindow = mPrefixedWindow != null
+            ? mPrefixedWindow.prefixedBy(prefixedSearch)
+            : null;
+        SearchableArray<E> newContainsElements = mContainsElements != null
+            ? mContainsElements.elementsContaining(prefixedSearch)
+            : null;
 
-        return new SearchResult<E>(prefixedSearch, newPrefixedWindow, newContainsWindow);
+        return new SearchResult<E>(prefixedSearch, newPrefixedWindow, newContainsElements);
     }
 
     private int prefixedCount() {
@@ -46,7 +48,7 @@ public final class SearchResult<E extends Searchable<E>>
     }
 
     private int containsCount() {
-        return mContainsWindow != null ? mContainsWindow.size() : 0;
+        return mContainsElements != null ? mContainsElements.size() : 0;
     }
 
     @Override
@@ -78,7 +80,7 @@ public final class SearchResult<E extends Searchable<E>>
         if (index < prefCount) {
             return mPrefixedWindow.get(index);
         }
-        return mContainsWindow.get(index - prefCount);
+        return mContainsElements.get(index - prefCount);
     }
 
     @Override
@@ -93,14 +95,14 @@ public final class SearchResult<E extends Searchable<E>>
 
     @Override
     public Stream<E> stream() {
-        if (mPrefixedWindow != null && mContainsWindow != null) {
-            return Stream.concat(mPrefixedWindow.stream(), mContainsWindow.stream());
+        if (mPrefixedWindow != null && mContainsElements != null) {
+            return Stream.concat(mPrefixedWindow.stream(), mContainsElements.stream());
         }
         if (mPrefixedWindow != null) {
             return mPrefixedWindow.stream();
         }
-        if (mContainsWindow != null) {
-            return mContainsWindow.stream();
+        if (mContainsElements != null) {
+            return mContainsElements.stream();
         }
         return Stream.empty();
     }

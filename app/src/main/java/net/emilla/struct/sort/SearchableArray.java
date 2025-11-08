@@ -2,7 +2,6 @@ package net.emilla.struct.sort;
 
 import androidx.annotation.Nullable;
 import androidx.core.util.Function;
-import androidx.core.util.Predicate;
 
 import java.util.Collection;
 
@@ -20,6 +19,10 @@ public final class SearchableArray<E extends Searchable<E>> extends SortedArray<
         super(c, converter);
     }
 
+    private SearchableArray(E[] data, int size) {
+        super(data, size);
+    }
+
     @Override @SuppressWarnings("unchecked")
     protected E[] newArray(int capacity) {
         return (E[]) new Searchable[capacity];
@@ -33,41 +36,82 @@ public final class SearchableArray<E extends Searchable<E>> extends SortedArray<
 
     public SearchResult<E> filter(String search) {
         IndexWindow prefixedWindow = windowMatching(new PrefixSearcher<E>(search));
-        SparseWindow containsWindow = elementsContaining(search, prefixedWindow);
+        SearchableArray<E> containsElements = elementsContaining(search, prefixedWindow);
         var prefWindow = prefixedWindow != null ? new Window(prefixedWindow) : null;
 
-        return new SearchResult<E>(search, prefWindow, containsWindow);
+        return new SearchResult<E>(search, prefWindow, containsElements);
     }
 
     @Nullable
-    private SparseWindow elementsContaining(String search, @Nullable IndexWindow exclude) {
-        if (exclude == null) {
-            return elements(val -> val.ordinalContains(search));
+    public SearchableArray<E> elementsContaining(String search) {
+        E[] data = newArray(pSize);
+        int size = 0;
+
+        for (int i = 0; i < pSize; ++i) {
+            if (pData[i].ordinalContains(search)) {
+                data[size] = pData[i];
+                ++size;
+            }
         }
-        return elements(val -> val.ordinalContains(search), exclude);
+
+        if (size == 0) return null;
+
+        return new SearchableArray<E>(data, size);
     }
 
     @Nullable
-    private IndexWindow windowMatching(Comparable<E> searcher) {
+    private SearchableArray<E> elementsContaining(String search, @Nullable IndexWindow exclude) {
+        if (exclude == null) return elementsContaining(search);
+
+        E[] data = newArray(pSize);
+        int size = 0;
+
+        for (int i = 0; i < exclude.start; ++i) {
+            if (pData[i].ordinalContains(search)) {
+                data[size] = pData[i];
+                ++size;
+            }
+        }
+
+        for (int i = exclude.end; i < pSize; ++i) {
+            if (pData[i].ordinalContains(search)) {
+                data[size] = pData[i];
+                ++size;
+            }
+        }
+
+        if (size == 0) return null;
+
+        return new SearchableArray<E>(data, size);
+    }
+
+    @Nullable
+    private IndexWindow windowMatching(Comparable<? super E> searcher) {
         return windowMatching(searcher, 0, pSize - 1);
     }
 
     @Nullable
-    private IndexWindow windowMatching(Comparable<E> searcher, int lo, int hi) {
+    private IndexWindow windowMatching(Comparable<? super E> searcher, int lo, int hi) {
         while (lo <= hi) {
             int mid = lo + hi >>> 1;
             int cmp = searcher.compareTo(pData[mid]);
 
-            if (cmp > 0) lo = mid + 1;
-            else if (cmp < 0) hi = mid - 1;
-            else return new IndexWindow(firstIndexOf(searcher, lo, mid),
-                                        lastIndexOf(searcher, mid, hi));
+            if (cmp > 0) {
+                lo = mid + 1;
+            } else if (cmp < 0) {
+                hi = mid - 1;
+            } else {
+                return new IndexWindow(
+                    firstIndexOf(searcher, lo, mid),
+                    lastIndexOf(searcher, mid, hi)
+                );
+            }
         }
 
         return null; // no values found.
     }
 
-    private int firstIndexOf(Comparable<E> searcher, int lo, int hi) {
+    private int firstIndexOf(Comparable<? super E> searcher, int lo, int hi) {
         int first = -1;
 
         while (lo <= hi) {
@@ -77,7 +121,9 @@ public final class SearchableArray<E extends Searchable<E>> extends SortedArray<
             if (cmp > 0) {
                 lo = mid + 1;
             } else {
-                if (cmp == 0) first = mid;
+                if (cmp == 0) {
+                    first = mid;
+                }
                 hi = mid - 1; // keep searching the lower half.
             }
         }
@@ -85,7 +131,7 @@ public final class SearchableArray<E extends Searchable<E>> extends SortedArray<
         return first;
     }
 
-    private int lastIndexOf(Comparable<E> searcher, int lo, int hi) {
+    private int lastIndexOf(Comparable<? super E> searcher, int lo, int hi) {
         int last = -1;
 
         while (lo <= hi) {
@@ -95,7 +141,9 @@ public final class SearchableArray<E extends Searchable<E>> extends SortedArray<
             if (cmp < 0) {
                 hi = mid - 1;
             } else {
-                if (cmp == 0) last = mid;
+                if (cmp == 0) {
+                    last = mid;
+                }
                 lo = mid + 1; // keep searching the upper half.
             }
         }
@@ -118,53 +166,7 @@ public final class SearchableArray<E extends Searchable<E>> extends SortedArray<
             );
             return prefixed != null ? new Window(prefixed) : null;
         }
+
     }
 
-    @Nullable
-    private SparseWindow elements(Predicate<E> takeIf) {
-        var elements = new SparseWindow(takeIf);
-        return elements.isEmpty() ? null : elements;
-    }
-
-    @Nullable
-    private SparseWindow elements(Predicate<E> takeIf, IndexWindow exclude) {
-        var elements = new SparseWindow(takeIf, exclude);
-        return elements.isEmpty() ? null : elements;
-    }
-
-    public /*inner*/ final class SparseWindow extends SortedArray<E>.SparseWindow {
-
-        private SparseWindow(Predicate<E> takeIf) {
-            super(takeIf);
-        }
-
-        private SparseWindow(Predicate<E> takeIf, IndexWindow exclude) {
-            super(takeIf, exclude);
-        }
-
-        private SparseWindow(SparseWindow elements, Predicate<E> takeIf) {
-            super(elements, takeIf);
-        }
-
-        private SparseWindow(SparseWindow elements, Predicate<E> takeIf, IndexWindow exclude) {
-            super(elements, takeIf, exclude);
-        }
-
-        @Nullable
-        private SparseWindow elements(Predicate<E> takeIf) {
-            var elements = new SparseWindow(this, takeIf);
-            return elements.isEmpty() ? null : elements;
-        }
-
-        @Nullable
-        private SparseWindow elements(Predicate<E> takeIf, IndexWindow exclude) {
-            var elements = new SparseWindow(this, takeIf, exclude);
-            return elements.isEmpty() ? null : elements;
-        }
-
-        @Nullable
-        public SparseWindow elementsContaining(String search) {
-            return elements(val -> val.ordinalContains(search));
-        }
-    }
 }

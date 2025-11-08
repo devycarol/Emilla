@@ -2,7 +2,6 @@ package net.emilla.struct.sort;
 
 import androidx.annotation.Nullable;
 import androidx.core.util.Function;
-import androidx.core.util.Predicate;
 
 import net.emilla.struct.IndexedStruct;
 
@@ -33,6 +32,11 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
     public <T> SortedArray(Collection<T> c, Function<T, E> converter) {
         pData = newArray(c.size());
         for (T val : c) addInternal(converter.apply(val));
+    }
+
+    protected SortedArray(E[] data, int size) {
+        pData = Arrays.copyOf(data, size);
+        pSize = size;
     }
 
     @SuppressWarnings("unchecked")
@@ -225,102 +229,6 @@ public /*open*/ class SortedArray<E extends Comparable<E>> implements Iterable<E
         @Override
         public final Stream<E> stream() {
             return Arrays.stream(pData, window.start, window.end);
-        }
-
-        @Override
-        public final Iterator<E> iterator() {
-            return stream().iterator();
-        }
-
-    }
-
-    public /*inner open*/ class SparseWindow implements IndexedStruct<E> {
-
-        private final int[] indices;
-        private final int size;
-
-        protected SparseWindow(Predicate<E> takeIf) {
-            var indices = new int[pSize];
-            int size = 0;
-            for (int i = 0; i < pSize; ++i) {
-                if (takeIf.test(pData[i])) {
-                    indices[size++] = i;
-                }
-            }
-
-            this.indices = Arrays.copyOf(indices, size);
-            this.size = size;
-        }
-
-        protected SparseWindow(Predicate<E> takeIf, IndexWindow exclude) {
-            var indices = new int[pSize];
-            int size = 0;
-            for (int i = 0; i < exclude.start; ++i) {
-                if (takeIf.test(pData[i])) {
-                    indices[size++] = i;
-                }
-            }
-            for (int i = exclude.end; i < pSize; ++i) {
-                if (takeIf.test(pData[i])) {
-                    indices[size++] = i;
-                }
-            }
-
-            this.indices = Arrays.copyOf(indices, size);
-            this.size = size;
-        }
-
-        protected SparseWindow(SparseWindow elements, Predicate<E> takeIf) {
-            int windowSize = elements.size;
-            var indices = new int[windowSize];
-            int size = 0;
-            for (int i = 0; i < windowSize; ++i) {
-                if (takeIf.test(elements.get(i))) {
-                    indices[size++] = elements.indices[i];
-                }
-            }
-
-            this.indices = Arrays.copyOf(indices, size);
-            this.size = size;
-        }
-
-        protected SparseWindow(SparseWindow elements, Predicate<E> takeIf, IndexWindow exclude) {
-            int windowSize = elements.size;
-            var indices = new int[windowSize];
-            int size = 0;
-            for (int i = 0; i < exclude.start; ++i) {
-                if (takeIf.test(elements.get(i))) {
-                    indices[size++] = elements.indices[i];
-                }
-            }
-            for (int i = exclude.end; i < windowSize; ++i) {
-                if (takeIf.test(elements.get(i))) {
-                    indices[size++] = elements.indices[i];
-                }
-            }
-
-            this.indices = Arrays.copyOf(indices, size);
-            this.size = size;
-        }
-
-        @Override
-        public final E get(int index) {
-            return pData[this.indices[index]];
-        }
-
-        @Override
-        public final int size() {
-            return this.size;
-        }
-
-        @Override
-        public final boolean isEmpty() {
-            return this.size == 0;
-        }
-
-        @Override
-        public final Stream<E> stream() {
-            throw new RuntimeException(); // TODO
         }
 
         @Override
