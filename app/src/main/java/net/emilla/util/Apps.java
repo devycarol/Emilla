@@ -44,8 +44,10 @@ public final class Apps {
     }
 
     public static Intent launchIntent(AppEntry app) {
-        return new Intent(ACTION_MAIN).addCategory(CATEGORY_LAUNCHER)
-                .setPackage(app.pkg).setComponent(app.componentName());
+        return new Intent(ACTION_MAIN)
+            .setPackage(app.pkg)
+            .setComponent(app.componentName())
+            .addCategory(CATEGORY_LAUNCHER);
     }
 
     public static Intent categoryTask(String category) {
@@ -162,19 +164,26 @@ public final class Apps {
     }
 
     public static Intent uninstallIntent(String pkg, PackageManager pm) {
-    try {
-        ApplicationInfo info = pm.getApplicationInfo(pkg, 0);
-        if ((info.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
-            return new Intent(ACTION_UNINSTALL_PACKAGE, pkgUri(pkg));
-            // Todo: ACTION_UNINSTALL_PACKAGE is deprecated.
+        try {
+            ApplicationInfo info = pm.getApplicationInfo(pkg, 0);
+            if ((info.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
+                return new Intent(ACTION_UNINSTALL_PACKAGE, pkgUri(pkg));
+                // Todo: ACTION_UNINSTALL_PACKAGE is deprecated.
+            }
+
+            Intent appInfo = infoTask(pkg);
+            if (appInfo.resolveActivity(pm) != null) {
+                return appInfo;
+            }
+
+            var settings = new Intent(Settings.ACTION_SETTINGS);
+            if (appInfo.resolveActivity(pm) != null) {
+                return settings;
+            }
+        } catch (PackageManager.NameNotFoundException ignored) {
+            // fallthrough
         }
 
-        Intent appInfo = infoTask(pkg);
-        if (appInfo.resolveActivity(pm) != null) return appInfo;
-
-        var settings = new Intent(Settings.ACTION_SETTINGS);
-        if (appInfo.resolveActivity(pm) != null) return settings;
-    } catch (PackageManager.NameNotFoundException ignored) {}
         throw new IllegalStateException();
     }
 
