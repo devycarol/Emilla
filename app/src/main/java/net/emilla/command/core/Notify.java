@@ -10,7 +10,7 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.ping.PingChannel;
 import net.emilla.ping.Pings;
-import net.emilla.util.Permissions;
+import net.emilla.util.Permission;
 
 /*internal*/ final class Notify extends CoreDataCommand {
 
@@ -46,7 +46,7 @@ import net.emilla.util.Permissions;
 
     @SuppressLint("MissingPermission")
     private void tryPing(String title, @Nullable String text) {
-        Permissions.withPings(this.activity, () -> ping(title, text));
+        Permission.PINGS.with(this.activity, () -> ping(title, text));
     }
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)

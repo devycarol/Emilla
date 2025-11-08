@@ -14,7 +14,7 @@ import net.emilla.command.ActionMap;
 import net.emilla.command.DataCommand;
 import net.emilla.lang.Lines;
 import net.emilla.util.Dialogs;
-import net.emilla.util.Permissions;
+import net.emilla.util.Permission;
 import net.emilla.util.Strings;
 import net.emilla.util.TaskerIntent;
 
@@ -107,7 +107,10 @@ import java.util.TreeSet;
             R.string.dlg_yes_tasker_external_access_settings,
             (dlg, which) -> offerApp(TaskerIntent.getExternalAccessPrefsIntent(), false)
         );
-        case NO_PERMISSION -> Permissions.taskerFlow(this.activity, () -> trySearchRun(task, params));
+        case NO_PERMISSION -> Permission.TASKER.flow(
+            this.activity,
+            () -> trySearchRun(task, params)
+        );
         case NO_RECEIVER -> failMessage(R.string.error_tasker_no_receiver);
         }
     }

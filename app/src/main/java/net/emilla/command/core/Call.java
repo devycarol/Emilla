@@ -17,7 +17,7 @@ import net.emilla.util.Apps;
 import net.emilla.util.Contacts;
 import net.emilla.util.Dialogs;
 import net.emilla.util.Features;
-import net.emilla.util.Permissions;
+import net.emilla.util.Permission;
 
 /*internal*/ final class Call extends CoreCommand implements PhoneReceiver {
 
@@ -60,7 +60,7 @@ import net.emilla.util.Permissions;
 
     @Override
     protected void run() {
-        Permissions.withContacts(this.activity, this::tryCall);
+        Permission.CONTACTS.with(this.activity, this::tryCall);
     }
 
     private void tryCall() {
@@ -80,7 +80,7 @@ import net.emilla.util.Permissions;
         //  transfer. it shouldn't disable the "command enabled" pref, it should just be its own
         //  element of an "is the command enabled" check similar to HeliBoard's handling in its
         //  "SettingsValues" class.
-        Permissions.withCall(this.activity, () -> tryCall(nameOrNumber));
+        Permission.CALL.with(this.activity, () -> tryCall(nameOrNumber));
     }
 
     private void tryCall(String nameOrNumber) {
@@ -121,7 +121,7 @@ import net.emilla.util.Permissions;
 
     @Override
     public void provide(String phoneNumber) {
-        Permissions.withCall(this.activity, () -> call(phoneNumber));
+        Permission.CALL.with(this.activity, () -> call(phoneNumber));
     }
 
 }

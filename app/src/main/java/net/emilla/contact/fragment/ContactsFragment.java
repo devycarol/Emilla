@@ -28,7 +28,7 @@ import net.emilla.contact.MultiSearch;
 import net.emilla.contact.adapter.ContactCursorAdapter;
 import net.emilla.content.receive.ContactReceiver;
 import net.emilla.util.Intents;
-import net.emilla.util.Permissions;
+import net.emilla.util.Permission;
 
 public abstract class ContactsFragment<T> extends Fragment
     implements LoaderManager.LoaderCallbacks<Cursor>,
@@ -67,7 +67,7 @@ public abstract class ContactsFragment<T> extends Fragment
 
         mActivity = (AssistActivity) requireActivity();
 
-        if (Permissions.contacts(requireContext())) {
+        if (Permission.CONTACTS.has(requireContext())) {
             populateContacts();
         } else {
             deactivateContacts();
@@ -83,7 +83,7 @@ public abstract class ContactsFragment<T> extends Fragment
         mPermissionContainer.setVisibility(View.VISIBLE);
         mPermissionButton.setOnClickListener(v -> {
             AssistActivity act = (AssistActivity) requireActivity();
-            Permissions.withContacts(
+            Permission.CONTACTS.with(
                 act, this::activateContacts,
 
                 () -> startActivity(Intents.appInfo()),
@@ -119,7 +119,7 @@ public abstract class ContactsFragment<T> extends Fragment
         mSearchString = search;
 
         var ctx = getContext();
-        if (ctx == null || !Permissions.contacts(ctx)) return;
+        if (ctx == null || !Permission.CONTACTS.has(ctx)) return;
 
         LoaderManager.getInstance(this).restartLoader(0, null, this);
     }
@@ -207,7 +207,7 @@ public abstract class ContactsFragment<T> extends Fragment
         // todo: when there's only one contact, highlight it to indicate it's automatically selected.
         // TODO ACC: have a more available feedback for users to know which contacts are
         //  selected without having to scour the whole list.
-        if (Permissions.contacts(requireContext())) {
+        if (Permission.CONTACTS.has(requireContext())) {
             var adapter = (CursorAdapter) mContactList.getAdapter();
             return selectedContactsInternal(mContactList, adapter.getCursor());
         }
@@ -258,4 +258,5 @@ public abstract class ContactsFragment<T> extends Fragment
 
         return null;
     }
+
 }

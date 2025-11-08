@@ -19,10 +19,6 @@ public final class PermissionOffering implements CommandRun {
     @Nullable
     private final Runnable mOnGrant;
 
-    public PermissionOffering(String permission, @Nullable Runnable onGrant) {
-        this(new String[]{permission}, onGrant);
-    }
-
     public PermissionOffering(String[] permissions, @Nullable Runnable onGrant) {
         mPermissions = permissions;
         mOnGrant = onGrant;
@@ -32,4 +28,5 @@ public final class PermissionOffering implements CommandRun {
     public void run(AssistActivity act) {
         act.offerPermissions(mPermissions, mOnGrant);
     }
+
 }

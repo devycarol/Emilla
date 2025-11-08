@@ -10,7 +10,7 @@ import android.util.Log;
 
 import net.emilla.ping.PingIntent;
 import net.emilla.ping.Pinger;
-import net.emilla.util.Permissions;
+import net.emilla.util.Permission;
 
 public final class PingReceiver extends BroadcastReceiver {
 
@@ -18,10 +18,11 @@ public final class PingReceiver extends BroadcastReceiver {
 
     @Override @SuppressLint("MissingPermission")
     public void onReceive(Context ctx, Intent intent) {
-        if (Permissions.pings(ctx)) {
+        if (Permission.PINGS.has(ctx)) {
             Pinger.of(ctx, new PingIntent(intent)).ping();
         } else if (DEBUG) {
             Log.e(TAG, "Unable to ping due to lack of permission.");
         }
     }
+
 }

@@ -19,7 +19,7 @@ import net.emilla.event.Plan;
 import net.emilla.lang.Lang;
 import net.emilla.ping.PingChannel;
 import net.emilla.ping.Pings;
-import net.emilla.util.Permissions;
+import net.emilla.util.Permission;
 
 /*internal*/ final class Pomodoro extends CoreDataCommand {
 
@@ -97,7 +97,7 @@ import net.emilla.util.Permissions;
     @SuppressLint("MissingPermission")
     private void tryPomo(@Nullable String minutes, boolean isBreak) {
         int seconds = seconds(minutes, isBreak);
-        Permissions.withPings(this.activity, () -> pomo(seconds, mWorkMemo, mBreakMemo, isBreak));
+        Permission.PINGS.with(this.activity, () -> pomo(seconds, mWorkMemo, mBreakMemo, isBreak));
     }
 
     private int seconds(@Nullable String minutes, boolean isBreak) {
