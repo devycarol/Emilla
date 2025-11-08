@@ -93,9 +93,9 @@ public abstract class EmillaCommand {
         //  should be borne in mind when creating a more robust custom command system.
         for (String customEntry : customs) {
             String[] split = customEntry.split(", *");
-            int lastIdx = split.length - 1;
-            for (int i = 0; i < lastIdx; ++i) {
-                map.putCustom(split[i], split[lastIdx]);
+            int last = split.length - 1;
+            for (int i = 0; i < last; ++i) {
+                map.putCustom(split[i], split[last]);
             }
         }
 

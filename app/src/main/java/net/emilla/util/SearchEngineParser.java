@@ -44,9 +44,9 @@ public final class SearchEngineParser {
             String[] split = entry.split("\\s*,\\s*");
             if (split.length < 2) continue;
 
-            int lastIdx = split.length - 1;
-            String[] aliases = Arrays.copyOf(split, lastIdx);
-            String url = split[lastIdx];
+            int last = split.length - 1;
+            String[] aliases = Arrays.copyOf(split, last);
+            String url = split[last];
 
             var engine = url.contains("%s")
                 ? new Website(url.replaceFirst("%s", ""), url)

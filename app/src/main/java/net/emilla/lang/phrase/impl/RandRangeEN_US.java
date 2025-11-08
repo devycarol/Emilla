@@ -14,9 +14,9 @@ public final class RandRangeEN_US {
         if (range.matches("[(\\[]-?\\d+,\\s*-?\\d+[)\\]]")) {
             // range notation.
             boolean leftInclus = range.charAt(0) == '[';
-            int lastIdx = range.length() - 1;
-            boolean rightInclus = range.charAt(lastIdx) == ']';
-            range = range.substring(1, lastIdx);
+            int last = range.length() - 1;
+            boolean rightInclus = range.charAt(last) == ']';
+            range = range.substring(1, last);
 
             String[] split = range.split(",\\s*");
 

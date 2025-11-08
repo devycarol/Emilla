@@ -26,11 +26,11 @@ public abstract class ContactCursorAdapter extends CursorAdapter {
         Contacts.STARRED,
     };
 
-    public static final int IDX_ID = 0;
-    public static final int IDX_KEY = 1;
-    public static final int IDX_NAME = 2;
-    public static final int IDX_PHOTO = 3;
-    public static final int IDX_STARRED = 4;
+    public static final int INDEX_ID = 0;
+    public static final int INDEX_KEY = 1;
+    public static final int INDEX_NAME = 2;
+    public static final int INDEX_PHOTO = 3;
+    public static final int INDEX_STARRED = 4;
 
     protected static String[] projection(String[] addCols) {
         String[] fromCols = ContactCursorAdapter.BASE_COLS;

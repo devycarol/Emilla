@@ -67,12 +67,12 @@ public final class Contacts {
     public static String phoneNumber(Uri contact, ContentResolver cr) {
         Uri contentUri = Phone.CONTENT_URI;
         String[] projection = {Phone.NUMBER};
-        int IDX_NUMBER = 0;
+        int INDEX_NUMBER = 0;
         String selection = Phone.CONTACT_ID + " = ?";
         String[] selectionArgs = {contact.getLastPathSegment()};
         try (Cursor cur = cr.query(contentUri, projection, selection, selectionArgs, null)) {
             if (cur != null && cur.moveToFirst()) {
-                return cur.getString(IDX_NUMBER);
+                return cur.getString(INDEX_NUMBER);
             }
         }
         return null;
@@ -82,12 +82,12 @@ public final class Contacts {
     public static String emailAddress(Uri contact, ContentResolver cr) {
         Uri contentUri = Email.CONTENT_URI;
         String[] projection = {Email.ADDRESS};
-        int IDX_ADDRESS = 0;
+        int INDEX_ADDRESS = 0;
         String selection = Email.CONTACT_ID + " = ?";
         String[] selectionArgs = {contact.getLastPathSegment()};
         try (Cursor cur = cr.query(contentUri, projection, selection, selectionArgs, null)) {
             if (cur != null && cur.moveToFirst()) {
-                return cur.getString(IDX_ADDRESS);
+                return cur.getString(INDEX_ADDRESS);
             }
         }
         return null;

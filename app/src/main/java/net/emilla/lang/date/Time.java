@@ -289,9 +289,9 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
             String y = m.group();
             if (m.find()) throw new EmillaException(errorTitle, R.string.error_excess_time_units);
 
-            int tickIdx = y.indexOf('\'');
-            if (tickIdx == -1) cal.set(YEAR, Integer.parseInt(y));
-            else cal.set(YEAR, cal.get(YEAR) / 100 * 100 + Integer.parseInt(y.substring(tickIdx + 1)));
+            int tickIndex = y.indexOf('\'');
+            if (tickIndex == -1) cal.set(YEAR, Integer.parseInt(y));
+            else cal.set(YEAR, cal.get(YEAR) / 100 * 100 + Integer.parseInt(y.substring(tickIndex + 1)));
         }
 
         return cal;

@@ -1,6 +1,6 @@
 package net.emilla.contact.fragment;
 
-import static net.emilla.contact.adapter.ContactPhoneAdapter.IDX_NUMBER;
+import static net.emilla.contact.adapter.ContactPhoneAdapter.INDEX_NUMBER;
 
 import android.database.Cursor;
 import android.widget.ListView;
@@ -23,6 +23,6 @@ public final class ContactPhonesFragment extends ContactsFragment<String> {
 
     @Override @Nullable
     protected String selectedContactsInternal(ListView contactList, Cursor cur) {
-        return multiSelectedCsv(contactList, cur, IDX_NUMBER);
+        return multiSelectedCsv(contactList, cur, INDEX_NUMBER);
     }
 }

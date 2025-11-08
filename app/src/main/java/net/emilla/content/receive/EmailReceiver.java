@@ -1,6 +1,6 @@
 package net.emilla.content.receive;
 
-import static net.emilla.contact.adapter.ContactEmailAdapter.IDX_ADDRESS;
+import static net.emilla.contact.adapter.ContactEmailAdapter.INDEX_ADDRESS;
 
 import android.database.Cursor;
 
@@ -9,7 +9,7 @@ public interface EmailReceiver extends ContactDataReceiver {
 
     @Override
     default void useContact(Cursor cur) {
-        provide(cur.getString(IDX_ADDRESS));
+        provide(cur.getString(INDEX_ADDRESS));
     }
 
     /// Provides the receiver with an email address.

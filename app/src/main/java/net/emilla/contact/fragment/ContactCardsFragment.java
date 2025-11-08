@@ -1,7 +1,7 @@
 package net.emilla.contact.fragment;
 
-import static net.emilla.contact.adapter.ContactCursorAdapter.IDX_ID;
-import static net.emilla.contact.adapter.ContactCursorAdapter.IDX_KEY;
+import static net.emilla.contact.adapter.ContactCursorAdapter.INDEX_ID;
+import static net.emilla.contact.adapter.ContactCursorAdapter.INDEX_KEY;
 
 import android.database.Cursor;
 import android.net.Uri;
@@ -28,12 +28,13 @@ public final class ContactCardsFragment extends ContactsFragment<Uri> {
     protected Uri selectedContactsInternal(ListView contactList, Cursor cur) {
         if (cur.getCount() == 1) {
             cur.moveToFirst();
-            return ContactsContract.Contacts.getLookupUri(cur.getLong(IDX_ID), cur.getString(IDX_KEY));
+            return ContactsContract.Contacts.getLookupUri(cur.getLong(INDEX_ID), cur.getString(
+                INDEX_KEY));
         }
 
         int pos = contactList.getCheckedItemPosition();
         return cur.moveToPosition(pos)
-            ? ContactsContract.Contacts.getLookupUri(cur.getLong(IDX_ID), cur.getString(IDX_KEY))
+            ? ContactsContract.Contacts.getLookupUri(cur.getLong(INDEX_ID), cur.getString(INDEX_KEY))
             : null;
     }
 }

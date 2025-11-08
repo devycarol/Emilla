@@ -1,7 +1,7 @@
 package net.emilla.content.receive;
 
-import static net.emilla.contact.adapter.ContactCursorAdapter.IDX_ID;
-import static net.emilla.contact.adapter.ContactCursorAdapter.IDX_KEY;
+import static net.emilla.contact.adapter.ContactCursorAdapter.INDEX_ID;
+import static net.emilla.contact.adapter.ContactCursorAdapter.INDEX_KEY;
 
 import android.database.Cursor;
 import android.net.Uri;
@@ -12,8 +12,8 @@ public interface ContactCardReceiver extends ContactReceiver {
 
     @Override
     default void useContact(Cursor cur) {
-        long id = cur.getLong(IDX_ID);
-        String key = cur.getString(IDX_KEY);
+        long id = cur.getLong(INDEX_ID);
+        String key = cur.getString(INDEX_KEY);
 
         provide(ContactsContract.Contacts.getLookupUri(id, key));
     }

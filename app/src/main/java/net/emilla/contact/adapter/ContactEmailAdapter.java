@@ -21,10 +21,10 @@ public final class ContactEmailAdapter extends ContactCursorAdapter {
 
     private static final String[] PROJECTION = projection(ADD_COLS);
 
-    public static final int IDX_CONTACT_ID = PROJECTION.length - 4;
-    public static final int IDX_ADDRESS = PROJECTION.length - 3;
-    public static final int IDX_TYPE = PROJECTION.length - 2;
-    public static final int IDX_LABEL = PROJECTION.length - 1;
+    public static final int INDEX_CONTACT_ID = PROJECTION.length - 4;
+    public static final int INDEX_ADDRESS = PROJECTION.length - 3;
+    public static final int INDEX_TYPE = PROJECTION.length - 2;
+    public static final int INDEX_LABEL = PROJECTION.length - 1;
 
     public ContactEmailAdapter(Context ctx) {
         super(ctx);
@@ -48,14 +48,14 @@ public final class ContactEmailAdapter extends ContactCursorAdapter {
     @Override
     public void bindView(View view, Context ctx, Cursor cur) {
         var item = (ContactItemView) view;
-        item.setContactInfo(cur.getLong(IDX_CONTACT_ID), cur.getString(IDX_KEY),
-                cur.getString(IDX_NAME), cur.getString(IDX_PHOTO), cur.getInt(IDX_STARRED) != 0);
+        item.setContactInfo(cur.getLong(INDEX_CONTACT_ID), cur.getString(INDEX_KEY),
+                cur.getString(INDEX_NAME), cur.getString(INDEX_PHOTO), cur.getInt(INDEX_STARRED) != 0);
 
-        int type = cur.getInt(IDX_TYPE);
-        String customLabel = cur.getString(IDX_LABEL);
+        int type = cur.getInt(INDEX_TYPE);
+        String customLabel = cur.getString(INDEX_LABEL);
 
         CharSequence typeText = Email.getTypeLabel(this.resources, type, customLabel);
-        String address = cur.getString(IDX_ADDRESS);
+        String address = cur.getString(INDEX_ADDRESS);
 
         item.setContactDetail(Lang.colonConcat(this.resources, typeText, address));
     }
