@@ -15,6 +15,7 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.content.receive.AppChoiceReceiver;
 import net.emilla.util.Apps;
 import net.emilla.util.Files.MimeType;
+import net.emilla.util.Intents;
 import net.emilla.util.MimeTypes;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
     public static final String ENTRY = "share";
 
     public static boolean possible(PackageManager pm) {
-        return Apps.canDo(pm, Apps.sendTask(MimeTypes.PLAIN_TEXT));
+        return Apps.canDo(pm, Intents.send(MimeTypes.PLAIN_TEXT));
     }
 
     private FileFetcher mFileFetcher = null;
@@ -55,28 +56,30 @@ import java.util.ArrayList;
     private Intent makeIntent() {
         ArrayList<Uri> attachments = this.activity.attachments(ENTRY);
 
-        if (attachments == null) return Apps.sendTask(MimeTypes.PLAIN_TEXT);
+        if (attachments == null) {
+            return Intents.send(MimeTypes.PLAIN_TEXT);
+        }
         if (attachments.size() == 1) {
-            Intent in = Apps.sendTask(MimeTypes.PLAIN_TEXT).putExtra(EXTRA_STREAM, attachments.get(0));
-            in.setSelector(Apps.sendTask(MimeType.of(attachments, this.activity)));
+            Intent in = Intents.send(MimeTypes.PLAIN_TEXT).putExtra(EXTRA_STREAM, attachments.get(0));
+            in.setSelector(Intents.send(MimeType.of(attachments, this.activity)));
             return in;
         }
-        Intent in = Apps.sendMultipleTask(MimeTypes.PLAIN_TEXT).putExtra(EXTRA_STREAM, attachments);
-        in.setSelector(Apps.sendMultipleTask(MimeType.of(attachments, this.activity)));
+        Intent in = Intents.sendMultiple(MimeTypes.PLAIN_TEXT).putExtra(EXTRA_STREAM, attachments);
+        in.setSelector(Intents.sendMultiple(MimeType.of(attachments, this.activity)));
         return in;
     }
 
     private Intent makeIntent(String text) {
         ArrayList<Uri> attachments = this.activity.attachments(ENTRY);
-        if (attachments == null) return Apps.sendTask(MimeTypes.PLAIN_TEXT).putExtra(EXTRA_TEXT, text);
+        if (attachments == null) return Intents.send(MimeTypes.PLAIN_TEXT).putExtra(EXTRA_TEXT, text);
 
         Intent in;
         if (attachments.size() == 1) {
-            in = Apps.sendTask(MimeTypes.PLAIN_TEXT).putExtra(EXTRA_STREAM, attachments.get(0));
-            in.setSelector(Apps.sendTask(MimeType.of(MimeTypes.PLAIN_TEXT, attachments, this.activity)));
+            in = Intents.send(MimeTypes.PLAIN_TEXT).putExtra(EXTRA_STREAM, attachments.get(0));
+            in.setSelector(Intents.send(MimeType.of(MimeTypes.PLAIN_TEXT, attachments, this.activity)));
         } else {
-            in = Apps.sendMultipleTask(MimeTypes.PLAIN_TEXT).putExtra(EXTRA_STREAM, attachments);
-            in.setSelector(Apps.sendMultipleTask(MimeType.of(MimeTypes.PLAIN_TEXT, attachments, this.activity)));
+            in = Intents.sendMultiple(MimeTypes.PLAIN_TEXT).putExtra(EXTRA_STREAM, attachments);
+            in.setSelector(Intents.sendMultiple(MimeType.of(MimeTypes.PLAIN_TEXT, attachments, this.activity)));
         }
         // Todo: this is essentially saying "good luck" to the user with wildcard MIME types any
         //  time there's more than one kind of attachment. Specifically targeting apps that support

@@ -12,15 +12,16 @@ import androidx.appcompat.app.AlertDialog;
 import net.emilla.activity.AssistActivity;
 import net.emilla.util.Apps;
 import net.emilla.util.Dialogs;
+import net.emilla.util.Intents;
 
 /*internal*/ final class Uninstall extends OpenCommand {
 
     public static final String ENTRY = "uninstall";
 
     public static boolean possible(PackageManager pm) {
-        return Apps.canDo(pm, new Intent(ACTION_UNINSTALL_PACKAGE, Apps.pkgUri("")))
+        return Apps.canDo(pm, new Intent(ACTION_UNINSTALL_PACKAGE, Apps.packageUri("")))
             // todo: ACTION_UNINSTALL_PACKAGE is deprecated?
-            || Apps.canDo(pm, Apps.infoTask(""))
+            || Apps.canDo(pm, Intents.appInfo(""))
             || Apps.canDo(pm, new Intent(Settings.ACTION_SETTINGS));
     }
 
@@ -35,7 +36,7 @@ import net.emilla.util.Dialogs;
 
     @Override
     protected void run(String app) {
-        appSearchRun(app, appEntry -> Apps.uninstallIntent(appEntry.pkg, pm()));
+        appSearchRun(app, appEntry -> Intents.uninstallApp(appEntry.pkg, pm()));
     }
 
     @Override

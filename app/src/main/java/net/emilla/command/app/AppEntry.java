@@ -23,6 +23,7 @@ import net.emilla.lang.Lang;
 import net.emilla.struct.IndexedStruct;
 import net.emilla.struct.sort.Searchable;
 import net.emilla.util.Apps;
+import net.emilla.util.Intents;
 
 import java.util.Set;
 
@@ -113,7 +114,7 @@ public final class AppEntry extends CommandYielder implements Params, Searchable
     }
 
     public Intent launchIntent() {
-        return Apps.launchIntent(this);
+        return Intents.launchApp(this);
     }
 
     @Override

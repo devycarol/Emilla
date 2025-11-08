@@ -19,6 +19,8 @@ import net.emilla.action.field.UrlField;
 import net.emilla.activity.AssistActivity;
 import net.emilla.lang.date.Time;
 import net.emilla.util.Apps;
+import net.emilla.util.Intents;
+import net.emilla.util.MimeTypes;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -88,7 +90,7 @@ import java.util.regex.Pattern;
     }
 
     private static Intent makeIntent() {
-        return Apps.insertTask(Events.CONTENT_URI, "vnd.android.cursor.dir/event");
+        return Intents.insert(Events.CONTENT_URI, MimeTypes.CALENDAR_EVENT);
         // Todo: Etar is broken if already open. May be a flags issue?
     }
 

@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.activity.AssistActivity;
 import net.emilla.util.Apps;
+import net.emilla.util.Intents;
 
 /*internal*/ final class Notifications extends OpenCommand {
 
@@ -27,12 +28,12 @@ import net.emilla.util.Apps;
 
     @Override @RequiresApi(api = Build.VERSION_CODES.O)
     protected void run() {
-        appSucceed(Apps.notificationsTask());
+        appSucceed(Intents.notificationSettings());
     }
 
     @Override @RequiresApi(api = Build.VERSION_CODES.O)
     protected void run(String app) {
-        appSearchRun(app, appEntry -> Apps.notificationsTask(appEntry.pkg));
+        appSearchRun(app, appEntry -> Intents.notificationSettings(appEntry.pkg));
     }
 
     @Override

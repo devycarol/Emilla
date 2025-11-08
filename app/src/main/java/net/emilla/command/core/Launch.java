@@ -5,8 +5,8 @@ import android.view.inputmethod.EditorInfo;
 import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.activity.AssistActivity;
-import net.emilla.util.Apps;
 import net.emilla.util.Dialogs;
+import net.emilla.util.Intents;
 
 /*internal*/ final class Launch extends OpenCommand {
 
@@ -27,7 +27,7 @@ import net.emilla.util.Dialogs;
 
     @Override
     protected void run(String app) {
-        appSearchRun(app, Apps::launchIntent);
+        appSearchRun(app, Intents::launchApp);
     }
 
     @Override

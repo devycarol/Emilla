@@ -5,13 +5,14 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
 import net.emilla.command.app.AppEntry;
+import net.emilla.struct.IndexedStruct;
 import net.emilla.struct.sort.SearchResult;
 import net.emilla.struct.sort.SearchableArray;
 
 import java.util.Iterator;
 import java.util.List;
 
-public final class AppList implements Iterable<AppEntry> {
+public final class AppList implements Iterable<AppEntry>, IndexedStruct<AppEntry> {
 
     private final SearchableArray<AppEntry> mApps;
 
@@ -31,12 +32,19 @@ public final class AppList implements Iterable<AppEntry> {
         return mApps.filter(search);
     }
 
+    @Override
     public AppEntry get(int index) {
         return mApps.get(index);
     }
 
+    @Override
     public int size() {
         return mApps.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return mApps.isEmpty();
     }
 
     @Override

@@ -19,6 +19,7 @@ import net.emilla.contact.fragment.ContactCardsFragment;
 import net.emilla.content.receive.ContactCardReceiver;
 import net.emilla.util.Apps;
 import net.emilla.util.Dialogs;
+import net.emilla.util.Intents;
 
 import java.util.List;
 
@@ -27,10 +28,10 @@ import java.util.List;
     public static final String ENTRY = "contact";
 
     public static boolean possible(PackageManager pm) {
-        return Apps.canDo(pm, Apps.viewTask(Contacts.CONTENT_URI, Contacts.CONTENT_TYPE))
-            || Apps.canDo(pm, Apps.editTask(Contacts.CONTENT_URI, Contacts.CONTENT_TYPE))
-            || Apps.canDo(pm, Apps.sendTask(Contacts.CONTENT_VCARD_TYPE))
-            || Apps.canDo(pm, Apps.insertTask(Contacts.CONTENT_TYPE));
+        return Apps.canDo(pm, Intents.view(Contacts.CONTENT_URI, Contacts.CONTENT_TYPE))
+            || Apps.canDo(pm, Intents.edit(Contacts.CONTENT_URI, Contacts.CONTENT_TYPE))
+            || Apps.canDo(pm, Intents.send(Contacts.CONTENT_VCARD_TYPE))
+            || Apps.canDo(pm, Intents.insert(Contacts.CONTENT_TYPE));
     }
 
     private enum Action {
@@ -151,16 +152,16 @@ import java.util.List;
     }
 
     private void view(Uri contact) {
-        appSucceed(Apps.viewTask(contact));
+        appSucceed(Intents.view(contact));
     }
 
     private void edit(Uri contact) {
-        appSucceed(Apps.editTask(contact));
+        appSucceed(Intents.edit(contact));
     }
 
     private void send(Uri contact, @Nullable String message) {
         // todo: multi-selection for this particular case..
-        Intent send = Apps.sendTask(Contacts.CONTENT_VCARD_TYPE);
+        Intent send = Intents.send(Contacts.CONTENT_VCARD_TYPE);
 
         List<String> segments = contact.getPathSegments();
         String lookupKey = segments.get(segments.size() - 2);
@@ -180,7 +181,7 @@ import java.util.List;
     }
 
     private void create(@Nullable String person, @Nullable String phoneNumber) {
-        Intent insert = Apps.insertTask(Contacts.CONTENT_TYPE);
+        Intent insert = Intents.insert(Contacts.CONTENT_TYPE);
         if (person != null) insert.putExtra(Insert.NAME, person);
         if (phoneNumber != null) insert.putExtra(Insert.PHONE, phoneNumber);
         // todo: further details. a lot of them..

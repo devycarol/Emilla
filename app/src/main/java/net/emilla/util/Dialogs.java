@@ -151,7 +151,7 @@ public final class Dialogs {
         //  less cramped. on the accessibility topic, being able to speak/type a (nato?) letter
         //  would be helpful for everyone. basically: very accessible search interface
         // a choice between list and grid layout would be cool
-        Intent[] intents = Apps.launches(appList);
+        Intent[] intents = Intents.appLaunches(appList);
         return list(act, R.string.dialog_app, Apps.labels(appList),
                 (dlg, which) -> act.succeed(new AppSuccess(intents[which])));
     }
@@ -159,7 +159,7 @@ public final class Dialogs {
     public static AlertDialog.Builder appUninstalls(AssistActivity act) {
         AppList appList = act.appList();
         PackageManager pm = act.getPackageManager();
-        Intent[] intents = Apps.uninstalls(appList, pm);
+        Intent[] intents = Intents.appUninstalls(appList, pm);
         return list(act, R.string.dialog_app, Apps.labels(appList), (dlg, which) -> {
             if (intents[which] == null) {
                 act.fail(new MessageFailure(act, R.string.command_uninstall, R.string.error_cant_uninstall));

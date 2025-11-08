@@ -8,8 +8,8 @@ import androidx.appcompat.app.AlertDialog;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.util.AppList;
-import net.emilla.util.Apps;
 import net.emilla.util.Dialogs;
+import net.emilla.util.Intents;
 
 /*internal*/ abstract class CategoryCommand extends CoreCommand {
 
@@ -47,7 +47,7 @@ import net.emilla.util.Dialogs;
     protected final void run() {
         switch (mAppList.size()) {
         case 0 -> throw badCommand(R.string.error_no_app);
-        case 1 -> appSucceed(Apps.launchIntent(mAppList.get(0)));
+        case 1 -> appSucceed(Intents.launchApp(mAppList.get(0)));
         default -> offerDialog(mChooser);
         // todo: allow to select a default app, ensuring that the preference is cleared if ever the
         //  default is no longer installed or a new candidate is installed

@@ -7,13 +7,14 @@ import android.view.inputmethod.EditorInfo;
 
 import net.emilla.activity.AssistActivity;
 import net.emilla.util.Apps;
+import net.emilla.util.Intents;
 
 /*internal*/ final class Navigate extends CategoryCommand {
 
     public static final String ENTRY = "navigate";
 
     public static boolean possible(PackageManager pm) {
-        return Apps.canDo(pm, Apps.viewTask("geo:"));
+        return Apps.canDo(pm, Intents.view("geo:"));
     }
 
     /*internal*/ Navigate(AssistActivity act) {
@@ -22,13 +23,13 @@ import net.emilla.util.Apps;
 
     @Override
     protected Intent makeFilter() {
-        return Apps.viewTask("geo:");
+        return Intents.view("geo:");
     }
 
     @Override
     protected void run(String location) {
         // Todo: location bookmarks, navigate to contacts' addresses
-        appSucceed(Apps.viewTask(Uri.parse("geo:0,0?q=" + location)));
+        appSucceed(Intents.view(Uri.parse("geo:0,0?q=" + location)));
     }
 
 }

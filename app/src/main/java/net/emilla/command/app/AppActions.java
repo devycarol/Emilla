@@ -8,6 +8,7 @@ import androidx.annotation.StringRes;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.util.Apps;
+import net.emilla.util.Intents;
 
 public final class AppActions {
 
@@ -21,10 +22,10 @@ public final class AppActions {
         int flags = 0;
 
         int sendMasked = mask & FLAGS_SEND_TEXT;
-        if (sendMasked != 0 && Apps.canDo(pm, Apps.sendToApp(pkg))) {
+        if (sendMasked != 0 && Apps.canDo(pm, Intents.sendToApp(pkg))) {
             flags |= sendMasked;
         }
-        if ((mask & FLAG_SEARCH) != 0 && Apps.canDo(pm, Apps.searchToApp(pkg))) {
+        if ((mask & FLAG_SEARCH) != 0 && Apps.canDo(pm, Intents.searchToApp(pkg))) {
             flags |= FLAG_SEARCH;
         }
 

@@ -11,7 +11,7 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.activity.EmillaActivity;
 import net.emilla.databinding.ActivityConfigBinding;
-import net.emilla.util.Apps;
+import net.emilla.util.Intents;
 
 public final class ConfigActivity extends EmillaActivity {
 
@@ -31,7 +31,7 @@ public final class ConfigActivity extends EmillaActivity {
         mBinding.navView.setOnItemReselectedListener(item -> {
             boolean assistantItem = item.getItemId() == R.id.nav_assistant;
             if (assistantItem) {
-                startActivity(Apps.meTask(this, AssistActivity.class));
+                startActivity(Intents.me(this, AssistActivity.class));
             }
         });
         var navHostFragment = (NavHostFragment) getSupportFragmentManager()

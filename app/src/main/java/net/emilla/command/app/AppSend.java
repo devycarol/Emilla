@@ -5,7 +5,7 @@ import static android.content.Intent.EXTRA_TEXT;
 import android.view.inputmethod.EditorInfo;
 
 import net.emilla.activity.AssistActivity;
-import net.emilla.util.Apps;
+import net.emilla.util.Intents;
 
 /*internal open*/ class AppSend extends AppCommand {
 
@@ -19,7 +19,7 @@ import net.emilla.util.Apps;
 
     @Override
     protected final void run(String message) {
-        appSucceed(Apps.sendToApp(this.appEntry.pkg).putExtra(EXTRA_TEXT, message));
+        appSucceed(Intents.sendToApp(this.appEntry.pkg).putExtra(EXTRA_TEXT, message));
     }
 
 }

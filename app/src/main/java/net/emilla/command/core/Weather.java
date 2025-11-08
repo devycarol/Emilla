@@ -9,13 +9,14 @@ import android.view.inputmethod.EditorInfo;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.util.Apps;
+import net.emilla.util.Intents;
 
 /*internal*/ final class Weather extends CategoryCommand {
 
     public static final String ENTRY = "weather";
 
     public static boolean possible(PackageManager pm) {
-        return Apps.canDo(pm, Apps.categoryTask(CATEGORY_APP_WEATHER));
+        return Apps.canDo(pm, Intents.categoryTask(CATEGORY_APP_WEATHER));
     }
 
     /*internal*/ Weather(AssistActivity act) {
@@ -24,7 +25,7 @@ import net.emilla.util.Apps;
 
     @Override
     protected Intent makeFilter() {
-        return Apps.categoryTask(CATEGORY_APP_WEATHER);
+        return Intents.categoryTask(CATEGORY_APP_WEATHER);
         // TODO: figure out what's up with API level stuff here.
     }
 

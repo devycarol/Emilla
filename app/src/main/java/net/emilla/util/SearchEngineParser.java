@@ -65,9 +65,9 @@ public final class SearchEngineParser {
             if (queryWords.hasRemainingContents()) {
                 String encodedQuery = Uri.encode(queryWords.remainingContents());
                 Uri uri = Uri.parse(get.searchUrl.replaceFirst("%s", encodedQuery));
-                return Apps.viewTask(uri);
+                return Intents.view(uri);
             }
-            return Apps.viewTask(Uri.parse(get.siteUrl));
+            return Intents.view(Uri.parse(get.siteUrl));
         }
         return new Intent(ACTION_WEB_SEARCH).putExtra(QUERY, query);
     }

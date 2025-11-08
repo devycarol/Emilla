@@ -9,6 +9,7 @@ import android.view.inputmethod.EditorInfo;
 import net.emilla.activity.AssistActivity;
 import net.emilla.config.SettingVals;
 import net.emilla.util.Apps;
+import net.emilla.util.Intents;
 import net.emilla.util.SearchEngineParser;
 
 /*internal*/ final class Web extends CoreCommand {
@@ -17,8 +18,8 @@ import net.emilla.util.SearchEngineParser;
 
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, new Intent(ACTION_WEB_SEARCH))
-            || Apps.canDo(pm, Apps.viewTask("https:"))
-            || Apps.canDo(pm, Apps.viewTask("http:"));
+            || Apps.canDo(pm, Intents.view("https:"))
+            || Apps.canDo(pm, Intents.view("http:"));
     }
 
     private SearchEngineParser mSearchEngineMap = null;

@@ -27,6 +27,7 @@ import net.emilla.result.GetChimeSound;
 import net.emilla.system.EmillaA11yService;
 import net.emilla.util.Apps;
 import net.emilla.util.Features;
+import net.emilla.util.Intents;
 
 public final class SettingsFragment extends EmillaSettingsFragment {
 
@@ -204,9 +205,9 @@ public final class SettingsFragment extends EmillaSettingsFragment {
     private void setupNotificationsPref() {
         Preference appNotifications = preferenceOf("notifications");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Intent notifSettings = Apps.notificationsTask();
-            if (notifSettings.resolveActivity(mPm) != null) {
-                appNotifications.setIntent(notifSettings);
+            Intent notificationSettings = Intents.notificationSettings();
+            if (notificationSettings.resolveActivity(mPm) != null) {
+                appNotifications.setIntent(notificationSettings);
                 return;
             }
         }
@@ -233,9 +234,9 @@ public final class SettingsFragment extends EmillaSettingsFragment {
 
     private void setupAppInfoPref() {
         Preference systemAppInfo = preferenceOf("app_info");
-        Intent in = Apps.infoTask();
-        if (in.resolveActivity(mPm) != null) {
-            systemAppInfo.setIntent(in);
+        Intent appInfo = Intents.appInfo();
+        if (appInfo.resolveActivity(mPm) != null) {
+            systemAppInfo.setIntent(appInfo);
         } else {
             systemAppInfo.setVisible(false);
         }

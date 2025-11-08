@@ -19,13 +19,14 @@ import net.emilla.util.Apps;
 import net.emilla.util.Contacts;
 import net.emilla.util.Dialogs;
 import net.emilla.util.Features;
+import net.emilla.util.Intents;
 
 /*internal*/ final class Sms extends CoreDataCommand implements PhoneReceiver {
 
     public static final String ENTRY = "sms";
 
     public static boolean possible(PackageManager pm) {
-        return Features.sms(pm) || Apps.canDo(pm, Apps.sendTask(Uri.parse("smsto:")));
+        return Features.sms(pm) || Apps.canDo(pm, Intents.send(Uri.parse("smsto:")));
     }
 
     @Override

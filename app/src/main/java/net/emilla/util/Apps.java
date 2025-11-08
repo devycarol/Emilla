@@ -1,28 +1,14 @@
 package net.emilla.util;
 
-import static android.content.Intent.ACTION_EDIT;
-import static android.content.Intent.ACTION_INSERT;
 import static android.content.Intent.ACTION_MAIN;
-import static android.content.Intent.ACTION_SEARCH;
-import static android.content.Intent.ACTION_SEND;
-import static android.content.Intent.ACTION_SEND_MULTIPLE;
-import static android.content.Intent.ACTION_UNINSTALL_PACKAGE;
-import static android.content.Intent.ACTION_VIEW;
 import static android.content.Intent.CATEGORY_LAUNCHER;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.os.Build;
-import android.provider.Settings;
-
-import androidx.annotation.RequiresApi;
 
 import net.emilla.BuildConfig;
-import net.emilla.activity.EmillaActivity;
 import net.emilla.command.app.AppEntry;
 
 import java.util.List;
@@ -43,88 +29,6 @@ public final class Apps {
         return pm.queryIntentActivities(filter, 0);
     }
 
-    public static Intent launchIntent(AppEntry app) {
-        return new Intent(ACTION_MAIN)
-            .setPackage(app.pkg)
-            .setComponent(app.componentName())
-            .addCategory(CATEGORY_LAUNCHER);
-    }
-
-    public static Intent categoryTask(String category) {
-        return new Intent(ACTION_MAIN).addCategory(CATEGORY_LAUNCHER).addCategory(category);
-    }
-
-    public static Intent sendTask(Uri scheme) {
-        return new Intent(ACTION_SEND, scheme);
-    }
-
-    public static Intent sendTask(String type) {
-        return new Intent(ACTION_SEND).setType(type);
-    }
-
-    public static Intent sendToApp(String pkg) {
-        return sendTask(MimeTypes.PLAIN_TEXT).setPackage(pkg);
-    }
-
-    public static Intent sendMultipleTask(String type) {
-        return new Intent(ACTION_SEND_MULTIPLE).setType(type);
-    }
-
-    public static Intent searchToApp(String pkg) {
-        return new Intent(ACTION_SEARCH).setPackage(pkg);
-    }
-
-    public static Intent viewTask(String scheme) {
-        return viewTask(Uri.parse(scheme));
-    }
-
-    public static Intent viewTask(Uri uri) {
-        return new Intent(ACTION_VIEW, uri);
-    }
-
-    public static Intent viewTask(Uri data, String type) {
-        return new Intent(ACTION_VIEW).setDataAndType(data, type);
-    }
-
-    public static Intent editTask(Uri uri) {
-        return new Intent(ACTION_EDIT, uri);
-    }
-
-    public static Intent editTask(Uri data, String type) {
-        return new Intent(ACTION_EDIT).setDataAndType(data, type);
-    }
-
-    public static Intent insertTask(String type) {
-        return new Intent(ACTION_INSERT).setType(type);
-    }
-
-    public static Intent insertTask(Uri data, String type) {
-        return new Intent(ACTION_INSERT).setDataAndType(data, type);
-    }
-
-    public static Intent infoTask() {
-        return infoTask(MY_PKG);
-    }
-
-    public static Intent infoTask(String pkg) {
-        return new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, pkgUri(pkg));
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public static Intent notificationsTask() {
-        return notificationsTask(MY_PKG);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public static Intent notificationsTask(String pkg) {
-        return new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
-            .putExtra(Settings.EXTRA_APP_PACKAGE, pkg);
-    }
-
-    public static Intent meTask(Context ctx, Class<? extends EmillaActivity> cls) {
-        return new Intent(ctx, cls);
-    }
-
     public static boolean canDo(PackageManager pm, Intent intent) {
         return pm.resolveActivity(intent, 0) != null;
     }
@@ -139,52 +43,8 @@ public final class Apps {
         return labels;
     }
 
-    public static Intent[] launches(AppList appList) {
-        var intents = new Intent[appList.size()];
-        int i = 0;
-        for (AppEntry app : appList) {
-            intents[i] = launchIntent(app);
-            ++i;
-        }
-        return intents;
-    }
-
-    public static Uri pkgUri(String pkg) {
+    public static Uri packageUri(String pkg) {
         return Uri.parse("package:" + pkg);
-    }
-
-    public static Intent[] uninstalls(AppList appList, PackageManager pm) {
-        var intents = new Intent[appList.size()];
-        int i = 0;
-        for (AppEntry app : appList) {
-            intents[i] = uninstallIntent(app.pkg, pm);
-            ++i;
-        }
-        return intents;
-    }
-
-    public static Intent uninstallIntent(String pkg, PackageManager pm) {
-        try {
-            ApplicationInfo info = pm.getApplicationInfo(pkg, 0);
-            if ((info.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
-                return new Intent(ACTION_UNINSTALL_PACKAGE, pkgUri(pkg));
-                // Todo: ACTION_UNINSTALL_PACKAGE is deprecated.
-            }
-
-            Intent appInfo = infoTask(pkg);
-            if (appInfo.resolveActivity(pm) != null) {
-                return appInfo;
-            }
-
-            var settings = new Intent(Settings.ACTION_SETTINGS);
-            if (appInfo.resolveActivity(pm) != null) {
-                return settings;
-            }
-        } catch (PackageManager.NameNotFoundException ignored) {
-            // fallthrough
-        }
-
-        throw new IllegalStateException();
     }
 
     private Apps() {}

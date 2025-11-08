@@ -12,7 +12,7 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.config.ConfigActivity;
 import net.emilla.run.AppSuccess;
-import net.emilla.util.Apps;
+import net.emilla.util.Intents;
 
 public final class AssistantSettings implements LabeledQuickAction {
 
@@ -44,7 +44,7 @@ public final class AssistantSettings implements LabeledQuickAction {
 
     @Override
     public void perform() {
-        Intent config = Apps.meTask(mActivity, ConfigActivity.class);
+        Intent config = Intents.me(mActivity, ConfigActivity.class);
         if (mActivity.shouldCancel()) {
             mActivity.succeed(new AppSuccess(config));
         } else {

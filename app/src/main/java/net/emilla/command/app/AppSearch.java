@@ -6,7 +6,7 @@ import android.view.inputmethod.EditorInfo;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.util.Apps;
+import net.emilla.util.Intents;
 
 /*internal*/ final class AppSearch extends AppCommand {
 
@@ -18,7 +18,7 @@ import net.emilla.util.Apps;
     protected void run(String query) {
         String[] searchAliases = stringArray(R.array.subcmd_search);
         String lcQuery = query.toLowerCase();
-        Intent search = Apps.searchToApp(this.appEntry.pkg);
+        Intent search = Intents.searchToApp(this.appEntry.pkg);
         for (String alias : searchAliases) {
             if (lcQuery.startsWith(alias)) {
                 // Todo: visual indication that this will be used

@@ -27,7 +27,7 @@ import net.emilla.contact.ContactItemView;
 import net.emilla.contact.MultiSearch;
 import net.emilla.contact.adapter.ContactCursorAdapter;
 import net.emilla.content.receive.ContactReceiver;
-import net.emilla.util.Apps;
+import net.emilla.util.Intents;
 import net.emilla.util.Permissions;
 
 public abstract class ContactsFragment<T> extends Fragment
@@ -83,9 +83,12 @@ public abstract class ContactsFragment<T> extends Fragment
         mPermissionContainer.setVisibility(View.VISIBLE);
         mPermissionButton.setOnClickListener(v -> {
             AssistActivity act = (AssistActivity) requireActivity();
-            Permissions.withContacts(act, this::activateContacts,
-                                     () -> startActivity(Apps.infoTask()),
-                                     () -> act.chime(RESUME));
+            Permissions.withContacts(
+                act, this::activateContacts,
+
+                () -> startActivity(Intents.appInfo()),
+                () -> act.chime(RESUME)
+            );
         });
     }
 

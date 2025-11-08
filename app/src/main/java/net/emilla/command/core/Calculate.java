@@ -8,7 +8,7 @@ import android.view.inputmethod.EditorInfo;
 import net.emilla.activity.AssistActivity;
 import net.emilla.math.Calculator;
 import net.emilla.math.Maths;
-import net.emilla.util.Apps;
+import net.emilla.util.Intents;
 
 /*internal*/ final class Calculate extends CategoryCommand {
 
@@ -24,7 +24,7 @@ import net.emilla.util.Apps;
 
     @Override
     protected Intent makeFilter() {
-        return Apps.categoryTask(CATEGORY_APP_CALCULATOR);
+        return Intents.categoryTask(CATEGORY_APP_CALCULATOR);
     }
 
     @Override

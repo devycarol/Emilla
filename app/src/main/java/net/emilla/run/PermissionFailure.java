@@ -8,15 +8,15 @@ import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.util.Apps;
 import net.emilla.util.Dialogs;
+import net.emilla.util.Intents;
 
 public final class PermissionFailure extends DialogRun {
 
     private static AlertDialog.Builder dialog(AssistActivity act, @StringRes int permissionName) {
         // todo: this often results in an activity restart, which messes with the resume chime and
         //  probably other elements of state. handle accordingly.
-        Intent appInfo = Apps.infoTask();
+        Intent appInfo = Intents.appInfo();
         PackageManager pm = act.getPackageManager();
         if (appInfo.resolveActivity(pm) != null) {
             return Dialogs.dual(act, permissionName, R.string.dlg_msg_perm_denial, R.string.app_info,
