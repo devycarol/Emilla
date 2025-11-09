@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 
 import net.emilla.R;
 import net.emilla.action.field.FieldToggle;
-import net.emilla.action.field.SubjectField;
+import net.emilla.action.field.InputField;
 import net.emilla.activity.AssistActivity;
 import net.emilla.contact.fragment.ContactPhonesFragment;
 import net.emilla.content.receive.PhoneReceiver;
@@ -51,9 +51,9 @@ import net.emilla.util.Uris;
         this.activity.giveActionBox(mContactsFragment);
 
         if (mSubjectToggle == null) {
-            mSubjectToggle = new SubjectField(this.activity);
+            mSubjectToggle = InputField.SUBJECT.toggler(this.activity);
         } else if (mSubjectToggle.activated()) {
-            reshowField(SubjectField.FIELD_ID);
+            reshowField(InputField.SUBJECT.fieldId);
         }
         giveAction(mSubjectToggle);
         // Todo: attachments
@@ -71,8 +71,8 @@ import net.emilla.util.Uris;
 
         this.activity.removeActionBox(mContactsFragment);
 
-        removeAction(SubjectField.ACTION_ID);
-        hideField(SubjectField.FIELD_ID);
+        removeAction(InputField.SUBJECT.actionId);
+        hideField(InputField.SUBJECT.fieldId);
     }
 
     @Override

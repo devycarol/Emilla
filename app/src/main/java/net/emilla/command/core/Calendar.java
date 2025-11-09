@@ -14,8 +14,7 @@ import android.provider.CalendarContract.Events;
 
 import net.emilla.R;
 import net.emilla.action.field.FieldToggle;
-import net.emilla.action.field.LocationField;
-import net.emilla.action.field.UrlField;
+import net.emilla.action.field.InputField;
 import net.emilla.activity.AssistActivity;
 import net.emilla.lang.date.Time;
 import net.emilla.util.Apps;
@@ -45,16 +44,16 @@ import java.util.regex.Pattern;
         super.onInit();
 
         if (mLocationToggle == null) {
-            mLocationToggle = new LocationField(this.activity);
+            mLocationToggle = InputField.LOCATION.toggler(this.activity);
         } else if (mLocationToggle.activated()) {
-            reshowField(LocationField.FIELD_ID);
+            reshowField(InputField.LOCATION.fieldId);
         }
         giveAction(mLocationToggle);
 
         if (mUrlToggle == null) {
-            mUrlToggle = new UrlField(this.activity);
+            mUrlToggle = InputField.URL.toggler(this.activity);
         } else if (mUrlToggle.activated()) {
-            reshowField(UrlField.FIELD_ID);
+            reshowField(InputField.URL.fieldId);
         }
         giveAction(mUrlToggle);
     }
@@ -63,10 +62,10 @@ import java.util.regex.Pattern;
     protected void onClean() {
         super.onClean();
 
-        removeAction(LocationField.ACTION_ID);
-        hideField(LocationField.FIELD_ID);
-        removeAction(UrlField.ACTION_ID);
-        hideField(UrlField.FIELD_ID);
+        removeAction(InputField.LOCATION.actionId);
+        hideField(InputField.LOCATION.fieldId);
+        removeAction(InputField.URL.actionId);
+        hideField(InputField.URL.fieldId);
     }
 
     @Override

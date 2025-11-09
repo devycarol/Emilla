@@ -17,7 +17,7 @@ import net.emilla.R;
 import net.emilla.action.FileFetcher;
 import net.emilla.action.MediaFetcher;
 import net.emilla.action.field.FieldToggle;
-import net.emilla.action.field.SubjectField;
+import net.emilla.action.field.InputField;
 import net.emilla.activity.AssistActivity;
 import net.emilla.contact.fragment.ContactEmailsFragment;
 import net.emilla.content.receive.EmailReceiver;
@@ -52,9 +52,9 @@ import java.util.ArrayList;
         this.activity.giveActionBox(mContactsFragment);
 
         if (mSubjectToggle == null) {
-            mSubjectToggle = new SubjectField(this.activity);
+            mSubjectToggle = InputField.SUBJECT.toggler(this.activity);
         } else if (mSubjectToggle.activated()) {
-            reshowField(SubjectField.FIELD_ID);
+            reshowField(InputField.SUBJECT.fieldId);
         }
         giveAction(mSubjectToggle);
 

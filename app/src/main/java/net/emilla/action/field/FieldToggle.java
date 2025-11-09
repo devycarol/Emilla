@@ -10,81 +10,64 @@ import android.widget.EditText;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.action.QuickAction;
 import net.emilla.activity.AssistActivity;
 
-public abstract class FieldToggle implements QuickAction {
-
-    @IdRes
-    private final int mActionId;
-    @IdRes
-    private final int mFieldId;
-    @StringRes
-    private final int mFieldName;
-    @DrawableRes
-    private final int mIcon;
+public final class FieldToggle implements QuickAction {
 
     private final AssistActivity mActivity;
+    private final InputField mInputField;
 
     private boolean mActivated = false;
     private EditText mField = null;
 
-    public FieldToggle(
-        AssistActivity act,
-        @IdRes int action,
-        @IdRes int field,
-        @StringRes int fieldName,
-        @DrawableRes int icon
-    ) {
-        mActionId = action;
-        mFieldId = field;
-        mFieldName = fieldName;
-        mIcon = icon;
-
+    /*internal*/ FieldToggle(AssistActivity act, InputField inputField) {
         mActivity = act;
+        mInputField = inputField;
     }
 
-    public final boolean activated() {
+    public boolean activated() {
         return mActivated;
     }
 
     @Nullable
-    public final String fieldText() {
-        return mField == null || mField.getVisibility() == View.GONE || mField.length() == 0 ? null
-                : mField.getText().toString();
+    public String fieldText() {
+        if (mField != null && mField.getVisibility() != View.GONE && mField.length() > 0) {
+            return mField.getText().toString();
+        }
+        return null;
     }
 
     @Override @IdRes
-    public final int id() {
-        return mActionId;
+    public int id() {
+        return mInputField.actionId;
     }
 
     @Override @DrawableRes
-    public final int icon() {
-        return mIcon;
+    public int icon() {
+        return mInputField.icon;
     }
 
     @Override
-    public final String label(Resources res) {
-        return res.getString(R.string.action_toggle_field, res.getString(mFieldName));
+    public String label(Resources res) {
+        return res.getString(R.string.action_toggle_field, res.getString(mInputField.fieldName));
     }
 
     @Override
-    public final String description(Resources res) {
-        return res.getString(R.string.action_desc_toggle_field, res.getString(mFieldName));
+    public String description(Resources res) {
+        return res.getString(R.string.action_desc_toggle_field, res.getString(mInputField.fieldName));
     }
 
     @Override
-    public final void perform() {
+    public void perform() {
         if (mField == null) {
-            mField = mActivity.createField(mFieldId, mFieldName);
+            mField = mActivity.createField(mInputField.fieldId, mInputField.fieldName);
             mActivated = true;
             mActivity.chime(ACT);
         } else {
-            mActivated = mActivity.toggleField(mFieldId);
+            mActivated = mActivity.toggleField(mInputField.fieldId);
             mActivity.chime(mActivated ? ACT : RESUME);
         }
     }
