@@ -23,12 +23,14 @@ import androidx.annotation.RequiresPermission;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
+import net.emilla.R;
 import net.emilla.action.QuickAction;
 import net.emilla.activity.AssistActivity;
 import net.emilla.chime.Chime;
 import net.emilla.command.app.AppEntry;
 import net.emilla.command.core.CoreEntry;
 import net.emilla.config.SettingVals;
+import net.emilla.lang.Lang;
 import net.emilla.ping.PingChannel;
 import net.emilla.run.AppGift;
 import net.emilla.run.AppSuccess;
@@ -173,11 +175,18 @@ public abstract class EmillaCommand {
         }
     }
 
-    public final void decorate(boolean setIcon) {
-        this.activity.updateTitle(title());
+    public final void decorate(boolean setIcon, boolean isDefault) {
+        CharSequence title = isDefault ? Lang.colonConcat(
+            this.resources,
+            R.string.command_default,
+            sentenceName()
+        ) : title();
+        this.activity.updateTitle(title);
         this.activity.updateDataHint();
         this.activity.setImeAction(this.imeAction);
-        if (setIcon) this.activity.setSubmitIcon(icon(), usesAppIcon());
+        if (setIcon) {
+            this.activity.setSubmitIcon(icon(), usesAppIcon());
+        }
     }
 
     public final void init() {

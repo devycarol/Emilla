@@ -159,7 +159,7 @@ public final class AssistActivity extends EmillaActivity {
         mMenuKeyAction = SettingVals.menuKey(prefs, this);
 
         mCommandMap = EmillaCommand.map(prefs, mVm.res, pm, mVm.appList);
-        mCommand = mCommandMap.get(this, "");
+        mCommand = mCommandMap.getDefault(this);
     }
 
     private void setupCommandField() {
@@ -186,16 +186,22 @@ public final class AssistActivity extends EmillaActivity {
             String command = Strings.trimLeading(text.toString());
 
             EmillaCommand cmd = mCommandMap.get(AssistActivity.this, command);
+            boolean isDefault = cmd == null;
+            if (isDefault) {
+                cmd = mCommandMap.getDefault(AssistActivity.this);
+            }
+
             boolean noCommand = command.isEmpty();
             if (cmd != mCommand || noCommand != mVm.noCommand) {
                 mCommand.clean();
                 mCommand = cmd;
                 mVm.noCommand = noCommand;
+
+                cmd.decorate(!noCommand, isDefault);
+
                 if (noCommand) {
-                    cmd.decorate(false);
                     mBinding.submitButton.setIcon(mNoCommandAction.icon());
                 } else {
-                    cmd.decorate(true);
                     cmd.init();
                 }
 

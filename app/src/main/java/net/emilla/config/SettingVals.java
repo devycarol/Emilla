@@ -20,7 +20,7 @@ import net.emilla.action.SelectAll;
 import net.emilla.activity.AssistActivity;
 import net.emilla.chime.Chime;
 import net.emilla.chime.Chimer;
-import net.emilla.command.DefaultCommandWrapperYielder;
+import net.emilla.command.CommandYielder;
 import net.emilla.command.core.CoreEntry;
 import net.emilla.util.Apps;
 import net.emilla.util.Features;
@@ -72,11 +72,11 @@ public final class SettingVals {
         return "cmd_" + entry + "_enabled";
     }
 
-    public static DefaultCommandWrapperYielder defaultCommand(SharedPreferences prefs) {
+    public static CommandYielder defaultCommand(SharedPreferences prefs) {
         // Todo: allow apps and customs. Make sure to fall back to a core if the app is uninstalled
         //  or the custom is deleted.
         String entry = prefs.getString(DEFAULT_COMMAND, "web");
-        return new DefaultCommandWrapperYielder(CoreEntry.of(entry));
+        return CoreEntry.of(entry).yielder();
     }
 
     public static Set<String> customCommands(SharedPreferences prefs) {

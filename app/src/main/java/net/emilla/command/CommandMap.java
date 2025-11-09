@@ -1,5 +1,7 @@
 package net.emilla.command;
 
+import androidx.annotation.Nullable;
+
 import net.emilla.activity.AssistActivity;
 import net.emilla.lang.Lang;
 import net.emilla.lang.Words;
@@ -9,9 +11,9 @@ import net.emilla.struct.trie.TrieMap;
 public final class CommandMap {
 
     private final TrieMap<String, CommandYielder> mTrieMap = new HashTrieMap<>();
-    private final DefaultCommandWrapperYielder mDefaultYielder;
+    private final CommandYielder mDefaultYielder;
 
-    /*internal*/ CommandMap(DefaultCommandWrapperYielder defaultYielder) {
+    /*internal*/ CommandMap(CommandYielder defaultYielder) {
         mDefaultYielder = defaultYielder;
     }
 
@@ -32,10 +34,15 @@ public final class CommandMap {
         }
     }
 
+    @Nullable
     public EmillaCommand get(AssistActivity act, String fullCommand) {
         Words words = Lang.words(fullCommand);
         CommandYielder get = mTrieMap.get(words);
-        return (get == null ? mDefaultYielder : get).command(act, words);
+        return get != null ? get.command(act, words) : null;
+    }
+
+    public EmillaCommand getDefault(AssistActivity act) {
+        return mDefaultYielder.command(act);
     }
 
 }
