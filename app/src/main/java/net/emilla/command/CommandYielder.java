@@ -41,7 +41,9 @@ public abstract class CommandYielder implements TrieMap.Value<CommandYielder> {
             ? commandPhrase.remainingContents()
             : null;
 
-        return command.instruct(instruction);
+        command.instruct(instruction);
+
+        return command;
     }
 
     /// Generates a new command instance.

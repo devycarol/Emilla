@@ -151,15 +151,13 @@ public abstract class EmillaCommand {
         this(act, appEntry, appEntry.summary(), appEntry.actions.manual(), imeAction);
     }
 
-    /*internal*/ final EmillaCommand instruct(@Nullable String instruction) {
+    /*internal*/ final void instruct(@Nullable String instruction) {
         if (!Objects.equals(mInstruction, instruction)) {
             // we don't assume this is true because input editor bugs may cause onTextChanged() to
             // be called repeatedly for the same text.
             mInstruction = instruction;
             if (mInitialized) onInstruct(instruction);
         }
-
-        return this;
     }
 
     protected final void setInstruction(@Nullable String instruction) {
