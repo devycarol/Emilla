@@ -5,7 +5,6 @@ import static android.content.Intent.EXTRA_SUBJECT;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 
 import androidx.annotation.Nullable;
 
@@ -20,13 +19,14 @@ import net.emilla.util.Contacts;
 import net.emilla.util.Dialogs;
 import net.emilla.util.Features;
 import net.emilla.util.Intents;
+import net.emilla.util.Uris;
 
 /*internal*/ final class Sms extends CoreDataCommand implements PhoneReceiver {
 
     public static final String ENTRY = "sms";
 
     public static boolean possible(PackageManager pm) {
-        return Features.sms(pm) || Apps.canDo(pm, Intents.send(Uri.parse("smsto:")));
+        return Features.sms(pm) || Apps.canDo(pm, Intents.send(Uris.sms("")));
     }
 
     @Override
@@ -126,9 +126,9 @@ import net.emilla.util.Intents;
     }
 
     private void message(String numbers, @Nullable String message) {
-        var sendTo = new Intent(ACTION_SENDTO, Uri.parse("smsto:" + numbers));
+        var sendTo = new Intent(ACTION_SENDTO, Uris.sms(numbers));
 
-        if (message != null) sendTo.putExtra("sms_body", message);
+        if (message != null) sendTo.putExtra(Intents.EXTRA_SMS_BODY, message);
         // overwrites any existing draft to the recipient
         // Todo: detect, warn, confirm.
 

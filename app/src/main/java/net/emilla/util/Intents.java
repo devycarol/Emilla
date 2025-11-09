@@ -25,6 +25,8 @@ import net.emilla.command.app.AppEntry;
 
 public final class Intents {
 
+    public static final String EXTRA_SMS_BODY = "sms_body";
+
     public static Intent launchApp(AppEntry app) {
         return new Intent(ACTION_MAIN)
             .setPackage(app.pkg)
