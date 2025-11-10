@@ -4,7 +4,6 @@ import static android.content.Intent.ACTION_SENDTO;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 
 import androidx.annotation.Nullable;
 
@@ -33,15 +32,10 @@ import net.emilla.util.Uris;
         return false; // the initials "SMS" shouldn't be lowercased
     }
 
+    private final ContactPhonesFragment mContactsFragment;
+
     /*internal*/ Sms(AssistActivity act) {
         super(act, CoreEntry.SMS, R.string.data_hint_message);
-    }
-
-    private /*late*/ ContactPhonesFragment mContactsFragment;
-
-    @Override
-    protected void init(AssistActivity act, Resources res) {
-        super.init(act, res);
 
         mContactsFragment = ContactPhonesFragment.newInstance(true);
 

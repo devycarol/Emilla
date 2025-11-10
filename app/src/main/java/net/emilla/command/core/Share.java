@@ -6,7 +6,6 @@ import static net.emilla.chime.Chime.RESUME;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.net.Uri;
 
 import net.emilla.R;
@@ -31,11 +30,6 @@ import java.util.ArrayList;
 
     /*internal*/ Share(AssistActivity act) {
         super(act, CoreEntry.SHARE, R.string.data_hint_text);
-    }
-
-    @Override
-    protected void init(AssistActivity act, Resources res) {
-        super.init(act, res);
 
         giveGadgets(new FileFetcher(act, ENTRY, "*/*"), new MediaFetcher(act, ENTRY));
     }

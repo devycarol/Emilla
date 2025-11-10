@@ -205,7 +205,7 @@ public final class AssistActivity extends EmillaActivity {
                 if (noCommand) {
                     mBinding.submitButton.setIcon(mNoCommandAction.icon());
                 } else {
-                    cmd.reinit(act, res);
+                    cmd.init(act);
                 }
 
                 boolean dataAvailable = noCommand || mCommand.usesData();

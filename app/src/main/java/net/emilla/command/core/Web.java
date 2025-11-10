@@ -4,7 +4,6 @@ import static android.content.Intent.ACTION_WEB_SEARCH;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.view.inputmethod.EditorInfo;
 
 import net.emilla.activity.AssistActivity;
@@ -23,15 +22,10 @@ import net.emilla.util.SearchEngineParser;
             || Apps.canDo(pm, Intents.view("http:"));
     }
 
+    private final SearchEngineParser mSearchEngineMap;
+
     /*internal*/ Web(AssistActivity act) {
         super(act, CoreEntry.WEB, EditorInfo.IME_ACTION_SEARCH);
-    }
-
-    private /*late*/ SearchEngineParser mSearchEngineMap;
-
-    @Override
-    protected void init(AssistActivity act, Resources res) {
-        super.init(act, res);
 
         mSearchEngineMap = new SearchEngineParser(SettingVals.searchEngineCsv(prefs()));
     }

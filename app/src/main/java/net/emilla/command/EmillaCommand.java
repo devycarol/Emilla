@@ -15,7 +15,6 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 
 import androidx.annotation.ArrayRes;
-import androidx.annotation.CallSuper;
 import androidx.annotation.Nullable;
 import androidx.annotation.PluralsRes;
 import androidx.annotation.RequiresPermission;
@@ -125,7 +124,6 @@ public abstract class EmillaCommand {
 
     @Nullable
     private String mInstruction = null;
-    private boolean mInitialized = false;
     private boolean mActive = false;
     private Drawable mIcon = null;
 
@@ -192,11 +190,7 @@ public abstract class EmillaCommand {
         }
     }
 
-    public final void reinit(AssistActivity act, Resources res) {
-        if (!mInitialized) {
-            init(act, res);
-        }
-
+    public final void init(AssistActivity act) {
         if (mGadgets != null) {
             for (Gadget gadget : mGadgets) {
                 gadget.init(act);
@@ -206,11 +200,6 @@ public abstract class EmillaCommand {
         }
 
         mActive = true;
-    }
-
-    @CallSuper
-    protected /*open*/ void init(AssistActivity act, Resources res) {
-        mInitialized = true;
     }
 
     public /*open*/ void clean(AssistActivity act) {

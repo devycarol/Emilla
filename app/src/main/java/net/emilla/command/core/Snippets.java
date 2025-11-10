@@ -1,7 +1,5 @@
 package net.emilla.command.core;
 
-import android.content.res.Resources;
-
 import androidx.annotation.Nullable;
 
 import net.emilla.R;
@@ -18,13 +16,9 @@ import net.emilla.command.Subcommand;
         return true;
     }
 
-    /*internal*/ Snippets(AssistActivity act) {
-        super(act, CoreEntry.SNIPPETS, R.string.data_hint_text);
-    }
+    private final SnippetsFragment mSnippetsFragment;
 
-    private /*late*/ SnippetsFragment mSnippetsFragment;
-
-    private /*late*/ ActionMap<SnippetAction> mActionMap;
+    private final ActionMap<SnippetAction> mActionMap;
     private SnippetAction mAction = SnippetAction.GET;
 
     @Nullable
@@ -32,9 +26,8 @@ import net.emilla.command.Subcommand;
     @Nullable
     private String mUsedText = null;
 
-    @Override
-    protected void init(AssistActivity act, Resources res) {
-        super.init(act, res);
+    /*internal*/ Snippets(AssistActivity act) {
+        super(act, CoreEntry.SNIPPETS, R.string.data_hint_text);
 
         mSnippetsFragment = SnippetsFragment.newInstance();
 
@@ -42,10 +35,10 @@ import net.emilla.command.Subcommand;
 
         mActionMap = new ActionMap<SnippetAction>(SnippetAction.GET);
 
-        mActionMap.put(res, SnippetAction.PEEK, R.array.subcmd_snippet_peek, true);
-        mActionMap.put(res, SnippetAction.GET, R.array.subcmd_snippet_get, true);
-        mActionMap.put(res, SnippetAction.POP, R.array.subcmd_snippet_pop, true);
-        mActionMap.put(res, SnippetAction.REMOVE, R.array.subcmd_snippet_remove, true);
+        mActionMap.put(this.resources, SnippetAction.PEEK, R.array.subcmd_snippet_peek, true);
+        mActionMap.put(this.resources, SnippetAction.GET, R.array.subcmd_snippet_get, true);
+        mActionMap.put(this.resources, SnippetAction.POP, R.array.subcmd_snippet_pop, true);
+        mActionMap.put(this.resources, SnippetAction.REMOVE, R.array.subcmd_snippet_remove, true);
     }
 
     @Override

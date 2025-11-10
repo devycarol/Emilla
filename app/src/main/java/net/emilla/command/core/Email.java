@@ -9,7 +9,6 @@ import static android.content.Intent.EXTRA_TEXT;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.net.Uri;
 
 import androidx.annotation.Nullable;
@@ -34,16 +33,11 @@ import java.util.ArrayList;
         return Apps.canDo(pm, new Intent(ACTION_SENDTO, Uri.parse("mailto:")));
     }
 
+    private final ContactEmailsFragment mContactsFragment;
+    private final FieldToggle mSubjectToggle;
+
     /*internal*/ Email(AssistActivity act) {
         super(act, CoreEntry.EMAIL, R.string.data_hint_email);
-    }
-
-    private /*late*/ ContactEmailsFragment mContactsFragment;
-    private /*late*/ FieldToggle mSubjectToggle;
-
-    @Override
-    protected void init(AssistActivity act, Resources res) {
-        super.init(act, res);
 
         mContactsFragment = ContactEmailsFragment.newInstance(true);
         mSubjectToggle = InputField.SUBJECT.toggler(act);

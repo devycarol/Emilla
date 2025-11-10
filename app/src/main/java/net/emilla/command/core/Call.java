@@ -4,7 +4,6 @@ import static android.content.Intent.ACTION_CALL;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.view.inputmethod.EditorInfo;
 
@@ -26,15 +25,10 @@ import net.emilla.util.Permission;
         return Features.phone(pm) || Apps.canDo(pm, makeIntent(""));
     }
 
+    private final ContactPhonesFragment mContactsFragment;
+
     /*internal*/ Call(AssistActivity act) {
         super(act, CoreEntry.CALL, EditorInfo.IME_ACTION_GO);
-    }
-
-    private /*late*/ ContactPhonesFragment mContactsFragment;
-
-    @Override
-    protected void init(AssistActivity act, Resources res) {
-        super.init(act, res);
 
         mContactsFragment = ContactPhonesFragment.newInstance(false);
 

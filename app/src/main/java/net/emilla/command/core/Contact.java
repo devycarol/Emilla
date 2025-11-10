@@ -5,7 +5,6 @@ import static android.content.Intent.EXTRA_TEXT;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents.Insert;
@@ -39,18 +38,13 @@ import java.util.List;
         VIEW, EDIT, SHARE, CREATE
     }
 
-    /*internal*/ Contact(AssistActivity act) {
-        super(act, CoreEntry.CONTACT, R.string.data_hint_contact);
-    }
+    private final ContactCardsFragment mContactsFragment;
 
-    private /*late*/ ContactCardsFragment mContactsFragment;
-
-    private /*late*/ ActionMap<Action> mActionMap;
+    private final ActionMap<Action> mActionMap;
     private Action mAction = Action.VIEW;
 
-    @Override
-    protected void init(AssistActivity act, Resources res) {
-        super.init(act, res);
+    /*internal*/ Contact(AssistActivity act) {
+        super(act, CoreEntry.CONTACT, R.string.data_hint_contact);
 
         mContactsFragment = ContactCardsFragment.newInstance();
 
@@ -58,10 +52,10 @@ import java.util.List;
 
         mActionMap = new ActionMap<Action>(Action.VIEW);
 
-        mActionMap.put(res, Action.VIEW, R.array.subcmd_edit, true);
-        mActionMap.put(res, Action.EDIT, R.array.subcmd_edit, true);
-        mActionMap.put(res, Action.SHARE, R.array.subcmd_share, true);
-        mActionMap.put(res, Action.CREATE, R.array.subcmd_create, true);
+        mActionMap.put(this.resources, Action.VIEW, R.array.subcmd_edit, true);
+        mActionMap.put(this.resources, Action.EDIT, R.array.subcmd_edit, true);
+        mActionMap.put(this.resources, Action.SHARE, R.array.subcmd_share, true);
+        mActionMap.put(this.resources, Action.CREATE, R.array.subcmd_create, true);
     }
 
     @Override

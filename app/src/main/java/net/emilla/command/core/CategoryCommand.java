@@ -1,8 +1,8 @@
 package net.emilla.command.core;
 
 import android.content.Intent;
-import android.content.res.Resources;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.R;
@@ -13,21 +13,17 @@ import net.emilla.util.Intents;
 
 /*internal*/ abstract class CategoryCommand extends CoreCommand {
 
+    private final AppList mAppList;
+    @Nullable
+    private final AlertDialog.Builder mChooser;
+
     /*internal*/ CategoryCommand(AssistActivity act, CoreEntry coreEntry, int imeAction) {
         super(act, coreEntry, imeAction);
-    }
-
-    private /*late*/ AppList mAppList;
-    private AlertDialog.Builder mChooser = null;
-
-    @Override
-    protected final void init(AssistActivity act, Resources res) {
-        super.init(act, res);
 
         mAppList = new AppList(pm(), makeFilter());
-        if (mAppList.size() > 1) {
-            mChooser = Dialogs.appLaunches(act, mAppList);
-        }
+        mChooser = mAppList.size() > 1
+            ? Dialogs.appLaunches(act, mAppList)
+            : null;
     }
 
     protected abstract Intent makeFilter();

@@ -3,7 +3,6 @@ package net.emilla.command.core;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Notification;
-import android.content.res.Resources;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
@@ -33,25 +32,20 @@ import net.emilla.util.Permission;
         WORK, BREAK
     }
 
+    private final ActionMap<Action> mActionMap;
+    @Nullable
+    private String mWorkMemo;
+    @Nullable
+    private String mBreakMemo;
+
     /*internal*/ Pomodoro(AssistActivity act) {
         super(act, CoreEntry.POMODORO, R.string.data_hint_pomodoro);
-    }
-
-    private /*late*/ ActionMap<Action> mActionMap;
-    @Nullable
-    private /*late*/ String mWorkMemo;
-    @Nullable
-    private /*late*/ String mBreakMemo;
-
-    @Override
-    protected void init(AssistActivity act, Resources res) {
-        super.init(act, res);
 
         mActionMap = new ActionMap<Action>(Action.WORK);
-        mActionMap.put(res, Action.BREAK, R.array.subcmd_pomodoro_break, true);
+        mActionMap.put(this.resources, Action.BREAK, R.array.subcmd_pomodoro_break, true);
 
-        mWorkMemo = SettingVals.defaultPomoWorkMemo(prefs(), res);
-        mBreakMemo = SettingVals.defaultPomoBreakMemo(prefs(), res);
+        mWorkMemo = SettingVals.defaultPomoWorkMemo(prefs(), this.resources);
+        mBreakMemo = SettingVals.defaultPomoBreakMemo(prefs(), this.resources);
     }
 
     @Override

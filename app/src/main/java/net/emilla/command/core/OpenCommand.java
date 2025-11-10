@@ -1,7 +1,6 @@
 package net.emilla.command.core;
 
 import android.content.Intent;
-import android.content.res.Resources;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -14,15 +13,10 @@ import net.emilla.util.Dialogs;
 
 /*internal*/ abstract class OpenCommand extends CoreCommand {
 
+    protected final AlertDialog.Builder appChooser;
+
     protected OpenCommand(AssistActivity act, CoreEntry coreEntry, int imeAction) {
         super(act, coreEntry, imeAction);
-    }
-
-    protected /*late*/ AlertDialog.Builder appChooser;
-
-    @Override
-    protected final void init(AssistActivity act, Resources res) {
-        super.init(act, res);
 
         this.appChooser = makeChooser();
     }

@@ -68,7 +68,7 @@ import net.emilla.util.Dialogs;
     @Override
     protected void run() {
         chooseCommand((dlg, which) -> {
-            mCommands[which].reinit(this.activity, this.resources);
+            mCommands[which].init(this.activity);
             mCommands[which].execute();
             mCommands[which].clean(this.activity);
         });
@@ -78,7 +78,7 @@ import net.emilla.util.Dialogs;
     protected void run(String instruction) {
         chooseCommand((dlg, which) -> {
             mCommands[which].setInstruction(instruction);
-            mCommands[which].reinit(this.activity, this.resources);
+            mCommands[which].init(this.activity);
             mCommands[which].execute();
             mCommands[which].clean(this.activity);
         });
@@ -87,7 +87,7 @@ import net.emilla.util.Dialogs;
     @Override
     public void execute(String data) {
         chooseCommand((dlg, which) -> {
-            mCommands[which].reinit(this.activity, this.resources);
+            mCommands[which].init(this.activity);
             // Todo: this surely looks janky and will behave as such. Don't execute dupe commands
             //  immediately, disambiguate prior to execution.
             if (mCommands[which].usesData()) {

@@ -10,7 +10,6 @@ import static java.util.regex.Pattern.CASE_INSENSITIVE;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.provider.CalendarContract.Events;
 
 import net.emilla.R;
@@ -33,16 +32,11 @@ import java.util.regex.Pattern;
         return Apps.canDo(pm, makeIntent());
     }
 
+    private final FieldToggle mLocationToggle;
+    private final FieldToggle mUrlToggle;
+
     /*internal*/ Calendar(AssistActivity act) {
         super(act, CoreEntry.CALENDAR, R.string.data_hint_calendar);
-    }
-
-    private /*late*/ FieldToggle mLocationToggle;
-    private /*late*/ FieldToggle mUrlToggle;
-
-    @Override
-    protected void init(AssistActivity act, Resources res) {
-        super.init(act, res);
 
         mLocationToggle = InputField.LOCATION.toggler(act);
         mUrlToggle = InputField.URL.toggler(act);
