@@ -45,4 +45,8 @@ public final class CommandMap {
         return mDefaultYielder.command(act);
     }
 
+    public EmillaCommand getDefault(AssistActivity act, String fullCommand) {
+        return mDefaultYielder.command(act, Lang.words(fullCommand));
+    }
+
 }

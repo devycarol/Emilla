@@ -190,7 +190,7 @@ public final class AssistActivity extends EmillaActivity {
             EmillaCommand cmd = mCommandMap.get(act, command);
             boolean isDefault = cmd == null;
             if (isDefault) {
-                cmd = mCommandMap.getDefault(act);
+                cmd = mCommandMap.getDefault(act, command);
             }
 
             boolean noCommand = command.isEmpty();
