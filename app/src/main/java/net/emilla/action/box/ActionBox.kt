@@ -16,6 +16,7 @@ abstract class ActionBox protected constructor(
     @LayoutRes contentLayoutId: Int
 ) : Fragment (contentLayoutId), InstructyGadget {
 
+    @get:JvmName("activity")
     protected val activity by lazy { requireActivity() as AssistActivity }
     private val res by lazy { activity.resources }
 
