@@ -1,7 +1,6 @@
 package net.emilla.command.core;
 
 import static android.content.Intent.ACTION_SENDTO;
-import static android.content.Intent.EXTRA_SUBJECT;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,8 +10,6 @@ import androidx.annotation.Nullable;
 
 import net.emilla.R;
 import net.emilla.action.MediaFetcher;
-import net.emilla.action.field.FieldToggle;
-import net.emilla.action.field.InputField;
 import net.emilla.activity.AssistActivity;
 import net.emilla.contact.fragment.ContactPhonesFragment;
 import net.emilla.content.receive.PhoneReceiver;
@@ -41,16 +38,14 @@ import net.emilla.util.Uris;
     }
 
     private /*late*/ ContactPhonesFragment mContactsFragment;
-    private /*late*/ FieldToggle mSubjectToggle;
 
     @Override
     protected void init(AssistActivity act, Resources res) {
         super.init(act, res);
 
         mContactsFragment = ContactPhonesFragment.newInstance(true);
-        mSubjectToggle = InputField.SUBJECT.toggler(act);
 
-        giveGadgets(mContactsFragment, mSubjectToggle, new MediaFetcher(act, ENTRY));
+        giveGadgets(mContactsFragment, new MediaFetcher(act, ENTRY));
     }
 
     @Override
@@ -109,10 +104,6 @@ import net.emilla.util.Uris;
         if (message != null) sendTo.putExtra(Intents.EXTRA_SMS_BODY, message);
         // overwrites any existing draft to the recipient
         // Todo: detect, warn, confirm.
-
-        String subject = mSubjectToggle.fieldText();
-        if (subject != null) sendTo.putExtra(EXTRA_SUBJECT, subject);
-        // TODO: I've not gotten this to work yet
 
         appSucceed(sendTo);
     }

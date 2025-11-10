@@ -350,10 +350,7 @@
         assistant settings. In the future, the command will search your system contacts with
         graphical selection.\n
         \n
-        You can type a message in the data field. This may overwrite an existing SMS draft!\n
-        \n
-        You can provide a subject line using the \"subject field\" button. For now, this doesn\'t
-        seem to work..
+        You can type a message in the data field. This may overwrite an existing SMS draft!
     </string>
     <!-- "View, create, and edit contacts" -->
     <string name="manual_contact">
