@@ -10,8 +10,6 @@ import net.emilla.content.receive.FilesReceiver;
 
 public final class MediaFetcher implements LabeledQuickAction {
 
-    public static final int ID = R.id.action_get_media;
-
     private final AssistActivity mActivity;
     private final FilesReceiver mReceiver;
 
@@ -22,7 +20,7 @@ public final class MediaFetcher implements LabeledQuickAction {
 
     @Override @IdRes
     public int id() {
-        return ID;
+        return R.id.action_get_media;
     }
 
     @Override @DrawableRes

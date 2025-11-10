@@ -10,6 +10,7 @@ import android.content.res.Resources;
 import androidx.annotation.Nullable;
 
 import net.emilla.R;
+import net.emilla.action.MediaFetcher;
 import net.emilla.action.field.FieldToggle;
 import net.emilla.action.field.InputField;
 import net.emilla.activity.AssistActivity;
@@ -49,8 +50,7 @@ import net.emilla.util.Uris;
         mContactsFragment = ContactPhonesFragment.newInstance(true);
         mSubjectToggle = InputField.SUBJECT.toggler(act);
 
-        giveGadgets(mContactsFragment, mSubjectToggle);
-        // Todo: attachments
+        giveGadgets(mContactsFragment, mSubjectToggle, new MediaFetcher(act, ENTRY));
     }
 
     @Override
