@@ -34,16 +34,16 @@ public abstract class ContactsFragment<T> extends ActionBox
     implements LoaderManager.LoaderCallbacks<Cursor>,
     AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
-    private ListView mContactList;
-    private LinearLayout mPermissionContainer;
-    private Button mPermissionButton;
+    private /*late*/ ListView mContactList;
+    private /*late*/ LinearLayout mPermissionContainer;
+    private /*late*/ Button mPermissionButton;
 
-    private ContactCursorAdapter mCursorAdapter;
+    private /*late*/ ContactCursorAdapter mCursorAdapter;
     @Nullable
-    private String mSearchString;
+    private String mSearchString = null;
 
-    private AssistActivity mActivity;
-    private boolean mHasMultiSelect;
+    private /*late*/ AssistActivity mActivity;
+    private /*late*/ boolean mHasMultiSelect;
 
     public ContactsFragment() {
         super(R.layout.fragment_contacts);

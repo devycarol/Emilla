@@ -97,22 +97,22 @@ public final class AssistActivity extends EmillaActivity {
             ? new PermissionRetriever(this)
             : null;
 
-    private LayoutInflater mInflater;
-    private ActivityAssistBinding mBinding;
-    private AssistViewModel mVm;
+    private /*late*/ LayoutInflater mInflater;
+    private /*late*/ ActivityAssistBinding mBinding;
+    private /*late*/ AssistViewModel mVm;
 
     @Nullable
-    private Fragment mDefaultActionBox;
+    private Fragment mDefaultActionBox = null;
     @Nullable
-    private AlertDialog mManual;
+    private AlertDialog mManual = null;
     // todo: please handle this another way..
 
-    private QuickAction mNoCommandAction;
-    private QuickAction mDoubleAssistAction;
-    private QuickAction mMenuKeyAction;
+    private /*late*/ QuickAction mNoCommandAction;
+    private /*late*/ QuickAction mDoubleAssistAction;
+    private /*late*/ QuickAction mMenuKeyAction;
 
-    private CommandMap mCommandMap;
-    private EmillaCommand mCommand;
+    private /*late*/ CommandMap mCommandMap;
+    private /*late*/ EmillaCommand mCommand;
 
     private boolean mOpen = false;
 

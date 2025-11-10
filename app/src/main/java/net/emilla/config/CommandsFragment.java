@@ -23,10 +23,10 @@ import java.util.Set;
 
 public final class CommandsFragment extends EmillaSettingsFragment {
 
-    private EmillaActivity mActivity;
-    private PackageManager mPm;
-    private SharedPreferences mPrefs;
-    private Resources mRes;
+    private /*late*/ EmillaActivity mActivity;
+    private /*late*/ PackageManager mPm;
+    private /*late*/ SharedPreferences mPrefs;
+    private /*late*/ Resources mRes;
 
     private final OnPreferenceChangeListener mListener = (pref, newVal) -> {
         var cmdPref = (CommandPreference) pref;

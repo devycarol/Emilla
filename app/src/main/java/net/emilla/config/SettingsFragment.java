@@ -34,12 +34,12 @@ public final class SettingsFragment extends EmillaSettingsFragment {
     private static final String EXTRA_FRAGMENT_ARG_KEY = ":settings:fragment_args_key";
     private static final String EXTRA_SHOW_FRAGMENT_ARGUMENTS = ":settings:show_fragment_args";
 
-    private EmillaActivity mActivity;
-    private SharedPreferences mPrefs;
-    private Resources mRes;
-    private PackageManager mPm;
+    private /*late*/ EmillaActivity mActivity;
+    private /*late*/ SharedPreferences mPrefs;
+    private /*late*/ Resources mRes;
+    private /*late*/ PackageManager mPm;
 
-    private boolean mUsingCustomSounds;
+    private /*late*/ boolean mUsingCustomSounds;
 
     private final ActivityResultLauncher<Chime> mSoundPickerLauncher = registerForActivityResult(
         new GetChimeSound(),
