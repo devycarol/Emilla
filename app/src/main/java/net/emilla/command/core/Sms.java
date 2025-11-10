@@ -5,6 +5,7 @@ import static android.content.Intent.EXTRA_SUBJECT;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 
 import androidx.annotation.Nullable;
 
@@ -34,45 +35,22 @@ import net.emilla.util.Uris;
         return false; // the initials "SMS" shouldn't be lowercased
     }
 
-    private FieldToggle mSubjectToggle = null;
-    private ContactPhonesFragment mContactsFragment = null;
-
     /*internal*/ Sms(AssistActivity act) {
         super(act, CoreEntry.SMS, R.string.data_hint_message);
     }
 
+    private /*late*/ ContactPhonesFragment mContactsFragment;
+    private /*late*/ FieldToggle mSubjectToggle;
+
     @Override
-    protected void onInit() {
-        super.onInit();
+    protected void init(AssistActivity act, Resources res) {
+        super.init(act, res);
 
-        if (mContactsFragment == null) {
-            mContactsFragment = ContactPhonesFragment.newInstance(true);
-        }
-        this.activity.giveActionBox(mContactsFragment);
+        mContactsFragment = ContactPhonesFragment.newInstance(true);
+        mSubjectToggle = InputField.SUBJECT.toggler(act);
 
-        if (mSubjectToggle == null) {
-            mSubjectToggle = InputField.SUBJECT.toggler(this.activity);
-        } else if (mSubjectToggle.activated()) {
-            reshowField(InputField.SUBJECT.fieldId);
-        }
-        giveAction(mSubjectToggle);
+        giveGadgets(mContactsFragment, mSubjectToggle);
         // Todo: attachments
-    }
-
-    @Override
-    protected void onInstruct(@Nullable String instruction) {
-        super.onInstruct(instruction);
-        if (mContactsFragment != null) mContactsFragment.search(instruction);
-    }
-
-    @Override
-    protected void onClean() {
-        super.onClean();
-
-        this.activity.removeActionBox(mContactsFragment);
-
-        removeAction(InputField.SUBJECT.actionId);
-        hideField(InputField.SUBJECT.fieldId);
     }
 
     @Override

@@ -3,8 +3,8 @@ package net.emilla.command.core;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Notification;
+import android.content.res.Resources;
 
-import androidx.annotation.CallSuper;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
 
@@ -33,37 +33,25 @@ import net.emilla.util.Permission;
         WORK, BREAK
     }
 
-    private ActionMap<Action> mActionMap = null;
-    @Nullable
-    private String mWorkMemo = null;
-    @Nullable
-    private String mBreakMemo = null;
-
     /*internal*/ Pomodoro(AssistActivity act) {
         super(act, CoreEntry.POMODORO, R.string.data_hint_pomodoro);
     }
 
-    @Override @CallSuper
-    protected void onInit() {
-        super.onInit();
+    private /*late*/ ActionMap<Action> mActionMap;
+    @Nullable
+    private /*late*/ String mWorkMemo;
+    @Nullable
+    private /*late*/ String mBreakMemo;
 
-        if (mActionMap == null) {
-            mActionMap = new ActionMap<Action>(Action.WORK);
-            mActionMap.put(this.resources, Action.BREAK, R.array.subcmd_pomodoro_break, true);
-        }
+    @Override
+    protected void init(AssistActivity act, Resources res) {
+        super.init(act, res);
 
-        if (mWorkMemo == null || mBreakMemo == null) {
-            mWorkMemo = SettingVals.defaultPomoWorkMemo(prefs(), this.resources);
-            mBreakMemo = SettingVals.defaultPomoBreakMemo(prefs(), this.resources);
-        }
-    }
+        mActionMap = new ActionMap<Action>(Action.WORK);
+        mActionMap.put(res, Action.BREAK, R.array.subcmd_pomodoro_break, true);
 
-    @Override @CallSuper
-    protected void onClean() {
-        super.onClean();
-
-        mWorkMemo = null;
-        mBreakMemo = null;
+        mWorkMemo = SettingVals.defaultPomoWorkMemo(prefs(), res);
+        mBreakMemo = SettingVals.defaultPomoBreakMemo(prefs(), res);
     }
 
     @Override
@@ -102,9 +90,11 @@ import net.emilla.util.Permission;
 
     private int seconds(@Nullable String minutes, boolean isBreak) {
         if (minutes == null) {
-            return isBreak
-                ? SettingVals.defaultPomoBreakMins(prefs()) * 60
-                : SettingVals.defaultPomoWorkMins(prefs()) * 60;
+            return (
+                isBreak
+                    ? SettingVals.defaultPomoBreakMins(prefs())
+                    : SettingVals.defaultPomoWorkMins(prefs())
+            ) * 60;
         }
 
         return Lang.duration(minutes, CoreEntry.POMODORO.name).seconds;
@@ -113,17 +103,27 @@ import net.emilla.util.Permission;
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     private void pomo(int seconds, String workMemo, String breakMemo, boolean isBreak) {
         if (isBreak) {
-            pomo(seconds, PingChannel.POMODORO_BREAK_START,
-                 str(R.string.ping_pomodoro_break), breakMemo,
-                 PingChannel.POMODORO_BREAK_WARN,
-                 PingChannel.POMODORO_BREAK_END,
-                 str(R.string.ping_pomodoro_break_over), workMemo);
+            pomo(
+                seconds,
+                PingChannel.POMODORO_BREAK_START,
+                str(R.string.ping_pomodoro_break),
+                breakMemo,
+                PingChannel.POMODORO_BREAK_WARN,
+                PingChannel.POMODORO_BREAK_END,
+                str(R.string.ping_pomodoro_break_over),
+                workMemo
+            );
         } else {
-            pomo(seconds, PingChannel.POMODORO_START,
-                 str(R.string.ping_pomodoro), workMemo,
-                 PingChannel.POMODORO_WARN,
-                 PingChannel.POMODORO_END,
-                 str(R.string.ping_pomodoro_over), breakMemo);
+            pomo(
+                seconds,
+                PingChannel.POMODORO_START,
+                str(R.string.ping_pomodoro),
+                workMemo,
+                PingChannel.POMODORO_WARN,
+                PingChannel.POMODORO_END,
+                str(R.string.ping_pomodoro_over),
+                breakMemo
+            );
         }
 
     }
@@ -145,20 +145,22 @@ import net.emilla.util.Permission;
             givePing(startChannel, mainTitle, startMemo);
 
             scheduler.plan(PingPlan.afterSeconds(
-                    Plan.POMODORO_WARNING,
-                    seconds - 60,
-                    makePing(warnChannel, mainTitle, warnMemo),
-                    warnChannel));
+                Plan.POMODORO_WARNING,
+                seconds - 60,
+                makePing(warnChannel, mainTitle, warnMemo),
+                warnChannel
+            ));
 
         } else {
             givePing(warnChannel, mainTitle, warnMemo);
         }
 
         scheduler.plan(PingPlan.afterSeconds(
-                Plan.POMODORO_ENDED,
-                seconds,
-                makePing(endChannel, endTitle, endMemo),
-                endChannel));
+            Plan.POMODORO_ENDED,
+            seconds,
+            makePing(endChannel, endTitle, endMemo),
+            endChannel
+        ));
     }
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)

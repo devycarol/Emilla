@@ -24,13 +24,6 @@ import net.emilla.run.CopyGift;
     }
 
     @Override
-    protected void onClean() {
-        super.onClean();
-        mCopiedText = null;
-        // forget the copied text
-    }
-
-    @Override
     protected void run() {
         throw badCommand(R.string.error_unfinished_copy);
         // Todo
@@ -49,6 +42,13 @@ import net.emilla.run.CopyGift;
         }
         mCopiedText = text;
         give(new CopyGift(text));
+    }
+
+    @Override
+    public void clean(AssistActivity act) {
+        super.clean(act);
+        mCopiedText = null;
+        // forget the copied text
     }
 
 }

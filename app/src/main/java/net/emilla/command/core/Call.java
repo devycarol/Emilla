@@ -4,10 +4,9 @@ import static android.content.Intent.ACTION_CALL;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.view.inputmethod.EditorInfo;
-
-import androidx.annotation.Nullable;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
@@ -27,35 +26,19 @@ import net.emilla.util.Permission;
         return Features.phone(pm) || Apps.canDo(pm, makeIntent(""));
     }
 
-    private ContactPhonesFragment mContactsFragment = null;
-
     /*internal*/ Call(AssistActivity act) {
         super(act, CoreEntry.CALL, EditorInfo.IME_ACTION_GO);
     }
 
-    @Override
-    protected void onInit() {
-        super.onInit();
-
-        if (mContactsFragment == null) {
-            mContactsFragment = ContactPhonesFragment.newInstance(false);
-        }
-
-        this.activity.giveActionBox(mContactsFragment);
-    }
+    private /*late*/ ContactPhonesFragment mContactsFragment;
 
     @Override
-    protected void onInstruct(@Nullable String instruction) {
-        super.onInstruct(instruction);
-        mContactsFragment.search(instruction);
-    }
+    protected void init(AssistActivity act, Resources res) {
+        super.init(act, res);
 
-    @Override
-    protected void onClean() {
-        super.onClean();
+        mContactsFragment = ContactPhonesFragment.newInstance(false);
 
-        this.activity.removeActionBox(mContactsFragment);
-        mContactsFragment = null;
+        giveGadgets(mContactsFragment);
     }
 
     @Override

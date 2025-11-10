@@ -10,6 +10,7 @@ import static java.util.regex.Pattern.CASE_INSENSITIVE;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.provider.CalendarContract.Events;
 
 import net.emilla.R;
@@ -36,36 +37,17 @@ import java.util.regex.Pattern;
         super(act, CoreEntry.CALENDAR, R.string.data_hint_calendar);
     }
 
-    private FieldToggle mLocationToggle = null;
-    private FieldToggle mUrlToggle = null;
+    private /*late*/ FieldToggle mLocationToggle;
+    private /*late*/ FieldToggle mUrlToggle;
 
     @Override
-    protected void onInit() {
-        super.onInit();
+    protected void init(AssistActivity act, Resources res) {
+        super.init(act, res);
 
-        if (mLocationToggle == null) {
-            mLocationToggle = InputField.LOCATION.toggler(this.activity);
-        } else if (mLocationToggle.activated()) {
-            reshowField(InputField.LOCATION.fieldId);
-        }
-        giveAction(mLocationToggle);
+        mLocationToggle = InputField.LOCATION.toggler(act);
+        mUrlToggle = InputField.URL.toggler(act);
 
-        if (mUrlToggle == null) {
-            mUrlToggle = InputField.URL.toggler(this.activity);
-        } else if (mUrlToggle.activated()) {
-            reshowField(InputField.URL.fieldId);
-        }
-        giveAction(mUrlToggle);
-    }
-
-    @Override
-    protected void onClean() {
-        super.onClean();
-
-        removeAction(InputField.LOCATION.actionId);
-        hideField(InputField.LOCATION.fieldId);
-        removeAction(InputField.URL.actionId);
-        hideField(InputField.URL.fieldId);
+        giveGadgets(mLocationToggle, mUrlToggle);
     }
 
     @Override

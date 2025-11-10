@@ -1,5 +1,7 @@
 package net.emilla.command.core;
 
+import android.content.res.Resources;
+
 import androidx.annotation.Nullable;
 
 import net.emilla.R;
@@ -16,46 +18,34 @@ import net.emilla.command.Subcommand;
         return true;
     }
 
-    private SnippetsFragment mSnippetsFragment = null;
+    /*internal*/ Snippets(AssistActivity act) {
+        super(act, CoreEntry.SNIPPETS, R.string.data_hint_text);
+    }
 
-    private ActionMap<SnippetAction> mActionMap = null;
+    private /*late*/ SnippetsFragment mSnippetsFragment;
+
+    private /*late*/ ActionMap<SnippetAction> mActionMap;
     private SnippetAction mAction = SnippetAction.GET;
+
     @Nullable
     private String mUsedSnippet = null;
     @Nullable
     private String mUsedText = null;
 
-    /*internal*/ Snippets(AssistActivity act) {
-        super(act, CoreEntry.SNIPPETS, R.string.data_hint_text);
-    }
-
     @Override
-    protected void onInit() {
-        super.onInit();
+    protected void init(AssistActivity act, Resources res) {
+        super.init(act, res);
 
-        if (mSnippetsFragment == null) mSnippetsFragment = SnippetsFragment.newInstance();
-        this.activity.giveActionBox(mSnippetsFragment);
+        mSnippetsFragment = SnippetsFragment.newInstance();
 
-        if (mActionMap == null) {
-            mActionMap = new ActionMap<SnippetAction>(SnippetAction.GET);
+        giveGadgets(mSnippetsFragment);
 
-            mActionMap.put(this.resources, SnippetAction.PEEK, R.array.subcmd_snippet_peek, true);
-            mActionMap.put(this.resources, SnippetAction.GET, R.array.subcmd_snippet_get, true);
-            mActionMap.put(this.resources, SnippetAction.POP, R.array.subcmd_snippet_pop, true);
-            mActionMap.put(this.resources, SnippetAction.REMOVE, R.array.subcmd_snippet_remove, true);
-        }
-    }
+        mActionMap = new ActionMap<SnippetAction>(SnippetAction.GET);
 
-    @Override
-    protected void onClean() {
-        super.onClean();
-
-        this.activity.removeActionBox(mSnippetsFragment);
-        mSnippetsFragment = null;
-
-        mUsedSnippet = null;
-        mUsedText = null;
-        // forget the used snippet
+        mActionMap.put(res, SnippetAction.PEEK, R.array.subcmd_snippet_peek, true);
+        mActionMap.put(res, SnippetAction.GET, R.array.subcmd_snippet_get, true);
+        mActionMap.put(res, SnippetAction.POP, R.array.subcmd_snippet_pop, true);
+        mActionMap.put(res, SnippetAction.REMOVE, R.array.subcmd_snippet_remove, true);
     }
 
     @Override
@@ -158,6 +148,15 @@ import net.emilla.command.Subcommand;
 
         mUsedSnippet = label;
         mUsedText = text;
+    }
+
+    @Override
+    public void clean(AssistActivity act) {
+        super.clean(act);
+
+        mUsedSnippet = null;
+        mUsedText = null;
+        // forget the used snippet
     }
 
 }

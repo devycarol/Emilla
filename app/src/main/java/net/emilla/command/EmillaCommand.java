@@ -16,7 +16,6 @@ import android.graphics.drawable.Drawable;
 
 import androidx.annotation.ArrayRes;
 import androidx.annotation.CallSuper;
-import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.PluralsRes;
 import androidx.annotation.RequiresPermission;
@@ -24,7 +23,8 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.R;
-import net.emilla.action.QuickAction;
+import net.emilla.action.Gadget;
+import net.emilla.action.InstructyGadget;
 import net.emilla.activity.AssistActivity;
 import net.emilla.chime.Chime;
 import net.emilla.command.app.AppEntry;
@@ -41,6 +41,7 @@ import net.emilla.run.MessageFailure;
 import net.emilla.run.PingGift;
 import net.emilla.run.TextGift;
 import net.emilla.run.TimePickerOffering;
+import net.emilla.util.ArrayLoader;
 import net.emilla.util.Dialogs;
 
 import java.util.Objects;
@@ -125,7 +126,13 @@ public abstract class EmillaCommand {
     @Nullable
     private String mInstruction = null;
     private boolean mInitialized = false;
+    private boolean mActive = false;
     private Drawable mIcon = null;
+
+    @Nullable
+    private Gadget[] mGadgets = null;
+    @Nullable
+    private InstructyGadget[] mInstructyGadgets = null;
 
     protected EmillaCommand(
         AssistActivity act,
@@ -156,7 +163,7 @@ public abstract class EmillaCommand {
             // we don't assume this is true because input editor bugs may cause onTextChanged() to
             // be called repeatedly for the same text.
             mInstruction = instruction;
-            if (mInitialized) onInstruct(instruction);
+            if (mActive) onInstruct(instruction);
         }
     }
 
@@ -173,39 +180,82 @@ public abstract class EmillaCommand {
         }
     }
 
-    public final void decorate(boolean setIcon, boolean isDefault) {
-        CharSequence title = isDefault ? Lang.colonConcat(
-            this.resources,
-            R.string.command_default,
-            sentenceName()
-        ) : title();
-        this.activity.updateTitle(title);
-        this.activity.updateDataHint();
-        this.activity.setImeAction(this.imeAction);
+    public final void decorate(AssistActivity act, Resources res, boolean setIcon, boolean isDefault) {
+        CharSequence title = isDefault
+            ? Lang.colonConcat(res, R.string.command_default, sentenceName())
+            : title();
+        act.updateTitle(title);
+        act.updateDataHint();
+        act.setImeAction(this.imeAction);
         if (setIcon) {
-            this.activity.setSubmitIcon(icon(), usesAppIcon());
+            act.setSubmitIcon(icon(), usesAppIcon());
         }
     }
 
-    public final void init() {
-        onInit();
+    public final void reinit(AssistActivity act, Resources res) {
+        if (!mInitialized) {
+            init(act, res);
+        }
+
+        if (mGadgets != null) {
+            for (Gadget gadget : mGadgets) {
+                gadget.init(act);
+            }
+
+            onInstruct(mInstruction);
+        }
+
+        mActive = true;
+    }
+
+    @CallSuper
+    protected /*open*/ void init(AssistActivity act, Resources res) {
         mInitialized = true;
-        onInstruct(mInstruction);
     }
 
-    public final void clean() {
-        onClean();
-        mInitialized = false;
+    public /*open*/ void clean(AssistActivity act) {
+        if (mGadgets != null) {
+            for (Gadget gadget : mGadgets) {
+                gadget.cleanup(act);
+            }
+        }
+
+        mActive = false;
     }
 
-    @CallSuper
-    protected /*open*/ void onInit() {}
+    protected final void giveGadgets(Gadget... gadgets) {
+        int gadgetCount = gadgets.length;
 
-    @CallSuper
-    protected /*open*/ void onInstruct(@Nullable String instruction) {}
+        if (mGadgets == null) {
+            mGadgets = gadgets;
+        } else {
+            mGadgets = ArrayLoader.concat(mGadgets, gadgets);
+        }
 
-    @CallSuper
-    protected /*open*/ void onClean() {}
+        var instructyGadgets = new ArrayLoader<InstructyGadget>(gadgetCount, InstructyGadget[]::new);
+        for (Gadget gadget : gadgets) {
+            if (gadget instanceof InstructyGadget instructyGadget) {
+                instructyGadgets.add(instructyGadget);
+            }
+        }
+
+        if (instructyGadgets.notEmpty()) {
+            if (mInstructyGadgets == null) {
+                mInstructyGadgets = instructyGadgets.array();
+            } else {
+                mInstructyGadgets = instructyGadgets.appendedTo(mInstructyGadgets);
+            }
+        }
+    }
+
+    // TODO: make final and handle subcommands in a more centralized manner
+    protected /*open*/ void onInstruct(@Nullable String instruction) {
+        if (mInstructyGadgets != null) {
+            for (InstructyGadget gadget : mInstructyGadgets) {
+                gadget.instruct(instruction);
+            }
+        }
+    }
 
     @Nullable
     protected final String instruction() {
@@ -258,22 +308,6 @@ public abstract class EmillaCommand {
 
     protected final void chime(Chime chime) {
         this.activity.chime(chime);
-    }
-
-    protected final void giveAction(QuickAction action) {
-        this.activity.addAction(action);
-    }
-
-    protected final void reshowField(@IdRes int id) {
-        this.activity.reshowField(id);
-    }
-
-    protected final void hideField(@IdRes int id) {
-        this.activity.hideField(id);
-    }
-
-    protected final void removeAction(@IdRes int id) {
-        this.activity.removeAction(id);
     }
 
     /*======================================================================================*

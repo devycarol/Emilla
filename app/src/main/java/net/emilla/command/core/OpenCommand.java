@@ -1,8 +1,8 @@
 package net.emilla.command.core;
 
 import android.content.Intent;
+import android.content.res.Resources;
 
-import androidx.annotation.CallSuper;
 import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.R;
@@ -18,18 +18,13 @@ import net.emilla.util.Dialogs;
         super(act, coreEntry, imeAction);
     }
 
-    protected AlertDialog.Builder appChooser = null;
+    protected /*late*/ AlertDialog.Builder appChooser;
 
-    @Override @CallSuper
-    protected final void onInit() {
-        super.onInit();
+    @Override
+    protected final void init(AssistActivity act, Resources res) {
+        super.init(act, res);
+
         this.appChooser = makeChooser();
-    }
-
-    @Override @CallSuper
-    protected final void onClean() {
-        super.onClean();
-        this.appChooser = null;
     }
 
     protected abstract AlertDialog.Builder makeChooser();

@@ -28,10 +28,6 @@ public final class FieldToggle implements QuickAction {
         mInputField = inputField;
     }
 
-    public boolean activated() {
-        return mActivated;
-    }
-
     @Nullable
     public String fieldText() {
         if (mField != null && mField.getVisibility() != View.GONE && mField.length() > 0) {
@@ -71,4 +67,21 @@ public final class FieldToggle implements QuickAction {
             mActivity.chime(mActivated ? ACT : RESUME);
         }
     }
+
+    @Override
+    public void init(AssistActivity act) {
+        QuickAction.super.init(act);
+
+        if (mActivated) {
+            act.reshowField(mInputField.fieldId);
+        }
+    }
+
+    @Override
+    public void cleanup(AssistActivity act) {
+        QuickAction.super.cleanup(act);
+
+        act.hideField(mInputField.fieldId);
+    }
+
 }

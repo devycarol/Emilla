@@ -1,8 +1,8 @@
 package net.emilla.command.core;
 
 import android.content.Intent;
+import android.content.res.Resources;
 
-import androidx.annotation.CallSuper;
 import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.R;
@@ -17,31 +17,20 @@ import net.emilla.util.Intents;
         super(act, coreEntry, imeAction);
     }
 
-    private AppList mAppList = null;
+    private /*late*/ AppList mAppList;
     private AlertDialog.Builder mChooser = null;
 
-    @Override @CallSuper
-    protected final void onInit() {
-        super.onInit();
+    @Override
+    protected final void init(AssistActivity act, Resources res) {
+        super.init(act, res);
 
-        if (mAppList == null) {
-            mAppList = new AppList(pm(), makeFilter());
-        }
-
+        mAppList = new AppList(pm(), makeFilter());
         if (mAppList.size() > 1) {
-            mChooser = Dialogs.appLaunches(this.activity, mAppList);
+            mChooser = Dialogs.appLaunches(act, mAppList);
         }
     }
 
     protected abstract Intent makeFilter();
-
-    @Override @CallSuper
-    protected final void onClean() {
-        super.onClean();
-
-        mAppList = null;
-        mChooser = null;
-    }
 
     @Override
     protected final void run() {

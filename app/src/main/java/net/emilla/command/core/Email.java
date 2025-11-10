@@ -9,6 +9,7 @@ import static android.content.Intent.EXTRA_TEXT;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.net.Uri;
 
 import androidx.annotation.Nullable;
@@ -33,59 +34,28 @@ import java.util.ArrayList;
         return Apps.canDo(pm, new Intent(ACTION_SENDTO, Uri.parse("mailto:")));
     }
 
-    private FieldToggle mSubjectToggle = null;
-    private FileFetcher mFileFetcher = null;
-    private MediaFetcher mMediaFetcher = null;
-    private ContactEmailsFragment mContactsFragment = null;
-
     /*internal*/ Email(AssistActivity act) {
         super(act, CoreEntry.EMAIL, R.string.data_hint_email);
     }
 
-    @Override
-    protected void onInit() {
-        super.onInit();
-
-        if (mContactsFragment == null) {
-            mContactsFragment = ContactEmailsFragment.newInstance(true);
-        }
-        this.activity.giveActionBox(mContactsFragment);
-
-        if (mSubjectToggle == null) {
-            mSubjectToggle = InputField.SUBJECT.toggler(this.activity);
-        } else if (mSubjectToggle.activated()) {
-            reshowField(InputField.SUBJECT.fieldId);
-        }
-        giveAction(mSubjectToggle);
-
-        if (mFileFetcher == null) {
-            mFileFetcher = new FileFetcher(this.activity, ENTRY, "*/*");
-        }
-        giveAction(mFileFetcher);
-        // TODO: Thunderbird doesn't like certain filetypes. See if you can find a type statement
-        //  that's consistently email-friendly.
-
-        if (mMediaFetcher == null) {
-            mMediaFetcher = new MediaFetcher(this.activity, ENTRY);
-        }
-        giveAction(mMediaFetcher);
-    }
+    private /*late*/ ContactEmailsFragment mContactsFragment;
+    private /*late*/ FieldToggle mSubjectToggle;
 
     @Override
-    protected void onInstruct(@Nullable String instruction) {
-        super.onInstruct(instruction);
-        mContactsFragment.search(instruction);
-    }
+    protected void init(AssistActivity act, Resources res) {
+        super.init(act, res);
 
-    @Override
-    protected void onClean() {
-        super.onClean();
+        mContactsFragment = ContactEmailsFragment.newInstance(true);
+        mSubjectToggle = InputField.SUBJECT.toggler(act);
 
-        this.activity.removeActionBox(mContactsFragment);
-        mContactsFragment = null;
-
-        removeAction(FileFetcher.ID);
-        removeAction(MediaFetcher.ID);
+        giveGadgets(
+            mContactsFragment,
+            mSubjectToggle,
+            new FileFetcher(act, ENTRY, "*/*"),
+            // TODO: Thunderbird doesn't like certain filetypes. See if you can find a type
+            //  statement that's consistently email-friendly.
+            new MediaFetcher(act, ENTRY)
+        );
     }
 
     @Override

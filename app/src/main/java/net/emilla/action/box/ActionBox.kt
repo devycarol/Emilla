@@ -4,6 +4,7 @@ import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import net.emilla.action.InstructyGadget
 import net.emilla.activity.AssistActivity
 import net.emilla.chime.Chime
 import net.emilla.run.CommandRun
@@ -13,7 +14,7 @@ import net.emilla.run.TextGift
 
 abstract class ActionBox protected constructor(
     @LayoutRes contentLayoutId: Int
-) : Fragment (contentLayoutId) {
+) : Fragment (contentLayoutId), InstructyGadget {
 
     protected val activity by lazy { requireActivity() as AssistActivity }
     private val res by lazy { activity.resources }
@@ -25,9 +26,15 @@ abstract class ActionBox protected constructor(
     private fun offer(offering: CommandRun) = activity.offer(offering)
     protected fun offerDialog(dlg: AlertDialog.Builder) = offer(DialogRun(dlg))
     protected fun give(gift: CommandRun) = activity.give(gift)
-    protected fun giveText(text: CharSequence) = give(TextGift(activity, name, text))
+    protected fun giveText(text: CharSequence, @StringRes name: Int) = give(TextGift(activity, name, text))
     protected fun giveCopy(text: CharSequence) = give(CopyGift(text))
 
-    @get:StringRes
-    protected abstract val name: Int
+    final override fun init(act: AssistActivity) {
+        act.giveActionBox(this)
+    }
+
+    final override fun cleanup(act: AssistActivity) {
+        act.removeActionBox(this)
+    }
+
 }

@@ -1,10 +1,10 @@
 package net.emilla.command.app;
 
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.CallSuper;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
@@ -42,29 +42,22 @@ import java.util.TreeSet;
         RUN, LIST
     }
 
-    private ActionMap<Action> mActionMap = null;
-
     /*internal*/ Tasker(AssistActivity act, AppEntry appEntry) {
         super(act, appEntry, EditorInfo.IME_ACTION_NEXT);
     }
 
-    @Override @CallSuper
-    protected void onInit() {
-        super.onInit();
+    private /*late*/ ActionMap<Action> mActionMap;
 
-        if (mActionMap == null) {
-            mActionMap = new ActionMap<Action>(Action.RUN);
+    @Override
+    protected void init(AssistActivity act, Resources res) {
+        super.init(act, res);
 
-            mActionMap.put(this.resources, Action.RUN, R.array.subcmd_tasker_run, true);
-            mActionMap.put(this.resources, Action.LIST, R.array.subcmd_tasker_list, false);
-            // todo: list with search—when you do, change usesInstruction from false to true.
-            // todo: in the far future, you could have a rudimentary UI for creating tasks
-        }
-    }
+        mActionMap = new ActionMap<Action>(Action.RUN);
 
-    @Override @CallSuper
-    protected void onClean() {
-        super.onClean();
+        mActionMap.put(res, Action.RUN, R.array.subcmd_tasker_run, true);
+        mActionMap.put(res, Action.LIST, R.array.subcmd_tasker_list, false);
+        // todo: list with search—when you do, change usesInstruction from false to true.
+        // todo: in the far future, you could have a rudimentary UI for creating tasks
     }
 
     @Override

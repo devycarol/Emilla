@@ -2,10 +2,13 @@ package net.emilla.action;
 
 import android.content.res.Resources;
 
+import androidx.annotation.CallSuper;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
 
-public interface QuickAction {
+import net.emilla.activity.AssistActivity;
+
+public interface QuickAction extends Gadget {
 
     // Preference keys
     String PREF_NO_COMMAND = "action_no_command";
@@ -29,4 +32,15 @@ public interface QuickAction {
     String label(Resources res);
     String description(Resources res);
     void perform();
+
+    @Override @CallSuper
+    default void init(AssistActivity act) {
+        act.addAction(this);
+    }
+
+    @Override @CallSuper
+    default void cleanup(AssistActivity act) {
+        act.removeAction(id());
+    }
+
 }

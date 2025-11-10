@@ -3,7 +3,6 @@ package net.emilla.action.box
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
-import androidx.annotation.StringRes
 import androidx.fragment.app.viewModels
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,9 +27,9 @@ class SnippetsFragment : ActionBox(R.layout.snippet_item_list) {
     }
 
     private val adapter: SnippetAdapter by lazy {
-        SnippetAdapter(vm.snippetLabels(), SnippetAdapter.OnItemClickListener { pos ->
+        SnippetAdapter(vm.snippetLabels()) { pos ->
             peek(vm.labelAt(pos))
-        })
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -89,7 +88,9 @@ class SnippetsFragment : ActionBox(R.layout.snippet_item_list) {
         }
     }
 
-    fun peek(label: String) = giveText(SettingVals.snippet(vm.prefs, label))
+    fun peek(label: String) {
+        giveText(SettingVals.snippet(vm.prefs, label), R.string.command_snippets)
+    }
 
     fun get(label: String) = giveCopy(SettingVals.snippet(vm.prefs, label))
 
@@ -119,6 +120,8 @@ class SnippetsFragment : ActionBox(R.layout.snippet_item_list) {
         toast(R.string.toast_snippet_deleted, label)
     }
 
-    @StringRes
-    override val name = R.string.command_snippets
+    override fun instruct(instruction: String?) {
+        // TODO: search the snippets
+    }
+
 }

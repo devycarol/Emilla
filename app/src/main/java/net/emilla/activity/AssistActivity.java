@@ -23,6 +23,7 @@ import static net.emilla.chime.Chime.SUCCEED;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -185,24 +186,26 @@ public final class AssistActivity extends EmillaActivity {
         public void onTextChanged(CharSequence text, int start, int before, int count) {
             String command = Strings.trimLeading(text.toString());
 
-            EmillaCommand cmd = mCommandMap.get(AssistActivity.this, command);
+            var act = AssistActivity.this;
+            EmillaCommand cmd = mCommandMap.get(act, command);
             boolean isDefault = cmd == null;
             if (isDefault) {
-                cmd = mCommandMap.getDefault(AssistActivity.this);
+                cmd = mCommandMap.getDefault(act);
             }
 
             boolean noCommand = command.isEmpty();
             if (cmd != mCommand || noCommand != mVm.noCommand) {
-                mCommand.clean();
+                mCommand.clean(act);
                 mCommand = cmd;
                 mVm.noCommand = noCommand;
 
-                cmd.decorate(!noCommand, isDefault);
+                Resources res = mVm.res;
+                cmd.decorate(act, res, !noCommand, isDefault);
 
                 if (noCommand) {
                     mBinding.submitButton.setIcon(mNoCommandAction.icon());
                 } else {
-                    cmd.init();
+                    cmd.reinit(act, res);
                 }
 
                 boolean dataAvailable = noCommand || mCommand.usesData();
@@ -349,13 +352,13 @@ public final class AssistActivity extends EmillaActivity {
         // TODO: save state hell
         // Todo: put these in an editor.
         if (SettingVals.showCursorStartButton(prefs)) {
-            addAction(new CursorStart(this));
+            new CursorStart(this).init(this);
         }
         if (SettingVals.showHelpButton(prefs)) {
-            addAction(new Help(this));
+            new Help(this).init(this);
         }
         if (SettingVals.showPlayPauseButton(prefs)) {
-            addAction(new PlayPause(this));
+            new PlayPause(this).init(this);
         }
     }
 

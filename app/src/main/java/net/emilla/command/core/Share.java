@@ -6,6 +6,7 @@ import static net.emilla.chime.Chime.RESUME;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.net.Uri;
 
 import net.emilla.R;
@@ -28,29 +29,15 @@ import java.util.ArrayList;
         return Apps.canDo(pm, Intents.send(MimeTypes.PLAIN_TEXT));
     }
 
-    private FileFetcher mFileFetcher = null;
-    private MediaFetcher mMediaFetcher = null;
-
     /*internal*/ Share(AssistActivity act) {
         super(act, CoreEntry.SHARE, R.string.data_hint_text);
     }
 
     @Override
-    protected void onInit() {
-        super.onInit();
+    protected void init(AssistActivity act, Resources res) {
+        super.init(act, res);
 
-        if (mFileFetcher == null) mFileFetcher = new FileFetcher(this.activity, ENTRY, "*/*");
-        giveAction(mFileFetcher);
-        if (mMediaFetcher == null) mMediaFetcher = new MediaFetcher(this.activity, ENTRY);
-        giveAction(mMediaFetcher);
-    }
-
-    @Override
-    protected void onClean() {
-        super.onClean();
-
-        removeAction(FileFetcher.ID);
-        removeAction(MediaFetcher.ID);
+        giveGadgets(new FileFetcher(act, ENTRY, "*/*"), new MediaFetcher(act, ENTRY));
     }
 
     private Intent makeIntent() {

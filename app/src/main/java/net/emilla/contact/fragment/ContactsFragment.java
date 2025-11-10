@@ -16,12 +16,12 @@ import android.widget.ListView;
 
 import androidx.annotation.Nullable;
 import androidx.cursoradapter.widget.CursorAdapter;
-import androidx.fragment.app.Fragment;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
 import net.emilla.R;
+import net.emilla.action.box.ActionBox;
 import net.emilla.activity.AssistActivity;
 import net.emilla.contact.ContactItemView;
 import net.emilla.contact.MultiSearch;
@@ -30,7 +30,7 @@ import net.emilla.content.receive.ContactReceiver;
 import net.emilla.util.Intents;
 import net.emilla.util.Permission;
 
-public abstract class ContactsFragment<T> extends Fragment
+public abstract class ContactsFragment<T> extends ActionBox
     implements LoaderManager.LoaderCallbacks<Cursor>,
     AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
@@ -115,7 +115,8 @@ public abstract class ContactsFragment<T> extends Fragment
 
     protected abstract ContactCursorAdapter cursorAdapter();
 
-    public final void search(@Nullable String search) {
+    @Override
+    public final void instruct(@Nullable String search) {
         mSearchString = search;
 
         var ctx = getContext();

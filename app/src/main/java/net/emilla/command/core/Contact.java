@@ -5,6 +5,7 @@ import static android.content.Intent.EXTRA_TEXT;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents.Insert;
@@ -38,47 +39,34 @@ import java.util.List;
         VIEW, EDIT, SHARE, CREATE
     }
 
-    private ContactCardsFragment mContactsFragment = null;
-
-    private ActionMap<Action> mActionMap = null;
-    private Action mAction = Action.VIEW;
-
     /*internal*/ Contact(AssistActivity act) {
         super(act, CoreEntry.CONTACT, R.string.data_hint_contact);
     }
 
+    private /*late*/ ContactCardsFragment mContactsFragment;
+
+    private /*late*/ ActionMap<Action> mActionMap;
+    private Action mAction = Action.VIEW;
+
     @Override
-    protected void onInit() {
-        super.onInit();
+    protected void init(AssistActivity act, Resources res) {
+        super.init(act, res);
 
-        if (mContactsFragment == null) {
-            mContactsFragment = ContactCardsFragment.newInstance();
-        }
-        this.activity.giveActionBox(mContactsFragment);
+        mContactsFragment = ContactCardsFragment.newInstance();
 
-        if (mActionMap == null) {
-            mActionMap = new ActionMap<Action>(Action.VIEW);
+        giveGadgets(mContactsFragment);
 
-            mActionMap.put(this.resources, Action.VIEW, R.array.subcmd_edit, true);
-            mActionMap.put(this.resources, Action.EDIT, R.array.subcmd_edit, true);
-            mActionMap.put(this.resources, Action.SHARE, R.array.subcmd_share, true);
-            mActionMap.put(this.resources, Action.CREATE, R.array.subcmd_create, true);
-        }
+        mActionMap = new ActionMap<Action>(Action.VIEW);
+
+        mActionMap.put(res, Action.VIEW, R.array.subcmd_edit, true);
+        mActionMap.put(res, Action.EDIT, R.array.subcmd_edit, true);
+        mActionMap.put(res, Action.SHARE, R.array.subcmd_share, true);
+        mActionMap.put(res, Action.CREATE, R.array.subcmd_create, true);
     }
 
     @Override
-    protected void onInstruct(@Nullable String instruction) {
-        super.onInstruct(instruction);
-        mContactsFragment.search(mAction == Action.CREATE ? null : extractAction(instruction));
-        // Todo: maybe don't show contacts for the 'create' subcommand
-    }
-
-    @Override
-    protected void onClean() {
-        super.onClean();
-
-        this.activity.removeActionBox(mContactsFragment);
-        mContactsFragment = null;
+    protected void onInstruct(@Nullable String person) {
+        super.onInstruct(extractAction(person));
     }
 
     @Nullable
