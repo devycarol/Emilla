@@ -242,9 +242,4 @@ public final class SettingsFragment extends EmillaSettingsFragment {
         }
     }
 
-    private boolean caveat(CharSequence text, boolean longToast) { // Todo: remove these
-        mActivity.toast(text, longToast);
-        return false;
-    }
-
 }
