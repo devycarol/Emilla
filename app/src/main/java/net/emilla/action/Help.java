@@ -50,7 +50,7 @@ public final class Help implements LabeledQuickAction {
         Resources res = mActivity.getResources();
         String msg = res.getText(cmd.summary) + "\n\n" + res.getText(cmd.manual);
         // TODO: resolve weird whitespace parsing.
-        AlertDialog manual = Dialogs.message(mActivity, cmd.name(), msg)
+        AlertDialog manual = Dialogs.message(mActivity, cmd.name, msg)
                 .setOnDismissListener(dlg -> mActivity.setManual(null))
                 .setOnKeyListener((dlg, keyCode, event) -> {
                     // this is necessary because the AlertDialog becomes the consumer of key-events

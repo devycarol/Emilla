@@ -32,4 +32,9 @@ import net.emilla.lang.Lang;
         return AppCompatResources.getDrawable(ctx, R.drawable.ic_command);
     }
 
+    @Override
+    public boolean isProperNoun() {
+        return false;
+    }
+
 }

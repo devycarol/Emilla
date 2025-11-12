@@ -3,6 +3,7 @@ package net.emilla.command.core;
 import static android.content.Intent.EXTRA_STREAM;
 import static android.content.Intent.EXTRA_TEXT;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -25,8 +26,6 @@ import java.util.List;
 
 /*internal*/ final class Contact extends CoreDataCommand implements ContactCardReceiver {
 
-    public static final String ENTRY = "contact";
-
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, Intents.view(Contacts.CONTENT_URI, Contacts.CONTENT_TYPE))
             || Apps.canDo(pm, Intents.edit(Contacts.CONTENT_URI, Contacts.CONTENT_TYPE))
@@ -43,8 +42,8 @@ import java.util.List;
     private final ActionMap<Action> mActionMap;
     private Action mAction = Action.VIEW;
 
-    /*internal*/ Contact(AssistActivity act) {
-        super(act, CoreEntry.CONTACT, R.string.data_hint_contact);
+    /*internal*/ Contact(Context ctx) {
+        super(ctx, CoreEntry.CONTACT, R.string.data_hint_contact);
 
         mContactsFragment = ContactCardsFragment.newInstance();
 
@@ -52,10 +51,11 @@ import java.util.List;
 
         mActionMap = new ActionMap<Action>(Action.VIEW);
 
-        mActionMap.put(this.resources, Action.VIEW, R.array.subcmd_edit, true);
-        mActionMap.put(this.resources, Action.EDIT, R.array.subcmd_edit, true);
-        mActionMap.put(this.resources, Action.SHARE, R.array.subcmd_share, true);
-        mActionMap.put(this.resources, Action.CREATE, R.array.subcmd_create, true);
+        var res = ctx.getResources();
+        mActionMap.put(res, Action.VIEW, R.array.subcmd_view, true);
+        mActionMap.put(res, Action.EDIT, R.array.subcmd_edit, true);
+        mActionMap.put(res, Action.SHARE, R.array.subcmd_share, true);
+        mActionMap.put(res, Action.CREATE, R.array.subcmd_create, true);
     }
 
     @Override
@@ -77,16 +77,16 @@ import java.util.List;
     }
 
     @Override
-    protected void run() {
-        this.activity.offerContactCards(this);
+    protected void run(AssistActivity act) {
+        act.offerContactCards(this);
     }
 
     @Override
-    protected void run(String person) {
-        contact(extractAction(person));
+    protected void run(AssistActivity act, String person) {
+        contact(act, extractAction(person));
     }
 
-    private void contact(@Nullable String person) {
+    private void contact(AssistActivity act, @Nullable String person) {
         // todo: search by other details as well? nicknames certainly. phones, addresses, phone
         //  types (cell, work, ..) probably, depending on the command.
         //  special cases:
@@ -97,51 +97,51 @@ import java.util.List;
         case VIEW, EDIT, SHARE -> {
             Uri contact = mContactsFragment.selectedContacts();
             if (contact != null) switch (mAction) {
-                case VIEW -> view(contact);
-                case EDIT -> edit(contact);
-                case SHARE -> send(contact, null);
+                case VIEW -> view(act, contact);
+                case EDIT -> edit(act, contact);
+                case SHARE -> send(act, contact, null);
             } else if (person != null) {
-                offerCreate(person, null);
+                offerCreate(act, person, null);
             } else {
-                this.activity.offerContactCards(this);
+                act.offerContactCards(this);
             }
         }
-        case CREATE -> create(person, null);
+        case CREATE -> create(act, person, null);
         }
     }
 
     @Override
-    protected void runWithData(String details) {
+    public void runWithData(AssistActivity act, String details) {
         // TODO LANG: only show data field in 'create' or 'send' mode.
-        contact(null, details);
+        contact(act, null, details);
     }
 
     @Override
-    protected void runWithData(String person, String details) {
+    public void runWithData(AssistActivity act, String person, String details) {
         // TODO LANG: only show data field in 'create' or 'send' mode.
-        contact(person, details);
+        contact(act, person, details);
     }
 
-    private void contact(@Nullable String person, String details) {
+    private void contact(AssistActivity act, @Nullable String person, String details) {
         // Todo: dynamic data hint
         if (mAction != Action.SHARE) {
-            create(person, details);
+            create(act, person, details);
         } else if (person != null) {
-            offerCreate(person, details);
+            offerCreate(act, person, details);
         } else {
-            this.activity.offerContactCards(this);
+            act.offerContactCards(this);
         }
     }
 
-    private void view(Uri contact) {
-        appSucceed(Intents.view(contact));
+    private static void view(AssistActivity act, Uri contact) {
+        appSucceed(act, Intents.view(contact));
     }
 
-    private void edit(Uri contact) {
-        appSucceed(Intents.edit(contact));
+    private static void edit(AssistActivity act, Uri contact) {
+        appSucceed(act, Intents.edit(contact));
     }
 
-    private void send(Uri contact, @Nullable String message) {
+    private void send(AssistActivity act, Uri contact, @Nullable String message) {
         // todo: multi-selection for this particular case..
         Intent send = Intents.send(Contacts.CONTENT_VCARD_TYPE);
 
@@ -153,29 +153,43 @@ import java.util.List;
         if (message != null) send.putExtra(EXTRA_TEXT, message);
         // todo: see if it's possible to detect when apps won't accept this.
 
-        appSucceed(Intent.createChooser(send, str(CoreEntry.CONTACT.name)));
+        var res = act.getResources();
+        appSucceed(act, Intent.createChooser(send, res.getString(CoreEntry.CONTACT.name)));
     }
 
-    private void offerCreate(String person, @Nullable String details) {
-        String msg = str(R.string.notice_contact_no_match, person);
-        offerDialog(Dialogs.dual(this.activity, CoreEntry.CONTACT.name, msg, R.string.create,
-                                 (dlg, which) -> create(person, details)));
+    private void offerCreate(AssistActivity act, String person, @Nullable String details) {
+        var res = act.getResources();
+        String msg = res.getString(R.string.notice_contact_no_match, person);
+        offerDialog(
+            act,
+            Dialogs.dual(
+                act, CoreEntry.CONTACT.name,
+
+                msg, R.string.create,
+
+                (dlg, which) -> create(act, person, details)
+            )
+        );
     }
 
-    private void create(@Nullable String person, @Nullable String phoneNumber) {
+    private static void create(
+        AssistActivity act,
+        @Nullable String person,
+        @Nullable String phoneNumber
+    ) {
         Intent insert = Intents.insert(Contacts.CONTENT_TYPE);
         if (person != null) insert.putExtra(Insert.NAME, person);
         if (phoneNumber != null) insert.putExtra(Insert.PHONE, phoneNumber);
         // todo: further details. a lot of them..
-        appSucceed(insert);
+        appSucceed(act, insert);
     }
 
     @Override
-    public void provide(Uri contact) {
+    public void provide(AssistActivity act, Uri contact) {
         switch (mAction) {
-        case EDIT -> edit(contact);
-        case SHARE -> send(contact, this.activity.dataText());
-        default -> view(contact);
+        case EDIT -> edit(act, contact);
+        case SHARE -> send(act, contact, act.dataText());
+        default -> view(act, contact);
         }
     }
 

@@ -5,6 +5,7 @@ import android.net.Uri;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.util.Toasts;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,8 @@ public final class FilesReceiver implements ResultReceiver {
         mActivity.putAttachments(mCommandEntry, attaches);
 
         Resources res = mActivity.getResources();
-        mActivity.toast(res.getQuantityString(R.plurals.toast_files_attached, size, size));
+        Toasts.show(mActivity, res.getQuantityString(R.plurals.toast_files_attached, size, size));
         // Todo: better feedback.
     }
+
 }

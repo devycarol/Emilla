@@ -9,11 +9,12 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
+import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import net.emilla.chime.Chime.SUCCEED
 import net.emilla.chime.Chimer
 
-class DummyActivity : EmillaActivity() {
+class DummyActivity : AppCompatActivity() {
 
     private lateinit var chimer: Chimer
 

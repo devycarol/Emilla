@@ -1,74 +1,85 @@
 package net.emilla.lang.date.impl;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.exception.EmillaException;
-import net.emilla.lang.date.Weekdays;
 
-import java.util.ArrayList;
-import java.util.Calendar;
+import java.time.DayOfWeek;
+import java.util.EnumSet;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
-public record WeekdaysEN_US(ArrayList<Integer> days, boolean empty) implements Weekdays {
+public final class WeekdaysEN_US {
 
-    public static WeekdaysEN_US instance(String timeStr, @StringRes int errorTitle) {
-        timeStr = timeStr.toLowerCase().replaceFirst(HourMinEN_US.REGEX, "").trim();
-        if (timeStr.isEmpty()) {
-            return new WeekdaysEN_US(new ArrayList<Integer>(), true);
+    private static final Pattern WEEKDAYS = Pattern.compile("\\w+( +\\w+){0,6}");
+    private static final Pattern WEEKDAY_LETTERS = Pattern.compile("[umtwrfs]{1,7}");
+    private static final Pattern COMMA_OPTIONAL_LIST = Pattern.compile(", *| +");
+
+    @Nullable
+    public static EnumSet<DayOfWeek> set(String time, @StringRes int errorTitle) {
+        String weekdayString = HourMinEN_US.REGEX.matcher(time.toLowerCase()).replaceFirst("").trim();
+        if (weekdayString.isEmpty()) {
+            return null;
         }
 
-        if (!timeStr.matches("\\w+( +\\w+){0,6}")) {
-            throw new EmillaException(errorTitle, R.string.error_invalid_weekday_format);
-        }
-        if (!timeStr.matches("[umtwrfs]{1,7}")) {
-            timeStr = letterString(timeStr, errorTitle);
-        }
-
-        var weekdays = new ArrayList<Integer>(timeStr.length());
-        do {
-            char c = timeStr.charAt(0);
-            timeStr = timeStr.substring(1);
-
-            if (timeStr.indexOf(c) == -1) {
-                switch (c) {
-                case 'u' -> weekdays.add(Calendar.SUNDAY);
-                case 'm' -> weekdays.add(Calendar.MONDAY);
-                case 't' -> weekdays.add(Calendar.TUESDAY);
-                case 'w' -> weekdays.add(Calendar.WEDNESDAY);
-                case 'r' -> weekdays.add(Calendar.THURSDAY);
-                case 'f' -> weekdays.add(Calendar.FRIDAY);
-                case 's' -> weekdays.add(Calendar.SATURDAY);
+        var weekdays = EnumSet.noneOf(DayOfWeek.class);
+        weekdayStream(weekdayString, errorTitle).forEach(
+            dayOfWeek -> {
+                if (!weekdays.add(dayOfWeek)) {
+                    throw new EmillaException(errorTitle, R.string.error_excess_weekdays);
                 }
-            } else {
-                throw new EmillaException(errorTitle, R.string.error_excess_weekdays);
             }
-        } while (!timeStr.isEmpty());
+        );
 
-        return new WeekdaysEN_US(weekdays, false);
+        return weekdays;
     }
 
-    /// Compresses a weekdays-string into basic 7-letter format.
-    ///
-    /// @return the weekday set in "umtwrfs" format.
-    private static String letterString(String s, @StringRes int errorTitle) {
-        String[] words = s.split(", *| +");
-        var sb = new StringBuilder();
-        for (String word : words) {
-            sb.append(dayLetter(word, errorTitle));
+    private static Stream<DayOfWeek> weekdayStream(CharSequence weekdays, @StringRes int errorTitle) {
+        if (WEEKDAY_LETTERS.matcher(weekdays).matches()) {
+            return weekdays.chars()
+                .mapToObj((int letter) -> weekdayOf(letter, errorTitle));
         }
-        return sb.toString();
+
+        if (WEEKDAYS.matcher(weekdays).matches()) {
+            return COMMA_OPTIONAL_LIST.splitAsStream(weekdays)
+                .map((String word) -> weekdayOf(word, errorTitle));
+        }
+
+        throw formatFail(errorTitle);
     }
 
-    private static char dayLetter(String word, @StringRes int errorTitle) {
-        return switch (word) {
-            case "sunday", "sun", "u" -> 'u';
-            case "monday", "mon", "m" -> 'm';
-            case "tuesday", "tues", "tue", "t" -> 't';
-            case "wednesday", "wed", "w" -> 'w';
-            case "thursday", "thurs", "thur", "thu", "th", "r" -> 'r';
-            case "friday", "fri", "f" -> 'f';
-            case "saturday", "sat", "s" -> 's';
-            default -> throw new EmillaException(errorTitle, R.string.error_invalid_weekday);
+    private static DayOfWeek weekdayOf(int letter, @StringRes int errorTitle) {
+        return switch (letter) {
+            case 'u' -> DayOfWeek.SUNDAY;
+            case 'm' -> DayOfWeek.MONDAY;
+            case 't' -> DayOfWeek.TUESDAY;
+            case 'w' -> DayOfWeek.WEDNESDAY;
+            case 'r' -> DayOfWeek.THURSDAY;
+            case 'f' -> DayOfWeek.FRIDAY;
+            case 's' -> DayOfWeek.SATURDAY;
+            default -> throw formatFail(errorTitle);
         };
     }
+
+    private static DayOfWeek weekdayOf(String word, @StringRes int errorTitle) {
+        return switch (word) {
+            case "sunday", "sun", "u" -> DayOfWeek.SUNDAY;
+            case "monday", "mon", "m" -> DayOfWeek.MONDAY;
+            case "tuesday", "tues", "tue", "t" -> DayOfWeek.TUESDAY;
+            case "wednesday", "wed", "w" -> DayOfWeek.WEDNESDAY;
+            case "thursday", "thurs", "thur", "thu", "th", "r" -> DayOfWeek.THURSDAY;
+            case "friday", "fri", "f" -> DayOfWeek.FRIDAY;
+            case "saturday", "sat", "s" -> DayOfWeek.SATURDAY;
+            default -> throw formatFail(errorTitle);
+        };
+    }
+
+    private static EmillaException formatFail(@StringRes int errorTitle) {
+        return new EmillaException(errorTitle, R.string.error_invalid_weekday_format);
+    }
+
+    private WeekdaysEN_US() {}
+
 }

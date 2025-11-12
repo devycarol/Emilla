@@ -12,12 +12,6 @@ import net.emilla.util.Intents;
 
 /*internal*/ final class Calculate extends CategoryCommand {
 
-    public static final String ENTRY = "calculate";
-
-    public static boolean possible() {
-        return true;
-    }
-
     /*internal*/ Calculate(AssistActivity act) {
         super(act, CoreEntry.CALCULATE, EditorInfo.IME_ACTION_DONE);
     }
@@ -28,8 +22,8 @@ import net.emilla.util.Intents;
     }
 
     @Override
-    protected void run(String expression) {
-        giveText(Maths.prettyNumber(Calculator.compute(expression, CoreEntry.CALCULATE.name)));
+    protected void run(AssistActivity act, String expression) {
+        giveText(act, Maths.prettyNumber(Calculator.compute(expression, CoreEntry.CALCULATE.name)));
     }
 
 }

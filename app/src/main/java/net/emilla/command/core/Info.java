@@ -11,8 +11,6 @@ import net.emilla.util.Intents;
 
 /*internal*/ final class Info extends OpenCommand {
 
-    public static final String ENTRY = "info";
-
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, Intents.appInfo(""));
     }
@@ -22,19 +20,19 @@ import net.emilla.util.Intents;
     }
 
     @Override
-    protected void run() {
+    protected void run(AssistActivity act) {
         // Todo: it may be useful to include listings beyond those in the launcher icons, or be able to
         //  search by package name.
-        appSucceed(Intents.appInfo());
+        appSucceed(act, Intents.appInfo());
     }
 
     @Override
-    protected void run(String app) {
-        appSearchRun(app, appEntry -> Intents.appInfo(appEntry.pkg));
+    protected void run(AssistActivity act, String app) {
+        appSearchRun(act, app, appEntry -> Intents.appInfo(appEntry.pkg));
     }
 
     @Override
-    protected AlertDialog.Builder makeChooser() {
+    protected AlertDialog.Builder makeChooser(AssistActivity act) {
         // TODO: this isn't needed
         return null;
     }

@@ -15,8 +15,6 @@ import net.emilla.util.Intents;
 
 /*internal*/ final class Notifications extends OpenCommand {
 
-    public static final String ENTRY = "notifications";
-
     public static boolean possible(PackageManager pm) {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
             && Apps.canDo(pm, new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS));
@@ -27,17 +25,17 @@ import net.emilla.util.Intents;
     }
 
     @Override @RequiresApi(api = Build.VERSION_CODES.O)
-    protected void run() {
-        appSucceed(Intents.notificationSettings());
+    protected void run(AssistActivity act) {
+        appSucceed(act, Intents.notificationSettings());
     }
 
     @Override @RequiresApi(api = Build.VERSION_CODES.O)
-    protected void run(String app) {
-        appSearchRun(app, appEntry -> Intents.notificationSettings(appEntry.pkg));
+    protected void run(AssistActivity act, String app) {
+        appSearchRun(act, app, appEntry -> Intents.notificationSettings(appEntry.pkg));
     }
 
     @Override
-    protected AlertDialog.Builder makeChooser() {
+    protected AlertDialog.Builder makeChooser(AssistActivity act) {
         // TODO: this isn't needed.
         return null;
     }

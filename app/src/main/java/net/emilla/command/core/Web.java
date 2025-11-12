@@ -14,8 +14,6 @@ import net.emilla.util.SearchEngineParser;
 
 /*internal*/ final class Web extends CoreCommand {
 
-    public static final String ENTRY = "web";
-
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, new Intent(ACTION_WEB_SEARCH))
             || Apps.canDo(pm, Intents.view("https:"))
@@ -27,21 +25,21 @@ import net.emilla.util.SearchEngineParser;
     /*internal*/ Web(AssistActivity act) {
         super(act, CoreEntry.WEB, EditorInfo.IME_ACTION_SEARCH);
 
-        mSearchEngineMap = new SearchEngineParser(SettingVals.searchEngineCsv(prefs()));
+        mSearchEngineMap = new SearchEngineParser(SettingVals.searchEngineCsv(act.prefs()));
     }
 
     @Override
-    protected void run() {
-        appSucceed(new Intent(ACTION_WEB_SEARCH));
+    protected void run(AssistActivity act) {
+        appSucceed(act, new Intent(ACTION_WEB_SEARCH));
     }
 
     @Override
-    protected void run(String query) {
+    protected void run(AssistActivity act, String query) {
         // Todo: make a UI for this.
         //  - don't allow multiple %s's in the setting (i don't imagine there's any use for that right?)
         //    - handle character escapes if you want to be particular about it but the user can
         //      probably do that themself.
-        appSucceed(mSearchEngineMap.intent(query));
+        appSucceed(act, mSearchEngineMap.intent(query));
     }
 
 }

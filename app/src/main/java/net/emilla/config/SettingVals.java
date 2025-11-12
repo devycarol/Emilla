@@ -17,10 +17,12 @@ import net.emilla.action.NoAction;
 import net.emilla.action.PlayPause;
 import net.emilla.action.QuickAction;
 import net.emilla.action.SelectAll;
+import net.emilla.action.box.Snippet;
 import net.emilla.activity.AssistActivity;
 import net.emilla.chime.Chime;
 import net.emilla.chime.Chimer;
 import net.emilla.command.CommandYielder;
+import net.emilla.command.app.AppEntry;
 import net.emilla.command.core.CoreEntry;
 import net.emilla.util.Apps;
 import net.emilla.util.Features;
@@ -32,6 +34,9 @@ public final class SettingVals {
 
     public static final String DEFAULT_COMMAND = "default_command";
     public static final String CHIMER = "sound_set";
+
+    private static final String NOTE_FOLDER = "note_folder";
+    private static final String TODO_FILE = "todo_file";
 
     public static final String ALIASES_CUSTOM = "aliases_custom";
     public static final String ALIASES_CUSTOM_TEXT = "aliases_custom_text";
@@ -49,7 +54,7 @@ public final class SettingVals {
         SharedPreferences prefs,
         CoreEntry coreEntry
     ) {
-        String key = commandEnabledKey(coreEntry.entry);
+        String key = commandEnabledKey(coreEntry.name());
         return prefs.getBoolean(key, prefs.contains(key) || coreEntry.isPossible(pm));
         // don't check 'possible' if a key is already registered. note this demands exhaustively
         // ensuring command possibility in the *settings screens*, re-checking device properties to
@@ -59,12 +64,12 @@ public final class SettingVals {
         // be sure to still write exception-safe code.
     }
 
-    public static boolean appEnabled(SharedPreferences prefs, String pkg, String cls) {
-        String key = appEnabledKey(pkg, cls);
+    public static boolean appEnabled(SharedPreferences prefs, AppEntry app) {
+        String key = appEnabledKey(app.pkg, app.cls);
         return prefs.getBoolean(key, true /*allowProprietary(prefs) || isFoss(pkg)*/);
     }
 
-    public static String appEnabledKey(String pkg, String cls) {
+    private static String appEnabledKey(String pkg, String cls) {
         return commandEnabledKey(Apps.entry(pkg, cls));
     }
 
@@ -75,8 +80,8 @@ public final class SettingVals {
     public static CommandYielder defaultCommand(SharedPreferences prefs) {
         // Todo: allow apps and customs. Make sure to fall back to a core if the app is uninstalled
         //  or the custom is deleted.
-        String entry = prefs.getString(DEFAULT_COMMAND, "web");
-        return CoreEntry.of(entry).yielder();
+        String entry = prefs.getString(DEFAULT_COMMAND, CoreEntry.WEB.name());
+        return CoreEntry.valueOf(entry).yielder();
     }
 
     public static Set<String> customCommands(SharedPreferences prefs) {
@@ -184,8 +189,38 @@ public final class SettingVals {
         return prefs.getString("search_engines", DEFAULT_SEARCH_ENGINES);
     }
 
-    public static Set<String> snippets(SharedPreferences prefs) {
-        return prefs.getStringSet("snippets", defaultSnippets());
+    public static void setNoteFolder(SharedPreferences prefs, Uri folder) {
+        prefs.edit().putString(NOTE_FOLDER, folder.toString()).apply();
+    }
+
+    @Nullable
+    public static Uri noteFolder(SharedPreferences prefs) {
+        String uriString = prefs.getString(NOTE_FOLDER, null);
+        return uriString != null ? Uri.parse(uriString) : null;
+    }
+
+    public static void forgetNoteFolder(SharedPreferences prefs) {
+        prefs.edit().remove(TODO_FILE).apply();
+    }
+
+    public static void setTodoFile(SharedPreferences prefs, Uri file) {
+        prefs.edit().putString(TODO_FILE, file.toString()).apply();
+    }
+
+    @Nullable
+    public static Uri todoFile(SharedPreferences prefs) {
+        String uriString = prefs.getString(TODO_FILE, null);
+        return uriString != null ? Uri.parse(uriString) : null;
+    }
+
+    public static void forgetTodoFile(SharedPreferences prefs) {
+        prefs.edit().remove(NOTE_FOLDER).apply();
+    }
+
+    public static Snippet[] snippets(SharedPreferences prefs) {
+        return prefs.getStringSet("snippets", defaultSnippets()).stream()
+            .map(Snippet::new)
+            .toArray(Snippet[]::new);
     }
 
     public static String snippet(SharedPreferences prefs, String label) {
@@ -196,23 +231,26 @@ public final class SettingVals {
         var snippets = new HashSet<String>(prefs.getStringSet("snippets", defaultSnippets()));
         snippets.add(label);
 
-        prefs.edit().putString(snippetPref(label), text)
-                    .putStringSet("snippets", snippets)
-                    .apply();
+        prefs.edit()
+            .putString(snippetPref(label), text)
+            .putStringSet("snippets", snippets)
+            .apply();
     }
 
     public static void replaceSnippet(SharedPreferences prefs, String label, String text) {
-        prefs.edit().putString(snippetPref(label), text)
-                    .apply();
+        prefs.edit()
+            .putString(snippetPref(label), text)
+            .apply();
     }
 
     public static void removeSnippet(SharedPreferences prefs, String label) {
         var snippets = new HashSet<String>(prefs.getStringSet("snippets", defaultSnippets()));
         snippets.remove(label);
 
-        prefs.edit().remove(snippetPref(label))
-                    .putStringSet("snippets", snippets)
-                    .apply();
+        prefs.edit()
+            .remove(snippetPref(label))
+            .putStringSet("snippets", snippets)
+            .apply();
     }
 
     private static Set<String> defaultSnippets() {
@@ -242,4 +280,5 @@ public final class SettingVals {
     }
 
     private SettingVals() {}
+
 }

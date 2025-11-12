@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import net.emilla.activity.AssistActivity;
+import net.emilla.content.ResultLaunchers;
 
 import java.util.Map;
 
@@ -38,7 +39,7 @@ public final class PermissionRetriever {
             return;
         }
         mOnGrant = onGrant;
-        mLauncher.launch(permissions);
+        ResultLaunchers.tryLaunch(mActivity, mLauncher, permissions);
     }
 
     private /*inner*/ final class PermissionCallback

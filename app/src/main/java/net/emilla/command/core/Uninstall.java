@@ -16,8 +16,6 @@ import net.emilla.util.Intents;
 
 /*internal*/ final class Uninstall extends OpenCommand {
 
-    public static final String ENTRY = "uninstall";
-
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, new Intent(ACTION_UNINSTALL_PACKAGE, Apps.packageUri("")))
             // todo: ACTION_UNINSTALL_PACKAGE is deprecated?
@@ -30,18 +28,18 @@ import net.emilla.util.Intents;
     }
 
     @Override
-    protected void run() {
-        offerDialog(this.appChooser);
+    protected void run(AssistActivity act) {
+        offerDialog(act, this.appChooser);
     }
 
     @Override
-    protected void run(String app) {
-        appSearchRun(app, appEntry -> Intents.uninstallApp(appEntry.pkg, pm()));
+    protected void run(AssistActivity act, String app) {
+        appSearchRun(act, app, appEntry -> Intents.uninstallApp(appEntry.pkg, act.getPackageManager()));
     }
 
     @Override
-    protected AlertDialog.Builder makeChooser() {
-        return Dialogs.appUninstalls(this.activity);
+    protected AlertDialog.Builder makeChooser(AssistActivity act) {
+        return Dialogs.appUninstalls(act);
     }
 
 }

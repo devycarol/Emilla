@@ -16,17 +16,22 @@ import net.emilla.R;
 import net.emilla.action.field.FieldToggle;
 import net.emilla.action.field.InputField;
 import net.emilla.activity.AssistActivity;
+import net.emilla.lang.date.DateTimeSpan;
 import net.emilla.lang.date.Time;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
 import net.emilla.util.MimeTypes;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /*internal*/ final class Calendar extends CoreDataCommand {
 
-    public static final String ENTRY = "calendar";
+    private static final Pattern TAG_ALL_DAY = Pattern.compile(" */all(day)?", CASE_INSENSITIVE);
+    private static final Pattern TRIMMING_PSV = Pattern.compile(" *\\| *");
+    // TODO LANG: please stop.
 
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, makeIntent());
@@ -45,23 +50,23 @@ import java.util.regex.Pattern;
     }
 
     @Override
-    protected void run() {
-        calendar(makeIntent());
+    protected void run(AssistActivity act) {
+        calendar(act, makeIntent());
     }
 
     @Override
-    protected void run(String titleAndDate) {
-        calendar(makeIntent(titleAndDate));
+    protected void run(AssistActivity act, String titleAndDate) {
+        calendar(act, makeIntent(titleAndDate));
     }
 
     @Override
-    protected void runWithData(String details) {
-        calendar(makeIntent().putExtra(DESCRIPTION, details));
+    public void runWithData(AssistActivity act, String details) {
+        calendar(act, makeIntent().putExtra(DESCRIPTION, details));
     }
 
     @Override
-    protected void runWithData(String titleAndDate, String details) {
-        calendar(makeIntent(titleAndDate).putExtra(DESCRIPTION, details));
+    public void runWithData(AssistActivity act, String titleAndDate, String details) {
+        calendar(act, makeIntent(titleAndDate).putExtra(DESCRIPTION, details));
     }
 
     private static Intent makeIntent() {
@@ -72,36 +77,42 @@ import java.util.regex.Pattern;
     private Intent makeIntent(String titleAndDate) {
         Intent intent = makeIntent();
 
-        // todo: clean this up
-        var p = Pattern.compile(" */all(day)?", CASE_INSENSITIVE);
-        // TODO LANG
-        Matcher m = p.matcher(titleAndDate);
+        String title = titleAndDate;
+        Matcher m = TAG_ALL_DAY.matcher(title);
         if (m.find()) {
-            titleAndDate = m.replaceFirst("");
+            title = m.replaceFirst("");
             intent.putExtra(EXTRA_EVENT_ALL_DAY, true);
         }
-        String[] nameAndTime = titleAndDate.split(" *\\| *");
+
+        String[] nameAndTime = TRIMMING_PSV.split(title);
         switch (nameAndTime.length) {
         case 1 -> {}
         case 2 -> {
-            titleAndDate = nameAndTime[0];
-            long[] times = Time.parseDateAndTimes(nameAndTime[1], CoreEntry.CALENDAR.name);
-            intent.putExtra(EXTRA_EVENT_BEGIN_TIME, times[0]);
-            if (times[1] != 0L) {
-                intent.putExtra(EXTRA_EVENT_END_TIME, times[1]);
+            title = nameAndTime[0];
+            DateTimeSpan times = Time.parseDateAndTimes(nameAndTime[1], CoreEntry.CALENDAR.name);
+
+            intent.putExtra(EXTRA_EVENT_BEGIN_TIME, epochMilliOf(times.start));
+
+            LocalDateTime end = times.end;
+            if (end != null) {
+                intent.putExtra(EXTRA_EVENT_END_TIME, epochMilliOf(end));
             }
         }
-        default -> throw badCommand(R.string.error_multiple_dates);
+        default -> throw badCommand(R.string.error_invalid_date);
         }
 
-        if (!titleAndDate.isEmpty()) {
-            intent.putExtra(TITLE, titleAndDate);
+        if (!title.isEmpty()) {
+            intent.putExtra(TITLE, title);
         }
 
         return intent;
     }
 
-    private void calendar(Intent intent) {
+    private static long epochMilliOf(LocalDateTime dateTime) {
+        return dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+    }
+
+    private void calendar(AssistActivity act, Intent intent) {
         String location = mLocationToggle.fieldText();
         if (location != null) intent.putExtra(EVENT_LOCATION, location);
 
@@ -112,7 +123,7 @@ import java.util.regex.Pattern;
         // Todo: action buttons to select availability, access level, and guests—last requires
         //  contacts stuff. If possible also: reminders, repeats, timezone, event color, and
         //  calendar selection.
-        appSucceed(intent);
+        appSucceed(act, intent);
         // todo: etar calendar acts janky in the recents
     }
 

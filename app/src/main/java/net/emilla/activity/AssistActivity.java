@@ -42,6 +42,7 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -68,8 +69,10 @@ import net.emilla.content.retrieve.ContactEmailRetriever;
 import net.emilla.content.retrieve.ContactPhoneRetriever;
 import net.emilla.content.retrieve.FilesRetriever;
 import net.emilla.content.retrieve.MediaRetriever;
+import net.emilla.content.retrieve.TextFileCreator;
 import net.emilla.databinding.ActivityAssistBinding;
 import net.emilla.exception.EmillaException;
+import net.emilla.file.Folder;
 import net.emilla.lang.Lang;
 import net.emilla.permission.PermissionRetriever;
 import net.emilla.run.BugFailure;
@@ -84,8 +87,9 @@ import net.emilla.view.ActionButton;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public final class AssistActivity extends EmillaActivity {
+public final class AssistActivity extends AppCompatActivity {
 
+    private final TextFileCreator mTextFileCreator = new TextFileCreator(this);
     private final FilesRetriever mFilesRetriever = new FilesRetriever(this);
     private final MediaRetriever mMediaRetriever = new MediaRetriever(this);
     private final ContactCardRetriever mContactCardRetriever = new ContactCardRetriever(this);
@@ -128,7 +132,7 @@ public final class AssistActivity extends EmillaActivity {
         mBinding = ActivityAssistBinding.inflate(mInflater);
         setContentView(mBinding.getRoot());
 
-        var factory = new AssistViewModel.Factory(getApplicationContext());
+        var factory = new AssistViewModel.Factory(this);
         var provider = new ViewModelProvider(this, factory);
         mVm = provider.get(AssistViewModel.class);
 
@@ -161,6 +165,7 @@ public final class AssistActivity extends EmillaActivity {
 
         mCommandMap = EmillaCommand.map(prefs, mVm.res, pm, mVm.appList);
         mCommand = mCommandMap.getDefault(this);
+        mCommand.load(this);
     }
 
     private void setupCommandField() {
@@ -195,7 +200,7 @@ public final class AssistActivity extends EmillaActivity {
 
             boolean noCommand = command.isEmpty();
             if (cmd != mCommand || noCommand != mVm.noCommand) {
-                mCommand.clean(act);
+                mCommand.unload(act);
                 mCommand = cmd;
                 mVm.noCommand = noCommand;
 
@@ -205,10 +210,10 @@ public final class AssistActivity extends EmillaActivity {
                 if (noCommand) {
                     mBinding.submitButton.setIcon(mNoCommandAction.icon());
                 } else {
-                    cmd.init(act);
+                    cmd.load(act);
                 }
 
-                boolean dataAvailable = noCommand || mCommand.usesData();
+                boolean dataAvailable = noCommand || mCommand instanceof DataCommand;
                 if (dataAvailable != mVm.dataAvailable) {
                     updateDataAvailability(dataAvailable);
                 }
@@ -352,13 +357,13 @@ public final class AssistActivity extends EmillaActivity {
         // TODO: save state hell
         // Todo: put these in an editor.
         if (SettingVals.showCursorStartButton(prefs)) {
-            new CursorStart(this).init(this);
+            new CursorStart(this).load(this);
         }
         if (SettingVals.showHelpButton(prefs)) {
-            new Help(this).init(this);
+            new Help(this).load(this);
         }
         if (SettingVals.showPlayPauseButton(prefs)) {
-            new PlayPause(this).init(this);
+            new PlayPause(this).load(this);
         }
     }
 
@@ -489,7 +494,7 @@ public final class AssistActivity extends EmillaActivity {
         if (!(isChangingConfigurations() || isFinishing())) {
             if (shouldCancel()) cancel();
             // TODO: the launch fail bug is caused by focus stealing
-            else if (!mVm.dialogOpen && mVm.askChimePend()) chime(PEND);
+            else if (!mVm.dialogOpen) chime(PEND);
         }
     }
 
@@ -542,16 +547,29 @@ public final class AssistActivity extends EmillaActivity {
      * Setters *
      *=========*/
 
+    @Deprecated
+    public void setInstruction(@StringRes int bruteForceCommandName, String instruction) {
+        String command = Lang.wordConcat(mVm.res, bruteForceCommandName, instruction);
+
+        EditText commandField = mBinding.commandField;
+        commandField.setText(command);
+        commandField.setSelection(command.length());
+    }
+
     public void putAttachments(String commandEntry, @Nullable ArrayList<Uri> attachments) {
         mVm.attachmentMap().put(commandEntry, attachments);
     }
 
     public void giveActionBox(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.action_box, fragment).commit();
+        getSupportFragmentManager().beginTransaction()
+            .setReorderingAllowed(true)
+            .replace(R.id.action_box, fragment)
+            .commit();
     }
 
     public void removeActionBox(Fragment fragment) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction()
+            .setReorderingAllowed(true);
 
         if (mDefaultActionBox == null) {
             transaction.remove(fragment);
@@ -573,10 +591,10 @@ public final class AssistActivity extends EmillaActivity {
 
     public void updateDataHint() {
         EditText dataField = mBinding.dataField;
-        if (mVm.noCommand || !mCommand.usesData()) {
-            dataField.setHint(R.string.data_hint_default);
+        if (!mVm.noCommand && mCommand instanceof DataCommand dataCmd) {
+            dataField.setHint(dataCmd.dataHint());
         } else {
-            dataField.setHint(((DataCommand) mCommand).dataHint());
+            dataField.setHint(R.string.data_hint_default);
         }
     }
 
@@ -593,16 +611,8 @@ public final class AssistActivity extends EmillaActivity {
         }
     }
 
-    public void suppressPendChime() {
-        mVm.suppressPendChime();
-    }
-
-    public void suppressResumeChime() {
-        mVm.suppressResumeChime();
-    }
-
-    public void suppressSuccessChime() {
-        mVm.suppressSuccessChime();
+    public void suppressChime(Chime chime) {
+        mVm.suppressChime(chime);
     }
 
     @Deprecated
@@ -629,7 +639,7 @@ public final class AssistActivity extends EmillaActivity {
     }
 
     public void resume() {
-        if (!mVm.dialogOpen && mVm.askChimeResume()) chime(RESUME);
+        if (!mVm.dialogOpen) chime(RESUME);
     }
 
     public boolean shouldCancel() {
@@ -688,6 +698,14 @@ public final class AssistActivity extends EmillaActivity {
         chime(PEND);
     }
 
+    public void offerSaveFile(
+        @Nullable String filename,
+        @Nullable Folder defaultFolder,
+        @Nullable String text
+    ) {
+        mTextFileCreator.offerCreate(filename, defaultFolder, text);
+    }
+
     public void offerFiles(FilesReceiver receiver, String mimeType) {
         mFilesRetriever.retrieve(receiver, mimeType);
     }
@@ -727,7 +745,7 @@ public final class AssistActivity extends EmillaActivity {
 
     public void succeed(CommandRun success) {
         success.run(this);
-        if (mVm.askChimeSuccess()) chime(SUCCEED);
+        chime(SUCCEED);
     }
 
     public void fail(CommandRun failure) {
@@ -745,15 +763,16 @@ public final class AssistActivity extends EmillaActivity {
 
         try {
             EditText dataField = mBinding.dataField;
-            if (mCommand.usesData() && dataField.length() > 0) {
-                ((DataCommand) mCommand).execute(dataField.getText().toString());
+            if (mCommand instanceof DataCommand dataCmd && dataField.length() > 0) {
+                DataCommand.execute(dataCmd, this, dataField.getText().toString());
             } else {
-                mCommand.execute();
+                mCommand.execute(this);
             }
         } catch (EmillaException e) {
             fail(new MessageFailure(this, e));
         } catch (RuntimeException e) {
-            fail(new BugFailure(this, e, mCommand.name()));
+            fail(new BugFailure(this, e, mCommand.name));
         }
     }
+
 }

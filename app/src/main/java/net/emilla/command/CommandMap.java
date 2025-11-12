@@ -5,12 +5,11 @@ import androidx.annotation.Nullable;
 import net.emilla.activity.AssistActivity;
 import net.emilla.lang.Lang;
 import net.emilla.lang.Words;
-import net.emilla.struct.trie.HashTrieMap;
 import net.emilla.struct.trie.TrieMap;
 
 public final class CommandMap {
 
-    private final TrieMap<String, CommandYielder> mTrieMap = new HashTrieMap<>();
+    private final TrieMap<String, CommandYielder> mTrieMap = new TrieMap<String, CommandYielder>();
     private final CommandYielder mDefaultYielder;
 
     /*internal*/ CommandMap(CommandYielder defaultYielder) {

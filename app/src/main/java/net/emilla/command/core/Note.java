@@ -1,38 +1,76 @@
 package net.emilla.command.core;
 
+import android.content.Context;
+import android.net.Uri;
+
 import net.emilla.R;
+import net.emilla.action.box.NotesFragment;
 import net.emilla.activity.AssistActivity;
+import net.emilla.exception.EmillaException;
+import net.emilla.file.Files;
+import net.emilla.file.Folder;
+import net.emilla.file.TreeFile;
 
 /*internal*/ final class Note extends CoreDataCommand {
 
-    public static final String ENTRY = "note";
-
     public static boolean possible() {
         return true;
+        // todo: god help us if any of the following are false:
+        //  has any writable filesystem whatsoever
+        //  can view text documents
+        //  can do the create document and open document tree intents
     }
 
-    /*internal*/ Note(AssistActivity act) {
-        super(act, CoreEntry.NOTE, R.string.data_hint_note);
-    }
+    private final NotesFragment mNotesFragment;
 
-    @Override
-    protected void run() {
-        throw badCommand(R.string.error_unfinished_notes);
-    }
+    /*internal*/ Note(Context ctx) {
+        super(ctx, CoreEntry.NOTE, R.string.data_hint_text);
 
-    @Override
-    protected void run(String title) {
-        throw badCommand(R.string.error_unfinished_notes);
-    }
+        mNotesFragment = NotesFragment.newInstance();
 
-    @Override
-    protected void runWithData(String text) {
-        throw badCommand(R.string.error_unfinished_notes);
+        giveGadgets(mNotesFragment);
     }
 
     @Override
-    protected void runWithData(String title, String text) {
-        throw badCommand(R.string.error_unfinished_notes);
+    protected void run(AssistActivity act) {
+        act.offerSaveFile(null, mNotesFragment.folder(), null);
+    }
+
+    @Override
+    protected void run(AssistActivity act, String filename) {
+        Folder folder = mNotesFragment.folder();
+        TreeFile existingFile = mNotesFragment.fileNamed(filename);
+        if (folder != null && existingFile != null) {
+            appSucceed(act, existingFile.viewIntent(folder));
+            return;
+        }
+
+        act.offerSaveFile(filename, folder, null);
+    }
+
+    @Override
+    public void runWithData(AssistActivity act, String text) {
+        act.offerSaveFile(null, mNotesFragment.folder(), text);
+    }
+
+    @Override
+    public void runWithData(AssistActivity act, String filename, String text) {
+        Folder folder = mNotesFragment.folder();
+        TreeFile existingFile = mNotesFragment.fileNamed(filename);
+        if (folder != null && existingFile != null) {
+            appendToFile(act, existingFile.uri(folder), text);
+            return;
+        }
+
+        act.offerSaveFile(filename, folder, text);
+    }
+
+    private static void appendToFile(AssistActivity act, Uri file, String text) {
+        if (Files.appendLine(act.getContentResolver(), file, text)){
+            act.give(a -> {});
+        } else {
+            throw new EmillaException(R.string.error_cant_use_file);
+        }
     }
 
 }

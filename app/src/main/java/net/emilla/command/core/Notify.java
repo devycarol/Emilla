@@ -2,6 +2,7 @@ package net.emilla.command.core;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
@@ -14,47 +15,44 @@ import net.emilla.util.Permission;
 
 /*internal*/ final class Notify extends CoreDataCommand {
 
-    public static final String ENTRY = "notify";
-
-    public static boolean possible() {
-        return true;
-    }
-
-    /*internal*/ Notify(AssistActivity act) {
-        super(act, CoreEntry.NOTIFY, R.string.data_hint_notify);
+    /*internal*/ Notify(Context ctx) {
+        super(ctx, CoreEntry.NOTIFY, R.string.data_hint_notify);
     }
 
     @Override
-    protected void run() {
-        tryPing(str(R.string.ping_command), null);
+    protected void run(AssistActivity act) {
+        var res = act.getResources();
+        tryPing(act, res.getString(R.string.ping_command), null);
     }
 
     @Override
-    protected void run(String title) {
-        tryPing(title, null);
+    protected void run(AssistActivity act, String title) {
+        tryPing(act, title, null);
     }
 
     @Override
-    protected void runWithData(String text) {
-        tryPing(str(R.string.ping_command), text);
+    public void runWithData(AssistActivity act, String text) {
+        var res = act.getResources();
+        tryPing(act, res.getString(R.string.ping_command), text);
     }
 
     @Override
-    protected void runWithData(String title, String text) {
-        tryPing(title, text);
+    public void runWithData(AssistActivity act, String title, String text) {
+        tryPing(act, title, text);
     }
 
     @SuppressLint("MissingPermission")
-    private void tryPing(String title, @Nullable String text) {
-        Permission.PINGS.with(this.activity, () -> ping(title, text));
+    private static void tryPing(AssistActivity act, String title, @Nullable String text) {
+        Permission.PINGS.with(act, () -> ping(act, title, text));
     }
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
-    private void ping(String title, @Nullable String text) {
+    private static void ping(AssistActivity act, String title, @Nullable String text) {
         givePing(
+            act,
             Pings.make(
-                this.activity,
-                PingChannel.COMMAND,
+                act, PingChannel.COMMAND,
+
                 title, text,
 
                 R.drawable.ic_notify

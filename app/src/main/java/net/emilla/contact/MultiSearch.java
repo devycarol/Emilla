@@ -9,11 +9,12 @@ public record MultiSearch(String selection, String[] selectionArgs, boolean hasM
 
         var selection = new StringBuilder(baseSelection);
         terms[0] = '%' + terms[0] + '%';
-        for (int i = 1; i < terms.length; ++i) {
+        int termCount = terms.length;
+        for (int i = 1; i < termCount; ++i) {
             terms[i] = '%' + terms[i] + '%';
             selection.append(" OR ").append(baseSelection);
         }
 
-        return new MultiSearch(selection.toString(), terms, terms.length > 1);
+        return new MultiSearch(selection.toString(), terms, termCount > 1);
     }
 }

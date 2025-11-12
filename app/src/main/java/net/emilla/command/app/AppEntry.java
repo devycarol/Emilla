@@ -14,44 +14,52 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import net.emilla.R;
-import net.emilla.activity.AssistActivity;
-import net.emilla.command.CommandYielder;
 import net.emilla.command.Params;
 import net.emilla.config.Aliases;
 import net.emilla.config.SettingVals;
 import net.emilla.lang.Lang;
+import net.emilla.sort.SearchItem;
 import net.emilla.struct.IndexedStruct;
-import net.emilla.struct.sort.Searchable;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
 
 import java.util.Set;
 
-public final class AppEntry extends CommandYielder implements Params, Searchable<AppEntry> {
+public final class AppEntry extends SearchItem implements Params {
 
     public static String[] labels(IndexedStruct<AppEntry> apps) {
         int size = apps.size();
         var labels = new String[size];
 
         for (int i = 0; i < size; ++i) {
-            labels[i] = apps.get(i).label;
+            labels[i] = apps.get(i).displayName;
         }
 
         return labels;
     }
 
+    public static AppEntry from(PackageManager pm, ResolveInfo resolveInfo) {
+        ActivityInfo activityInfo = resolveInfo.activityInfo;
+
+        return new AppEntry(
+            pm,
+            activityInfo.loadLabel(pm).toString(),
+            activityInfo.packageName,
+            activityInfo.name
+        );
+    }
+
     public final String pkg;
     public final String cls;
-    public final String label;
     @Nullable
     public final AppProperties properties;
     public final AppActions actions;
 
-    public AppEntry(PackageManager pm, ResolveInfo info) {
-        ActivityInfo actInfo = info.activityInfo;
-        pkg = actInfo.packageName;
-        cls = actInfo.name;
-        label = actInfo.loadLabel(pm).toString();
+    private AppEntry(PackageManager pm, String label, String packageName, String name) {
+        super(label);
+
+        pkg = packageName;
+        cls = name;
         // TODO: this is the biggest performance bottleneck I've found so far. Look into how the
         //  launcher caches labels for ideas on how to improve the performance of this critical
         //  onCreate task. That is, if they do to begin with..
@@ -65,21 +73,21 @@ public final class AppEntry extends CommandYielder implements Params, Searchable
 
     @Override
     public String name(Resources res) {
-        return label;
+        return displayName;
     }
 
     @Override
     public String title(Resources res) {
         if (actions.hasSend()) {
-            return Lang.colonConcat(res, R.string.command_app_send, label);
+            return Lang.colonConcat(res, R.string.command_app_send, displayName);
         }
         if (actions.hasSearch()) {
-            return Lang.colonConcat(res, R.string.command_app_search, label);
+            return Lang.colonConcat(res, R.string.command_app_search, displayName);
         }
         if (actions.usesInstruction() && properties != null) {
-            return Lang.colonConcat(res, label, properties.instruction);
+            return Lang.colonConcat(res, displayName, properties.instruction);
         }
-        return Lang.colonConcat(res, R.string.command_app, label);
+        return Lang.colonConcat(res, R.string.command_app, displayName);
     }
 
     @Override
@@ -90,6 +98,11 @@ public final class AppEntry extends CommandYielder implements Params, Searchable
             throw new RuntimeException(e);
             // TODO: No.
         }
+    }
+
+    @Override
+    public boolean isProperNoun() {
+        return true;
     }
 
     @Nullable
@@ -109,31 +122,16 @@ public final class AppEntry extends CommandYielder implements Params, Searchable
         return new ComponentName(pkg, cls);
     }
 
+    public AppYielder yielder() {
+        return new AppYielder(this);
+    }
+
     public boolean isEnabled(SharedPreferences prefs) {
-        return SettingVals.appEnabled(prefs, pkg, cls);
+        return SettingVals.appEnabled(prefs, this);
     }
 
     public Intent launchIntent() {
         return Intents.launchApp(this);
-    }
-
-    @Override
-    public boolean isPrefixable() {
-        return actions.usesInstruction();
-    }
-
-    @Override
-    protected AppCommand makeCommand(AssistActivity act) {
-        if (properties != null) {
-            return properties.maker.make(act, this);
-        }
-
-        return actions.defaultCommand(act, this);
-    }
-
-    @Override
-    public String ordinal() {
-        return label;
     }
 
 }

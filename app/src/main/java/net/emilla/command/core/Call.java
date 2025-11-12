@@ -1,7 +1,9 @@
 package net.emilla.command.core;
 
 import static android.content.Intent.ACTION_CALL;
+import static net.emilla.chime.Chime.SUCCEED;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -19,16 +21,14 @@ import net.emilla.util.Permission;
 
 /*internal*/ final class Call extends CoreCommand implements PhoneReceiver {
 
-    public static final String ENTRY = "call";
-
     public static boolean possible(PackageManager pm) {
         return Features.phone(pm) || Apps.canDo(pm, makeIntent(""));
     }
 
     private final ContactPhonesFragment mContactsFragment;
 
-    /*internal*/ Call(AssistActivity act) {
-        super(act, CoreEntry.CALL, EditorInfo.IME_ACTION_GO);
+    /*internal*/ Call(Context ctx) {
+        super(ctx, CoreEntry.CALL, EditorInfo.IME_ACTION_GO);
 
         mContactsFragment = ContactPhonesFragment.newInstance(false);
 
@@ -36,31 +36,26 @@ import net.emilla.util.Permission;
     }
 
     @Override
-    protected void run() {
-        Permission.CONTACTS.with(this.activity, this::tryCall);
+    protected void run(AssistActivity act) {
+        Permission.CONTACTS.with(act, () -> tryCall(act));
     }
 
-    private void tryCall() {
+    private void tryCall(AssistActivity act) {
         String number = mContactsFragment.selectedContacts();
         if (number != null) {
-            call(number);
+            call(act, number);
         } else {
-            this.activity.offerContactPhones(this);
+            act.offerContactPhones(this);
         }
     }
 
     @Override
-    protected void run(String nameOrNumber) {
+    protected void run(AssistActivity act, String nameOrNumber) {
         // todo: conference calls?
-        if (!Features.phone(pm())) throw badCommand(R.string.error_feature_phone);
-        // Todo: handle at install - make sure it's not 'sticky' in sharedprefs in case of data
-        //  transfer. it shouldn't disable the "command enabled" pref, it should just be its own
-        //  element of an "is the command enabled" check similar to HeliBoard's handling in its
-        //  "SettingsValues" class.
-        Permission.CALL.with(this.activity, () -> tryCall(nameOrNumber));
+        Permission.CALL.with(act, () -> tryCall(act, nameOrNumber));
     }
 
-    private void tryCall(String nameOrNumber) {
+    private void tryCall(AssistActivity act, String nameOrNumber) {
         String number = mContactsFragment.selectedContacts();
 
         if (number == null && Contacts.isPhoneNumbers(nameOrNumber)) {
@@ -68,28 +63,30 @@ import net.emilla.util.Permission;
         }
 
         if (number != null) {
-            call(number);
+            call(act, number);
         } else {
-            String msg = str(
+            var res = act.getResources();
+            String msg = res.getString(
                 R.string.notice_call_not_number,
                 nameOrNumber,
                 Contacts.phonewordsToNumbers(nameOrNumber)
             );
             offerDialog(
+                act,
                 Dialogs.dual(
-                    this.activity,
-                    CoreEntry.CALL.name,
+                    act, CoreEntry.CALL.name,
+
                     msg, R.string.call_directly,
 
-                    (dlg, which) -> call(nameOrNumber)
+                    (dlg, which) -> call(act, nameOrNumber)
                 )
             );
         }
     }
 
-    private void call(String nameOrNumber) {
-        this.activity.suppressSuccessChime();
-        appSucceed(makeIntent(nameOrNumber));
+    private static void call(AssistActivity act, String nameOrNumber) {
+        act.suppressChime(SUCCEED);
+        appSucceed(act, makeIntent(nameOrNumber));
     }
 
     private static Intent makeIntent(String number) {
@@ -97,8 +94,8 @@ import net.emilla.util.Permission;
     }
 
     @Override
-    public void provide(String phoneNumber) {
-        Permission.CALL.with(this.activity, () -> call(phoneNumber));
+    public void provide(AssistActivity act, String phoneNumber) {
+        Permission.CALL.with(act, () -> call(act, phoneNumber));
     }
 
 }

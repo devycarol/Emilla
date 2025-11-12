@@ -11,8 +11,6 @@ import net.emilla.util.Intents;
 
 /*internal*/ final class Navigate extends CategoryCommand {
 
-    public static final String ENTRY = "navigate";
-
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, Intents.view("geo:"));
     }
@@ -27,9 +25,9 @@ import net.emilla.util.Intents;
     }
 
     @Override
-    protected void run(String location) {
+    protected void run(AssistActivity act, String location) {
         // Todo: location bookmarks, navigate to contacts' addresses
-        appSucceed(Intents.view(Uri.parse("geo:0,0?q=" + location)));
+        appSucceed(act, Intents.view(Uri.parse("geo:0,0?q=" + location)));
     }
 
 }

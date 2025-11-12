@@ -1,5 +1,6 @@
 package net.emilla.command.core;
 
+import android.content.Context;
 import android.view.inputmethod.EditorInfo;
 
 import net.emilla.R;
@@ -11,27 +12,21 @@ import java.util.Random;
 
 /*internal*/ final class Roll extends CoreCommand {
 
-    public static final String ENTRY = "roll";
-
-    public static boolean possible() {
-        return true;
-    }
-
-    /*internal*/ Roll(AssistActivity act) {
-        super(act, CoreEntry.ROLL, EditorInfo.IME_ACTION_DONE);
+    /*internal*/ Roll(Context ctx) {
+        super(ctx, CoreEntry.ROLL, EditorInfo.IME_ACTION_DONE);
     }
 
     @Override
-    protected void run() {
+    protected void run(AssistActivity act) {
         var rand = new Random();
-        giveText(rand.nextBoolean() ? R.string.heads : R.string.tails);
+        giveText(act, rand.nextBoolean() ? R.string.heads : R.string.tails);
     }
 
     @Override
-    protected void run(String roll) {
+    protected void run(AssistActivity act, String roll) {
         Dices dices = Lang.dices(roll, CoreEntry.ROLL.name);
         var rand = new Random();
-        giveText(String.valueOf(dices.roll(rand)));
+        giveText(act, String.valueOf(dices.roll(rand)));
     }
 
 }

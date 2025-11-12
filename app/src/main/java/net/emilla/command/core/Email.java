@@ -22,12 +22,11 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.contact.fragment.ContactEmailsFragment;
 import net.emilla.content.receive.EmailReceiver;
 import net.emilla.util.Apps;
+import net.emilla.util.Patterns;
 
 import java.util.ArrayList;
 
 /*internal*/ final class Email extends CoreDataCommand implements EmailReceiver {
-
-    public static final String ENTRY = "email";
 
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, new Intent(ACTION_SENDTO, Uri.parse("mailto:")));
@@ -42,46 +41,47 @@ import java.util.ArrayList;
         mContactsFragment = ContactEmailsFragment.newInstance(true);
         mSubjectToggle = InputField.SUBJECT.toggler(act);
 
+        String entry = CoreEntry.EMAIL.name();
         giveGadgets(
             mContactsFragment,
             mSubjectToggle,
-            new FileFetcher(act, ENTRY, "*/*"),
+            new FileFetcher(act, entry, "*/*"),
             // TODO: Thunderbird doesn't like certain filetypes. See if you can find a type
             //  statement that's consistently email-friendly.
-            new MediaFetcher(act, ENTRY)
+            new MediaFetcher(act, entry)
         );
     }
 
     @Override
-    protected void run() {
-        tryEmail("", null);
+    protected void run(AssistActivity act) {
+        tryEmail(act, "", null);
     }
 
     @Override
-    protected void run(String recipients) {
-        tryEmail(recipients, null);
+    protected void run(AssistActivity act, String recipients) {
+        tryEmail(act, recipients, null);
     }
 
     @Override
-    protected void runWithData(String body) {
-        tryEmail("", body);
+    public void runWithData(AssistActivity act, String body) {
+        tryEmail(act, "", body);
     }
 
     @Override
-    protected void runWithData(String recipients, String body) {
-        tryEmail(recipients, body);
+    public void runWithData(AssistActivity act, String recipients, String body) {
+        tryEmail(act, recipients, body);
     }
 
-    private void tryEmail(String recipients, @Nullable String body) {
+    private void tryEmail(AssistActivity act, String recipients, @Nullable String body) {
         String addresses = mContactsFragment.selectedContacts();
         if (addresses != null) recipients = addresses;
 
-        email(recipients, body);
+        email(act, recipients, body);
         // todo: validate the raw recipients
     }
 
-    private void email(String addresses, @Nullable String body) {
-        ArrayList<Uri> attachments = this.activity.attachments(ENTRY);
+    private void email(AssistActivity act, String addresses, @Nullable String body) {
+        ArrayList<Uri> attachments = act.attachments(CoreEntry.EMAIL.name());
 
         Intent email;
         var sendTo = new Intent(ACTION_SENDTO, Uri.parse("mailto:"));
@@ -91,7 +91,7 @@ import java.util.ArrayList;
             email = new Intent(ACTION_SEND_MULTIPLE).putExtra(EXTRA_STREAM, attachments);
             email.setSelector(sendTo);
         }
-        email.putExtra(EXTRA_EMAIL, addresses.split(", *"));
+        email.putExtra(EXTRA_EMAIL, Patterns.TRIMMING_CSV.split(addresses));
         // TODO: CC and BCC selections
 
         if (body != null) email.putExtra(EXTRA_TEXT, body);
@@ -99,12 +99,12 @@ import java.util.ArrayList;
         String subject = mSubjectToggle.fieldText();
         if (subject != null) email.putExtra(EXTRA_SUBJECT, subject);
 
-        giveApp(email);
+        giveApp(act, email);
     }
 
     @Override
-    public void provide(String emailAddress) {
-        email(emailAddress, this.activity.dataText());
+    public void provide(AssistActivity act, String emailAddress) {
+        email(act, emailAddress, act.dataText());
     }
 
 }

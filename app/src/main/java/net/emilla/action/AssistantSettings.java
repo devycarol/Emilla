@@ -1,6 +1,7 @@
 package net.emilla.action;
 
 import static net.emilla.chime.Chime.ACT;
+import static net.emilla.chime.Chime.PEND;
 
 import android.content.Intent;
 
@@ -48,7 +49,7 @@ public final class AssistantSettings implements LabeledQuickAction {
         if (mActivity.shouldCancel()) {
             mActivity.succeed(new AppSuccess(config));
         } else {
-            mActivity.suppressPendChime();
+            mActivity.suppressChime(PEND);
             mActivity.startActivity(config.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             mActivity.chime(ACT);
         }

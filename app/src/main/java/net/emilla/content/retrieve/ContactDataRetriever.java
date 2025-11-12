@@ -1,6 +1,7 @@
 package net.emilla.content.retrieve;
 
 import static android.content.Intent.ACTION_PICK;
+import static net.emilla.chime.Chime.RESUME;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -14,6 +15,7 @@ import androidx.annotation.Nullable;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.content.receive.ContactDataReceiver;
+import net.emilla.util.Toasts;
 
 public abstract class ContactDataRetriever extends ResultRetriever<Void, String, ContactDataReceiver> {
 
@@ -65,12 +67,14 @@ public abstract class ContactDataRetriever extends ResultRetriever<Void, String,
 
         @Override
         protected void onActivityResult(String data, ContactDataReceiver receiver) {
+            AssistActivity act = ContactDataRetriever.this.activity;
             if (data != null) {
-                ContactDataRetriever.this.activity.suppressResumeChime();
-                receiver.provide(data);
+                act.suppressChime(RESUME);
+                receiver.provide(act, data);
             } else {
-                ContactDataRetriever.this.activity.toast(R.string.toast_contact_not_selected);
+                Toasts.show(act, R.string.toast_contact_not_selected);
             }
         }
     }
+
 }

@@ -1,13 +1,13 @@
 package net.emilla.command.app;
 
-import net.emilla.activity.AssistActivity;
+import android.content.Context;
 
 /*internal*/ final class NewPipe {
 
     public static final String PKG = "org.schabi.newpipe";
 
-    /*internal*/ static VideoSearchBySend instance(AssistActivity act, AppEntry appEntry) {
-        return new VideoSearchBySend(act, appEntry);
+    /*internal*/ static VideoSearchBySend instance(Context ctx, AppEntry appEntry) {
+        return new VideoSearchBySend(ctx, appEntry);
     }
 
     private NewPipe() {}

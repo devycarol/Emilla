@@ -1,6 +1,7 @@
 package net.emilla.command.app;
 
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.view.inputmethod.EditorInfo;
 
@@ -10,13 +11,15 @@ import net.emilla.util.Intents;
 
 /*internal*/ final class AppSearch extends AppCommand {
 
-    /*internal*/ AppSearch(AssistActivity act, AppEntry appEntry) {
-        super(act, appEntry, EditorInfo.IME_ACTION_SEARCH);
+    /*internal*/ AppSearch(Context ctx, AppEntry appEntry) {
+        super(ctx, appEntry, EditorInfo.IME_ACTION_SEARCH);
     }
 
     @Override
-    protected void run(String query) {
-        String[] searchAliases = stringArray(R.array.subcmd_search);
+    protected void run(AssistActivity act, String query) {
+        var res = act.getResources();
+
+        String[] searchAliases = res.getStringArray(R.array.subcmd_search);
         String lcQuery = query.toLowerCase();
         Intent search = Intents.searchToApp(this.appEntry.pkg);
         for (String alias : searchAliases) {
@@ -24,11 +27,11 @@ import net.emilla.util.Intents;
                 // Todo: visual indication that this will be used
                 query = query.substring(alias.length()).trim();
                 if (!query.isEmpty()) search.putExtra(SearchManager.QUERY, query);
-                appSucceed(search);
+                appSucceed(act, search);
                 return;
             }
         }
-        appSucceed(search.putExtra(SearchManager.QUERY, query));
+        appSucceed(act, search.putExtra(SearchManager.QUERY, query));
     }
 
 }

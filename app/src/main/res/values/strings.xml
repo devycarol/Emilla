@@ -14,6 +14,10 @@
     <string name="never">Never</string>
     <string name="none">None</string>
     <string name="overwrite">Overwrite</string>
+    <string name="local_time">Local time</string>
+    <string name="notes">Notes</string>
+    <string name="request_note_folder">Press to select a folder for notes</string>
+    <string name="request_todo_file">Press to select a file for tasks</string>
 
     <string name="heads">Heads!</string>
     <string name="tails">Tails!</string>
@@ -135,8 +139,6 @@
     <string name="category_apps">Apps</string>
     <string name="category_custom">Custom</string>
 
-    <string name="command_enabled">Enabled</string>
-
     <!-- Command names -->
     <!-- These will be lowercased mid-sentence unless they're marked as proper nouns/initialisms in EmillaCommand.java -->
     <!-- If this should vary for your locale, please let me know. -->
@@ -183,7 +185,6 @@
     <string name="command_app_search">App Search</string>
 
     <!-- Descriptions for command arguments -->
-    <string name="instruction">instruction</string>
     <string name="instruction_web">search or URL</string>
     <string name="instruction_play">media</string>
     <string name="instruction_pause">pauses media</string>
@@ -203,7 +204,6 @@
     <string name="instruction_todo">task</string>
     <string name="instruction_pomodoro">minutes</string>
     <string name="instruction_duplicate">choose</string>
-    <string name="instruction_custom">description of arguments</string>
     <!-- Generic instruction for contacting a person by name or phone number -->
     <string name="instruction_phone">person or number</string>
     <!-- Generic instruction for a choice of app -->
@@ -224,8 +224,6 @@
     <string name="instruction_title">title</string>
     <!-- Generic instruction for message text -->
     <string name="instruction_message">message</string>
-    <!-- Generic instruction for search query -->
-    <string name="instruction_search">query</string>
     <!-- Generic instruction for email apps -->
     <string name="instruction_app_email">email body</string>
     <!-- Generic instruction for code issues -->
@@ -674,8 +672,6 @@
     <string name="data_hint_default">Data</string>
     <string name="data_hint_message">Message body</string>
     <string name="data_hint_email">Body</string>
-    <string name="data_hint_note">Note text</string>
-    <string name="data_hint_todo">Additional tasks</string>
     <string name="data_hint_pomodoro">Memo</string>
     <string name="data_hint_calendar">Event details</string>
     <string name="data_hint_contact">Contact info</string>
@@ -705,37 +701,24 @@
     <string name="error_excess_timespan">You can\'t span more than 2 times.</string>
     <string name="error_excess_timespans">You can\'t have multiple timespans.</string>
     <string name="error_invalid_duration">Invalid duration!</string>
-    <string name="error_multiple_dates">You can\'t have multiple dates.</string>
-    <string name="error_invalid_weekday">Not a weekday!</string>
+    <string name="error_invalid_date">Invalid date.</string>
     <string name="error_invalid_weekday_format">Invalid weekday format.</string>
     <string name="error_excess_weekdays">You can\'t have duplicate weekdays.</string>
-    <string name="error_duplicate_tags">You can\'t have duplicate tags.</string>
     <string name="error_calc_malformed_expression">Malformed expression.</string>
     <string name="error_calc_undefined">Undefined.</string>
     <string name="error_invalid_number_range">Invalid number range.</string>
     <string name="error_bad_temperature">Invalid temperature.</string>
     <string name="error_invalid_dice_roll">Invalid dice roll.</string>
-    <string name="error_no_contact_phone">The contact doesn\'t have a phone number.</string>
     <!-- Should match @android:string/noApplications. -->
     <string name="error_no_app">No apps can perform this action.</string>
     <string name="error_apps_not_found">Apps weren\'t found.</string>
-    <string name="error_no_snippet">Snippet \"%s\" doesn\'t exist, but you can make it with the data field.</string>
-    <string name="error_no_snippets">You don\'t have any saved snippets.</string>
     <string name="error_cant_uninstall">Failed to uninstall the app.</string>
-    <string name="error_cant_find_file">Can\'t find the file.</string>
     <string name="error_cant_use_file">A file error occurred.</string>
     <string name="error_torch_failed">Failed to toggle the flashlight.</string>
-    <string name="error_feature_phone">Your device doesn\'t support phone calls.</string>
-    <string name="error_feature_sms">Your device doesn\'t support SMS messaging.</string>
     <string name="error_unfinished_feature">Unfinished feature!</string>
-    <string name="error_unfinished_setting">Sorry! I don\'t know how to modify specific settings yet.</string>
-    <string name="error_unfinished_notes">Sorry! I don\'t know how to write notes yet.</string>
     <string name="error_unfinished_version">Sorry! This command doesn\'t support your Android version yet.</string>
-    <string name="error_unfinished_contact_search">Sorry! I don\'t know how to search through contacts yet.</string>
-    <string name="error_unfinished_file_search">Sorry! I don\'t know how to search for files yet.</string>
     <string name="error_unfinished_categorical_app_search">Sorry! I don\'t have categorical app search yet.</string>
     <string name="error_unfinished_timer_label">Sorry! I can\'t label the timer without a duration.</string>
-    <string name="error_unfinished_time_location_elapse">Sorry! No locations or elapse-time yet, working on it.</string>
     <string name="error_unfinished_copy">Unfinished feature! The idea is to copy a file when text isn\'t provided.</string>
     <string name="error_unknown">Unknown error</string>
     <string name="error_bug_report_please">Please submit the bug report!</string>
@@ -783,13 +766,13 @@
     <string name="contacts_permission_required">Permission is needed to read device contacts.</string>
     <string name="contacts_permission_button">Get permission</string>
 
+    <!-- Menu items -->
+    <string name="switch_folder">Switch folder</string>
+    <string name="switch_file">Switch file</string>
+
     <!-- Toast messages -->
-    <string name="toast_local_time">Local time: %s</string>
     <string name="toast_hello">Hi there!</string>
-    <plurals name="toast_tasks_created">
-        <item quantity="one">Task created.</item>
-        <item quantity="other">%d tasks created.</item>
-    </plurals>
+    <string name="toast_file_not_created">A file wasn\'t created.</string>
     <string name="toast_files_not_selected">Files weren\'t selected.</string>
     <string name="toast_media_not_selected">Media weren\'t selected.</string>
     <plurals name="toast_files_attached">

@@ -79,8 +79,7 @@ public abstract class Words implements TrieMap.Phrase<String, String> {
                 String word = Strings.substring(mPhrase, start, mPos);
                 advance();
 
-                return word.toLowerCase();
-                // convert to lowercase to ensure TrieMap is case-insensitive
+                return Lang.normalize(word);
             }
 
             private void advance() {
@@ -108,8 +107,7 @@ public abstract class Words implements TrieMap.Phrase<String, String> {
             public String next() {
                 int codePoint = Character.codePointAt(mPhrase, mPos);
                 mPos += Character.charCount(codePoint);
-                return new String(Character.toChars(codePoint)).toLowerCase();
-                // convert to lowercase to ensure TrieMap is case-insensitive
+                return Lang.normalize(new String(Character.toChars(codePoint)));
             }
         }
     }

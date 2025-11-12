@@ -5,17 +5,17 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
 import net.emilla.command.app.AppEntry;
+import net.emilla.sort.ArraySearcher;
 import net.emilla.struct.IndexedStruct;
-import net.emilla.struct.sort.SearchResult;
-import net.emilla.struct.sort.SearchableArray;
 
-import java.util.Iterator;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.stream.Stream;
 
 public final class AppList implements IndexedStruct<AppEntry> {
 
-    private final SearchableArray<AppEntry> mApps;
+    private final AppEntry[] mApps;
+    private final ArraySearcher<AppEntry> mSearcher;
 
     public static AppList launchers(PackageManager pm) {
         return new AppList(Apps.resolveList(pm), pm);
@@ -25,37 +25,36 @@ public final class AppList implements IndexedStruct<AppEntry> {
         this(Apps.resolveList(pm, filter), pm);
     }
 
-    private AppList(List<? extends ResolveInfo> resolveInfos, PackageManager pm) {
-        mApps = new SearchableArray<AppEntry>(resolveInfos, info -> new AppEntry(pm, info));
+    private AppList(Collection<? extends ResolveInfo> resolveInfos, PackageManager pm) {
+        mApps = resolveInfos.stream()
+            .map(resolveInfo -> AppEntry.from(pm, resolveInfo))
+            .toArray(AppEntry[]::new);
+        // this array is sorted by the ArraySearcher
+        mSearcher = new ArraySearcher<AppEntry>(mApps, AppEntry[]::new);
     }
 
-    public SearchResult<AppEntry> filter(String search) {
-        return mApps.filter(search);
+    public IndexedStruct<AppEntry> filter(String search) {
+        return mSearcher.search(search);
     }
 
     @Override
     public AppEntry get(int index) {
-        return mApps.get(index);
+        return mApps[index];
     }
 
     @Override
     public int size() {
-        return mApps.size();
+        return mApps.length;
     }
 
     @Override
     public boolean isEmpty() {
-        return mApps.isEmpty();
+        return mApps.length == 0;
     }
 
     @Override
     public Stream<AppEntry> stream() {
-        return mApps.stream();
-    }
-
-    @Override
-    public Iterator<AppEntry> iterator() {
-        return mApps.iterator();
+        return Arrays.stream(mApps);
     }
 
 }

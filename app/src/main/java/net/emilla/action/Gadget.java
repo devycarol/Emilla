@@ -4,7 +4,7 @@ import net.emilla.activity.AssistActivity;
 
 public interface Gadget {
 
-    void init(AssistActivity act);
-    void cleanup(AssistActivity act);
+    void load(AssistActivity act);
+    void unload(AssistActivity act);
 
 }

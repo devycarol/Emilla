@@ -1,5 +1,6 @@
 package net.emilla.command.app;
 
+import android.content.Context;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.StringRes;
@@ -13,19 +14,14 @@ import net.emilla.command.DataCommand;
     @StringRes
     private final int mHint;
 
-    /*internal*/ AppSendData(AssistActivity act, AppEntry appEntry) {
-        this(act, appEntry, R.string.data_hint_text);
+    /*internal*/ AppSendData(Context ctx, AppEntry appEntry) {
+        this(ctx, appEntry, R.string.data_hint_text);
     }
 
-    /*internal*/ AppSendData(AssistActivity act, AppEntry appEntry, @StringRes int hint) {
-        super(act, appEntry, EditorInfo.IME_ACTION_NEXT);
+    /*internal*/ AppSendData(Context ctx, AppEntry appEntry, @StringRes int hint) {
+        super(ctx, appEntry, EditorInfo.IME_ACTION_NEXT);
 
         mHint = hint;
-    }
-
-    @Override
-    public final boolean usesData() {
-        return true;
     }
 
     @Override @StringRes
@@ -33,22 +29,14 @@ import net.emilla.command.DataCommand;
         return mHint;
     }
 
-    private void runWithData(String message) {
-        run(message);
-    }
-
-    private void runWithData(String message, String cont) {
-        run(message + '\n' + cont);
+    @Override
+    public final void runWithData(AssistActivity act, String message) {
+        run(act, message);
     }
 
     @Override
-    public final void execute(String data) {
-        String instruction = instruction();
-        if (instruction != null) {
-            runWithData(instruction, data);
-        } else {
-            runWithData(data);
-        }
+    public final void runWithData(AssistActivity act, String message, String cont) {
+        run(act, message + '\n' + cont);
     }
 
 }

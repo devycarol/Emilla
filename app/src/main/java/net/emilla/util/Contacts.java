@@ -12,8 +12,10 @@ import java.util.regex.Pattern;
 
 public final class Contacts {
 
-    public static boolean isPhoneNumbers(String s) {
-        return Pattern.compile("\\+?[0-9*#][0-9*#() \\-./,;]*").matcher(s).matches();
+    private static final Pattern PHONE_NUMBERS = Pattern.compile("\\+?[0-9*#][0-9*#() \\-./,;]*");
+
+    public static boolean isPhoneNumbers(CharSequence text) {
+        return PHONE_NUMBERS.matcher(text).matches();
     }
 
     public static String phonewordsToNumbers(String namesOrNumbers) {

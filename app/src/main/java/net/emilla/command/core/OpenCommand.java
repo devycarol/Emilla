@@ -8,7 +8,6 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.command.app.AppEntry;
 import net.emilla.struct.IndexedStruct;
-import net.emilla.struct.sort.SearchResult;
 import net.emilla.util.Dialogs;
 
 /*internal*/ abstract class OpenCommand extends CoreCommand {
@@ -18,13 +17,13 @@ import net.emilla.util.Dialogs;
     protected OpenCommand(AssistActivity act, CoreEntry coreEntry, int imeAction) {
         super(act, coreEntry, imeAction);
 
-        this.appChooser = makeChooser();
+        this.appChooser = makeChooser(act);
     }
 
-    protected abstract AlertDialog.Builder makeChooser();
+    protected abstract AlertDialog.Builder makeChooser(AssistActivity act);
 
-    protected final void appSearchRun(String search, IntentMaker maker) {
-        SearchResult<AppEntry> result = this.activity.appList().filter(search);
+    protected final void appSearchRun(AssistActivity act, String search, IntentMaker maker) {
+        IndexedStruct<AppEntry> result = act.appList().filter(search);
         int size = result.size();
         if (size == 0) {
             throw badCommand(R.string.error_apps_not_found);
@@ -32,21 +31,33 @@ import net.emilla.util.Dialogs;
         }
 
         if (size == 1 || oneExactMatch(result, search)) {
-            open(result, 0, maker);
+            open(act, result, 0, maker);
         } else {
-            offerDialog(Dialogs.list(this.activity, R.string.dialog_app, AppEntry.labels(result),
-                                     (dlg, which) -> open(result, which, maker)));
+            offerDialog(
+                act,
+                Dialogs.list(
+                    act, R.string.dialog_app,
+
+                    AppEntry.labels(result),
+                    (dlg, which) -> open(act, result, which, maker)
+                )
+            );
         }
     }
 
-    private static boolean oneExactMatch(SearchResult<AppEntry> result, String search) {
-        return result.get(0).ordinalIs(search)
-            && !result.get(1).ordinalIs(search);
+    private static boolean oneExactMatch(IndexedStruct<AppEntry> result, String search) {
+        return result.get(0).displayName.equalsIgnoreCase(search)
+            && !result.get(1).displayName.equalsIgnoreCase(search);
     }
 
-    private void open(IndexedStruct<AppEntry> filtered, int which, IntentMaker action) {
+    private static void open(
+        AssistActivity act,
+        IndexedStruct<AppEntry> filtered,
+        int which,
+        IntentMaker action
+    ) {
         AppEntry app = filtered.get(which);
-        appSucceed(action.make(app));
+        appSucceed(act, action.make(app));
     }
 
     @FunctionalInterface

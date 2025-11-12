@@ -1,19 +1,21 @@
 package net.emilla.run;
 
 import net.emilla.activity.AssistActivity;
+import net.emilla.util.Toasts;
 
 public final class ToastGift implements CommandRun {
 
     private final CharSequence mMessage;
-    private final boolean mLong;
+    private final boolean mIsLongToast;
 
-    public ToastGift(CharSequence msg, boolean longToast) {
+    public ToastGift(CharSequence msg, boolean isLongToast) {
         mMessage = msg;
-        mLong = longToast;
+        mIsLongToast = isLongToast;
     }
 
     @Override
     public void run(AssistActivity act) {
-        act.toast(mMessage, mLong);
+        Toasts.show(act, mMessage, mIsLongToast);
     }
+
 }

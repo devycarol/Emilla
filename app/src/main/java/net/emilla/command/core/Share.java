@@ -12,55 +12,63 @@ import net.emilla.R;
 import net.emilla.action.FileFetcher;
 import net.emilla.action.MediaFetcher;
 import net.emilla.activity.AssistActivity;
+import net.emilla.chime.Chime;
 import net.emilla.content.receive.AppChoiceReceiver;
 import net.emilla.util.Apps;
-import net.emilla.util.Files.MimeType;
 import net.emilla.util.Intents;
+import net.emilla.util.MimeType;
 import net.emilla.util.MimeTypes;
 
 import java.util.ArrayList;
 
 /*internal*/ final class Share extends CoreDataCommand implements AppChoiceReceiver {
 
-    public static final String ENTRY = "share";
-
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, Intents.send(MimeTypes.PLAIN_TEXT));
     }
 
+    @Deprecated
+    private final AssistActivity mActivity;
+
     /*internal*/ Share(AssistActivity act) {
         super(act, CoreEntry.SHARE, R.string.data_hint_text);
 
-        giveGadgets(new FileFetcher(act, ENTRY, "*/*"), new MediaFetcher(act, ENTRY));
+        mActivity = act;
+
+        String entry = CoreEntry.SHARE.name();
+        giveGadgets(
+            new FileFetcher(act, entry, "*/*"),
+            new MediaFetcher(act, entry)
+        );
     }
 
-    private Intent makeIntent() {
-        ArrayList<Uri> attachments = this.activity.attachments(ENTRY);
+    private static Intent makeIntent(AssistActivity act) {
+        ArrayList<Uri> attachments = act.attachments(CoreEntry.SHARE.name());
 
         if (attachments == null) {
             return Intents.send(MimeTypes.PLAIN_TEXT);
         }
         if (attachments.size() == 1) {
             Intent in = Intents.send(MimeTypes.PLAIN_TEXT).putExtra(EXTRA_STREAM, attachments.get(0));
-            in.setSelector(Intents.send(MimeType.of(attachments, this.activity)));
+            in.setSelector(Intents.send(MimeType.of(attachments, act)));
             return in;
         }
         Intent in = Intents.sendMultiple(MimeTypes.PLAIN_TEXT).putExtra(EXTRA_STREAM, attachments);
-        in.setSelector(Intents.sendMultiple(MimeType.of(attachments, this.activity)));
+        in.setSelector(Intents.sendMultiple(MimeType.of(attachments, act)));
         return in;
     }
 
-    private Intent makeIntent(String text) {
-        ArrayList<Uri> attachments = this.activity.attachments(ENTRY);
+    private static Intent makeIntent(AssistActivity act, String text) {
+        ArrayList<Uri> attachments = act.attachments(CoreEntry.SHARE.name());
         if (attachments == null) return Intents.send(MimeTypes.PLAIN_TEXT).putExtra(EXTRA_TEXT, text);
 
         Intent in;
         if (attachments.size() == 1) {
             in = Intents.send(MimeTypes.PLAIN_TEXT).putExtra(EXTRA_STREAM, attachments.get(0));
-            in.setSelector(Intents.send(MimeType.of(MimeTypes.PLAIN_TEXT, attachments, this.activity)));
+            in.setSelector(Intents.send(MimeType.of(MimeTypes.PLAIN_TEXT, attachments, act)));
         } else {
             in = Intents.sendMultiple(MimeTypes.PLAIN_TEXT).putExtra(EXTRA_STREAM, attachments);
-            in.setSelector(Intents.sendMultiple(MimeType.of(MimeTypes.PLAIN_TEXT, attachments, this.activity)));
+            in.setSelector(Intents.sendMultiple(MimeType.of(MimeTypes.PLAIN_TEXT, attachments, act)));
         }
         // Todo: this is essentially saying "good luck" to the user with wildcard MIME types any
         //  time there's more than one kind of attachment. Specifically targeting apps that support
@@ -70,32 +78,35 @@ import java.util.ArrayList;
     }
 
     @Override
-    protected void run() {
-        this.activity.offerChooser(this, makeIntent(), CoreEntry.SHARE.name);
+    protected void run(AssistActivity act) {
+        act.offerChooser(this, makeIntent(act), CoreEntry.SHARE.name);
     }
 
     @Override
-    protected void run(String app) {
-        runWithData(app); // TODO: allow to specify app, conversation, and (ideally) person
+    protected void run(AssistActivity act, String app) {
+        runWithData(act, app); // TODO: allow to specify app, conversation, and (ideally) person
     }
 
     @Override
-    protected void runWithData(String text) {
-        this.activity.offerChooser(this, makeIntent(text), CoreEntry.SHARE.name);
+    public void runWithData(AssistActivity act, String text) {
+        act.offerChooser(this, makeIntent(act, text), CoreEntry.SHARE.name);
     }
 
     @Override
-    protected void runWithData(String app, String text) {
-        runWithData(app + '\n' + text);
+    public void runWithData(AssistActivity act, String app, String text) {
+        runWithData(act, app + '\n' + text);
     }
 
     @Override
     public void provide(boolean chosen) {
-        if (chosen) succeed(act -> {
-            act.finishAndRemoveTask();
-            act.suppressPendChime();
-        });
-        else chime(RESUME);
+        if (chosen) {
+            mActivity.succeed(a -> {
+                a.finishAndRemoveTask();
+                a.suppressChime(Chime.PEND);
+            });
+        } else {
+            mActivity.chime(RESUME);
+        }
     }
 
 }

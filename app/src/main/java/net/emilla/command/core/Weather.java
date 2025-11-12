@@ -13,8 +13,6 @@ import net.emilla.util.Intents;
 
 /*internal*/ final class Weather extends CategoryCommand {
 
-    public static final String ENTRY = "weather";
-
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, Intents.categoryTask(CATEGORY_APP_WEATHER));
     }
@@ -30,7 +28,7 @@ import net.emilla.util.Intents;
     }
 
     @Override
-    protected void run(String location) {
+    protected void run(AssistActivity act, String location) {
         throw badCommand(R.string.error_unfinished_categorical_app_search); // Todo
     }
 

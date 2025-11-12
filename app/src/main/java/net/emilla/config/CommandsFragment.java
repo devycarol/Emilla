@@ -1,5 +1,6 @@
 package net.emilla.config;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -12,18 +13,21 @@ import androidx.preference.Preference.OnPreferenceChangeListener;
 import androidx.preference.PreferenceCategory;
 
 import net.emilla.R;
-import net.emilla.activity.EmillaActivity;
 import net.emilla.command.app.AppEntry;
 import net.emilla.command.core.CoreEntry;
 import net.emilla.util.AppList;
+import net.emilla.util.Patterns;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public final class CommandsFragment extends EmillaSettingsFragment {
 
-    private /*late*/ EmillaActivity mActivity;
+    private static final Pattern SQUASHING_CSV = Pattern.compile("( *, *)+");
+
+    private /*late*/ Context mContext;
     private /*late*/ PackageManager mPm;
     private /*late*/ SharedPreferences mPrefs;
     private /*late*/ Resources mRes;
@@ -33,7 +37,7 @@ public final class CommandsFragment extends EmillaSettingsFragment {
         String textKey = cmdPref.getKey();
         String setKey = cmdPref.setKey;
         String correctedText = ((String) newVal).trim().toLowerCase();
-        String[] vals = correctedText.split(" *, *");
+        String[] vals = Patterns.TRIMMING_CSV.split(correctedText);
         Set<String> aliases = Set.of(vals);
         var joined = String.join(", ", aliases);
         cmdPref.setText(joined);
@@ -48,8 +52,8 @@ public final class CommandsFragment extends EmillaSettingsFragment {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.command_prefs, rootKey);
 
-        mActivity = emillaActivity();
-        mPm = mActivity.getPackageManager();
+        mContext = requireContext();
+        mPm = mContext.getPackageManager();
         mPrefs = prefs();
         mRes = getResources();
 
@@ -59,46 +63,39 @@ public final class CommandsFragment extends EmillaSettingsFragment {
     }
 
     private void setupCores() {
+        Aliases.reformatCoresIfNecessary(mPrefs);
+
         PreferenceCategory cores = preferenceOf("category_cores");
         for (var coreEntry : CoreEntry.values()) {
-            var corePref = new CommandPreference(mActivity, coreEntry);
+            var corePref = new CommandPreference(mContext, coreEntry);
             cores.addPreference(corePref);
             setupCorePref(coreEntry, corePref);
         }
     }
 
     private void setupCorePref(CoreEntry coreEntry, CommandPreference corePref) {
-        String entry = coreEntry.entry;
+        String entry = coreEntry.name();
         @ArrayRes int aliases = coreEntry.aliases;
 
         String enabledKey = SettingVals.commandEnabledKey(entry);
 
-        boolean isImplemented = coreEntry.isImplemented;
-        if (isImplemented && coreEntry.isPossible(mPm)) {
+        if (coreEntry.isPossible(mPm)) {
             if (!mPrefs.contains(enabledKey)) {
                 mPrefs.edit().putBoolean(enabledKey, true).apply();
-                // TODO: actually allow to toggle this setting.
             }
             Set<String> aliasSet = Aliases.coreSet(mPrefs, mRes, entry, aliases);
             setupPref(corePref, aliasSet);
         } else {
             mPrefs.edit().putBoolean(enabledKey, false).apply();
             corePref.setEnabled(false);
-//            if (isImplemented) {
-//                corePref.setOnPreferenceClickListener(pref -> {
-//                    mActivity.toast(R.string.toast_command_unsupported);
-//                    /*Your device doesn\'t support this command.*/
-//                    // TODO: this doesn't work because it's EditTextPreference
-//                    // Todo: offer to search for apps that may satisfy the command or inform that
-//                        it's a hardware issue.
-//                    return false;
-//                });
-//            } else {
-//                corePref.setOnPreferenceClickListener(pref -> {
-//                    mActivity.toast("Coming soon!");
-//                    return false;
-//                });
-//            }
+//            corePref.setOnPreferenceClickListener(pref -> {
+//                Toasts.show(mContext, R.string.toast_command_unsupported);
+//                /*Your device doesn\'t support this command.*/
+//                // TODO: this doesn't work because it's EditTextPreference
+//                // Todo: offer to search for apps that may satisfy the command or inform that
+//                    it's a hardware issue.
+//                return false;
+//            });
         }
     }
 
@@ -111,7 +108,7 @@ public final class CommandsFragment extends EmillaSettingsFragment {
         // Todo: priority-sort the apps with hard-coded support?
         PreferenceCategory apps = preferenceOf("category_apps");
         for (AppEntry app : AppList.launchers(mPm)) {
-            var appPref = new CommandPreference(mActivity, app);
+            var appPref = new CommandPreference(mContext, app);
             apps.addPreference(appPref);
             setupPref(appPref, Aliases.appSet(mPrefs, mRes, app));
         }
@@ -129,7 +126,7 @@ public final class CommandsFragment extends EmillaSettingsFragment {
 
             var reviseBldr = new StringBuilder();
             var customEntries = new HashSet<String>();
-            for (String entry : newText.split(" *\n *")) {
+            for (String entry : Patterns.TRIMMING_LINES.split(newText)) {
                 String revisedEntry = cleanCommaList(entry);
                 if (revisedEntry != null) {
                     reviseBldr.append(revisedEntry).append('\n');
@@ -156,20 +153,14 @@ public final class CommandsFragment extends EmillaSettingsFragment {
     }
 
     @Nullable
-    private static String cleanCommaList(String entry) {
-        String[] split = entry.split("( *, *)+");
-        int len = split.length;
-        if (len >= 2) {
-            var items = new ArrayList<String>(len);
+    private static String cleanCommaList(CharSequence entry) {
+        String cleanCommaList = SQUASHING_CSV.splitAsStream(entry)
+            .filter(s -> !s.isEmpty())
+            .collect(Collectors.joining(", "));
 
-            int i = 0;
-            do if (!split[i].isEmpty()) items.add(split[i]);
-            while (++i < len);
-
-            if (items.size() >= 2) return String.join(", ", items);
-        }
-
-        return null;
+        return cleanCommaList.indexOf(',') >= 0
+            ? cleanCommaList
+            : null;
     }
 
 }

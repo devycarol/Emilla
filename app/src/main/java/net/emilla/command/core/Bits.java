@@ -11,12 +11,6 @@ import net.emilla.util.Intents;
 
 /*internal*/ final class Bits extends CategoryCommand {
 
-    public static final String ENTRY = "bits";
-
-    public static boolean possible() {
-        return true;
-    }
-
     /*internal*/ Bits(AssistActivity act) {
         super(act, CoreEntry.BITS, EditorInfo.IME_ACTION_DONE);
     }
@@ -27,8 +21,8 @@ import net.emilla.util.Intents;
     }
 
     @Override
-    protected void run(String expression) {
-        giveText(String.valueOf(BitwiseCalculator.compute(expression, CoreEntry.BITS.name)));
+    protected void run(AssistActivity act, String expression) {
+        giveText(act, String.valueOf(BitwiseCalculator.compute(expression, CoreEntry.BITS.name)));
     }
 
 }

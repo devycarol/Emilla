@@ -42,7 +42,6 @@ public abstract class ContactsFragment<T> extends ActionBox
     @Nullable
     private String mSearchString = null;
 
-    private /*late*/ AssistActivity mActivity;
     private /*late*/ boolean mHasMultiSelect;
 
     public ContactsFragment() {
@@ -65,8 +64,6 @@ public abstract class ContactsFragment<T> extends ActionBox
         mPermissionContainer = view.findViewById(R.id.ctct_permission_container);
         mPermissionButton = view.findViewById(R.id.ctct_permission_btn);
 
-        mActivity = (AssistActivity) requireActivity();
-
         if (Permission.CONTACTS.has(requireContext())) {
             populateContacts();
         } else {
@@ -82,7 +79,7 @@ public abstract class ContactsFragment<T> extends ActionBox
         mContactList.setVisibility(View.GONE);
         mPermissionContainer.setVisibility(View.VISIBLE);
         mPermissionButton.setOnClickListener(v -> {
-            AssistActivity act = (AssistActivity) requireActivity();
+            var act = (AssistActivity) requireActivity();
             Permission.CONTACTS.with(
                 act, this::activateContacts,
 
@@ -183,8 +180,9 @@ public abstract class ContactsFragment<T> extends ActionBox
             Cursor cur = adapter.getCursor();
             cur.moveToPosition(pos);
 
-            var receiver = (ContactReceiver) mActivity.command();
-            receiver.useContact(cur);
+            var act = (AssistActivity) requireActivity();
+            var receiver = (ContactReceiver) act.command();
+            receiver.useContact(act, cur);
         } else if (mHasMultiSelect) {
             item.markSelected(mContactList.isItemChecked(pos));
         }

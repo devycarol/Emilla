@@ -20,7 +20,6 @@ import android.provider.Settings;
 
 import androidx.annotation.RequiresApi;
 
-import net.emilla.activity.EmillaActivity;
 import net.emilla.command.app.AppEntry;
 
 public final class Intents {
@@ -105,7 +104,7 @@ public final class Intents {
             .putExtra(Settings.EXTRA_APP_PACKAGE, pkg);
     }
 
-    public static Intent me(Context ctx, Class<? extends EmillaActivity> cls) {
+    public static Intent me(Context ctx, Class<?> cls) {
         return new Intent(ctx, cls);
     }
 

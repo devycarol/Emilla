@@ -6,30 +6,37 @@ import net.emilla.R;
 import net.emilla.exception.EmillaException;
 import net.emilla.lang.phrase.Dice;
 import net.emilla.lang.phrase.Dices;
-import net.emilla.struct.sort.SortedArray;
+import net.emilla.util.Strings;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.regex.Pattern;
 
 public final class DicesEN_US {
 
+    private static final Pattern DICE_ROLL = Pattern.compile(
+        "((-\\d)?\\d*D\\d+|-?\\d+)([+-]((-\\d)?\\d*D\\d+|-?\\d+))*",
+        Pattern.CASE_INSENSITIVE
+    );
+
     public static Dices instance(String roll, @StringRes int errorTitle) {
-        String actualRoll = roll.replaceAll("\\s+", "");
-        if (!actualRoll.matches("(?i)((-\\d)?\\d*D\\d+|-?\\d+)([+-]((-\\d)?\\d*D\\d+|-?\\d+))*")) {
+        String actualRoll = Strings.stripSpaces(roll);
+        if (!DICE_ROLL.matcher(actualRoll).matches()) {
             throw new EmillaException(errorTitle, R.string.error_invalid_dice_roll);
         }
 
-        var dices = new SortedArray<Dice>(1);
+        var dices = new ArrayList<Dice>(2);
 
         for (Dice dice : dices(actualRoll, errorTitle)) {
-            Dice retrieve = dices.retrieve(dice);
-            if (retrieve == null) {
-                dices.add(dice);
+            int index = dices.indexOf(dice);
+            if (index >= 0) {
+                dices.get(index).add(dice.count());
             } else {
-                retrieve.add(dice.count());
+                dices.add(dice);
             }
         }
 
-        return new Dices(dices);
+        return new Dices(dices.toArray(Dice[]::new));
     }
 
     private static Iterable<Dice> dices(String roll, @StringRes int errorTitle) {

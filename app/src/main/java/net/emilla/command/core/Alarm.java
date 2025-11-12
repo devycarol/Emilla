@@ -7,6 +7,7 @@ import static android.provider.AlarmClock.EXTRA_HOUR;
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 import static android.provider.AlarmClock.EXTRA_MINUTES;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 
@@ -17,57 +18,67 @@ import net.emilla.lang.date.HourMin;
 import net.emilla.lang.date.Weekdays;
 import net.emilla.util.Apps;
 
-/*internal*/ final class Alarm extends CoreDataCommand {
+import java.time.DayOfWeek;
+import java.util.EnumSet;
 
-    public static final String ENTRY = "alarm";
+/*internal*/ final class Alarm extends CoreDataCommand {
 
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, makeIntent()) || Apps.canDo(pm, new Intent(ACTION_SET_ALARM));
     }
 
-    /*internal*/ Alarm(AssistActivity act) {
-        super(act, CoreEntry.ALARM, R.string.data_hint_label);
+    /*internal*/ Alarm(Context ctx) {
+        super(ctx, CoreEntry.ALARM, R.string.data_hint_label);
     }
 
     @Override
-    protected void run() {
-        appSucceed(makeIntent());
+    protected void run(AssistActivity act) {
+        appSucceed(act, makeIntent());
         // todo: put time picker on this one. separate "alarms" command will require implementing
         //  the special no-args cmd tree behavior :P
     }
 
     @Override
-    protected void run(String time) {
-        appSucceed(makeIntent(time));
+    protected void run(AssistActivity act, String time) {
+        appSucceed(act, makeIntent(act, time));
     }
 
     @Override
-    protected void runWithData(String label) {
-        offerTimePicker((picker, hourOfDay, minute) -> appSucceed(makeIntent(hourOfDay, minute)
-                .putExtra(EXTRA_MESSAGE, label)));
+    public void runWithData(AssistActivity act, String label) {
+        offerTimePicker(
+            act,
+            (picker, hourOfDay, minute) -> {
+                appSucceed(act, makeIntent(hourOfDay, minute).putExtra(EXTRA_MESSAGE, label));
+            }
+        );
         // todo: weekday widget
     }
 
     @Override
-    protected void runWithData(String time, String label) {
-        appSucceed(makeIntent(time).putExtra(EXTRA_MESSAGE, label));
+    public void runWithData(AssistActivity act, String time, String label) {
+        appSucceed(act, makeIntent(act, time).putExtra(EXTRA_MESSAGE, label));
     }
 
     private static Intent makeIntent() {
         return new Intent(ACTION_SHOW_ALARMS);
     }
 
-    private Intent makeIntent(String timeString) {
-        HourMin time = Lang.time(timeString, this.activity, CoreEntry.ALARM.name);
-        Weekdays days = Lang.weekdays(timeString, CoreEntry.ALARM.name);
-        Intent in = makeIntent(time.hour24(), time.minute());
-        return days.empty() ? in : in.putExtra(EXTRA_DAYS, days.days());
+    private static Intent makeIntent(Context ctx, String timeString) {
+        HourMin time = Lang.time(timeString, ctx, CoreEntry.ALARM.name);
+        Intent setAlarm = makeIntent(time.hour24(), time.minute());
+
+        EnumSet<DayOfWeek> weekdays = Lang.weekdays(timeString, CoreEntry.ALARM.name);
+        if (weekdays != null) {
+            setAlarm.putExtra(EXTRA_DAYS, Weekdays.calendarArrayList(weekdays));
+        }
+
+        return setAlarm;
     }
 
     private static Intent makeIntent(int hour, int minute) {
         return new Intent(ACTION_SET_ALARM)
-                .putExtra(EXTRA_HOUR, hour)
-                .putExtra(EXTRA_MINUTES, minute);
+            .putExtra(EXTRA_HOUR, hour)
+            .putExtra(EXTRA_MINUTES, minute);
     }
 
 }

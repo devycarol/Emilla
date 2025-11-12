@@ -1,5 +1,6 @@
 package net.emilla.command.core;
 
+import android.content.Context;
 import android.view.inputmethod.EditorInfo;
 
 import net.emilla.R;
@@ -10,29 +11,24 @@ import net.emilla.math.Maths;
 
 /*internal*/ final class Celsius extends CoreCommand {
 
-    public static final String ENTRY = "celsius";
-
-    public static boolean possible() {
-        return true;
-    }
-
-    /*internal*/ Celsius(AssistActivity act) {
-        super(act, CoreEntry.CELSIUS, EditorInfo.IME_ACTION_DONE);
+    /*internal*/ Celsius(Context ctx) {
+        super(ctx, CoreEntry.CELSIUS, EditorInfo.IME_ACTION_DONE);
     }
 
     @Override
-    protected void run() {
-        offer(act -> {});
+    protected void run(AssistActivity act) {
+        act.offer(a -> {});
     }
 
     @Override
-    protected void run(String temperature) {
+    protected void run(AssistActivity act, String temperature) {
         CelsiusConversion celsius = Lang.celsius(temperature, CoreEntry.CELSIUS.name);
 
         String oldDegrees = Maths.prettyNumber(celsius.degrees);
-        String unit = str(celsius.fromKelvin ? R.string.kelvin : R.string.fahrenheit);
+        var res = act.getResources();
+        String unit = res.getString(celsius.fromKelvin ? R.string.kelvin : R.string.fahrenheit);
         String celsiusDegrees = Maths.prettyNumber(celsius.convert());
-        giveText(str(R.string.celsius_conversion, oldDegrees, unit, celsiusDegrees));
+        giveText(act, res.getString(R.string.celsius_conversion, oldDegrees, unit, celsiusDegrees));
     }
 
 }

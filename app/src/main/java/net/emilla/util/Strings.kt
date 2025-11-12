@@ -40,9 +40,9 @@ fun String.containsIgnoreCase(other: String): Boolean {
     var i = 0
     while (i <= max) {
         // look for first char.
-        if (this[i].differentLetter(first)) {
+        if (Chars.differentLetters(this[i], first)) {
             do ++i
-            while (i <= max && this[i].differentLetter(first))
+            while (i <= max && Chars.differentLetters(this[i], first))
 
             if (i > max) return false
         }
@@ -55,6 +55,30 @@ fun String.containsIgnoreCase(other: String): Boolean {
     return false
 }
 
-fun Char.repeat(count: Int) = String(CharArray(count) { this })
-fun CharArray.substring(start: Int = 0) = substring(start, size)
-fun CharArray.substring(start: Int = 0, end: Int) = String(copyOfRange(start, end))
+internal fun ByteArray.count(b: Byte): Int = count { it == b }
+fun Char.repeat(count: Int): String = String(CharArray(count) { this })
+fun CharArray.substring(start: Int = 0): String = substring(start, size)
+fun CharArray.substring(start: Int = 0, end: Int): String = String(copyOfRange(start, end))
+
+fun String.stripNonDigits(): String = stripNonMatching(this, Character::isDigit)
+fun String.stripNonNumbers(): String = stripNonMatching(this, Chars::isNumberChar)
+fun String.stripSpaces(): String = stripMatching(this, Character::isWhitespace)
+
+private inline fun stripMatching(s: String, condition: (Char) -> Boolean): String
+    = stripNonMatching(s) { !condition(it) }
+
+private inline fun stripNonMatching(s: String, filter: (Char) -> Boolean): String {
+    val chars = s.toCharArray()
+    var pos = 0
+
+    for (i in 0..<chars.size) {
+        if (filter(chars[i])) {
+            chars[pos] = chars[i]
+            ++pos
+        }
+    }
+
+    return String(chars, 0, pos)
+}
+
+fun CharSequence.isOneToNDigits(n: Int): Boolean = length in 1..n && all(Character::isDigit)

@@ -2,20 +2,18 @@ package net.emilla.config;
 
 import android.os.Bundle;
 
-import androidx.navigation.NavController;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.activity.EmillaActivity;
 import net.emilla.databinding.ActivityConfigBinding;
 import net.emilla.util.Intents;
 
-public final class ConfigActivity extends EmillaActivity {
-
-    private ActivityConfigBinding mBinding = null;
+public final class ConfigActivity extends AppCompatActivity {
 
     public ConfigActivity() {
         super();
@@ -25,25 +23,30 @@ public final class ConfigActivity extends EmillaActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mBinding = ActivityConfigBinding.inflate(getLayoutInflater());
-        setContentView(mBinding.getRoot());
+        var binding = ActivityConfigBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        mBinding.navView.setOnItemReselectedListener(item -> {
-            boolean assistantItem = item.getItemId() == R.id.nav_assistant;
-            if (assistantItem) {
+        binding.navView.setOnItemReselectedListener(item -> {
+            if (item.getItemId() == R.id.nav_assistant) {
                 startActivity(Intents.me(this, AssistActivity.class));
             }
         });
-        var navHostFragment = (NavHostFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.nav_host_fragment_activity_config);
-        if (navHostFragment == null) return;
-        NavController navController = navHostFragment.getNavController();
-        var appBarConfiguration = new AppBarConfiguration.Builder(
+
+        FragmentManager manager = getSupportFragmentManager();
+        var host = (NavHostFragment)
+            manager.findFragmentById(R.id.host_fragment);
+        if (host == null) {
+            throw new IllegalStateException("Couldn't find the host fragment");
+        }
+
+        var navController = host.getNavController();
+        var configuration = new AppBarConfiguration.Builder(
             R.id.nav_commands,
             R.id.nav_assistant,
             R.id.nav_settings
         ).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(mBinding.navView, navController);
+
+        NavigationUI.setupActionBarWithNavController(this, navController, configuration);
+        NavigationUI.setupWithNavController(binding.navView, navController);
     }
 }

@@ -6,9 +6,10 @@ import java.util.regex.Pattern;
 
 public final class ListPhraseEN_US implements ListPhrase {
 
-    private static final String CONJUNCTION = "(?i)(?<=[^\\s,])\\s+(and|&)\\s+(?=[^\\s,])";
-    private static final String COORDINATION = "(?<=[^\\s,]),[\\s,]*(?=[^\\s,])";
-    private static final String SERIAL = "(?i)(?<=\\S),[\\s,]*(and|&)\\s+(?=[^\\s,])";
+    private static final Pattern CONJUNCTION = Pattern.compile("(?<=[^\\s,])\\s+(and|&)\\s+(?=[^\\s,])", Pattern.CASE_INSENSITIVE);
+    private static final Pattern COORDINATION = Pattern.compile("(?<=[^\\s,]),[\\s,]*(?=[^\\s,])");
+    private static final Pattern SERIAL = Pattern.compile("(?<=\\S),[\\s,]*(and|&)\\s+(?=[^\\s,])", Pattern.CASE_INSENSITIVE);
+    private static final Pattern SEPARATION = Pattern.compile(SERIAL + "|" + COORDINATION, Pattern.CASE_INSENSITIVE);
 
     private final String[] mItems;
 
@@ -18,15 +19,13 @@ public final class ListPhraseEN_US implements ListPhrase {
         //  "items with commas", but it will suffice for now.
         // don't put commas in your contact names u jackal :P
 
-        var coordination = Pattern.compile(COORDINATION);
-        if (coordination.matcher(phrase).find()) {
-            mItems = phrase.split(SERIAL + '|' + COORDINATION);
+        if (COORDINATION.matcher(phrase).find()) {
+            mItems = SEPARATION.split(phrase);
             return;
         }
 
-        var conjunction = Pattern.compile(CONJUNCTION);
-        if (conjunction.matcher(phrase).find()) {
-            mItems = conjunction.split(phrase);
+        if (CONJUNCTION.matcher(phrase).find()) {
+            mItems = CONJUNCTION.split(phrase);
             return;
         }
 

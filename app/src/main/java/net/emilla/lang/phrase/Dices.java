@@ -1,12 +1,14 @@
 package net.emilla.lang.phrase;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public final class Dices {
 
-    private final Iterable<Dice> mDices;
+    private final Dice[] mDices;
 
-    public Dices(Iterable<Dice> dices) {
+    public Dices(Dice[] dices) {
+        Arrays.sort(dices);
         mDices = dices;
     }
 

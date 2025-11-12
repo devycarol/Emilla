@@ -117,16 +117,6 @@
                 android:resource="@xml/accessibility_service_config" />
         </service>
 
-        <provider
-            android:name=".system.EmillaFileProvider"
-            android:authorities="${applicationId}.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/paths" />
-        </provider>
-
         <receiver
             android:name=".content.retrieve.AppChoiceRetriever$AppChooserBroadcastReceiver"
             android:exported="true">

@@ -5,6 +5,7 @@ import static android.provider.AlarmClock.EXTRA_LENGTH;
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 import static android.provider.AlarmClock.EXTRA_SKIP_UI;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 
@@ -15,14 +16,12 @@ import net.emilla.util.Apps;
 
 /*internal*/ final class Timer extends CoreDataCommand {
 
-    public static final String ENTRY = "timer";
-
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, makeIntent());
     }
 
-    /*internal*/ Timer(AssistActivity act) {
-        super(act, CoreEntry.TIMER, R.string.data_hint_label);
+    /*internal*/ Timer(Context ctx) {
+        super(ctx, CoreEntry.TIMER, R.string.data_hint_label);
     }
 
     private static Intent makeIntent() {
@@ -37,17 +36,17 @@ import net.emilla.util.Apps;
     }
 
     @Override
-    protected void run() {
-        appSucceed(makeIntent());
+    protected void run(AssistActivity act) {
+        appSucceed(act, makeIntent());
     }
 
     @Override
-    protected void run(String duration) {
-        appSucceed(makeIntent(duration));
+    protected void run(AssistActivity act, String duration) {
+        appSucceed(act, makeIntent(duration));
     }
 
     @Override
-    protected void runWithData(String title) {
+    public void runWithData(AssistActivity act, String title) {
         throw badCommand(R.string.error_unfinished_timer_label);
         // TODO: is this always the case? I'd strongly prefer to defer to the user's app's UI. At
         //  the least, this failure should be replaced with an input dialog for com.android.deskclock
@@ -56,8 +55,8 @@ import net.emilla.util.Apps;
     }
 
     @Override
-    protected void runWithData(String duration, String title) {
-        appSucceed(makeIntent(duration).putExtra(EXTRA_MESSAGE, title));
+    public void runWithData(AssistActivity act, String duration, String title) {
+        appSucceed(act, makeIntent(duration).putExtra(EXTRA_MESSAGE, title));
     }
 
 }

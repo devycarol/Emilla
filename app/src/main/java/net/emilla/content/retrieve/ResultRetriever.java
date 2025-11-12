@@ -2,7 +2,6 @@ package net.emilla.content.retrieve;
 
 import static net.emilla.BuildConfig.DEBUG;
 
-import android.content.ActivityNotFoundException;
 import android.util.Log;
 
 import androidx.activity.result.ActivityResultCallback;
@@ -10,10 +9,9 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContract;
 import androidx.annotation.Nullable;
 
-import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.content.ResultLaunchers;
 import net.emilla.content.receive.ResultReceiver;
-import net.emilla.run.MessageFailure;
 
 /*internal*/ abstract class ResultRetriever<I, O, C extends ResultReceiver> {
 
@@ -43,13 +41,7 @@ import net.emilla.run.MessageFailure;
     }
 
     protected final void launch(@Nullable I input) {
-        try {
-            mLauncher.launch(input);
-        } catch (ActivityNotFoundException e) {
-            this.activity.fail(
-                new MessageFailure(this.activity, R.string.error, R.string.error_no_app)
-            );
-        }
+        ResultLaunchers.tryLaunch(this.activity, mLauncher, input);
     }
 
     @Deprecated @Nullable

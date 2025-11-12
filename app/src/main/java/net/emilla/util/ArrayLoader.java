@@ -5,7 +5,7 @@ import java.util.function.IntFunction;
 
 public final class ArrayLoader<E> {
 
-    private final E[] mArray;
+    private E[] mArray;
     private int mSize = 0;
 
     public ArrayLoader(int capacity, IntFunction<E[]> generator) {
@@ -16,6 +16,13 @@ public final class ArrayLoader<E> {
         mArray[mSize] = e;
         // IOB at capacity
         ++mSize;
+    }
+
+    public void growingAdd(E e) {
+        if (mSize == mArray.length) {
+            mArray = Arrays.copyOf(mArray, mSize * 3 / 2 + 1);
+        }
+        add(e);
     }
 
     public boolean notEmpty() {

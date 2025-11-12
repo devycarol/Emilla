@@ -1,12 +1,12 @@
 package net.emilla.command.app;
 
+import android.content.Context;
 import android.content.pm.PackageManager;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import net.emilla.R;
-import net.emilla.activity.AssistActivity;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
 
@@ -88,18 +88,18 @@ public final class AppActions {
         return R.string.manual_app;
     }
 
-    public AppCommand defaultCommand(AssistActivity act, AppEntry appEntry) {
+    public AppCommand defaultCommand(Context ctx, AppEntry appEntry) {
         if (hasMultilineSend()) {
-            return new AppSendData(act, appEntry);
+            return new AppSendData(ctx, appEntry);
         }
         if (hasSend()) {
-            return new AppSend(act, appEntry);
+            return new AppSend(ctx, appEntry);
         }
         if (hasSearch()) {
-            return new AppSearch(act, appEntry);
+            return new AppSearch(ctx, appEntry);
         }
         // Todo: allow multiple actions
-        return new AppCommand(act, appEntry);
+        return new AppCommand(ctx, appEntry);
     }
 
 }

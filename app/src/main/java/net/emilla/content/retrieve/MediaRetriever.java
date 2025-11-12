@@ -11,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.content.receive.FilesReceiver;
+import net.emilla.util.Toasts;
 
 import java.util.List;
 
@@ -39,7 +40,7 @@ public final class MediaRetriever extends ResultRetriever<PickVisualMediaRequest
         @Override
         protected void onActivityResult(List<Uri> media, FilesReceiver receiver) {
             if (media.isEmpty()) {
-                MediaRetriever.this.activity.toast(R.string.toast_media_not_selected);
+                Toasts.show(MediaRetriever.this.activity, R.string.toast_media_not_selected);
             } else {
                 receiver.provide(media);
             }

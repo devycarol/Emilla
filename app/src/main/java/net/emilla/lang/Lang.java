@@ -3,12 +3,12 @@ package net.emilla.lang;
 import android.content.Context;
 import android.content.res.Resources;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.lang.date.Duration;
 import net.emilla.lang.date.HourMin;
-import net.emilla.lang.date.Weekdays;
 import net.emilla.lang.date.impl.DurationEN_US;
 import net.emilla.lang.date.impl.HourMinEN_US;
 import net.emilla.lang.date.impl.WeekdaysEN_US;
@@ -23,8 +23,16 @@ import net.emilla.lang.phrase.RandRange;
 import net.emilla.lang.phrase.impl.DicesEN_US;
 import net.emilla.lang.phrase.impl.RandRangeEN_US;
 
+import java.time.DayOfWeek;
+import java.util.EnumSet;
+
 public enum Lang {
     EN_US;
+
+    public static String normalize(String s) {
+        return s.toLowerCase();
+        // Todo lang: strip diacritics and handle the fact that case is really weird
+    }
 
     public static String wordConcat(Resources res, Object a, Object b) {
         return res.getString(R.string.word_concatenation, a, b);
@@ -82,9 +90,10 @@ public enum Lang {
         };
     }
 
-    public static Weekdays weekdays(String timeStr, @StringRes int errorTitle) {
+    @Nullable
+    public static EnumSet<DayOfWeek> weekdays(String timeStr, @StringRes int errorTitle) {
         return switch (-1) {
-            default -> WeekdaysEN_US.instance(timeStr, errorTitle);
+            default -> WeekdaysEN_US.set(timeStr, errorTitle);
         };
     }
 
@@ -116,4 +125,5 @@ public enum Lang {
             default -> DicesEN_US.instance(roll, errorTitle);
         };
     }
+
 }

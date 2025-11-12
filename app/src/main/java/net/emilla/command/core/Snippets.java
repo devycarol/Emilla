@@ -1,5 +1,9 @@
 package net.emilla.command.core;
 
+import static net.emilla.chime.Chime.PEND;
+
+import android.content.Context;
+
 import androidx.annotation.Nullable;
 
 import net.emilla.R;
@@ -10,24 +14,13 @@ import net.emilla.command.Subcommand;
 
 /*internal*/ final class Snippets extends CoreDataCommand {
 
-    public static final String ENTRY = "snippets";
-
-    public static boolean possible() {
-        return true;
-    }
-
     private final SnippetsFragment mSnippetsFragment;
 
     private final ActionMap<SnippetAction> mActionMap;
     private SnippetAction mAction = SnippetAction.GET;
 
-    @Nullable
-    private String mUsedSnippet = null;
-    @Nullable
-    private String mUsedText = null;
-
-    /*internal*/ Snippets(AssistActivity act) {
-        super(act, CoreEntry.SNIPPETS, R.string.data_hint_text);
+    /*internal*/ Snippets(Context ctx) {
+        super(ctx, CoreEntry.SNIPPETS, R.string.data_hint_text);
 
         mSnippetsFragment = SnippetsFragment.newInstance();
 
@@ -35,121 +28,60 @@ import net.emilla.command.Subcommand;
 
         mActionMap = new ActionMap<SnippetAction>(SnippetAction.GET);
 
-        mActionMap.put(this.resources, SnippetAction.PEEK, R.array.subcmd_snippet_peek, true);
-        mActionMap.put(this.resources, SnippetAction.GET, R.array.subcmd_snippet_get, true);
-        mActionMap.put(this.resources, SnippetAction.POP, R.array.subcmd_snippet_pop, true);
-        mActionMap.put(this.resources, SnippetAction.REMOVE, R.array.subcmd_snippet_remove, true);
+        var res = ctx.getResources();
+        mActionMap.put(res, SnippetAction.PEEK, R.array.subcmd_snippet_peek, true);
+        mActionMap.put(res, SnippetAction.GET, R.array.subcmd_snippet_get, true);
+        mActionMap.put(res, SnippetAction.POP, R.array.subcmd_snippet_pop, true);
+        mActionMap.put(res, SnippetAction.REMOVE, R.array.subcmd_snippet_remove, true);
     }
 
     @Override
-    protected void run() {
-        refreshState(SnippetAction.GET);
-        snippet(new Subcommand<SnippetAction>(SnippetAction.GET, null));
+    protected void onInstruct(@Nullable String person) {
+        super.onInstruct(extractAction(person));
     }
 
-    @Override
-    protected void run(String label) {
-        Subcommand<SnippetAction> subcmd = mActionMap.get(label);
-        refreshState(subcmd.action);
-        snippet(subcmd);
-    }
-
-    private void refreshState(SnippetAction action) {
-        if (mAction != action) {
-            mAction = action;
-            mUsedSnippet = null;
-            mUsedText = null;
-            // forget the used snippet
-        } else if (action == SnippetAction.PEEK) {
-            mUsedSnippet = null;
-            mUsedText = null;
-            // forget the used snippet
+    @Nullable
+    private String extractAction(@Nullable String person) {
+        if (person == null) {
+            mAction = SnippetAction.GET;
+            return null;
         }
-    }
 
-    private void snippet(Subcommand<SnippetAction> subcmd) {
-        String label = subcmd.instruction;
-        if (label != null) {
-            String lcLabel = label.toLowerCase();
-            if (mSnippetsFragment.contains(lcLabel)) {
-                if (label.equals(mUsedSnippet)) {
-                    // todo: you could change the submit icon to indicate this behavior. it would
-                    //  require monitoring text changes and updating the icon each time the user
-                    //  types. if the instruction is the already-copied text, set the close icon.
-                    //  otherwise, set/keep the copy icon. you could even query the system clipboard
-                    //  instead for this check, and listen for copy events that change what the
-                    //  behavior & icon should be.
-                    succeed();
-                    return;
-                }
+        Subcommand<SnippetAction> subcmd = mActionMap.get(person);
+        mAction = subcmd.action;
 
-                mUsedSnippet = label;
-                snippet(label, lcLabel, subcmd.action);
-            } else {
-                failMessage(str(R.string.error_no_snippet, label));
-            }
-        } else if (mSnippetsFragment.isEmpty()) {
-            failMessage(R.string.error_no_snippets);
-        } else {
-            mSnippetsFragment.prime(subcmd.action);
-        }
-        // TODO: respect the user's letter case for the labels while retaining case-insensitivity
-    }
-
-    private void snippet(String label, String lcLabel, SnippetAction action) {
-        switch (action) {
-        case PEEK -> mSnippetsFragment.peek(lcLabel);
-        case GET -> mSnippetsFragment.get(lcLabel);
-        case POP -> mSnippetsFragment.pop(label, lcLabel);
-        case REMOVE -> {
-            mSnippetsFragment.remove(label, lcLabel);
-            give(act -> {});
-        }}
-    }
-
-    public void remove(String label, String lcLabel) {
-        mSnippetsFragment.remove(label, lcLabel);
-        give(act -> {});
+        return subcmd.instruction;
     }
 
     @Override
-    protected void runWithData(String text) {
-        if (mSnippetsFragment.isEmpty()) {
-            failMessage(R.string.error_no_snippets);
+    protected void run(AssistActivity act) {
+        act.chime(PEND);
+    }
+
+    @Override
+    protected void run(AssistActivity act, String label) {
+        label = extractAction(label);
+        if (label == null) {
+            run(act);
             return;
         }
 
-        mSnippetsFragment.prime(SnippetAction.ADD);
-    }
-
-    @Override
-    protected void runWithData(String label, String text) {
-        mAction = SnippetAction.ADD;
-
-        if (label.equals(mUsedSnippet) && text.equals(mUsedText)) {
-            // todo: you could change the submit icon to indicate this behavior. it would
-            //  require monitoring text changes and updating the icon each time the user types.
-            //  if the instruction is the already-copied text, set the close icon. otherwise,
-            //  set/keep the copy icon. you could even query the system clipboard instead for
-            //  this check, and listen for copy events that change what the behavior & icon
-            //  should be.
-            succeed();
-            return;
+        switch (mAction) {
+        case PEEK -> mSnippetsFragment.peek(label);
+        case GET -> mSnippetsFragment.copy(label);
+        case POP -> mSnippetsFragment.pop(label);
+        case REMOVE -> mSnippetsFragment.remove(label);
         }
-
-        mSnippetsFragment.tryAdd(label.toLowerCase(), text);
-
-        mUsedSnippet = label;
-        mUsedText = text;
     }
 
     @Override
-    public void clean(AssistActivity act) {
-        super.clean(act);
+    public void runWithData(AssistActivity act, String text) {
+        run(act);
+    }
 
-        mUsedSnippet = null;
-        mUsedText = null;
-        // forget the used snippet
+    @Override
+    public void runWithData(AssistActivity act, String label, String text) {
+        mSnippetsFragment.add(label, text);
     }
 
 }

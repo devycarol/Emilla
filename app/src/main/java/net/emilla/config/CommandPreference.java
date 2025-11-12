@@ -27,7 +27,7 @@ public final class CommandPreference extends EditTextPreference {
     }
 
     /*internal*/ CommandPreference(Context ctx, CoreEntry coreEntry) {
-        this(ctx, null, coreEntry.entry);
+        this(ctx, null, coreEntry.name());
 
         setTitle(coreEntry.name);
         setSummary(coreEntry.summary);
@@ -37,7 +37,7 @@ public final class CommandPreference extends EditTextPreference {
     /*internal*/ CommandPreference(Context ctx, AppEntry appEntry) {
         this(ctx, null, appEntry.entry());
 
-        setTitle(appEntry.label);
+        setTitle(appEntry.displayName);
         setSummary(appEntry.summary());
         setIcon(appEntry.icon(ctx));
     }

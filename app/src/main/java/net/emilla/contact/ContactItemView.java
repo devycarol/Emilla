@@ -42,7 +42,7 @@ public final class ContactItemView extends LinearLayout {
         return true;
     };
 
-    private long mLastTap = 0;
+    private long mLastTap = 0L;
 
     public ContactItemView(Context ctx) {
         super(ctx);

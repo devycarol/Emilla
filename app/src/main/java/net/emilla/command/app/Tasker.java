@@ -1,5 +1,6 @@
 package net.emilla.command.app;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.view.inputmethod.EditorInfo;
@@ -24,11 +25,6 @@ import java.util.TreeSet;
 
     public static final String PKG = TaskerIntent.TASKER_PACKAGE_MARKET;
 
-    @Override
-    public boolean usesData() {
-        return true;
-    }
-
     @Override @StringRes
     public int dataHint() {
         return R.string.data_hint_app_tasker;
@@ -43,72 +39,68 @@ import java.util.TreeSet;
 
     private final ActionMap<Action> mActionMap;
 
-    /*internal*/ Tasker(AssistActivity act, AppEntry appEntry) {
-        super(act, appEntry, EditorInfo.IME_ACTION_NEXT);
+    /*internal*/ Tasker(Context ctx, AppEntry appEntry) {
+        super(ctx, appEntry, EditorInfo.IME_ACTION_NEXT);
 
         mActionMap = new ActionMap<Action>(Action.RUN);
 
-        mActionMap.put(this.resources, Action.RUN, R.array.subcmd_tasker_run, true);
-        mActionMap.put(this.resources, Action.LIST, R.array.subcmd_tasker_list, false);
+        var res = ctx.getResources();
+        mActionMap.put(res, Action.RUN, R.array.subcmd_tasker_run, true);
+        mActionMap.put(res, Action.LIST, R.array.subcmd_tasker_list, false);
         // todo: list with search—when you do, change usesInstruction from false to true.
         // todo: in the far future, you could have a rudimentary UI for creating tasks
     }
 
     @Override
-    protected void run(String task) {
-        trySearchRun(extractAction(task), null);
+    protected void run(AssistActivity act, String task) {
+        trySearchRun(act, extractAction(task), null);
     }
 
     @Override
-    public void execute(String data) {
-        String instruction = instruction();
-        if (instruction != null) {
-            runWithData(instruction, data);
-        } else {
-            runWithData(data);
-        }
+    public void runWithData(AssistActivity act, String params) {
+        trySearchRun(act, "", params);
     }
 
-    private void runWithData(String params) {
-        trySearchRun("", params);
-    }
-
-    private void runWithData(String task, String params) {
-        trySearchRun(extractAction(task), params);
+    @Override
+    public void runWithData(AssistActivity act, String task, String params) {
+        trySearchRun(act, extractAction(task), params);
     }
 
     private String extractAction(String task) {
         return Strings.emptyIfNull(mActionMap.get(task).instruction);
     }
 
-    private void trySearchRun(String task, @Nullable String params) {
-        switch (TaskerIntent.testStatus(this.activity)) {
-        case OK -> searchRun(task, params);
+    private void trySearchRun(AssistActivity act, String task, @Nullable String params) {
+        switch (TaskerIntent.testStatus(act)) {
+        case OK -> searchRun(act, task, params);
         case NOT_ENABLED -> failDialog(
-            R.string.error_tasker_not_enabled,
+            act, R.string.error_tasker_not_enabled,
+
             R.string.dlg_yes_tasker_open,
-            (dlg, which) -> offerApp(this.appEntry.launchIntent(), true)
+            (dlg, which) -> offerApp(act, this.appEntry.launchIntent(), true)
         );
         case NO_ACCESS -> failDialog(
-            R.string.error_tasker_blocked,
+            act, R.string.error_tasker_blocked,
+
             R.string.dlg_yes_tasker_external_access_settings,
-            (dlg, which) -> offerApp(TaskerIntent.getExternalAccessPrefsIntent(), false)
+            (dlg, which) -> offerApp(act, TaskerIntent.getExternalAccessPrefsIntent(), false)
         );
         case NO_PERMISSION -> Permission.TASKER.flow(
-            this.activity,
-            () -> trySearchRun(task, params)
+            act, () -> trySearchRun(act, task, params)
         );
-        case NO_RECEIVER -> failMessage(R.string.error_tasker_no_receiver);
+        case NO_RECEIVER -> failMessage(act, R.string.error_tasker_no_receiver);
         }
     }
 
-    private void searchRun(String task, @Nullable String params) {
-        String[] projection = {COL_TASK_NAME, COL_PROJECT_NAME};
+    private void searchRun(AssistActivity act, String task, @Nullable String params) {
+        var res = act.getResources();
+        var cr = act.getContentResolver();
         var contentUri = Uri.parse("content://net.dinglisch.android.tasker/tasks");
-        Cursor cur = contentResolver().query(contentUri, projection, null, null, null);
+        String[] projection = {COL_TASK_NAME, COL_PROJECT_NAME};
+        Cursor cur = cr.query(contentUri, projection, null, null, null);
 
         if (cur == null) {
-            failMessage(str(R.string.error_tasker_no_tasks, task));
+            failMessage(act, res.getString(R.string.error_tasker_no_tasks, task));
             return;
         }
 
@@ -129,7 +121,7 @@ import java.util.TreeSet;
         cur.close();
 
         if (tasks.isEmpty()) {
-            failMessage(str(R.string.error_tasker_no_tasks, task));
+            failMessage(act, res.getString(R.string.error_tasker_no_tasks, task));
             return;
         }
 
@@ -137,7 +129,7 @@ import java.util.TreeSet;
         if (size == 1) {
             String taskName = tasks.first().taskName;
             if (taskName.equalsIgnoreCase(task)) {
-                runTask(taskName, params);
+                runTask(act, taskName, params);
                 return;
             }
         }
@@ -151,12 +143,19 @@ import java.util.TreeSet;
             ++i;
         }
 
-        offerDialog(Dialogs.list(this.activity, R.string.dialog_tasker_select_task, taskLabels,
-                                 (dlg, which) -> runTask(taskNames[which], params)));
+        offerDialog(
+            act,
+            Dialogs.list(
+                act, R.string.dialog_tasker_select_task,
+
+                taskLabels,
+                (dlg, which) -> runTask(act, taskNames[which], params)
+            )
+        );
         // todo: see if it's possible to display task/project icons
     }
 
-    private Comparator<Task> taskComparator(String lcTask) {
+    private static Comparator<Task> taskComparator(String lcTask) {
         return (a, b) -> {
             boolean aStarts = a.taskName.toLowerCase().startsWith(lcTask);
             boolean bStarts = b.taskName.toLowerCase().startsWith(lcTask);
@@ -175,16 +174,17 @@ import java.util.TreeSet;
         public String toString() {
             return taskName + " | " + projectName;
         }
+
     }
 
-    private void runTask(String taskName, @Nullable String params) {
+    private static void runTask(AssistActivity act, String taskName, @Nullable String params) {
         var intent = new TaskerIntent(taskName);
         if (params != null) {
             for (String param : new Lines(params, false)) {
                 intent.addParameter(param);
             }
         }
-        giveBroadcast(intent);
+        giveBroadcast(act, intent);
     }
 
 }

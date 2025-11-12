@@ -2,12 +2,8 @@ package net.emilla.lang
 
 import net.emilla.lang.LatinToken.Letter
 import net.emilla.lang.LatinToken.Word
+import net.emilla.util.Chars
 import net.emilla.util.indexOfNonSpace
-import net.emilla.util.isDigit
-import net.emilla.util.isNumberChar
-import net.emilla.util.isSignOrDigit
-import net.emilla.util.isSignOrNumberChar
-import net.emilla.util.notSpace
 import net.emilla.util.substring
 
 sealed interface LatinToken {
@@ -58,7 +54,7 @@ class LatinTokens(s: String) {
     }
 
     fun nextToken(): String {
-        val start = scan(Char::notSpace)
+        val start = scan { !Character.isWhitespace(it) }
         val s = chars.substring(start, pos)
 
         advanceImmediate()
@@ -74,7 +70,7 @@ class LatinTokens(s: String) {
     }
 
     fun nextInteger(): Long {
-        val start = scan(Char::isSignOrDigit, Char::isDigit)
+        val start = scan(Chars::isSignOrDigit, Char::isDigit)
         val s = chars.substring(start, pos)
 
         advance()
@@ -86,7 +82,7 @@ class LatinTokens(s: String) {
     }
 
     fun nextNumber(): Double {
-        val start = scan(Char::isSignOrNumberChar, Char::isNumberChar)
+        val start = scan(Chars::isSignOrNumberChar, Chars::isNumberChar)
         val s = chars.substring(start, pos)
 
         advance()

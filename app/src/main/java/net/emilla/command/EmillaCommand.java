@@ -6,17 +6,14 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.TimePickerDialog.OnTimeSetListener;
-import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 
-import androidx.annotation.ArrayRes;
 import androidx.annotation.Nullable;
-import androidx.annotation.PluralsRes;
 import androidx.annotation.RequiresPermission;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
@@ -25,16 +22,17 @@ import net.emilla.R;
 import net.emilla.action.Gadget;
 import net.emilla.action.InstructyGadget;
 import net.emilla.activity.AssistActivity;
-import net.emilla.chime.Chime;
+import net.emilla.command.app.AppCommand;
 import net.emilla.command.app.AppEntry;
+import net.emilla.command.app.AppYielder;
 import net.emilla.command.core.CoreEntry;
+import net.emilla.config.Aliases;
 import net.emilla.config.SettingVals;
 import net.emilla.lang.Lang;
 import net.emilla.ping.PingChannel;
 import net.emilla.run.AppGift;
 import net.emilla.run.AppSuccess;
 import net.emilla.run.BroadcastGift;
-import net.emilla.run.CommandRun;
 import net.emilla.run.DialogRun;
 import net.emilla.run.MessageFailure;
 import net.emilla.run.PingGift;
@@ -42,6 +40,7 @@ import net.emilla.run.TextGift;
 import net.emilla.run.TimePickerOffering;
 import net.emilla.util.ArrayLoader;
 import net.emilla.util.Dialogs;
+import net.emilla.util.Patterns;
 
 import java.util.Objects;
 import java.util.Set;
@@ -54,10 +53,12 @@ public abstract class EmillaCommand {
         PackageManager pm,
         Iterable<AppEntry> appList
     ) {
+        Aliases.reformatCoresIfNecessary(prefs);
+
         var map = new CommandMap(SettingVals.defaultCommand(prefs));
 
         for (var coreEntry : CoreEntry.values()) {
-            if (!coreEntry.enabled(pm, prefs)) {
+            if (!coreEntry.isEnabled(pm, prefs)) {
                 continue;
             }
 
@@ -75,15 +76,21 @@ public abstract class EmillaCommand {
         }
 
         for (AppEntry app : appList) {
-            if (app.isEnabled(prefs)) {
-                // todo: edge case where a mapped app is uninstalled during the activity lifecycle
-                map.put(app.label, app);
+            if (!app.isEnabled(prefs)) {
+                continue;
+            }
 
-                Set<String> aliases = app.aliases(prefs, res);
-                if (aliases == null) continue;
-                for (String alias : aliases) {
-                    map.put(alias, app);
-                }
+            // todo: edge case where a mapped app is uninstalled during the activity lifecycle
+            AppYielder yielder = app.yielder();
+            map.put(app.displayName, yielder);
+
+            Set<String> aliases = app.aliases(prefs, res);
+            if (aliases == null) {
+                continue;
+            }
+
+            for (String alias : aliases) {
+                map.put(alias, yielder);
             }
         }
 
@@ -94,7 +101,7 @@ public abstract class EmillaCommand {
         //  reciprocally used. that's good for now since that'd be infinite recursion, but this
         //  should be borne in mind when creating a more robust custom command system.
         for (String customEntry : customs) {
-            String[] split = customEntry.split(", *");
+            String[] split = Patterns.TRIMMING_CSV.split(customEntry);
             int last = split.length - 1;
             for (int i = 0; i < last; ++i) {
                 map.putCustom(split[i], split[last]);
@@ -104,10 +111,9 @@ public abstract class EmillaCommand {
         return map;
     }
 
-    protected final AssistActivity activity;
-    protected final Resources resources;
-    private final Params params;
+    private final Params mParams;
 
+    public final String name;
     @StringRes
     public final int summary;
     @StringRes
@@ -116,7 +122,7 @@ public abstract class EmillaCommand {
     /// are GO, SEARCH, SEND, DONE, and NEXT. GO is usually a forward arrow, SEARCH is usually a
     /// magnifying glass, SEND is usually a paper airplane, and DONE is usually a checkmark. NEXT is
     /// the 'tab' function and should be used when the data field is available.
-    protected final int imeAction;
+    private final int mImeAction;
     // todo: you should be able to long-click the enter key in the command or data field to
     //  submit the command, using an appropriate action icon.
     // requires changing the input method code directly
@@ -125,7 +131,6 @@ public abstract class EmillaCommand {
     @Nullable
     private String mInstruction = null;
     private boolean mActive = false;
-    private Drawable mIcon = null;
 
     @Nullable
     private Gadget[] mGadgets = null;
@@ -133,27 +138,28 @@ public abstract class EmillaCommand {
     private InstructyGadget[] mInstructyGadgets = null;
 
     protected EmillaCommand(
-        AssistActivity act,
+        Context ctx,
         Params params,
         @StringRes int summary,
         @StringRes int manual,
         int imeAction
     ) {
-        this.activity = act;
-        this.resources = act.getResources();
+        mParams = params;
 
-        this.params = params;
+        var res = ctx.getResources();
+
+        this.name = params.name(res);
         this.summary = summary;
         this.manual = manual;
-        this.imeAction = imeAction;
+        this.mImeAction = imeAction;
     }
 
-    protected EmillaCommand(AssistActivity act, CoreEntry coreEntry, int imeAction) {
-        this(act, coreEntry, coreEntry.summary, coreEntry.manual, imeAction);
+    protected EmillaCommand(Context ctx, CoreEntry coreEntry, int imeAction) {
+        this(ctx, coreEntry, coreEntry.summary, coreEntry.manual, imeAction);
     }
 
-    protected EmillaCommand(AssistActivity act, AppEntry appEntry, int imeAction) {
-        this(act, appEntry, appEntry.summary(), appEntry.actions.manual(), imeAction);
+    protected EmillaCommand(Context ctx, AppEntry appEntry, int imeAction) {
+        this(ctx, appEntry, appEntry.summary(), appEntry.actions.manual(), imeAction);
     }
 
     /*internal*/ final void instruct(@Nullable String instruction) {
@@ -165,35 +171,26 @@ public abstract class EmillaCommand {
         }
     }
 
-    protected final void setInstruction(@Nullable String instruction) {
-        mInstruction = instruction;
-    }
-
-    @Deprecated
-    protected final void instructAppend(String data) {
-        if (mInstruction == null) {
-            mInstruction = data;
-        } else {
-            mInstruction += '\n' + data;
-        }
-    }
-
     public final void decorate(AssistActivity act, Resources res, boolean setIcon, boolean isDefault) {
-        CharSequence title = isDefault
-            ? Lang.colonConcat(res, R.string.command_default, sentenceName())
-            : title();
+        CharSequence title;
+        if (isDefault) {
+            String sentenceName = mParams.isProperNoun() ? this.name : this.name.toLowerCase();
+            title = Lang.colonConcat(res, R.string.command_default, sentenceName);
+        } else {
+            title = mParams.title(res);
+        }
         act.updateTitle(title);
         act.updateDataHint();
-        act.setImeAction(this.imeAction);
+        act.setImeAction(mImeAction);
         if (setIcon) {
-            act.setSubmitIcon(icon(), usesAppIcon());
+            act.setSubmitIcon(mParams.icon(act), this instanceof AppCommand);
         }
     }
 
-    public final void init(AssistActivity act) {
+    public final void load(AssistActivity act) {
         if (mGadgets != null) {
             for (Gadget gadget : mGadgets) {
-                gadget.init(act);
+                gadget.load(act);
             }
 
             onInstruct(mInstruction);
@@ -202,10 +199,10 @@ public abstract class EmillaCommand {
         mActive = true;
     }
 
-    public /*open*/ void clean(AssistActivity act) {
+    public /*open*/ void unload(AssistActivity act) {
         if (mGadgets != null) {
             for (Gadget gadget : mGadgets) {
-                gadget.cleanup(act);
+                gadget.unload(act);
             }
         }
 
@@ -251,52 +248,12 @@ public abstract class EmillaCommand {
         return mInstruction;
     }
 
-    protected final String str(@StringRes int id) {
-        return this.resources.getString(id);
-    }
-
-    protected final String str(@StringRes int id, Object ... formatArgs) {
-        return this.resources.getString(id, formatArgs);
-    }
-
-    protected final String quantityString(@PluralsRes int id, int quantity) {
-        return this.resources.getQuantityString(id, quantity, quantity);
-    }
-
-    protected final String[] stringArray(@ArrayRes int id) {
-        return this.resources.getStringArray(id);
-    }
-
-    protected final SharedPreferences prefs() {
-        return this.activity.prefs();
-    }
-
-    protected final PackageManager pm() {
-        return this.activity.getPackageManager();
-    }
-
-    protected final ContentResolver contentResolver() {
-        return this.activity.getContentResolver();
-    }
-
-    public final void execute() {
+    public final void execute(AssistActivity act) {
         if (mInstruction != null) {
-            run(mInstruction);
+            run(act, mInstruction);
         } else {
-            run();
+            run(act);
         }
-    }
-
-    /// Show a little message.
-    ///
-    /// @param text is shown as a toast notification at the bottom of the screen. Don't hard-code
-    /// text.
-    protected final void toast(CharSequence text) {
-        this.activity.toast(text);
-    }
-
-    protected final void chime(Chime chime) {
-        this.activity.chime(chime);
     }
 
     /*======================================================================================*
@@ -304,149 +261,85 @@ public abstract class EmillaCommand {
      *======================================================================================*/
 
     /// Simply close the assistant :)
-    protected final void succeed() {
-        this.activity.succeed(Activity::finishAndRemoveTask);
-    }
-
-    /// Completes the work that the user wants from the assistant and closes it. Typically entails
-    /// opening another app window, handing work to another program.
-    ///
-    /// @param success finishes the work of the assistant.
-    protected final void succeed(CommandRun success) {
-        this.activity.succeed(success);
+    protected static void succeed(AssistActivity act) {
+        act.succeed(Activity::finishAndRemoveTask);
     }
 
     /// Tells the AssistActivity to close and start the `intent` activity. The succeeding activity
     /// must never be excluded from the recents.
     ///
     /// @param intent is launched after the assistant closes. It's very important that this is
-    /// resolvable, else an ANF exception will occur.
-    protected final void appSucceed(Intent intent) {
-        succeed(new AppSuccess(intent));
+    ///               resolvable, else an ANF exception will occur.
+    protected static void appSucceed(AssistActivity act, Intent intent) {
+        act.succeed(new AppSuccess(intent));
     }
 
-    /// Gives the user a gadget to play with. The assistant is done with its work for now and the
-    /// user can use the gadget for whatever they need it for.
-    ///
-    /// @param gift gadget for the user.
-    protected final void give(CommandRun gift) {
-        this.activity.give(gift);
+    protected final void giveText(AssistActivity act, @StringRes int msg) {
+        act.give(new TextGift(act, this.name, msg));
     }
 
-    protected final void giveText(@StringRes int msg) {
-        give(new TextGift(this.activity, name(), msg));
-    }
-
-    protected final void giveText(CharSequence msg) {
-        give(new TextGift(this.activity, name(), msg));
+    protected final void giveText(AssistActivity act, CharSequence msg) {
+        act.give(new TextGift(act, this.name, msg));
     }
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
-    protected final void givePing(Notification ping, PingChannel channel) {
-        give(new PingGift(ping, channel));
+    protected static void givePing(AssistActivity act, Notification ping, PingChannel channel) {
+        act.give(new PingGift(ping, channel));
     }
 
-    protected final void giveBroadcast(Intent intent) {
-        give(new BroadcastGift(intent));
+    protected static void giveBroadcast(AssistActivity act, Intent intent) {
+        act.give(new BroadcastGift(intent));
     }
 
-    protected final void giveApp(Intent intent) {
-        give(new AppGift(intent));
+    protected static void giveApp(AssistActivity act, Intent intent) {
+        act.give(new AppGift(intent));
     }
 
-    /// Offers the user a tool to complete their command. Successful use of the tool should lead to
-    /// a prompt 'success', whereas canceled use should lead to a full reset of the command and UI
-    /// to their pre-offer state.
-    ///
-    /// @param offering tool for the user.
-    protected final void offer(CommandRun offering) {
-        this.activity.offer(offering);
+    protected static void offerDialog(AssistActivity act, AlertDialog.Builder builder) {
+        act.offer(new DialogRun(builder));
     }
 
-    protected final void offerDialog(AlertDialog.Builder builder) {
-        offer(new DialogRun(builder));
+    protected static void offerTimePicker(AssistActivity act, OnTimeSetListener timeSet) {
+        act.offer(new TimePickerOffering(timeSet));
     }
 
-    protected final void offerTimePicker(OnTimeSetListener timeSet) {
-        offer(new TimePickerOffering(timeSet));
-    }
-
-    protected final void offerApp(Intent intent, boolean newTask) {
+    protected static void offerApp(AssistActivity act, Intent intent, boolean newTask) {
         if (newTask) {
             intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
         } else {
-            this.activity.suppressBackCancellation();
+            act.suppressBackCancellation();
         }
 
-        this.activity.startActivity(intent);
-    }
-
-    /// Stops the command in its tracks because something has gone wrong. Offers the user a tool to
-    /// help fix the problem.
-    ///
-    /// @param failure tool for the user to resolve the issue.
-    protected final void fail(CommandRun failure) {
-        this.activity.fail(failure);
+        act.startActivity(intent);
     }
 
     protected final void failDialog(
+        AssistActivity act,
         @StringRes int msg,
         @StringRes int yesLabel,
         DialogInterface.OnClickListener yesClick
     ) {
-        fail(new DialogRun(Dialogs.dual(this.activity, name(), msg, yesLabel, yesClick)));
+        act.fail(new DialogRun(Dialogs.dual(act, this.name, msg, yesLabel, yesClick)));
     }
 
-    protected final void failMessage(@StringRes int msg) {
-        fail(new MessageFailure(this.activity, name(), msg));
+    protected final void failMessage(AssistActivity act, @StringRes int msg) {
+        act.fail(new MessageFailure(act, this.name, msg));
     }
 
-    protected final void failMessage(CharSequence msg) {
-        fail(new MessageFailure(this.activity, name(), msg));
+    protected final void failMessage(AssistActivity act, CharSequence msg) {
+        act.fail(new MessageFailure(act, this.name, msg));
     }
 
     /*==========================*
      * End of finisher methods. *
      *==========================*/
 
-    public /*open*/ boolean usesData() {
-        return false;
-    }
-
-    public final String name() {
-        return params.name(this.resources);
-    }
-
-    @Deprecated
-    protected abstract String dupeLabel(); // Todo: replace with icons
-
-    protected final CharSequence sentenceName() {
-        return shouldLowercase() ? name().toLowerCase() : name();
-    }
-
-    /// Whether the command should be lowercased mid-sentence.
-    ///
-    /// @return true if the command is a common noun, false if the command is a proper noun.
-    protected abstract boolean shouldLowercase();
-
-    protected final CharSequence title() {
-        return params.title(this.resources);
-    }
-
-    protected final Drawable icon() {
-        return mIcon == null ? mIcon = params.icon(this.activity) : mIcon;
-    }
-
-    /// Whether the command's icon is an app icon.
-    ///
-    /// @return true if the command uses an app's icon, false if it just uses clip art.
-    protected abstract boolean usesAppIcon();
-
     /// Runs the command.
-    protected abstract void run();
+    protected abstract void run(AssistActivity act);
     /// Runs the command with instruction.
+    ///
     /// @param instruction is provided after in the command field after the command's name. It's
     /// always space-trimmed and should remain as such.
-    protected abstract void run(String instruction);
+    protected abstract void run(AssistActivity act, String instruction);
 
 }

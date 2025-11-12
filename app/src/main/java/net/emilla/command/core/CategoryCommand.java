@@ -20,7 +20,7 @@ import net.emilla.util.Intents;
     /*internal*/ CategoryCommand(AssistActivity act, CoreEntry coreEntry, int imeAction) {
         super(act, coreEntry, imeAction);
 
-        mAppList = new AppList(pm(), makeFilter());
+        mAppList = new AppList(act.getPackageManager(), makeFilter());
         mChooser = mAppList.size() > 1
             ? Dialogs.appLaunches(act, mAppList)
             : null;
@@ -29,11 +29,11 @@ import net.emilla.util.Intents;
     protected abstract Intent makeFilter();
 
     @Override
-    protected final void run() {
+    protected final void run(AssistActivity act) {
         switch (mAppList.size()) {
         case 0 -> throw badCommand(R.string.error_no_app);
-        case 1 -> appSucceed(Intents.launchApp(mAppList.get(0)));
-        default -> offerDialog(mChooser);
+        case 1 -> appSucceed(act, Intents.launchApp(mAppList.get(0)));
+        default -> offerDialog(act, mChooser);
         // todo: allow to select a default app, ensuring that the preference is cleared if ever the
         //  default is no longer installed or a new candidate is installed
         // interestingly, Tasker is included if you remove CATEGORY_LAUNCHER from the intent. i

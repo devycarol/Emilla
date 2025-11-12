@@ -34,12 +34,12 @@ public interface QuickAction extends Gadget {
     void perform();
 
     @Override @CallSuper
-    default void init(AssistActivity act) {
+    default void load(AssistActivity act) {
         act.addAction(this);
     }
 
     @Override @CallSuper
-    default void cleanup(AssistActivity act) {
+    default void unload(AssistActivity act) {
         act.removeAction(id());
     }
 

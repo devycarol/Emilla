@@ -10,29 +10,23 @@ import net.emilla.util.Intents;
 
 /*internal*/ final class Launch extends OpenCommand {
 
-    public static final String ENTRY = "launch";
-
-    public static boolean possible() {
-        return true;
-    }
-
     /*internal*/ Launch(AssistActivity act) {
         super(act, CoreEntry.LAUNCH, EditorInfo.IME_ACTION_GO);
     }
 
     @Override
-    protected void run() {
-        offerDialog(this.appChooser);
+    protected void run(AssistActivity act) {
+        offerDialog(act, this.appChooser);
     }
 
     @Override
-    protected void run(String app) {
-        appSearchRun(app, Intents::launchApp);
+    protected void run(AssistActivity act, String app) {
+        appSearchRun(act, app, Intents::launchApp);
     }
 
     @Override
-    protected AlertDialog.Builder makeChooser() {
-        return Dialogs.appLaunches(this.activity);
+    protected AlertDialog.Builder makeChooser(AssistActivity act) {
+        return Dialogs.appLaunches(act);
     }
 
 }

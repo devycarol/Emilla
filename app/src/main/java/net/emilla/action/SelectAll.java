@@ -52,7 +52,7 @@ public final class SelectAll implements LabeledQuickAction {
                 box.selectAll();
                 mActivity.chime(ACT);
             } else {
-                box.setSelection(len, len);
+                box.setSelection(len);
                 mActivity.chime(RESUME);
             }
         } else {

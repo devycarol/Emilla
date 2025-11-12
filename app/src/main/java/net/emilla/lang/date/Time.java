@@ -1,24 +1,15 @@
 package net.emilla.lang.date;
 
-import static java.util.Calendar.AM;
-import static java.util.Calendar.DAY_OF_MONTH;
-import static java.util.Calendar.HOUR_OF_DAY;
-import static java.util.Calendar.MILLISECOND;
-import static java.util.Calendar.MINUTE;
-import static java.util.Calendar.MONTH;
-import static java.util.Calendar.PM;
-import static java.util.Calendar.SECOND;
-import static java.util.Calendar.YEAR;
-import static java.util.regex.Pattern.CASE_INSENSITIVE;
-
-import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import net.emilla.R;
-import net.emilla.activity.EmillaActivity;
 import net.emilla.exception.EmillaException;
+import net.emilla.util.Strings;
 
-import java.util.Calendar;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Month;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,76 +29,96 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
     private static final String NOV = "nov(ember)?";
     private static final String DEC = "dec(ember)?";
 
-    private static Pattern monthRegex() {
-        return Pattern.compile(
-            String.format("(?i)(%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s)",
-                          JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC)
-        );
-    }
+    private static final String TOMORROW = "tomorrow";
 
-    private static Pattern dayRegex() {
-        return Pattern.compile("(^| +)\\d?\\d( +|$)");
-    }
+    public static final Pattern REGEX_AM = Pattern.compile("\\d *A", Pattern.CASE_INSENSITIVE);
+    public static final Pattern REGEX_PM = Pattern.compile("\\d *P", Pattern.CASE_INSENSITIVE);
+    private static final Pattern MERIDIEM = Pattern.compile("\\d *[AP]", Pattern.CASE_INSENSITIVE);
 
-    private static Pattern yearRegex() {
-        return Pattern.compile("(\\d\\d|')\\d\\d");
-    }
+    private static final Pattern DURATION_SPLITTER = Pattern.compile(" *: *| +");
 
-    private static boolean containsRgxIgnoreCase(String s, String rgx) {
-        return Pattern.compile(rgx, CASE_INSENSITIVE).matcher(s).find();
-    }
+    private static final Pattern DURATION_UNTIL = Pattern.compile(
+        "(until|t(ill?|o)) .*",
+        Pattern.CASE_INSENSITIVE
+    );
+    private static final Pattern HOURS = Pattern.compile(
+        "\\d*\\.?\\d+ *h((ou)?rs?)?",
+        Pattern.CASE_INSENSITIVE
+    );
+    private static final Pattern MINUTES = Pattern.compile(
+        "\\d*\\.?\\d+ *m(in(ute)?s?)?",
+        Pattern.CASE_INSENSITIVE
+    );
+    private static final Pattern SECONDS = Pattern.compile(
+        "\\d*\\.?\\d+ *s(ec(ond)?s?)?",
+        Pattern.CASE_INSENSITIVE
+    );
+
+    private static final Pattern REGEX_MONTH = Pattern.compile(
+        String.format(
+            "(%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s)",
+            JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC
+        ),
+        Pattern.CASE_INSENSITIVE
+    );
+    private static final Pattern REGEX_DAY = Pattern.compile("(^| +)\\d?\\d( +|$)");
+    private static final Pattern REGEX_YEAR = Pattern.compile("(\\d\\d|')\\d\\d");
+
+    private static final Pattern DATE_TIME_SPLITTER = Pattern.compile(
+        " *@ *|(^| +)(at|from) +",
+        Pattern.CASE_INSENSITIVE
+    );
+    private static final Pattern TIME_SPAN_SPLITTER = Pattern.compile(
+        " *(-|t(o|ill?)|until) *",
+        Pattern.CASE_INSENSITIVE
+    );
+    private static final Pattern SPACE_TOMORROW = Pattern.compile(
+        " *" + TOMORROW,
+        Pattern.CASE_INSENSITIVE
+    );
 
     private static int[] timeUnits(String time, @StringRes int errorTitle) {
-        time = time.replaceAll("\\D", "");
-        if (!time.matches("\\d{1,6}")) {
+        String timeDigits = Strings.stripNonDigits(time);
+        if (!Strings.isOneToNDigits(timeDigits, 6)) {
             throw new EmillaException(errorTitle, R.string.error_invalid_time);
         }
 
         int h = 0;
         int m = 0;
         int s = 0;
-        int len = time.length();
+        int len = timeDigits.length();
         switch ((len + 1) / 2) {
         case 1 -> {
-            h = Integer.parseInt(time);
+            h = Integer.parseInt(timeDigits);
         }
         case 2 -> {
-            h = Integer.parseInt(time.substring(0, len - 2));
-            m = Integer.parseInt(time.substring(len - 2));
+            h = Integer.parseInt(timeDigits.substring(0, len - 2));
+            m = Integer.parseInt(timeDigits.substring(len - 2));
         }
         case 3 -> {
-            h = Integer.parseInt(time.substring(0, len - 4));
-            m = Integer.parseInt(time.substring(len - 4, len - 2));
-            s = Integer.parseInt(time.substring(len - 2));
+            h = Integer.parseInt(timeDigits.substring(0, len - 4));
+            m = Integer.parseInt(timeDigits.substring(len - 4, len - 2));
+            s = Integer.parseInt(timeDigits.substring(len - 2));
         }}
 
         return new int[]{h, m, s};
     }
 
-    private static int[] parseTime(
-        String time,
-        @Nullable EmillaActivity act, /*todo jesus christ*/
-        @StringRes int errorTitle
-    ) {
-        int meridiem;
-        if (time.matches("(?i).*\\d *A.*")) meridiem = AM;
-        else if (time.matches("(?i).*\\d *P.*")) meridiem = PM;
-        else meridiem = -1;
+    private static int[] parseTime(String time, @StringRes int errorTitle) {
+        var meridiem
+            = REGEX_AM.matcher(time).find() ? Meridiem.AM
+            : REGEX_PM.matcher(time).find() ? Meridiem.PM
+            : Meridiem.UNSPECIFIED;
 
         int[] units = timeUnits(time, errorTitle);
         int h = units[0];
         int m = units[1];
         int s = units[2];
 
-        if (meridiem == -1) {
-            if (act != null) {
-                if (1 <= h && h <= 11) act.toast("Warning! Time set for AM.");
-                else if (h == 12) act.toast("Warning! Time set for PM.");
-            }
-        } else {
+        if (meridiem != Meridiem.UNSPECIFIED) {
             if (h < 1 || 12 < h) throw new EmillaException(errorTitle, R.string.error_invalid_time);
             if (h == 12) h = 0;
-            if (meridiem == PM) h += 12;
+            if (meridiem == Meridiem.PM) h += 12;
         }
 
         if (h > 23 || Math.max(m, s) > 59) {
@@ -118,38 +129,38 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
     }
 
     private static Duration parseDurationUntil(String until, @StringRes int errorTitle) {
-        int[] endUnits = parseTime(until, null, errorTitle);
+        int[] endUnits = parseTime(until, errorTitle);
         int endHour = endUnits[0];
-        int endMin = endUnits[1];
-        int endSec = endUnits[2];
+        int endMinute = endUnits[1];
+        int endSecond = endUnits[2];
 
-        var cal = Calendar.getInstance();
-        int curHour = cal.get(HOUR_OF_DAY);
-        int curMin = cal.get(MINUTE);
-        int curSec = cal.get(SECOND);
+        var timeNow = LocalTime.now();
+        int hour24Now = timeNow.getHour();
+        int minuteNow = timeNow.getMinute();
+        int secondNow = timeNow.getSecond();
 
         int h = 0;
         int m = 0;
         int s = 0;
 
-        s = endSec - curSec;
+        s = endSecond - secondNow;
         if (s < 0) {
             s += 60;
             --m;
         }
 
-        m += endMin - curMin;
+        m += endMinute - minuteNow;
         if (m < 0) {
             m += 60;
             --h;
         }
 
-        h += endHour - curHour;
+        h += endHour - hour24Now;
         if (h < 0) {
             h += 24;
         }
 
-        if (!containsRgxIgnoreCase(until, "\\d *[AP]")) {
+        if (!MERIDIEM.matcher(until).find()) {
             if (h > 12 || h == 12 && Math.max(m, s) > 0) {
                 h -= 12;
             }
@@ -159,8 +170,8 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         // we subtract 1 to give an extra second of leeway
     }
 
-    private static Duration splitDurationString (String dur) {
-        String[] units = dur.split(" *: *| +");
+    private static Duration splitDurationString(String dur) {
+        String[] units = DURATION_SPLITTER.split(dur);
 
         double h = 0.0;
         double m = 0.0;
@@ -185,25 +196,21 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
 
     public static Duration parseDuration(String dur, @StringRes int errorTitle) {
         // TODO: handle 24h time properly
-        if (dur.matches("(until|t(ill?|o)) .*")) {
+        if (DURATION_UNTIL.matcher(dur).find()) {
             return parseDurationUntil(dur, errorTitle);
         }
 
         var timeUnits = new double[3];
-        String[] patterns = {
-            "\\d*\\.?\\d+ *h((ou)?rs?)?",
-            "\\d*\\.?\\d+ *m(in(ute)?s?)?",
-            "\\d*\\.?\\d+ *s(ec(ond)?s?)?"
-        };
+        Pattern[] patterns = {HOURS, MINUTES, SECONDS};
 
         boolean hit = false;
         boolean notEmpty = true;
         for (int i = 0; i < 3 && notEmpty; ++i) {
-            String rgx = patterns[i];
-            if (containsRgxIgnoreCase(dur, rgx)) {
+            Pattern pattern = patterns[i];
+            if (pattern.matcher(dur).find()) {
                 hit = true;
 
-                String[] withoutHours = dur.split(rgx);
+                String[] withoutHours = pattern.split(dur);
                 if (withoutHours.length > 2) {
                     throw new EmillaException(errorTitle, R.string.error_invalid_duration);
                 }
@@ -219,7 +226,7 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
                 int start = before.length();
                 int end = dur.length() - after.length();
 
-                timeUnits[i] = Double.parseDouble(dur.substring(start, end).replaceAll("[^\\d.]", ""));
+                timeUnits[i] = Double.parseDouble(Strings.stripNonNumbers(dur.substring(start, end)));
                 dur = (before + after).trim();
 
                 notEmpty = !dur.isEmpty();
@@ -240,85 +247,108 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         return splitDurationString(dur);
     }
 
-    private static int parseMonth(String month) {
-        month = month.substring(0, 3).toLowerCase();
-
-        return switch (month) {
-            case "jan" -> Calendar.JANUARY;
-            case "feb" -> Calendar.FEBRUARY;
-            case "mar" -> Calendar.MARCH;
-            case "apr" -> Calendar.APRIL;
-            case "may" -> Calendar.MAY;
-            case "jun" -> Calendar.JUNE;
-            case "jul" -> Calendar.JULY;
-            case "aug" -> Calendar.AUGUST;
-            case "sep" -> Calendar.SEPTEMBER;
-            case "oct" -> Calendar.OCTOBER;
-            case "nov" -> Calendar.NOVEMBER;
-            case "dec" -> Calendar.DECEMBER;
-            default -> -1;
+    private static Month parseMonth(String month) {
+        return switch (month.substring(0, 3).toLowerCase()) {
+            case "jan" -> Month.JANUARY;
+            case "feb" -> Month.FEBRUARY;
+            case "mar" -> Month.MARCH;
+            case "apr" -> Month.APRIL;
+            case "may" -> Month.MAY;
+            case "jun" -> Month.JUNE;
+            case "jul" -> Month.JULY;
+            case "aug" -> Month.AUGUST;
+            case "sep" -> Month.SEPTEMBER;
+            case "oct" -> Month.OCTOBER;
+            case "nov" -> Month.NOVEMBER;
+            case "dec" -> Month.DECEMBER;
+            default -> throw new IllegalArgumentException("Invalid month: " + month);
         };
     }
 
-    private static Calendar parseDate(String s, @StringRes int errorTitle) {
+    private static LocalDateTime parseDateToNextHalfHour(String s, @StringRes int errorTitle) {
         // TODO more formats but dear god locales ughhhhh
-        var cal = Calendar.getInstance();
-        cal.set(MILLISECOND, 0);
-        cal.set(SECOND, 0);
-        cal.add(MINUTE, -cal.get(MINUTE) % 30 + 30);
+        var timeNow = LocalTime.now();
+        var minutesToNextHalfHour = (long) -timeNow.getMinute() % 30L + 30L;
+        LocalTime nextHalfHour = timeNow.plusMinutes(minutesToNextHalfHour)
+            .withSecond(0)
+            .withNano(0);
 
-        if (s.equalsIgnoreCase("tomorrow")) {
-            cal.add(DAY_OF_MONTH, 1);
-            return cal;
+        var dateNow = LocalDate.now();
+        var date = dateNow;
+
+        if (s.equalsIgnoreCase(TOMORROW)) {
+            LocalDate tomorrow = date.plusDays(1L);
+            return LocalDateTime.of(tomorrow, nextHalfHour);
         }
 
-        Matcher m = monthRegex().matcher(s);
-        if (m.find()) {
-            cal.set(MONTH, parseMonth(m.group()));
-            if (m.find()) throw new EmillaException(errorTitle, R.string.error_excess_time_units);
+        Matcher monthMatcher = REGEX_MONTH.matcher(s);
+        if (monthMatcher.find()) {
+            Month month = parseMonth(monthMatcher.group());
+            date = date.withMonth(month.getValue());
+            if (monthMatcher.find()) {
+                throw new EmillaException(errorTitle, R.string.error_excess_time_units);
+            }
         }
 
-        m = dayRegex().matcher(s);
-        if (m.find()) {
-            cal.set(DAY_OF_MONTH, Integer.parseInt(m.group().trim()));
-            if (m.find()) throw new EmillaException(errorTitle, R.string.error_excess_time_units);
+        Matcher dayMatcher = REGEX_DAY.matcher(s);
+        if (dayMatcher.find()) {
+            // todo: this shouldn't work for just a day-number
+            int dayOfMonth = Integer.parseInt(dayMatcher.group().trim());
+            date = date.withDayOfMonth(dayOfMonth);
+            if (dayMatcher.find()) {
+                throw new EmillaException(errorTitle, R.string.error_excess_time_units);
+            }
         }
 
-        m = yearRegex().matcher(s);
-        if (m.find()) {
-            String y = m.group();
-            if (m.find()) throw new EmillaException(errorTitle, R.string.error_excess_time_units);
+        Matcher yearMatcher = REGEX_YEAR.matcher(s);
+        if (yearMatcher.find()) {
+            String yearString = yearMatcher.group();
+            if (yearMatcher.find()) {
+                throw new EmillaException(errorTitle, R.string.error_excess_time_units);
+            }
 
-            int tickIndex = y.indexOf('\'');
-            if (tickIndex == -1) cal.set(YEAR, Integer.parseInt(y));
-            else cal.set(YEAR, cal.get(YEAR) / 100 * 100 + Integer.parseInt(y.substring(tickIndex + 1)));
+            int tickIndex = yearString.indexOf('\'');
+            if (tickIndex >= 0) {
+                int startOfCentury = date.getYear() / 100 * 100;
+                int yearOfCentury = Integer.parseInt(yearString.substring(tickIndex + 1));
+                date = date.withYear(startOfCentury + yearOfCentury);
+            } else {
+                int year = Integer.parseInt(yearString);
+                date = date.withYear(year);
+            }
+        } else if (date.isBefore(dateNow)) {
+            date = date.plusYears(1L);
+        } else if (date.equals(dateNow)) {
+            throw new EmillaException(errorTitle, R.string.error_invalid_date);
         }
 
-        return cal;
+        return LocalDateTime.of(date, nextHalfHour);
     }
 
-    public static long[] parseDateAndTimes(String date, @StringRes int errorTitle) {
-        String[] dateTime = date.split(" *@ *|(^| +)(at|from) +");
+    public static DateTimeSpan parseDateAndTimes(String dateString, @StringRes int errorTitle) {
+        String[] dateTime = DATE_TIME_SPLITTER.split(dateString);
 
         int[] startTime = null;
         int[] endTime = null;
         boolean endTomorrow = false; // TODO
         int len = dateTime.length;
         if (len == 2) {
-            date = dateTime[0];
-            String[] times = dateTime[1].split(" *(-|t(o|ill?)|until) *");
+            dateString = dateTime[0];
+            String[] times = TIME_SPAN_SPLITTER.split(dateTime[1]);
 
             switch (times.length) {
             case 2:
                 String endStr = times[1];
-                if (containsRgxIgnoreCase(endStr, "tomorrow")) {
+                if (Strings.containsIgnoreCase(endStr, TOMORROW)) {
                     endTomorrow = true;
-                    endStr = endStr.replaceFirst(" *tomorrow", "");
-                } else if (containsRgxIgnoreCase(endStr, "on "))
-                endTime = parseTime(endStr, null, errorTitle);
+                    endStr = SPACE_TOMORROW.matcher(endStr).replaceFirst("");
+                } else if (Strings.containsIgnoreCase(endStr, "on ")) {
+                    // todo
+                }
+                endTime = parseTime(endStr, errorTitle);
                 // fallthrough
             case 1:
-                startTime = parseTime(times[0], null, errorTitle);
+                startTime = parseTime(times[0], errorTitle);
                 break;
             default:
                 throw new EmillaException(errorTitle, R.string.error_excess_timespan);
@@ -327,23 +357,23 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
             throw new EmillaException(errorTitle, R.string.error_excess_timespans);
         }
 
-        Calendar cal = parseDate(date, errorTitle);
-        Calendar endCal = null;
+        LocalDateTime startDate = parseDateToNextHalfHour(dateString, errorTitle);
+        LocalDateTime endDate = null;
         if (startTime != null) {
             if (endTime != null) {
-                endCal = (Calendar) cal.clone();
-
-                endCal.set(HOUR_OF_DAY, endTime[0]);
-                endCal.set(MINUTE, endTime[1]);
-                endCal.set(SECOND, endTime[2]);
+                endDate = LocalDateTime.of(
+                    startDate.toLocalDate(),
+                    LocalTime.of(endTime[0], endTime[1], endTime[2])
+                );
             }
 
-            cal.set(HOUR_OF_DAY, startTime[0]);
-            cal.set(MINUTE, startTime[1]);
-            cal.set(SECOND, startTime[2]);
+            startDate = LocalDateTime.of(
+                startDate.toLocalDate(),
+                LocalTime.of(startTime[0], startTime[1], startTime[2])
+            );
         }
 
-        return new long[]{cal.getTimeInMillis(), endCal == null ? 0 : endCal.getTimeInMillis()};
+        return new DateTimeSpan(startDate, endDate);
     }
 
     private Time() {}

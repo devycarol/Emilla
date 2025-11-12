@@ -1,5 +1,6 @@
 package net.emilla.command.core;
 
+import android.content.Context;
 import android.view.inputmethod.EditorInfo;
 
 import net.emilla.activity.AssistActivity;
@@ -10,24 +11,18 @@ import java.util.Random;
 
 /*internal*/ final class RandomNumber extends CoreCommand {
 
-    public static final String ENTRY = "random_number";
-
-    public static boolean possible() {
-        return true;
-    }
-
-    /*internal*/ RandomNumber(AssistActivity act) {
-        super(act, CoreEntry.RANDOM_NUMBER, EditorInfo.IME_ACTION_DONE);
+    /*internal*/ RandomNumber(Context ctx) {
+        super(ctx, CoreEntry.RANDOM_NUMBER, EditorInfo.IME_ACTION_DONE);
     }
 
     @Override
-    protected void run() {
+    protected void run(AssistActivity act) {
         var rand = new Random();
-        giveText(String.valueOf(rand.nextLong()));
+        giveText(act, String.valueOf(rand.nextLong()));
     }
 
     @Override
-    protected void run(String range) {
+    protected void run(AssistActivity act, String range) {
         RandRange randRange = Lang.randomRange(range, CoreEntry.RANDOM_NUMBER.name);
         int inclusStart = randRange.inclusStart;
         int exclusEnd = randRange.exclusEnd;
@@ -43,7 +38,7 @@ import java.util.Random;
         var rand = new Random();
         int randVal = negativeOffset + inclusStart
                     + rand.nextInt(exclusEnd - inclusStart);
-        giveText(String.valueOf(randVal));
+        giveText(act, String.valueOf(randVal));
     }
 
 }

@@ -10,12 +10,15 @@ import androidx.annotation.Nullable;
 
 import net.emilla.lang.Lang;
 import net.emilla.lang.Words;
-import net.emilla.struct.trie.HashTrieMap;
 import net.emilla.struct.trie.TrieMap;
 
 import java.util.Arrays;
+import java.util.regex.Pattern;
 
 public final class SearchEngineParser {
+
+    private static final String WILDCARD = "%s";
+    private static final Pattern WILDCARD_PATTERN = Pattern.compile(WILDCARD);
 
     /// A record for a website's site URL and, if applicable, its search URL.
     ///
@@ -36,20 +39,20 @@ public final class SearchEngineParser {
         }
     }
 
-    private final TrieMap<String, Website> mEngineMap = new HashTrieMap<>();
+    private final TrieMap<String, Website> mEngineMap = new TrieMap<String, Website>();
 
     @Deprecated
     public SearchEngineParser(String engineCsv) {
-        for (String entry : engineCsv.split("\\s*\n\\s*")) {
-            String[] split = entry.split("\\s*,\\s*");
+        for (String entry : Patterns.TRIMMING_LINES.split(engineCsv)) {
+            String[] split = Patterns.TRIMMING_CSV.split(entry);
             if (split.length < 2) continue;
 
             int last = split.length - 1;
             String[] aliases = Arrays.copyOf(split, last);
             String url = split[last];
 
-            var engine = url.contains("%s")
-                ? new Website(url.replaceFirst("%s", ""), url)
+            var engine = url.contains(WILDCARD)
+                ? new Website(WILDCARD_PATTERN.matcher(url).replaceFirst(""), url)
                 : new Website(url, null);
 
             for (String alias : aliases) {
@@ -64,8 +67,8 @@ public final class SearchEngineParser {
         if (get != null) {
             if (queryWords.hasRemainingContents()) {
                 String encodedQuery = Uri.encode(queryWords.remainingContents());
-                Uri uri = Uri.parse(get.searchUrl.replaceFirst("%s", encodedQuery));
-                return Intents.view(uri);
+                String searchUrl = WILDCARD_PATTERN.matcher(get.searchUrl).replaceFirst(encodedQuery);
+                return Intents.view(Uri.parse(searchUrl));
             }
             return Intents.view(Uri.parse(get.siteUrl));
         }

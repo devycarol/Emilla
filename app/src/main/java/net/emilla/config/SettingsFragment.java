@@ -1,5 +1,6 @@
 package net.emilla.config;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -17,7 +18,6 @@ import androidx.preference.Preference;
 
 import net.emilla.R;
 import net.emilla.action.QuickAction;
-import net.emilla.activity.EmillaActivity;
 import net.emilla.chime.Chime;
 import net.emilla.chime.Chimer;
 import net.emilla.command.core.CoreEntry;
@@ -28,13 +28,14 @@ import net.emilla.system.EmillaA11yService;
 import net.emilla.util.Apps;
 import net.emilla.util.Features;
 import net.emilla.util.Intents;
+import net.emilla.util.Toasts;
 
 public final class SettingsFragment extends EmillaSettingsFragment {
 
     private static final String EXTRA_FRAGMENT_ARG_KEY = ":settings:fragment_args_key";
     private static final String EXTRA_SHOW_FRAGMENT_ARGUMENTS = ":settings:show_fragment_args";
 
-    private /*late*/ EmillaActivity mActivity;
+    private /*late*/ Context mContext;
     private /*late*/ SharedPreferences mPrefs;
     private /*late*/ Resources mRes;
     private /*late*/ PackageManager mPm;
@@ -65,10 +66,10 @@ public final class SettingsFragment extends EmillaSettingsFragment {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.prefs, rootKey);
 
-        mActivity = emillaActivity();
+        mContext = requireContext();
         mPrefs = prefs();
         mRes = getResources();
-        mPm = mActivity.getPackageManager();
+        mPm = mContext.getPackageManager();
 
         setupDefaultCommandPref();
 
@@ -140,9 +141,9 @@ public final class SettingsFragment extends EmillaSettingsFragment {
         Uri soundUri = SettingVals.customChimeSoundUri(mPrefs, chime);
 
         if (soundUri != null) {
-            Ringtone ringtone = RingtoneManager.getRingtone(mActivity, soundUri);
+            Ringtone ringtone = RingtoneManager.getRingtone(mContext, soundUri);
             if (ringtone != null) {
-                return ringtone.getTitle(mActivity);
+                return ringtone.getTitle(mContext);
             }
         }
 
@@ -152,7 +153,7 @@ public final class SettingsFragment extends EmillaSettingsFragment {
     private void setupFavoriteCommandsPref() {
         Preference favoriteCommmands = preferenceOf("favorite_commands");
         favoriteCommmands.setOnPreferenceClickListener(pref -> {
-            mActivity.toast("Coming soon!", false);
+            Toasts.show(mContext, "Coming soon!");
             // Todo
             return false;
         });

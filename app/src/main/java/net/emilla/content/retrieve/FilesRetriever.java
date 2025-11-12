@@ -7,6 +7,7 @@ import androidx.activity.result.contract.ActivityResultContracts.GetMultipleCont
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.content.receive.FilesReceiver;
+import net.emilla.util.Toasts;
 
 import java.util.List;
 
@@ -31,10 +32,11 @@ public final class FilesRetriever extends ResultRetriever<String, List<Uri>, Fil
         @Override
         protected void onActivityResult(List<Uri> files, FilesReceiver receiver) {
             if (files.isEmpty()) {
-                FilesRetriever.this.activity.toast(R.string.toast_files_not_selected);
+                Toasts.show(FilesRetriever.this.activity, R.string.toast_files_not_selected);
             } else {
                 receiver.provide(files);
             }
         }
     }
+
 }

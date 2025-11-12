@@ -69,8 +69,8 @@ public final class FieldToggle implements QuickAction {
     }
 
     @Override
-    public void init(AssistActivity act) {
-        QuickAction.super.init(act);
+    public void load(AssistActivity act) {
+        QuickAction.super.load(act);
 
         if (mActivated) {
             act.reshowField(mInputField.fieldId);
@@ -78,8 +78,8 @@ public final class FieldToggle implements QuickAction {
     }
 
     @Override
-    public void cleanup(AssistActivity act) {
-        QuickAction.super.cleanup(act);
+    public void unload(AssistActivity act) {
+        QuickAction.super.unload(act);
 
         act.hideField(mInputField.fieldId);
     }

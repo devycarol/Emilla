@@ -25,4 +25,9 @@ public interface Params {
     /// @return the command's icon drawable.
     Drawable icon(Context ctx);
 
+    /// Whether the command should be lowercased mid-sentence.
+    ///
+    /// @return true if the command is a common noun, false if the command is a proper noun.
+    boolean isProperNoun();
+
 }

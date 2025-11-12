@@ -38,7 +38,7 @@ public final class Apps {
         var labels = new String[apps.size()];
         int i = 0;
         for (AppEntry app : apps) {
-            labels[i] = app.label;
+            labels[i] = app.displayName;
             ++i;
         }
         return labels;
