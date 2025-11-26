@@ -17,7 +17,7 @@ import net.emilla.content.ResultLaunchers;
 
 import java.util.Map;
 
-@RequiresApi(api = Build.VERSION_CODES.M)
+@RequiresApi(Build.VERSION_CODES.M)
 public final class PermissionRetriever {
 
     private static final String TAG = PermissionRetriever.class.getSimpleName();

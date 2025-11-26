@@ -23,14 +23,14 @@ public final class EmillaA11yService extends AccessibilityService {
     @Override
     public void onInterrupt() {}
 
-    @Override @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override @RequiresApi(Build.VERSION_CODES.O)
     public void onCreate() {
         var controller = getAccessibilityButtonController();
         var callback = new AssistButtonCallback();
         controller.registerAccessibilityButtonCallback(callback);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    @RequiresApi(Build.VERSION_CODES.O)
     private /*inner*/ final class AssistButtonCallback extends AccessibilityButtonCallback {
 
         @Override

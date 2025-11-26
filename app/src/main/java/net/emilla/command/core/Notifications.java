@@ -24,12 +24,12 @@ import net.emilla.util.Intents;
         super(act, CoreEntry.NOTIFICATIONS, EditorInfo.IME_ACTION_GO);
     }
 
-    @Override @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override @RequiresApi(Build.VERSION_CODES.O)
     protected void run(AssistActivity act) {
         appSucceed(act, Intents.notificationSettings());
     }
 
-    @Override @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override @RequiresApi(Build.VERSION_CODES.O)
     protected void run(AssistActivity act, String app) {
         appSearchRun(act, app, appEntry -> Intents.notificationSettings(appEntry.pkg));
     }

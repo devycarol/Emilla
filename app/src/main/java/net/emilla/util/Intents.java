@@ -93,12 +93,12 @@ public final class Intents {
         return new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Apps.packageUri(pkg));
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    @RequiresApi(Build.VERSION_CODES.O)
     public static Intent notificationSettings() {
         return notificationSettings(Apps.MY_PKG);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    @RequiresApi(Build.VERSION_CODES.O)
     public static Intent notificationSettings(String pkg) {
         return new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
             .putExtra(Settings.EXTRA_APP_PACKAGE, pkg);

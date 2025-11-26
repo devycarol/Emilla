@@ -139,7 +139,7 @@ public final class ContactItemView extends LinearLayout {
         ViewCompat.replaceAccessibilityAction(this, mStarAction, starActionLabel(), mStarCommand);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.R)
+    @RequiresApi(Build.VERSION_CODES.R)
     private void setStateDesc() {
         var res = getResources();
         if (mSelected) {

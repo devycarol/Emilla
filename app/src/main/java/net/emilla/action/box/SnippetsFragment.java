@@ -65,13 +65,9 @@ public final class SnippetsFragment extends ActionBox {
         recycler.setAdapter(mAdapter);
     }
 
-    public boolean isEmpty() {
-        return mAdapter.getItemCount() == 0;
-    }
-
     @Nullable
-    private Snippet selectedSnippet(AssistActivity act, String label) {
-        Snippet selected = mAdapter.preferredItem(label);
+    private Snippet selectedSnippet(AssistActivity act, String search) {
+        Snippet selected = mAdapter.preferredItem(search);
         if (selected == null) {
             act.chime(PEND);
         }

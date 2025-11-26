@@ -12,7 +12,7 @@ import net.emilla.activity.AssistActivity;
 ///
 /// This can only be used when [Activity#shouldShowRequestPermissionRationale(String)] is true for
 /// the permission(s) being requested.
-@RequiresApi(api = Build.VERSION_CODES.M)
+@RequiresApi(Build.VERSION_CODES.M)
 public final class PermissionOffering implements CommandRun {
 
     private final String[] mPermissions;
