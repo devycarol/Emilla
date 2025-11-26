@@ -13,14 +13,6 @@ import net.emilla.file.TreeFile;
 
 /*internal*/ final class Note extends CoreDataCommand {
 
-    public static boolean possible() {
-        return true;
-        // todo: god help us if any of the following are false:
-        //  has any writable filesystem whatsoever
-        //  can view text documents
-        //  can do the create document and open document tree intents
-    }
-
     private final NotesFragment mNotesFragment;
 
     /*internal*/ Note(Context ctx) {

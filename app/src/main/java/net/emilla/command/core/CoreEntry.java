@@ -87,30 +87,9 @@ public enum CoreEntry implements Params {
         }
 
     },
-    NOTE(Note::new, R.string.command_note, R.array.aliases_note, R.string.instruction_file, R.drawable.ic_note, R.string.summary_note, R.string.manual_note, true) {
-
-        @Override
-        public boolean isPossible(PackageManager pm) {
-            return Note.possible();
-        }
-
-    },
-    TODO(Todo::new, R.string.command_todo, R.array.aliases_todo, R.string.instruction_todo, R.drawable.ic_todo, R.string.summary_todo, R.string.manual_todo, true) {
-
-        @Override
-        public boolean isPossible(PackageManager pm) {
-            return Todo.possible();
-        }
-
-    },
-//    FIND(Find::new, R.string.command_find, R.array.aliases_find, R.string.instruction_find, R.drawable.ic_find, R.string.summary_find, R.string.manual_find, true) {
-//
-//        @Override
-//        public boolean isPossible(PackageManager pm) {
-//            return Find.possible();
-//        }
-//
-//    },
+    NOTE(Note::new, R.string.command_note, R.array.aliases_note, R.string.instruction_file, R.drawable.ic_note, R.string.summary_note, R.string.manual_note, true),
+    TODO(Todo::new, R.string.command_todo, R.array.aliases_todo, R.string.instruction_todo, R.drawable.ic_todo, R.string.summary_todo, R.string.manual_todo, true),
+//    FIND(Find::new, R.string.command_find, R.array.aliases_find, R.string.instruction_find, R.drawable.ic_find, R.string.summary_find, R.string.manual_find, true),
     EMAIL(Email::new, R.string.command_email, R.array.aliases_email, R.string.instruction_email, R.drawable.ic_email, R.string.summary_email, R.string.manual_email) {
 
         @Override
@@ -165,14 +144,7 @@ public enum CoreEntry implements Params {
     NOTIFY(Notify::new, R.string.command_notify, R.array.aliases_notify, R.string.instruction_title, R.drawable.ic_notify, R.string.summary_notify, R.string.manual_notify),
     COPY(Copy::new, R.string.command_copy, R.array.aliases_copy, R.string.instruction_text, R.drawable.ic_copy, R.string.summary_copy, R.string.manual_copy),
     SNIPPETS(Snippets::new, R.string.command_snippets, R.array.aliases_snippets, R.string.instruction_name_label, R.drawable.ic_snippets, R.string.summary_snippets, R.string.manual_snippets),
-//    SETTING(Setting::new, R.string.command_setting, R.array.aliases_setting, R.string.instruction_setting, R.drawable.ic_settings, R.string.summary_setting, R.string.manual_setting, true) {
-//
-//        @Override
-//        public boolean isPossible(PackageManager pm) {
-//            return Setting.possible();
-//        }
-//
-//    },
+//    SETTING(Setting::new, R.string.command_setting, R.array.aliases_setting, R.string.instruction_setting, R.drawable.ic_settings, R.string.summary_setting, R.string.manual_setting, true),
     CELSIUS(Celsius::new, R.string.command_celsius, R.array.aliases_celsius, R.string.instruction_temperature, R.drawable.ic_temperature, R.string.summary_celsius, R.string.manual_celsius),
     FAHRENHEIT(Fahrenheit::new, R.string.command_fahrenheit, R.array.aliases_fahrenheit, R.string.instruction_temperature, R.drawable.ic_temperature, R.string.summary_fahrenheit, R.string.manual_fahrenheit),
     ROLL(Roll::new, R.string.command_roll, R.array.aliases_roll, R.string.instruction_roll, R.drawable.ic_roll, R.string.summary_roll, R.string.manual_roll),

@@ -15,10 +15,6 @@ import net.emilla.util.MimeTypes;
 
 /*internal*/ final class Todo extends CoreCommand {
 
-    public static boolean possible() {
-        return true;
-    }
-
     private final TodoFragment mTodoFragment;
 
     /*internal*/ Todo(Context ctx) {
