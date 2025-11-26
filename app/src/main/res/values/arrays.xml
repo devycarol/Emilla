@@ -173,7 +173,6 @@
     <string-array name="aliases_markor">
         <item>mark</item>
         <item>mkr</item>
-        <item>note</item><!--Todo: generic 'note' command-->
     </string-array>
     <string-array name="aliases_firefox">
         <item>ff</item>

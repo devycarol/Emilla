@@ -104,7 +104,7 @@ public final class ArraySearcher<E extends SearchItem> {
         newItems[position] = item;
         System.arraycopy(oldItems, position, newItems, position + 1, itemCount - position);
 
-        load(newItems);
+        setArray(newItems);
     }
 
     public void remove(E item) {
@@ -120,12 +120,17 @@ public final class ArraySearcher<E extends SearchItem> {
         System.arraycopy(oldItems, 0, newItems, 0, position);
         System.arraycopy(oldItems, position + 1, newItems, position, newItemCount - position);
 
-        load(newItems);
+        setArray(newItems);
+    }
+
+    private void setArray(E[] newItems) {
+        mItems.mArray = newItems;
+        mSearchCache.clear();
     }
 
     public void load(E[] newItems) {
-        mItems.mArray = newItems;
-        mSearchCache.clear();
+        Arrays.sort(newItems);
+        setArray(newItems);
     }
 
     public ArrayWindow<E> itemsNamed(String search) {
