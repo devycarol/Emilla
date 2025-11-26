@@ -1,32 +1,29 @@
 package net.emilla.command.core;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.view.inputmethod.EditorInfo;
 
-import androidx.appcompat.app.AlertDialog;
+import androidx.annotation.Nullable;
 
-import net.emilla.activity.AssistActivity;
-import net.emilla.util.Dialogs;
+import net.emilla.command.app.AppEntry;
 import net.emilla.util.Intents;
 
 /*internal*/ final class Launch extends OpenCommand {
 
-    /*internal*/ Launch(AssistActivity act) {
-        super(act, CoreEntry.LAUNCH, EditorInfo.IME_ACTION_GO);
+    /*internal*/ Launch(Context ctx) {
+        super(ctx, CoreEntry.LAUNCH, EditorInfo.IME_ACTION_GO);
+    }
+
+    @Override @Nullable
+    protected Intent defaultIntent() {
+        return null;
     }
 
     @Override
-    protected void run(AssistActivity act) {
-        offerDialog(act, this.appChooser);
-    }
-
-    @Override
-    protected void run(AssistActivity act, String app) {
-        appSearchRun(act, app, Intents::launchApp);
-    }
-
-    @Override
-    protected AlertDialog.Builder makeChooser(AssistActivity act) {
-        return Dialogs.appLaunches(act);
+    public Intent makeIntent(AppEntry app, PackageManager pm) {
+        return Intents.launchApp(app);
     }
 
 }

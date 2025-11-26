@@ -1,5 +1,6 @@
 package net.emilla.command.core;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -7,9 +8,8 @@ import android.provider.Settings;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 
-import net.emilla.activity.AssistActivity;
+import net.emilla.command.app.AppEntry;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
 
@@ -20,24 +20,18 @@ import net.emilla.util.Intents;
             && Apps.canDo(pm, new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS));
     }
 
-    /*internal*/ Notifications(AssistActivity act) {
-        super(act, CoreEntry.NOTIFICATIONS, EditorInfo.IME_ACTION_GO);
+    /*internal*/ Notifications(Context ctx) {
+        super(ctx, CoreEntry.NOTIFICATIONS, EditorInfo.IME_ACTION_GO);
     }
 
     @Override @RequiresApi(Build.VERSION_CODES.O)
-    protected void run(AssistActivity act) {
-        appSucceed(act, Intents.notificationSettings());
+    protected Intent defaultIntent() {
+        return Intents.notificationSettings();
     }
 
     @Override @RequiresApi(Build.VERSION_CODES.O)
-    protected void run(AssistActivity act, String app) {
-        appSearchRun(act, app, appEntry -> Intents.notificationSettings(appEntry.pkg));
-    }
-
-    @Override
-    protected AlertDialog.Builder makeChooser(AssistActivity act) {
-        // TODO: this isn't needed.
-        return null;
+    protected Intent makeIntent(AppEntry app, PackageManager pm) {
+        return Intents.notificationSettings(app.pkg);
     }
 
 }

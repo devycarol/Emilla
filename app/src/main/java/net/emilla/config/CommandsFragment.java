@@ -15,7 +15,7 @@ import androidx.preference.PreferenceCategory;
 import net.emilla.R;
 import net.emilla.command.app.AppEntry;
 import net.emilla.command.core.CoreEntry;
-import net.emilla.util.AppList;
+import net.emilla.util.Apps;
 import net.emilla.util.Patterns;
 
 import java.util.HashSet;
@@ -107,7 +107,7 @@ public final class CommandsFragment extends EmillaSettingsFragment {
     private void setupApps() {
         // Todo: priority-sort the apps with hard-coded support?
         PreferenceCategory apps = preferenceOf("category_apps");
-        for (AppEntry app : AppList.launchers(mPm)) {
+        for (AppEntry app : Apps.launchers(mPm)) {
             var appPref = new CommandPreference(mContext, app);
             apps.addPreference(appPref);
             setupPref(appPref, Aliases.appSet(mPrefs, mRes, app));

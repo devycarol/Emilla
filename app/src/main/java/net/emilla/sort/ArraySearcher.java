@@ -42,12 +42,16 @@ public final class ArraySearcher<E extends SearchItem> {
     private final HashMap<String, SearchResult<E>> mSearchCache;
     private final IntFunction<E[]> mArrayGenerator;
 
-    public ArraySearcher(E[] items, IntFunction<E[]> arrayGenerator) {
-        Arrays.sort(items);
-
-        mItems = new ArrayWrapper<E>(items);
+    /*internal*/ ArraySearcher(E[] sortedItems, IntFunction<E[]> arrayGenerator) {
+        mItems = new ArrayWrapper<E>(sortedItems);
         mSearchCache = new HashMap<String, SearchResult<E>>(16);
         mArrayGenerator = arrayGenerator;
+    }
+
+    public static <E extends SearchItem>
+    ArraySearcher<E> of(E[] items, IntFunction<E[]> arrayGenerator) {
+        Arrays.sort(items);
+        return new ArraySearcher<E>(items, arrayGenerator);
     }
 
     public IndexedStruct<E> search(@Nullable String search) {

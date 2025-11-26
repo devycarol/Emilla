@@ -32,12 +32,33 @@ public /*open*/ class ItemSearchAdapter<E extends SearchItem>
         Consumer<E> itemClickAction,
         IntFunction<E[]> arrayGenerator
     ) {
+        this(inflater, ArraySearcher.of(items, arrayGenerator), itemClickAction);
+    }
+
+    private ItemSearchAdapter(
+        LayoutInflater inflater,
+        ArraySearcher<E> searcher,
+        Consumer<E> itemClickAction
+    ) {
         mInflater = inflater;
 
-        this.searcher = new ArraySearcher<E>(items, arrayGenerator);
+        this.searcher = searcher;
         mSearchResult = this.searcher.search(null);
 
         mItemClickAction = itemClickAction;
+    }
+
+    public static <E extends SearchItem> ItemSearchAdapter<E> ofSorted(
+        LayoutInflater inflater,
+        E[] sortedItems,
+        Consumer<E> itemClickAction,
+        IntFunction<E[]> arrayGenerator
+    ) {
+        return new ItemSearchAdapter<E>(
+            inflater,
+            new ArraySearcher<E>(sortedItems, arrayGenerator),
+            itemClickAction
+        );
     }
 
     public final void search(@Nullable String search) {

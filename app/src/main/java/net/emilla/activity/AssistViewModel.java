@@ -15,8 +15,9 @@ import androidx.preference.PreferenceManager;
 
 import net.emilla.chime.Chime;
 import net.emilla.chime.Chimer;
+import net.emilla.command.app.AppEntry;
 import net.emilla.config.SettingVals;
-import net.emilla.util.AppList;
+import net.emilla.util.Apps;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -58,7 +59,7 @@ import java.util.HashMap;
     @Nullable
     public final String motd;
 
-    public final AppList appList;
+    public final AppEntry[] apps;
     @Nullable
     private HashMap<String, ArrayList<Uri>> mAttachmentMap = null;
 
@@ -83,7 +84,7 @@ import java.util.HashMap;
 
         this.motd = noTitlebar ? null : SettingVals.motd(this.prefs, this.res);
 
-        this.appList = AppList.launchers(appContext.getPackageManager());
+        this.apps = Apps.launchers(appContext.getPackageManager());
 
         mChimer = Chimer.of(this.prefs);
         mChimer.chime(mAppContext, START);

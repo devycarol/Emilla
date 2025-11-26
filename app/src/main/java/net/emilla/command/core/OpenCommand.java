@@ -1,68 +1,55 @@
 package net.emilla.command.core;
 
+import static net.emilla.chime.Chime.PEND;
+
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 
-import androidx.appcompat.app.AlertDialog;
+import androidx.annotation.Nullable;
 
-import net.emilla.R;
+import net.emilla.action.box.AppsFragment;
 import net.emilla.activity.AssistActivity;
 import net.emilla.command.app.AppEntry;
-import net.emilla.struct.IndexedStruct;
-import net.emilla.util.Dialogs;
 
-/*internal*/ abstract class OpenCommand extends CoreCommand {
+public abstract class OpenCommand extends CoreCommand {
 
-    protected final AlertDialog.Builder appChooser;
+    private final AppsFragment mAppsFragment;
 
-    protected OpenCommand(AssistActivity act, CoreEntry coreEntry, int imeAction) {
-        super(act, coreEntry, imeAction);
+    protected OpenCommand(Context ctx, CoreEntry coreEntry, int imeAction) {
+        super(ctx, coreEntry, imeAction);
 
-        this.appChooser = makeChooser(act);
+        mAppsFragment = AppsFragment.newInstance();
+        giveGadgets(mAppsFragment);
     }
 
-    protected abstract AlertDialog.Builder makeChooser(AssistActivity act);
+    @Nullable
+    protected abstract Intent defaultIntent();
+    protected abstract Intent makeIntent(AppEntry app, PackageManager pm);
 
-    protected final void appSearchRun(AssistActivity act, String search, IntentMaker maker) {
-        IndexedStruct<AppEntry> result = act.appList().filter(search);
-        int size = result.size();
-        if (size == 0) {
-            throw badCommand(R.string.error_apps_not_found);
-            // Todo: offer to search app store
-        }
+    public final void use(AssistActivity act, AppEntry app) {
+        var pm = act.getPackageManager();
+        appSucceed(act, makeIntent(app, pm));
+    }
 
-        if (size == 1 || oneExactMatch(result, search)) {
-            open(act, result, 0, maker);
+    @Override
+    protected final void run(AssistActivity act) {
+        var intent = defaultIntent();
+        if (intent != null) {
+            appSucceed(act, intent);
         } else {
-            offerDialog(
-                act,
-                Dialogs.list(
-                    act, R.string.dialog_app,
-
-                    AppEntry.labels(result),
-                    (dlg, which) -> open(act, result, which, maker)
-                )
-            );
+            act.chime(PEND);
         }
     }
 
-    private static boolean oneExactMatch(IndexedStruct<AppEntry> result, String search) {
-        return result.get(0).displayName.equalsIgnoreCase(search)
-            && !result.get(1).displayName.equalsIgnoreCase(search);
-    }
-
-    private static void open(
-        AssistActivity act,
-        IndexedStruct<AppEntry> filtered,
-        int which,
-        IntentMaker action
-    ) {
-        AppEntry app = filtered.get(which);
-        appSucceed(act, action.make(app));
-    }
-
-    @FunctionalInterface
-    protected interface IntentMaker {
-        Intent make(AppEntry app);
+    @Override
+    protected final void run(AssistActivity act, String instruction) {
+        AppEntry app = mAppsFragment.selectedApp(instruction);
+        if (app != null) {
+            use(act, app);
+        } else {
+            act.chime(PEND);
+        }
     }
 
 }

@@ -108,18 +108,6 @@ public final class Intents {
         return new Intent(ctx, cls);
     }
 
-    public static Intent[] appLaunches(AppList appList) {
-        return appList.stream()
-            .map(Intents::launchApp)
-            .toArray(Intent[]::new);
-    }
-
-    public static Intent[] appUninstalls(AppList appList, PackageManager pm) {
-        return appList.stream()
-            .map(appEntry -> uninstallApp(appEntry.pkg, pm))
-            .toArray(Intent[]::new);
-    }
-
     public static Intent uninstallApp(String pkg, PackageManager pm) {
         try {
             ApplicationInfo info = pm.getApplicationInfo(pkg, 0);

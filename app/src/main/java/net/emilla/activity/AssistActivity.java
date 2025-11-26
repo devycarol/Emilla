@@ -57,6 +57,7 @@ import net.emilla.chime.Chime;
 import net.emilla.command.CommandMap;
 import net.emilla.command.DataCommand;
 import net.emilla.command.EmillaCommand;
+import net.emilla.command.app.AppEntry;
 import net.emilla.config.SettingVals;
 import net.emilla.content.receive.AppChoiceReceiver;
 import net.emilla.content.receive.ContactCardReceiver;
@@ -79,7 +80,6 @@ import net.emilla.run.BugFailure;
 import net.emilla.run.CommandRun;
 import net.emilla.run.DialogRun;
 import net.emilla.run.MessageFailure;
-import net.emilla.util.AppList;
 import net.emilla.util.Dialogs;
 import net.emilla.util.Strings;
 import net.emilla.view.ActionButton;
@@ -163,7 +163,7 @@ public final class AssistActivity extends AppCompatActivity {
         mDoubleAssistAction = SettingVals.doubleAssist(prefs, this, pm);
         mMenuKeyAction = SettingVals.menuKey(prefs, this);
 
-        mCommandMap = EmillaCommand.map(prefs, mVm.res, pm, mVm.appList);
+        mCommandMap = EmillaCommand.map(prefs, mVm.res, pm, mVm.apps);
         mCommand = mCommandMap.getDefault(this);
         mCommand.load(this);
     }
@@ -512,8 +512,8 @@ public final class AssistActivity extends AppCompatActivity {
         return mVm.prefs;
     }
 
-    public AppList appList() {
-        return mVm.appList;
+    public AppEntry[] apps() {
+        return mVm.apps;
     }
 
     public EditText focusedEditBox() {

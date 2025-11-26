@@ -51,7 +51,7 @@ public abstract class EmillaCommand {
         SharedPreferences prefs,
         Resources res,
         PackageManager pm,
-        Iterable<AppEntry> appList
+        AppEntry[] apps
     ) {
         Aliases.reformatCoresIfNecessary(prefs);
 
@@ -75,7 +75,7 @@ public abstract class EmillaCommand {
             }
         }
 
-        for (AppEntry app : appList) {
+        for (AppEntry app : apps) {
             if (!app.isEnabled(prefs)) {
                 continue;
             }

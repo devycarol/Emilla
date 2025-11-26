@@ -2,16 +2,11 @@ package net.emilla.util;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
-import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.run.AppSuccess;
-import net.emilla.run.MessageFailure;
 
 public final class Dialogs {
 
@@ -136,37 +131,6 @@ public final class Dialogs {
                 .setPositiveButton(yesLabel, (dlg, which) -> {
             act.onCloseDialog(); // Todo: don't require this.
             yesClick.onClick(dlg, which);
-        });
-    }
-
-    public static AlertDialog.Builder appLaunches(AssistActivity act) {
-        return appLaunches(act, act.appList());
-    }
-
-    public static AlertDialog.Builder appLaunches(AssistActivity act, AppList appList) {
-        // TODO: due to duplicate app labels, it's important to eventually include app icons in this
-        //  dialog
-        // TODO: allow for alpha sort. important for screen readers (it should be on by default in
-        //  that case) only reason not to is i kind of like the random order. makes my phone feel
-        //  less cramped. on the accessibility topic, being able to speak/type a (nato?) letter
-        //  would be helpful for everyone. basically: very accessible search interface
-        // a choice between list and grid layout would be cool
-        Intent[] intents = Intents.appLaunches(appList);
-        return list(act, R.string.dialog_app, Apps.labels(appList),
-                (dlg, which) -> act.succeed(new AppSuccess(intents[which])));
-    }
-
-    public static AlertDialog.Builder appUninstalls(AssistActivity act) {
-        AppList appList = act.appList();
-        PackageManager pm = act.getPackageManager();
-        Intent[] intents = Intents.appUninstalls(appList, pm);
-        return list(act, R.string.dialog_app, Apps.labels(appList), (dlg, which) -> {
-            if (intents[which] == null) {
-                act.fail(new MessageFailure(act, R.string.command_uninstall, R.string.error_cant_uninstall));
-                // Todo: instead handle at mapping somehow
-            } else {
-                act.succeed(new AppSuccess(intents[which]));
-            }
         });
     }
 
