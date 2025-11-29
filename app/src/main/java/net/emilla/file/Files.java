@@ -34,15 +34,49 @@ public final class Files {
 
     private static final long SIZE_UNKNOWN = -1L;
 
+    @FunctionalInterface
+    private interface Reader<T> {
+        T readFrom(InputStream istream) throws IOException;
+    }
+
+    private static <T> T read(ContentResolver cr, Uri file, Reader<T> reader)
+        throws IOException, FileNotFoundException {
+
+        try (InputStream istream = cr.openInputStream(file)) {
+            if (istream == null) {
+                throw new IOException("The content provider crashed");
+            }
+
+            return reader.readFrom(istream);
+        } catch (SecurityException e) {
+            throw new IOException(e);
+        }
+    }
+
+    @FunctionalInterface
+    private interface Writer {
+        void writeTo(OutputStream ostream) throws IOException;
+    }
+
+    private static void write(ContentResolver cr, Uri file, String mode, Writer writer)
+        throws IOException, FileNotFoundException {
+
+        try (OutputStream ostream = cr.openOutputStream(file, mode)) {
+            if (ostream == null) {
+                throw new IOException("The content provider crashed");
+            }
+
+            writer.writeTo(ostream);
+        } catch (SecurityException e) {
+            throw new IOException(e);
+        }
+    }
+
     @Nullable
     public static String[] nonBlankLines(ContentResolver cr, Uri file) {
         byte[] bytes;
-        try (InputStream istream = cr.openInputStream(file)) {
-            if (istream == null) {
-                return null;
-            }
-
-            bytes = istream.readAllBytes();
+        try {
+            bytes = read(cr, file, istream -> istream.readAllBytes());
         } catch (IOException e) {
             return null;
         }
@@ -69,12 +103,8 @@ public final class Files {
     }
 
     public static boolean writeLine(ContentResolver cr, Uri file, String text) {
-        try (OutputStream ostream = cr.openOutputStream(file, OVERWRITE)) {
-            if (ostream == null) {
-                throw new IOException("The content provider crashed");
-            }
-
-            writeLine(ostream, text);
+        try {
+            write(cr, file, OVERWRITE, ostream -> writeLine(ostream, text));
 
             return true;
         } catch (IOException e) {
@@ -90,16 +120,14 @@ public final class Files {
             return false;
         }
 
-        try (OutputStream ostream = cr.openOutputStream(file, APPEND)) {
-            if (ostream == null) {
-                return false;
-            }
+        try {
+            write(cr, file, APPEND, ostream -> {
+                if (!endsNormally) {
+                    ostream.write('\n');
+                }
 
-            if (!endsNormally) {
-                ostream.write('\n');
-            }
-
-            writeLine(ostream, text);
+                writeLine(ostream, text);
+            });
 
             return true;
         } catch (IOException e) {
@@ -138,6 +166,8 @@ public final class Files {
             }
 
             return size;
+        } catch (SecurityException e) {
+            throw new IOException(e);
         }
     }
 
@@ -157,6 +187,8 @@ public final class Files {
             }
 
             return isLineSeparator(lastByteOf(istream, fileSize));
+        } catch (SecurityException e) {
+            throw new IOException(e);
         }
     }
 
