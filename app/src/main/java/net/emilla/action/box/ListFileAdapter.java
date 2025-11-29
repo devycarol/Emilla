@@ -14,16 +14,16 @@ import net.emilla.file.ListItemHolder;
 
 import java.util.Arrays;
 
-public final class TodoFileAdapter extends RecyclerView.Adapter<ListItemHolder> {
+public final class ListFileAdapter extends RecyclerView.Adapter<ListItemHolder> {
 
     private final LayoutInflater mInflater;
 
     @Nullable
     private Uri mFile;
     @Nullable
-    private String[] mTasks;
+    private String[] mItems;
 
-    public TodoFileAdapter(LayoutInflater inflater) {
+    public ListFileAdapter(LayoutInflater inflater) {
         mInflater = inflater;
     }
 
@@ -35,52 +35,52 @@ public final class TodoFileAdapter extends RecyclerView.Adapter<ListItemHolder> 
 
     @Override
     public void onBindViewHolder(ListItemHolder holder, int position) {
-        holder.labelView.setText(mTasks[position]);
+        holder.labelView.setText(mItems[position]);
     }
 
     @Override
     public int getItemCount() {
-        return mTasks != null ? mTasks.length : 0;
+        return mItems != null ? mItems.length : 0;
     }
 
     public boolean loadFile(ContentResolver cr, Uri file) {
-        int oldTaskCount = getItemCount();
-        mTasks = Files.nonBlankLines(cr, file);
+        int oldItemCount = getItemCount();
+        mItems = Files.nonBlankLines(cr, file);
 
-        boolean success = mTasks != null;
+        boolean success = mItems != null;
         if (!success) {
             file = null;
         }
         mFile = file;
 
-        if (oldTaskCount > 0) {
-            notifyItemRangeRemoved(0, oldTaskCount);
+        if (oldItemCount > 0) {
+            notifyItemRangeRemoved(0, oldItemCount);
         }
 
         if (success) {
-            int taskCount = mTasks.length;
-            if (taskCount > 0) {
-                notifyItemRangeInserted(0, taskCount);
+            int itemCount = mItems.length;
+            if (itemCount > 0) {
+                notifyItemRangeInserted(0, itemCount);
             }
         }
 
         return success;
     }
 
-    public TriResult addTask(ContentResolver cr, String task) {
-        if (mTasks == null || mFile == null) {
+    public TriResult addItem(ContentResolver cr, String item) {
+        if (mItems == null || mFile == null) {
             return TriResult.WAITING;
         }
 
-        if (!Files.appendLine(cr, mFile, task)) {
+        if (!Files.appendLine(cr, mFile, item)) {
             return TriResult.FAILURE;
         }
 
-        int oldTaskCount = mTasks.length;
-        mTasks = Arrays.copyOf(mTasks, oldTaskCount + 1);
-        mTasks[oldTaskCount] = task;
+        int oldItemCount = mItems.length;
+        mItems = Arrays.copyOf(mItems, oldItemCount + 1);
+        mItems[oldItemCount] = item;
 
-        notifyItemInserted(oldTaskCount);
+        notifyItemInserted(oldItemCount);
 
         return TriResult.SUCCESS;
     }

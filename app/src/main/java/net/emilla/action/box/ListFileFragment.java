@@ -26,23 +26,23 @@ import net.emilla.cursor.FileDisplayName;
 import net.emilla.databinding.FragmentNotesBinding;
 import net.emilla.util.MimeTypes;
 
-public final class TodoFragment extends ActionBox {
+public final class ListFileFragment extends ActionBox {
 
     private final ActivityResultLauncher<String[]> mFileSwitcher = registerForActivityResult(
         new OpenDocument(),
         this::onFileChosen
     );
 
-    private TodoFragment() {
+    private ListFileFragment() {
         super(R.layout.fragment_notes);
     }
 
-    public static TodoFragment newInstance() {
-        return new TodoFragment();
+    public static ListFileFragment newInstance() {
+        return new ListFileFragment();
     }
 
     private /*late*/ FragmentNotesBinding mBinding;
-    private /*late*/ TodoFileAdapter mAdapter;
+    private /*late*/ ListFileAdapter mAdapter;
 
     @Override
     public View onCreateView(
@@ -59,7 +59,7 @@ public final class TodoFragment extends ActionBox {
         super.onViewCreated(view, savedInstanceState);
 
         Toolbar toolbar = mBinding.toolbar;
-        toolbar.inflateMenu(R.menu.todo_toolbar);
+        toolbar.inflateMenu(R.menu.list_file_toolbar);
         toolbar.setOnMenuItemClickListener(menuItem -> {
             if (menuItem.getItemId() == R.id.switch_file) {
                 switchFile();
@@ -75,7 +75,7 @@ public final class TodoFragment extends ActionBox {
         recycler.setLayoutManager(manager);
 
         var inflater = act.getLayoutInflater();
-        mAdapter = new TodoFileAdapter(inflater);
+        mAdapter = new ListFileAdapter(inflater);
         recycler.setAdapter(mAdapter);
 
         TextView fileRequester = mBinding.fileRequester;
@@ -152,7 +152,7 @@ public final class TodoFragment extends ActionBox {
     public TriResult addTask(String task) {
         var ctx = requireContext();
         var cr = ctx.getContentResolver();
-        return mAdapter.addTask(cr, task);
+        return mAdapter.addItem(cr, task);
     }
 
     @Override

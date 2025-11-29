@@ -7,7 +7,7 @@ import android.net.Uri;
 import android.view.inputmethod.EditorInfo;
 
 import net.emilla.R;
-import net.emilla.action.box.TodoFragment;
+import net.emilla.action.box.ListFileFragment;
 import net.emilla.activity.AssistActivity;
 import net.emilla.exception.EmillaException;
 import net.emilla.file.Files;
@@ -15,12 +15,12 @@ import net.emilla.util.MimeTypes;
 
 /*internal*/ final class Todo extends CoreCommand {
 
-    private final TodoFragment mTodoFragment;
+    private final ListFileFragment mTodoFragment;
 
     /*internal*/ Todo(Context ctx) {
         super(ctx, CoreEntry.TODO, EditorInfo.IME_ACTION_DONE);
 
-        mTodoFragment = TodoFragment.newInstance();
+        mTodoFragment = ListFileFragment.newInstance();
         giveGadgets(mTodoFragment);
     }
 
