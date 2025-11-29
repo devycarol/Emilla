@@ -23,8 +23,8 @@ import java.io.OutputStream;
 
 public final class Files {
 
-    private static final String WRITE = "w";
-    private static final String WRITE_APPEND = "wa";
+    private static final String OVERWRITE = "wt";
+    private static final String APPEND = "wa";
 
     private static final int INDEX_SIZE = 0;
 
@@ -69,7 +69,7 @@ public final class Files {
     }
 
     public static boolean writeLine(ContentResolver cr, Uri file, String text) {
-        try (OutputStream ostream = cr.openOutputStream(file, WRITE)) {
+        try (OutputStream ostream = cr.openOutputStream(file, OVERWRITE)) {
             if (ostream == null) {
                 throw new IOException("The content provider crashed");
             }
@@ -90,7 +90,7 @@ public final class Files {
             return false;
         }
 
-        try (OutputStream ostream = cr.openOutputStream(file, WRITE_APPEND)) {
+        try (OutputStream ostream = cr.openOutputStream(file, APPEND)) {
             if (ostream == null) {
                 return false;
             }
