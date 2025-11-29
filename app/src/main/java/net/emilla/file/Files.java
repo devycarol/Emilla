@@ -34,12 +34,6 @@ public final class Files {
 
     private static final long SIZE_UNKNOWN = -1L;
 
-    public static Intent viewIntent(Uri file, String mimeType) {
-        return Intents.view(file, mimeType)
-            .putExtra(Intent.EXTRA_STREAM, file)
-            .addFlags(FLAG_GRANT_READ_URI_PERMISSION | FLAG_GRANT_WRITE_URI_PERMISSION);
-    }
-
     @Nullable
     public static String[] nonBlankLines(ContentResolver cr, Uri file) {
         byte[] bytes;
@@ -206,6 +200,12 @@ public final class Files {
 
     private static IOException wrongFileSize() {
         return new IOException("The file size was not correctly reported");
+    }
+
+    public static Intent viewIntent(Uri file, String mimeType) {
+        return Intents.view(file, mimeType)
+            .putExtra(Intent.EXTRA_STREAM, file)
+            .addFlags(FLAG_GRANT_READ_URI_PERMISSION | FLAG_GRANT_WRITE_URI_PERMISSION);
     }
 
     private Files() {}
