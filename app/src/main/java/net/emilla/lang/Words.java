@@ -4,7 +4,7 @@ import static androidx.annotation.RestrictTo.Scope.SUBCLASSES;
 
 import androidx.annotation.RestrictTo;
 
-import net.emilla.struct.trie.TrieMap;
+import net.emilla.trie.TrieMap;
 import net.emilla.util.Strings;
 
 import java.util.Iterator;

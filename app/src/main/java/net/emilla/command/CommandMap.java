@@ -5,7 +5,7 @@ import androidx.annotation.Nullable;
 import net.emilla.activity.AssistActivity;
 import net.emilla.lang.Lang;
 import net.emilla.lang.Words;
-import net.emilla.struct.trie.TrieMap;
+import net.emilla.trie.TrieMap;
 
 public final class CommandMap {
 

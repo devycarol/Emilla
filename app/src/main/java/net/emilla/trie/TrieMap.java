@@ -1,4 +1,4 @@
-package net.emilla.struct.trie;
+package net.emilla.trie;
 
 import androidx.annotation.Nullable;
 

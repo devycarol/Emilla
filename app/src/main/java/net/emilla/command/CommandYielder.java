@@ -6,7 +6,7 @@ import androidx.annotation.RestrictTo;
 
 import net.emilla.activity.AssistActivity;
 import net.emilla.lang.Words;
-import net.emilla.struct.trie.TrieMap;
+import net.emilla.trie.TrieMap;
 
 /// This container enables storage of commands in the [TrieMap] data structure.
 ///

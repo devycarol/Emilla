@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 
 import net.emilla.lang.Lang;
 import net.emilla.lang.Words;
-import net.emilla.struct.trie.TrieMap;
+import net.emilla.trie.TrieMap;
 
 import java.util.Arrays;
 import java.util.regex.Pattern;
