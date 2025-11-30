@@ -10,7 +10,7 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.config.SettingVals;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
-import net.emilla.util.SearchEngineParser;
+import net.emilla.web.WebsiteMap;
 
 /*internal*/ final class Web extends CoreCommand {
 
@@ -20,12 +20,12 @@ import net.emilla.util.SearchEngineParser;
             || Apps.canDo(pm, Intents.view("http:"));
     }
 
-    private final SearchEngineParser mSearchEngineMap;
+    private final WebsiteMap mWebsiteMap;
 
     /*internal*/ Web(AssistActivity act) {
         super(act, CoreEntry.WEB, EditorInfo.IME_ACTION_SEARCH);
 
-        mSearchEngineMap = new SearchEngineParser(SettingVals.searchEngineCsv(act.prefs()));
+        mWebsiteMap = new WebsiteMap(SettingVals.searchEngineCsv(act.prefs()));
     }
 
     @Override
@@ -39,7 +39,7 @@ import net.emilla.util.SearchEngineParser;
         //  - don't allow multiple %s's in the setting (i don't imagine there's any use for that right?)
         //    - handle character escapes if you want to be particular about it but the user can
         //      probably do that themself.
-        appSucceed(act, mSearchEngineMap.intent(query));
+        appSucceed(act, mWebsiteMap.intent(query));
     }
 
 }
