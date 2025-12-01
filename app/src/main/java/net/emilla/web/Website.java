@@ -5,10 +5,9 @@ import android.net.Uri;
 
 import androidx.annotation.Nullable;
 
-import net.emilla.trie.TrieMap;
 import net.emilla.util.Intents;
 
-/*internal*/ final class Website implements TrieMap.Value<Website> {
+/*internal*/ final class Website {
 
     private final String mUrl;
     @Nullable
@@ -35,15 +34,8 @@ import net.emilla.util.Intents;
         );
     }
 
-    @Override
-    public boolean isPrefixable() {
+    public boolean hasSearchEngine() {
         return mSearchEngine != null;
-    }
-
-    @Override
-    public Website duplicate(Website value) {
-        return this; // just return the self, discarding the duplicate value
-        // TODO: don't allow duplicate bookmarks in the settings.
     }
 
 }

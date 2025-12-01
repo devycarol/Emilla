@@ -77,7 +77,7 @@ public final class NotesFragment extends ActionBox {
         var inflater = act.getLayoutInflater();
         mAdapter = new FileSearchAdapter(
             inflater,
-            treeFile -> act.setInstruction(R.string.command_note, treeFile.displayName)
+            treeFile -> act.setInstruction(treeFile.displayName)
         );
         recycler.setAdapter(mAdapter);
 

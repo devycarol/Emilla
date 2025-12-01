@@ -1,43 +1,32 @@
 package net.emilla.command;
 
+import android.content.res.Resources;
+
 import androidx.annotation.Nullable;
 
 import net.emilla.activity.AssistActivity;
 import net.emilla.lang.Lang;
-import net.emilla.lang.Words;
-import net.emilla.trie.TrieMap;
+import net.emilla.trie.PhraseTree;
+import net.emilla.trie.PrefixResult;
 
 public final class CommandMap {
 
-    private final TrieMap<String, CommandYielder> mTrieMap = new TrieMap<String, CommandYielder>();
+    private final PhraseTree<CommandYielder> mPhraseTree;
     private final CommandYielder mDefaultYielder;
 
-    /*internal*/ CommandMap(CommandYielder defaultYielder) {
+    /*internal*/ CommandMap(Resources res, CommandYielder defaultYielder) {
+        mPhraseTree = Lang.phraseTree(res, CommandYielder[]::new);
         mDefaultYielder = defaultYielder;
     }
 
     /*internal*/ void put(String command, CommandYielder yielder) {
-        mTrieMap.put(Lang.words(command), yielder);
-    }
-
-    /// Tries to map `alias` to a command associated with `commandName`.
-    ///
-    /// If no such command is in the map, the alias is discarded.
-    ///
-    /// @param alias name for the custom command.
-    /// @param commandName exact name of command to map `alias` to.
-    /*internal*/ void putCustom(String alias, String commandName) {
-        CommandYielder exact = mTrieMap.getExact(Lang.words(commandName));
-        if (exact != null) {
-            mTrieMap.put(Lang.words(alias), exact);
-        }
+        mPhraseTree.put(command, yielder, yielder.usesInstruction());
     }
 
     @Nullable
     public EmillaCommand get(AssistActivity act, String fullCommand) {
-        Words words = Lang.words(fullCommand);
-        CommandYielder get = mTrieMap.get(words);
-        return get != null ? get.command(act, words) : null;
+        PrefixResult<CommandYielder, String> get = mPhraseTree.get(fullCommand);
+        return PrefixResult.toEmillaCommand(act, get);
     }
 
     public EmillaCommand getDefault(AssistActivity act) {
@@ -45,7 +34,7 @@ public final class CommandMap {
     }
 
     public EmillaCommand getDefault(AssistActivity act, String fullCommand) {
-        return mDefaultYielder.command(act, Lang.words(fullCommand));
+        return mDefaultYielder.command(act, fullCommand);
     }
 
 }

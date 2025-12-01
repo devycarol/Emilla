@@ -22,15 +22,22 @@ import net.emilla.lang.phrase.Dices;
 import net.emilla.lang.phrase.RandRange;
 import net.emilla.lang.phrase.impl.DicesEN_US;
 import net.emilla.lang.phrase.impl.RandRangeEN_US;
+import net.emilla.trie.PhraseTree;
 
 import java.time.DayOfWeek;
 import java.util.EnumSet;
+import java.util.function.IntFunction;
 
 public enum Lang {
     EN_US;
 
     public static String normalize(String s) {
         return s.toLowerCase();
+        // Todo lang: strip diacritics and handle the fact that case is really weird
+    }
+
+    public static int normalize(int codePoint) {
+        return Character.toLowerCase(codePoint);
         // Todo lang: strip diacritics and handle the fact that case is really weird
     }
 
@@ -66,10 +73,8 @@ public enum Lang {
         return res.getString(R.string.colon_concatenation, res.getString(a), res.getString(b));
     }
 
-    public static Words words(String phrase) {
-        return switch (-1) {
-            default -> new Words.Latin(phrase);
-        };
+    public static <V> PhraseTree<V> phraseTree(Resources res, IntFunction<V[]> arrayGenerator) {
+        return PhraseTree.of(res.getBoolean(R.bool.conf_lang_spaces), arrayGenerator);
     }
 
     public static ListPhrase list(String phrase) {

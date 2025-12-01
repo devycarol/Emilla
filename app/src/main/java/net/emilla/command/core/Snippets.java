@@ -26,9 +26,9 @@ import net.emilla.command.Subcommand;
 
         giveGadgets(mSnippetsFragment);
 
-        mActionMap = new ActionMap<SnippetAction>(SnippetAction.GET);
-
         var res = ctx.getResources();
+        mActionMap = new ActionMap<SnippetAction>(res, SnippetAction.GET, SnippetAction[]::new);
+
         mActionMap.put(res, SnippetAction.PEEK, R.array.subcmd_snippet_peek, true);
         mActionMap.put(res, SnippetAction.GET, R.array.subcmd_snippet_get, true);
         mActionMap.put(res, SnippetAction.POP, R.array.subcmd_snippet_pop, true);

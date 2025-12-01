@@ -40,7 +40,6 @@ import net.emilla.run.TextGift;
 import net.emilla.run.TimePickerOffering;
 import net.emilla.util.ArrayLoader;
 import net.emilla.util.Dialogs;
-import net.emilla.util.Patterns;
 
 import java.util.Objects;
 import java.util.Set;
@@ -55,7 +54,7 @@ public abstract class EmillaCommand {
     ) {
         Aliases.reformatCoresIfNecessary(prefs);
 
-        var map = new CommandMap(SettingVals.defaultCommand(prefs));
+        var map = new CommandMap(res, SettingVals.defaultCommand(prefs));
 
         for (var coreEntry : CoreEntry.values()) {
             if (!coreEntry.isEnabled(pm, prefs)) {
@@ -94,19 +93,19 @@ public abstract class EmillaCommand {
             }
         }
 
-        Set<String> customs = SettingVals.customCommands(prefs);
+//        Set<String> customs = SettingVals.customCommands(prefs);
         // Todo: custom commands with preset instructions.
-        // Todo: the current string-set approach means it's anyone's guess whether custom aliases
+        // Todo: the previous string-set approach means it's anyone's guess whether custom aliases
         //  can *successfully* map to one another at mapping time, and it guarantees they can't be
         //  reciprocally used. that's good for now since that'd be infinite recursion, but this
         //  should be borne in mind when creating a more robust custom command system.
-        for (String customEntry : customs) {
-            String[] split = Patterns.TRIMMING_CSV.split(customEntry);
-            int last = split.length - 1;
-            for (int i = 0; i < last; ++i) {
-                map.putCustom(split[i], split[last]);
-            }
-        }
+//        for (String customEntry : customs) {
+//            String[] split = Patterns.TRIMMING_CSV.split(customEntry);
+//            int last = split.length - 1;
+//            for (int i = 0; i < last; ++i) {
+//                map.putCustom(split[i], split[last]);
+//            }
+//        }
 
         return map;
     }

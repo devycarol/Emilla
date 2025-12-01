@@ -49,9 +49,9 @@ import java.util.List;
 
         giveGadgets(mContactsFragment);
 
-        mActionMap = new ActionMap<Action>(Action.VIEW);
-
         var res = ctx.getResources();
+        mActionMap = new ActionMap<Action>(res, Action.VIEW, Action[]::new);
+
         mActionMap.put(res, Action.VIEW, R.array.subcmd_view, true);
         mActionMap.put(res, Action.EDIT, R.array.subcmd_edit, true);
         mActionMap.put(res, Action.SHARE, R.array.subcmd_share, true);

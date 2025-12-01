@@ -42,9 +42,9 @@ import java.util.TreeSet;
     /*internal*/ Tasker(Context ctx, AppEntry appEntry) {
         super(ctx, appEntry, EditorInfo.IME_ACTION_NEXT);
 
-        mActionMap = new ActionMap<Action>(Action.RUN);
-
         var res = ctx.getResources();
+        mActionMap = new ActionMap<Action>(res, Action.RUN, Action[]::new);
+
         mActionMap.put(res, Action.RUN, R.array.subcmd_tasker_run, true);
         mActionMap.put(res, Action.LIST, R.array.subcmd_tasker_list, false);
         // todo: list with search—when you do, change usesInstruction from false to true.

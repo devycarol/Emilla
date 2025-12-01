@@ -25,7 +25,8 @@ import net.emilla.web.WebsiteMap;
     /*internal*/ Web(AssistActivity act) {
         super(act, CoreEntry.WEB, EditorInfo.IME_ACTION_SEARCH);
 
-        mWebsiteMap = new WebsiteMap(SettingVals.searchEngineCsv(act.prefs()));
+        var res = act.getResources();
+        mWebsiteMap = new WebsiteMap(res, SettingVals.searchEngineCsv(act.prefs()));
     }
 
     @Override

@@ -5,28 +5,34 @@ import android.content.res.Resources;
 import androidx.annotation.ArrayRes;
 
 import net.emilla.lang.Lang;
-import net.emilla.lang.Words;
-import net.emilla.trie.TrieMap;
+import net.emilla.trie.PhraseTree;
+import net.emilla.trie.PrefixResult;
+
+import java.util.function.IntFunction;
 
 public final class ActionMap<A extends Enum<A>> {
 
-    private final TrieMap<String, ActionYielder<A>> mTrieMap = new TrieMap<String, ActionYielder<A>>();
+    private final PhraseTree<A> mPhraseTree;
     private final A mDefaultAction;
 
-    public ActionMap(A defaultAction) {
+    public ActionMap(Resources res, A defaultAction, IntFunction<A[]> arrayGenerator) {
+        mPhraseTree = Lang.phraseTree(res, arrayGenerator);
         mDefaultAction = defaultAction;
     }
 
     public void put(Resources res, A action, @ArrayRes int names, boolean usesInstruction) {
-        var yielder = new ActionYielder<A>(action, usesInstruction);
         for (String name : res.getStringArray(names)) {
-            mTrieMap.put(Lang.words(name), yielder);
+            mPhraseTree.put(name, action, usesInstruction);
         }
     }
 
     public Subcommand<A> get(String instruction) {
-        Words words = Lang.words(instruction);
-        ActionYielder<A> get = mTrieMap.get(words);
-        return get == null ? new Subcommand<A>(mDefaultAction, instruction) : get.action(words);
+        PrefixResult<A, String> get = mPhraseTree.get(instruction);
+        A action = get.value();
+
+        return action != null
+            ? new Subcommand<A>(action, get.leftovers)
+            : new Subcommand<A>(mDefaultAction, instruction);
     }
+
 }

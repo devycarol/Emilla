@@ -38,8 +38,7 @@ import net.emilla.util.Permission;
         super(act, CoreEntry.POMODORO, R.string.data_hint_pomodoro);
 
         var res = act.getResources();
-
-        mActionMap = new ActionMap<Action>(Action.WORK);
+        mActionMap = new ActionMap<Action>(res, Action.WORK, Action[]::new);
         mActionMap.put(res, Action.BREAK, R.array.subcmd_pomodoro_break, true);
 
         SharedPreferences prefs = act.prefs();

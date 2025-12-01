@@ -1,8 +1,9 @@
 package net.emilla.command;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.view.inputmethod.EditorInfo;
+
+import androidx.annotation.Nullable;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
@@ -10,25 +11,32 @@ import net.emilla.util.Dialogs;
 
 import java.util.Arrays;
 
-/*internal*/ final class DuplicateCommand extends EmillaCommand {
+public final class DuplicateCommand extends EmillaCommand {
 
-    private final String[] mLabels;
     private final EmillaCommand[] mCommands;
+    private final String[] mLabels;
 
-    /*internal*/ DuplicateCommand(Context ctx, EmillaCommand[] cmds) {
+    public DuplicateCommand(
+        AssistActivity act,
+        CommandYielder[] yielders,
+        @Nullable String instruction
+    ) {
         super(
-            ctx, new DuplicateParams(),
+            act, new DuplicateParams(),
 
             R.string.summary_duplicate,
             R.string.manual_duplicate,
-            EditorInfo.IME_ACTION_NEXT
+            EditorInfo.IME_ACTION_DONE
         );
 
-        var res = ctx.getResources();
-        mLabels = Arrays.stream(cmds)
+        mCommands = Arrays.stream(yielders)
+            .map(yielder -> yielder.command(act))
+            .toArray(EmillaCommand[]::new);
+        mLabels = Arrays.stream(mCommands)
             .map(cmd -> cmd.name)
             .toArray(String[]::new);
-        mCommands = cmds;
+
+        instruct(instruction);
     }
 
     @Override

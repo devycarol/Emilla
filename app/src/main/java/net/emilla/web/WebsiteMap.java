@@ -4,18 +4,21 @@ import static android.app.SearchManager.QUERY;
 import static android.content.Intent.ACTION_WEB_SEARCH;
 
 import android.content.Intent;
+import android.content.res.Resources;
 
 import net.emilla.lang.Lang;
-import net.emilla.lang.Words;
-import net.emilla.trie.TrieMap;
+import net.emilla.trie.PhraseTree;
+import net.emilla.trie.PrefixResult;
 import net.emilla.util.Patterns;
 
 public final class WebsiteMap {
 
-    private final TrieMap<String, Website> mSiteMap = new TrieMap<String, Website>();
+    private final PhraseTree<Website> mSiteMap;
 
     @Deprecated
-    public WebsiteMap(String engineCsv) {
+    public WebsiteMap(Resources res, CharSequence engineCsv) {
+        mSiteMap = Lang.phraseTree(res, Website[]::new);
+
         for (String entry : Patterns.TRIMMING_LINES.split(engineCsv)) {
             String[] split = Patterns.TRIMMING_CSV.split(entry);
             if (split.length < 2) {
@@ -29,24 +32,20 @@ public final class WebsiteMap {
 
             for (int i = 0; i < last; ++i) {
                 String alias = split[i];
-                mSiteMap.put(Lang.words(alias), site);
+                mSiteMap.put(alias, site, site.hasSearchEngine());
             }
         }
     }
 
     public Intent intent(String search) {
-        Words words = Lang.words(search);
+        PrefixResult<Website, String> get = mSiteMap.get(search);
 
-        Website site = mSiteMap.get(words);
+        Website site = get.value();
         if (site == null) {
             return new Intent(ACTION_WEB_SEARCH).putExtra(QUERY, search);
         }
 
-        String query = words.hasRemainingContents()
-            ? words.remainingContents()
-            : null;
-
-        return site.viewIntent(query);
+        return site.viewIntent(get.leftovers);
     }
 
 }

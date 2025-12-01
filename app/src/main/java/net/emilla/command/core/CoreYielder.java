@@ -13,7 +13,7 @@ import net.emilla.command.EmillaCommand;
     }
 
     @Override
-    public boolean isPrefixable() {
+    public boolean usesInstruction() {
         return mCoreEntry.usesInstruction;
     }
 

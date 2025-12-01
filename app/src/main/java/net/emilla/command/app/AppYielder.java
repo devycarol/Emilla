@@ -12,7 +12,7 @@ public final class AppYielder extends CommandYielder {
     }
 
     @Override
-    public boolean isPrefixable() {
+    public boolean usesInstruction() {
         return mApp.actions.usesInstruction();
     }
 

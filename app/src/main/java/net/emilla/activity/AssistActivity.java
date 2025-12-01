@@ -81,7 +81,6 @@ import net.emilla.run.CommandRun;
 import net.emilla.run.DialogRun;
 import net.emilla.run.MessageFailure;
 import net.emilla.util.Dialogs;
-import net.emilla.util.Strings;
 import net.emilla.view.ActionButton;
 
 import java.util.ArrayList;
@@ -117,6 +116,8 @@ public final class AssistActivity extends AppCompatActivity {
 
     private /*late*/ CommandMap mCommandMap;
     private /*late*/ EmillaCommand mCommand;
+
+    private int mInstructionPosition;
 
     private boolean mOpen = false;
 
@@ -189,7 +190,7 @@ public final class AssistActivity extends AppCompatActivity {
 
         @Override
         public void onTextChanged(CharSequence text, int start, int before, int count) {
-            String command = Strings.trimLeading(text.toString());
+            String command = text.toString();
 
             var act = AssistActivity.this;
             EmillaCommand cmd = mCommandMap.get(act, command);
@@ -198,7 +199,7 @@ public final class AssistActivity extends AppCompatActivity {
                 cmd = mCommandMap.getDefault(act, command);
             }
 
-            boolean noCommand = command.isEmpty();
+            boolean noCommand = command.isBlank();
             if (cmd != mCommand || noCommand != mVm.noCommand) {
                 mCommand.unload(act);
                 mCommand = cmd;
@@ -547,13 +548,17 @@ public final class AssistActivity extends AppCompatActivity {
      * Setters *
      *=========*/
 
-    @Deprecated
-    public void setInstruction(@StringRes int bruteForceCommandName, String instruction) {
-        String command = Lang.wordConcat(mVm.res, bruteForceCommandName, instruction);
+    public void setInstructionPosition(int position) {
+        mInstructionPosition = position;
+    }
 
+    public void setInstruction(String instruction) {
         EditText commandField = mBinding.commandField;
-        commandField.setText(command);
-        commandField.setSelection(command.length());
+        String command = commandField.getText().toString().substring(0, mInstructionPosition);
+        String newCommand = command + instruction;
+
+        commandField.setText(newCommand);
+        commandField.setSelection(mInstructionPosition, newCommand.length());
     }
 
     public void putAttachments(String commandEntry, @Nullable ArrayList<Uri> attachments) {
