@@ -329,11 +329,11 @@ public final class AssistActivity extends AppCompatActivity {
             Editable commandText = commandField.getText();
             Editable dataText = dataField.getText();
 
-            int len = commandText.length();
-            if (len == 0 || Character.isWhitespace(commandText.charAt(len - 1))) {
+            int length = commandText.length();
+            if (length == 0 || Character.isWhitespace(commandText.charAt(length - 1))) {
                 commandField.append(dataText);
             } else {
-                commandField.append(Lang.wordConcat(mVm.res, "", dataText));
+                commandField.append(Lang.wordConcat(mVm.res, "", dataText.toString()));
             }
 
             dataField.setText(null);
@@ -555,8 +555,16 @@ public final class AssistActivity extends AppCompatActivity {
     public void setInstruction(String instruction) {
         EditText commandField = mBinding.commandField;
         String command = commandField.getText().toString().substring(0, mInstructionPosition);
-        String newCommand = command + instruction;
 
+        if (Lang.wordsAreSpaceSeparated(mVm.res)) {
+            int last = command.length() - 1;
+            if (last >= 0 && !Character.isWhitespace(command.charAt(last))) {
+                command += ' ';
+                ++mInstructionPosition;
+            }
+        }
+
+        String newCommand = command + instruction;
         commandField.setText(newCommand);
         commandField.setSelection(mInstructionPosition, newCommand.length());
     }

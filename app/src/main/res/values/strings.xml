@@ -665,6 +665,7 @@
     <!-- Locale-sensitive grammars. For instance, English words are space-separated but Chinese characters aren't. -->
     <!-- Please let me know if your locale requires more nuance for this. -->
     <string name="word_concatenation">%1$s %2$s</string>
+    <string name="comma_concatenation">%1$s, %2$s</string>
     <!-- Help text displayed when entering a command (command name, brief instruction) -->
     <string name="colon_concatenation">%1$s: %2$s</string>
 

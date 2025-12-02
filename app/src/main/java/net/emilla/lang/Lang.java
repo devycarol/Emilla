@@ -41,20 +41,31 @@ public enum Lang {
         // Todo lang: strip diacritics and handle the fact that case is really weird
     }
 
-    public static String wordConcat(Resources res, Object a, Object b) {
-        return res.getString(R.string.word_concatenation, a, b);
+    public static boolean wordsAreSpaceSeparated(Resources res) {
+        return res.getBoolean(R.bool.conf_lang_spaces);
     }
 
-    public static String wordConcat(Resources res, @StringRes int a, Object b) {
-        return res.getString(R.string.word_concatenation, res.getString(a), b);
+    public static String wordConcat(Resources res, String a, String b) {
+        return wordsAreSpaceSeparated(res)
+            ? a + ' ' + b
+            : a + b;
+
     }
 
-    public static String wordConcat(Resources res, Object a, @StringRes int b) {
-        return res.getString(R.string.word_concatenation, a, res.getString(b));
+    public static String wordConcat(Resources res, @StringRes int a, String b) {
+        return wordConcat(res, res.getString(a), b);
+    }
+
+    public static String wordConcat(Resources res, String a, @StringRes int b) {
+        return wordConcat(res, a, res.getString(b));
     }
 
     public static String wordConcat(Resources res, @StringRes int a, @StringRes int b) {
-        return res.getString(R.string.word_concatenation, res.getString(a), res.getString(b));
+        return wordConcat(res, res.getString(a), res.getString(b));
+    }
+
+    public static String commaConcat(Resources res, Object a, @StringRes int b) {
+        return res.getString(R.string.comma_concatenation, a, res.getString(b));
     }
 
     public static String colonConcat(Resources res, Object a, Object b) {
@@ -74,7 +85,7 @@ public enum Lang {
     }
 
     public static <V> PhraseTree<V> phraseTree(Resources res, IntFunction<V[]> arrayGenerator) {
-        return PhraseTree.of(res.getBoolean(R.bool.conf_lang_spaces), arrayGenerator);
+        return PhraseTree.of(wordsAreSpaceSeparated(res), arrayGenerator);
     }
 
     public static ListPhrase list(String phrase) {
