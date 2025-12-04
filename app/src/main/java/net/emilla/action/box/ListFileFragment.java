@@ -33,7 +33,7 @@ public final class ListFileFragment extends ActionBox {
         this::onFileChosen
     );
 
-    private ListFileFragment() {
+    /*internal*/ ListFileFragment() {
         super(R.layout.fragment_notes);
     }
 

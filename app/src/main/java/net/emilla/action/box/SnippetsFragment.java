@@ -21,7 +21,7 @@ import net.emilla.util.Dialogs;
 
 public final class SnippetsFragment extends ActionBox {
 
-    private SnippetsFragment() {
+    /*internal*/ SnippetsFragment() {
         super(R.layout.fragment_item_list);
     }
 

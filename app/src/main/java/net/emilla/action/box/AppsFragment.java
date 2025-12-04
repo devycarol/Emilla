@@ -18,7 +18,7 @@ import net.emilla.sort.ItemSearchAdapter;
 
 public final class AppsFragment extends ActionBox {
 
-    private AppsFragment() {
+    /*internal*/ AppsFragment() {
         super(R.layout.fragment_item_list);
     }
 

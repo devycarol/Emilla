@@ -32,7 +32,7 @@ public final class NotesFragment extends ActionBox {
         this::onFolderChosen
     );
 
-    private NotesFragment() {
+    /*internal*/ NotesFragment() {
         super(R.layout.fragment_notes);
     }
 
