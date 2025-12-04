@@ -134,7 +134,7 @@ public /*open*/ class ItemSearchAdapter<E extends SearchItem>
         holder.itemView.setOnClickListener(v -> {
             mItemClickAction.accept(itemAt(holder.getBindingAdapterPosition()));
         });
-        holder.labelView.setText(itemAt(pos).displayName);
+        holder.label.setText(itemAt(pos).displayName);
     }
 
     private E itemAt(int index) {

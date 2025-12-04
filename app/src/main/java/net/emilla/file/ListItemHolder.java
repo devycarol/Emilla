@@ -8,12 +8,12 @@ import net.emilla.databinding.ListItemBinding;
 
 public final class ListItemHolder extends RecyclerView.ViewHolder {
 
-    public final TextView labelView;
+    public final TextView label;
 
     public ListItemHolder(ListItemBinding binding) {
         super(binding.getRoot());
 
-        this.labelView = binding.getRoot();
+        this.label = binding.getRoot();
     }
 
 }

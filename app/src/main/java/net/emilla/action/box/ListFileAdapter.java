@@ -35,7 +35,7 @@ public final class ListFileAdapter extends RecyclerView.Adapter<ListItemHolder> 
 
     @Override
     public void onBindViewHolder(ListItemHolder holder, int position) {
-        holder.labelView.setText(mItems[position]);
+        holder.label.setText(mItems[position]);
     }
 
     @Override
