@@ -4,6 +4,7 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.exception.EmillaException;
+import net.emilla.lang.Lang;
 import net.emilla.util.Strings;
 
 import java.time.LocalDate;
@@ -276,7 +277,7 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         var dateNow = LocalDate.now();
         var date = dateNow;
 
-        if (s.equalsIgnoreCase(TOMORROW)) {
+        if (Lang.normalize(s).equals(TOMORROW)) {
             LocalDate tomorrow = date.plusDays(1L);
             return LocalDateTime.of(tomorrow, nextHalfHour);
         }
@@ -339,10 +340,10 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
             switch (times.length) {
             case 2:
                 String endStr = times[1];
-                if (Strings.containsIgnoreCase(endStr, TOMORROW)) {
+                if (Lang.normalize(endStr).contains(TOMORROW)) {
                     endTomorrow = true;
                     endStr = SPACE_TOMORROW.matcher(endStr).replaceFirst("");
-                } else if (Strings.containsIgnoreCase(endStr, "on ")) {
+                } else if (Lang.normalize(endStr).contains("on ")) {
                     // todo
                 }
                 endTime = parseTime(endStr, errorTitle);
