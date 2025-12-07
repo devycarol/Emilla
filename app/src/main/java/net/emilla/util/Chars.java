@@ -2,18 +2,19 @@ package net.emilla.util;
 
 public final class Chars {
 
-    public static boolean isNonLineSpace(char ch) {
-        return switch (ch) {
-            case '\n', '\r' -> false;
-            default -> Character.isWhitespace(ch);
-        };
+    public static boolean isLineSeparator(int ch) {
+        return ch == '\n' || ch == '\r';
+    }
+
+    public static boolean isNonLineSpace(int ch) {
+        return !isLineSeparator(ch) && Character.isWhitespace(ch);
     }
 
     public static boolean differentLetters(char a, char b) {
         return compareIgnoreCase(a, b) != 0;
     }
 
-    public static int compareIgnoreCase(char a, char b) {
+    private static int compareIgnoreCase(char a, char b) {
         if (a != b && Character.toUpperCase(a) != Character.toUpperCase(b)) {
             a = Character.toLowerCase(a);
             b = Character.toLowerCase(b);

@@ -5,6 +5,7 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.exception.EmillaException;
+import net.emilla.util.Patterns;
 
 import java.time.DayOfWeek;
 import java.util.EnumSet;
@@ -43,7 +44,7 @@ public final class WeekdaysEN_US {
         }
 
         if (WEEKDAYS.matcher(weekdays).matches()) {
-            return COMMA_OPTIONAL_LIST.splitAsStream(weekdays)
+            return Patterns.splitStream(COMMA_OPTIONAL_LIST, weekdays)
                 .map((String word) -> weekdayOf(word, errorTitle));
         }
 

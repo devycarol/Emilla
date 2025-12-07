@@ -1,12 +1,14 @@
 package net.emilla.util;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 
 import net.emilla.R;
@@ -50,8 +52,11 @@ public enum Permission {
         mPermissions = permissions;
     }
 
+    @SuppressLint("NewApi")
     public void flow(AssistActivity act, @Nullable Runnable onGrant) {
-        if (has(act)) return;
+        if (has(act)) {
+            return;
+        }
 
         if (isPromptAllowed(act)) {
             act.offer(new PermissionOffering(mPermissions, onGrant));
@@ -60,6 +65,7 @@ public enum Permission {
         }
     }
 
+    @SuppressLint("NewApi")
     public final void with(AssistActivity act, Runnable onGrant) {
         if (has(act)) {
             onGrant.run();
@@ -73,6 +79,7 @@ public enum Permission {
         }
     }
 
+    @SuppressLint("NewApi")
     public void with(AssistActivity act, Runnable onGrant, Runnable onNoPrompt, Runnable afterGrant) {
         if (has(act)) {
             onGrant.run();
@@ -91,6 +98,7 @@ public enum Permission {
         }
     }
 
+    @SuppressLint("NewApi")
     public boolean has(Context ctx) {
         if (Build.VERSION.SDK_INT < mRestrictSdk) {
             return true;
@@ -105,6 +113,7 @@ public enum Permission {
         return true;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private boolean isPromptAllowed(Activity act) {
         for (String permission : mPermissions) {
             if (!act.shouldShowRequestPermissionRationale(permission)) {

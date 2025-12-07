@@ -1,5 +1,9 @@
 package net.emilla.sort;
 
+import net.emilla.util.ArrayLoader;
+
+import java.util.Arrays;
+
 public final class SortedArrays {
 
     public static <E> int indexOf(E[] array, Comparable<? super E> searcher) {
@@ -112,6 +116,43 @@ public final class SortedArrays {
         }
 
         return last;
+    }
+
+    /// Locations of step-sequences in a distinct, sorted array.
+    ///
+    /// @param sortedIndices must be sorted and distinct.
+    /// @return a sorted array of all contiguous index portions in `sortedIndices` where the
+    /// elements follow (n, n + 1, n + 2, ...). An element with no sequential neighbors will be a
+    /// lone [IndexPortion].
+    public static IndexPortion[] portions(int[] sortedIndices) {
+        int indexCount = sortedIndices.length;
+        var loader = new ArrayLoader<IndexPortion>(indexCount, IndexPortion[]::new);
+
+        int last = indexCount - 1;
+        for (int i = 0; i <= last; ++i) {
+            int index = sortedIndices[i];
+            if (i == last || index + 1 != sortedIndices[i + 1]) {
+                loader.add(new IndexPortion(index));
+            } else {
+                do ++i;
+                while (i < last && sortedIndices[i] + 1 == sortedIndices[i + 1]);
+
+                int end = sortedIndices[i] + 1;
+                loader.add(IndexSpan.window(index, end));
+            }
+        }
+
+        return loader.array();
+    }
+
+    public static <E> E[] extract(E[] array, IndexPortion[] sortedPortions) {
+        int position = 0;
+
+        for (IndexPortion keep : sortedPortions) {
+            position = keep.shiftTo(array, position);
+        }
+
+        return Arrays.copyOf(array, position);
     }
 
     private SortedArrays() {}

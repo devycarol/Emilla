@@ -154,7 +154,7 @@ public final class CommandsFragment extends EmillaSettingsFragment {
 
     @Nullable
     private static String cleanCommaList(CharSequence entry) {
-        String cleanCommaList = SQUASHING_CSV.splitAsStream(entry)
+        String cleanCommaList = Patterns.splitStream(SQUASHING_CSV, entry)
             .filter(s -> !s.isEmpty())
             .collect(Collectors.joining(", "));
 

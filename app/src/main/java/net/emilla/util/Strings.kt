@@ -2,7 +2,7 @@
 
 package net.emilla.util
 
-fun emptyIfNull(s: String?) = s ?: ""
+fun String?.emptyIfNull(): String = this ?: ""
 
 fun CharArray.indexOfNonSpace(): Int {
     if (isEmpty() || !this[0].isWhitespace()) return 0
@@ -14,20 +14,19 @@ fun CharArray.indexOfNonSpace(): Int {
     return index
 }
 
-internal fun ByteArray.count(b: Byte): Int = count { it == b }
 fun Char.repeat(count: Int) = String(CharArray(count) { this })
 fun CharArray.substring(start: Int = 0): String = substring(start, size)
 fun CharArray.substring(start: Int = 0, end: Int) = String(copyOfRange(start, end))
 
-fun String.stripNonDigits(): String = stripNonMatching(this, Character::isDigit)
-fun String.stripNonNumbers(): String = stripNonMatching(this, Chars::isNumberChar)
-fun String.stripSpaces(): String = stripMatching(this, Character::isWhitespace)
+fun String.stripNonDigits(): String = stripNonMatching(Character::isDigit)
+fun String.stripNonNumbers(): String = stripNonMatching(Chars::isNumberChar)
+fun String.stripSpaces(): String = stripMatching(Character::isWhitespace)
 
-private inline fun stripMatching(s: String, condition: (Char) -> Boolean): String
-    = stripNonMatching(s) { !condition(it) }
+private inline fun String.stripMatching(condition: (Char) -> Boolean): String
+    = stripNonMatching { !condition(it) }
 
-private inline fun stripNonMatching(s: String, filter: (Char) -> Boolean): String {
-    val chars = s.toCharArray()
+private inline fun String.stripNonMatching(filter: (Char) -> Boolean): String {
+    val chars = this.toCharArray()
     var pos = 0
 
     for (i in 0..<chars.size) {

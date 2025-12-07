@@ -7,15 +7,15 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.DocumentsContract.Document;
 
 import androidx.annotation.Nullable;
 
-import net.emilla.util.ArrayLoader;
+import net.emilla.util.Chars;
 import net.emilla.util.Intents;
-import net.emilla.util.Strings;
-import net.emilla.util.TokenIterator;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,9 +43,7 @@ public final class Files {
         throws IOException, FileNotFoundException {
 
         try (InputStream istream = cr.openInputStream(file)) {
-            if (istream == null) {
-                throw new IOException("The content provider crashed");
-            }
+            requireStream(istream);
 
             return reader.readFrom(istream);
         } catch (SecurityException e) {
@@ -62,9 +60,7 @@ public final class Files {
         throws IOException, FileNotFoundException {
 
         try (OutputStream ostream = cr.openOutputStream(file, mode)) {
-            if (ostream == null) {
-                throw new IOException("The content provider crashed");
-            }
+            requireStream(ostream);
 
             writer.writeTo(ostream);
         } catch (SecurityException e) {
@@ -73,33 +69,50 @@ public final class Files {
     }
 
     @Nullable
-    public static String[] nonBlankLines(ContentResolver cr, Uri file) {
+    public static ListItem[] textList(ContentResolver cr, Uri file) {
         byte[] bytes;
         try {
-            bytes = read(cr, file, istream -> istream.readAllBytes());
+            bytes = read(cr, file, Files::readAllBytes);
         } catch (IOException e) {
             return null;
         }
 
-        int lineCount = Strings.count(bytes, (byte) '\n') + 1;
+        return new TextListReader(bytes).toArray();
+    }
 
-        int last = bytes.length - 1;
-        while (last >= 0 && bytes[last] == '\n') {
-            --lineCount;
-            --last;
+    private static byte[] readAllBytes(InputStream inputStream) throws IOException {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            return inputStream.readAllBytes();
         }
 
-        var loader = new ArrayLoader<String>(lineCount, String[]::new);
-        var tokens = new TokenIterator(bytes, (byte) '\n');
+        var ostream = new ByteArrayOutputStream();
 
-        for (int i = 0; i < lineCount; ++i) {
-            String line = tokens.next();
-            if (!line.isBlank()) {
-                loader.add(line);
+        int bufferSize = 0x2000;
+        var buffer = new byte[bufferSize];
+        do {
+            int read = inputStream.read(buffer, 0, bufferSize);
+            if (read == -1) {
+                break;
             }
-        }
+            ostream.write(buffer, 0, read);
+        } while (true);
 
-        return loader.array();
+        return ostream.toByteArray();
+    }
+
+    public static boolean saveList(ContentResolver cr, ListItem[] list, Uri file) {
+        try {
+            write(cr, file, OVERWRITE, ostream -> {
+                for (ListItem item : list) {
+                    item.writeTo(ostream);
+                    ostream.write('\n');
+                }
+            });
+
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
     }
 
     public static boolean writeLine(ContentResolver cr, Uri file, String text) {
@@ -166,8 +179,6 @@ public final class Files {
             }
 
             return size;
-        } catch (SecurityException e) {
-            throw new IOException(e);
         }
     }
 
@@ -177,23 +188,17 @@ public final class Files {
         long fileSize = sizeOf(cr, file);
 
         try (InputStream istream = cr.openInputStream(file)) {
-            if (istream == null) {
-                throw new IOException("The content provider crashed");
-            }
+            requireStream(istream);
 
             if (fileSize == 0L) {
                 assertEnded(istream);
                 return true;
             }
 
-            return isLineSeparator(lastByteOf(istream, fileSize));
+            return Chars.isLineSeparator(lastByteOf(istream, fileSize));
         } catch (SecurityException e) {
             throw new IOException(e);
         }
-    }
-
-    private static boolean isLineSeparator(int b) {
-        return b == '\n' || b == '\r';
     }
 
     private static int lastByteOf(InputStream istream, long size) throws IOException {
@@ -222,6 +227,12 @@ public final class Files {
         }
 
         return lastByte;
+    }
+
+    private static void requireStream(Object iostream) throws IOException {
+        if (iostream == null) {
+            throw new IOException("The content provider crashed");
+        }
     }
 
     private static void assertEnded(InputStream istream) throws IOException {

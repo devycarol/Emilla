@@ -74,8 +74,9 @@ public final class ListFileFragment extends ActionBox {
         var manager = new LinearLayoutManager(act);
         recycler.setLayoutManager(manager);
 
+        var res = act.getResources();
         var inflater = act.getLayoutInflater();
-        mAdapter = new ListFileAdapter(inflater);
+        mAdapter = new ListFileAdapter(res, inflater);
         recycler.setAdapter(mAdapter);
 
         TextView fileRequester = mBinding.fileRequester;
@@ -149,10 +150,13 @@ public final class ListFileFragment extends ActionBox {
         return mAdapter.file();
     }
 
-    public TriResult addTask(String task) {
-        var ctx = requireContext();
-        var cr = ctx.getContentResolver();
+    public TriResult addTask(ContentResolver cr, String task) {
         return mAdapter.addItem(cr, task);
+    }
+
+    @Nullable
+    public TriResult completeSelection(ContentResolver cr) {
+        return mAdapter.dismissSelection(cr);
     }
 
     @Override

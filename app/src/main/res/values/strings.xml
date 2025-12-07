@@ -16,6 +16,8 @@
     <string name="overwrite">Overwrite</string>
     <string name="local_time">Local time</string>
     <string name="notes">Notes</string>
+    <string name="check">check</string>
+    <string name="uncheck">uncheck</string>
     <string name="request_note_folder">Press to select a folder for notes</string>
     <string name="request_todo_file">Press to select a file for tasks</string>
 
@@ -664,7 +666,6 @@
 
     <!-- Locale-sensitive grammars. For instance, English words are space-separated but Chinese characters aren't. -->
     <!-- Please let me know if your locale requires more nuance for this. -->
-    <string name="word_concatenation">%1$s %2$s</string>
     <string name="comma_concatenation">%1$s, %2$s</string>
     <!-- Help text displayed when entering a command (command name, brief instruction) -->
     <string name="colon_concatenation">%1$s: %2$s</string>
@@ -727,7 +728,7 @@
     <!-- App-specific errors -->
     <string name="error_tasker_not_enabled">Tasker isn\'t enabled.</string>
     <string name="error_tasker_blocked">External access isn\'t enabled in Tasker.</string>
-    <string name="error_tasker_no_receiver">Tasker receive tasks. This is probably a Tasker bug.</string>
+    <string name="error_tasker_no_receiver">Tasker can\'t receive tasks. This is probably a Tasker bug.</string>
     <string name="error_tasker_no_tasks">No tasks matching \"%s\" were found.</string>
 
     <!-- Alert dialogs -->
@@ -785,4 +786,5 @@
     <string name="toast_snippet_deleted">Deleted \"%s\".</string>
 
     <string name="tag_toast_long">/long</string>
+    <string name="checked">checked</string>
 </resources>
