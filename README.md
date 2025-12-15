@@ -1,5 +1,5 @@
 # Emilla
-A powerful, you-respecting assistant for Android.
+A powerful Android assistant that respects you.
 
 ## [Releases](https://github.com/devycarol/Emilla/releases)
 
