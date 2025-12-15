@@ -5,10 +5,10 @@ A powerful, respectful assistant for Android.
 
 ### Why is Emilla awesome?
 - You don't need a microphone, you can use it wherever you want.
-- It never cuts you off or assumes it knows better than you.
+- It never cuts you off or tries to know better than you.
 - It's based on explicit commands, not mysterious AI.
-- The interface helps you find what you need.
-- It never connects to the internet. It *can't*, so it won't snoop on you.
+- It finds what you need and gets out of the way.
+- It can't connect to the internet, it won't snoop on you.
 - It's designed with accessibility at front of mind.
 - You can turn off sounds if they're not your thing.
 
