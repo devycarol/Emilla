@@ -9,7 +9,7 @@ A powerful, respectful assistant for Android.
 - It's based on explicit commands, not mysterious AI.
 - It finds what you need and gets out of the way.
 - It can't connect to the internet, it won't snoop on you.
-- It's designed with accessibility at front of mind.
+- Accessibility is a top priority.
 - You can turn off sounds if they're not your thing.
 
 <img src="https://github.com/user-attachments/assets/82f3bb88-5d74-4c08-bd18-d6b7029ee0e8" width="380px">
