@@ -1,5 +1,7 @@
 package net.emilla.util;
 
+import androidx.annotation.Nullable;
+
 import java.util.Arrays;
 import java.util.function.IntFunction;
 
@@ -12,13 +14,13 @@ public final class ArrayLoader<E> {
         mArray = generator.apply(capacity);
     }
 
-    public void add(E e) {
+    public void add(@Nullable E e) {
         mArray[mSize] = e;
         // IOB at capacity
         ++mSize;
     }
 
-    public void growingAdd(E e) {
+    public void growingAdd(@Nullable E e) {
         if (mSize == mArray.length) {
             mArray = Arrays.copyOf(mArray, mSize * 3 / 2 + 1);
         }
@@ -30,10 +32,9 @@ public final class ArrayLoader<E> {
     }
 
     public E[] array() {
-        if (mSize == mArray.length) {
-            return mArray;
-        }
-        return Arrays.copyOf(mArray, mSize);
+        return mSize == mArray.length
+            ? mArray
+            : Arrays.copyOf(mArray, mSize);
     }
 
     public E[] appendedTo(E[] array) {
