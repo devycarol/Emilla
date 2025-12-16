@@ -84,7 +84,7 @@ public final class ListFileFragment extends ActionBox {
         fileRequester.setOnClickListener((View v) -> switchFile());
 
         var cr = act.getContentResolver();
-        SharedPreferences prefs = act.prefs();
+        var prefs = act.getSharedPreferences();
         Uri todoFile = SettingVals.todoFile(prefs);
         if (todoFile != null) {
             loadFile(cr, prefs, todoFile);
@@ -105,7 +105,7 @@ public final class ListFileFragment extends ActionBox {
 
         var act = (AssistActivity) requireActivity();
         var cr = act.getContentResolver();
-        SharedPreferences prefs = act.prefs();
+        var prefs = act.getSharedPreferences();
 
         if (loadFile(cr, prefs, file)) {
             int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION

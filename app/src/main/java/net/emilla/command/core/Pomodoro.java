@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.content.Context;
-import android.content.SharedPreferences;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
@@ -41,7 +40,7 @@ final class Pomodoro extends CoreDataCommand {
         mActionMap = new ActionMap<Action>(res, Action.WORK, Action[]::new);
         mActionMap.put(res, Action.BREAK, R.array.subcmd_pomodoro_break, true);
 
-        SharedPreferences prefs = act.prefs();
+        var prefs = act.getSharedPreferences();
         mWorkMemo = SettingVals.defaultPomoWorkMemo(prefs, res);
         mBreakMemo = SettingVals.defaultPomoBreakMemo(prefs, res);
     }
@@ -82,7 +81,7 @@ final class Pomodoro extends CoreDataCommand {
 
     private static int seconds(AssistActivity act, @Nullable String minutes, boolean isBreak) {
         if (minutes == null) {
-            SharedPreferences prefs = act.prefs();
+            var prefs = act.getSharedPreferences();
             return (
                 isBreak
                     ? SettingVals.defaultPomoBreakMins(prefs)

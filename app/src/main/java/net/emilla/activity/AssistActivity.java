@@ -509,7 +509,7 @@ public final class AssistActivity extends AppCompatActivity {
      * Getters *
      *=========*/
 
-    public SharedPreferences prefs() {
+    public SharedPreferences getSharedPreferences() {
         return mVm.prefs;
     }
 

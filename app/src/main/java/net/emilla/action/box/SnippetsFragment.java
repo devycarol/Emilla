@@ -56,7 +56,7 @@ public final class SnippetsFragment extends ActionBox {
         recycler.setLayoutManager(manager);
 
         var inflater = act.getLayoutInflater();
-        mPrefs = act.prefs();
+        mPrefs = act.getSharedPreferences();
         mAdapter = Snippet.adapter(
             inflater,
             mPrefs,

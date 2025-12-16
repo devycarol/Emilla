@@ -3,7 +3,6 @@ package net.emilla.command.core;
 import static android.content.Intent.ACTION_WEB_SEARCH;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.view.inputmethod.EditorInfo;
 
@@ -25,7 +24,7 @@ final class Web extends CoreCommand {
     /*internal*/ Web(AssistActivity act) {
         super(act, CoreEntry.WEB, EditorInfo.IME_ACTION_SEARCH);
 
-        SharedPreferences prefs = act.prefs();
+        var prefs = act.getSharedPreferences();
         var res = act.getResources();
         mWebsiteMap = new WebsiteMap(prefs, res);
     }

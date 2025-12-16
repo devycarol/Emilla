@@ -86,7 +86,7 @@ public final class NotesFragment extends ActionBox {
         fileRequester.setOnClickListener((View v) -> switchFolder());
 
         var cr = act.getContentResolver();
-        SharedPreferences prefs = act.prefs();
+        var prefs = act.getSharedPreferences();
         Uri noteFolder = SettingVals.noteFolder(prefs);
         if (noteFolder != null) {
             loadFolder(cr, prefs, noteFolder);
@@ -108,7 +108,7 @@ public final class NotesFragment extends ActionBox {
 
         var act = (AssistActivity) requireActivity();
         var cr = act.getContentResolver();
-        SharedPreferences prefs = act.prefs();
+        var prefs = act.getSharedPreferences();
 
         if (loadFolder(cr, prefs, folder)) {
             int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION
