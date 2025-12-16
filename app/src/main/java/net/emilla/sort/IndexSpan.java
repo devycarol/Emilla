@@ -2,7 +2,7 @@ package net.emilla.sort;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-/*internal*/ final class IndexSpan extends IndexPortion {
+final class IndexSpan extends IndexPortion {
 
     private final int mLength;
 

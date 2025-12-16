@@ -3,7 +3,7 @@ package net.emilla.file;
 import java.io.IOException;
 import java.io.OutputStream;
 
-/*internal*/ final class FileListItem extends ListItem {
+final class FileListItem extends ListItem {
 
     private final byte[] mMother;
     private final int mPosition;

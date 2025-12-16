@@ -11,7 +11,7 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
 
-/*internal*/ final class Weather extends CategoryCommand {
+final class Weather extends CategoryCommand {
 
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, Intents.categoryTask(CATEGORY_APP_WEATHER));

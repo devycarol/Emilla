@@ -8,7 +8,7 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.util.Features;
 import net.emilla.util.TorchManager;
 
-/*internal*/ final class Torch extends CoreCommand {
+final class Torch extends CoreCommand {
 
     public static boolean possible(PackageManager pm) {
         return Features.torch(pm);

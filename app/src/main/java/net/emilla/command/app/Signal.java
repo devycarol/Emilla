@@ -2,7 +2,7 @@ package net.emilla.command.app;
 
 import android.content.Context;
 
-/*internal*/ final class Signal {
+final class Signal {
 
     public static final String PKG = "org.thoughtcrime.securesms";
 

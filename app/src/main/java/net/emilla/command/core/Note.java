@@ -11,7 +11,7 @@ import net.emilla.file.Files;
 import net.emilla.file.Folder;
 import net.emilla.file.TreeFile;
 
-/*internal*/ final class Note extends CoreDataCommand {
+final class Note extends CoreDataCommand {
 
     private final NotesFragment mNotesFragment;
 

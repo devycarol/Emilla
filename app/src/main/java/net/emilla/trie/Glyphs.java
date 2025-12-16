@@ -2,7 +2,7 @@ package net.emilla.trie;
 
 import net.emilla.lang.Lang;
 
-/*internal*/ final class Glyphs extends Phrase<Integer> {
+final class Glyphs extends Phrase<Integer> {
 
     /*internal*/ Glyphs(String phrase) {
         super(phrase);

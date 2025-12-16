@@ -9,7 +9,7 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
 
-/*internal*/ final class Navigate extends CategoryCommand {
+final class Navigate extends CategoryCommand {
 
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, Intents.view("geo:"));

@@ -19,7 +19,7 @@ import net.emilla.util.Dialogs;
 import net.emilla.util.Features;
 import net.emilla.util.Permission;
 
-/*internal*/ final class Call extends CoreCommand implements PhoneReceiver {
+final class Call extends CoreCommand implements PhoneReceiver {
 
     public static boolean possible(PackageManager pm) {
         return Features.phone(pm) || Apps.canDo(pm, makeIntent(""));

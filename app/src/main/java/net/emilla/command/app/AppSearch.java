@@ -9,7 +9,7 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.util.Intents;
 
-/*internal*/ final class AppSearch extends AppCommand {
+final class AppSearch extends AppCommand {
 
     /*internal*/ AppSearch(Context ctx, AppEntry appEntry) {
         super(ctx, appEntry, EditorInfo.IME_ACTION_SEARCH);

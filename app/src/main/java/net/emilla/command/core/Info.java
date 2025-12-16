@@ -9,7 +9,7 @@ import net.emilla.command.app.AppEntry;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
 
-/*internal*/ final class Info extends OpenCommand {
+final class Info extends OpenCommand {
 
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, Intents.appInfo(""));

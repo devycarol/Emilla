@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.function.IntFunction;
 import java.util.stream.Stream;
 
-/*internal*/ final class PrefixNode<K, V> {
+final class PrefixNode<K, V> {
 
     private final IntFunction<V[]> mArrayGenerator;
 

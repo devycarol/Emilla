@@ -14,7 +14,7 @@ import net.emilla.exception.EmillaException;
 import net.emilla.file.Files;
 import net.emilla.util.MimeTypes;
 
-/*internal*/ final class Todo extends CoreCommand {
+final class Todo extends CoreCommand {
 
     private final ListFileFragment mTodoFragment;
 

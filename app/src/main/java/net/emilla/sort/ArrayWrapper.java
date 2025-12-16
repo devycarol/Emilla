@@ -5,7 +5,7 @@ import net.emilla.struct.IndexedStruct;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-/*internal*/ final class ArrayWrapper<E> implements IndexedStruct<E> {
+final class ArrayWrapper<E> implements IndexedStruct<E> {
 
     /*internal*/ E[] mArray;
 

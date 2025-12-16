@@ -9,7 +9,7 @@ import net.emilla.lang.phrase.RandRange;
 
 import java.util.Random;
 
-/*internal*/ final class RandomNumber extends CoreCommand {
+final class RandomNumber extends CoreCommand {
 
     /*internal*/ RandomNumber(Context ctx) {
         super(ctx, CoreEntry.RANDOM_NUMBER, EditorInfo.IME_ACTION_DONE);

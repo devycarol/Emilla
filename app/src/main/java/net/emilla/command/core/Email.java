@@ -26,7 +26,7 @@ import net.emilla.util.Patterns;
 
 import java.util.ArrayList;
 
-/*internal*/ final class Email extends CoreDataCommand implements EmailReceiver {
+final class Email extends CoreDataCommand implements EmailReceiver {
 
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, new Intent(ACTION_SENDTO, Uri.parse("mailto:")));

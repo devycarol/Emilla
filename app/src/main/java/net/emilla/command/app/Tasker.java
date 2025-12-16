@@ -21,7 +21,7 @@ import net.emilla.util.TaskerIntent;
 import java.util.Comparator;
 import java.util.TreeSet;
 
-/*internal*/ final class Tasker extends AppCommand implements DataCommand {
+final class Tasker extends AppCommand implements DataCommand {
 
     public static final String PKG = TaskerIntent.TASKER_PACKAGE_MARKET;
 

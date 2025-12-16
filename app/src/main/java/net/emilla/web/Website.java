@@ -7,7 +7,7 @@ import androidx.annotation.Nullable;
 
 import net.emilla.util.Intents;
 
-/*internal*/ final class Website {
+final class Website {
 
     private final String mUrl;
     @Nullable

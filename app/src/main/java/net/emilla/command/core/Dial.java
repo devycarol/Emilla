@@ -11,7 +11,7 @@ import android.view.inputmethod.EditorInfo;
 import net.emilla.activity.AssistActivity;
 import net.emilla.util.Apps;
 
-/*internal*/ final class Dial extends CoreCommand {
+final class Dial extends CoreCommand {
 
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, new Intent(ACTION_DIAL));

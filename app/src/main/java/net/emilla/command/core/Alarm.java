@@ -21,7 +21,7 @@ import net.emilla.util.Apps;
 import java.time.DayOfWeek;
 import java.util.EnumSet;
 
-/*internal*/ final class Alarm extends CoreDataCommand {
+final class Alarm extends CoreDataCommand {
 
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, makeIntent()) || Apps.canDo(pm, new Intent(ACTION_SET_ALARM));

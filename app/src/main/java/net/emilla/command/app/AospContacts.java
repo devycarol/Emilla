@@ -2,7 +2,7 @@ package net.emilla.command.app;
 
 import android.content.Context;
 
-/*internal*/ final class AospContacts {
+final class AospContacts {
 
     public static final String PKG = "com.android.contacts";
 

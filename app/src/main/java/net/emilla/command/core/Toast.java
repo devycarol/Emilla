@@ -6,7 +6,7 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.run.ToastGift;
 
-/*internal*/ final class Toast extends CoreDataCommand {
+final class Toast extends CoreDataCommand {
 
     /*internal*/ Toast(Context ctx) {
         super(ctx, CoreEntry.TOAST, R.string.data_hint_toast);

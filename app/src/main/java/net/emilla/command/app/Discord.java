@@ -2,7 +2,7 @@ package net.emilla.command.app;
 
 import android.content.Context;
 
-/*internal*/ final class Discord {
+final class Discord {
 
     public static final String PKG = "com.discord";
 

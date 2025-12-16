@@ -9,7 +9,7 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.run.CopyGift;
 
-/*internal*/ final class Copy extends CoreCommand {
+final class Copy extends CoreCommand {
 
     @Nullable
     private String mCopiedText = null;

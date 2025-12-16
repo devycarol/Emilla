@@ -2,7 +2,7 @@ package net.emilla.command.app;
 
 import android.content.Context;
 
-/*internal*/ final class Tubular {
+final class Tubular {
 
     public static final String PKG = "org.polymorphicshade.tubular";
 

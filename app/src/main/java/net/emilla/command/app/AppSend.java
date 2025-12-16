@@ -8,7 +8,7 @@ import android.view.inputmethod.EditorInfo;
 import net.emilla.activity.AssistActivity;
 import net.emilla.util.Intents;
 
-/*internal open*/ class AppSend extends AppCommand {
+/*open*/ class AppSend extends AppCommand {
 
     /*internal*/ AppSend(Context ctx, AppEntry appEntry) {
         this(ctx, appEntry, EditorInfo.IME_ACTION_SEND);

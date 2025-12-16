@@ -4,7 +4,7 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.command.CommandYielder;
 import net.emilla.command.EmillaCommand;
 
-/*internal*/ final class CoreYielder extends CommandYielder {
+final class CoreYielder extends CommandYielder {
 
     private final CoreEntry mCoreEntry;
 

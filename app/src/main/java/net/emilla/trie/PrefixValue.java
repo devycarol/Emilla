@@ -1,6 +1,6 @@
 package net.emilla.trie;
 
-/*internal*/ final class PrefixValue<V> {
+final class PrefixValue<V> {
 
     public final V value;
     public final boolean takesLeftovers;

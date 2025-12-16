@@ -22,7 +22,7 @@ import net.emilla.ping.PingChannel;
 import net.emilla.ping.Pings;
 import net.emilla.util.Permission;
 
-/*internal*/ final class Pomodoro extends CoreDataCommand {
+final class Pomodoro extends CoreDataCommand {
 
     private enum Action {
         WORK, BREAK

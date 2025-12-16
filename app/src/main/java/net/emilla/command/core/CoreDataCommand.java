@@ -7,12 +7,12 @@ import androidx.annotation.StringRes;
 
 import net.emilla.command.DataCommand;
 
-/*internal*/ abstract class CoreDataCommand extends CoreCommand implements DataCommand {
+abstract class CoreDataCommand extends CoreCommand implements DataCommand {
 
     @StringRes
     private final int mHint;
 
-    protected CoreDataCommand(Context ctx, CoreEntry coreEntry, @StringRes int dataHint) {
+    /*internal*/ CoreDataCommand(Context ctx, CoreEntry coreEntry, @StringRes int dataHint) {
         super(ctx, coreEntry, EditorInfo.IME_ACTION_NEXT);
         mHint = dataHint;
     }

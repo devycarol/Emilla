@@ -20,7 +20,7 @@ import net.emilla.util.Intents;
 import net.emilla.util.Strings;
 import net.emilla.util.Uris;
 
-/*internal*/ final class Sms extends CoreDataCommand implements PhoneReceiver {
+final class Sms extends CoreDataCommand implements PhoneReceiver {
 
     public static boolean possible(PackageManager pm) {
         return Features.sms(pm) || Apps.canDo(pm, Intents.send(Uris.sms("")));

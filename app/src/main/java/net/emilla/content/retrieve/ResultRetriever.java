@@ -13,7 +13,7 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.content.ResultLaunchers;
 import net.emilla.content.receive.ResultReceiver;
 
-/*internal*/ abstract class ResultRetriever<I, O, C extends ResultReceiver> {
+abstract class ResultRetriever<I, O, C extends ResultReceiver> {
 
     private static final String TAG = ResultRetriever.class.getSimpleName();
 
@@ -23,7 +23,7 @@ import net.emilla.content.receive.ResultReceiver;
     @Deprecated // Todo: incorporate these in the launchers directly if possible.
     private C mReceiver;
 
-    protected ResultRetriever(AssistActivity act, ActivityResultContract<I, O> contract) {
+    /*internal*/ ResultRetriever(AssistActivity act, ActivityResultContract<I, O> contract) {
         this.activity = act;
         mLauncher = act.registerForActivityResult(contract, makeCallback());
     }

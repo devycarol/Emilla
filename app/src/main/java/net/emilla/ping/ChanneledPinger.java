@@ -10,7 +10,7 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.RequiresPermission;
 
 @RequiresApi(Build.VERSION_CODES.O)
-/*internal*/ final class ChanneledPinger extends Pinger {
+final class ChanneledPinger extends Pinger {
 
     private final PingChannel mChannel;
     private final Resources mRes;

@@ -11,7 +11,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 
-/*internal*/ final class Time extends CoreCommand {
+final class Time extends CoreCommand {
 
     /*internal*/ Time(Context ctx) {
         super(ctx, CoreEntry.TIME, EditorInfo.IME_ACTION_DONE);

@@ -3,7 +3,7 @@ package net.emilla.trie;
 import java.util.Iterator;
 import java.util.function.IntFunction;
 
-/*internal*/ final class PrefixTree<K, V> {
+final class PrefixTree<K, V> {
 
     private final PrefixNode<K, V> mRoot;
 

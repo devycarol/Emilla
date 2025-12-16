@@ -2,7 +2,7 @@ package net.emilla.trie;
 
 import androidx.annotation.Nullable;
 
-/*internal*/ abstract class Phrase<W> implements PositionalIterator<W, String> {
+abstract class Phrase<W> implements PositionalIterator<W, String> {
 
     /*internal*/ final char[] mPhrase;
     /*internal*/ final int mLength;

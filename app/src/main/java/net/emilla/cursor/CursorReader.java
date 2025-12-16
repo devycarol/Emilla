@@ -1,6 +1,6 @@
 package net.emilla.cursor;
 
-/*internal*/ abstract class CursorReader {
+abstract class CursorReader {
 
     /*internal*/ final String[] mProjection;
 

@@ -4,7 +4,7 @@ import android.content.Context;
 
 import net.emilla.R;
 
-/*internal*/ final class Outlook {
+final class Outlook {
 
     public static final String PKG = "com.microsoft.office.outlook";
 

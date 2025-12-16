@@ -4,7 +4,7 @@ import android.net.Uri;
 
 import androidx.annotation.Nullable;
 
-/*internal*/ final class SearchEngine {
+final class SearchEngine {
 
     private static final String WILDCARD = "%s";
 

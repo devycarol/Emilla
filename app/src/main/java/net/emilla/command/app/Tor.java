@@ -2,7 +2,7 @@ package net.emilla.command.app;
 
 import android.content.Context;
 
-/*internal*/ final class Tor {
+final class Tor {
 
     public static final String PKG = "org.torproject.torbrowser";
 

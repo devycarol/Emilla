@@ -4,7 +4,7 @@ import android.content.Context;
 
 import net.emilla.R;
 
-/*internal*/ final class Markor {
+final class Markor {
 
     public static final String PKG = "net.gsantner.markor";
     public static final String CLS_MAIN = PKG + ".activity.MainActivity";

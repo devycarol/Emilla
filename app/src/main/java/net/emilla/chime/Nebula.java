@@ -4,7 +4,7 @@ import android.content.Context;
 import android.media.MediaPlayer;
 
 /// The default chimer, Nebula.
-/*internal*/ final class Nebula implements Chimer {
+final class Nebula implements Chimer {
 
     /*internal*/ Nebula() {}
 

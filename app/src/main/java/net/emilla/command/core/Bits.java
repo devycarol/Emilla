@@ -9,7 +9,7 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.math.BitwiseCalculator;
 import net.emilla.util.Intents;
 
-/*internal*/ final class Bits extends CategoryCommand {
+final class Bits extends CategoryCommand {
 
     /*internal*/ Bits(AssistActivity act) {
         super(act, CoreEntry.BITS, EditorInfo.IME_ACTION_DONE);

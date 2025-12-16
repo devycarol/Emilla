@@ -2,7 +2,7 @@ package net.emilla.trie;
 
 import net.emilla.lang.Lang;
 
-/*internal*/ final class Words extends Phrase<String> {
+final class Words extends Phrase<String> {
 
     /*internal*/ Words(String phrase) {
         super(phrase);

@@ -27,7 +27,7 @@ import java.time.ZoneId;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/*internal*/ final class Calendar extends CoreDataCommand {
+final class Calendar extends CoreDataCommand {
 
     private static final Pattern TAG_ALL_DAY = Pattern.compile(" */all(day)?", CASE_INSENSITIVE);
     private static final Pattern TRIMMING_PSV = Pattern.compile(" *\\| *");

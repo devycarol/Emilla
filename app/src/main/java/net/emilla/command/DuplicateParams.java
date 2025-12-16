@@ -10,7 +10,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import net.emilla.R;
 import net.emilla.lang.Lang;
 
-/*internal*/ final class DuplicateParams implements Params {
+final class DuplicateParams implements Params {
 
     @StringRes
     private static final int NAME = R.string.command_duplicate;

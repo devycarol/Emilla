@@ -12,7 +12,7 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.command.ActionMap;
 import net.emilla.command.Subcommand;
 
-/*internal*/ final class Snippets extends CoreDataCommand {
+final class Snippets extends CoreDataCommand {
 
     private final SnippetsFragment mSnippetsFragment;
 

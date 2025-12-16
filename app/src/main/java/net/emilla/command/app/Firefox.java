@@ -2,7 +2,7 @@ package net.emilla.command.app;
 
 import android.content.Context;
 
-/*internal*/ final class Firefox {
+final class Firefox {
 
     public static final String PKG = "org.mozilla.firefox";
 

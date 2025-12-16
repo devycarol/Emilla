@@ -2,7 +2,7 @@ package net.emilla.trie;
 
 import java.util.function.IntFunction;
 
-/*internal*/ final class GlyphsTree<V> implements PhraseTree<V> {
+final class GlyphsTree<V> implements PhraseTree<V> {
 
     private final PrefixTree<Integer, V> mPrefixTree;
 

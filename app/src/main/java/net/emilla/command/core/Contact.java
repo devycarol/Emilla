@@ -24,7 +24,7 @@ import net.emilla.util.Intents;
 
 import java.util.List;
 
-/*internal*/ final class Contact extends CoreDataCommand implements ContactCardReceiver {
+final class Contact extends CoreDataCommand implements ContactCardReceiver {
 
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, Intents.view(Contacts.CONTENT_URI, Contacts.CONTENT_TYPE))

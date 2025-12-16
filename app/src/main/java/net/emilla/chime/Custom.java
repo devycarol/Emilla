@@ -7,7 +7,7 @@ import android.net.Uri;
 
 import net.emilla.config.SettingVals;
 
-/*internal*/ final class Custom implements Chimer {
+final class Custom implements Chimer {
 
     private final Uri[] mUris;
 

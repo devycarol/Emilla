@@ -4,7 +4,7 @@ import android.content.Context;
 
 import net.emilla.R;
 
-/*internal*/ final class GitHub  {
+final class GitHub  {
 
     public static final String PKG = "com.github.android";
 

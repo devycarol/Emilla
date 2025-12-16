@@ -14,7 +14,7 @@ import net.emilla.command.app.AppEntry;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
 
-/*internal*/ final class Uninstall extends OpenCommand {
+final class Uninstall extends OpenCommand {
 
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, new Intent(ACTION_UNINSTALL_PACKAGE, Apps.packageUri("")))

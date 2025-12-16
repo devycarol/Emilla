@@ -9,7 +9,7 @@ import net.emilla.lang.Lang;
 import net.emilla.lang.measure.FahrenheitConversion;
 import net.emilla.math.Maths;
 
-/*internal*/ final class Fahrenheit extends CoreCommand {
+final class Fahrenheit extends CoreCommand {
 
     /*internal*/ Fahrenheit(Context ctx) {
         super(ctx, CoreEntry.FAHRENHEIT, EditorInfo.IME_ACTION_DONE);

@@ -9,7 +9,7 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.command.DataCommand;
 
-/*internal open*/ class AppSendData extends AppSend implements DataCommand {
+/*open*/ class AppSendData extends AppSend implements DataCommand {
 
     @StringRes
     private final int mHint;

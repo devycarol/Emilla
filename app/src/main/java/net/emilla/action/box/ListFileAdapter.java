@@ -19,7 +19,7 @@ import net.emilla.util.IntArrayLoader;
 
 import java.util.Arrays;
 
-/*internal*/ final class ListFileAdapter extends RecyclerView.Adapter<ChecklistItemHolder> {
+final class ListFileAdapter extends RecyclerView.Adapter<ChecklistItemHolder> {
 
     private final Resources mResources;
     private final LayoutInflater mInflater;

@@ -12,7 +12,7 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.exception.EmillaException;
 import net.emilla.setting.SettingMap;
 
-/*internal*/ final class Setting extends CoreCommand {
+final class Setting extends CoreCommand {
 
     /*internal*/ Setting(Context ctx) {
         super(ctx, CoreEntry.SETTING, EditorInfo.IME_ACTION_DONE);

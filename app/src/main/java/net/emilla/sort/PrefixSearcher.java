@@ -1,6 +1,6 @@
 package net.emilla.sort;
 
-/*internal*/ final class PrefixSearcher implements Comparable<SearchItem> {
+final class PrefixSearcher implements Comparable<SearchItem> {
 
     private final String mNormalizedSearch;
     private final int mPrefixLength;

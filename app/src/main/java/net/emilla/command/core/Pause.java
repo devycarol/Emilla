@@ -8,7 +8,7 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.util.MediaControl;
 import net.emilla.util.Services;
 
-/*internal*/ final class Pause extends CoreCommand {
+final class Pause extends CoreCommand {
 
     /*internal*/ Pause(Context ctx) {
         super(ctx, CoreEntry.PAUSE, EditorInfo.IME_ACTION_DONE);

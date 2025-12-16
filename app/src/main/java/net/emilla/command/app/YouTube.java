@@ -2,7 +2,7 @@ package net.emilla.command.app;
 
 import android.content.Context;
 
-/*internal*/ final class YouTube {
+final class YouTube {
 
     public static final String PKG = "com.google.android.youtube";
 

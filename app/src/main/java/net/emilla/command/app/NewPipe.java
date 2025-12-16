@@ -2,7 +2,7 @@ package net.emilla.command.app;
 
 import android.content.Context;
 
-/*internal*/ final class NewPipe {
+final class NewPipe {
 
     public static final String PKG = "org.schabi.newpipe";
 

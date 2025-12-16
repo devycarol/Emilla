@@ -12,7 +12,7 @@ import net.emilla.util.Apps;
 import net.emilla.util.Intents;
 import net.emilla.web.WebsiteMap;
 
-/*internal*/ final class Web extends CoreCommand {
+final class Web extends CoreCommand {
 
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, new Intent(ACTION_WEB_SEARCH))

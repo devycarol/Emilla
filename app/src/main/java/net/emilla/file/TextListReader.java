@@ -5,7 +5,7 @@ import androidx.annotation.Nullable;
 import net.emilla.util.ArrayLoader;
 import net.emilla.util.Chars;
 
-/*internal*/ final class TextListReader {
+final class TextListReader {
 
     private static final ListItem[] EMPTY_ARRAY = new ListItem[0];
 

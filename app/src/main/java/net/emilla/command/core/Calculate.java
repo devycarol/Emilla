@@ -10,7 +10,7 @@ import net.emilla.math.Calculator;
 import net.emilla.math.Maths;
 import net.emilla.util.Intents;
 
-/*internal*/ final class Calculate extends CategoryCommand {
+final class Calculate extends CategoryCommand {
 
     /*internal*/ Calculate(AssistActivity act) {
         super(act, CoreEntry.CALCULATE, EditorInfo.IME_ACTION_DONE);

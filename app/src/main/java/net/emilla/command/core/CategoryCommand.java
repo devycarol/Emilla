@@ -15,7 +15,7 @@ import net.emilla.util.Intents;
 
 import java.util.Arrays;
 
-/*internal*/ abstract class CategoryCommand extends CoreCommand {
+abstract class CategoryCommand extends CoreCommand {
 
     private final AppEntry[] mApps;
     @Nullable

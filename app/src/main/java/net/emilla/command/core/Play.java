@@ -9,7 +9,7 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.util.MediaControl;
 import net.emilla.util.Services;
 
-/*internal*/ final class Play extends CoreCommand {
+final class Play extends CoreCommand {
 
     /*internal*/ Play(Context ctx) {
         super(ctx, CoreEntry.PLAY, EditorInfo.IME_ACTION_GO);

@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 
-/*internal*/ final class AssistViewModel extends ViewModel {
+final class AssistViewModel extends ViewModel {
 
     /*internal*/ static final class Factory implements ViewModelProvider.Factory {
 

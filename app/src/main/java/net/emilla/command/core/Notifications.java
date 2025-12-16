@@ -13,7 +13,7 @@ import net.emilla.command.app.AppEntry;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
 
-/*internal*/ final class Notifications extends OpenCommand {
+final class Notifications extends OpenCommand {
 
     public static boolean possible(PackageManager pm) {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
