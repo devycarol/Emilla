@@ -127,7 +127,6 @@ final class Pomodoro extends CoreDataCommand {
                 breakMemo
             );
         }
-
     }
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
