@@ -41,6 +41,18 @@ public enum Lang {
         // Todo lang: strip diacritics and handle the fact that case is really weird
     }
 
+    public static int parseInt(String s) {
+        return Integer.parseInt(s);
+    }
+
+    public static long parseLong(String s) {
+        return Long.parseLong(s);
+    }
+
+    public static float parseFloat(String s) {
+        return Float.parseFloat(s);
+    }
+
     public static boolean wordsAreSpaceSeparated(Resources res) {
         return res.getBoolean(R.bool.conf_lang_spaces);
     }

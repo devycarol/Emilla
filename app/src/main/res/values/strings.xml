@@ -18,6 +18,9 @@
     <string name="notes">Notes</string>
     <string name="check">check</string>
     <string name="uncheck">uncheck</string>
+    <string name="checked">checked</string>
+    <string name="on">on</string>
+    <string name="off">off</string>
     <string name="request_note_folder">Press to select a folder for notes</string>
     <string name="request_todo_file">Press to select a file for tasks</string>
 
@@ -717,6 +720,7 @@
     <string name="error_cant_uninstall">Failed to uninstall the app.</string>
     <string name="error_cant_use_file">A file error occurred.</string>
     <string name="error_torch_failed">Failed to toggle the flashlight.</string>
+    <string name="error_invalid_setting_value">Invalid setting value.</string>
     <string name="error_unfinished_feature">Unfinished feature!</string>
     <string name="error_unfinished_version">Sorry! This command doesn\'t support your Android version yet.</string>
     <string name="error_unfinished_categorical_app_search">Sorry! I don\'t have categorical app search yet.</string>
@@ -786,5 +790,4 @@
     <string name="toast_snippet_deleted">Deleted \"%s\".</string>
 
     <string name="tag_toast_long">/long</string>
-    <string name="checked">checked</string>
 </resources>
