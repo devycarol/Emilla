@@ -4,36 +4,60 @@ import static android.app.SearchManager.QUERY;
 import static android.content.Intent.ACTION_WEB_SEARCH;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 
+import net.emilla.config.SettingVals;
 import net.emilla.lang.Lang;
+import net.emilla.text.Csv;
+import net.emilla.text.CsvLines;
 import net.emilla.trie.PhraseTree;
 import net.emilla.trie.PrefixResult;
-import net.emilla.util.Patterns;
+import net.emilla.util.ArrayLoader;
+
+import java.util.function.Function;
 
 public final class WebsiteMap {
 
     private final PhraseTree<Website> mSiteMap;
 
-    @Deprecated
-    public WebsiteMap(Resources res, CharSequence engineCsv) {
+    public WebsiteMap(SharedPreferences prefs, Resources res) {
         mSiteMap = Lang.phraseTree(res, Website[]::new);
 
-        for (String entry : Patterns.TRIMMING_LINES.split(engineCsv)) {
-            String[] split = Patterns.TRIMMING_CSV.split(entry);
-            if (split.length < 2) {
+        String engineCsv = SettingVals.searchEngineCsv(prefs);
+        boolean isLegacy = engineCsv != null;
+
+        CsvLines lines;
+        Function<Csv, Website> mapper;
+        if (isLegacy) {
+            lines = new CsvLines(engineCsv);
+            mapper = Website::fromLegacy;
+        } else {
+            lines = new CsvLines(SettingVals.websiteCsv(prefs));
+            mapper = Website::from;
+        }
+
+        var loader = isLegacy
+            ? new ArrayLoader<String>(10, String[]::new)
+            : null;
+        while (lines.hasNext()) {
+            Csv csv = lines.next();
+            Website site = mapper.apply(csv);
+            if (site == null) {
                 continue;
             }
 
-            int last = split.length - 1;
-
-            String url = split[last];
-            var site = Website.of(url);
-
-            for (int i = 0; i < last; ++i) {
-                String alias = split[i];
+            for (String alias : site.mAliases) {
                 mSiteMap.put(alias, site, site.hasSearchEngine());
             }
+
+            if (isLegacy) {
+                loader.growingAdd(site.toString());
+            }
+        }
+
+        if (isLegacy) {
+            SettingVals.setWebsites(prefs, ArrayLoader.join(loader, '\n'));
         }
     }
 
@@ -41,11 +65,9 @@ public final class WebsiteMap {
         PrefixResult<Website, String> get = mSiteMap.get(search);
 
         Website site = get.value();
-        if (site == null) {
-            return new Intent(ACTION_WEB_SEARCH).putExtra(QUERY, search);
-        }
-
-        return site.viewIntent(get.leftovers);
+        return site != null
+            ? site.viewIntent(get.leftovers)
+            : new Intent(ACTION_WEB_SEARCH).putExtra(QUERY, search);
     }
 
 }

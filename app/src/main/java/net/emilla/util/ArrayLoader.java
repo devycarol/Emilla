@@ -45,12 +45,29 @@ public final class ArrayLoader<E> {
         return concat(a, b, b.length);
     }
 
-    private static <E> E[] concat(E[] a, E[] b, int bSize) {
+    private static <E> E[] concat(E[] a, E[] b, int bLimit) {
         int previousEnd = a.length;
-        E[] appendedTo = Arrays.copyOf(a, previousEnd + bSize);
-        System.arraycopy(b, 0, appendedTo, previousEnd, bSize);
+        E[] concat = Arrays.copyOf(a, previousEnd + bLimit);
+        System.arraycopy(b, 0, concat, previousEnd, bLimit);
 
-        return appendedTo;
+        return concat;
+    }
+
+    @Nullable
+    public static String join(ArrayLoader<String> loader, char delimiter) {
+        int size = loader.mSize;
+        if (size == 0) {
+            return null;
+        }
+
+        String[] array = loader.mArray;
+        var sb = new StringBuilder(array[0]);
+
+        for (int i = 1; i < size; ++i) {
+            sb.append(delimiter).append(array[i]);
+        }
+
+        return sb.toString();
     }
 
 }

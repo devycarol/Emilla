@@ -3,11 +3,11 @@ package net.emilla.command.core;
 import static android.content.Intent.ACTION_WEB_SEARCH;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.view.inputmethod.EditorInfo;
 
 import net.emilla.activity.AssistActivity;
-import net.emilla.config.SettingVals;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
 import net.emilla.web.WebsiteMap;
@@ -25,8 +25,9 @@ final class Web extends CoreCommand {
     /*internal*/ Web(AssistActivity act) {
         super(act, CoreEntry.WEB, EditorInfo.IME_ACTION_SEARCH);
 
+        SharedPreferences prefs = act.prefs();
         var res = act.getResources();
-        mWebsiteMap = new WebsiteMap(res, SettingVals.searchEngineCsv(act.prefs()));
+        mWebsiteMap = new WebsiteMap(prefs, res);
     }
 
     @Override
@@ -36,10 +37,6 @@ final class Web extends CoreCommand {
 
     @Override
     protected void run(AssistActivity act, String query) {
-        // Todo: make a UI for this.
-        //  - don't allow multiple %s's in the setting (i don't imagine there's any use for that right?)
-        //    - handle character escapes if you want to be particular about it but the user can
-        //      probably do that themself.
         appSucceed(act, mWebsiteMap.intent(query));
     }
 

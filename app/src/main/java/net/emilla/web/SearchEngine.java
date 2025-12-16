@@ -4,38 +4,41 @@ import android.net.Uri;
 
 import androidx.annotation.Nullable;
 
+import net.emilla.text.Csv;
+import net.emilla.util.Strings;
+
+import java.util.NoSuchElementException;
+
 final class SearchEngine {
 
-    private static final String WILDCARD = "%s";
+    /*internal*/ final String mUrlPrefix;
+    /*internal*/ final String mUrlSuffix;
 
-    private final String mUrlPrefix;
-    private final String mUrlSuffix;
-
-    private SearchEngine(String urlPrefix, String urlSuffix) {
-        mUrlPrefix = urlPrefix;
-        mUrlSuffix = urlSuffix;
+    private SearchEngine(@Nullable String urlPrefix, @Nullable String urlSuffix) {
+        mUrlPrefix = Strings.emptyIfNull(urlPrefix);
+        mUrlSuffix = Strings.emptyIfNull(urlSuffix);
     }
 
-    @Deprecated @Nullable
-    /*internal*/ static SearchEngine of(String searchUrl) {
-        int wildcardPosition = searchUrl.indexOf(WILDCARD);
-        if (wildcardPosition < 0) {
-            return null;
-        }
-
-        return new SearchEngine(
-            searchUrl.substring(0, wildcardPosition),
-            searchUrl.substring(wildcardPosition + 2)
-        );
-    }
-
-    public Uri searchUrl(String query) {
-        return Uri.parse(mUrlPrefix + Uri.encode(query) + mUrlSuffix);
+    @Nullable
+    /*internal*/ static SearchEngine from(Csv csv) {
+        String prefix = csv.next();
+        String suffix = csv.next();
+        return prefix != null || suffix != null
+            ? new SearchEngine(prefix, suffix)
+            : null;
     }
 
     @Deprecated
-    public String rawUrl() {
-        return mUrlPrefix + mUrlSuffix;
+    /*internal*/ static SearchEngine fromRaw(String prefix, String suffix) {
+        return new SearchEngine(prefix, suffix);
+    }
+
+    private static NoSuchElementException invalidWebsiteEntry() {
+        return new NoSuchElementException("Invalid website entry");
+    }
+
+    public Uri url(String query) {
+        return Uri.parse(mUrlPrefix + Uri.encode(query) + mUrlSuffix);
     }
 
 }

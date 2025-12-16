@@ -35,19 +35,13 @@ public final class SettingVals {
     public static final String DEFAULT_COMMAND = "default_command";
     public static final String CHIMER = "sound_set";
 
+    private static final String WEBSITES = "websites";
+
     private static final String NOTE_FOLDER = "note_folder";
     private static final String TODO_FILE = "todo_file";
 
     public static final String ALIASES_CUSTOM = "aliases_custom";
     public static final String ALIASES_CUSTOM_TEXT = "aliases_custom_text";
-
-    private static final String DEFAULT_SEARCH_ENGINES = """
-        Wikipedia, wiki, w, https://wikipedia.org/wiki/%s
-        Google, g, https://www.google.com/search?q=%s
-        Google Images, gimages, gimage, gimg, gi, https://www.google.com/search?q=%s&udm=2
-        YouTube, yt, y, https://www.youtube.com/results?search_query=%s
-        DuckDuckGo, ddg, dd, d, https://duckduckgo.com/?q=%s
-        DuckDuckGo Images, duckimages, duckimage, duckimg, ddgimages, ddgimage, ddgimg, ddgi, ddimages, ddimage, ddimg, ddi, dimages, dimage, dimg, https://duckduckgo.com/?q=%s&ia=images&iax=images""";
 
     public static boolean commandEnabled(
         PackageManager pm,
@@ -185,8 +179,41 @@ public final class SettingVals {
         prefs.edit().remove(chime.preferenceKey).apply();
     }
 
+    @Deprecated @Nullable
     public static String searchEngineCsv(SharedPreferences prefs) {
-        return prefs.getString("search_engines", DEFAULT_SEARCH_ENGINES);
+        String key = "search_engines";
+        if (!prefs.contains(key)) {
+            return null;
+        }
+
+        String engineCsv = prefs.getString(key, null);
+        prefs.edit().remove(key).apply();
+
+        return engineCsv;
+    }
+
+    public static void setWebsites(SharedPreferences prefs, @Nullable String websiteCsv) {
+        SharedPreferences.Editor edit = prefs.edit();
+        if (websiteCsv != null) {
+            edit.putString(WEBSITES, websiteCsv);
+        } else {
+            edit.remove(WEBSITES);
+        }
+        edit.apply();
+    }
+
+    public static String websiteCsv(SharedPreferences prefs) {
+        if (prefs.contains(WEBSITES)) {
+            prefs.getString(WEBSITES, null);
+        }
+
+        return """
+            https://wikipedia.org,https://wikipedia.org/wiki/,,Wikipedia,wiki,wp
+            https://duckduckgo.com,https://duckduckgo.com/?q=,,DuckDuckGo,duck,ddg
+            https://images.duckduckgo.com,https://duckduckgo.com/?q=,&ia=images&iax=images,DuckDuckGo Images, ducki, di
+            https://www.google.com,https://www.google.com/search?q=,,Google,g
+            https://images.google.com,https://www.google.com/search?q=,&udm=2,Google Images,gi
+            https://www.youtube.com,https://www.youtube.com/results?search_query=,,YouTube,yt""";
     }
 
     public static void setNoteFolder(SharedPreferences prefs, Uri folder) {
