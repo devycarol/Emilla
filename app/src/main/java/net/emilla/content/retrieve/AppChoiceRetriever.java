@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.inner;
 import net.emilla.content.receive.AppChoiceReceiver;
 
 public final class AppChoiceRetriever extends ResultRetriever<Intent, ActivityResult, AppChoiceReceiver> {
@@ -61,7 +62,7 @@ public final class AppChoiceRetriever extends ResultRetriever<Intent, ActivityRe
         return new AppCallback();
     }
 
-    private /*inner*/ final class AppCallback extends ResultCallback {
+    private @inner final class AppCallback extends ResultCallback {
 
         @Override
         protected void onActivityResult(ActivityResult output, AppChoiceReceiver receiver) {

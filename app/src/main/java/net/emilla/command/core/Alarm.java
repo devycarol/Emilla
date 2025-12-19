@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.lang.Lang;
 import net.emilla.lang.date.HourMin;
 import net.emilla.lang.date.Weekdays;
@@ -27,7 +28,7 @@ final class Alarm extends CoreDataCommand {
         return Apps.canDo(pm, makeIntent()) || Apps.canDo(pm, new Intent(ACTION_SET_ALARM));
     }
 
-    /*internal*/ Alarm(Context ctx) {
+    @internal Alarm(Context ctx) {
         super(ctx, CoreEntry.ALARM, R.string.data_hint_label);
     }
 

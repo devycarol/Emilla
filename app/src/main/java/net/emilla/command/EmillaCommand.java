@@ -22,6 +22,8 @@ import net.emilla.R;
 import net.emilla.action.Gadget;
 import net.emilla.action.InstructyGadget;
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
+import net.emilla.annotation.open;
 import net.emilla.command.app.AppCommand;
 import net.emilla.command.app.AppEntry;
 import net.emilla.command.app.AppYielder;
@@ -161,7 +163,7 @@ public abstract class EmillaCommand {
         this(ctx, appEntry, appEntry.summary(), appEntry.actions.manual(), imeAction);
     }
 
-    /*internal*/ final void instruct(@Nullable String instruction) {
+    @internal final void instruct(@Nullable String instruction) {
         if (!Objects.equals(mInstruction, instruction)) {
             // we don't assume this is true because input editor bugs may cause onTextChanged() to
             // be called repeatedly for the same text.
@@ -198,7 +200,7 @@ public abstract class EmillaCommand {
         mActive = true;
     }
 
-    public /*open*/ void unload(AssistActivity act) {
+    public @open void unload(AssistActivity act) {
         if (mGadgets != null) {
             for (Gadget gadget : mGadgets) {
                 gadget.unload(act);
@@ -234,7 +236,7 @@ public abstract class EmillaCommand {
     }
 
     // TODO: make final and handle subcommands in a more centralized manner
-    protected /*open*/ void onInstruct(@Nullable String instruction) {
+    protected @open void onInstruct(@Nullable String instruction) {
         if (mInstructyGadgets != null) {
             for (InstructyGadget gadget : mInstructyGadgets) {
                 gadget.instruct(instruction);

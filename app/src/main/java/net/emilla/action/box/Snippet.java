@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 
 import net.emilla.R;
+import net.emilla.annotation.internal;
 import net.emilla.config.SettingVals;
 import net.emilla.sort.ItemSearchAdapter;
 import net.emilla.sort.SearchItem;
@@ -18,7 +19,7 @@ public final class Snippet extends SearchItem {
         super(name);
     }
 
-    /*internal*/ static ItemSearchAdapter<Snippet> adapter(
+    @internal static ItemSearchAdapter<Snippet> adapter(
         LayoutInflater inflater,
         SharedPreferences prefs,
         Consumer<Snippet> itemClickAction

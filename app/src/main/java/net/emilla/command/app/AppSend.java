@@ -6,15 +6,17 @@ import android.content.Context;
 import android.view.inputmethod.EditorInfo;
 
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
+import net.emilla.annotation.open;
 import net.emilla.util.Intents;
 
-/*open*/ class AppSend extends AppCommand {
+@open class AppSend extends AppCommand {
 
-    /*internal*/ AppSend(Context ctx, AppEntry appEntry) {
+    @internal AppSend(Context ctx, AppEntry appEntry) {
         this(ctx, appEntry, EditorInfo.IME_ACTION_SEND);
     }
 
-    /*internal*/ AppSend(Context ctx, AppEntry appEntry, int imeAction) {
+    @internal AppSend(Context ctx, AppEntry appEntry, int imeAction) {
         super(ctx, appEntry, imeAction);
     }
 

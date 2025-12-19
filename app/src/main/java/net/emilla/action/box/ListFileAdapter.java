@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import net.emilla.annotation.internal;
 import net.emilla.databinding.ChecklistItemBinding;
 import net.emilla.file.ChecklistItemHolder;
 import net.emilla.file.Files;
@@ -31,7 +32,7 @@ final class ListFileAdapter extends RecyclerView.Adapter<ChecklistItemHolder> {
 
     private int mCheckedCount = 0;
 
-    /*internal*/ ListFileAdapter(Resources res, LayoutInflater inflater) {
+    @internal ListFileAdapter(Resources res, LayoutInflater inflater) {
         mResources = res;
         mInflater = inflater;
     }

@@ -8,6 +8,7 @@ import androidx.activity.result.contract.ActivityResultContracts.PickContact;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.inner;
 import net.emilla.content.receive.ContactCardReceiver;
 import net.emilla.util.Toasts;
 
@@ -27,7 +28,7 @@ public final class ContactCardRetriever extends ResultRetriever<Void, Uri, Conta
         return new ContactCallback();
     }
 
-    private /*inner*/ final class ContactCallback extends ResultCallback {
+    private @inner final class ContactCallback extends ResultCallback {
 
         @Override
         protected void onActivityResult(Uri contact, ContactCardReceiver receiver) {

@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import net.emilla.R;
 import net.emilla.action.MediaFetcher;
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.contact.fragment.ContactPhonesFragment;
 import net.emilla.content.receive.PhoneReceiver;
 import net.emilla.util.Apps;
@@ -28,7 +29,7 @@ final class Sms extends CoreDataCommand implements PhoneReceiver {
 
     private final ContactPhonesFragment mContactsFragment;
 
-    /*internal*/ Sms(AssistActivity act) {
+    @internal Sms(AssistActivity act) {
         super(act, CoreEntry.SMS, R.string.data_hint_message);
 
         mContactsFragment = ContactPhonesFragment.newInstance(true);

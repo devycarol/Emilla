@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.view.inputmethod.EditorInfo;
 
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
 
@@ -15,7 +16,7 @@ final class Navigate extends CategoryCommand {
         return Apps.canDo(pm, Intents.view("geo:"));
     }
 
-    /*internal*/ Navigate(AssistActivity act) {
+    @internal Navigate(AssistActivity act) {
         super(act, CoreEntry.NAVIGATE, EditorInfo.IME_ACTION_SEARCH);
     }
 

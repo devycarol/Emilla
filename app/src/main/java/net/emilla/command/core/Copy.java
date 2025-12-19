@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.run.CopyGift;
 
 final class Copy extends CoreCommand {
@@ -14,7 +15,7 @@ final class Copy extends CoreCommand {
     @Nullable
     private String mCopiedText = null;
 
-    /*internal*/ Copy(Context ctx) {
+    @internal Copy(Context ctx) {
         super(ctx, CoreEntry.COPY, EditorInfo.IME_ACTION_DONE);
     }
 

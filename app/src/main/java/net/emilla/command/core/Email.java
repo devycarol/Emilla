@@ -19,6 +19,7 @@ import net.emilla.action.MediaFetcher;
 import net.emilla.action.field.FieldToggle;
 import net.emilla.action.field.InputField;
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.contact.fragment.ContactEmailsFragment;
 import net.emilla.content.receive.EmailReceiver;
 import net.emilla.util.Apps;
@@ -35,7 +36,7 @@ final class Email extends CoreDataCommand implements EmailReceiver {
     private final ContactEmailsFragment mContactsFragment;
     private final FieldToggle mSubjectToggle;
 
-    /*internal*/ Email(AssistActivity act) {
+    @internal Email(AssistActivity act) {
         super(act, CoreEntry.EMAIL, R.string.data_hint_email);
 
         mContactsFragment = ContactEmailsFragment.newInstance(true);

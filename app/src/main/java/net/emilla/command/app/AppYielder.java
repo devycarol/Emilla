@@ -1,13 +1,14 @@
 package net.emilla.command.app;
 
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.command.CommandYielder;
 
 public final class AppYielder extends CommandYielder {
 
     private final AppEntry mApp;
 
-    /*internal*/ AppYielder(AppEntry app) {
+    @internal AppYielder(AppEntry app) {
         mApp = app;
     }
 

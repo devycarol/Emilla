@@ -7,11 +7,12 @@ import android.view.inputmethod.EditorInfo;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.util.Intents;
 
 final class AppSearch extends AppCommand {
 
-    /*internal*/ AppSearch(Context ctx, AppEntry appEntry) {
+    @internal AppSearch(Context ctx, AppEntry appEntry) {
         super(ctx, appEntry, EditorInfo.IME_ACTION_SEARCH);
     }
 

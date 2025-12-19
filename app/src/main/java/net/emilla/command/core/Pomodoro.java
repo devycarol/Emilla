@@ -10,6 +10,7 @@ import androidx.annotation.RequiresPermission;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.command.ActionMap;
 import net.emilla.command.Subcommand;
 import net.emilla.config.SettingVals;
@@ -33,7 +34,7 @@ final class Pomodoro extends CoreDataCommand {
     @Nullable
     private String mBreakMemo;
 
-    /*internal*/ Pomodoro(AssistActivity act) {
+    @internal Pomodoro(AssistActivity act) {
         super(act, CoreEntry.POMODORO, R.string.data_hint_pomodoro);
 
         var res = act.getResources();

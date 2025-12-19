@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 import net.emilla.action.box.TriResult;
 import net.emilla.lang.Lang;
 
-/*internal*/ enum IntSetting implements SystemSetting {
+enum IntSetting implements SystemSetting {
     PLACEHOLDER(null, null, 0) {
         @Override
         boolean isValid(int value) {

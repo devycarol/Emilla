@@ -9,12 +9,13 @@ import android.view.inputmethod.EditorInfo;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.exception.EmillaException;
 import net.emilla.setting.SettingMap;
 
 final class Setting extends CoreCommand {
 
-    /*internal*/ Setting(Context ctx) {
+    @internal Setting(Context ctx) {
         super(ctx, CoreEntry.SETTING, EditorInfo.IME_ACTION_DONE);
     }
 

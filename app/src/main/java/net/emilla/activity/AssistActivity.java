@@ -53,6 +53,7 @@ import net.emilla.action.CursorStart;
 import net.emilla.action.Help;
 import net.emilla.action.PlayPause;
 import net.emilla.action.QuickAction;
+import net.emilla.annotation.inner;
 import net.emilla.chime.Chime;
 import net.emilla.command.CommandMap;
 import net.emilla.command.DataCommand;
@@ -181,7 +182,7 @@ public final class AssistActivity extends AppCompatActivity {
         commandField.requestFocus();
     }
 
-    private /*inner*/ final class CommandWatcher implements TextWatcher {
+    private @inner final class CommandWatcher implements TextWatcher {
 
         CommandWatcher() {}
 

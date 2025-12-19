@@ -4,11 +4,12 @@ import android.content.Context;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.run.ToastGift;
 
 final class Toast extends CoreDataCommand {
 
-    /*internal*/ Toast(Context ctx) {
+    @internal Toast(Context ctx) {
         super(ctx, CoreEntry.TOAST, R.string.data_hint_toast);
     }
 

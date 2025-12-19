@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 import net.emilla.action.box.TriResult;
 import net.emilla.lang.Lang;
 
-/*internal*/ enum LongSetting implements SystemSetting {
+enum LongSetting implements SystemSetting {
     PLACEHOLDER(null, null, 0) {
         @Override
         boolean isValid(long value) {

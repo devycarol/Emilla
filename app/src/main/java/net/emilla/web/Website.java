@@ -5,6 +5,7 @@ import android.net.Uri;
 
 import androidx.annotation.Nullable;
 
+import net.emilla.annotation.internal;
 import net.emilla.text.Csv;
 import net.emilla.text.CsvBuilder;
 import net.emilla.util.Intents;
@@ -21,7 +22,7 @@ final class Website {
     private final String mUrl;
     @Nullable
     private final SearchEngine mSearchEngine;
-    /*internal*/ String[] mAliases;
+    @internal String[] mAliases;
 
     private Website(String url, @Nullable SearchEngine searchEngine, String[] aliases) {
         mUrl = url;
@@ -30,7 +31,7 @@ final class Website {
     }
 
     @Nullable
-    /*internal*/ static Website from(Csv csv) {
+    @internal static Website from(Csv csv) {
         try {
             String url = csv.requireNext();
             var engine = SearchEngine.from(csv);
@@ -44,7 +45,7 @@ final class Website {
     }
 
     @Deprecated @Nullable
-    /*internal*/ static Website fromLegacy(Csv csv) {
+    @internal static Website fromLegacy(Csv csv) {
         String[] split;
         try {
             split = csv.remainingValues();
@@ -82,7 +83,7 @@ final class Website {
         return mSearchEngine != null;
     }
 
-    /*internal*/ Intent viewIntent(@Nullable String searchQuery) {
+    @internal Intent viewIntent(@Nullable String searchQuery) {
         return Intents.view(
             searchQuery != null
                 ? mSearchEngine.url(searchQuery)

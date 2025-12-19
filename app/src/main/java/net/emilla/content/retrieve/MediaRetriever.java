@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.inner;
 import net.emilla.content.receive.FilesReceiver;
 import net.emilla.util.Toasts;
 
@@ -35,7 +36,7 @@ public final class MediaRetriever extends ResultRetriever<PickVisualMediaRequest
         return new MediaCallback();
     }
 
-    private /*inner*/ final class MediaCallback extends ResultCallback {
+    private @inner final class MediaCallback extends ResultCallback {
 
         @Override
         protected void onActivityResult(List<Uri> media, FilesReceiver receiver) {

@@ -2,11 +2,13 @@ package net.emilla.cursor;
 
 import android.database.Cursor;
 
+import net.emilla.annotation.internal;
+
 import java.util.function.Predicate;
 
 public abstract class CursorTester extends CursorReader implements Predicate<Cursor> {
 
-    /*internal*/ CursorTester(String[] projection) {
+    @internal CursorTester(String[] projection) {
         super(projection);
     }
 

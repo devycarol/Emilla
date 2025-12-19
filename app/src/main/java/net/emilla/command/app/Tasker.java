@@ -10,6 +10,7 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.command.ActionMap;
 import net.emilla.command.DataCommand;
 import net.emilla.lang.Lines;
@@ -39,7 +40,7 @@ final class Tasker extends AppCommand implements DataCommand {
 
     private final ActionMap<Action> mActionMap;
 
-    /*internal*/ Tasker(Context ctx, AppEntry appEntry) {
+    @internal Tasker(Context ctx, AppEntry appEntry) {
         super(ctx, appEntry, EditorInfo.IME_ACTION_NEXT);
 
         var res = ctx.getResources();

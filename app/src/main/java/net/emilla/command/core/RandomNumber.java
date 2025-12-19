@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.inputmethod.EditorInfo;
 
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.lang.Lang;
 import net.emilla.lang.phrase.RandRange;
 
@@ -11,7 +12,7 @@ import java.util.Random;
 
 final class RandomNumber extends CoreCommand {
 
-    /*internal*/ RandomNumber(Context ctx) {
+    @internal RandomNumber(Context ctx) {
         super(ctx, CoreEntry.RANDOM_NUMBER, EditorInfo.IME_ACTION_DONE);
     }
 

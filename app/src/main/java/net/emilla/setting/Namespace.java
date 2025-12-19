@@ -3,7 +3,7 @@ package net.emilla.setting;
 import android.content.ContentResolver;
 import android.provider.Settings;
 
-/*internal*/ enum Namespace {
+enum Namespace {
     GLOBAL {
         @Override
         public int getInt(ContentResolver cr, String name)

@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.view.inputmethod.EditorInfo;
 
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
 import net.emilla.web.WebsiteMap;
@@ -21,7 +22,7 @@ final class Web extends CoreCommand {
 
     private final WebsiteMap mWebsiteMap;
 
-    /*internal*/ Web(AssistActivity act) {
+    @internal Web(AssistActivity act) {
         super(act, CoreEntry.WEB, EditorInfo.IME_ACTION_SEARCH);
 
         var prefs = act.getSharedPreferences();

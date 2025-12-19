@@ -3,7 +3,7 @@ package net.emilla.command.core;
 import net.emilla.activity.AssistActivity;
 
 @FunctionalInterface
-/*internal*/ interface CoreMaker {
+interface CoreMaker {
 
     CoreCommand make(AssistActivity act);
 

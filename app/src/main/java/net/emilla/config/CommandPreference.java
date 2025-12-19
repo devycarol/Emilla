@@ -11,6 +11,7 @@ import androidx.preference.EditTextPreference;
 import androidx.preference.PreferenceViewHolder;
 
 import net.emilla.R;
+import net.emilla.annotation.internal;
 import net.emilla.command.app.AppEntry;
 import net.emilla.command.core.CoreEntry;
 
@@ -26,7 +27,7 @@ public final class CommandPreference extends EditTextPreference {
         this(ctx, attrs, null);
     }
 
-    /*internal*/ CommandPreference(Context ctx, CoreEntry coreEntry) {
+    @internal CommandPreference(Context ctx, CoreEntry coreEntry) {
         this(ctx, null, coreEntry.name());
 
         setTitle(coreEntry.name);
@@ -34,7 +35,7 @@ public final class CommandPreference extends EditTextPreference {
         setIcon(coreEntry.icon(ctx));
     }
 
-    /*internal*/ CommandPreference(Context ctx, AppEntry appEntry) {
+    @internal CommandPreference(Context ctx, AppEntry appEntry) {
         this(ctx, null, appEntry.entry());
 
         setTitle(appEntry.displayName);

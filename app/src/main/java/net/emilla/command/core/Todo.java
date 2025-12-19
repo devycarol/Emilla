@@ -10,6 +10,7 @@ import net.emilla.R;
 import net.emilla.action.box.ListFileFragment;
 import net.emilla.action.box.TriResult;
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.exception.EmillaException;
 import net.emilla.file.Files;
 import net.emilla.util.MimeTypes;
@@ -18,7 +19,7 @@ final class Todo extends CoreCommand {
 
     private final ListFileFragment mTodoFragment;
 
-    /*internal*/ Todo(Context ctx) {
+    @internal Todo(Context ctx) {
         super(ctx, CoreEntry.TODO, EditorInfo.IME_ACTION_DONE);
 
         mTodoFragment = ListFileFragment.newInstance();

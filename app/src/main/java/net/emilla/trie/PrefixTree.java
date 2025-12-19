@@ -1,5 +1,7 @@
 package net.emilla.trie;
 
+import net.emilla.annotation.internal;
+
 import java.util.Iterator;
 import java.util.function.IntFunction;
 
@@ -7,7 +9,7 @@ final class PrefixTree<K, V> {
 
     private final PrefixNode<K, V> mRoot;
 
-    /*internal*/ PrefixTree(IntFunction<V[]> arrayGenerator) {
+    @internal PrefixTree(IntFunction<V[]> arrayGenerator) {
         mRoot = new PrefixNode<K, V>(arrayGenerator);
     }
 

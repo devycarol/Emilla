@@ -1,5 +1,6 @@
 package net.emilla.sort;
 
+import net.emilla.annotation.internal;
 import net.emilla.util.ArrayLoader;
 
 import java.util.Arrays;
@@ -33,14 +34,14 @@ public final class SortedArrays {
             : ~index;
     }
 
-    /*internal*/ static <E> ArrayWindow<E> windowMatching(
+    @internal static <E> ArrayWindow<E> windowMatching(
         E[] array,
         Comparable<? super E> searcher
     ) {
         return windowMatching(array, searcher, 0, array.length);
     }
 
-    /*internal*/ static <E> ArrayWindow<E> windowMatching(
+    @internal static <E> ArrayWindow<E> windowMatching(
         ArrayWindow<? extends E> window,
         Comparable<? super E> searcher
     ) {

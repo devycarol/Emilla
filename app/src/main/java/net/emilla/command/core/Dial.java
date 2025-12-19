@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.view.inputmethod.EditorInfo;
 
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.util.Apps;
 
 final class Dial extends CoreCommand {
@@ -17,7 +18,7 @@ final class Dial extends CoreCommand {
         return Apps.canDo(pm, new Intent(ACTION_DIAL));
     }
 
-    /*internal*/ Dial(Context ctx) {
+    @internal Dial(Context ctx) {
         super(ctx, CoreEntry.DIAL, EditorInfo.IME_ACTION_GO);
     }
 

@@ -16,6 +16,7 @@ import net.emilla.R;
 import net.emilla.action.field.FieldToggle;
 import net.emilla.action.field.InputField;
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.lang.date.DateTimeSpan;
 import net.emilla.lang.date.Time;
 import net.emilla.util.Apps;
@@ -40,7 +41,7 @@ final class Calendar extends CoreDataCommand {
     private final FieldToggle mLocationToggle;
     private final FieldToggle mUrlToggle;
 
-    /*internal*/ Calendar(AssistActivity act) {
+    @internal Calendar(AssistActivity act) {
         super(act, CoreEntry.CALENDAR, R.string.data_hint_calendar);
 
         mLocationToggle = InputField.LOCATION.toggler(act);

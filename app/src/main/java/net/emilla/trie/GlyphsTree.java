@@ -1,12 +1,14 @@
 package net.emilla.trie;
 
+import net.emilla.annotation.internal;
+
 import java.util.function.IntFunction;
 
 final class GlyphsTree<V> implements PhraseTree<V> {
 
     private final PrefixTree<Integer, V> mPrefixTree;
 
-    /*internal*/ GlyphsTree(IntFunction<V[]> arrayGenerator) {
+    @internal GlyphsTree(IntFunction<V[]> arrayGenerator) {
         mPrefixTree = new PrefixTree<Integer, V>(arrayGenerator);
     }
 

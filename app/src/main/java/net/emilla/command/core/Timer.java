@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.lang.date.Time;
 import net.emilla.util.Apps;
 
@@ -20,7 +21,7 @@ final class Timer extends CoreDataCommand {
         return Apps.canDo(pm, makeIntent());
     }
 
-    /*internal*/ Timer(Context ctx) {
+    @internal Timer(Context ctx) {
         super(ctx, CoreEntry.TIMER, R.string.data_hint_label);
     }
 

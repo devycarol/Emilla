@@ -1,11 +1,13 @@
 package net.emilla.sort;
 
+import net.emilla.annotation.internal;
+
 final class PrefixSearcher implements Comparable<SearchItem> {
 
     private final String mNormalizedSearch;
     private final int mPrefixLength;
 
-    /*internal*/ PrefixSearcher(String normalizedSearch) {
+    @internal PrefixSearcher(String normalizedSearch) {
         mNormalizedSearch = normalizedSearch;
         mPrefixLength = normalizedSearch.length();
     }

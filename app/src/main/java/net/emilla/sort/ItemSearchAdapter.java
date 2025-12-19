@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import net.emilla.annotation.open;
 import net.emilla.databinding.ListItemBinding;
 import net.emilla.file.ListItemHolder;
 import net.emilla.struct.IndexedStruct;
@@ -13,7 +14,7 @@ import net.emilla.struct.IndexedStruct;
 import java.util.function.Consumer;
 import java.util.function.IntFunction;
 
-public /*open*/ class ItemSearchAdapter<E extends SearchItem>
+public @open class ItemSearchAdapter<E extends SearchItem>
     extends RecyclerView.Adapter<ListItemHolder> {
 
     private final LayoutInflater mInflater;

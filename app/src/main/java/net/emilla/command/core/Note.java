@@ -6,6 +6,7 @@ import android.net.Uri;
 import net.emilla.R;
 import net.emilla.action.box.NotesFragment;
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.exception.EmillaException;
 import net.emilla.file.Files;
 import net.emilla.file.Folder;
@@ -15,7 +16,7 @@ final class Note extends CoreDataCommand {
 
     private final NotesFragment mNotesFragment;
 
-    /*internal*/ Note(Context ctx) {
+    @internal Note(Context ctx) {
         super(ctx, CoreEntry.NOTE, R.string.data_hint_text);
 
         mNotesFragment = NotesFragment.newInstance();

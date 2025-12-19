@@ -15,13 +15,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.databinding.FragmentItemListBinding;
 import net.emilla.sort.ItemSearchAdapter;
 import net.emilla.util.Dialogs;
 
 public final class SnippetsFragment extends ActionBox {
 
-    /*internal*/ SnippetsFragment() {
+    @internal SnippetsFragment() {
         super(R.layout.fragment_item_list);
     }
 

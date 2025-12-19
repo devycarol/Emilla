@@ -6,12 +6,13 @@ import android.view.inputmethod.EditorInfo;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.util.MediaControl;
 import net.emilla.util.Services;
 
 final class Play extends CoreCommand {
 
-    /*internal*/ Play(Context ctx) {
+    @internal Play(Context ctx) {
         super(ctx, CoreEntry.PLAY, EditorInfo.IME_ACTION_GO);
     }
 

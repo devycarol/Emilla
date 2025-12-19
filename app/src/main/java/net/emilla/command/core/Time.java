@@ -5,6 +5,7 @@ import android.view.inputmethod.EditorInfo;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.run.TextGift;
 
 import java.time.LocalTime;
@@ -13,7 +14,7 @@ import java.time.format.FormatStyle;
 
 final class Time extends CoreCommand {
 
-    /*internal*/ Time(Context ctx) {
+    @internal Time(Context ctx) {
         super(ctx, CoreEntry.TIME, EditorInfo.IME_ACTION_DONE);
     }
 

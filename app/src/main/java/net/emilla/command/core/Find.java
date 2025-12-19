@@ -4,10 +4,11 @@ package net.emilla.command.core;
 //import android.view.inputmethod.EditorInfo;
 //
 //import net.emilla.activity.AssistActivity;
+//import net.emilla.annotation.internal;
 //
 //final class Find extends CoreCommand {
 //
-//    /*internal*/ Find(Context ctx) {
+//    @internal Find(Context ctx) {
 //        super(ctx, CoreEntry.FIND, EditorInfo.IME_ACTION_SEARCH);
 //    }
 //

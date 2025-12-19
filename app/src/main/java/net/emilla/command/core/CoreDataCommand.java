@@ -5,6 +5,7 @@ import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.StringRes;
 
+import net.emilla.annotation.internal;
 import net.emilla.command.DataCommand;
 
 abstract class CoreDataCommand extends CoreCommand implements DataCommand {
@@ -12,7 +13,7 @@ abstract class CoreDataCommand extends CoreCommand implements DataCommand {
     @StringRes
     private final int mHint;
 
-    /*internal*/ CoreDataCommand(Context ctx, CoreEntry coreEntry, @StringRes int dataHint) {
+    @internal CoreDataCommand(Context ctx, CoreEntry coreEntry, @StringRes int dataHint) {
         super(ctx, coreEntry, EditorInfo.IME_ACTION_NEXT);
         mHint = dataHint;
     }

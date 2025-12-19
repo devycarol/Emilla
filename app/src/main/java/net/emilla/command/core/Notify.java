@@ -9,13 +9,14 @@ import androidx.annotation.RequiresPermission;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.ping.PingChannel;
 import net.emilla.ping.Pings;
 import net.emilla.util.Permission;
 
 final class Notify extends CoreDataCommand {
 
-    /*internal*/ Notify(Context ctx) {
+    @internal Notify(Context ctx) {
         super(ctx, CoreEntry.NOTIFY, R.string.data_hint_notify);
     }
 

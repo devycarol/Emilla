@@ -2,6 +2,7 @@ package net.emilla.file;
 
 import androidx.annotation.Nullable;
 
+import net.emilla.annotation.internal;
 import net.emilla.util.ArrayLoader;
 import net.emilla.util.Chars;
 
@@ -14,7 +15,7 @@ final class TextListReader {
 
     private int mPosition = 0;
 
-    /*internal*/ TextListReader(byte[] bytes) {
+    @internal TextListReader(byte[] bytes) {
         mText = bytes;
         mLength = bytes.length;
     }

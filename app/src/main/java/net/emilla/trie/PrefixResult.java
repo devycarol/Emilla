@@ -3,6 +3,7 @@ package net.emilla.trie;
 import androidx.annotation.Nullable;
 
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.command.CommandYielder;
 import net.emilla.command.DuplicateCommand;
 import net.emilla.command.EmillaCommand;
@@ -15,11 +16,7 @@ public final class PrefixResult<V, L> {
     public final L leftovers;
     private final int mLeftoverPosition;
 
-    /*internal*/ PrefixResult(
-        @Nullable V[] values,
-        @Nullable L leftovers,
-        int leftoverPosition
-    ) {
+    @internal PrefixResult(@Nullable V[] values, @Nullable L leftovers, int leftoverPosition) {
         mValues = values;
         this.leftovers = leftovers;
         mLeftoverPosition = leftoverPosition;

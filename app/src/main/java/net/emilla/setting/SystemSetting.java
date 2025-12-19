@@ -7,7 +7,7 @@ import androidx.annotation.Nullable;
 
 import net.emilla.action.box.TriResult;
 
-/*internal*/ sealed interface SystemSetting
+sealed interface SystemSetting
     permits IntSetting, LongSetting, FloatSetting, StringSetting, BooleanSetting
 {
     String[] names(Resources res);

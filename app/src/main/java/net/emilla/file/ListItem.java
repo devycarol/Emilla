@@ -1,5 +1,7 @@
 package net.emilla.file;
 
+import net.emilla.annotation.internal;
+import net.emilla.annotation.open;
 import net.emilla.sort.IndexPortion;
 
 import java.io.IOException;
@@ -17,7 +19,7 @@ public sealed class ListItem permits FileListItem {
         this(text, 0);
     }
 
-    /*internal*/ ListItem(String text, int leadingLineCount) {
+    @internal ListItem(String text, int leadingLineCount) {
         this.text = text;
         mLeadingLineCount = leadingLineCount;
     }
@@ -64,7 +66,7 @@ public sealed class ListItem permits FileListItem {
         writeText(ostream);
     }
 
-    protected /*open*/ void writeText(OutputStream ostream) throws IOException {
+    protected @open void writeText(OutputStream ostream) throws IOException {
         ostream.write(this.text.getBytes());
     }
 

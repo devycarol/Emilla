@@ -1,5 +1,6 @@
 package net.emilla.sort;
 
+import net.emilla.annotation.internal;
 import net.emilla.struct.IndexedStruct;
 import net.emilla.util.ArrayLoader;
 
@@ -9,15 +10,15 @@ import java.util.stream.Stream;
 
 public final class SearchResult<E extends SearchItem> implements IndexedStruct<E> {
 
-    /*internal*/ final ArrayWindow<E> mPrimaryItems;
+    @internal final ArrayWindow<E> mPrimaryItems;
     private final E[] mSecondaryItems;
 
-    /*internal*/ SearchResult(ArrayWindow<E> primaryItems, E[] secondaryItems) {
+    @internal SearchResult(ArrayWindow<E> primaryItems, E[] secondaryItems) {
         mPrimaryItems = primaryItems;
         mSecondaryItems = secondaryItems;
     }
 
-    /*internal*/ SearchResult<E> narrow(
+    @internal SearchResult<E> narrow(
         String normalizedTailedSearch,
         IntFunction<E[]> arrayGenerator
     ) {

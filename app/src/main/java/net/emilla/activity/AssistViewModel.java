@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
+import net.emilla.annotation.internal;
 import net.emilla.chime.Chime;
 import net.emilla.chime.Chimer;
 import net.emilla.command.app.AppEntry;
@@ -25,11 +26,11 @@ import java.util.HashMap;
 
 final class AssistViewModel extends ViewModel {
 
-    /*internal*/ static final class Factory implements ViewModelProvider.Factory {
+    @internal static final class Factory implements ViewModelProvider.Factory {
 
         private final Context mAppContext;
 
-        /*internal*/ Factory(Context ctx) {
+        @internal Factory(Context ctx) {
             mAppContext = ctx.getApplicationContext();
         }
 

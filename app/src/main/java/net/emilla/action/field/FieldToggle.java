@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import net.emilla.R;
 import net.emilla.action.QuickAction;
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 
 public final class FieldToggle implements QuickAction {
 
@@ -23,7 +24,7 @@ public final class FieldToggle implements QuickAction {
     private boolean mActivated = false;
     private EditText mField = null;
 
-    /*internal*/ FieldToggle(AssistActivity act, InputField inputField) {
+    @internal FieldToggle(AssistActivity act, InputField inputField) {
         mActivity = act;
         mInputField = inputField;
     }

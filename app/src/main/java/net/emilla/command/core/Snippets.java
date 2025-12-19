@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import net.emilla.R;
 import net.emilla.action.box.SnippetsFragment;
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.command.ActionMap;
 import net.emilla.command.Subcommand;
 
@@ -19,7 +20,7 @@ final class Snippets extends CoreDataCommand {
     private final ActionMap<SnippetAction> mActionMap;
     private SnippetAction mAction = SnippetAction.GET;
 
-    /*internal*/ Snippets(Context ctx) {
+    @internal Snippets(Context ctx) {
         super(ctx, CoreEntry.SNIPPETS, R.string.data_hint_text);
 
         mSnippetsFragment = SnippetsFragment.newInstance();

@@ -6,13 +6,14 @@ import android.content.Intent;
 import android.view.inputmethod.EditorInfo;
 
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.math.Calculator;
 import net.emilla.math.Maths;
 import net.emilla.util.Intents;
 
 final class Calculate extends CategoryCommand {
 
-    /*internal*/ Calculate(AssistActivity act) {
+    @internal Calculate(AssistActivity act) {
         super(act, CoreEntry.CALCULATE, EditorInfo.IME_ACTION_DONE);
     }
 

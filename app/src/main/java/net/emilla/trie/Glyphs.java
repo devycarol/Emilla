@@ -1,10 +1,11 @@
 package net.emilla.trie;
 
+import net.emilla.annotation.internal;
 import net.emilla.lang.Lang;
 
 final class Glyphs extends Phrase<Integer> {
 
-    /*internal*/ Glyphs(String phrase) {
+    @internal Glyphs(String phrase) {
         super(phrase);
     }
 

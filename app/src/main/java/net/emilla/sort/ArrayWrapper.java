@@ -1,5 +1,6 @@
 package net.emilla.sort;
 
+import net.emilla.annotation.internal;
 import net.emilla.struct.IndexedStruct;
 
 import java.util.Arrays;
@@ -7,9 +8,9 @@ import java.util.stream.Stream;
 
 final class ArrayWrapper<E> implements IndexedStruct<E> {
 
-    /*internal*/ E[] mArray;
+    @internal E[] mArray;
 
-    /*internal*/ ArrayWrapper(E[] array) {
+    @internal ArrayWrapper(E[] array) {
         mArray = array;
     }
 

@@ -9,13 +9,15 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RequiresPermission;
 
+import net.emilla.annotation.internal;
+
 @RequiresApi(Build.VERSION_CODES.O)
 final class ChanneledPinger extends Pinger {
 
     private final PingChannel mChannel;
     private final Resources mRes;
 
-    /*internal*/ ChanneledPinger(Context ctx, Notification ping, PingChannel channel) {
+    @internal ChanneledPinger(Context ctx, Notification ping, PingChannel channel) {
         super(ctx, ping, channel);
 
         mChannel = channel;

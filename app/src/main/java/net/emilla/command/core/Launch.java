@@ -7,12 +7,13 @@ import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.Nullable;
 
+import net.emilla.annotation.internal;
 import net.emilla.command.app.AppEntry;
 import net.emilla.util.Intents;
 
 final class Launch extends OpenCommand {
 
-    /*internal*/ Launch(Context ctx) {
+    @internal Launch(Context ctx) {
         super(ctx, CoreEntry.LAUNCH, EditorInfo.IME_ACTION_GO);
     }
 

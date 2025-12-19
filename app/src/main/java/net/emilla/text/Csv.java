@@ -2,6 +2,7 @@ package net.emilla.text;
 
 import androidx.annotation.Nullable;
 
+import net.emilla.annotation.internal;
 import net.emilla.util.ArrayLoader;
 
 import java.util.NoSuchElementException;
@@ -13,7 +14,7 @@ public final class Csv {
 
     private int mPosition;
 
-    /*internal*/ Csv(char[] text, int start, int span) {
+    @internal Csv(char[] text, int start, int span) {
         mText = text;
         mEnd = start + span;
 

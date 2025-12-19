@@ -12,6 +12,7 @@ import net.emilla.R;
 import net.emilla.action.FileFetcher;
 import net.emilla.action.MediaFetcher;
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.chime.Chime;
 import net.emilla.content.receive.AppChoiceReceiver;
 import net.emilla.util.Apps;
@@ -30,7 +31,7 @@ final class Share extends CoreDataCommand implements AppChoiceReceiver {
     @Deprecated
     private final AssistActivity mActivity;
 
-    /*internal*/ Share(AssistActivity act) {
+    @internal Share(AssistActivity act) {
         super(act, CoreEntry.SHARE, R.string.data_hint_text);
 
         mActivity = act;

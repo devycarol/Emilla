@@ -2,6 +2,7 @@ package net.emilla.sort;
 
 import androidx.annotation.Nullable;
 
+import net.emilla.annotation.internal;
 import net.emilla.lang.Lang;
 import net.emilla.struct.IndexedStruct;
 import net.emilla.util.ArrayLoader;
@@ -42,7 +43,7 @@ public final class ArraySearcher<E extends SearchItem> {
     private final HashMap<String, SearchResult<E>> mSearchCache;
     private final IntFunction<E[]> mArrayGenerator;
 
-    /*internal*/ ArraySearcher(E[] sortedItems, IntFunction<E[]> arrayGenerator) {
+    @internal ArraySearcher(E[] sortedItems, IntFunction<E[]> arrayGenerator) {
         mItems = new ArrayWrapper<E>(sortedItems);
         mSearchCache = new HashMap<String, SearchResult<E>>(16);
         mArrayGenerator = arrayGenerator;

@@ -10,6 +10,7 @@ import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.Nullable;
 
+import net.emilla.annotation.internal;
 import net.emilla.command.app.AppEntry;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
@@ -23,7 +24,7 @@ final class Uninstall extends OpenCommand {
             || Apps.canDo(pm, new Intent(Settings.ACTION_SETTINGS));
     }
 
-    /*internal*/ Uninstall(Context ctx) {
+    @internal Uninstall(Context ctx) {
         super(ctx, CoreEntry.UNINSTALL, EditorInfo.IME_ACTION_GO);
     }
 

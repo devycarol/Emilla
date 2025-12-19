@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.view.inputmethod.EditorInfo;
 
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.util.Features;
 import net.emilla.util.TorchManager;
 
@@ -14,7 +15,7 @@ final class Torch extends CoreCommand {
         return Features.torch(pm);
     }
 
-    /*internal*/ Torch(Context ctx) {
+    @internal Torch(Context ctx) {
         super(ctx, CoreEntry.TORCH, EditorInfo.IME_ACTION_DONE);
     }
 

@@ -2,12 +2,14 @@ package net.emilla.sort;
 
 import androidx.annotation.CallSuper;
 
+import net.emilla.annotation.internal;
+import net.emilla.annotation.open;
 import net.emilla.lang.Lang;
 
 public abstract class SearchItem implements Comparable<SearchItem> {
 
     public final String displayName;
-    /*internal*/ final String mSearchKey;
+    @internal final String mSearchKey;
 
     protected SearchItem(String displayName) {
         this.displayName = displayName;
@@ -15,7 +17,7 @@ public abstract class SearchItem implements Comparable<SearchItem> {
     }
 
     @CallSuper
-    public /*open*/ boolean contains(CharSequence normalizedSearch) {
+    public @open boolean contains(CharSequence normalizedSearch) {
         return mSearchKey.contains(normalizedSearch);
     }
 

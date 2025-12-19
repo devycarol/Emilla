@@ -5,13 +5,14 @@ import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.net.Uri;
 
+import net.emilla.annotation.internal;
 import net.emilla.config.SettingVals;
 
 final class Custom implements Chimer {
 
     private final Uri[] mUris;
 
-    /*internal*/ Custom(SharedPreferences prefs) {
+    @internal Custom(SharedPreferences prefs) {
         Chime[] chimes = Chime.values();
         int chimeCount = chimes.length;
         var uris = new Uri[chimeCount];

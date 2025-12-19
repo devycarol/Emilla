@@ -1,10 +1,11 @@
 package net.emilla.trie;
 
+import net.emilla.annotation.internal;
 import net.emilla.lang.Lang;
 
 final class Words extends Phrase<String> {
 
-    /*internal*/ Words(String phrase) {
+    @internal Words(String phrase) {
         super(phrase);
     }
 

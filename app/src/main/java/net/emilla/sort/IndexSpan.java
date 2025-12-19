@@ -2,6 +2,8 @@ package net.emilla.sort;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import net.emilla.annotation.internal;
+
 final class IndexSpan extends IndexPortion {
 
     private final int mLength;
@@ -12,7 +14,7 @@ final class IndexSpan extends IndexPortion {
         mLength = length;
     }
 
-    /*internal*/ static IndexSpan window(int start, int end) {
+    @internal static IndexSpan window(int start, int end) {
         return new IndexSpan(start, end - start);
     }
 

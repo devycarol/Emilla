@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.config.SettingVals;
 import net.emilla.content.ResultLaunchers;
 import net.emilla.databinding.FragmentNotesBinding;
@@ -32,7 +33,7 @@ public final class NotesFragment extends ActionBox {
         this::onFolderChosen
     );
 
-    /*internal*/ NotesFragment() {
+    @internal NotesFragment() {
         super(R.layout.fragment_notes);
     }
 

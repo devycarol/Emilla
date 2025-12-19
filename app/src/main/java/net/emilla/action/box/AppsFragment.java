@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.command.app.AppEntry;
 import net.emilla.command.core.OpenCommand;
 import net.emilla.databinding.FragmentItemListBinding;
@@ -18,7 +19,7 @@ import net.emilla.sort.ItemSearchAdapter;
 
 public final class AppsFragment extends ActionBox {
 
-    /*internal*/ AppsFragment() {
+    @internal AppsFragment() {
         super(R.layout.fragment_item_list);
     }
 

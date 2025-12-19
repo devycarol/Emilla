@@ -5,13 +5,14 @@ import android.view.inputmethod.EditorInfo;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.lang.Lang;
 import net.emilla.lang.measure.FahrenheitConversion;
 import net.emilla.math.Maths;
 
 final class Fahrenheit extends CoreCommand {
 
-    /*internal*/ Fahrenheit(Context ctx) {
+    @internal Fahrenheit(Context ctx) {
         super(ctx, CoreEntry.FAHRENHEIT, EditorInfo.IME_ACTION_DONE);
     }
 

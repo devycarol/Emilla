@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.inner;
 import net.emilla.content.receive.ContactDataReceiver;
 import net.emilla.util.Toasts;
 
@@ -63,7 +64,7 @@ public abstract class ContactDataRetriever extends ResultRetriever<Void, String,
         return new DataCallback();
     }
 
-    private /*inner*/ final class DataCallback extends ResultCallback {
+    private @inner final class DataCallback extends ResultCallback {
 
         @Override
         protected void onActivityResult(String data, ContactDataReceiver receiver) {

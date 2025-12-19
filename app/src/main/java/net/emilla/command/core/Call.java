@@ -11,6 +11,7 @@ import android.view.inputmethod.EditorInfo;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.contact.fragment.ContactPhonesFragment;
 import net.emilla.content.receive.PhoneReceiver;
 import net.emilla.util.Apps;
@@ -27,7 +28,7 @@ final class Call extends CoreCommand implements PhoneReceiver {
 
     private final ContactPhonesFragment mContactsFragment;
 
-    /*internal*/ Call(Context ctx) {
+    @internal Call(Context ctx) {
         super(ctx, CoreEntry.CALL, EditorInfo.IME_ACTION_GO);
 
         mContactsFragment = ContactPhonesFragment.newInstance(false);

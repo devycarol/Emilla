@@ -8,6 +8,8 @@ import android.os.Build;
 
 import androidx.annotation.RequiresPermission;
 
+import net.emilla.annotation.internal;
+import net.emilla.annotation.open;
 import net.emilla.util.Services;
 
 public sealed class Pinger permits ChanneledPinger {
@@ -36,14 +38,14 @@ public sealed class Pinger permits ChanneledPinger {
     private final Notification mPing;
     private final int mSlot;
 
-    /*internal*/ Pinger(Context ctx, Notification ping, PingChannel channel) {
+    @internal Pinger(Context ctx, Notification ping, PingChannel channel) {
         this.pingManager = Services.notification(ctx);
         mPing = ping;
         mSlot = channel.slot;
     }
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
-    public /*open*/ void ping() {
+    public @open void ping() {
         int id = mSlot == PingChannel.SLOT_UNLIMITED ? uniqueSlot() : mSlot;
         // this can be used to edit or remove the notification later.
         this.pingManager.notify(id, mPing);

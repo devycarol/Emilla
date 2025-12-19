@@ -7,6 +7,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.command.app.AppEntry;
 import net.emilla.run.AppSuccess;
 import net.emilla.util.Apps;
@@ -21,7 +22,7 @@ abstract class CategoryCommand extends CoreCommand {
     @Nullable
     private final AlertDialog.Builder mChooser;
 
-    /*internal*/ CategoryCommand(AssistActivity act, CoreEntry coreEntry, int imeAction) {
+    @internal CategoryCommand(AssistActivity act, CoreEntry coreEntry, int imeAction) {
         super(act, coreEntry, imeAction);
 
         mApps = Apps.filter(act.getPackageManager(), makeFilter());

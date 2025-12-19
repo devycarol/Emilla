@@ -4,6 +4,7 @@ import android.net.Uri;
 
 import androidx.annotation.Nullable;
 
+import net.emilla.annotation.internal;
 import net.emilla.text.Csv;
 import net.emilla.util.Strings;
 
@@ -11,8 +12,8 @@ import java.util.NoSuchElementException;
 
 final class SearchEngine {
 
-    /*internal*/ final String mUrlPrefix;
-    /*internal*/ final String mUrlSuffix;
+    @internal final String mUrlPrefix;
+    @internal final String mUrlSuffix;
 
     private SearchEngine(@Nullable String urlPrefix, @Nullable String urlSuffix) {
         mUrlPrefix = Strings.emptyIfNull(urlPrefix);
@@ -20,7 +21,7 @@ final class SearchEngine {
     }
 
     @Nullable
-    /*internal*/ static SearchEngine from(Csv csv) {
+    @internal static SearchEngine from(Csv csv) {
         String prefix = csv.next();
         String suffix = csv.next();
         return prefix != null || suffix != null
@@ -29,7 +30,7 @@ final class SearchEngine {
     }
 
     @Deprecated
-    /*internal*/ static SearchEngine fromRaw(String prefix, String suffix) {
+    @internal static SearchEngine fromRaw(String prefix, String suffix) {
         return new SearchEngine(prefix, suffix);
     }
 

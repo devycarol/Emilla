@@ -8,6 +8,7 @@ import android.view.inputmethod.EditorInfo;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
 
@@ -17,7 +18,7 @@ final class Weather extends CategoryCommand {
         return Apps.canDo(pm, Intents.categoryTask(CATEGORY_APP_WEATHER));
     }
 
-    /*internal*/ Weather(AssistActivity act) {
+    @internal Weather(AssistActivity act) {
         super(act, CoreEntry.WEATHER, EditorInfo.IME_ACTION_GO);
     }
 

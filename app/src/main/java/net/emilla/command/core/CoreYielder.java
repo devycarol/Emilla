@@ -1,6 +1,7 @@
 package net.emilla.command.core;
 
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.command.CommandYielder;
 import net.emilla.command.EmillaCommand;
 
@@ -8,7 +9,7 @@ final class CoreYielder extends CommandYielder {
 
     private final CoreEntry mCoreEntry;
 
-    /*internal*/ CoreYielder(CoreEntry coreEntry) {
+    @internal CoreYielder(CoreEntry coreEntry) {
         mCoreEntry = coreEntry;
     }
 

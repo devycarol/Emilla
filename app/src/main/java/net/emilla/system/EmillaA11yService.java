@@ -12,6 +12,8 @@ import android.view.accessibility.AccessibilityEvent;
 
 import androidx.annotation.RequiresApi;
 
+import net.emilla.annotation.inner;
+
 public final class EmillaA11yService extends AccessibilityService {
 
     // TODO: google assistant (maybe?) changes the accessibility menu icon for "assistant," so we
@@ -31,7 +33,7 @@ public final class EmillaA11yService extends AccessibilityService {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private /*inner*/ final class AssistButtonCallback extends AccessibilityButtonCallback {
+    private @inner final class AssistButtonCallback extends AccessibilityButtonCallback {
 
         @Override
         public void onClicked(AccessibilityButtonController controller) {

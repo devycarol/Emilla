@@ -9,6 +9,7 @@ import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.RequiresApi;
 
+import net.emilla.annotation.internal;
 import net.emilla.command.app.AppEntry;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
@@ -20,7 +21,7 @@ final class Notifications extends OpenCommand {
             && Apps.canDo(pm, new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS));
     }
 
-    /*internal*/ Notifications(Context ctx) {
+    @internal Notifications(Context ctx) {
         super(ctx, CoreEntry.NOTIFICATIONS, EditorInfo.IME_ACTION_GO);
     }
 

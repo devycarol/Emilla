@@ -10,6 +10,9 @@ import androidx.activity.result.contract.ActivityResultContract;
 import androidx.annotation.Nullable;
 
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.inner;
+import net.emilla.annotation.internal;
+import net.emilla.annotation.open;
 import net.emilla.content.ResultLaunchers;
 import net.emilla.content.receive.ResultReceiver;
 
@@ -23,7 +26,7 @@ abstract class ResultRetriever<I, O, C extends ResultReceiver> {
     @Deprecated // Todo: incorporate these in the launchers directly if possible.
     private C mReceiver;
 
-    /*internal*/ ResultRetriever(AssistActivity act, ActivityResultContract<I, O> contract) {
+    @internal ResultRetriever(AssistActivity act, ActivityResultContract<I, O> contract) {
         this.activity = act;
         mLauncher = act.registerForActivityResult(contract, makeCallback());
     }
@@ -45,16 +48,16 @@ abstract class ResultRetriever<I, O, C extends ResultReceiver> {
     }
 
     @Deprecated @Nullable
-    protected /*open*/ C receiver() {
+    protected @open C receiver() {
         return mReceiver;
     }
 
     @Deprecated
-    protected /*open*/ void deleteReceiver() {
+    protected @open void deleteReceiver() {
         mReceiver = null;
     }
 
-    protected /*inner*/ abstract class ResultCallback implements ActivityResultCallback<O> {
+    protected @inner abstract class ResultCallback implements ActivityResultCallback<O> {
 
         @Override
         public final void onActivityResult(O output) {

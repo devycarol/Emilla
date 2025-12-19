@@ -2,6 +2,8 @@ package net.emilla.trie;
 
 import androidx.annotation.Nullable;
 
+import net.emilla.annotation.internal;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +19,7 @@ final class PrefixNode<K, V> {
     @Nullable
     private Map<K, PrefixNode<K, V>> mChildren = null;
 
-    /*internal*/ PrefixNode(IntFunction<V[]> arrayGenerator) {
+    @internal PrefixNode(IntFunction<V[]> arrayGenerator) {
         mArrayGenerator = arrayGenerator;
     }
 

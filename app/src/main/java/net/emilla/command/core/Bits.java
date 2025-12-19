@@ -6,12 +6,13 @@ import android.content.Intent;
 import android.view.inputmethod.EditorInfo;
 
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.math.BitwiseCalculator;
 import net.emilla.util.Intents;
 
 final class Bits extends CategoryCommand {
 
-    /*internal*/ Bits(AssistActivity act) {
+    @internal Bits(AssistActivity act) {
         super(act, CoreEntry.BITS, EditorInfo.IME_ACTION_DONE);
     }
 

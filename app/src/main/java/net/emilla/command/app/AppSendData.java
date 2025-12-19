@@ -7,18 +7,20 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
+import net.emilla.annotation.open;
 import net.emilla.command.DataCommand;
 
-/*open*/ class AppSendData extends AppSend implements DataCommand {
+@open class AppSendData extends AppSend implements DataCommand {
 
     @StringRes
     private final int mHint;
 
-    /*internal*/ AppSendData(Context ctx, AppEntry appEntry) {
+    @internal AppSendData(Context ctx, AppEntry appEntry) {
         this(ctx, appEntry, R.string.data_hint_text);
     }
 
-    /*internal*/ AppSendData(Context ctx, AppEntry appEntry, @StringRes int hint) {
+    @internal AppSendData(Context ctx, AppEntry appEntry, @StringRes int hint) {
         super(ctx, appEntry, EditorInfo.IME_ACTION_NEXT);
 
         mHint = hint;

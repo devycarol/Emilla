@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
 import net.emilla.command.ActionMap;
 import net.emilla.command.Subcommand;
 import net.emilla.contact.fragment.ContactCardsFragment;
@@ -42,7 +43,7 @@ final class Contact extends CoreDataCommand implements ContactCardReceiver {
     private final ActionMap<Action> mActionMap;
     private Action mAction = Action.VIEW;
 
-    /*internal*/ Contact(Context ctx) {
+    @internal Contact(Context ctx) {
         super(ctx, CoreEntry.CONTACT, R.string.data_hint_contact);
 
         mContactsFragment = ContactCardsFragment.newInstance();

@@ -13,6 +13,8 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.content.res.AppCompatResources;
 
 import net.emilla.R;
+import net.emilla.annotation.internal;
+import net.emilla.annotation.open;
 import net.emilla.command.Params;
 import net.emilla.config.Aliases;
 import net.emilla.config.SettingVals;
@@ -144,7 +146,7 @@ public enum CoreEntry implements Params {
     TOAST(Toast::new, R.string.command_toast, R.array.aliases_toast, R.string.instruction_text, R.drawable.ic_toast, R.string.summary_toast, R.string.manual_toast),
     BITS(Bits::new, R.string.command_bits, R.array.aliases_bits, R.string.instruction_calculate, R.drawable.ic_command, R.string.summary_bits, R.string.manual_bits);
 
-    /*internal*/ final CoreMaker mMaker;
+    @internal final CoreMaker mMaker;
     @StringRes
     public final int name;
     @ArrayRes
@@ -191,7 +193,7 @@ public enum CoreEntry implements Params {
         this.usesInstruction = usesInstruction;
     }
 
-    public /*open*/ boolean isPossible(PackageManager pm) {
+    public @open boolean isPossible(PackageManager pm) {
         return true;
         // todo: be more granular about deactivating certain command elements based on which intents
         //  are/n't doable. currently these methods are generally permissive if just one of their
@@ -227,7 +229,7 @@ public enum CoreEntry implements Params {
     }
 
     @Override
-    public /*open*/ boolean isProperNoun() {
+    public @open boolean isProperNoun() {
         return false;
     }
 

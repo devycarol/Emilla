@@ -1,5 +1,6 @@
 package net.emilla.sort;
 
+import net.emilla.annotation.internal;
 import net.emilla.struct.IndexedStruct;
 import net.emilla.util.Exceptions;
 
@@ -12,11 +13,11 @@ public final class ArrayWindow<E> implements IndexedStruct<E> {
         return new ArrayWindow<E>(array, index, index);
     }
 
-    /*internal*/ final E[] mArray;
-    /*internal*/ final int mStart;
-    /*internal*/ final int mEnd;
+    @internal final E[] mArray;
+    @internal final int mStart;
+    @internal final int mEnd;
 
-    /*internal*/ ArrayWindow(E[] array, int start, int end) {
+    @internal ArrayWindow(E[] array, int start, int end) {
         mArray = array;
         mStart = start;
         mEnd = end;

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.view.inputmethod.EditorInfo;
 
+import net.emilla.annotation.internal;
 import net.emilla.command.app.AppEntry;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
@@ -15,7 +16,7 @@ final class Info extends OpenCommand {
         return Apps.canDo(pm, Intents.appInfo(""));
     }
 
-    /*internal*/ Info(Context ctx) {
+    @internal Info(Context ctx) {
         super(ctx, CoreEntry.INFO, EditorInfo.IME_ACTION_GO);
     }
 

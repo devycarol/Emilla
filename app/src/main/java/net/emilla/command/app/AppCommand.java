@@ -4,9 +4,11 @@ import android.content.Context;
 import android.view.inputmethod.EditorInfo;
 
 import net.emilla.activity.AssistActivity;
+import net.emilla.annotation.internal;
+import net.emilla.annotation.open;
 import net.emilla.command.EmillaCommand;
 
-public /*open*/ class AppCommand extends EmillaCommand {
+public @open class AppCommand extends EmillaCommand {
 
     @FunctionalInterface
     public interface Maker {
@@ -17,11 +19,11 @@ public /*open*/ class AppCommand extends EmillaCommand {
 
     protected final AppEntry appEntry;
 
-    /*internal*/ AppCommand(Context ctx, AppEntry appEntry) {
+    @internal AppCommand(Context ctx, AppEntry appEntry) {
         this(ctx, appEntry, EditorInfo.IME_ACTION_GO);
     }
 
-    /*internal*/ AppCommand(Context ctx, AppEntry appEntry, int imeAction) {
+    @internal AppCommand(Context ctx, AppEntry appEntry, int imeAction) {
         super(ctx, appEntry, imeAction);
 
         this.appEntry = appEntry;
@@ -33,7 +35,7 @@ public /*open*/ class AppCommand extends EmillaCommand {
     }
 
     @Override
-    protected /*open*/ void run(AssistActivity act, String ignored) {
+    protected @open void run(AssistActivity act, String ignored) {
         run(act); // Todo: remove this from the interface for non-instructables.
     }
 
