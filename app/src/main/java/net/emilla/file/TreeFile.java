@@ -19,7 +19,7 @@ public final class TreeFile extends SearchItem {
     }
 
     public Uri uri(Folder parent) {
-        return DocumentsContract.buildDocumentUriUsingTree(parent.treeUri, mDocumentId);
+        return DocumentsContract.buildDocumentUriUsingTree(parent.treeUri(), mDocumentId);
     }
 
     public Intent viewIntent(Folder parent) {

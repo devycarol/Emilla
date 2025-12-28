@@ -27,8 +27,8 @@ final class Fahrenheit extends CoreCommand {
 
         FahrenheitConversion fahrenheit = Lang.fahrenheit(temperature, CoreEntry.FAHRENHEIT.name);
 
-        String oldDegrees = Maths.prettyNumber(fahrenheit.degrees);
-        String unit = res.getString(fahrenheit.fromKelvin ? R.string.kelvin : R.string.celsius);
+        String oldDegrees = Maths.prettyNumber(fahrenheit.degrees());
+        String unit = res.getString(fahrenheit.fromKelvin() ? R.string.kelvin : R.string.celsius);
         String fahrenheitDegrees = Maths.prettyNumber(fahrenheit.convert());
         giveText(act, res.getString(R.string.fahrenheit_conversion, oldDegrees, unit, fahrenheitDegrees));
     }

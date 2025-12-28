@@ -15,17 +15,7 @@ import net.emilla.cursor.IsWritableDirectory;
 import net.emilla.cursor.TextFiles;
 import net.emilla.util.Intents;
 
-public final class Folder {
-
-    public final Uri treeUri;
-    private final Uri mDocumentUri;
-    public final String displayName;
-
-    private Folder(Uri treeUri, Uri documentUri, String displayName) {
-        this.treeUri = treeUri;
-        mDocumentUri = documentUri;
-        this.displayName = displayName;
-    }
+public record Folder(Uri treeUri, Uri documentUri, String displayName) {
 
     @Nullable
     public static Folder from(ContentResolver cr, Uri treeUri) {
@@ -63,7 +53,7 @@ public final class Folder {
     }
 
     public Intent viewIntent() {
-        return Intents.view(mDocumentUri, Document.MIME_TYPE_DIR);
+        return Intents.view(documentUri, Document.MIME_TYPE_DIR);
     }
 
 }

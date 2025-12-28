@@ -109,7 +109,7 @@ final class Pomodoro extends CoreDataCommand {
                 PingChannel.POMODORO_BREAK_START,
                 res.getString(R.string.ping_pomodoro_break),
                 breakMemo,
-                PingChannel.POMODORO_BREAK_WARN,
+                PingChannel.POMODORO_BREAK_WARNING,
                 PingChannel.POMODORO_BREAK_END,
                 res.getString(R.string.ping_pomodoro_break_over),
                 workMemo
@@ -121,7 +121,7 @@ final class Pomodoro extends CoreDataCommand {
                 PingChannel.POMODORO_START,
                 res.getString(R.string.ping_pomodoro),
                 workMemo,
-                PingChannel.POMODORO_WARN,
+                PingChannel.POMODORO_WARNING,
                 PingChannel.POMODORO_END,
                 res.getString(R.string.ping_pomodoro_over),
                 breakMemo
@@ -133,11 +133,11 @@ final class Pomodoro extends CoreDataCommand {
     private void pomo(
         AssistActivity act,
         int seconds,
-        String startChannel,
+        PingChannel startChannel,
         String mainTitle,
         String startMemo,
-        String warnChannel,
-        String endChannel,
+        PingChannel warnChannel,
+        PingChannel endChannel,
         String endTitle,
         String endMemo
     ) {
@@ -147,31 +147,35 @@ final class Pomodoro extends CoreDataCommand {
         if (seconds > 60) {
             givePing(act, startChannel, mainTitle, startMemo);
 
-            scheduler.plan(PingPlan.afterSeconds(
-                Plan.POMODORO_WARNING,
-                seconds - 60,
-                makePing(act, warnChannel, mainTitle, warnMemo),
-                warnChannel
-            ));
+            scheduler.plan(
+                PingPlan.afterSeconds(
+                    Plan.POMODORO_WARNING,
+                    seconds - 60,
+                    makePing(act, warnChannel, mainTitle, warnMemo),
+                    warnChannel
+                )
+            );
 
         } else {
             givePing(act, warnChannel, mainTitle, warnMemo);
         }
 
-        scheduler.plan(PingPlan.afterSeconds(
-            Plan.POMODORO_ENDED,
-            seconds,
-            makePing(act, endChannel, endTitle, endMemo),
-            endChannel
-        ));
+        scheduler.plan(
+            PingPlan.afterSeconds(
+                Plan.POMODORO_ENDED,
+                seconds,
+                makePing(act, endChannel, endTitle, endMemo),
+                endChannel
+            )
+        );
     }
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
-    private static void givePing(AssistActivity act, String channel, String title, String memo) {
-        givePing(act, makePing(act, channel, title, memo), PingChannel.of(channel));
+    private static void givePing(AssistActivity act, PingChannel channel, String title, String memo) {
+        givePing(act, makePing(act, channel, title, memo), channel);
     }
 
-    private static Notification makePing(Context ctx, String channel, String title, String memo) {
+    private static Notification makePing(Context ctx, PingChannel channel, String title, String memo) {
         return Pings.make(ctx, channel, title, memo, R.drawable.ic_pomodoro);
     }
 

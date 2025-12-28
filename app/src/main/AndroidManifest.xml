@@ -98,7 +98,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.DummyActivity"
+            android:name=".activity.PassthroughActivity"
             android:exported="false"
             android:launchMode="singleInstancePerTask"
             android:theme="@style/Theme.AppCompat" />

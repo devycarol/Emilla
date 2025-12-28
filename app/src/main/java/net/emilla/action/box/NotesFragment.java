@@ -98,7 +98,7 @@ public final class NotesFragment extends ActionBox {
         var act = (AssistActivity) requireActivity();
 
         Folder noteFolder = mAdapter.folder();
-        Uri initialUri = noteFolder != null ? noteFolder.treeUri : null;
+        Uri initialUri = noteFolder != null ? noteFolder.treeUri() : null;
         ResultLaunchers.tryLaunch(act, mFolderSwitcher, initialUri);
     }
 
@@ -145,7 +145,7 @@ public final class NotesFragment extends ActionBox {
             return false;
         }
 
-        mBinding.toolbar.setTitle(folder.displayName);
+        mBinding.toolbar.setTitle(folder.displayName());
         return true;
     }
 

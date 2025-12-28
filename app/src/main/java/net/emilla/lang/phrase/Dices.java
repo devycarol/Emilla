@@ -17,4 +17,5 @@ public final class Dices {
         for (Dice dice : mDices) result += dice.roll(rand);
         return result;
     }
+
 }

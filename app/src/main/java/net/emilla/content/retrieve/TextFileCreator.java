@@ -55,7 +55,7 @@ public final class TextFileCreator {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
             && defaultFolder != null) {
 
-            createDocument.putExtra(DocumentsContract.EXTRA_INITIAL_URI, defaultFolder.treeUri);
+            createDocument.putExtra(DocumentsContract.EXTRA_INITIAL_URI, defaultFolder.treeUri());
         }
 
         if (ResultLaunchers.tryLaunch(mActivity, mLauncher, createDocument)) {

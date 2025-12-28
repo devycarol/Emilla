@@ -396,9 +396,7 @@
     <string name="manual_calculate">
         The text you enter will be evaluated as a math expression.\n
         \n
-        In the future, more functions
-        will be supported and you\'ll be able to use natural language like \"plus\" and "times" in
-        the instruction.
+        In the future, more functions will be supported.
     </string><!--todo-->
     <!-- "Generate random numbers" -->
     <string name="manual_random_number">

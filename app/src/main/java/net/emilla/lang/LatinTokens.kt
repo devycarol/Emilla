@@ -96,7 +96,7 @@ class LatinTokens(s: String) {
     /**
      * Make sure no token in the sequence is a case-insensitive prefix of a subsequent one!
      */
-    fun skipFirst(sequence: Array<LatinToken>) {
+    fun skipFirst(vararg sequence: LatinToken) {
         if (pos == length) return
 
         for (token in sequence) when (token) {
@@ -123,7 +123,7 @@ class LatinTokens(s: String) {
     /**
      * Make sure no token in the sequence is a case-insensitive prefix of a subsequent one!
      */
-    fun nextOf(sequence: Array<LatinToken>): String {
+    fun nextOf(vararg sequence: LatinToken): String {
         check(pos < length)
 
         for (token in sequence) when (token) {

@@ -23,7 +23,7 @@ import androidx.core.app.NotificationCompat
 @JvmOverloads
 fun make(
     ctx: Context,
-    channel: String,
+    channel: PingChannel,
     @StringRes title: Int,
     @StringRes text: Int,
     @DrawableRes icon: Int,
@@ -48,13 +48,13 @@ fun make(
 @JvmOverloads
 fun make(
     ctx: Context,
-    channel: String,
+    channel: PingChannel,
     title: CharSequence,
     text: CharSequence?,
     @DrawableRes icon: Int,
     sticky: Boolean = false
 ): Notification {
-    return NotificationCompat.Builder(ctx, channel).apply {
+    return NotificationCompat.Builder(ctx, channel.id).apply {
         setContentTitle(title)
         if (text != null) setContentText(text)
         setSmallIcon(icon)

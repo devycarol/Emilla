@@ -58,7 +58,7 @@ final class Notify extends CoreDataCommand {
 
                 R.drawable.ic_notify
             ),
-            PingChannel.command()
+            PingChannel.COMMAND
         );
     }
 

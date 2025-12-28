@@ -46,7 +46,7 @@ public sealed class Pinger permits ChanneledPinger {
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     public @open void ping() {
-        int id = mSlot == PingChannel.SLOT_UNLIMITED ? uniqueSlot() : mSlot;
+        int id = mSlot == PingChannels.SLOT_UNLIMITED ? uniqueSlot() : mSlot;
         // this can be used to edit or remove the notification later.
         this.pingManager.notify(id, mPing);
     }

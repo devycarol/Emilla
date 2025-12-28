@@ -50,8 +50,8 @@ public final class SettingsFragment extends EmillaSettingsFragment {
     private void onPickChimeSound(ChimeSoundResult chimeSoundResult) {
         if (chimeSoundResult == null) return;
 
-        Chime chime = chimeSoundResult.chime;
-        Uri soundUri = chimeSoundResult.soundUri;
+        Chime chime = chimeSoundResult.chime();
+        Uri soundUri = chimeSoundResult.soundUri();
 
         if (soundUri != null) {
             SettingVals.setCustomSound(mPrefs, chime, soundUri);

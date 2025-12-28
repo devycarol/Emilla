@@ -92,9 +92,9 @@ final class Calendar extends CoreDataCommand {
             title = nameAndTime[0];
             DateTimeSpan times = Time.parseDateAndTimes(nameAndTime[1], CoreEntry.CALENDAR.name);
 
-            intent.putExtra(EXTRA_EVENT_BEGIN_TIME, epochMilliOf(times.start));
+            intent.putExtra(EXTRA_EVENT_BEGIN_TIME, epochMilliOf(times.start()));
 
-            LocalDateTime end = times.end;
+            LocalDateTime end = times.end();
             if (end != null) {
                 intent.putExtra(EXTRA_EVENT_END_TIME, epochMilliOf(end));
             }
