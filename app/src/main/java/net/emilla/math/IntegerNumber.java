@@ -9,9 +9,8 @@ final class IntegerNumber implements BitwiseToken {
 
     public final long value;
 
-    @internal
-    IntegerNumber(String num, @StringRes int errorTitle) {
-        this.value = Maths.tryParseLong(num, errorTitle);
+    @internal IntegerNumber(String number, @StringRes int errorTitle) {
+        this.value = Maths.tryParseLong(number, errorTitle);
     }
 
 }

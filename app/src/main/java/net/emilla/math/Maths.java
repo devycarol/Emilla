@@ -15,17 +15,17 @@ public enum Maths {
         return new DecimalFormat("#.######").format(n);
     }
 
-    public static long tryParseLong(String num, @StringRes int errorTitle) {
+    public static long tryParseLong(String number, @StringRes int errorTitle) {
         try {
-            return Long.parseLong(num);
+            return Long.parseLong(number);
         } catch (NumberFormatException e) {
             throw malformedExpression(errorTitle);
         }
     }
 
-    public static double tryParseDouble(String num, @StringRes int errorTitle) {
+    public static double tryParseDouble(String number, @StringRes int errorTitle) {
         try {
-            return Double.parseDouble(num);
+            return Double.parseDouble(number);
         } catch (NumberFormatException e) {
             throw malformedExpression(errorTitle);
         }

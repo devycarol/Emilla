@@ -194,8 +194,8 @@ public enum BitwiseCalculator {
                 opStk.push(BitwiseOperator.LPAREN);
             } else if (token instanceof RParen) {
                 result.applyRParen(opStk);
-            } else if (token instanceof IntegerNumber num) {
-                result.push(num.value);
+            } else if (token instanceof IntegerNumber number) {
+                result.push(number.value);
             }
         }
 

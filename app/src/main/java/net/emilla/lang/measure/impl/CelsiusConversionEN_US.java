@@ -4,9 +4,9 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.exception.EmillaException;
-import net.emilla.lang.LatinToken.Letter;
-import net.emilla.lang.LatinToken.Word;
 import net.emilla.lang.LatinTokens;
+import net.emilla.lang.Letter;
+import net.emilla.lang.Word;
 import net.emilla.lang.measure.CelsiusConversion;
 
 import java.util.Locale;

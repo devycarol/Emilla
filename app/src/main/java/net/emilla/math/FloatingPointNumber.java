@@ -9,8 +9,8 @@ final class FloatingPointNumber implements InfixToken {
 
     public final double value;
 
-    @internal FloatingPointNumber(String num, @StringRes int errorTitle) {
-        this.value = Maths.tryParseDouble(num, errorTitle);
+    @internal FloatingPointNumber(String number, @StringRes int errorTitle) {
+        this.value = Maths.tryParseDouble(number, errorTitle);
     }
 
 }

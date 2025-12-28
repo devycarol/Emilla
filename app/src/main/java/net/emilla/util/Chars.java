@@ -11,8 +11,8 @@ public enum Chars {
         return !isLineSeparator(ch) && Character.isWhitespace(ch);
     }
 
-    public static boolean differentLetters(char a, char b) {
-        return compareIgnoreCase(a, b) != 0;
+    public static boolean sameLetter(char a, char b) {
+        return compareIgnoreCase(a, b) == 0;
     }
 
     private static int compareIgnoreCase(char a, char b) {

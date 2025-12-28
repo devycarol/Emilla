@@ -210,8 +210,8 @@ public enum Calculator {
                 opStk.push(BinaryOperator.LPAREN);
             } else if (token instanceof RParen) {
                 result.applyRParen(opStk);
-            } else if (token instanceof FloatingPointNumber num) {
-                result.push(num.value);
+            } else if (token instanceof FloatingPointNumber number) {
+                result.push(number.value);
             }
         }
 
