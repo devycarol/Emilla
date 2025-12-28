@@ -5,7 +5,8 @@ import net.emilla.util.ArrayLoader;
 
 import java.util.Arrays;
 
-public final class SortedArrays {
+public enum SortedArrays {
+    ;
 
     public static <E> int indexOf(E[] array, Comparable<? super E> searcher) {
         int lo = 0;
@@ -155,7 +156,5 @@ public final class SortedArrays {
 
         return Arrays.copyOf(array, position);
     }
-
-    private SortedArrays() {}
 
 }

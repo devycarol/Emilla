@@ -21,7 +21,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public final class Files {
+public enum Files {
+    ;
 
     private static final String OVERWRITE = "wt";
     private static final String APPEND = "wa";
@@ -250,7 +251,5 @@ public final class Files {
             .putExtra(Intent.EXTRA_STREAM, file)
             .addFlags(FLAG_GRANT_READ_URI_PERMISSION | FLAG_GRANT_WRITE_URI_PERMISSION);
     }
-
-    private Files() {}
 
 }

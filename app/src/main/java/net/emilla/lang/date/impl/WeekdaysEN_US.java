@@ -12,7 +12,8 @@ import java.util.EnumSet;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public final class WeekdaysEN_US {
+public enum WeekdaysEN_US {
+    ;
 
     private static final Pattern WEEKDAYS = Pattern.compile("\\w+( +\\w+){0,6}");
     private static final Pattern WEEKDAY_LETTERS = Pattern.compile("[umtwrfs]{1,7}");
@@ -80,7 +81,5 @@ public final class WeekdaysEN_US {
     private static EmillaException formatFail(@StringRes int errorTitle) {
         return new EmillaException(errorTitle, R.string.error_invalid_weekday_format);
     }
-
-    private WeekdaysEN_US() {}
 
 }

@@ -4,7 +4,8 @@ import android.content.Context;
 
 import net.emilla.annotation.internal;
 
-final class YouTube {
+enum YouTube {
+    ;
 
     public static final String PKG = "com.google.android.youtube";
 
@@ -14,7 +15,5 @@ final class YouTube {
         //  etc. I assume the G assistant has similar functionality. If requires internet could use
         //  bookmarks at the very least. Also, this command is broken when a video is playing.
     }
-
-    private YouTube() {}
 
 }

@@ -22,7 +22,8 @@ import androidx.annotation.RequiresApi;
 
 import net.emilla.command.app.AppEntry;
 
-public final class Intents {
+public enum Intents {
+    ;
 
     public static final String EXTRA_SMS_BODY = "sms_body";
 
@@ -131,7 +132,5 @@ public final class Intents {
 
         throw new IllegalStateException();
     }
-
-    private Intents() {}
 
 }

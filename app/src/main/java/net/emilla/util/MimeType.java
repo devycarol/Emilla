@@ -8,7 +8,8 @@ import android.webkit.MimeTypeMap;
 import java.util.Iterator;
 import java.util.regex.Pattern;
 
-public final class MimeType {
+public enum MimeType {
+    ;
 
     private static final Pattern SLASH = Pattern.compile("/");
 
@@ -67,7 +68,5 @@ public final class MimeType {
     private static String partUnion(String part1, String part2) {
         return part1.equals(part2) ? part1 : "*";
     }
-
-    private MimeType() {}
 
 }

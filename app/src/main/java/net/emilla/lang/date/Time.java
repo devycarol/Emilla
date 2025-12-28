@@ -15,7 +15,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 // Todo: this class is utterly unreadable
-public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
+public enum Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
+    ;
 
     private static final String JAN = "jan(uary)?";
     private static final String FEB = "feb(ruary)?";
@@ -377,5 +378,4 @@ public final class Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         return new DateTimeSpan(startDate, endDate);
     }
 
-    private Time() {}
 }

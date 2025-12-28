@@ -5,7 +5,8 @@ import android.widget.Toast;
 
 import androidx.annotation.StringRes;
 
-public final class Toasts {
+public enum Toasts {
+    ;
 
     public static void show(Context ctx, @StringRes int text) {
         Toast.makeText(ctx, text, Toast.LENGTH_SHORT).show();
@@ -18,7 +19,5 @@ public final class Toasts {
     public static void show(Context ctx, CharSequence text, boolean isLongToast) {
         Toast.makeText(ctx, text, isLongToast ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT).show();
     }
-
-    private Toasts() {}
 
 }

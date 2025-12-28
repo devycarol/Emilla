@@ -9,7 +9,8 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.run.MessageFailure;
 
-public final class ResultLaunchers {
+public enum ResultLaunchers {
+    ;
 
     public static <I> boolean tryLaunch(
         AssistActivity act,
@@ -24,7 +25,5 @@ public final class ResultLaunchers {
             return false;
         }
     }
-
-    private ResultLaunchers() {}
 
 }

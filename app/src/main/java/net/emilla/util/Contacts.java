@@ -10,7 +10,8 @@ import androidx.annotation.Nullable;
 
 import java.util.regex.Pattern;
 
-public final class Contacts {
+public enum Contacts {
+    ;
 
     private static final Pattern PHONE_NUMBERS = Pattern.compile("\\+?[0-9*#][0-9*#() \\-./,;]*");
 
@@ -95,5 +96,4 @@ public final class Contacts {
         return null;
     }
 
-    private Contacts() {}
 }

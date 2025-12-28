@@ -8,7 +8,8 @@ import androidx.annotation.Nullable;
 
 import net.emilla.util.ArrayLoader;
 
-public final class Cursors {
+public enum Cursors {
+    ;
 
     public static boolean testFirst(ContentResolver cr, Uri uri, CursorTester tester) {
         try (Cursor cursor = cr.query(uri, tester.mProjection, null, null, null)) {
@@ -53,7 +54,5 @@ public final class Cursors {
             return null;
         }
     }
-
-    private Cursors() {}
 
 }

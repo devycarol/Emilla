@@ -11,7 +11,8 @@ import net.emilla.util.Strings;
 import java.util.Arrays;
 import java.util.Iterator;
 
-public final class Calculator {
+public enum Calculator {
+    ;
 
 //    private static final String ALL_OF = "all ?of", DONE = "done|good";
 //
@@ -371,5 +372,4 @@ public final class Calculator {
         }
     }
 
-    private Calculator() {}
 }

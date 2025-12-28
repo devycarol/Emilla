@@ -1,6 +1,7 @@
 package net.emilla.util;
 
-public final class Chars {
+public enum Chars {
+    ;
 
     public static boolean isLineSeparator(int ch) {
         return ch == '\n' || ch == '\r';
@@ -42,7 +43,5 @@ public final class Chars {
             default -> false;
         };
     }
-
-    private Chars() {}
 
 }

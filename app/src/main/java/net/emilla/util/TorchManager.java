@@ -16,7 +16,8 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.exception.EmillaException;
 
-public final class TorchManager {
+public enum TorchManager {
+    ;
 
     private static final String TAG = TorchManager.class.getSimpleName();
 
@@ -67,5 +68,4 @@ public final class TorchManager {
         // Todo: what if multiple torches?
     }
 
-    private TorchManager() {}
 }

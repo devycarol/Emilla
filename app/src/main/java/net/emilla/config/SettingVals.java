@@ -30,7 +30,8 @@ import net.emilla.util.Features;
 import java.util.HashSet;
 import java.util.Set;
 
-public final class SettingVals {
+public enum SettingVals {
+    ;
 
     public static final String DEFAULT_COMMAND = "default_command";
     public static final String CHIMER = "sound_set";
@@ -305,7 +306,5 @@ public final class SettingVals {
     public static String defaultPomoBreakMemo(SharedPreferences prefs, Resources res) {
         return prefs.getString("pomo_default_break_memo", res.getString(R.string.ping_pomodoro_break_text));
     }
-
-    private SettingVals() {}
 
 }

@@ -10,7 +10,8 @@ import androidx.core.view.ViewCompat;
 
 import net.emilla.lang.Lang;
 
-public final class Views {
+public enum Views {
+    ;
 
     public static void setStateDescriptionCompat(
         Resources res,
@@ -28,7 +29,5 @@ public final class Views {
     public static void setClickActionLabel(Resources res, View view, @StringRes int label) {
         ViewCompat.replaceAccessibilityAction(view, ACTION_CLICK, res.getString(label), null);
     }
-
-    private Views() {}
 
 }

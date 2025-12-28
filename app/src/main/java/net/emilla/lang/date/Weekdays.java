@@ -6,7 +6,8 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-public final class Weekdays {
+public enum Weekdays {
+    ;
 
     public static ArrayList<Integer> calendarArrayList(Collection<DayOfWeek> weekdays) {
         return weekdays.stream()
@@ -26,7 +27,5 @@ public final class Weekdays {
             case SUNDAY -> Calendar.SUNDAY;
         };
     }
-
-    private Weekdays() {}
 
 }

@@ -6,7 +6,8 @@ import android.os.LocaleList;
 
 import java.util.function.Consumer;
 
-public final class TestLang {
+public enum TestLang {
+    ;
 
     public static void withEachLocale(Resources res, Consumer<? super Resources> consumer) {
         var originalConf = res.getConfiguration();
@@ -26,7 +27,5 @@ public final class TestLang {
 
         res.updateConfiguration(originalConf, displayMetrics);
     }
-
-    private TestLang() {}
 
 }

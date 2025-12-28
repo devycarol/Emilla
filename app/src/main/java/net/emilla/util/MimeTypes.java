@@ -2,7 +2,8 @@ package net.emilla.util;
 
 import android.webkit.MimeTypeMap;
 
-public final class MimeTypes {
+public enum MimeTypes {
+    ;
 
     public static final String PREFIX_TEXT = "text/";
 
@@ -28,7 +29,5 @@ public final class MimeTypes {
             ? filename
             : filename + EXTENSION_TEXT;
     }
-
-    private MimeTypes() {}
 
 }

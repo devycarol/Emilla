@@ -11,7 +11,8 @@ import net.emilla.util.Strings;
 import java.util.Arrays;
 import java.util.Iterator;
 
-public final class BitwiseCalculator {
+public enum BitwiseCalculator {
+    ;
 
     private static final class OpStack {
 
@@ -386,5 +387,4 @@ public final class BitwiseCalculator {
         }
     }
 
-    private BitwiseCalculator() {}
 }

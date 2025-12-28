@@ -1,17 +1,10 @@
-package net.emilla.system;
-
-public final class BackgroundServiceUtil {
-
-//    private enum State {
-//        A11Y_WAKE_WORD, A11Y, WAKE_WORD, FAST_LOAD, OFF;
+//package net.emilla.system;
 //
-//        public static State of() {
-//            ;
-//        }
-//    }
+//enum BackgroundServiceState {
+//    A11Y_WAKE_WORD, A11Y, WAKE_WORD, FAST_LOAD, OFF;
 //
 //    static {
-//        var state = State.of();
+//        var state = ;
 //        switch (state) {
 //        case A11Y_WAKE_WORD -> {
 //            ensureA11yService();
@@ -27,6 +20,5 @@ public final class BackgroundServiceUtil {
 //            ensureFastLoadService();
 //        }}
 //    }
-
-    private BackgroundServiceUtil() {}
-}
+//
+//}

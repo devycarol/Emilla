@@ -1,6 +1,7 @@
 package net.emilla.util;
 
-public final class Timeit {
+public enum Timeit {
+    ;
 
     private static final String TAG = Timeit.class.getSimpleName();
 
@@ -24,5 +25,4 @@ public final class Timeit {
 //        return sPrevTime = System.nanoTime();
 //    }
 
-    private Timeit() {}
 }

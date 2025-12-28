@@ -6,7 +6,8 @@ import net.emilla.R;
 import net.emilla.exception.EmillaException;
 import net.emilla.lang.date.Duration;
 
-public final class DurationEN_US {
+public enum DurationEN_US {
+    ;
 
     public static Duration instance(String minutes, @StringRes int errorTitle) {
         try {
@@ -18,5 +19,4 @@ public final class DurationEN_US {
         }
     }
 
-    private DurationEN_US() {}
 }
