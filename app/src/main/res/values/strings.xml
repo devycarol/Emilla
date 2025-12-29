@@ -10,8 +10,6 @@
     <string name="call_directly">Call directly</string>
     <string name="message_directly">Message directly</string>
     <string name="create">Create</string>
-    <string name="always">Always</string>
-    <string name="never">Never</string>
     <string name="none">None</string>
     <string name="overwrite">Overwrite</string>
     <string name="local_time">Local time</string>
@@ -35,7 +33,6 @@
     <!--todo lang: "1 degrees"-->
 
     <string name="app_name">Emilla</string>
-    <string name="activity_assistant">Emilla Assistant</string>
     <string name="title_assistant">Assistant</string>
     <string name="title_commands">Commands</string>
 
@@ -94,7 +91,7 @@
     <string name="spoken_description_empty_space">Empty space</string>
     <string name="spoken_description_show_data">Show data field</string>
     <string name="spoken_description_hide_data">Hide data field</string>
-    <string name="welcome_message">Hello there!</string>
+    <string name="welcome_message">Hello!</string>
     <string name="welcome_instruction">To open the assistant, re-press the assistant button.</string>
 
     <!-- Setting category Titles -->
@@ -111,8 +108,6 @@
     <string name="pref_pomo_default_break">Default Pomodoro break memo</string>
 
     <!-- Customization settings -->
-    <string name="pref_show_titlebar">Titlebar</string>
-    <string name="optn_show_titlebar_portrait">Portrait</string>
     <string name="pref_sounds">Sounds</string>
     <string name="sound_set_nebula">Nebula</string>
     <string name="sound_set_voice_dialer">Redial</string>

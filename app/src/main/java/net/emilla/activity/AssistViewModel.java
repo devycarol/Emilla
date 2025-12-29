@@ -46,7 +46,6 @@ final class AssistViewModel extends ViewModel {
     public final Resources res;
     public final SharedPreferences prefs;
 
-    public final boolean noTitlebar;
     public final boolean alwaysShowData;
 
     public boolean noCommand = true;
@@ -57,7 +56,6 @@ final class AssistViewModel extends ViewModel {
 
     public int imeAction = EditorInfo.IME_ACTION_NEXT;
 
-    @Nullable
     public final String motd;
 
     public final AppEntry[] apps;
@@ -79,11 +77,10 @@ final class AssistViewModel extends ViewModel {
         this.res = appContext.getResources();
         this.prefs = PreferenceManager.getDefaultSharedPreferences(appContext);
 
-        this.noTitlebar = !SettingVals.showTitlebar(this.prefs, this.res);
         this.alwaysShowData = SettingVals.alwaysShowData(prefs);
         this.dataVisible = this.alwaysShowData;
 
-        this.motd = noTitlebar ? null : SettingVals.motd(this.prefs, this.res);
+        this.motd = SettingVals.motd(this.prefs, this.res);
 
         this.apps = Apps.launchers(appContext.getPackageManager());
 

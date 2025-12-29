@@ -4,7 +4,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.Uri;
-import android.util.DisplayMetrics;
 
 import androidx.annotation.Nullable;
 
@@ -83,31 +82,13 @@ public enum SettingVals {
         return prefs.getStringSet(ALIASES_CUSTOM, Set.of());
     }
 
-    public static boolean showTitlebar(SharedPreferences prefs, Resources res) {
-        return switch (prefs.getString("show_titlebar", res.getString(R.string.conf_show_titlebar))) {
-            // Todo: in the off chance app-data is transferred across phone/tablet, the setting
-            //  should change if it's still default. back:prefs.xml
-            case "never" -> false;
-            case "portrait" -> {
-                DisplayMetrics metrics = res.getDisplayMetrics();
-                yield metrics.widthPixels < metrics.heightPixels;
-            }
-            default /*"always"*/ -> true;
-        };
-    }
-
     public static String motd(SharedPreferences prefs, Resources res) {
-        return prefs.getString("motd", res.getString(R.string.activity_assistant));
+        return prefs.getString("motd", res.getString(R.string.welcome_message));
     }
 
     public static boolean alwaysShowData(SharedPreferences prefs) {
         return prefs.getBoolean("always_show_data", false);
         // TODO ACC: no reason for a hidden data field if a screen reader is in use.
-    }
-
-    public static boolean showHelpButton(SharedPreferences prefs) {
-        return prefs.getBoolean("show_help_button", true);
-        // Todo: put these in an editor.
     }
 
     public static boolean showCursorStartButton(SharedPreferences prefs) {

@@ -27,14 +27,6 @@
 
     <PreferenceCategory app:title="@string/header_customization">
         <ListPreference
-            app:defaultValue="@string/conf_show_titlebar"
-            app:entries="@array/show_titlebar_entries"
-            app:entryValues="@array/show_titlebar_values"
-            app:key="show_titlebar"
-            app:title="@string/pref_show_titlebar"
-            app:useSimpleSummaryProvider="true" />
-        <!--Todo: see SettingVals#showTitleBar()-->
-        <ListPreference
             app:defaultValue="nebula"
             app:entries="@array/sound_set_entries"
             app:entryValues="@array/sound_set_values"
@@ -63,11 +55,11 @@
             app:key="chime_fail"
             app:title="@string/chime_fail" />
         <EditTextPreference
-            app:defaultValue="@string/activity_assistant"
+            app:defaultValue="@string/welcome_message"
             app:key="motd"
             app:title="@string/pref_motd"
             app:useSimpleSummaryProvider="true" />
-        <!--Todo: add a reset button, only allow one line, hide when no titlebar-->
+        <!--Todo: add a reset button-->
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/header_actions">
@@ -76,10 +68,6 @@
             app:summary="@string/smry_favorites"
             app:title="@string/pref_favorites" />
         <!--Todo: editor UI for any number of these-->
-        <SwitchPreference
-            app:defaultValue="true"
-            app:key="show_help_button"
-            app:title="@string/action_help"/>
         <SwitchPreference
             app:defaultValue="false"
             app:key="show_cursor_start_button"

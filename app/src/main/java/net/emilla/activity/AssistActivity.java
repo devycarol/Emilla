@@ -34,13 +34,14 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -81,10 +82,10 @@ import net.emilla.run.CommandRun;
 import net.emilla.run.DialogRun;
 import net.emilla.run.MessageFailure;
 import net.emilla.util.Dialogs;
+import net.emilla.util.Views;
 import net.emilla.view.ActionButton;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public final class AssistActivity extends AppCompatActivity {
 
@@ -129,6 +130,10 @@ public final class AssistActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+            EdgeToEdge.enable(this);
+        }
+
         mInflater = getLayoutInflater();
         mBinding = ActivityAssistBinding.inflate(mInflater);
         setContentView(mBinding.getRoot());
@@ -141,14 +146,14 @@ public final class AssistActivity extends AppCompatActivity {
             acknowledgeAssistIntent(false);
         }
 
-        SharedPreferences prefs = mVm.prefs;
+        var res = getResources();
 
-        ActionBar actionBar = Objects.requireNonNull(getSupportActionBar());
-        if (mVm.noTitlebar) {
-            actionBar.hide();
-        } else {
-            actionBar.setTitle(mVm.motd);
-        }
+        mBinding.titleText.setText(mVm.motd);
+        FrameLayout titleTouchTarget = mBinding.titleTouchTarget;
+        titleTouchTarget.setOnClickListener(v -> {
+            Help.perform(this);
+        });
+        Views.setClickActionLabel(res, titleTouchTarget, R.string.action_desc_help);
 
         setupCommandField();
         if (mVm.dataVisible) showDataField();
@@ -156,6 +161,7 @@ public final class AssistActivity extends AppCompatActivity {
         setupDataButtons();
         setupMoreActions();
 
+        SharedPreferences prefs = mVm.prefs;
         var pm = getPackageManager();
 
         mNoCommandAction = SettingVals.noCommand(prefs, this);
@@ -358,9 +364,6 @@ public final class AssistActivity extends AppCompatActivity {
         // Todo: put these in an editor.
         if (SettingVals.showCursorStartButton(prefs)) {
             new CursorStart(this).load(this);
-        }
-        if (SettingVals.showHelpButton(prefs)) {
-            new Help(this).load(this);
         }
         if (SettingVals.showPlayPauseButton(prefs)) {
             new PlayPause(this).load(this);
@@ -593,12 +596,11 @@ public final class AssistActivity extends AppCompatActivity {
     }
 
     public void updateTitle(CharSequence title) {
-        if (mVm.noTitlebar) return;
+        if (mVm.noCommand) {
+            title = mVm.motd;
+        }
 
-        ActionBar actionBar = Objects.requireNonNull(getSupportActionBar());
-        if (mVm.noCommand) title = mVm.motd;
-
-        actionBar.setTitle(title);
+        mBinding.titleText.setText(title);
     }
 
     public void updateDataHint() {

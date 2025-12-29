@@ -43,15 +43,19 @@ public final class Help implements LabeledQuickAction {
 
     @Override
     public void perform() {
-        if (mActivity.cancelManualIfShowing()) return;
+        perform(mActivity);
+    }
+
+    public static void perform(AssistActivity act) {
+        if (act.cancelManualIfShowing()) return;
         // it's the double assist action and the manual is already open
-        EmillaCommand cmd = mActivity.command();
+        EmillaCommand cmd = act.command();
         // Todo: pull up a general manual when no command.
-        Resources res = mActivity.getResources();
+        Resources res = act.getResources();
         String msg = res.getText(cmd.summary) + "\n\n" + res.getText(cmd.manual);
         // TODO: resolve weird whitespace parsing.
-        AlertDialog manual = Dialogs.message(mActivity, cmd.name, msg)
-                .setOnDismissListener(dlg -> mActivity.setManual(null))
+        AlertDialog manual = Dialogs.message(act, cmd.name, msg)
+                .setOnDismissListener(dlg -> act.setManual(null))
                 .setOnKeyListener((dlg, keyCode, event) -> {
                     // this is necessary because the AlertDialog becomes the consumer of key-events
                     if (keyCode == KEYCODE_MENU && event.getAction() == ACTION_UP) {
@@ -60,8 +64,8 @@ public final class Help implements LabeledQuickAction {
                     }
                     return false;
                 }).create();
-        mActivity.setManual(manual);
-        mActivity.offer(act -> {
+        act.setManual(manual);
+        act.offer(a -> {
             manual.setOnCancelListener(dlg -> {
                 act.onCloseDialog(); // Todo: don't require this
                 act.resume();
@@ -70,4 +74,5 @@ public final class Help implements LabeledQuickAction {
             manual.show();
         });
     }
+
 }

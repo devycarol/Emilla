@@ -85,7 +85,7 @@
             android:enableOnBackInvokedCallback="false"
             android:exported="true"
             android:icon="@mipmap/ic_launcher_assistant"
-            android:label="@string/activity_assistant"
+            android:label="@string/title_assistant"
             android:launchMode="singleTask"
             android:roundIcon="@mipmap/ic_launcher_assistant_round"
             android:taskAffinity=".assistant"

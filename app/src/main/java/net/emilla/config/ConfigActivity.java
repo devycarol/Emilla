@@ -1,7 +1,9 @@
 package net.emilla.config;
 
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.fragment.NavHostFragment;
@@ -22,6 +24,10 @@ public final class ConfigActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+            EdgeToEdge.enable(this);
+        }
 
         var binding = ActivityConfigBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -49,4 +55,5 @@ public final class ConfigActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, configuration);
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
+
 }

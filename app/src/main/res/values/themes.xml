@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="Theme.Emilla.DayNight" parent="Theme.MaterialComponents" />
+
     <style name="Theme.Emilla.Base" parent="Theme.Emilla.DayNight">
         <item name="actionBarStyle">@style/ActionBarStyle</item>
         <item name="preferenceTheme">@style/SettingsTheme</item>
@@ -32,10 +34,13 @@
     <style name="Theme.Assistant.Base" parent="Theme.Emilla">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@color/bg_assistant</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="Theme.Assistant" parent="Theme.Assistant.Base">
         <item name="colorBackgroundFloating">@color/main_background_dark</item>
         <item name="colorSucceed">@color/main_400</item>
     </style>
+
 </resources>

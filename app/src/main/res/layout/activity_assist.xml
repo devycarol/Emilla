@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:contentDescription="@string/spoken_description_empty_space"
-        app:layout_constraintBottom_toTopOf="@id/container_assistant"
+        app:layout_constraintBottom_toTopOf="@id/assistant_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,22 +25,48 @@
         app:layout_constraintBottom_toTopOf="@id/actions_container"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <FrameLayout
+        android:id="@+id/title_touch_target"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_narrow"
+        android:layout_marginTop="@dimen/margin_narrow"
+        android:minHeight="@dimen/width_action"
+        app:layout_constraintBottom_toTopOf="@id/assistant_container"
+        app:layout_constraintEnd_toStartOf="@id/actions_container"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/title_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="?attr/colorBackgroundFloating"
+            android:paddingStart="@dimen/margin_narrow"
+            android:paddingTop="@dimen/margin_narrow"
+            android:textIsSelectable="false"
+            android:textSize="18sp" />
+
+    </FrameLayout>
+
     <LinearLayout
         android:id="@+id/actions_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_narrow"
+        android:background="?attr/colorBackgroundFloating"
         android:gravity="end"
         android:orientation="horizontal"
-        android:paddingBottom="@dimen/margin_narrow"
-        app:layout_constraintBottom_toTopOf="@id/container_assistant"
+        android:paddingTop="@dimen/margin_narrow"
+        android:paddingEnd="@dimen/margin_narrow"
+        app:layout_constraintBottom_toTopOf="@id/assistant_container"
         app:layout_constraintEnd_toEndOf="parent">
 
         <net.emilla.view.ActionButton
             android:id="@+id/show_data_button"
             android:layout_width="@dimen/width_action"
             android:layout_height="@dimen/width_action"
-            android:layout_marginEnd="@dimen/margin_narrow"
+            android:layout_marginStart="@dimen/margin_narrow"
             android:background="@drawable/bg_action_button"
             android:contentDescription="@string/spoken_description_show_data"
             android:padding="@dimen/margin_narrow"
@@ -50,7 +76,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/container_assistant"
+        android:id="@+id/assistant_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_narrow"
@@ -59,8 +85,8 @@
         android:orientation="vertical"
         android:padding="@dimen/margin_narrow"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
             android:id="@+id/fields_container"
