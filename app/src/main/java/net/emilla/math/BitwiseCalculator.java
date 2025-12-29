@@ -339,7 +339,7 @@ public enum BitwiseCalculator {
                     op = BitwiseOperator.USHR;
                     advanceImmediate();
                 } else {
-                    op = BitwiseOperator.of(Strings.repeat(shiftType, 2));
+                    op = BitwiseOperator.of(String.valueOf(shiftType) + shiftType);
                     advance();
                 }
 
