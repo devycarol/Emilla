@@ -327,7 +327,7 @@ public enum Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         return LocalDateTime.of(date, nextHalfHour);
     }
 
-    public static DateTimeSpan parseDateAndTimes(String dateString, @StringRes int errorTitle) {
+    public static DateTimeRange parseDateAndTimes(String dateString, @StringRes int errorTitle) {
         String[] dateTime = DATE_TIME_SPLITTER.split(dateString);
 
         int[] startTime = null;
@@ -375,7 +375,7 @@ public enum Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
             );
         }
 
-        return new DateTimeSpan(startDate, endDate);
+        return new DateTimeRange(startDate, endDate);
     }
 
 }

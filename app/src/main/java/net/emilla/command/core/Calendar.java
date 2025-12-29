@@ -17,7 +17,7 @@ import net.emilla.action.field.FieldToggle;
 import net.emilla.action.field.InputField;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
-import net.emilla.lang.date.DateTimeSpan;
+import net.emilla.lang.date.DateTimeRange;
 import net.emilla.lang.date.Time;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
@@ -90,7 +90,7 @@ final class Calendar extends CoreDataCommand {
         case 1 -> {}
         case 2 -> {
             title = nameAndTime[0];
-            DateTimeSpan times = Time.parseDateAndTimes(nameAndTime[1], CoreEntry.CALENDAR.name);
+            DateTimeRange times = Time.parseDateAndTimes(nameAndTime[1], CoreEntry.CALENDAR.name);
 
             intent.putExtra(EXTRA_EVENT_BEGIN_TIME, epochMilliOf(times.start()));
 
