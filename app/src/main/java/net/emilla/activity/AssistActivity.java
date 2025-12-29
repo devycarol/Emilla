@@ -43,7 +43,6 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
@@ -147,7 +146,6 @@ public final class AssistActivity extends AppCompatActivity {
         ActionBar actionBar = Objects.requireNonNull(getSupportActionBar());
         if (mVm.noTitlebar) {
             actionBar.hide();
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.bg_assistant));
         } else {
             actionBar.setTitle(mVm.motd);
         }

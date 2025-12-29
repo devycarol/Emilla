@@ -6,7 +6,7 @@ import android.os.LocaleList;
 
 import java.util.function.Consumer;
 
-public enum TestLang {
+enum TestLang {
     ;
 
     public static void withEachLocale(Resources res, Consumer<? super Resources> consumer) {

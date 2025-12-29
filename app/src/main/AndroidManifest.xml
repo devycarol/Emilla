@@ -82,6 +82,7 @@
         </activity>
         <activity
             android:name=".activity.AssistActivity"
+            android:enableOnBackInvokedCallback="false"
             android:exported="true"
             android:icon="@mipmap/ic_launcher_assistant"
             android:label="@string/activity_assistant"

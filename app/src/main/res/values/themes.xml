@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <style name="Theme.Emilla.DayNight" parent="Theme.MaterialComponents" />
     <style name="Theme.Emilla.Base" parent="Theme.Emilla.DayNight">
-        <item name="android:windowOptOutEdgeToEdgeEnforcement" tools:targetApi="35">true</item>
-        <!--todo: deal with this nonsense..-->
         <item name="actionBarStyle">@style/ActionBarStyle</item>
         <item name="preferenceTheme">@style/SettingsTheme</item>
-        <item name="android:statusBarColor">?attr/colorBackgroundFloating</item>
-        <item name="android:navigationBarColor">#000</item>
 
         <item name="alertDialogStyle">@style/AlertDialog.Emilla</item>
         <item name="android:buttonBarButtonStyle">@style/Widget.Emilla.Button.TextButton</item>
@@ -36,7 +32,6 @@
     <style name="Theme.Assistant.Base" parent="Theme.Emilla">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@color/bg_assistant</item>
-        <item name="android:navigationBarColor">@color/bg_assistant</item>
     </style>
 
     <style name="Theme.Assistant" parent="Theme.Assistant.Base">
