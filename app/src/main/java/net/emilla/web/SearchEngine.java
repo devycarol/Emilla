@@ -38,8 +38,8 @@ final class SearchEngine {
         return new NoSuchElementException("Invalid website entry");
     }
 
-    public Uri url(String query) {
-        return Uri.parse(mUrlPrefix + Uri.encode(query) + mUrlSuffix);
+    public String url(String query) {
+        return mUrlPrefix + Uri.encode(query) + mUrlSuffix;
     }
 
 }

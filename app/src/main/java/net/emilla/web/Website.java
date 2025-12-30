@@ -1,14 +1,15 @@
 package net.emilla.web;
 
+import static android.content.Intent.ACTION_WEB_SEARCH;
+
+import android.app.SearchManager;
 import android.content.Intent;
-import android.net.Uri;
 
 import androidx.annotation.Nullable;
 
 import net.emilla.annotation.internal;
 import net.emilla.text.Csv;
 import net.emilla.text.CsvBuilder;
-import net.emilla.util.Intents;
 
 import java.util.Arrays;
 import java.util.NoSuchElementException;
@@ -83,11 +84,12 @@ final class Website {
         return mSearchEngine != null;
     }
 
-    @internal Intent viewIntent(@Nullable String searchQuery) {
-        return Intents.view(
+    @internal Intent webIntent(@Nullable String searchQuery) {
+        return new Intent(ACTION_WEB_SEARCH).putExtra(
+            SearchManager.QUERY,
             searchQuery != null
                 ? mSearchEngine.url(searchQuery)
-                : Uri.parse(mUrl)
+                : mUrl
         );
     }
 

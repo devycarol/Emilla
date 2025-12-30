@@ -9,15 +9,12 @@ import android.view.inputmethod.EditorInfo;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.util.Apps;
-import net.emilla.util.Intents;
 import net.emilla.web.WebsiteMap;
 
 final class Web extends CoreCommand {
 
     public static boolean possible(PackageManager pm) {
-        return Apps.canDo(pm, new Intent(ACTION_WEB_SEARCH))
-            || Apps.canDo(pm, Intents.view("https:"))
-            || Apps.canDo(pm, Intents.view("http:"));
+        return Apps.canDo(pm, new Intent(ACTION_WEB_SEARCH));
     }
 
     private final WebsiteMap mWebsiteMap;

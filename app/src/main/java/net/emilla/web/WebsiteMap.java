@@ -1,8 +1,8 @@
 package net.emilla.web;
 
-import static android.app.SearchManager.QUERY;
 import static android.content.Intent.ACTION_WEB_SEARCH;
 
+import android.app.SearchManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -13,7 +13,6 @@ import net.emilla.text.Csv;
 import net.emilla.text.CsvLines;
 import net.emilla.trie.PhraseTree;
 import net.emilla.trie.PrefixResult;
-import net.emilla.util.ArrayLoader;
 
 import java.util.function.Function;
 
@@ -37,9 +36,9 @@ public final class WebsiteMap {
             mapper = Website::from;
         }
 
-        var loader = isLegacy
-            ? new ArrayLoader<String>(10, String[]::new)
-            : null;
+//        var loader = isLegacy
+//            ? new ArrayLoader<String>(10, String[]::new)
+//            : null;
         while (lines.hasNext()) {
             Csv csv = lines.next();
             Website site = mapper.apply(csv);
@@ -52,12 +51,12 @@ public final class WebsiteMap {
             }
 
             if (isLegacy) {
-                loader.growingAdd(site.toString());
+//                loader.growingAdd(site.toString());
             }
         }
 
         if (isLegacy) {
-            SettingVals.setWebsites(prefs, ArrayLoader.join(loader, '\n'));
+//            SettingVals.setWebsites(prefs, ArrayLoader.join(loader, '\n'));
         }
     }
 
@@ -66,8 +65,8 @@ public final class WebsiteMap {
 
         Website site = get.value();
         return site != null
-            ? site.viewIntent(get.leftovers)
-            : new Intent(ACTION_WEB_SEARCH).putExtra(QUERY, search);
+            ? site.webIntent(get.leftovers)
+            : new Intent(ACTION_WEB_SEARCH).putExtra(SearchManager.QUERY, search);
     }
 
 }

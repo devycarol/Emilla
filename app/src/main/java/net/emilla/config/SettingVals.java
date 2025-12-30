@@ -169,7 +169,7 @@ public enum SettingVals {
         }
 
         String engineCsv = prefs.getString(key, null);
-        prefs.edit().remove(key).apply();
+//        prefs.edit().remove(key).apply();
 
         return engineCsv;
     }
@@ -190,12 +190,12 @@ public enum SettingVals {
         }
 
         return """
-            https://wikipedia.org,https://wikipedia.org/wiki/,,Wikipedia,wiki,wp
-            https://duckduckgo.com,https://duckduckgo.com/?q=,,DuckDuckGo,duck,ddg
-            https://images.duckduckgo.com,https://duckduckgo.com/?q=,&ia=images&iax=images,DuckDuckGo Images, ducki, di
-            https://www.google.com,https://www.google.com/search?q=,,Google,g
-            https://images.google.com,https://www.google.com/search?q=,&udm=2,Google Images,gi
-            https://www.youtube.com,https://www.youtube.com/results?search_query=,,YouTube,yt""";
+             https://wikipedia.org,https://wikipedia.org/wiki/,,Wikipedia,wiki,wp
+             https://duckduckgo.com,https://duckduckgo.com/?q=,,DuckDuckGo,duck,ddg
+             https://images.duckduckgo.com,https://duckduckgo.com/?q=,&ia=images&iax=images,DuckDuckGo Images, ducki, di
+             https://www.google.com,https://www.google.com/search?q=,,Google,g
+             https://images.google.com,https://www.google.com/search?q=,&udm=2,Google Images,gi
+             https://www.youtube.com,https://www.youtube.com/results?search_query=,,YouTube,yt""";
     }
 
     public static void setNoteFolder(SharedPreferences prefs, Uri folder) {
