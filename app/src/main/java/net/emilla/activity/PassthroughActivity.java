@@ -29,7 +29,7 @@ public final class PassthroughActivity extends AppCompatActivity {
         }
     );
 
-    @internal PassthroughActivity() {}
+    public PassthroughActivity() {}
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
