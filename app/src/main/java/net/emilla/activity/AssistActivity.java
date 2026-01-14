@@ -357,7 +357,6 @@ public final class AssistActivity extends AppCompatActivity {
     private void setupMoreActions() {
         SharedPreferences prefs = mVm.prefs;
         // TODO: save state hell
-        // Todo: put these in an editor.
         if (SettingVals.showCursorStartButton(prefs)) {
             new CursorStart(this).load(this);
         }
@@ -400,7 +399,7 @@ public final class AssistActivity extends AppCompatActivity {
     /// @param id the field to toggle.
     /// @return true if the field is visible now, false if it's hidden.
     public boolean toggleField(@IdRes int id) {
-        // Todo: it's vague which field is which. First step: make them ordered consistently.
+        // Todo: it's vague which field is which. First step: order them consistently.
         EditText box = findViewById(id);
         if (box.getVisibility() == View.VISIBLE) {
             if (box.hasFocus()) mBinding.commandField.requestFocus();
@@ -445,16 +444,16 @@ public final class AssistActivity extends AppCompatActivity {
         }
     }
 
-    private long mLastAssistTime = 0;
+    private long mLastAssistTime = 0L;
 
     private void acknowledgeAssistIntent(boolean performAction) {
         // TODO: determine why the corner gesture sends the assist intent twice.
         long currentTime = System.currentTimeMillis();
-        if (currentTime - mLastAssistTime > 150 /*ms*/) {
+        if (currentTime - mLastAssistTime > 150L /*ms*/) {
             mLastAssistTime = currentTime;
             if (performAction) mDoubleAssistAction.perform();
         } else {
-            mLastAssistTime = 0;
+            mLastAssistTime = 0L;
         }
     }
 
