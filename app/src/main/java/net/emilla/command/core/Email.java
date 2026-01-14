@@ -28,7 +28,6 @@ import net.emilla.util.Patterns;
 import java.util.ArrayList;
 
 final class Email extends CoreDataCommand implements EmailReceiver {
-
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, new Intent(ACTION_SENDTO, Uri.parse("mailto:")));
     }
@@ -107,5 +106,4 @@ final class Email extends CoreDataCommand implements EmailReceiver {
     public void provide(AssistActivity act, String emailAddress) {
         email(act, emailAddress, act.dataText());
     }
-
 }

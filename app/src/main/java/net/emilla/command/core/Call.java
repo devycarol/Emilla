@@ -21,7 +21,6 @@ import net.emilla.util.Features;
 import net.emilla.util.Permission;
 
 final class Call extends CoreCommand implements PhoneReceiver {
-
     public static boolean possible(PackageManager pm) {
         return Features.phone(pm) || Apps.canDo(pm, makeIntent(""));
     }
@@ -98,5 +97,4 @@ final class Call extends CoreCommand implements PhoneReceiver {
     public void provide(AssistActivity act, String phoneNumber) {
         Permission.CALL.with(act, () -> call(act, phoneNumber));
     }
-
 }

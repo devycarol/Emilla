@@ -7,7 +7,6 @@ import net.emilla.util.Hashes;
 import java.util.random.RandomGenerator;
 
 public final class Dice implements Comparable<Dice> {
-
     private int mCount;
     private final int mFaces;
 
@@ -62,5 +61,4 @@ public final class Dice implements Comparable<Dice> {
     public int hashCode() {
         return Hashes.one(mFaces);
     }
-
 }

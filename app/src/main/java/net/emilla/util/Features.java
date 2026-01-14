@@ -5,7 +5,6 @@ import android.os.Build;
 
 public enum Features {
     ;
-
     public static boolean camera(PackageManager pm) {
         return pm.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
     }
@@ -24,5 +23,4 @@ public enum Features {
         return pm.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
         // todo: test this on a minSdk device.
     }
-
 }

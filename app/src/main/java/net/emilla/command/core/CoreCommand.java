@@ -9,7 +9,6 @@ import net.emilla.command.EmillaCommand;
 import net.emilla.exception.EmillaException;
 
 abstract class CoreCommand extends EmillaCommand {
-
     @StringRes
     private final int mName;
 
@@ -22,5 +21,4 @@ abstract class CoreCommand extends EmillaCommand {
     protected final EmillaException badCommand(@StringRes int msg) {
         return new EmillaException(mName, msg);
     }
-
 }

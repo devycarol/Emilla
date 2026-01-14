@@ -15,8 +15,8 @@ import java.util.function.Consumer;
 import java.util.function.IntFunction;
 
 public @open class ItemSearchAdapter<E extends SearchItem>
-    extends RecyclerView.Adapter<ListItemHolder> {
-
+    extends RecyclerView.Adapter<ListItemHolder>
+{
     private final LayoutInflater mInflater;
 
     protected final ArraySearcher<E> searcher;
@@ -146,5 +146,4 @@ public @open class ItemSearchAdapter<E extends SearchItem>
     public final int getItemCount() {
         return mSearchResult.size();
     }
-
 }

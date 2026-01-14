@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.function.IntFunction;
 
 final class PrefixTree<K, V> {
-
     private final PrefixNode<K, V> mRoot;
 
     @internal PrefixTree(IntFunction<V[]> arrayGenerator) {
@@ -56,5 +55,4 @@ final class PrefixTree<K, V> {
         L leftovers = keySequence.leftoversFrom(leftoverPosition);
         return new PrefixResult<V, L>(values, leftovers, leftoverPosition);
     }
-
 }

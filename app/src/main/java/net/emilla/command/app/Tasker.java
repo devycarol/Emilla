@@ -23,7 +23,6 @@ import java.util.Comparator;
 import java.util.TreeSet;
 
 final class Tasker extends AppCommand implements DataCommand {
-
     public static final String PKG = TaskerIntent.TASKER_PACKAGE_MARKET;
 
     @Override @StringRes
@@ -170,12 +169,10 @@ final class Tasker extends AppCommand implements DataCommand {
     }
 
     private record Task(String projectName, String taskName) {
-
         @Override
         public String toString() {
             return taskName + " | " + projectName;
         }
-
     }
 
     private static void runTask(AssistActivity act, String taskName, @Nullable String params) {
@@ -187,5 +184,4 @@ final class Tasker extends AppCommand implements DataCommand {
         }
         giveBroadcast(act, intent);
     }
-
 }

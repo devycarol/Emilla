@@ -10,7 +10,6 @@ import net.emilla.util.MediaControl;
 import net.emilla.util.Services;
 
 final class Pause extends CoreCommand {
-
     @internal Pause(Context ctx) {
         super(ctx, CoreEntry.PAUSE, EditorInfo.IME_ACTION_DONE);
     }
@@ -26,5 +25,4 @@ final class Pause extends CoreCommand {
     protected void run(AssistActivity act, String ignored) {
         run(act); // Todo: remove this from the interface for non-instructables.
     }
-
 }

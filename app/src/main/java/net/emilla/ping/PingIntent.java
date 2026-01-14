@@ -7,7 +7,6 @@ import android.content.Intent;
 import net.emilla.event.PingReceiver;
 
 public final class PingIntent extends Intent {
-
     private static final String EXTRA_PING = "ping";
     private static final String EXTRA_CHANNEL = "channel";
 

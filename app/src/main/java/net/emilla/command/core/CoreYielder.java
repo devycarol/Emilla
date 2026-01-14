@@ -6,7 +6,6 @@ import net.emilla.command.CommandYielder;
 import net.emilla.command.EmillaCommand;
 
 final class CoreYielder extends CommandYielder {
-
     private final CoreEntry mCoreEntry;
 
     @internal CoreYielder(CoreEntry coreEntry) {
@@ -22,5 +21,4 @@ final class CoreYielder extends CommandYielder {
     protected EmillaCommand makeCommand(AssistActivity act) {
         return mCoreEntry.mMaker.make(act);
     }
-
 }

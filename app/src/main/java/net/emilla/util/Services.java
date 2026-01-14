@@ -10,7 +10,6 @@ import android.view.accessibility.AccessibilityManager;
 
 public enum Services {
     ;
-
     public static AccessibilityManager accessibility(Context ctx) {
         return (AccessibilityManager) ctx.getSystemService(Context.ACCESSIBILITY_SERVICE);
     }
@@ -34,5 +33,4 @@ public enum Services {
     public static NotificationManager notification(Context ctx) {
         return (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
     }
-
 }

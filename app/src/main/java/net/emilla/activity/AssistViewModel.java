@@ -25,9 +25,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 
 final class AssistViewModel extends ViewModel {
-
     @internal static final class Factory implements ViewModelProvider.Factory {
-
         private final Context mAppContext;
 
         @internal Factory(Context ctx) {
@@ -38,7 +36,6 @@ final class AssistViewModel extends ViewModel {
         public <T extends ViewModel> T create(Class<T> modelClass) {
             return (T) new AssistViewModel(mAppContext);
         }
-
     }
 
     private final Context mAppContext;
@@ -127,5 +124,4 @@ final class AssistViewModel extends ViewModel {
         }
         return true;
     }
-
 }

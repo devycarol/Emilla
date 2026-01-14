@@ -14,7 +14,6 @@ import net.emilla.activity.AssistActivity;
 /// the permission(s) being requested.
 @RequiresApi(Build.VERSION_CODES.M)
 public final class PermissionOffering implements CommandRun {
-
     private final String[] mPermissions;
     @Nullable
     private final Runnable mOnGrant;
@@ -28,5 +27,4 @@ public final class PermissionOffering implements CommandRun {
     public void run(AssistActivity act) {
         act.offerPermissions(mPermissions, mOnGrant);
     }
-
 }

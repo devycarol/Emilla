@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
 
 public enum RandRangeEN_US {
     ;
-
     private static final Pattern NUMBER_RANGE = Pattern.compile("[(\\[]-?\\d+,\\s*-?\\d+[)\\]]");
     private static final Pattern VERBAL_RANGE = Pattern.compile(
         "-?\\d+((,\\s*|\\s+(and|&|to))?\\s+)-?\\d+",
@@ -67,5 +66,4 @@ public enum RandRangeEN_US {
 
         throw new EmillaException(errorTitle, R.string.error_invalid_number_range);
     }
-
 }

@@ -18,7 +18,6 @@ import net.emilla.databinding.FragmentItemListBinding;
 import net.emilla.sort.ItemSearchAdapter;
 
 public final class AppsFragment extends ActionBox {
-
     @internal AppsFragment() {
         super(R.layout.fragment_item_list);
     }
@@ -79,5 +78,4 @@ public final class AppsFragment extends ActionBox {
             mAdapter.search(instruction);
         }
     }
-
 }

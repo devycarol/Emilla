@@ -6,14 +6,12 @@ import androidx.activity.result.contract.ActivityResultContracts.GetMultipleCont
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.annotation.inner;
 import net.emilla.content.receive.FilesReceiver;
 import net.emilla.util.Toasts;
 
 import java.util.List;
 
 public final class FilesRetriever extends ResultRetriever<String, List<Uri>, FilesReceiver> {
-
     public FilesRetriever(AssistActivity act) {
         super(act, new GetMultipleContents());
     }
@@ -28,8 +26,7 @@ public final class FilesRetriever extends ResultRetriever<String, List<Uri>, Fil
         return new FileCallback();
     }
 
-    private @inner final class FileCallback extends ResultCallback {
-
+    private final class FileCallback extends ResultCallback {
         @Override
         protected void onActivityResult(List<Uri> files, FilesReceiver receiver) {
             if (files.isEmpty()) {
@@ -39,5 +36,4 @@ public final class FilesRetriever extends ResultRetriever<String, List<Uri>, Fil
             }
         }
     }
-
 }

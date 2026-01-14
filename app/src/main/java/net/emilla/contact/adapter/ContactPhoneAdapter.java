@@ -12,12 +12,11 @@ import net.emilla.contact.ContactItemView;
 import net.emilla.lang.Lang;
 
 public final class ContactPhoneAdapter extends ContactCursorAdapter {
-
     private static final String[] ADD_COLS = {
-            RawContacts.CONTACT_ID,
-            Phone.NUMBER,
-            Phone.TYPE,
-            Phone.LABEL,
+        RawContacts.CONTACT_ID,
+        Phone.NUMBER,
+        Phone.TYPE,
+        Phone.LABEL,
     };
 
     private static final String[] PROJECTION = projection(ADD_COLS);

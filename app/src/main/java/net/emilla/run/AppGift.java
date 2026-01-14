@@ -9,7 +9,6 @@ import net.emilla.exception.EmillaException;
 import net.emilla.util.Intents;
 
 public final class AppGift implements CommandRun {
-
     private final Intent mIntent;
 
     public AppGift(Intent intent) {
@@ -29,5 +28,4 @@ public final class AppGift implements CommandRun {
             throw new EmillaException(R.string.error, R.string.error_no_app);
         }
     }
-
 }

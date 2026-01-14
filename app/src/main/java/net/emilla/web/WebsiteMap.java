@@ -17,7 +17,6 @@ import net.emilla.trie.PrefixResult;
 import java.util.function.Function;
 
 public final class WebsiteMap {
-
     private final PhraseTree<Website> mSiteMap;
 
     public WebsiteMap(SharedPreferences prefs, Resources res) {
@@ -68,5 +67,4 @@ public final class WebsiteMap {
             ? site.webIntent(get.leftovers)
             : new Intent(ACTION_WEB_SEARCH).putExtra(SearchManager.QUERY, search);
     }
-
 }

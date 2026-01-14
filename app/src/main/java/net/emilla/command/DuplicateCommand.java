@@ -12,7 +12,6 @@ import net.emilla.util.Dialogs;
 import java.util.Arrays;
 
 public final class DuplicateCommand extends EmillaCommand {
-
     private final EmillaCommand[] mCommands;
     private final String[] mLabels;
 
@@ -63,5 +62,4 @@ public final class DuplicateCommand extends EmillaCommand {
     private void chooseCommand(AssistActivity act, DialogInterface.OnClickListener onChoose) {
         offerDialog(act, Dialogs.list(act, R.string.dialog_command, mLabels, onChoose));
     }
-
 }

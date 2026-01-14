@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 final class FileListItem extends ListItem {
-
     private final byte[] mMother;
     private final int mPosition;
     private final int mSpan;
@@ -23,5 +22,4 @@ final class FileListItem extends ListItem {
     protected void writeText(OutputStream ostream) throws IOException {
         ostream.write(mMother, mPosition, mSpan);
     }
-
 }

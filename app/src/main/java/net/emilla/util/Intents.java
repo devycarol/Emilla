@@ -24,7 +24,6 @@ import net.emilla.command.app.AppEntry;
 
 public enum Intents {
     ;
-
     public static final String EXTRA_SMS_BODY = "sms_body";
 
     public static Intent launchApp(AppEntry app) {
@@ -132,5 +131,4 @@ public enum Intents {
 
         throw new IllegalStateException();
     }
-
 }

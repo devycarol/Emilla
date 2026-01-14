@@ -14,7 +14,6 @@ import net.emilla.command.EmillaCommand;
 import net.emilla.util.Dialogs;
 
 public final class Help implements LabeledQuickAction {
-
     private final AssistActivity mActivity;
 
     public Help(AssistActivity act) {
@@ -74,5 +73,4 @@ public final class Help implements LabeledQuickAction {
             manual.show();
         });
     }
-
 }

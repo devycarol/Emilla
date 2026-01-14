@@ -11,7 +11,6 @@ import net.emilla.run.DialogRun;
 import net.emilla.run.TextGift;
 
 public abstract class ActionBox extends Fragment implements InstructyGadget {
-
     protected ActionBox(@LayoutRes int contentLayout) {
         super(contentLayout);
     }
@@ -37,5 +36,4 @@ public abstract class ActionBox extends Fragment implements InstructyGadget {
     public final void unload(AssistActivity act) {
         act.removeActionBox(this);
     }
-
 }

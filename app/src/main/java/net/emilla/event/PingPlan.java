@@ -5,7 +5,6 @@ import android.app.Notification;
 import net.emilla.ping.PingChannel;
 
 public final class PingPlan extends Plan {
-
     public final Notification ping;
     public final String channel;
 

@@ -13,7 +13,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 
 final class Time extends CoreCommand {
-
     @internal Time(Context ctx) {
         super(ctx, CoreEntry.TIME, EditorInfo.IME_ACTION_DONE);
     }
@@ -32,5 +31,4 @@ final class Time extends CoreCommand {
         throw badCommand(R.string.error_unfinished_feature);
         // TODO: locations, time-elapse
     }
-
 }

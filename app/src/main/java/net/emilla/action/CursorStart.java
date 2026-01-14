@@ -12,7 +12,6 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 
 public final class CursorStart implements LabeledQuickAction {
-
     private final AssistActivity mActivity;
 
     public CursorStart(AssistActivity act) {

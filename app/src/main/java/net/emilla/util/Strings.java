@@ -6,7 +6,6 @@ import net.emilla.function.CharPredicate;
 
 public enum Strings {
     ;
-
     public static String emptyIfNull(@Nullable String s) {
         return s != null ? s : "";
     }
@@ -80,5 +79,4 @@ public enum Strings {
 
         return true;
     }
-
 }

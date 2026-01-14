@@ -17,7 +17,6 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 
 public final class FieldToggle implements QuickAction {
-
     private final AssistActivity mActivity;
     private final InputField mInputField;
 
@@ -84,5 +83,4 @@ public final class FieldToggle implements QuickAction {
 
         act.hideField(mInputField.fieldId);
     }
-
 }

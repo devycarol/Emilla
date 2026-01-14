@@ -11,7 +11,6 @@ import net.emilla.contact.ContactItemView;
 import net.emilla.lang.Lang;
 
 public final class ContactEmailAdapter extends ContactCursorAdapter {
-
     private static final String[] ADD_COLS = {
             RawContacts.CONTACT_ID,
             Email.ADDRESS,

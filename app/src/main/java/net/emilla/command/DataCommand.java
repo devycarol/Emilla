@@ -5,7 +5,6 @@ import androidx.annotation.StringRes;
 import net.emilla.activity.AssistActivity;
 
 public interface DataCommand {
-
     @StringRes
     int dataHint();
     void runWithData(AssistActivity act, String data);
@@ -19,5 +18,4 @@ public interface DataCommand {
             cmd.runWithData(act, data);
         }
     }
-
 }

@@ -10,7 +10,6 @@ import net.emilla.activity.AssistActivity;
 
 public enum Dialogs {
     ;
-
     private static AlertDialog.Builder base(Context ctx, CharSequence title, @StringRes int noLabel) {
         return new AlertDialog.Builder(ctx).setTitle(title)
                 .setNegativeButton(noLabel, (dlg, which) -> dlg.cancel());
@@ -134,5 +133,4 @@ public enum Dialogs {
             yesClick.onClick(dlg, which);
         });
     }
-
 }

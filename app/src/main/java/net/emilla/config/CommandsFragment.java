@@ -24,7 +24,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public final class CommandsFragment extends EmillaSettingsFragment {
-
     private static final Pattern SQUASHING_CSV = Pattern.compile("( *, *)+");
 
     private /*late*/ Context mContext;
@@ -162,5 +161,4 @@ public final class CommandsFragment extends EmillaSettingsFragment {
             ? cleanCommaList
             : null;
     }
-
 }

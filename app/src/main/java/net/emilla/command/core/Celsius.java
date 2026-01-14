@@ -11,7 +11,6 @@ import net.emilla.lang.measure.CelsiusConversion;
 import net.emilla.math.Maths;
 
 final class Celsius extends CoreCommand {
-
     @internal Celsius(Context ctx) {
         super(ctx, CoreEntry.CELSIUS, EditorInfo.IME_ACTION_DONE);
     }
@@ -31,5 +30,4 @@ final class Celsius extends CoreCommand {
         String celsiusDegrees = Maths.prettyNumber(celsius.convert());
         giveText(act, res.getString(R.string.celsius_conversion, oldDegrees, unit, celsiusDegrees));
     }
-
 }

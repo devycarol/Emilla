@@ -14,7 +14,6 @@ import net.emilla.contact.adapter.ContactCardAdapter;
 import net.emilla.contact.adapter.ContactCursorAdapter;
 
 public final class ContactCardsFragment extends ContactsFragment<Uri> {
-
     public static ContactCardsFragment newInstance() {
         return newInstance(new ContactCardsFragment(), false);
     }

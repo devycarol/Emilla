@@ -5,7 +5,6 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 
 public interface Params {
-
     /// The command's name in Title Case.
     ///
     /// @param res can be used to retrieve the name from string resources.
@@ -29,5 +28,4 @@ public interface Params {
     ///
     /// @return true if the command is a common noun, false if the command is a proper noun.
     boolean isProperNoun();
-
 }

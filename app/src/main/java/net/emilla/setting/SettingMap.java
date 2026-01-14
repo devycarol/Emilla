@@ -9,7 +9,6 @@ import net.emilla.trie.PhraseTree;
 import net.emilla.trie.PrefixResult;
 
 public final class SettingMap {
-
     private final PhraseTree<SystemSetting> mSettingMap;
 
     public SettingMap(Resources res) {
@@ -40,5 +39,4 @@ public final class SettingMap {
 
         return setting.set(res, cr, result.leftovers);
     }
-
 }

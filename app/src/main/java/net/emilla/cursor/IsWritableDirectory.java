@@ -4,7 +4,6 @@ import android.database.Cursor;
 import android.provider.DocumentsContract.Document;
 
 public final class IsWritableDirectory extends CursorTester {
-
     private static final int INDEX_MIME_TYPE = 0;
     private static final int INDEX_FLAGS = 1;
 
@@ -30,5 +29,4 @@ public final class IsWritableDirectory extends CursorTester {
         return Document.MIME_TYPE_DIR.equals(cursor.getString(INDEX_MIME_TYPE))
             && (MONITORED_FLAGS & cursor.getInt(INDEX_FLAGS)) == REQUIRED_FLAGS;
     }
-
 }

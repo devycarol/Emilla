@@ -7,7 +7,6 @@ import net.emilla.annotation.open;
 import net.emilla.lang.Lang;
 
 public abstract class SearchItem implements Comparable<SearchItem> {
-
     public final String displayName;
     @internal final String mSearchKey;
 
@@ -30,5 +29,4 @@ public abstract class SearchItem implements Comparable<SearchItem> {
 
         return this.displayName.compareTo(other.displayName);
     }
-
 }

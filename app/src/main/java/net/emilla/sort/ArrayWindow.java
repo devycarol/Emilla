@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 public final class ArrayWindow<E> implements IndexedStruct<E> {
-
     public static <E> ArrayWindow<E> closed(E[] array, int index) {
         return new ArrayWindow<E>(array, index, index);
     }
@@ -51,5 +50,4 @@ public final class ArrayWindow<E> implements IndexedStruct<E> {
     public Stream<E> stream() {
         return Arrays.stream(mArray, mStart, mEnd);
     }
-
 }

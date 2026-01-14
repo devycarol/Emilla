@@ -10,7 +10,6 @@ import net.emilla.ping.PingChannel;
 import net.emilla.ping.Pinger;
 
 public final class PingGift implements CommandRun {
-
     private final Notification mPing;
     private final PingChannel mChannel;
 

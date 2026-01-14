@@ -12,7 +12,6 @@ import net.emilla.lang.phrase.Dices;
 import java.util.Random;
 
 final class Roll extends CoreCommand {
-
     @internal Roll(Context ctx) {
         super(ctx, CoreEntry.ROLL, EditorInfo.IME_ACTION_DONE);
     }
@@ -29,5 +28,4 @@ final class Roll extends CoreCommand {
         var rand = new Random();
         giveText(act, String.valueOf(dices.roll(rand)));
     }
-
 }

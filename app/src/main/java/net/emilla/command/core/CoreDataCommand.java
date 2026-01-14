@@ -9,7 +9,6 @@ import net.emilla.annotation.internal;
 import net.emilla.command.DataCommand;
 
 abstract class CoreDataCommand extends CoreCommand implements DataCommand {
-
     @StringRes
     private final int mHint;
 
@@ -22,5 +21,4 @@ abstract class CoreDataCommand extends CoreCommand implements DataCommand {
     public final int dataHint() {
         return mHint;
     }
-
 }

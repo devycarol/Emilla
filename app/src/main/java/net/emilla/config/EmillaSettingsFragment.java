@@ -8,7 +8,6 @@ import androidx.preference.PreferenceFragmentCompat;
 import java.util.Objects;
 
 public abstract class EmillaSettingsFragment extends PreferenceFragmentCompat {
-
     protected final <T extends Preference> T preferenceOf(String key) {
         return Objects.requireNonNull(findPreference(key));
     }
@@ -16,5 +15,4 @@ public abstract class EmillaSettingsFragment extends PreferenceFragmentCompat {
     protected final SharedPreferences prefs() {
         return Objects.requireNonNull(getPreferenceManager().getSharedPreferences());
     }
-
 }

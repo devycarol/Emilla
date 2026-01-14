@@ -9,7 +9,6 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.content.receive.FilesReceiver;
 
 public final class FileFetcher implements LabeledQuickAction {
-
     private final AssistActivity mActivity;
     private final FilesReceiver mReceiver;
     private final String mMimeType;

@@ -4,7 +4,6 @@ import net.emilla.annotation.internal;
 import net.emilla.lang.Lang;
 
 final class Glyphs extends Phrase<Integer> {
-
     @internal Glyphs(String phrase) {
         super(phrase);
     }
@@ -15,5 +14,4 @@ final class Glyphs extends Phrase<Integer> {
         mPosition += Character.charCount(codePoint);
         return Lang.normalize(codePoint);
     }
-
 }

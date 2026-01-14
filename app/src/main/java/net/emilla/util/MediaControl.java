@@ -8,7 +8,6 @@ import android.view.KeyEvent;
 
 public enum MediaControl {
     ;
-
     public static void play(AudioManager am) {
         sendButtonEvent(am, KeyEvent.KEYCODE_MEDIA_PLAY);
     }
@@ -25,5 +24,4 @@ public enum MediaControl {
         am.dispatchMediaKeyEvent(new KeyEvent(ACTION_DOWN, keyCode));
         am.dispatchMediaKeyEvent(new KeyEvent(ACTION_UP, keyCode));
     }
-
 }

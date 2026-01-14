@@ -7,7 +7,6 @@ import net.emilla.annotation.internal;
 
 /// The default chimer, Nebula.
 final class Nebula implements Chimer {
-
     @internal Nebula() {}
 
     @Override
@@ -20,5 +19,4 @@ final class Nebula implements Chimer {
     public static MediaPlayer mediaPlayer(Context ctx, Chime chime) {
         return MediaPlayer.create(ctx, chime.nebulaSound);
     }
-
 }

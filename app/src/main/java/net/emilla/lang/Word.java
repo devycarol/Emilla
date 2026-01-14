@@ -1,7 +1,6 @@
 package net.emilla.lang;
 
 public final class Word extends LatinToken {
-
     private final String mWord;
 
     public Word(boolean requireSpaceBefore, String word, boolean ignoreCase) {
@@ -18,5 +17,4 @@ public final class Word extends LatinToken {
             ? s.equalsIgnoreCase(mWord)
             : s.equals(mWord);
     }
-
 }

@@ -12,7 +12,6 @@ import net.emilla.lang.Lang;
 
 public enum Views {
     ;
-
     public static void setStateDescriptionCompat(
         Resources res,
         View view,
@@ -29,5 +28,4 @@ public enum Views {
     public static void setClickActionLabel(Resources res, View view, @StringRes int label) {
         ViewCompat.replaceAccessibilityAction(view, ACTION_CLICK, res.getString(label), null);
     }
-
 }

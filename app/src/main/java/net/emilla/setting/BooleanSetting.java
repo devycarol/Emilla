@@ -13,7 +13,6 @@ import net.emilla.lang.Lang;
 
 enum BooleanSetting implements SystemSetting {
     ;
-
     private final Namespace mNamespace;
     private final String mKey;
     @ArrayRes
@@ -64,5 +63,4 @@ enum BooleanSetting implements SystemSetting {
     public final boolean delete(ContentResolver cr) {
         return mNamespace.delete(cr, mKey);
     }
-
 }

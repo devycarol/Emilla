@@ -13,7 +13,6 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.command.app.AppEntry;
 
 public abstract class OpenCommand extends CoreCommand {
-
     private final AppsFragment mAppsFragment;
 
     protected OpenCommand(Context ctx, CoreEntry coreEntry, int imeAction) {
@@ -51,5 +50,4 @@ public abstract class OpenCommand extends CoreCommand {
             act.chime(PEND);
         }
     }
-
 }

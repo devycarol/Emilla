@@ -4,7 +4,6 @@ import android.webkit.MimeTypeMap;
 
 public enum MimeTypes {
     ;
-
     public static final String PREFIX_TEXT = "text/";
 
     public static final String ANY_TEXT = PREFIX_TEXT + '*';
@@ -29,5 +28,4 @@ public enum MimeTypes {
             ? filename
             : filename + EXTENSION_TEXT;
     }
-
 }

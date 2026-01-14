@@ -3,7 +3,6 @@ package net.emilla.event;
 import net.emilla.annotation.open;
 
 public @open class Plan {
-
     public static final int POMODORO_WARNING = 1;
     public static final int POMODORO_ENDED = 2;
 

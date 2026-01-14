@@ -17,7 +17,6 @@ import net.emilla.R;
 import java.util.Arrays;
 
 public abstract class ContactCursorAdapter extends CursorAdapter {
-
     protected static final String[] BASE_COLS = {
         Contacts._ID,
         Contacts.LOOKUP_KEY,

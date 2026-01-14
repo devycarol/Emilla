@@ -5,7 +5,6 @@ import net.emilla.annotation.internal;
 import net.emilla.command.CommandYielder;
 
 public final class AppYielder extends CommandYielder {
-
     private final AppEntry mApp;
 
     @internal AppYielder(AppEntry app) {
@@ -26,5 +25,4 @@ public final class AppYielder extends CommandYielder {
 
         return mApp.actions.defaultCommand(act, mApp);
     }
-
 }

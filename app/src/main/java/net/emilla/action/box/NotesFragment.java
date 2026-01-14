@@ -27,7 +27,6 @@ import net.emilla.file.Folder;
 import net.emilla.file.TreeFile;
 
 public final class NotesFragment extends ActionBox {
-
     private final ActivityResultLauncher<Uri> mFolderSwitcher = registerForActivityResult(
         new OpenDocumentTree(),
         this::onFolderChosen
@@ -167,5 +166,4 @@ public final class NotesFragment extends ActionBox {
             mAdapter.search(instruction);
         }
     }
-
 }

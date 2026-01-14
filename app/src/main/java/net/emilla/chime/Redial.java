@@ -7,7 +7,6 @@ import android.media.ToneGenerator;
 import net.emilla.annotation.internal;
 
 final class Redial implements Chimer {
-
     private final ToneGenerator mToneGenerator = new ToneGenerator(
         AudioManager.STREAM_MUSIC,
         ToneGenerator.MAX_VOLUME
@@ -19,5 +18,4 @@ final class Redial implements Chimer {
     public void chime(Context ctx, Chime chime) {
         mToneGenerator.startTone(chime.redialTone);
     }
-
 }

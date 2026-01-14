@@ -7,7 +7,6 @@ import java.util.stream.Stream;
 
 public enum Patterns {
     ;
-
     public static final Pattern TRIMMING_CSV = Pattern.compile(" *, *");
     public static final Pattern TRIMMING_LINES = Pattern.compile(" *\n *");
 
@@ -16,5 +15,4 @@ public enum Patterns {
             ? pattern.splitAsStream(input)
             : Stream.of(pattern.split(input));
     }
-
 }

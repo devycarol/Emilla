@@ -9,7 +9,6 @@ import net.emilla.annotation.internal;
 import net.emilla.config.SettingVals;
 
 final class Custom implements Chimer {
-
     private final Uri[] mUris;
 
     @internal Custom(SharedPreferences prefs) {
@@ -42,5 +41,4 @@ final class Custom implements Chimer {
         player.setOnCompletionListener(MediaPlayer::release);
         player.start();
     }
-
 }

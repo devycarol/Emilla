@@ -14,7 +14,6 @@ import net.emilla.databinding.ChecklistItemBinding;
 import net.emilla.util.Views;
 
 public final class ChecklistItemHolder extends RecyclerView.ViewHolder {
-
     public final TextView label;
     private final CheckBox mCheckBox;
 
@@ -54,5 +53,4 @@ public final class ChecklistItemHolder extends RecyclerView.ViewHolder {
             Views.removeStateDescriptionCompat(this.itemView, content);
         }
     }
-
 }

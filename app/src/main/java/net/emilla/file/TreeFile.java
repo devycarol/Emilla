@@ -7,7 +7,6 @@ import android.provider.DocumentsContract;
 import net.emilla.sort.SearchItem;
 
 public final class TreeFile extends SearchItem {
-
     private final String mDocumentId;
     private final String mMimeType;
 
@@ -25,5 +24,4 @@ public final class TreeFile extends SearchItem {
     public Intent viewIntent(Folder parent) {
         return Files.viewIntent(uri(parent), mMimeType);
     }
-
 }

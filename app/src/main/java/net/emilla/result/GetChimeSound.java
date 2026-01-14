@@ -15,7 +15,6 @@ import net.emilla.chime.Chime;
 import net.emilla.config.SettingVals;
 
 public final class GetChimeSound extends ActivityResultContract<Chime, ChimeSoundResult> {
-
     @Nullable
     private Chime mRaceCondition = null;
 
@@ -60,5 +59,4 @@ public final class GetChimeSound extends ActivityResultContract<Chime, ChimeSoun
 
         return result;
     }
-
 }

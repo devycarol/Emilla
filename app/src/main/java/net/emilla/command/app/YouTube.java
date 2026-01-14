@@ -6,7 +6,6 @@ import net.emilla.annotation.internal;
 
 enum YouTube {
     ;
-
     public static final String PKG = "com.google.android.youtube";
 
     @internal static AppSearch instance(Context ctx, AppEntry appEntry) {
@@ -15,5 +14,4 @@ enum YouTube {
         //  etc. I assume the G assistant has similar functionality. If requires internet could use
         //  bookmarks at the very least. Also, this command is broken when a video is playing.
     }
-
 }

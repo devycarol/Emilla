@@ -9,7 +9,6 @@ import java.io.OutputStream;
 import java.util.Arrays;
 
 public sealed class ListItem permits FileListItem {
-
     public final String text;
     private int mLeadingLineCount;
 
@@ -69,5 +68,4 @@ public sealed class ListItem permits FileListItem {
     protected @open void writeText(OutputStream ostream) throws IOException {
         ostream.write(this.text.getBytes());
     }
-
 }

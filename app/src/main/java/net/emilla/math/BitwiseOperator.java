@@ -107,5 +107,4 @@ enum BitwiseOperator implements BitwiseToken {
             default -> throw new IllegalArgumentException("Invalid bitwise operator");
         };
     }
-
 }

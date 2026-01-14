@@ -12,7 +12,6 @@ import net.emilla.sort.ItemSearchAdapter;
 import java.util.function.Consumer;
 
 public final class FileSearchAdapter extends ItemSearchAdapter<TreeFile> {
-
     private static final TreeFile[] EMPTY_ARRAY = new TreeFile[0];
 
     @Nullable
@@ -40,5 +39,4 @@ public final class FileSearchAdapter extends ItemSearchAdapter<TreeFile> {
     public Folder folder() {
         return mFolder;
     }
-
 }

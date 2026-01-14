@@ -12,7 +12,6 @@ import net.emilla.command.app.AppEntry;
 
 public enum Apps {
     ;
-
     public static final String MY_PKG = BuildConfig.APPLICATION_ID;
 
     public static String entry(String pkg, String cls) {
@@ -38,5 +37,4 @@ public enum Apps {
             .sorted()
             .toArray(AppEntry[]::new);
     }
-
 }

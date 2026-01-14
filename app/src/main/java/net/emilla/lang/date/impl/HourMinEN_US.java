@@ -16,7 +16,6 @@ import java.time.LocalTime;
 import java.util.regex.Pattern;
 
 public record HourMinEN_US(int hour24, int minute) implements HourMin {
-
     public static final Pattern REGEX = Pattern.compile(
         "([01]?[0-9]|2[0-3])(:?[0-5][0-9])? *([AP]M?)?",
         Pattern.CASE_INSENSITIVE

@@ -3,7 +3,6 @@ package net.emilla.util;
 import java.util.Arrays;
 
 public final class IntArrayLoader {
-
     private static final int[] EMPTY_ARRAY = new int[0];
 
     private final int[] mArray;
@@ -28,5 +27,4 @@ public final class IntArrayLoader {
         }
         return Arrays.copyOf(mArray, mSize);
     }
-
 }

@@ -9,12 +9,9 @@ import net.emilla.annotation.open;
 import net.emilla.command.EmillaCommand;
 
 public @open class AppCommand extends EmillaCommand {
-
     @FunctionalInterface
     public interface Maker {
-
         AppCommand make(Context ctx, AppEntry appEntry);
-
     }
 
     protected final AppEntry appEntry;
@@ -38,5 +35,4 @@ public @open class AppCommand extends EmillaCommand {
     protected @open void run(AssistActivity act, String ignored) {
         run(act); // Todo: remove this from the interface for non-instructables.
     }
-
 }

@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import net.emilla.databinding.ListItemBinding;
 
 public final class ListItemHolder extends RecyclerView.ViewHolder {
-
     public final TextView label;
 
     public ListItemHolder(ListItemBinding binding) {
@@ -15,5 +14,4 @@ public final class ListItemHolder extends RecyclerView.ViewHolder {
 
         this.label = binding.getRoot();
     }
-
 }

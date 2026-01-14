@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
 // Todo: this class is utterly unreadable
 public enum Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
     ;
-
     private static final String JAN = "jan(uary)?";
     private static final String FEB = "feb(ruary)?";
     private static final String MAR = "mar(ch)?";
@@ -377,5 +376,4 @@ public enum Time { // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
 
         return new DateTimeRange(startDate, endDate);
     }
-
 }

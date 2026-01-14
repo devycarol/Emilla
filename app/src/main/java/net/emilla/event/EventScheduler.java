@@ -9,7 +9,6 @@ import android.os.Build;
 import net.emilla.util.Services;
 
 public abstract class EventScheduler<P extends Plan> {
-
     protected final Context context;
     private final AlarmManager mAlarmManager;
 

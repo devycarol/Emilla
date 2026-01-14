@@ -14,7 +14,6 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 
 public final class SelectAll implements LabeledQuickAction {
-
     private final AssistActivity mActivity;
 
     public SelectAll(AssistActivity act) {

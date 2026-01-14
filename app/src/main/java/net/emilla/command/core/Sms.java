@@ -22,7 +22,6 @@ import net.emilla.util.Strings;
 import net.emilla.util.Uris;
 
 final class Sms extends CoreDataCommand implements PhoneReceiver {
-
     public static boolean possible(PackageManager pm) {
         return Features.sms(pm) || Apps.canDo(pm, Intents.send(Uris.sms("")));
     }
@@ -103,5 +102,4 @@ final class Sms extends CoreDataCommand implements PhoneReceiver {
     public void provide(AssistActivity act, String phoneNumber) {
         message(act, phoneNumber, act.dataText());
     }
-
 }

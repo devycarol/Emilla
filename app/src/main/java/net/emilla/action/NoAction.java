@@ -10,7 +10,6 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 
 public final class NoAction implements LabeledQuickAction {
-
     private final AssistActivity mActivity;
 
     public NoAction(AssistActivity act) {

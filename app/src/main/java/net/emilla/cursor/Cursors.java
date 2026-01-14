@@ -10,7 +10,6 @@ import net.emilla.util.ArrayLoader;
 
 public enum Cursors {
     ;
-
     public static boolean testFirst(ContentResolver cr, Uri uri, CursorTester tester) {
         try (Cursor cursor = cr.query(uri, tester.mProjection, null, null, null)) {
             return cursor != null
@@ -54,5 +53,4 @@ public enum Cursors {
             return null;
         }
     }
-
 }

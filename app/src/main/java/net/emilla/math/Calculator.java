@@ -13,7 +13,6 @@ import java.util.Iterator;
 
 public enum Calculator {
     ;
-
 //    private static final String ALL_OF = "all ?of", DONE = "done|good";
 //
 //    // The order in which these are parsed matters because of duplicate words in phrases like "3 by 3" versus "3 divide by 3"
@@ -28,7 +27,6 @@ public enum Calculator {
 //            END_PAREN = " *(all|end) *";
 
     private static final class OpStack {
-
         final BinaryOperator[] arr;
         int size = 0;
 
@@ -65,7 +63,6 @@ public enum Calculator {
     }
 
     private static final class ValStack {
-
         final double[] vals;
         final SignStack signs;
         int size = 0;
@@ -160,7 +157,6 @@ public enum Calculator {
     }
 
     private static final class SignStack {
-
         final UnaryOperator[] arr;
         int size = 0;
 
@@ -240,11 +236,9 @@ public enum Calculator {
         return result.value();
     }
 
-    private record InfixTokens(
-        String expression,
-        @StringRes int errorTitle
-    ) implements Iterable<InfixToken> {
-
+    private record InfixTokens(String expression, @StringRes int errorTitle)
+        implements Iterable<InfixToken>
+    {
         enum Type {
             LPAREN, RPAREN, OPERATOR, NUMBER
         }
@@ -255,7 +249,6 @@ public enum Calculator {
         }
 
         static final class InfixIterator implements Iterator<InfixToken> {
-
             final char[] expr;
             final int length;
 
@@ -375,5 +368,4 @@ public enum Calculator {
             }
         }
     }
-
 }

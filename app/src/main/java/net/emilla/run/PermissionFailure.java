@@ -12,7 +12,6 @@ import net.emilla.util.Dialogs;
 import net.emilla.util.Intents;
 
 public final class PermissionFailure extends DialogRun {
-
     private static AlertDialog.Builder dialog(AssistActivity act, @StringRes int permissionName) {
         // todo: this often results in an activity restart, which messes with the resume chime and
         //  probably other elements of state. handle accordingly.

@@ -8,7 +8,6 @@ import net.emilla.activity.AssistActivity;
 
 @FunctionalInterface
 public interface EmailReceiver extends ContactDataReceiver {
-
     @Override
     default void useContact(AssistActivity act, Cursor cur) {
         provide(act, cur.getString(INDEX_ADDRESS));
@@ -19,5 +18,4 @@ public interface EmailReceiver extends ContactDataReceiver {
     /// @param emailAddress is provided to the receiver.
     @Override
     void provide(AssistActivity act, String emailAddress);
-
 }

@@ -50,5 +50,4 @@ enum BitwiseSign implements BitwiseToken {
             default -> throw new IllegalArgumentException("Invalid bitwise sign");
         };
     }
-
 }

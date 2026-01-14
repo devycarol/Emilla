@@ -6,7 +6,5 @@ import net.emilla.activity.AssistActivity;
 
 @FunctionalInterface
 public interface ContactReceiver extends ResultReceiver {
-
     void useContact(AssistActivity act, Cursor cur);
-
 }

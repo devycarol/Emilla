@@ -29,5 +29,4 @@ public enum Chime {
         this.redialTone = redialTone;
         this.preferenceKey = preferenceKey;
     }
-
 }

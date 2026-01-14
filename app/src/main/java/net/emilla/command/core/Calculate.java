@@ -12,7 +12,6 @@ import net.emilla.math.Maths;
 import net.emilla.util.Intents;
 
 final class Calculate extends CategoryCommand {
-
     @internal Calculate(AssistActivity act) {
         super(act, CoreEntry.CALCULATE, EditorInfo.IME_ACTION_DONE);
     }
@@ -26,5 +25,4 @@ final class Calculate extends CategoryCommand {
     protected void run(AssistActivity act, String expression) {
         giveText(act, Maths.prettyNumber(Calculator.compute(expression, CoreEntry.CALCULATE.name)));
     }
-
 }

@@ -26,7 +26,6 @@ import net.emilla.util.Intents;
 import java.util.Set;
 
 public final class AppEntry extends SearchItem implements Params {
-
     public static String[] labels(IndexedStruct<AppEntry> apps) {
         int size = apps.size();
         var labels = new String[size];
@@ -133,5 +132,4 @@ public final class AppEntry extends SearchItem implements Params {
     public Intent launchIntent() {
         return Intents.launchApp(this);
     }
-
 }

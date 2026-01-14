@@ -7,29 +7,29 @@ enum Namespace {
     GLOBAL {
         @Override
         public int getInt(ContentResolver cr, String name)
-            throws Settings.SettingNotFoundException {
-
+            throws Settings.SettingNotFoundException
+        {
             return Settings.Global.getInt(cr, name);
         }
 
         @Override
         public long getLong(ContentResolver cr, String name)
-            throws Settings.SettingNotFoundException {
-
+            throws Settings.SettingNotFoundException
+        {
             return Settings.Global.getLong(cr, name);
         }
 
         @Override
         public float getFloat(ContentResolver cr, String name)
-            throws Settings.SettingNotFoundException {
-
+            throws Settings.SettingNotFoundException
+        {
             return Settings.Global.getFloat(cr, name);
         }
 
         @Override
         public String getString(ContentResolver cr, String name)
-            throws Settings.SettingNotFoundException {
-
+            throws Settings.SettingNotFoundException
+        {
             return require(Settings.Global.getString(cr, name));
         }
 
@@ -72,29 +72,29 @@ enum Namespace {
     SYSTEM {
         @Override
         public int getInt(ContentResolver cr, String name)
-            throws Settings.SettingNotFoundException {
-
+            throws Settings.SettingNotFoundException
+        {
             return Settings.System.getInt(cr, name);
         }
 
         @Override
         public long getLong(ContentResolver cr, String name)
-            throws Settings.SettingNotFoundException {
-
+            throws Settings.SettingNotFoundException
+        {
             return Settings.System.getLong(cr, name);
         }
 
         @Override
         public float getFloat(ContentResolver cr, String name)
-            throws Settings.SettingNotFoundException {
-
+            throws Settings.SettingNotFoundException
+        {
             return Settings.System.getFloat(cr, name);
         }
 
         @Override
         public String getString(ContentResolver cr, String name)
-            throws Settings.SettingNotFoundException {
-
+            throws Settings.SettingNotFoundException
+        {
             return require(Settings.System.getString(cr, name));
         }
 
@@ -137,29 +137,29 @@ enum Namespace {
     SECURE {
         @Override
         public int getInt(ContentResolver cr, String name)
-            throws Settings.SettingNotFoundException {
-
+            throws Settings.SettingNotFoundException
+        {
             return Settings.Secure.getInt(cr, name);
         }
 
         @Override
         public long getLong(ContentResolver cr, String name)
-            throws Settings.SettingNotFoundException {
-
+            throws Settings.SettingNotFoundException
+        {
             return Settings.Secure.getLong(cr, name);
         }
 
         @Override
         public float getFloat(ContentResolver cr, String name)
-            throws Settings.SettingNotFoundException {
-
+            throws Settings.SettingNotFoundException
+        {
             return Settings.Secure.getFloat(cr, name);
         }
 
         @Override
         public String getString(ContentResolver cr, String name)
-            throws Settings.SettingNotFoundException {
-
+            throws Settings.SettingNotFoundException
+        {
             return require(Settings.Secure.getString(cr, name));
         }
 
@@ -217,8 +217,8 @@ enum Namespace {
         throws Settings.SettingNotFoundException;
 
     public final boolean getBoolean(ContentResolver cr, String name)
-        throws Settings.SettingNotFoundException {
-
+        throws Settings.SettingNotFoundException
+    {
         return switch (getInt(cr, name)) {
             case 0 -> false;
             case 1 -> true;
@@ -238,5 +238,4 @@ enum Namespace {
     public final boolean delete(ContentResolver cr, String name) {
         return putString(cr, name, null);
     }
-
 }

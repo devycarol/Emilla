@@ -7,7 +7,6 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.util.Services;
 
 public final class CopyGift implements CommandRun {
-
     private final CharSequence mText;
 
     public CopyGift(CharSequence text) {

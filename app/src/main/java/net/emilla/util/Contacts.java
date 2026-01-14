@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
 
 public enum Contacts {
     ;
-
     private static final Pattern PHONE_NUMBERS = Pattern.compile("\\+?[0-9*#][0-9*#() \\-./,;]*");
 
     public static boolean isPhoneNumbers(CharSequence text) {
@@ -95,5 +94,4 @@ public enum Contacts {
         }
         return null;
     }
-
 }

@@ -9,7 +9,6 @@ import java.text.DecimalFormat;
 
 public enum Maths {
     ;
-
     public static String prettyNumber(double n) {
         // todo: configurable sig digs.
         return new DecimalFormat("#.######").format(n);
@@ -59,5 +58,4 @@ public enum Maths {
 
         return factorial;
     }
-
 }

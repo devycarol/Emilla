@@ -13,7 +13,6 @@ import net.emilla.annotation.internal;
 
 @RequiresApi(Build.VERSION_CODES.O)
 final class ChanneledPinger extends Pinger {
-
     private final PingChannel mChannel;
     private final Resources mRes;
 

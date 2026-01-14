@@ -6,11 +6,9 @@ import net.emilla.annotation.internal;
 
 enum Discord {
     ;
-
     public static final String PKG = "com.discord";
 
     @internal static AppSend instance(Context ctx, AppEntry appEntry) {
         return new AppSend(ctx, appEntry);
     }
-
 }

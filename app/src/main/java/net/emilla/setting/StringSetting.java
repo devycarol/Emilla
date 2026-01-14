@@ -49,5 +49,4 @@ enum StringSetting implements SystemSetting {
     public final boolean delete(ContentResolver cr) {
         return mNamespace.delete(cr, mKey);
     }
-
 }

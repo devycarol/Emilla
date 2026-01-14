@@ -50,5 +50,4 @@ enum UnaryOperator implements InfixToken {
             default -> throw new IllegalArgumentException("Invalid unary operator");
         };
     }
-
 }

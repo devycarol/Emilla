@@ -7,7 +7,6 @@ import net.emilla.annotation.internal;
 import net.emilla.exception.EmillaException;
 
 public final class Duration {
-
     public final int seconds;
 
     public Duration(int seconds, @StringRes int errorTitle) {

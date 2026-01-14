@@ -8,7 +8,6 @@ import net.emilla.annotation.internal;
 import net.emilla.run.ToastGift;
 
 final class Toast extends CoreDataCommand {
-
     @internal Toast(Context ctx) {
         super(ctx, CoreEntry.TOAST, R.string.data_hint_toast);
     }
@@ -63,5 +62,4 @@ final class Toast extends CoreDataCommand {
             toast(act, message + '\n' + cont, false);
         }
     }
-
 }

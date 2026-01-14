@@ -21,7 +21,6 @@ import java.util.function.Predicate;
 
 @RunWith(AndroidJUnit4.class)
 public final class TestCommandNamesAndAliases {
-
     private static final String[] KNOWN_APP_NAMES = new String[0]; // todo
 
     private static void assertAllNamesMatch(Resources res, Predicate<? super String> predicate) {
@@ -82,5 +81,4 @@ public final class TestCommandNamesAndAliases {
         assertAllNamesMatch(res, name -> seen.add(Lang.normalize(name)));
         assertAllAliasesMatch(res, seen::add);
     }
-
 }

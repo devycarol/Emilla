@@ -9,7 +9,6 @@ import androidx.annotation.IdRes;
 import net.emilla.activity.AssistActivity;
 
 public interface QuickAction extends Gadget {
-
     // Preference keys
     String PREF_NO_COMMAND = "action_no_command";
     String PREF_LONG_SUBMIT = "action_long_submit";
@@ -42,5 +41,4 @@ public interface QuickAction extends Gadget {
     default void unload(AssistActivity act) {
         act.removeAction(id());
     }
-
 }

@@ -11,7 +11,6 @@ import net.emilla.annotation.internal;
 import net.emilla.run.CopyGift;
 
 final class Copy extends CoreCommand {
-
     @Nullable
     private String mCopiedText = null;
 
@@ -46,5 +45,4 @@ final class Copy extends CoreCommand {
         mCopiedText = null;
         // forget the copied text
     }
-
 }

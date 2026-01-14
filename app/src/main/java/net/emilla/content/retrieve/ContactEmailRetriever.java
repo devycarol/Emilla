@@ -11,9 +11,7 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.util.Contacts;
 
 public final class ContactEmailRetriever extends ContactDataRetriever {
-
     private static final class PickContactEmail extends PickContactData {
-
         PickContactEmail(Context ctx) {
             super(ctx);
         }

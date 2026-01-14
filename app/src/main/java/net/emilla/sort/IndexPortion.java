@@ -6,7 +6,6 @@ import net.emilla.annotation.internal;
 import net.emilla.annotation.open;
 
 public sealed class IndexPortion permits IndexSpan {
-
     public final int index;
 
     @internal IndexPortion(int index) {
@@ -25,5 +24,4 @@ public sealed class IndexPortion permits IndexSpan {
         array[position] = array[this.index];
         return position + 1;
     }
-
 }

@@ -11,7 +11,6 @@ import net.emilla.util.MediaControl;
 import net.emilla.util.Services;
 
 final class Play extends CoreCommand {
-
     @internal Play(Context ctx) {
         super(ctx, CoreEntry.PLAY, EditorInfo.IME_ACTION_GO);
     }
@@ -27,5 +26,4 @@ final class Play extends CoreCommand {
     protected void run(AssistActivity act, String media) {
         throw badCommand(R.string.error_unfinished_feature);
     }
-
 }

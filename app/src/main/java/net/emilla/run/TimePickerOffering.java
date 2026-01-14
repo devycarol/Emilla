@@ -7,7 +7,6 @@ import android.text.format.DateFormat;
 import net.emilla.activity.AssistActivity;
 
 public final class TimePickerOffering implements CommandRun {
-
     private final OnTimeSetListener mTimeSet;
 
     public TimePickerOffering(OnTimeSetListener timeSet) {

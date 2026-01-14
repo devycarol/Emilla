@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Random;
 
 public final class TaskerIntent extends Intent {
-
     // 2 Tasker versions (Emilla only supports taskerm)
     public static final String TASKER_PACKAGE = "net.dinglisch.android.tasker";
     public static final String TASKER_PACKAGE_MARKET = TASKER_PACKAGE + 'm';

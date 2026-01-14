@@ -14,7 +14,6 @@ import net.emilla.command.ActionMap;
 import net.emilla.command.Subcommand;
 
 final class Snippets extends CoreDataCommand {
-
     private final SnippetsFragment mSnippetsFragment;
 
     private final ActionMap<SnippetAction> mActionMap;
@@ -84,5 +83,4 @@ final class Snippets extends CoreDataCommand {
     public void runWithData(AssistActivity act, String label, String text) {
         mSnippetsFragment.add(label, text);
     }
-
 }

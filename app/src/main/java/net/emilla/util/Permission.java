@@ -122,5 +122,4 @@ public enum Permission {
         }
         return true;
     }
-
 }

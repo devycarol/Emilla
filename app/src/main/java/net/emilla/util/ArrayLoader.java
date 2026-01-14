@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.function.IntFunction;
 
 public final class ArrayLoader<E> {
-
     private E[] mArray;
     private int mSize = 0;
 
@@ -69,5 +68,4 @@ public final class ArrayLoader<E> {
 
         return sb.toString();
     }
-
 }

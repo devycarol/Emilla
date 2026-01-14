@@ -8,7 +8,6 @@ import net.emilla.util.ArrayLoader;
 import java.util.NoSuchElementException;
 
 public final class Csv {
-
     private final char[] mText;
     private final int mEnd;
 
@@ -101,5 +100,4 @@ public final class Csv {
     private static NoSuchElementException endOfIterator() {
         return new NoSuchElementException("The CSV iterator has ended");
     }
-
 }

@@ -16,7 +16,6 @@ import net.emilla.file.Files;
 import net.emilla.util.MimeTypes;
 
 final class Todo extends CoreCommand {
-
     private final ListFileFragment mTodoFragment;
 
     @internal Todo(Context ctx) {
@@ -62,5 +61,4 @@ final class Todo extends CoreCommand {
         case FAILURE -> throw new EmillaException(R.string.error_cant_use_file);
         }
     }
-
 }

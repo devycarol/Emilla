@@ -9,7 +9,6 @@ import java.util.function.IntFunction;
 import java.util.stream.Stream;
 
 public final class SearchResult<E extends SearchItem> implements IndexedStruct<E> {
-
     @internal final ArrayWindow<E> mPrimaryItems;
     private final E[] mSecondaryItems;
 
@@ -101,5 +100,4 @@ public final class SearchResult<E extends SearchItem> implements IndexedStruct<E
     public Stream<E> stream() {
         return Stream.concat(mPrimaryItems.stream(), Arrays.stream(mSecondaryItems));
     }
-
 }

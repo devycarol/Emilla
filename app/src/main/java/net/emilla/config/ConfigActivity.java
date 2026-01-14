@@ -16,7 +16,6 @@ import net.emilla.databinding.ActivityConfigBinding;
 import net.emilla.util.Intents;
 
 public final class ConfigActivity extends AppCompatActivity {
-
     public ConfigActivity() {
         super();
     }
@@ -55,5 +54,4 @@ public final class ConfigActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, configuration);
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
-
 }

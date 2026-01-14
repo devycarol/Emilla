@@ -5,7 +5,6 @@ import net.emilla.annotation.internal;
 import java.util.function.IntFunction;
 
 final class WordsTree<V> implements PhraseTree<V> {
-
     private final PrefixTree<String, V> mPrefixTree;
 
     @internal WordsTree(IntFunction<V[]> arrayGenerator) {
@@ -21,5 +20,4 @@ final class WordsTree<V> implements PhraseTree<V> {
     public PrefixResult<V, String> get(String phrase) {
         return mPrefixTree.get(new Words(phrase));
     }
-
 }

@@ -152,5 +152,4 @@ public enum Lang {
             default -> DicesEN_US.instance(roll, errorTitle);
         };
     }
-
 }

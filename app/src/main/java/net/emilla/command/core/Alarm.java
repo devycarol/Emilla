@@ -23,7 +23,6 @@ import java.time.DayOfWeek;
 import java.util.EnumSet;
 
 final class Alarm extends CoreDataCommand {
-
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, makeIntent()) || Apps.canDo(pm, new Intent(ACTION_SET_ALARM));
     }
@@ -81,5 +80,4 @@ final class Alarm extends CoreDataCommand {
             .putExtra(EXTRA_HOUR, hour)
             .putExtra(EXTRA_MINUTES, minute);
     }
-
 }

@@ -27,7 +27,6 @@ import androidx.core.view.accessibility.AccessibilityViewCommand;
 import net.emilla.R;
 
 public final class ContactItemView extends LinearLayout {
-
     private long mContactId = 0L;
     private String mLookupKey = null;
     private boolean mStarred = false;

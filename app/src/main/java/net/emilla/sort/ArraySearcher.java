@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.function.IntFunction;
 
 public final class ArraySearcher<E extends SearchItem> {
-
     private static <E extends SearchItem> E[] elementsContaining(
         E[] items,
         CharSequence normalizedSearch,
@@ -139,5 +138,4 @@ public final class ArraySearcher<E extends SearchItem> {
         Comparable<SearchItem> nameSearcher = item -> normalizedSearch.compareTo(item.mSearchKey);
         return SortedArrays.windowMatching(mItems.mArray, nameSearcher);
     }
-
 }

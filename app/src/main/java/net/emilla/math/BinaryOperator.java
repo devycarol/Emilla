@@ -59,5 +59,4 @@ enum BinaryOperator implements InfixToken {
             default -> throw new IllegalArgumentException("Invalid binary operator");
         };
     }
-
 }

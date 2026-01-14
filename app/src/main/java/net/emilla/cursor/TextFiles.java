@@ -7,7 +7,6 @@ import net.emilla.file.TreeFile;
 import net.emilla.util.MimeTypes;
 
 public final class TextFiles extends CursorArrayExtractor<TreeFile> {
-
     private static final int INDEX_DOCUMENT_ID = 0;
     private static final int INDEX_MIME_TYPE = 1;
     private static final int INDEX_DISPLAY_NAME = 2;
@@ -51,5 +50,4 @@ public final class TextFiles extends CursorArrayExtractor<TreeFile> {
     public TreeFile[] newArray(int length) {
         return new TreeFile[length];
     }
-
 }

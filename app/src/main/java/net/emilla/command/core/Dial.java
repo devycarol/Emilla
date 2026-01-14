@@ -13,7 +13,6 @@ import net.emilla.annotation.internal;
 import net.emilla.util.Apps;
 
 final class Dial extends CoreCommand {
-
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, new Intent(ACTION_DIAL));
     }
@@ -31,5 +30,4 @@ final class Dial extends CoreCommand {
     protected void run(AssistActivity act, String numberOrPhoneword) {
         appSucceed(act, new Intent(ACTION_DIAL).setData(Uri.parse("tel:" + numberOrPhoneword)));
     }
-
 }

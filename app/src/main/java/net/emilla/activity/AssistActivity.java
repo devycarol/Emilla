@@ -53,7 +53,6 @@ import net.emilla.action.CursorStart;
 import net.emilla.action.Help;
 import net.emilla.action.PlayPause;
 import net.emilla.action.QuickAction;
-import net.emilla.annotation.inner;
 import net.emilla.chime.Chime;
 import net.emilla.command.CommandMap;
 import net.emilla.command.DataCommand;
@@ -88,7 +87,6 @@ import net.emilla.view.ActionButton;
 import java.util.ArrayList;
 
 public final class AssistActivity extends AppCompatActivity {
-
     private final TextFileCreator mTextFileCreator = new TextFileCreator(this);
     private final FilesRetriever mFilesRetriever = new FilesRetriever(this);
     private final MediaRetriever mMediaRetriever = new MediaRetriever(this);
@@ -186,8 +184,7 @@ public final class AssistActivity extends AppCompatActivity {
         commandField.requestFocus();
     }
 
-    private @inner final class CommandWatcher implements TextWatcher {
-
+    private final class CommandWatcher implements TextWatcher {
         CommandWatcher() {}
 
         @Override
@@ -228,7 +225,6 @@ public final class AssistActivity extends AppCompatActivity {
 
         @Override
         public void afterTextChanged(Editable s) {}
-
     }
 
     private void updateDataAvailability(boolean available) {
@@ -788,5 +784,4 @@ public final class AssistActivity extends AppCompatActivity {
             fail(new BugFailure(this, e, mCommand.name));
         }
     }
-
 }

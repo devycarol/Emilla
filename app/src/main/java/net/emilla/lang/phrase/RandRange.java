@@ -6,7 +6,6 @@ import net.emilla.R;
 import net.emilla.exception.EmillaException;
 
 public final class RandRange {
-
     public final int inclusStart;
     public final int exclusEnd;
 

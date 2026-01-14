@@ -11,7 +11,6 @@ import net.emilla.trie.PhraseTree;
 import net.emilla.trie.PrefixResult;
 
 public final class CommandMap {
-
     private final PhraseTree<CommandYielder> mPhraseTree;
     private final CommandYielder mDefaultYielder;
 
@@ -37,5 +36,4 @@ public final class CommandMap {
     public EmillaCommand getDefault(AssistActivity act, String fullCommand) {
         return mDefaultYielder.command(act, fullCommand);
     }
-
 }

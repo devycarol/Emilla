@@ -16,7 +16,6 @@ import net.emilla.cursor.TextFiles;
 import net.emilla.util.Intents;
 
 public record Folder(Uri treeUri, Uri documentUri, String displayName) {
-
     @Nullable
     public static Folder from(ContentResolver cr, Uri treeUri) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
@@ -55,5 +54,4 @@ public record Folder(Uri treeUri, Uri documentUri, String displayName) {
     public Intent viewIntent() {
         return Intents.view(documentUri, Document.MIME_TYPE_DIR);
     }
-
 }

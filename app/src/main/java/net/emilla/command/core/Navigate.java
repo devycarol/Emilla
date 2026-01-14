@@ -11,7 +11,6 @@ import net.emilla.util.Apps;
 import net.emilla.util.Intents;
 
 final class Navigate extends CategoryCommand {
-
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, Intents.view("geo:"));
     }
@@ -30,5 +29,4 @@ final class Navigate extends CategoryCommand {
         // Todo: location bookmarks, navigate to contacts' addresses
         appSucceed(act, Intents.view(Uri.parse("geo:0,0?q=" + location)));
     }
-
 }

@@ -16,7 +16,6 @@ import net.emilla.lang.date.Time;
 import net.emilla.util.Apps;
 
 final class Timer extends CoreDataCommand {
-
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, makeIntent());
     }
@@ -59,5 +58,4 @@ final class Timer extends CoreDataCommand {
     public void runWithData(AssistActivity act, String duration, String title) {
         appSucceed(act, makeIntent(duration).putExtra(EXTRA_MESSAGE, title));
     }
-
 }

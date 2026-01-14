@@ -51,5 +51,4 @@ public enum InputField {
     public FieldToggle toggler(AssistActivity act) {
         return new FieldToggle(act, this);
     }
-
 }

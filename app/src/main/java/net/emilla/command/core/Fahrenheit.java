@@ -11,7 +11,6 @@ import net.emilla.lang.measure.FahrenheitConversion;
 import net.emilla.math.Maths;
 
 final class Fahrenheit extends CoreCommand {
-
     @internal Fahrenheit(Context ctx) {
         super(ctx, CoreEntry.FAHRENHEIT, EditorInfo.IME_ACTION_DONE);
     }
@@ -32,5 +31,4 @@ final class Fahrenheit extends CoreCommand {
         String fahrenheitDegrees = Maths.prettyNumber(fahrenheit.convert());
         giveText(act, res.getString(R.string.fahrenheit_conversion, oldDegrees, unit, fahrenheitDegrees));
     }
-
 }

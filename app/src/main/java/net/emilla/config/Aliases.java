@@ -15,7 +15,6 @@ import java.util.Set;
 
 public enum Aliases {
     ;
-
     @Nullable
     public static Set<String> appSet(SharedPreferences prefs, Resources res, AppEntry app) {
         String entry = app.entry();
@@ -90,5 +89,4 @@ public enum Aliases {
             edit.apply();
         }
     }
-
 }

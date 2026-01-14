@@ -13,7 +13,6 @@ import java.util.Locale;
 
 public enum CelsiusConversionEN_US {
     ;
-
     public static CelsiusConversion instance(String s, @StringRes int errorTitle) {
         try {
             var tokens = new LatinTokens(s);
@@ -51,5 +50,4 @@ public enum CelsiusConversionEN_US {
             throw new EmillaException(errorTitle, R.string.error_bad_temperature);
         }
     }
-
 }

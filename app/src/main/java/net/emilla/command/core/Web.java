@@ -12,7 +12,6 @@ import net.emilla.util.Apps;
 import net.emilla.web.WebsiteMap;
 
 final class Web extends CoreCommand {
-
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, new Intent(ACTION_WEB_SEARCH));
     }
@@ -36,5 +35,4 @@ final class Web extends CoreCommand {
     protected void run(AssistActivity act, String query) {
         appSucceed(act, mWebsiteMap.intent(query));
     }
-
 }

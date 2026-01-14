@@ -11,7 +11,6 @@ import net.emilla.annotation.open;
 import net.emilla.util.Intents;
 
 @open class AppSend extends AppCommand {
-
     @internal AppSend(Context ctx, AppEntry appEntry) {
         this(ctx, appEntry, EditorInfo.IME_ACTION_SEND);
     }
@@ -24,5 +23,4 @@ import net.emilla.util.Intents;
     protected final void run(AssistActivity act, String message) {
         appSucceed(act, Intents.sendToApp(this.appEntry.pkg).putExtra(EXTRA_TEXT, message));
     }
-
 }

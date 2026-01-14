@@ -24,7 +24,6 @@ import net.emilla.action.QuickAction;
 import net.emilla.util.Services;
 
 public final class ActionButton extends AppCompatImageButton implements View.OnTouchListener {
-
     private boolean mHasLongPress = false;
     private boolean mLongTouching = false;
     private Drawable mIcon;

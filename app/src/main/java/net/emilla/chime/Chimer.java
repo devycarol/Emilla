@@ -7,7 +7,6 @@ import net.emilla.config.SettingVals;
 
 @FunctionalInterface
 public interface Chimer {
-
     // Preference IDs
     String SILENCE = "none";
     String NEBULA = "nebula";
@@ -29,5 +28,4 @@ public interface Chimer {
     }
 
     void chime(Context ctx, Chime chime);
-
 }

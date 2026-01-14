@@ -3,7 +3,6 @@ package net.emilla.text;
 import java.util.Iterator;
 
 public final class CsvLines implements Iterator<Csv> {
-
     private final char[] mText;
     private final int mLength;
 
@@ -29,5 +28,4 @@ public final class CsvLines implements Iterator<Csv> {
         int span = mPosition - start;
         return new Csv(mText, start, span);
     }
-
 }

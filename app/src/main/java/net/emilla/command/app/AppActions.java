@@ -11,7 +11,6 @@ import net.emilla.util.Apps;
 import net.emilla.util.Intents;
 
 public final class AppActions {
-
     public static final int FLAG_TASKER         = 0x8;
     public static final int FLAG_SEARCH         = 0x4;
     public static final int FLAG_SEND_MULTILINE = 0x2;
@@ -101,5 +100,4 @@ public final class AppActions {
         // Todo: allow multiple actions
         return new AppCommand(ctx, appEntry);
     }
-
 }

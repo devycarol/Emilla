@@ -23,7 +23,6 @@ import net.emilla.ping.Pings;
 import net.emilla.util.Permission;
 
 final class Pomodoro extends CoreDataCommand {
-
     private enum Action {
         WORK, BREAK
     }
@@ -155,7 +154,6 @@ final class Pomodoro extends CoreDataCommand {
                     warnChannel
                 )
             );
-
         } else {
             givePing(act, warnChannel, mainTitle, warnMemo);
         }
@@ -178,5 +176,4 @@ final class Pomodoro extends CoreDataCommand {
     private static Notification makePing(Context ctx, PingChannel channel, String title, String memo) {
         return Pings.make(ctx, channel, title, memo, R.drawable.ic_pomodoro);
     }
-
 }

@@ -10,7 +10,6 @@ import net.emilla.exception.EmillaException;
 import net.emilla.util.Dialogs;
 
 public final class MessageFailure extends DialogRun {
-
     public MessageFailure(Context ctx, EmillaException e) {
         this(ctx, e.title, e.message);
     }

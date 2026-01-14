@@ -14,7 +14,6 @@ import net.emilla.exception.EmillaException;
 import net.emilla.setting.SettingMap;
 
 final class Setting extends CoreCommand {
-
     @internal Setting(Context ctx) {
         super(ctx, CoreEntry.SETTING, EditorInfo.IME_ACTION_DONE);
     }
@@ -42,5 +41,4 @@ final class Setting extends CoreCommand {
         case FAILURE -> throw new EmillaException(R.string.error_invalid_setting_value);
         }
     }
-
 }

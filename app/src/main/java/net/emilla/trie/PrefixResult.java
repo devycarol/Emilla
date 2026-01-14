@@ -9,7 +9,6 @@ import net.emilla.command.DuplicateCommand;
 import net.emilla.command.EmillaCommand;
 
 public final class PrefixResult<V, L> {
-
     @Nullable
     private final V[] mValues;
     @Nullable
@@ -55,5 +54,4 @@ public final class PrefixResult<V, L> {
 
         return new DuplicateCommand(act, yielders, instruction);
     }
-
 }

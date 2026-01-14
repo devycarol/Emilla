@@ -28,7 +28,6 @@ import net.emilla.databinding.FragmentNotesBinding;
 import net.emilla.util.MimeTypes;
 
 public final class ListFileFragment extends ActionBox {
-
     private final ActivityResultLauncher<String[]> mFileSwitcher = registerForActivityResult(
         new OpenDocument(),
         this::onFileChosen
@@ -164,5 +163,4 @@ public final class ListFileFragment extends ActionBox {
     public void instruct(@Nullable String instruction) {
         // do nothing
     }
-
 }

@@ -7,7 +7,6 @@ import net.emilla.util.Chars;
 import net.emilla.util.Strings;
 
 public final class LatinTokens {
-
     private final char[] mChars;
     private final int mLength;
     private int mPosition;
@@ -187,5 +186,4 @@ public final class LatinTokens {
             throw new IllegalStateException("The token iterator isn't finished");
         }
     }
-
 }

@@ -32,8 +32,8 @@ import net.emilla.util.Permission;
 
 public abstract class ContactsFragment<T> extends ActionBox
     implements LoaderManager.LoaderCallbacks<Cursor>,
-    AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
-
+    AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener
+{
     private /*late*/ ListView mContactList;
     private /*late*/ LinearLayout mPermissionContainer;
     private /*late*/ Button mPermissionButton;
@@ -257,5 +257,4 @@ public abstract class ContactsFragment<T> extends ActionBox
 
         return null;
     }
-
 }

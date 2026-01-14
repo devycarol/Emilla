@@ -3,7 +3,6 @@ package net.emilla.trie;
 import java.util.function.IntFunction;
 
 public sealed interface PhraseTree<V> permits WordsTree, GlyphsTree {
-
     void put(String phrase, V value, boolean takesLeftovers);
     PrefixResult<V, String> get(String phrase);
 
@@ -15,5 +14,4 @@ public sealed interface PhraseTree<V> permits WordsTree, GlyphsTree {
             ? new WordsTree<V>(arrayGenerator)
             : new GlyphsTree<V>(arrayGenerator);
     }
-
 }

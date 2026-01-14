@@ -10,14 +10,12 @@ import androidx.activity.result.contract.ActivityResultContract;
 import androidx.annotation.Nullable;
 
 import net.emilla.activity.AssistActivity;
-import net.emilla.annotation.inner;
 import net.emilla.annotation.internal;
 import net.emilla.annotation.open;
 import net.emilla.content.ResultLaunchers;
 import net.emilla.content.receive.ResultReceiver;
 
 abstract class ResultRetriever<I, O, C extends ResultReceiver> {
-
     private static final String TAG = ResultRetriever.class.getSimpleName();
 
     protected final AssistActivity activity;
@@ -57,8 +55,7 @@ abstract class ResultRetriever<I, O, C extends ResultReceiver> {
         mReceiver = null;
     }
 
-    protected @inner abstract class ResultCallback implements ActivityResultCallback<O> {
-
+    protected abstract class ResultCallback implements ActivityResultCallback<O> {
         @Override
         public final void onActivityResult(O output) {
             C receiver = mReceiver;
@@ -67,7 +64,5 @@ abstract class ResultRetriever<I, O, C extends ResultReceiver> {
         }
 
         protected abstract void onActivityResult(O output, @Nullable C receiver);
-
     }
-
 }

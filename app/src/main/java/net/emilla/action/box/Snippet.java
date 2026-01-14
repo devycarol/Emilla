@@ -14,7 +14,6 @@ import net.emilla.util.Toasts;
 import java.util.function.Consumer;
 
 public final class Snippet extends SearchItem {
-
     public Snippet(String name) {
         super(name);
     }
@@ -51,5 +50,4 @@ public final class Snippet extends SearchItem {
         var res = ctx.getResources();
         Toasts.show(ctx, res.getString(R.string.toast_snippet_deleted, this.displayName));
     }
-
 }

@@ -14,11 +14,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 
-import net.emilla.annotation.internal;
 import net.emilla.chime.Chimer;
 
 public final class PassthroughActivity extends AppCompatActivity {
-
     private /*late*/ Chimer mChimer;
 
     private final ActivityResultLauncher<Intent> mResultLauncher = registerForActivityResult(
@@ -46,6 +44,5 @@ public final class PassthroughActivity extends AppCompatActivity {
 
         mResultLauncher.launch(intent);
     }
-
 }
 

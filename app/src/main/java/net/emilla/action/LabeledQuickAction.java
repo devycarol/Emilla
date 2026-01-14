@@ -5,7 +5,6 @@ import android.content.res.Resources;
 import androidx.annotation.StringRes;
 
 public interface LabeledQuickAction extends QuickAction {
-
     @StringRes
     int label();
     @StringRes

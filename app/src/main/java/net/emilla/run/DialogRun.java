@@ -6,7 +6,6 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.open;
 
 public @open class DialogRun implements CommandRun {
-
     protected final AlertDialog.Builder dialog;
 
     public DialogRun(AlertDialog.Builder dialog) {

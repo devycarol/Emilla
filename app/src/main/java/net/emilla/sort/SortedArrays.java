@@ -7,7 +7,6 @@ import java.util.Arrays;
 
 public enum SortedArrays {
     ;
-
     public static <E> int indexOf(E[] array, Comparable<? super E> searcher) {
         int lo = 0;
         int hi = array.length - 1;
@@ -156,5 +155,4 @@ public enum SortedArrays {
 
         return Arrays.copyOf(array, position);
     }
-
 }

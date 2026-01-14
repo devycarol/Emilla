@@ -11,7 +11,6 @@ import net.emilla.activity.AssistActivity;
 
 @FunctionalInterface
 public interface ContactCardReceiver extends ContactReceiver {
-
     @Override
     default void useContact(AssistActivity act, Cursor cur) {
         long id = cur.getLong(INDEX_ID);
@@ -24,5 +23,4 @@ public interface ContactCardReceiver extends ContactReceiver {
     ///
     /// @param contact is provided to the receiver.
     void provide(AssistActivity act, Uri contact);
-
 }

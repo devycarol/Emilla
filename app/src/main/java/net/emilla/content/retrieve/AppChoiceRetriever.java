@@ -13,11 +13,11 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import net.emilla.activity.AssistActivity;
-import net.emilla.annotation.inner;
 import net.emilla.content.receive.AppChoiceReceiver;
 
-public final class AppChoiceRetriever extends ResultRetriever<Intent, ActivityResult, AppChoiceReceiver> {
-
+public final class AppChoiceRetriever
+    extends ResultRetriever<Intent, ActivityResult, AppChoiceReceiver>
+{
     public AppChoiceRetriever(AssistActivity act) {
         super(act, new StartActivityForResult());
     }
@@ -62,8 +62,7 @@ public final class AppChoiceRetriever extends ResultRetriever<Intent, ActivityRe
         return new AppCallback();
     }
 
-    private @inner final class AppCallback extends ResultCallback {
-
+    private final class AppCallback extends ResultCallback {
         @Override
         protected void onActivityResult(ActivityResult output, AppChoiceReceiver receiver) {
             if (receiver == null) return;
@@ -74,7 +73,6 @@ public final class AppChoiceRetriever extends ResultRetriever<Intent, ActivityRe
 
     @Deprecated
     public static final class AppChooserBroadcastReceiver extends BroadcastReceiver {
-
         @Nullable @Deprecated
         private static AppChoiceRetriever sRetriever;
         // Todo: there *has* to be a better way.

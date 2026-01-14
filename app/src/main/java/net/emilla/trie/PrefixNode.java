@@ -11,7 +11,6 @@ import java.util.function.IntFunction;
 import java.util.stream.Stream;
 
 final class PrefixNode<K, V> {
-
     private final IntFunction<V[]> mArrayGenerator;
 
     @Nullable
@@ -73,5 +72,4 @@ final class PrefixNode<K, V> {
             ? values
             : null;
     }
-
 }

@@ -4,7 +4,6 @@ import android.database.Cursor;
 import android.provider.DocumentsContract.Document;
 
 public final class FileDisplayName extends CursorExtractor<String> {
-
     private static final int INDEX_DISPLAY_NAME = 0;
 
     private static final String[] PROJECTION = {
@@ -21,5 +20,4 @@ public final class FileDisplayName extends CursorExtractor<String> {
     public String extract(Cursor cursor) {
         return cursor.getString(INDEX_DISPLAY_NAME);
     }
-
 }

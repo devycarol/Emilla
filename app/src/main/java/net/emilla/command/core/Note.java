@@ -13,7 +13,6 @@ import net.emilla.file.Folder;
 import net.emilla.file.TreeFile;
 
 final class Note extends CoreDataCommand {
-
     private final NotesFragment mNotesFragment;
 
     @internal Note(Context ctx) {
@@ -65,5 +64,4 @@ final class Note extends CoreDataCommand {
             throw new EmillaException(R.string.error_cant_use_file);
         }
     }
-
 }

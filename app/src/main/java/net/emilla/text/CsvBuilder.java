@@ -1,7 +1,6 @@
 package net.emilla.text;
 
 public final class CsvBuilder {
-
     private final StringBuilder mBuilder;
 
     public CsvBuilder(String initialValue) {
@@ -36,5 +35,4 @@ public final class CsvBuilder {
     public String toString() {
         return mBuilder.toString();
     }
-
 }

@@ -10,7 +10,6 @@ import net.emilla.util.Features;
 import net.emilla.util.TorchManager;
 
 final class Torch extends CoreCommand {
-
     public static boolean possible(PackageManager pm) {
         return Features.torch(pm);
     }
@@ -28,5 +27,4 @@ final class Torch extends CoreCommand {
     protected void run(AssistActivity act, String ignored) {
         run(act); // Todo: remove this from the interface for non-instructables.
     }
-
 }

@@ -8,7 +8,6 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.util.Dialogs;
 
 public final class TextGift extends DialogRun {
-
     private final CharSequence mText;
 
     public TextGift(Context ctx, @StringRes int title, @StringRes int text) {

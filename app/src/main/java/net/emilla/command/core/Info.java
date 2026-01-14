@@ -11,7 +11,6 @@ import net.emilla.util.Apps;
 import net.emilla.util.Intents;
 
 final class Info extends OpenCommand {
-
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, Intents.appInfo(""));
     }
@@ -29,5 +28,4 @@ final class Info extends OpenCommand {
     public Intent makeIntent(AppEntry app, PackageManager pm) {
         return Intents.appInfo(app.pkg);
     }
-
 }

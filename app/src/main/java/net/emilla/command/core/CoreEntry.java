@@ -246,5 +246,4 @@ public enum CoreEntry implements Params {
             .map(mapper)
             .toArray(String[]::new);
     }
-
 }

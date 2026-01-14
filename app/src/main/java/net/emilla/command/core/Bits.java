@@ -11,7 +11,6 @@ import net.emilla.math.BitwiseCalculator;
 import net.emilla.util.Intents;
 
 final class Bits extends CategoryCommand {
-
     @internal Bits(AssistActivity act) {
         super(act, CoreEntry.BITS, EditorInfo.IME_ACTION_DONE);
     }
@@ -25,5 +24,4 @@ final class Bits extends CategoryCommand {
     protected void run(AssistActivity act, String expression) {
         giveText(act, String.valueOf(BitwiseCalculator.compute(expression, CoreEntry.BITS.name)));
     }
-
 }

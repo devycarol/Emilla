@@ -13,14 +13,12 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import net.emilla.activity.AssistActivity;
-import net.emilla.annotation.inner;
 import net.emilla.content.ResultLaunchers;
 
 import java.util.Map;
 
 @RequiresApi(Build.VERSION_CODES.M)
 public final class PermissionRetriever {
-
     private static final String TAG = PermissionRetriever.class.getSimpleName();
 
     private final AssistActivity mActivity;
@@ -43,9 +41,7 @@ public final class PermissionRetriever {
         ResultLaunchers.tryLaunch(mActivity, mLauncher, permissions);
     }
 
-    private @inner final class PermissionCallback
-        implements ActivityResultCallback<Map<String, Boolean>> {
-
+    private final class PermissionCallback implements ActivityResultCallback<Map<String, Boolean>> {
         @Override
         public void onActivityResult(Map<String, Boolean> grants) {
             Runnable onGrant = mOnGrant;

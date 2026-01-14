@@ -15,7 +15,6 @@ import net.emilla.util.Apps;
 import net.emilla.util.Intents;
 
 final class Notifications extends OpenCommand {
-
     public static boolean possible(PackageManager pm) {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
             && Apps.canDo(pm, new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS));
@@ -34,5 +33,4 @@ final class Notifications extends OpenCommand {
     protected Intent makeIntent(AppEntry app, PackageManager pm) {
         return Intents.notificationSettings(app.pkg);
     }
-
 }

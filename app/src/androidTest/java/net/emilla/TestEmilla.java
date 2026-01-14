@@ -12,11 +12,9 @@ import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
 public final class TestEmilla {
-
     @Test
     public void testApplicationId() {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals(BuildConfig.APPLICATION_ID, appContext.getPackageName());
     }
-
 }

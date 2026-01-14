@@ -4,7 +4,6 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.util.Toasts;
 
 public final class ToastGift implements CommandRun {
-
     private final CharSequence mMessage;
     private final boolean mIsLongToast;
 
@@ -17,5 +16,4 @@ public final class ToastGift implements CommandRun {
     public void run(AssistActivity act) {
         Toasts.show(act, mMessage, mIsLongToast);
     }
-
 }

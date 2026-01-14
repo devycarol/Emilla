@@ -21,7 +21,6 @@ import net.emilla.sort.ItemSearchAdapter;
 import net.emilla.util.Dialogs;
 
 public final class SnippetsFragment extends ActionBox {
-
     @internal SnippetsFragment() {
         super(R.layout.fragment_item_list);
     }
@@ -150,5 +149,4 @@ public final class SnippetsFragment extends ActionBox {
             mAdapter.search(instruction);
         }
     }
-
 }

@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 public enum Weekdays {
     ;
-
     public static ArrayList<Integer> calendarArrayList(Collection<DayOfWeek> weekdays) {
         return weekdays.stream()
             .map(Weekdays::toCalendarConstant)
@@ -27,5 +26,4 @@ public enum Weekdays {
             case SUNDAY -> Calendar.SUNDAY;
         };
     }
-
 }

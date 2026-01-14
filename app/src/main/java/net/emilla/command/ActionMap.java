@@ -11,7 +11,6 @@ import net.emilla.trie.PrefixResult;
 import java.util.function.IntFunction;
 
 public final class ActionMap<A extends Enum<A>> {
-
     private final PhraseTree<A> mPhraseTree;
     private final A mDefaultAction;
 
@@ -34,5 +33,4 @@ public final class ActionMap<A extends Enum<A>> {
             ? new Subcommand<A>(action, get.leftovers)
             : new Subcommand<A>(mDefaultAction, instruction);
     }
-
 }

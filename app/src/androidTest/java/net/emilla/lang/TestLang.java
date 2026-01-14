@@ -8,7 +8,6 @@ import java.util.function.Consumer;
 
 enum TestLang {
     ;
-
     public static void withEachLocale(Resources res, Consumer<? super Resources> consumer) {
         var originalConf = res.getConfiguration();
         LocaleList locales = originalConf.getLocales();
@@ -27,5 +26,4 @@ enum TestLang {
 
         res.updateConfiguration(originalConf, displayMetrics);
     }
-
 }

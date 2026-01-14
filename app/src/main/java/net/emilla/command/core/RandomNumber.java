@@ -11,7 +11,6 @@ import net.emilla.lang.phrase.RandRange;
 import java.util.Random;
 
 final class RandomNumber extends CoreCommand {
-
     @internal RandomNumber(Context ctx) {
         super(ctx, CoreEntry.RANDOM_NUMBER, EditorInfo.IME_ACTION_DONE);
     }
@@ -41,5 +40,4 @@ final class RandomNumber extends CoreCommand {
                     + rand.nextInt(exclusEnd - inclusStart);
         giveText(act, String.valueOf(randVal));
     }
-
 }

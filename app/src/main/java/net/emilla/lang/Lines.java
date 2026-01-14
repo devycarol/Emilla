@@ -2,14 +2,12 @@ package net.emilla.lang;
 
 import androidx.annotation.Nullable;
 
-import net.emilla.annotation.inner;
 import net.emilla.annotation.open;
 import net.emilla.util.Chars;
 
 import java.util.Iterator;
 
 public final class Lines implements Iterable<String> {
-
 //    @Nullable
 //    public static String of(Iterable<Object> iterable, boolean haveTrailing) {
 //        Iterator<Object> itr = iterable.iterator();
@@ -142,9 +140,9 @@ public final class Lines implements Iterable<String> {
         return mEnforceTrimming ? new TrimmingLineIterator() : new LineIterator();
     }
 
-    private @inner sealed class LineIterator implements Iterator<String>
-        permits TrimmingLineIterator {
-
+    private sealed class LineIterator implements Iterator<String>
+        permits TrimmingLineIterator
+    {
         protected int pos = mStart;
 
         @Override
@@ -197,8 +195,7 @@ public final class Lines implements Iterable<String> {
         }
     }
 
-    private @inner final class TrimmingLineIterator extends LineIterator {
-
+    private final class TrimmingLineIterator extends LineIterator {
         @Override
         protected void advanceToNextLine() {
             do ++this.pos;
@@ -208,7 +205,7 @@ public final class Lines implements Iterable<String> {
         }
 
         @Override
-        protected String makeLine(StringBuilder sb)  {
+        protected String makeLine(StringBuilder sb) {
             int len = sb.length();
             while (len > 0 && Chars.isNonLineSpace(sb.charAt(len - 1))) --len;
             sb.setLength(len);

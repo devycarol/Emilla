@@ -11,7 +11,6 @@ import net.emilla.contact.adapter.ContactCursorAdapter;
 import net.emilla.contact.adapter.ContactEmailAdapter;
 
 public final class ContactEmailsFragment extends ContactsFragment<String> {
-
     public static ContactEmailsFragment newInstance(boolean multiSelect) {
         return newInstance(new ContactEmailsFragment(), multiSelect);
     }

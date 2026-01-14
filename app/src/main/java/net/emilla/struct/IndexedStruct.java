@@ -5,7 +5,6 @@ import java.util.RandomAccess;
 import java.util.stream.Stream;
 
 public interface IndexedStruct<E> extends Iterable<E>, RandomAccess {
-
     E get(int index);
     int size();
     boolean isEmpty();
@@ -15,5 +14,4 @@ public interface IndexedStruct<E> extends Iterable<E>, RandomAccess {
     default Iterator<E> iterator() {
         return stream().iterator();
     }
-
 }

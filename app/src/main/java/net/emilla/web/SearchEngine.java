@@ -11,7 +11,6 @@ import net.emilla.util.Strings;
 import java.util.NoSuchElementException;
 
 final class SearchEngine {
-
     @internal final String mUrlPrefix;
     @internal final String mUrlSuffix;
 
@@ -41,5 +40,4 @@ final class SearchEngine {
     public String url(String query) {
         return mUrlPrefix + Uri.encode(query) + mUrlSuffix;
     }
-
 }

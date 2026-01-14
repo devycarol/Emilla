@@ -12,7 +12,6 @@ import net.emilla.util.MediaControl;
 import net.emilla.util.Services;
 
 public final class PlayPause implements LabeledQuickAction {
-
     private final AssistActivity mActivity;
 
     public PlayPause(AssistActivity act) {

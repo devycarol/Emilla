@@ -12,10 +12,7 @@ import android.view.accessibility.AccessibilityEvent;
 
 import androidx.annotation.RequiresApi;
 
-import net.emilla.annotation.inner;
-
 public final class EmillaA11yService extends AccessibilityService {
-
     // TODO: google assistant (maybe?) changes the accessibility menu icon for "assistant," so we
     //  should also do this. I wonder if you can add items to that menu..
 
@@ -33,8 +30,7 @@ public final class EmillaA11yService extends AccessibilityService {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private @inner final class AssistButtonCallback extends AccessibilityButtonCallback {
-
+    private final class AssistButtonCallback extends AccessibilityButtonCallback {
         @Override
         public void onClicked(AccessibilityButtonController controller) {
             startActivity(new Intent(ACTION_VOICE_COMMAND).addFlags(FLAG_ACTIVITY_NEW_TASK));

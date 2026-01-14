@@ -4,7 +4,6 @@ import net.emilla.annotation.internal;
 import net.emilla.lang.Lang;
 
 final class Words extends Phrase<String> {
-
     @internal Words(String phrase) {
         super(phrase);
     }
@@ -21,5 +20,4 @@ final class Words extends Phrase<String> {
 
         return Lang.normalize(word);
     }
-
 }

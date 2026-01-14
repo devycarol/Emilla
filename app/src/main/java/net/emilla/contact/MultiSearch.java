@@ -3,7 +3,6 @@ package net.emilla.contact;
 import net.emilla.lang.Lang;
 
 public record MultiSearch(String selection, String[] selectionArgs, boolean hasMultipleTerms) {
-
     public static MultiSearch instance(String baseSelection, String search) {
         String[] terms = Lang.list(search).items();
 

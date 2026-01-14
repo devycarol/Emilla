@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 import net.emilla.annotation.internal;
 
 abstract class Phrase<W> implements PositionalIterator<W, String> {
-
     @internal final char[] mPhrase;
     @internal final int mLength;
 
@@ -52,5 +51,4 @@ abstract class Phrase<W> implements PositionalIterator<W, String> {
         int span = mLength - position;
         return new String(mPhrase, position, span);
     }
-
 }

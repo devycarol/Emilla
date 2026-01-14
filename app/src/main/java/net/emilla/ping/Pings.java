@@ -9,7 +9,6 @@ import androidx.core.app.NotificationCompat;
 
 public enum Pings {
     ;
-
     public static Notification make(
         Context ctx,
         PingChannel channel,
@@ -27,5 +26,4 @@ public enum Pings {
 
         return builder.build();
     }
-
 }

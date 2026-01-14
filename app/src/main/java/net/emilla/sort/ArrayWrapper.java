@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 final class ArrayWrapper<E> implements IndexedStruct<E> {
-
     @internal E[] mArray;
 
     @internal ArrayWrapper(E[] array) {
@@ -33,5 +32,4 @@ final class ArrayWrapper<E> implements IndexedStruct<E> {
     public Stream<E> stream() {
         return Arrays.stream(mArray);
     }
-
 }

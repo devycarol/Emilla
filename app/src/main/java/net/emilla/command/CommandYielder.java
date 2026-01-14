@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 import net.emilla.activity.AssistActivity;
 
 public abstract class CommandYielder {
-
     private EmillaCommand mCommand = null;
 
     protected CommandYielder() {}
@@ -25,5 +24,4 @@ public abstract class CommandYielder {
         command.instruct(instruction);
         return command;
     }
-
 }

@@ -18,7 +18,6 @@ import net.emilla.exception.EmillaException;
 
 public enum TorchManager {
     ;
-
     private static final String TAG = TorchManager.class.getSimpleName();
 
     private static boolean sTorching = false;
@@ -67,5 +66,4 @@ public enum TorchManager {
         return null;
         // Todo: what if multiple torches?
     }
-
 }

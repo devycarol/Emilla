@@ -13,7 +13,6 @@ import net.emilla.ping.Pinger;
 import net.emilla.util.Permission;
 
 public final class PingReceiver extends BroadcastReceiver {
-
     private static final String TAG = PingReceiver.class.getSimpleName();
 
     @Override @SuppressLint("MissingPermission")
@@ -24,5 +23,4 @@ public final class PingReceiver extends BroadcastReceiver {
             Log.e(TAG, "Unable to ping due to lack of permission.");
         }
     }
-
 }

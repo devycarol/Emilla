@@ -14,14 +14,11 @@ import androidx.annotation.Nullable;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.annotation.inner;
 import net.emilla.content.receive.ContactDataReceiver;
 import net.emilla.util.Toasts;
 
 public abstract class ContactDataRetriever extends ResultRetriever<Void, String, ContactDataReceiver> {
-
     protected static abstract class PickContactData extends ActivityResultContract<Void, String> {
-
         private final Context mContext;
 
         public PickContactData(Context ctx) {
@@ -64,8 +61,7 @@ public abstract class ContactDataRetriever extends ResultRetriever<Void, String,
         return new DataCallback();
     }
 
-    private @inner final class DataCallback extends ResultCallback {
-
+    private final class DataCallback extends ResultCallback {
         @Override
         protected void onActivityResult(String data, ContactDataReceiver receiver) {
             AssistActivity act = ContactDataRetriever.this.activity;
@@ -77,5 +73,4 @@ public abstract class ContactDataRetriever extends ResultRetriever<Void, String,
             }
         }
     }
-
 }

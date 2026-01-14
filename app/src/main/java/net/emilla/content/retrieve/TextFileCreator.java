@@ -24,7 +24,6 @@ import net.emilla.util.MimeTypes;
 import net.emilla.util.Toasts;
 
 public final class TextFileCreator {
-
     private final AssistActivity mActivity;
     private final ActivityResultLauncher<Intent> mLauncher;
 
@@ -52,9 +51,7 @@ public final class TextFileCreator {
             createDocument.putExtra(Intent.EXTRA_TITLE, MimeTypes.textFilename(filename));
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
-            && defaultFolder != null) {
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && defaultFolder != null) {
             createDocument.putExtra(DocumentsContract.EXTRA_INITIAL_URI, defaultFolder.treeUri());
         }
 
@@ -100,5 +97,4 @@ public final class TextFileCreator {
             );
         }
     }
-
 }

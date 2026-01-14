@@ -11,7 +11,6 @@ import net.emilla.run.MessageFailure;
 import net.emilla.util.TorchManager;
 
 public final class Flashlight implements LabeledQuickAction {
-
     @StringRes
     private static final int NAME = R.string.action_flashlight;
 
@@ -49,5 +48,4 @@ public final class Flashlight implements LabeledQuickAction {
             mActivity.fail(new MessageFailure(mActivity, e));
         }
     }
-
 }

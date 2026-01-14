@@ -6,9 +6,7 @@ import android.view.inputmethod.EditorInfo;
 import net.emilla.annotation.internal;
 
 final class VideoSearchBySend extends AppSend {
-
     @internal VideoSearchBySend(Context ctx, AppEntry appEntry) {
         super(ctx, appEntry, EditorInfo.IME_ACTION_SEARCH);
     }
-
 }

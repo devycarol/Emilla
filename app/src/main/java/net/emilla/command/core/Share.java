@@ -23,7 +23,6 @@ import net.emilla.util.MimeTypes;
 import java.util.ArrayList;
 
 final class Share extends CoreDataCommand implements AppChoiceReceiver {
-
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, Intents.send(MimeTypes.PLAIN_TEXT));
     }
@@ -109,5 +108,4 @@ final class Share extends CoreDataCommand implements AppChoiceReceiver {
             mActivity.chime(RESUME);
         }
     }
-
 }

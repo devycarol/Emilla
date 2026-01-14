@@ -12,7 +12,6 @@ import net.emilla.annotation.internal;
 import net.emilla.lang.Lang;
 
 final class DuplicateParams implements Params {
-
     @StringRes
     private static final int NAME = R.string.command_duplicate;
 
@@ -37,5 +36,4 @@ final class DuplicateParams implements Params {
     public boolean isProperNoun() {
         return false;
     }
-
 }

@@ -13,7 +13,6 @@ import androidx.preference.PreferenceManager;
 import net.emilla.databinding.FragmentAssistantBinding;
 
 public final class AssistantFragment extends Fragment {
-
     private /*late*/ FragmentAssistantBinding mBinding;
 
     @Override
@@ -36,5 +35,4 @@ public final class AssistantFragment extends Fragment {
 
         mBinding.motdText.setText(SettingVals.motd(prefs, res));
     }
-
 }

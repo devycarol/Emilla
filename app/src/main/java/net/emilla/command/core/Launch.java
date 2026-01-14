@@ -12,7 +12,6 @@ import net.emilla.command.app.AppEntry;
 import net.emilla.util.Intents;
 
 final class Launch extends OpenCommand {
-
     @internal Launch(Context ctx) {
         super(ctx, CoreEntry.LAUNCH, EditorInfo.IME_ACTION_GO);
     }
@@ -26,5 +25,4 @@ final class Launch extends OpenCommand {
     public Intent makeIntent(AppEntry app, PackageManager pm) {
         return Intents.launchApp(app);
     }
-
 }

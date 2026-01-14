@@ -17,7 +17,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 final class Website {
-
     private static final Pattern LEGACY_SEARCH_WILDCARD = Pattern.compile("%s");
 
     private final String mUrl;
@@ -107,5 +106,4 @@ final class Website {
 
         return csv.toString();
     }
-
 }

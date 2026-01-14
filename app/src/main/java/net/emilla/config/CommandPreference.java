@@ -18,7 +18,6 @@ import net.emilla.command.core.CoreEntry;
 import java.util.Objects;
 
 public final class CommandPreference extends EditTextPreference {
-
     public final String setKey;
 
     private final String mEnabledKey;
@@ -103,5 +102,4 @@ public final class CommandPreference extends EditTextPreference {
     public boolean shouldDisableDependents() {
         return !mChecked || !isEnabled();
     }
-
 }

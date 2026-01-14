@@ -12,7 +12,6 @@ import net.emilla.annotation.open;
 import net.emilla.command.DataCommand;
 
 @open class AppSendData extends AppSend implements DataCommand {
-
     @StringRes
     private final int mHint;
 
@@ -40,5 +39,4 @@ import net.emilla.command.DataCommand;
     public final void runWithData(AssistActivity act, String message, String cont) {
         run(act, message + '\n' + cont);
     }
-
 }

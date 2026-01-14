@@ -31,7 +31,6 @@ import net.emilla.util.Intents;
 import net.emilla.util.Toasts;
 
 public final class SettingsFragment extends EmillaSettingsFragment {
-
     private static final String EXTRA_FRAGMENT_ARG_KEY = ":settings:fragment_args_key";
     private static final String EXTRA_SHOW_FRAGMENT_ARGUMENTS = ":settings:show_fragment_args";
 
@@ -242,5 +241,4 @@ public final class SettingsFragment extends EmillaSettingsFragment {
             systemAppInfo.setVisible(false);
         }
     }
-
 }

@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 
 public enum MimeType {
     ;
-
     private static final Pattern SLASH = Pattern.compile("/");
 
     /// Returns the union of all MIME types in a sequence of files. The union of different
@@ -68,5 +67,4 @@ public enum MimeType {
     private static String partUnion(String part1, String part2) {
         return part1.equals(part2) ? part1 : "*";
     }
-
 }

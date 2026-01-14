@@ -5,7 +5,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import net.emilla.annotation.internal;
 
 final class IndexSpan extends IndexPortion {
-
     private final int mLength;
 
     private IndexSpan(int index, int length) {
@@ -33,5 +32,4 @@ final class IndexSpan extends IndexPortion {
         System.arraycopy(array, this.index, array, position, mLength);
         return position + mLength;
     }
-
 }

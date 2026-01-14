@@ -13,9 +13,7 @@ import java.util.Iterator;
 
 public enum BitwiseCalculator {
     ;
-
     private static final class OpStack {
-
         final BitwiseOperator[] arr;
         int size = 0;
 
@@ -51,7 +49,6 @@ public enum BitwiseCalculator {
     }
 
     private static final class ValStack {
-
         final long[] vals;
         final SignStack signs;
         int size = 0;
@@ -146,7 +143,6 @@ public enum BitwiseCalculator {
     }
 
     private static final class SignStack {
-
         final BitwiseSign[] arr;
         int size = 0;
 
@@ -224,11 +220,9 @@ public enum BitwiseCalculator {
         return result.value();
     }
 
-    private record BitwiseTokens(
-        String expression,
-        @StringRes int errorTitle
-    ) implements Iterable<BitwiseToken> {
-
+    private record BitwiseTokens(String expression, @StringRes int errorTitle)
+        implements Iterable<BitwiseToken>
+    {
         enum Type {
             LPAREN, RPAREN, OPERATOR, NUMBER
         }
@@ -239,7 +233,6 @@ public enum BitwiseCalculator {
         }
 
         static final class BitwiseIterator implements Iterator<BitwiseToken> {
-
             final char[] expr;
             final int length;
 
@@ -390,5 +383,4 @@ public enum BitwiseCalculator {
             }
         }
     }
-
 }

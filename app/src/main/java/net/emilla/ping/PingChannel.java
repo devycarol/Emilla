@@ -88,5 +88,4 @@ public enum PingChannel {
         channel.setDescription(res.getString(mDescription));
         return channel;
     }
-
 }

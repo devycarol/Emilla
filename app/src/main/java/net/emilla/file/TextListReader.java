@@ -7,7 +7,6 @@ import net.emilla.util.ArrayLoader;
 import net.emilla.util.Chars;
 
 final class TextListReader {
-
     private static final ListItem[] EMPTY_ARRAY = new ListItem[0];
 
     private final byte[] mText;
@@ -81,5 +80,4 @@ final class TextListReader {
 
         return new FileListItem(mText, start, span, offsetLineCount);
     }
-
 }

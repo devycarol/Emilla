@@ -23,7 +23,6 @@ import java.io.OutputStream;
 
 public enum Files {
     ;
-
     private static final String OVERWRITE = "wt";
     private static final String APPEND = "wa";
 
@@ -41,8 +40,8 @@ public enum Files {
     }
 
     private static <T> T read(ContentResolver cr, Uri file, Reader<T> reader)
-        throws IOException, FileNotFoundException {
-
+        throws IOException, FileNotFoundException
+    {
         try (InputStream istream = cr.openInputStream(file)) {
             requireStream(istream);
 
@@ -58,8 +57,8 @@ public enum Files {
     }
 
     private static void write(ContentResolver cr, Uri file, String mode, Writer writer)
-        throws IOException, FileNotFoundException {
-
+        throws IOException, FileNotFoundException
+    {
         try (OutputStream ostream = cr.openOutputStream(file, mode)) {
             requireStream(ostream);
 
@@ -163,8 +162,8 @@ public enum Files {
     }
 
     private static long sizeOf(ContentResolver cr, Uri file)
-        throws IOException {
-
+        throws IOException
+    {
         try (Cursor cursor = cr.query(file, PROJECTION, null, null, null)) {
             if (cursor == null || !cursor.moveToFirst()) {
                 throw new IOException("Failed to query file size");
@@ -184,8 +183,8 @@ public enum Files {
     }
 
     private static boolean isEmptyOrEndsWithLineSeparator(ContentResolver cr, Uri file)
-        throws IOException, FileNotFoundException {
-
+        throws IOException, FileNotFoundException
+    {
         long fileSize = sizeOf(cr, file);
 
         try (InputStream istream = cr.openInputStream(file)) {
@@ -214,7 +213,6 @@ public enum Files {
 
                 lastByte = b;
             } while (true);
-
         } else {
             istream.skipNBytes(size - 1L);
 
@@ -251,5 +249,4 @@ public enum Files {
             .putExtra(Intent.EXTRA_STREAM, file)
             .addFlags(FLAG_GRANT_READ_URI_PERMISSION | FLAG_GRANT_WRITE_URI_PERMISSION);
     }
-
 }

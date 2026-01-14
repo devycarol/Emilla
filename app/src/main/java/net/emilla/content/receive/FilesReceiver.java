@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class FilesReceiver implements ResultReceiver {
-
     private final AssistActivity mActivity;
     private final String mCommandEntry;
 
@@ -41,5 +40,4 @@ public final class FilesReceiver implements ResultReceiver {
         Toasts.show(mActivity, res.getQuantityString(R.plurals.toast_files_attached, size, size));
         // Todo: better feedback.
     }
-
 }

@@ -5,7 +5,6 @@ import androidx.annotation.StringRes;
 
 public enum SubcommandEntry {
     ;
-
     @StringRes
     public final int name;
     @ArrayRes
@@ -15,5 +14,4 @@ public enum SubcommandEntry {
         this.name = name;
         this.aliases = aliases;
     }
-
 }

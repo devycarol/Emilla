@@ -3,7 +3,6 @@ package net.emilla.trie;
 import net.emilla.annotation.internal;
 
 final class PrefixValue<V> {
-
     public final V value;
     public final boolean takesLeftovers;
 
@@ -11,5 +10,4 @@ final class PrefixValue<V> {
         this.value = value;
         this.takesLeftovers = takesLeftovers;
     }
-
 }
