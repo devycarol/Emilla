@@ -33,7 +33,7 @@
 
     <style name="Theme.Assistant.Base" parent="Theme.Emilla">
         <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@color/bg_assistant</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
