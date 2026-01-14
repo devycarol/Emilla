@@ -50,9 +50,7 @@
     <!-- Command aliases -->
     <!-- These should all match your locale's String.toLowerCase() for any casing -->
     <string-array name="aliases_call" />
-    <string-array name="aliases_dial">
-        <item>phone</item>
-    </string-array>
+    <string-array name="aliases_dial" />
     <string-array name="aliases_sms">
         <item>text</item>
         <item>txt</item>
@@ -64,8 +62,7 @@
     </string-array>
     <string-array name="aliases_navigate">
         <item>nav</item>
-        <item>maps</item>
-        <item>map</item>
+        <item>directions</item>
         <item>take me</item>
     </string-array>
     <string-array name="aliases_launch">
@@ -90,7 +87,6 @@
     <string-array name="aliases_note" />
     <string-array name="aliases_todo">
         <item>todo</item>
-        <item>tasks</item>
         <item>task</item>
     </string-array>
     <string-array name="aliases_web">
@@ -107,16 +103,10 @@
         <item>cal</item>
         <item>plan</item>
     </string-array>
-    <string-array name="aliases_contact">
-        <item>people</item>
-        <item>person</item>
-    </string-array>
+    <string-array name="aliases_contact" />
     <string-array name="aliases_notify">
-        <item>notif</item>
         <item>reminder</item>
         <item>remind</item>
-        <item>rem</item>
-        <item>memo</item>
         <item>ping</item>
     </string-array>
     <string-array name="aliases_calculate">
@@ -134,15 +124,10 @@
     <string-array name="aliases_roll">
         <item>dice</item>
         <item>flip a coin</item>
-        <item>coin flip</item>
-        <item>coinflip</item>
-        <item>coin</item>
     </string-array>
     <string-array name="aliases_bits" />
     <string-array name="aliases_weather" />
-    <string-array name="aliases_play">
-        <item>resume</item>
-    </string-array>
+    <string-array name="aliases_play" />
     <string-array name="aliases_pause" />
     <string-array name="aliases_torch" />
     <string-array name="aliases_info" />
@@ -160,7 +145,6 @@
     <!-- App aliases -->
     <string-array name="aliases_aosp_contacts" />
     <string-array name="aliases_markor">
-        <item>mark</item>
         <item>mkr</item>
     </string-array>
     <string-array name="aliases_firefox">
@@ -170,15 +154,12 @@
         <item>tor</item>
     </string-array>
     <string-array name="aliases_signal">
-        <item>sig</item>
         <item>sgnl</item>
     </string-array>
     <string-array name="aliases_newpipe">
         <item>np</item>
     </string-array>
-    <string-array name="aliases_tubular">
-        <item>tub</item>
-    </string-array>
+    <string-array name="aliases_tubular" />
     <string-array name="aliases_tasker">
         <item>tsk</item>
     </string-array>
