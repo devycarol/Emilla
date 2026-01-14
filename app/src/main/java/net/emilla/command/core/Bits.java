@@ -1,23 +1,21 @@
 package net.emilla.command.core;
 
-import static android.content.Intent.CATEGORY_APP_CALCULATOR;
-
+import android.content.Context;
 import android.content.Intent;
 import android.view.inputmethod.EditorInfo;
 
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.math.BitwiseCalculator;
-import net.emilla.util.Intents;
 
-final class Bits extends CategoryCommand {
-    @internal Bits(AssistActivity act) {
-        super(act, CoreEntry.BITS, EditorInfo.IME_ACTION_DONE);
+final class Bits extends CoreCommand {
+    @internal Bits(Context ctx) {
+        super(ctx, CoreEntry.BITS, EditorInfo.IME_ACTION_DONE);
     }
 
     @Override
-    protected Intent makeFilter() {
-        return Intents.categoryTask(CATEGORY_APP_CALCULATOR);
+    protected void run(AssistActivity act) {
+        CategoryCommand.run(act, Intent.CATEGORY_APP_CALCULATOR);
     }
 
     @Override

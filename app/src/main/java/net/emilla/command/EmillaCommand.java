@@ -270,7 +270,7 @@ public abstract class EmillaCommand {
     ///
     /// @param intent is launched after the assistant closes. It's very important that this is
     ///               resolvable, else an ANF exception will occur.
-    protected static void appSucceed(AssistActivity act, Intent intent) {
+    public static void appSucceed(AssistActivity act, Intent intent) {
         act.succeed(AppSuccess.instance(intent));
     }
 
@@ -295,7 +295,7 @@ public abstract class EmillaCommand {
         act.give(AppGift.instance(intent));
     }
 
-    protected static void offerDialog(AssistActivity act, AlertDialog.Builder builder) {
+    public static void offerDialog(AssistActivity act, AlertDialog.Builder builder) {
         act.offer(new DialogRun(builder));
     }
 
