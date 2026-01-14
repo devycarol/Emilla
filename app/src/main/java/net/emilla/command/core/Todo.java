@@ -56,7 +56,7 @@ final class Todo extends CoreCommand {
 
     private static void actionFeedback(AssistActivity act, TriResult result) {
         switch (result) {
-        case SUCCESS -> act.give(a -> {});
+        case SUCCESS -> act.selectInstruction();
         case WAITING -> act.chime(PEND);
         case FAILURE -> throw new EmillaException(R.string.error_cant_use_file);
         }

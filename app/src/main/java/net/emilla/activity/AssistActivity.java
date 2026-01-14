@@ -550,6 +550,12 @@ public final class AssistActivity extends AppCompatActivity {
         mInstructionPosition = position;
     }
 
+    public void selectInstruction() {
+        EditText commandField = mBinding.commandField;
+        commandField.setSelection(mInstructionPosition, commandField.length());
+        chime(ACT);
+    }
+
     public void setInstruction(String instruction) {
         EditText commandField = mBinding.commandField;
         String command = commandField.getText().toString().substring(0, mInstructionPosition);
