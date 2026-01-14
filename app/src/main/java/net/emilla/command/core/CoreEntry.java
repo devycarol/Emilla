@@ -69,12 +69,12 @@ public enum CoreEntry implements Params {
             return Navigate.possible(pm);
         }
     },
-    WEATHER(Weather::new, R.string.command_weather, R.array.aliases_weather, R.string.instruction_app, R.drawable.ic_weather, R.string.summary_weather, R.string.manual_weather) {
-        @Override
-        public boolean isPossible(PackageManager pm) {
-            return Weather.possible(pm);
-        }
-    },
+//    WEATHER(Weather::new, R.string.command_weather, R.array.aliases_weather, R.string.instruction_app, R.drawable.ic_weather, R.string.summary_weather, R.string.manual_weather) {
+//        @Override
+//        public boolean isPossible(PackageManager pm) {
+//            return Weather.possible(pm);
+//        }
+//    },
     NOTE(Note::new, R.string.command_note, R.array.aliases_note, R.string.instruction_file, R.drawable.ic_note, R.string.summary_note, R.string.manual_note, true),
     TODO(Todo::new, R.string.command_todo, R.array.aliases_todo, R.string.instruction_todo, R.drawable.ic_todo, R.string.summary_todo, R.string.manual_todo, true),
 //    FIND(Find::new, R.string.command_find, R.array.aliases_find, R.string.instruction_find, R.drawable.ic_find, R.string.summary_find, R.string.manual_find, true),
