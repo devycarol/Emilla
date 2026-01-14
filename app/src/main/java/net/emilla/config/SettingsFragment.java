@@ -18,6 +18,7 @@ import androidx.preference.Preference;
 
 import net.emilla.R;
 import net.emilla.action.QuickAction;
+import net.emilla.annotation.internal;
 import net.emilla.chime.Chime;
 import net.emilla.chime.Chimer;
 import net.emilla.command.core.CoreEntry;
@@ -45,6 +46,8 @@ public final class SettingsFragment extends EmillaSettingsFragment {
         new GetChimeSound(),
         this::onPickChimeSound
     );
+
+    @internal SettingsFragment() {}
 
     private void onPickChimeSound(ChimeSoundResult chimeSoundResult) {
         if (chimeSoundResult == null) return;

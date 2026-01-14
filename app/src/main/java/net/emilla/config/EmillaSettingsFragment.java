@@ -5,10 +5,14 @@ import android.content.SharedPreferences;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
+import net.emilla.annotation.internal;
+
 import java.util.Objects;
 
-public abstract class EmillaSettingsFragment extends PreferenceFragmentCompat {
-    protected final <T extends Preference> T preferenceOf(String key) {
+abstract class EmillaSettingsFragment extends PreferenceFragmentCompat {
+    @internal EmillaSettingsFragment() {}
+
+    protected final <T extends Preference> T preferenceOf(CharSequence key) {
         return Objects.requireNonNull(findPreference(key));
     }
 

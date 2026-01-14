@@ -9,10 +9,12 @@ import android.os.Bundle;
 import androidx.annotation.ArrayRes;
 import androidx.annotation.Nullable;
 import androidx.preference.EditTextPreference;
+import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
 import androidx.preference.PreferenceCategory;
 
 import net.emilla.R;
+import net.emilla.annotation.internal;
 import net.emilla.command.app.AppEntry;
 import net.emilla.command.core.CoreEntry;
 import net.emilla.util.Apps;
@@ -31,7 +33,7 @@ public final class CommandsFragment extends EmillaSettingsFragment {
     private /*late*/ SharedPreferences mPrefs;
     private /*late*/ Resources mRes;
 
-    private final OnPreferenceChangeListener mListener = (pref, newVal) -> {
+    private final OnPreferenceChangeListener mListener = (Preference pref, Object newVal) -> {
         var cmdPref = (CommandPreference) pref;
         String textKey = cmdPref.getKey();
         String setKey = cmdPref.setKey;
@@ -46,6 +48,8 @@ public final class CommandsFragment extends EmillaSettingsFragment {
               .apply();
         return false;
     };
+
+    @internal CommandsFragment() {}
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -98,9 +102,9 @@ public final class CommandsFragment extends EmillaSettingsFragment {
         }
     }
 
-    private void setupPref(CommandPreference cmdPref, @Nullable Set<String> aliases) {
-        cmdPref.setText(aliases != null ? String.join(", ", aliases) : null);
-        cmdPref.setOnPreferenceChangeListener(mListener);
+    private void setupPref(CommandPreference preference, @Nullable Set<String> aliases) {
+        preference.setText(aliases != null ? String.join(", ", aliases) : null);
+        preference.setOnPreferenceChangeListener(mListener);
     }
 
     private void setupApps() {
@@ -123,23 +127,23 @@ public final class CommandsFragment extends EmillaSettingsFragment {
             // self-evident Todo.
             var newText = (String) newVal;
 
-            var reviseBldr = new StringBuilder();
+            var revised = new StringBuilder();
             var customEntries = new HashSet<String>();
             for (String entry : Patterns.TRIMMING_LINES.split(newText)) {
                 String revisedEntry = cleanCommaList(entry);
                 if (revisedEntry != null) {
-                    reviseBldr.append(revisedEntry).append('\n');
+                    revised.append(revisedEntry).append('\n');
                     customEntries.add(revisedEntry);
                 } else {
-                    reviseBldr.append('\n');
+                    revised.append('\n');
                 }
             }
 
-            int len = reviseBldr.length();
-            if (len > 0) reviseBldr.setLength(len - 1);
+            int len = revised.length();
+            if (len > 0) revised.setLength(len - 1);
             // snip trailing newline
 
-            String revisedText = reviseBldr.toString();
+            String revisedText = revised.toString();
             ((EditTextPreference) pref).setText(revisedText);
 
             mPrefs.edit()
