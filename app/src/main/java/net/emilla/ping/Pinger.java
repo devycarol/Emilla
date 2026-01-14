@@ -13,7 +13,6 @@ import net.emilla.annotation.open;
 import net.emilla.util.Services;
 
 public sealed class Pinger permits ChanneledPinger {
-
     public static Pinger of(Context ctx, PingIntent intent) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             return new ChanneledPinger(ctx, intent.ping(), intent.channel());
@@ -31,7 +30,8 @@ public sealed class Pinger permits ChanneledPinger {
     private static int sSlot = 0;
 
     private static synchronized int uniqueSlot() {
-        return --sSlot;
+        --sSlot;
+        return sSlot;
     }
 
     protected final NotificationManager pingManager;

@@ -42,7 +42,8 @@ public enum Calculator {
         }
 
         void push(@Nullable BinaryOperator val) {
-            this.arr[this.size++] = val;
+            this.arr[this.size] = val;
+            ++this.size;
         }
 
         @Nullable
@@ -54,7 +55,8 @@ public enum Calculator {
         @Nullable
         BinaryOperator pop() {
             if (this.size < 1) throw Maths.malformedExpression(this.errorTitle);
-            return this.arr[--this.size];
+            --this.size;
+            return this.arr[this.size];
         }
 
         boolean notEmpty() {
@@ -172,7 +174,8 @@ public enum Calculator {
         }
 
         void push(@Nullable UnaryOperator sign) {
-            arr[size++] = sign;
+            arr[size] = sign;
+            ++size;
         }
 
         @Nullable
@@ -184,7 +187,8 @@ public enum Calculator {
         @Nullable
         UnaryOperator pop() {
             if (size < 1) throw Maths.malformedExpression(errorTitle);
-            return arr[--size];
+            --size;
+            return arr[size];
         }
 
         boolean notEmpty() {

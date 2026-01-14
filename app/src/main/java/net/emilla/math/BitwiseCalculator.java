@@ -28,7 +28,8 @@ public enum BitwiseCalculator {
         }
 
         void push(@Nullable BitwiseOperator val) {
-            arr[size++] = val;
+            arr[size] = val;
+            ++size;
         }
 
         @Nullable
@@ -40,7 +41,8 @@ public enum BitwiseCalculator {
         @Nullable
         BitwiseOperator pop() {
             if (size < 1) throw Maths.malformedExpression(errorTitle);
-            return arr[--size];
+            --size;
+            return arr[size];
         }
 
         boolean notEmpty() {
@@ -158,7 +160,8 @@ public enum BitwiseCalculator {
         }
 
         void push(@Nullable BitwiseSign val) {
-            arr[size++] = val;
+            arr[size] = val;
+            ++size;
         }
 
         @Nullable
@@ -170,7 +173,8 @@ public enum BitwiseCalculator {
         @Nullable
         BitwiseSign pop() {
             if (size < 1) throw Maths.malformedExpression(errorTitle);
-            return arr[--size];
+            --size;
+            return arr[size];
         }
 
         boolean notEmpty() {
