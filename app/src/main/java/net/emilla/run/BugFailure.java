@@ -21,7 +21,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 public final class BugFailure extends DialogRun {
-
     private static final String TAG = BugFailure.class.getSimpleName();
 
     private static AlertDialog.Builder makeDialog(
@@ -56,7 +55,7 @@ public final class BugFailure extends DialogRun {
                 // TODO: open an actual email account
                 .putExtra(EXTRA_SUBJECT, "[Android bug] " + errorHeader)
                 .putExtra(EXTRA_TEXT, body);
-        act.succeed(new AppSuccess(email));
+        act.succeed(AppSuccess.instance(email));
     }
 
     private static String deviceInfo() {

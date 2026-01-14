@@ -7,26 +7,22 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 
 import net.emilla.R;
-import net.emilla.activity.AssistActivity;
 import net.emilla.exception.EmillaException;
 
-public final class AppSuccess implements CommandRun {
-    private final Intent mIntent;
-
-    public AppSuccess(Intent intent) {
-        mIntent = intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-    }
-
-    @Override
-    public void run(AssistActivity act) {
-        var pm = act.getPackageManager();
-        if (mIntent.resolveActivity(pm) != null) {
-            succeed(act, mIntent);
-        } else try {
-            succeed(act, mIntent);
-        } catch (ActivityNotFoundException e) {
-            throw new EmillaException(R.string.error, R.string.error_no_app);
-        }
+public enum AppSuccess {
+    ;
+    public static CommandRun instance(Intent intent) {
+        intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+        return act -> {
+            var pm = act.getPackageManager();
+            if (intent.resolveActivity(pm) != null) {
+                succeed(act, intent);
+            } else try {
+                succeed(act, intent);
+            } catch (ActivityNotFoundException e) {
+                throw new EmillaException(R.string.error, R.string.error_no_app);
+            }
+        };
     }
 
     private static void succeed(Activity act, Intent intent) {

@@ -47,7 +47,6 @@ import java.util.Objects;
 import java.util.Set;
 
 public abstract class EmillaCommand {
-
     public static CommandMap map(
         SharedPreferences prefs,
         Resources res,
@@ -272,7 +271,7 @@ public abstract class EmillaCommand {
     /// @param intent is launched after the assistant closes. It's very important that this is
     ///               resolvable, else an ANF exception will occur.
     protected static void appSucceed(AssistActivity act, Intent intent) {
-        act.succeed(new AppSuccess(intent));
+        act.succeed(AppSuccess.instance(intent));
     }
 
     protected final void giveText(AssistActivity act, @StringRes int msg) {
@@ -289,7 +288,7 @@ public abstract class EmillaCommand {
     }
 
     protected static void giveBroadcast(AssistActivity act, Intent intent) {
-        act.give(new BroadcastGift(intent));
+        act.give(BroadcastGift.instance(intent));
     }
 
     protected static void giveApp(AssistActivity act, Intent intent) {
@@ -342,5 +341,4 @@ public abstract class EmillaCommand {
     /// @param instruction is provided after in the command field after the command's name. It's
     /// always space-trimmed and should remain as such.
     protected abstract void run(AssistActivity act, String instruction);
-
 }

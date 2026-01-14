@@ -17,7 +17,6 @@ import net.emilla.util.Intents;
 import java.util.Arrays;
 
 abstract class CategoryCommand extends CoreCommand {
-
     private final AppEntry[] mApps;
     @Nullable
     private final AlertDialog.Builder mChooser;
@@ -41,7 +40,7 @@ abstract class CategoryCommand extends CoreCommand {
             act,
             R.string.dialog_app,
             labels,
-            (dlg, which) -> act.succeed(new AppSuccess(Intents.launchApp(apps[which])))
+            (dlg, which) -> act.succeed(AppSuccess.instance(Intents.launchApp(apps[which])))
         );
     }
 
@@ -62,5 +61,4 @@ abstract class CategoryCommand extends CoreCommand {
         // those special launches in the Tasker command.
         }
     }
-
 }

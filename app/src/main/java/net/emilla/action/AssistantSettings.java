@@ -16,7 +16,6 @@ import net.emilla.run.AppSuccess;
 import net.emilla.util.Intents;
 
 public final class AssistantSettings implements LabeledQuickAction {
-
     private final AssistActivity mActivity;
 
     public AssistantSettings(AssistActivity act) {
@@ -47,7 +46,7 @@ public final class AssistantSettings implements LabeledQuickAction {
     public void perform() {
         Intent config = Intents.me(mActivity, ConfigActivity.class);
         if (mActivity.shouldCancel()) {
-            mActivity.succeed(new AppSuccess(config));
+            mActivity.succeed(AppSuccess.instance(config));
         } else {
             mActivity.suppressChime(PEND);
             mActivity.startActivity(config.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
