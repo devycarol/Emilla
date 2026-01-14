@@ -59,7 +59,7 @@ public enum Permission {
         }
 
         if (isPromptAllowed(act)) {
-            act.offer(new PermissionOffering(mPermissions, onGrant));
+            act.offer(PermissionOffering.instance(mPermissions, onGrant));
         } else {
             act.fail(new PermissionFailure(act, mName));
         }
@@ -73,7 +73,7 @@ public enum Permission {
         }
 
         if (isPromptAllowed(act)) {
-            act.offer(new PermissionOffering(mPermissions, onGrant));
+            act.offer(PermissionOffering.instance(mPermissions, onGrant));
         } else {
             act.fail(new PermissionFailure(act, mName));
         }
@@ -88,7 +88,7 @@ public enum Permission {
 
         if (isPromptAllowed(act)) {
             act.offer(
-                new PermissionOffering(mPermissions, () -> {
+                PermissionOffering.instance(mPermissions, () -> {
                     onGrant.run();
                     afterGrant.run();
                 })

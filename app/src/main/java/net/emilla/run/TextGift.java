@@ -34,7 +34,7 @@ public final class TextGift extends DialogRun {
     public void run(AssistActivity act) {
         this.dialog.setNeutralButton(android.R.string.copy, (dlg, which) -> {
             act.onCloseDialog(); // Todo: don't require this.
-            act.give(new CopyGift(mText));
+            act.give(CopyGift.instance(mText));
         });
         super.run(act);
     }

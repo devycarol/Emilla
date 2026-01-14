@@ -36,7 +36,7 @@ final class Copy extends CoreCommand {
             return;
         }
         mCopiedText = text;
-        act.give(new CopyGift(text));
+        act.give(CopyGift.instance(text));
     }
 
     @Override

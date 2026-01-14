@@ -24,7 +24,7 @@ public abstract class ActionBox extends Fragment implements InstructyGadget {
     }
 
     protected static void giveCopy(AssistActivity act, CharSequence text) {
-        act.give(new CopyGift(text));
+        act.give(CopyGift.instance(text));
     }
 
     @Override

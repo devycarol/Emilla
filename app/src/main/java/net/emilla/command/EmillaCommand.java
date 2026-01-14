@@ -284,7 +284,7 @@ public abstract class EmillaCommand {
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     protected static void givePing(AssistActivity act, Notification ping, PingChannel channel) {
-        act.give(new PingGift(ping, channel));
+        act.give(PingGift.instance(ping, channel));
     }
 
     protected static void giveBroadcast(AssistActivity act, Intent intent) {
@@ -292,7 +292,7 @@ public abstract class EmillaCommand {
     }
 
     protected static void giveApp(AssistActivity act, Intent intent) {
-        act.give(new AppGift(intent));
+        act.give(AppGift.instance(intent));
     }
 
     protected static void offerDialog(AssistActivity act, AlertDialog.Builder builder) {

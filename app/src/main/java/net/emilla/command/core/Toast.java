@@ -12,8 +12,8 @@ final class Toast extends CoreDataCommand {
         super(ctx, CoreEntry.TOAST, R.string.data_hint_toast);
     }
 
-    private static void toast(AssistActivity act, String message, boolean isLongToast) {
-        act.give(new ToastGift(message, isLongToast));
+    private static void toast(AssistActivity act, CharSequence message, boolean isLongToast) {
+        act.give(ToastGift.instance(message, isLongToast));
     }
 
     @Override
