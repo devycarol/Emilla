@@ -2,7 +2,6 @@
     <!-- Common strings -->
     <string name="exit">Exit</string>
     <string name="leave">Leave</string>
-    <string name="settings">Settings</string>
     <!-- Generic error title. Should match @android:string/error_message_title -->
     <string name="error">Error</string>
     <!-- Android 'App info' link. Should match @android:string/app_info -->
@@ -34,9 +33,8 @@
 
     <string name="app_name">Emilla</string>
     <string name="title_assistant">Assistant</string>
-    <string name="title_commands">Commands</string>
 
-    <string name="ping_channel_command" translatable="false">@string/title_commands</string>
+    <string name="ping_channel_command" translatable="false">@string/header_commands</string>
     <string name="channel_desc_command">Notifications from commands.</string>
     <string name="ping_channel_pomodoro_start">Pomodoro Started</string>
     <string name="channel_desc_pomodoro_start">Fired when a Pomodoro has started.</string>
@@ -92,12 +90,11 @@
     <string name="spoken_description_show_data">Show data field</string>
     <string name="spoken_description_hide_data">Hide data field</string>
     <string name="welcome_message">Hello!</string>
-    <string name="welcome_instruction">To open the assistant, re-press the assistant button.</string>
 
     <!-- Setting category Titles -->
-    <string name="header_general">General</string>
-    <string name="header_customization">Customization</string>
-    <string name="header_actions">Actions</string>
+    <string name="header_behavior">Behavior</string>
+    <string name="header_commands">Commands</string>
+    <string name="header_layout">Layout</string>
     <string name="header_system">System</string>
 
     <!-- General settings -->

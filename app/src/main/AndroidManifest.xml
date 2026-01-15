@@ -67,7 +67,7 @@
         android:supportsRtl="true"
         tools:targetApi="34">
         <activity
-            android:name=".config.ConfigActivity"
+            android:name=".config.SettingsActivity"
             android:exported="true"
             android:theme="@style/Theme.Emilla">
             <intent-filter>

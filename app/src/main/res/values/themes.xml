@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Emilla.DayNight" parent="Theme.MaterialComponents" />
+    <style name="Theme.Emilla.DayNight" parent="Theme.MaterialComponents.NoActionBar" />
 
     <style name="Theme.Emilla.Base" parent="Theme.Emilla.DayNight">
-        <item name="actionBarStyle">@style/ActionBarStyle</item>
         <item name="preferenceTheme">@style/SettingsTheme</item>
 
         <item name="alertDialogStyle">@style/AlertDialog.Emilla</item>
@@ -12,10 +11,6 @@
         <item name="textAppearanceButton">@style/TextAppearance.Emilla.Button</item>
         <item name="listDividerAlertDialog">@drawable/list_divider_emilla</item>
         <item name="selectableItemBackground">@drawable/bg_selectable_item</item>
-    </style>
-
-    <style name="ActionBarStyle" parent="Widget.AppCompat.ActionBar">
-        <item name="background">?attr/colorBackgroundFloating</item>
     </style>
 
     <style name="Theme.Emilla" parent="Theme.Emilla.Base">
@@ -34,8 +29,6 @@
     <style name="Theme.Assistant.Base" parent="Theme.Emilla">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="Theme.Assistant" parent="Theme.Assistant.Base">

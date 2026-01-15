@@ -11,7 +11,7 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.config.ConfigActivity;
+import net.emilla.config.SettingsActivity;
 import net.emilla.run.AppSuccess;
 import net.emilla.util.Intents;
 
@@ -44,12 +44,12 @@ public final class AssistantSettings implements LabeledQuickAction {
 
     @Override
     public void perform() {
-        Intent config = Intents.me(mActivity, ConfigActivity.class);
+        Intent assistantSettings = Intents.me(mActivity, SettingsActivity.class);
         if (mActivity.shouldCancel()) {
-            mActivity.succeed(AppSuccess.instance(config));
+            mActivity.succeed(AppSuccess.instance(assistantSettings));
         } else {
             mActivity.suppressChime(PEND);
-            mActivity.startActivity(config.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+            mActivity.startActivity(assistantSettings.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             mActivity.chime(ACT);
         }
     }

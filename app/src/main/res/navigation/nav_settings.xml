@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:startDestination="@id/fragment_setting_pages">
+
+    <fragment
+        android:id="@+id/fragment_setting_pages"
+        android:name="net.emilla.config.SettingPagesFragment"
+        android:label="@string/app_name">
+        <action
+            android:id="@+id/nav_to_behavior"
+            app:destination="@id/fragment_behavior_settings" />
+        <action
+            android:id="@+id/nav_to_commands"
+            app:destination="@id/fragment_commands_settings" />
+        <action
+            android:id="@+id/nav_to_layout"
+            app:destination="@id/fragment_layout_settings" />
+        <action
+            android:id="@+id/nav_to_system"
+            app:destination="@id/fragment_system_settings" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_behavior_settings"
+        android:name="net.emilla.config.BehaviorSettingsFragment"
+        android:label="@string/header_behavior" />
+
+    <fragment
+        android:id="@+id/fragment_commands_settings"
+        android:name="net.emilla.config.CommandsFragment"
+        android:label="@string/header_commands" />
+
+    <fragment
+        android:id="@+id/fragment_layout_settings"
+        android:name="net.emilla.config.LayoutSettingsFragment"
+        android:label="@string/header_layout" />
+
+    <fragment
+        android:id="@+id/fragment_system_settings"
+        android:name="net.emilla.config.SystemSettingsFragment"
+        android:label="@string/header_system" />
+
+</navigation>

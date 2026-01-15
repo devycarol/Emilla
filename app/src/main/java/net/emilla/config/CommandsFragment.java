@@ -12,9 +12,9 @@ import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
 import androidx.preference.PreferenceCategory;
+import androidx.preference.PreferenceFragmentCompat;
 
 import net.emilla.R;
-import net.emilla.annotation.internal;
 import net.emilla.command.app.AppEntry;
 import net.emilla.command.core.CoreEntry;
 import net.emilla.util.Apps;
@@ -25,7 +25,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public final class CommandsFragment extends EmillaSettingsFragment {
+public final class CommandsFragment extends PreferenceFragmentCompat {
     private static final Pattern SQUASHING_CSV = Pattern.compile("( *, *)+");
 
     private /*late*/ Context mContext;
@@ -49,7 +49,7 @@ public final class CommandsFragment extends EmillaSettingsFragment {
         return false;
     };
 
-    @internal CommandsFragment() {}
+    public CommandsFragment() {}
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -57,7 +57,8 @@ public final class CommandsFragment extends EmillaSettingsFragment {
 
         mContext = requireContext();
         mPm = mContext.getPackageManager();
-        mPrefs = prefs();
+        var manager = getPreferenceManager();
+        mPrefs = manager.getSharedPreferences();
         mRes = getResources();
 
         setupCores();
@@ -68,7 +69,7 @@ public final class CommandsFragment extends EmillaSettingsFragment {
     private void setupCores() {
         Aliases.reformatCoresIfNecessary(mPrefs);
 
-        PreferenceCategory cores = preferenceOf("category_cores");
+        PreferenceCategory cores = findPreference("category_cores");
         for (var coreEntry : CoreEntry.values()) {
             var corePref = new CommandPreference(mContext, coreEntry);
             cores.addPreference(corePref);
@@ -109,7 +110,7 @@ public final class CommandsFragment extends EmillaSettingsFragment {
 
     private void setupApps() {
         // Todo: priority-sort the apps with hard-coded support?
-        PreferenceCategory apps = preferenceOf("category_apps");
+        PreferenceCategory apps = findPreference("category_apps");
         for (AppEntry app : Apps.launchers(mPm)) {
             var appPref = new CommandPreference(mContext, app);
             apps.addPreference(appPref);
@@ -118,7 +119,7 @@ public final class CommandsFragment extends EmillaSettingsFragment {
     }
 
     private void setupCustoms() {
-        EditTextPreference customCommands = preferenceOf(SettingVals.ALIASES_CUSTOM_TEXT);
+        EditTextPreference customCommands = findPreference(SettingVals.ALIASES_CUSTOM_TEXT);
         if (true) {
             customCommands.setEnabled(false);
             return;

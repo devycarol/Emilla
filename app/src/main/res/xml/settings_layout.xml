@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+    <EditTextPreference
+        app:defaultValue="@string/welcome_message"
+        app:key="motd"
+        app:title="@string/pref_motd"
+        app:useSimpleSummaryProvider="true" />
+    <!--Todo: add a reset button-->
+
+    <SwitchPreference
+        app:defaultValue="false"
+        app:key="always_show_data"
+        app:title="@string/pref_always_show_data" />
+
+    <Preference
+        app:key="favorite_commands"
+        app:summary="@string/smry_favorites"
+        app:title="@string/pref_favorites" />
+
+    <!--Todo: editor UI for any number of these-->
+    <SwitchPreference
+        app:defaultValue="false"
+        app:key="show_cursor_start_button"
+        app:title="@string/action_cursor_start"/>
+    <SwitchPreference
+        app:defaultValue="false"
+        app:key="show_play_pause_button"
+        app:title="@string/action_play_pause"/>
+</androidx.preference.PreferenceScreen>

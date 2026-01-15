@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+    <Preference
+        app:key="app_info"
+        app:summary="@string/summary_app_info"
+        app:title="@string/app_info" />
+    <Preference
+        app:key="notifications"
+        app:title="@string/pref_notifications" />
+    <Preference
+        app:key="default_assistant"
+        app:title="@string/pref_default_assistant" />
+    <Preference
+        app:key="accessibility_button"
+        app:summary="@string/accessibility_service_description"
+        app:title="@string/pref_accessibility_button" />
+</androidx.preference.PreferenceScreen>
