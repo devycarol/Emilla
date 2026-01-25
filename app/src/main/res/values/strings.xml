@@ -163,7 +163,7 @@
     <string name="command_alarm">Alarm</string>
     <string name="command_timer">Timer</string>
     <string name="command_note">Note</string>
-    <string name="command_calendar">Calendar</string>
+    <string name="command_schedule">Schedule</string>
     <string name="command_notify">Notify</string>
     <string name="command_setting">Setting</string>
     <string name="command_copy" translatable="false">@android:string/copy</string>
@@ -191,7 +191,7 @@
     <string name="instruction_roll">dice</string>
     <string name="instruction_alarm">time and weekdays</string>
     <string name="instruction_timer">minutes, duration, or until-time</string>
-    <string name="instruction_calendar">event name | DATETIME</string>
+    <string name="instruction_schedule">event name | DATETIME</string>
     <!-- Todo: manual page that specifies abbreviations, also simplify this text -->
     <string name="instruction_setting">name of setting</string>
     <string name="instruction_torch">toggle flashlight</string>
@@ -250,7 +250,7 @@
     <string name="summary_alarm">Set alarms</string>
     <string name="summary_timer">Set timers</string>
     <string name="summary_note">Add text to a file</string>
-    <string name="summary_calendar">Create calendar events</string>
+    <string name="summary_schedule">Create calendar events</string>
     <string name="summary_notify">Set notification reminders</string>
     <string name="summary_setting">Search and change system settings</string>
     <string name="summary_copy">Copy text and files</string>
@@ -489,7 +489,7 @@
         as normal.
     </string>
     <!-- "Create calendar events" -->
-    <string name="manual_calendar">
+    <string name="manual_schedule">
         The details you enter will be sent to your calendar app. You can label the event in the
         command instruction. You can also set the date and time.\n
         \n
@@ -507,7 +507,7 @@
         and \'to\' can also be used to split start and end time. Times can include seconds, see the
         \'alarm\' command for format instructions.\n
         \n
-        In the future, these will all be separate fields. Example command: Calendar Tennis match |
+        In the future, these will all be separate fields. Example command: Schedule Tennis match |
         tomorrow from 3 to 5.\n
         \n
         You can add a location or URL to your event by using their respective field-toggle buttons.
@@ -668,7 +668,7 @@
     <string name="data_hint_message">Message body</string>
     <string name="data_hint_email">Body</string>
     <string name="data_hint_pomodoro">Memo</string>
-    <string name="data_hint_calendar">Event details</string>
+    <string name="data_hint_schedule">Event details</string>
     <string name="data_hint_contact">Contact info</string>
     <string name="data_hint_notify">Notification text</string>
     <string name="data_hint_toast">More text</string>

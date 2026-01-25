@@ -55,6 +55,12 @@ public enum CoreEntry implements Params {
             return true;
         }
     },
+    SCHEDULE(Schedule::new, R.string.command_schedule, R.array.aliases_schedule, R.string.instruction_schedule, R.drawable.ic_schedule, R.string.summary_schedule, R.string.manual_schedule) {
+        @Override
+        public boolean isPossible(PackageManager pm) {
+            return Schedule.possible(pm);
+        }
+    },
     CONTACT(Contact::new, R.string.command_contact, R.array.aliases_contact, R.string.instruction_contact, R.drawable.ic_contact, R.string.summary_contact, R.string.manual_contact) {
         @Override
         public boolean isPossible(PackageManager pm) {
@@ -111,12 +117,6 @@ public enum CoreEntry implements Params {
         }
     },
     POMODORO(Pomodoro::new, R.string.command_pomodoro, R.array.aliases_pomodoro, R.string.instruction_pomodoro, R.drawable.ic_pomodoro, R.string.summary_pomodoro, R.string.manual_pomodoro),
-    CALENDAR(Calendar::new, R.string.command_calendar, R.array.aliases_calendar, R.string.instruction_calendar, R.drawable.ic_calendar, R.string.summary_calendar, R.string.manual_calendar) {
-        @Override
-        public boolean isPossible(PackageManager pm) {
-            return Calendar.possible(pm);
-        }
-    },
     NOTIFY(Notify::new, R.string.command_notify, R.array.aliases_notify, R.string.instruction_title, R.drawable.ic_notify, R.string.summary_notify, R.string.manual_notify),
     COPY(Copy::new, R.string.command_copy, R.array.aliases_copy, R.string.instruction_text, R.drawable.ic_copy, R.string.summary_copy, R.string.manual_copy),
     SNIPPETS(Snippets::new, R.string.command_snippets, R.array.aliases_snippets, R.string.instruction_name_label, R.drawable.ic_snippets, R.string.summary_snippets, R.string.manual_snippets),

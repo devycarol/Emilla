@@ -28,7 +28,7 @@ import java.time.ZoneId;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-final class Calendar extends CoreDataCommand {
+final class Schedule extends CoreDataCommand {
     private static final Pattern TAG_ALL_DAY = Pattern.compile(" */all(day)?", CASE_INSENSITIVE);
     private static final Pattern TRIMMING_PSV = Pattern.compile(" *\\| *");
     // TODO LANG: please stop.
@@ -40,8 +40,8 @@ final class Calendar extends CoreDataCommand {
     private final FieldToggle mLocationToggle;
     private final FieldToggle mUrlToggle;
 
-    @internal Calendar(AssistActivity act) {
-        super(act, CoreEntry.CALENDAR, R.string.data_hint_calendar);
+    @internal Schedule(AssistActivity act) {
+        super(act, CoreEntry.SCHEDULE, R.string.data_hint_schedule);
 
         mLocationToggle = InputField.LOCATION.toggler(act);
         mUrlToggle = InputField.URL.toggler(act);
@@ -51,22 +51,22 @@ final class Calendar extends CoreDataCommand {
 
     @Override
     protected void run(AssistActivity act) {
-        calendar(act, makeIntent());
+        schedule(act, makeIntent());
     }
 
     @Override
     protected void run(AssistActivity act, String titleAndDate) {
-        calendar(act, makeIntent(titleAndDate));
+        schedule(act, makeIntent(titleAndDate));
     }
 
     @Override
     public void runWithData(AssistActivity act, String details) {
-        calendar(act, makeIntent().putExtra(DESCRIPTION, details));
+        schedule(act, makeIntent().putExtra(DESCRIPTION, details));
     }
 
     @Override
     public void runWithData(AssistActivity act, String titleAndDate, String details) {
-        calendar(act, makeIntent(titleAndDate).putExtra(DESCRIPTION, details));
+        schedule(act, makeIntent(titleAndDate).putExtra(DESCRIPTION, details));
     }
 
     private static Intent makeIntent() {
@@ -89,7 +89,7 @@ final class Calendar extends CoreDataCommand {
         case 1 -> {}
         case 2 -> {
             title = nameAndTime[0];
-            DateTimeRange times = Time.parseDateAndTimes(nameAndTime[1], CoreEntry.CALENDAR.name);
+            DateTimeRange times = Time.parseDateAndTimes(nameAndTime[1], CoreEntry.SCHEDULE.name);
 
             intent.putExtra(EXTRA_EVENT_BEGIN_TIME, epochMilliOf(times.start()));
 
@@ -112,18 +112,16 @@ final class Calendar extends CoreDataCommand {
         return dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
     }
 
-    private void calendar(AssistActivity act, Intent intent) {
+    private void schedule(AssistActivity act, Intent intent) {
         String location = mLocationToggle.fieldText();
         if (location != null) intent.putExtra(EVENT_LOCATION, location);
 
         String url = mUrlToggle.fieldText();
         if (url != null) intent.putExtra("url", url);
 
-        // todo: is there a way to query supported extras?
         // Todo: action buttons to select availability, access level, and guests—last requires
         //  contacts stuff. If possible also: reminders, repeats, timezone, event color, and
         //  calendar selection.
         appSucceed(act, intent);
-        // todo: etar calendar acts janky in the recents
     }
 }

@@ -100,7 +100,7 @@
     <string-array name="aliases_pomodoro">
         <item>pomo</item>
     </string-array>
-    <string-array name="aliases_calendar">
+    <string-array name="aliases_schedule">
         <item>cal</item>
         <item>plan</item>
     </string-array>
