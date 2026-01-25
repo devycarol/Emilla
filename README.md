@@ -12,7 +12,7 @@ A powerful Android assistant that respects you.
 - Accessibility is a top priority.
 - You can turn off sounds if they're not your thing.
 
-<img src="https://github.com/user-attachments/assets/82f3bb88-5d74-4c08-bd18-d6b7029ee0e8" width="380px">
-<img src="https://github.com/user-attachments/assets/1783c154-97ec-4c22-8857-3c4b51f79578" width="380px">
-<img src="https://github.com/user-attachments/assets/fa86d57e-40d0-485e-802b-3e801e909277" width="380px">
-<img src="https://github.com/user-attachments/assets/a2fcce07-4c05-412d-a3d3-a8eadcafa831" width="380px">
+<img width="380px" alt="text" src="https://github.com/user-attachments/assets/37be6d6f-49fb-44d2-8fb7-aa0d978cea05" />
+<img width="380px" alt="todo" src="https://github.com/user-attachments/assets/ffe86579-052a-49f4-8ae3-fe4643b8da6e" />
+<img width="380px" alt="nav" src="https://github.com/user-attachments/assets/c3569cdc-127c-4959-a657-d2be8936150a" />
+<img width="380px" alt="ff" src="https://github.com/user-attachments/assets/1f9d7f71-a8aa-4c29-aa18-5fcd44ffc796" />
