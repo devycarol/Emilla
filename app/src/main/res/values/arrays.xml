@@ -64,6 +64,7 @@
         <item>nav</item>
         <item>directions</item>
         <item>take me</item>
+        <item>take me to</item>
     </string-array>
     <string-array name="aliases_launch">
         <item>open</item>
