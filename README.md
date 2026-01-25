@@ -12,7 +12,7 @@ A powerful Android assistant that respects you.
 - Accessibility is a top priority.
 - You can turn off sounds if they're not your thing.
 
-<img width="380px" alt="text" src="https://github.com/user-attachments/assets/37be6d6f-49fb-44d2-8fb7-aa0d978cea05" />
-<img width="380px" alt="todo" src="https://github.com/user-attachments/assets/ffe86579-052a-49f4-8ae3-fe4643b8da6e" />
-<img width="380px" alt="nav" src="https://github.com/user-attachments/assets/c3569cdc-127c-4959-a657-d2be8936150a" />
-<img width="380px" alt="ff" src="https://github.com/user-attachments/assets/1f9d7f71-a8aa-4c29-aa18-5fcd44ffc796" />
+<img width="380px" alt="Command example for 'Text mom and dad'. The UI hint is 'SMS: person or number'. A message body reading 'Hello!' is shown. A list of contacts is shown, which includes entries named 'Mom' and 'Dad' with mobile phone numbers redacted. They are both starred in the list." src="https://github.com/user-attachments/assets/2e2feda5-6388-4872-b326-639d72aeb43b" />
+<img width="380px" alt="Command example for 'Todo'. The UI hint is 'To-do: task'. A to-do list is shown, which includes 'Clean dishes', 'Project proposal' (checked), and 'Email Susan'." src="https://github.com/user-attachments/assets/1b944fc0-1098-47bd-a7d4-6406e38c864a" />
+<img width="380px" alt="Command example for 'Take me to Colorado Springs'. The UI hint is 'Navigate: location'." src="https://github.com/user-attachments/assets/62fdc8ff-a519-4caf-8551-7ef12e01298b" />
+<img width="380px" alt="Command example for 'Ff github.com/devycarol/Emilla'. The UI hint is 'Firefox: search or URL'." src="https://github.com/user-attachments/assets/0ef1b5e6-ac15-430c-93e2-f510472560b2" />
