@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.Emilla.DayNight" parent="Theme.MaterialComponents.Light" />
+    <style name="Theme.Emilla.DayNight" parent="Theme.MaterialComponents.Light.NoActionBar" />
 
     <style name="Theme.Emilla" parent="Theme.Emilla.Base">
         <item name="colorPrimary">@color/main_500</item>
