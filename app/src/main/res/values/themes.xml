@@ -22,6 +22,7 @@
         <item name="colorOnSecondary">#000</item>
         <item name="colorSecondaryContainer">@color/secn_background_dark</item>
         <item name="colorBackgroundFloating">@color/secn_background_dark</item>
+        <item name="colorSucceed">@color/main_400</item>
         <item name="android:textColor">#FFF</item>
         <item name="android:windowBackground">@color/main_background_dark</item>
     </style>
@@ -33,7 +34,6 @@
 
     <style name="Theme.Assistant" parent="Theme.Assistant.Base">
         <item name="colorBackgroundFloating">@color/main_background_dark</item>
-        <item name="colorSucceed">@color/main_400</item>
     </style>
 
 </resources>

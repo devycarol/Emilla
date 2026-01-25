@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="@dimen/margin_narrow_half">
 
     <GridLayout
         android:layout_width="match_parent"
@@ -15,6 +16,8 @@
             android:id="@+id/layout"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
+            android:layout_margin="@dimen/margin_narrow_half"
+            android:background="@color/bg_tile_button"
             android:gravity="center"
             android:text="@string/header_layout"
             android:textSize="24sp" />
@@ -23,6 +26,8 @@
             android:id="@+id/system"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
+            android:layout_margin="@dimen/margin_narrow_half"
+            android:background="@color/bg_tile_button"
             android:gravity="center"
             android:text="@string/header_system"
             android:textSize="24sp" />
@@ -31,6 +36,8 @@
             android:id="@+id/behavior"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
+            android:layout_margin="@dimen/margin_narrow_half"
+            android:background="@color/bg_tile_button"
             android:gravity="center"
             android:text="@string/header_behavior"
             android:textSize="24sp" />
@@ -39,6 +46,8 @@
             android:id="@+id/commands"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
+            android:layout_margin="@dimen/margin_narrow_half"
+            android:background="@color/bg_tile_button"
             android:gravity="center"
             android:text="@string/header_commands"
             android:textSize="24sp" />
@@ -49,6 +58,8 @@
         android:id="@+id/assistant"
         android:layout_width="match_parent"
         android:layout_height="@dimen/width_action"
+        android:layout_margin="@dimen/margin_narrow_half"
+        android:background="@color/bg_tile_button"
         android:gravity="center"
         android:text="@string/title_assistant"
         android:textSize="24sp" />

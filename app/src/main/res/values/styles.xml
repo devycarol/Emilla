@@ -56,7 +56,7 @@
         <item name="backgroundTint">@color/bg_text_button</item>
         <!-- TODO: make this a ripple that just holds the ripple color when held. Currently it just
               adds the ripple color on top of the pressed color which is not ideal. Examine the
-              Android accessibility consent dialog because that's goated.. -->
+              Android accessibility consent dialog. -->
     </style>
 
     <style name="TextAppearance.Emilla.Button" parent="TextAppearance.AppCompat.Button">
