@@ -63,7 +63,6 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         tools:targetApi="34">
         <activity
@@ -87,7 +86,6 @@
             android:icon="@mipmap/ic_launcher_assistant"
             android:label="@string/title_assistant"
             android:launchMode="singleTask"
-            android:roundIcon="@mipmap/ic_launcher_assistant_round"
             android:taskAffinity=".assistant"
             android:theme="@style/Theme.Assistant"
             android:windowSoftInputMode="adjustResize">
