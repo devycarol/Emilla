@@ -141,6 +141,11 @@ public final class ListFileFragment extends ActionBox {
             return false;
         }
 
+        int dotIndex = filename.lastIndexOf('.');
+        if (0 < dotIndex && dotIndex < filename.length() - 1 && filename.indexOf('.') == dotIndex) {
+            filename = filename.substring(0, dotIndex);
+        }
+
         mBinding.toolbar.setTitle(filename);
         return true;
     }
