@@ -57,6 +57,17 @@ public final class AppActions {
         return (mFlags & FLAG_TASKER) != 0;
     }
 
+    public int instruction() {
+        if (hasSend()) {
+            return R.string.instruction_app_send;
+        }
+        if (hasSearch()) {
+            return R.string.instruction_app_search;
+        }
+        // Todo: allow multiple actions
+        return R.string.instruction_app;
+    }
+
     @StringRes
     public int summary() {
         if (hasSend()) {

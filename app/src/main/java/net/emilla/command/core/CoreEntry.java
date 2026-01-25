@@ -31,7 +31,7 @@ public enum CoreEntry implements Params {
             return Web.possible(pm);
         }
     },
-    LAUNCH(Launch::new, R.string.command_launch, R.array.aliases_launch, R.string.instruction_app, R.drawable.ic_launch, R.string.summary_launch, R.string.manual_launch),
+    LAUNCH(Launch::new, R.string.command_launch, R.array.aliases_launch, R.string.instruction_choose_app, R.drawable.ic_launch, R.string.summary_launch, R.string.manual_launch),
     CALL(Call::new, R.string.command_call, R.array.aliases_call, R.string.instruction_phone, R.drawable.ic_call, R.string.summary_call, R.string.manual_call) {
         @Override
         public boolean isPossible(PackageManager pm) {
@@ -84,7 +84,7 @@ public enum CoreEntry implements Params {
             return Email.possible(pm);
         }
     },
-    SHARE(Share::new, R.string.command_share, R.array.aliases_share, R.string.instruction_app, R.drawable.ic_share, R.string.summary_share, R.string.manual_share) {
+    SHARE(Share::new, R.string.command_share, R.array.aliases_share, R.string.instruction_choose_app, R.drawable.ic_share, R.string.summary_share, R.string.manual_share) {
         @Override
         public boolean isPossible(PackageManager pm) {
             return Share.possible(pm);
@@ -125,19 +125,19 @@ public enum CoreEntry implements Params {
     FAHRENHEIT(Fahrenheit::new, R.string.command_fahrenheit, R.array.aliases_fahrenheit, R.string.instruction_temperature, R.drawable.ic_temperature, R.string.summary_fahrenheit, R.string.manual_fahrenheit),
     ROLL(Roll::new, R.string.command_roll, R.array.aliases_roll, R.string.instruction_roll, R.drawable.ic_roll, R.string.summary_roll, R.string.manual_roll),
     RANDOM_NUMBER(RandomNumber::new, R.string.command_random_number, R.array.aliases_random_number, R.string.instruction_random_number, R.drawable.ic_random_number, R.string.summary_random_number, R.string.manual_random_number),
-    INFO(Info::new, R.string.command_info, R.array.aliases_info, R.string.instruction_app, R.drawable.ic_info, R.string.summary_info, R.string.manual_info) {
+    INFO(Info::new, R.string.command_info, R.array.aliases_info, R.string.instruction_choose_app, R.drawable.ic_info, R.string.summary_info, R.string.manual_info) {
         @Override
         public boolean isPossible(PackageManager pm) {
             return Info.possible(pm);
         }
     },
-    NOTIFICATIONS(Notifications::new, R.string.command_notifications, R.array.aliases_notifications, R.string.instruction_app, R.drawable.ic_notifications, R.string.summary_notifications, R.string.manual_notifications) {
+    NOTIFICATIONS(Notifications::new, R.string.command_notifications, R.array.aliases_notifications, R.string.instruction_choose_app, R.drawable.ic_notifications, R.string.summary_notifications, R.string.manual_notifications) {
         @Override
         public boolean isPossible(PackageManager pm) {
             return Notifications.possible(pm);
         }
     },
-    UNINSTALL(Uninstall::new, R.string.command_uninstall, R.array.aliases_uninstall, R.string.instruction_app, R.drawable.ic_uninstall, R.string.summary_uninstall, R.string.manual_uninstall) {
+    UNINSTALL(Uninstall::new, R.string.command_uninstall, R.array.aliases_uninstall, R.string.instruction_choose_app, R.drawable.ic_uninstall, R.string.summary_uninstall, R.string.manual_uninstall) {
         @Override
         public boolean isPossible(PackageManager pm) {
             return Uninstall.possible(pm);

@@ -13,7 +13,6 @@ import android.graphics.drawable.Drawable;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
-import net.emilla.R;
 import net.emilla.command.Params;
 import net.emilla.config.Aliases;
 import net.emilla.config.SettingVals;
@@ -77,16 +76,18 @@ public final class AppEntry extends SearchItem implements Params {
 
     @Override
     public String title(Resources res) {
-        if (actions.hasSend()) {
-            return Lang.colonConcat(res, R.string.command_app_send, displayName);
+        return Lang.colonConcat(res, displayName, instruction());
+    }
+
+    @StringRes
+    private int instruction() {
+        if (properties != null) {
+            int instruction = properties.instruction;
+            if (instruction != 0) {
+                return instruction;
+            }
         }
-        if (actions.hasSearch()) {
-            return Lang.colonConcat(res, R.string.command_app_search, displayName);
-        }
-        if (actions.usesInstruction() && properties != null) {
-            return Lang.colonConcat(res, displayName, properties.instruction);
-        }
-        return Lang.colonConcat(res, R.string.command_app, displayName);
+        return actions.instruction();
     }
 
     @Override

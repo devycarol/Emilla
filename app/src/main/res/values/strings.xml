@@ -177,9 +177,6 @@
     <string name="command_todo">To-do</string>
     <string name="command_pomodoro">Pomodoro</string>
     <string name="command_custom">Custom</string>
-    <string name="command_app">App</string>
-    <string name="command_app_send">App Send</string>
-    <string name="command_app_search">App Search</string>
 
     <!-- Descriptions for command arguments -->
     <string name="instruction_web">search or URL</string>
@@ -204,7 +201,7 @@
     <!-- Generic instruction for contacting a person by name or phone number -->
     <string name="instruction_phone">person or number</string>
     <!-- Generic instruction for a choice of app -->
-    <string name="instruction_app">app name</string>
+    <string name="instruction_choose_app">app name</string>
     <!-- Generic instruction for finding a file by name -->
     <string name="instruction_file">filename</string>
     <!-- Generic instruction for giving a location -->
@@ -221,10 +218,13 @@
     <string name="instruction_title">title</string>
     <!-- Generic instruction for message text -->
     <string name="instruction_message">message</string>
+    <string name="instruction_app">launch</string>
+    <string name="instruction_app_send">send</string>
+    <string name="instruction_app_search">search</string>
     <!-- Generic instruction for email apps -->
     <string name="instruction_app_email">email body</string>
     <!-- Generic instruction for code issues -->
-    <string name="instruction_issue">issue text</string>
+    <string name="instruction_app_issue">issue text</string>
     <string name="instruction_app_tasker">task name</string>
 
     <!-- Command summaries -->
