@@ -6,6 +6,8 @@ import static net.emilla.chime.Chime.RESUME;
 
 import android.widget.EditText;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IdRes;
 import androidx.annotation.StringRes;
 
 import net.emilla.R;
@@ -18,13 +20,13 @@ public final class CursorStart implements LabeledQuickAction {
         mActivity = act;
     }
 
-    @Override
+    @Override @IdRes
     public int id() {
         return R.id.action_cursor_start;
     }
 
-    @Override
-    public int icon() {
+    @Override @DrawableRes
+    public int symbol() {
         return R.drawable.ic_cursor_start;
     }
 

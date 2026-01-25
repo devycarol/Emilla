@@ -12,9 +12,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.accessibility.AccessibilityManager;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
-import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
@@ -26,50 +24,36 @@ import net.emilla.util.Services;
 public final class ActionButton extends AppCompatImageButton implements View.OnTouchListener {
     private boolean mHasLongPress = false;
     private boolean mLongTouching = false;
-    private Drawable mIcon;
-    private Drawable mLongIcon = null;
-    private boolean mHasAppIcon = false;
+    private ActionIcon mIcon;
+    private ActionIcon mLongIcon = null;
     private final Drawable mBackground;
 
     private final Runnable mOnLongPress = () -> {
         mLongTouching = true;
         performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
-        setImageDrawable(mLongIcon);
-        if (mHasAppIcon) applyNormalIconBackground(getResources());
+        applyIcon(mLongIcon);
     };
 
     public ActionButton(Context ctx, @Nullable AttributeSet attrs) {
         super(ctx, attrs);
 
         setOnTouchListener(this);
-        mIcon = getDrawable();
+        mIcon = new SymbolIcon(getDrawable());
         mBackground = getBackground();
     }
 
-    public void setIcon(@DrawableRes int icon) {
-        setIcon(AppCompatResources.getDrawable(getContext(), icon), false);
-    }
-
-    public void setIcon(Drawable icon, boolean isAppIcon) {
-        setImageDrawable(mIcon = icon);
-        if (mHasAppIcon != isAppIcon) {
-            mHasAppIcon = isAppIcon;
-            var res = getResources();
-            if (isAppIcon) {
-                applyAppIconBackground(res);
-            } else {
-                applyNormalIconBackground(res);
-            }
-        }
+    public void setIcon(ActionIcon icon) {
+        mIcon = icon;
+        applyIcon(mIcon);
     }
 
     public void setLongPress(QuickAction action, Resources res) {
-        setOnLongClickListener(v -> {
+        setOnLongClickListener(view -> {
             action.perform();
             return true;
         });
 
-        mLongIcon = AppCompatResources.getDrawable(getContext(), action.icon());
+        mLongIcon = action.icon();
 
         ViewCompat.replaceAccessibilityAction(
             this,
@@ -98,12 +82,15 @@ public final class ActionButton extends AppCompatImageButton implements View.OnT
             }
             case MotionEvent.ACTION_MOVE -> {
                 boolean pressed = isPressed();
-                super.onTouchEvent(event);
+                onTouchEvent(event);
                 if (isPressed() != pressed) {
                     if (mLongTouching) {
-                        performHapticFeedback(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
-                                ? HapticFeedbackConstants.GESTURE_END : HapticFeedbackConstants.KEYBOARD_TAP);
-                        resetIcon();
+                        performHapticFeedback(
+                            Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
+                                ? HapticFeedbackConstants.GESTURE_END
+                                : HapticFeedbackConstants.KEYBOARD_TAP
+                        );
+                        applyIcon(mIcon);
                         mLongTouching = false;
                     } else if (mHasLongPress) {
                         getHandler().removeCallbacks(mOnLongPress);
@@ -116,7 +103,7 @@ public final class ActionButton extends AppCompatImageButton implements View.OnT
                     setPressed(false);
                     if (mLongTouching) {
                         mLongTouching = false;
-                        resetIcon();
+                        applyIcon(mIcon);
                         performLongClick();
                     } else {
                         if (mHasLongPress) {
@@ -131,25 +118,21 @@ public final class ActionButton extends AppCompatImageButton implements View.OnT
                 }
             }
         }
-        return super.onTouchEvent(event);
+        return onTouchEvent(event);
     }
 
-    private void resetIcon() {
-        setImageDrawable(mIcon);
-        if (mHasAppIcon) {
-            applyAppIconBackground(getResources());
+    private void applyIcon(ActionIcon icon) {
+        setImageDrawable(icon.drawable(getContext()));
+        var res = getResources();
+        int pad;
+        if (icon instanceof AppIcon) {
+            setBackgroundColor(res.getColor(android.R.color.transparent));
+            // Todo: make the app icon have a ripple highlight effect.
+            pad = 0;
+        } else {
+            setBackgroundDrawable(mBackground);
+            pad = res.getDimensionPixelSize(R.dimen.action_button_padding);
         }
-    }
-
-    private void applyAppIconBackground(Resources res) {
-        setBackgroundColor(res.getColor(android.R.color.transparent));
-        // Todo: make the app icon have a ripple highlight effect.
-        setPadding(0, 0, 0, 0);
-    }
-
-    private void applyNormalIconBackground(Resources res) {
-        setBackgroundDrawable(mBackground);
-        int pad = res.getDimensionPixelSize(R.dimen.margin_narrow);
         setPadding(pad, pad, pad, pad);
     }
 }

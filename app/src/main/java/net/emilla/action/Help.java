@@ -5,6 +5,8 @@ import static android.view.KeyEvent.KEYCODE_MENU;
 
 import android.content.res.Resources;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IdRes;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
@@ -20,13 +22,13 @@ public final class Help implements LabeledQuickAction {
         mActivity = act;
     }
 
-    @Override
+    @Override @IdRes
     public int id() {
         return R.id.action_help;
     }
 
-    @Override
-    public int icon() {
+    @Override @DrawableRes
+    public int symbol() {
         return R.drawable.ic_help;
     }
 

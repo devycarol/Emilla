@@ -28,7 +28,7 @@ public final class AssistantSettings implements LabeledQuickAction {
     }
 
     @Override @DrawableRes
-    public int icon() {
+    public int symbol() {
         return R.drawable.ic_assistant;
     }
 

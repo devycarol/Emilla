@@ -8,11 +8,18 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.InsetDrawable;
+import android.os.Build;
+import android.util.TypedValue;
 
+import androidx.annotation.AttrRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
+import net.emilla.R;
 import net.emilla.command.Params;
 import net.emilla.config.Aliases;
 import net.emilla.config.SettingVals;
@@ -21,6 +28,9 @@ import net.emilla.sort.SearchItem;
 import net.emilla.struct.IndexedStruct;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
+import net.emilla.widget.ActionIcon;
+import net.emilla.widget.AppIcon;
+import net.emilla.widget.SymbolIcon;
 
 import java.util.Set;
 
@@ -91,12 +101,40 @@ public final class AppEntry extends SearchItem implements Params {
     }
 
     @Override
+    public ActionIcon actionIcon(Context ctx) {
+        Drawable icon = icon(ctx);
+        if (icon == null) {
+            return new SymbolIcon(R.drawable.ic_app);
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+            && icon instanceof AdaptiveIconDrawable adaptive) {
+            Drawable monochrome = adaptive.getMonochrome();
+            if (monochrome != null) {
+                monochrome.setTint(attribute(ctx, com.google.android.material.R.attr.colorOnSurface));
+                var inset = new InsetDrawable(monochrome, -0.5f);
+                return new SymbolIcon(inset);
+            }
+        }
+
+        return new AppIcon(icon);
+    }
+
+    private static int attribute(Context ctx, @AttrRes int attribute) {
+        var value = new TypedValue();
+        if (ctx.getTheme().resolveAttribute(attribute, value, true)) {
+            return value.data;
+        }
+        return Color.BLACK;
+    }
+
+    @Nullable
     public Drawable icon(Context ctx) {
         try {
-            return ctx.getPackageManager().getActivityIcon(componentName());
+            var pm = ctx.getPackageManager();
+            return pm.getActivityIcon(componentName());
         } catch (PackageManager.NameNotFoundException e) {
-            throw new RuntimeException(e);
-            // TODO: No.
+            return null;
         }
     }
 

@@ -1,6 +1,7 @@
 <resources>
     <dimen name="margin_wide">16dp</dimen>
     <dimen name="margin_narrow">8dp</dimen>
+    <dimen name="action_button_padding">6dp</dimen>
     <dimen name="margin_narrow_half">4dp</dimen>
     <dimen name="width_action">52dp</dimen>
 </resources>

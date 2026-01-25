@@ -4,13 +4,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 
 import androidx.annotation.ArrayRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import androidx.appcompat.content.res.AppCompatResources;
 
 import net.emilla.R;
 import net.emilla.annotation.internal;
@@ -19,6 +17,7 @@ import net.emilla.command.Params;
 import net.emilla.config.Aliases;
 import net.emilla.config.SettingVals;
 import net.emilla.lang.Lang;
+import net.emilla.widget.SymbolIcon;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -224,8 +223,8 @@ public enum CoreEntry implements Params {
     }
 
     @Override
-    public final Drawable icon(Context ctx) {
-        return AppCompatResources.getDrawable(ctx, icon);
+    public final SymbolIcon actionIcon(Context ctx) {
+        return new SymbolIcon(icon);
     }
 
     @Override

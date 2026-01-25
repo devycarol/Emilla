@@ -42,7 +42,7 @@ public final class FieldToggle implements QuickAction {
     }
 
     @Override @DrawableRes
-    public int icon() {
+    public int symbol() {
         return mInputField.icon;
     }
 

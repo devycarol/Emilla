@@ -24,7 +24,6 @@ import static net.emilla.chime.Chime.SUCCEED;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -83,6 +82,7 @@ import net.emilla.run.MessageFailure;
 import net.emilla.util.Dialogs;
 import net.emilla.util.Views;
 import net.emilla.widget.ActionButton;
+import net.emilla.widget.ActionIcon;
 
 import java.util.ArrayList;
 
@@ -613,8 +613,8 @@ public final class AssistActivity extends AppCompatActivity {
         }
     }
 
-    public void setSubmitIcon(Drawable icon, boolean isAppIcon) {
-        mBinding.submitButton.setIcon(icon, isAppIcon);
+    public void setSubmitIcon(ActionIcon icon) {
+        mBinding.submitButton.setIcon(icon);
     }
 
     public void setImeAction(int action) {

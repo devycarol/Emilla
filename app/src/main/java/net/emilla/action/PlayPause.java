@@ -24,7 +24,7 @@ public final class PlayPause implements LabeledQuickAction {
     }
 
     @Override @DrawableRes
-    public int icon() {
+    public int symbol() {
         // TODO: update all feedbacks when media starts and stops playing, either from our actions
         //  or outside.
         return R.drawable.ic_play;

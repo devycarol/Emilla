@@ -24,7 +24,6 @@ import net.emilla.action.InstructyGadget;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.annotation.open;
-import net.emilla.command.app.AppCommand;
 import net.emilla.command.app.AppEntry;
 import net.emilla.command.app.AppYielder;
 import net.emilla.command.core.CoreEntry;
@@ -183,7 +182,7 @@ public abstract class EmillaCommand {
         act.updateDataHint();
         act.setImeAction(mImeAction);
         if (setIcon) {
-            act.setSubmitIcon(mParams.icon(act), this instanceof AppCommand);
+            act.setSubmitIcon(mParams.actionIcon(act));
         }
     }
 

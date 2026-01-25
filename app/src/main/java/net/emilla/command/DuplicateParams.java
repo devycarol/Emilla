@@ -2,14 +2,13 @@ package net.emilla.command;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 
 import androidx.annotation.StringRes;
-import androidx.appcompat.content.res.AppCompatResources;
 
 import net.emilla.R;
 import net.emilla.annotation.internal;
 import net.emilla.lang.Lang;
+import net.emilla.widget.SymbolIcon;
 
 final class DuplicateParams implements Params {
     @StringRes
@@ -28,8 +27,8 @@ final class DuplicateParams implements Params {
     }
 
     @Override
-    public Drawable icon(Context ctx) {
-        return AppCompatResources.getDrawable(ctx, R.drawable.ic_command);
+    public SymbolIcon actionIcon(Context ctx) {
+        return new SymbolIcon(R.drawable.ic_command);
     }
 
     @Override

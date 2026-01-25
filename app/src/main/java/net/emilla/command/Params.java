@@ -2,7 +2,8 @@ package net.emilla.command;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
+
+import net.emilla.widget.ActionIcon;
 
 public interface Params {
     /// The command's name in Title Case.
@@ -20,9 +21,8 @@ public interface Params {
 
     /// The command's icon for the submit button.
     ///
-    /// @param ctx can be used to retrieve the icon from drawable resources.
     /// @return the command's icon drawable.
-    Drawable icon(Context ctx);
+    ActionIcon actionIcon(Context ctx);
 
     /// Whether the command should be lowercased mid-sentence.
     ///

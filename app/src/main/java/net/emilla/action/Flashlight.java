@@ -26,7 +26,7 @@ public final class Flashlight implements LabeledQuickAction {
     }
 
     @Override @DrawableRes
-    public int icon() {
+    public int symbol() {
         return R.drawable.ic_torch;
     }
 

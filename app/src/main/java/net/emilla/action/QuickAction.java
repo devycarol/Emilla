@@ -7,6 +7,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
 
 import net.emilla.activity.AssistActivity;
+import net.emilla.widget.SymbolIcon;
 
 public interface QuickAction extends Gadget {
     // Preference keys
@@ -27,10 +28,14 @@ public interface QuickAction extends Gadget {
     @IdRes
     int id();
     @DrawableRes
-    int icon();
+    int symbol();
     String label(Resources res);
     String description(Resources res);
     void perform();
+
+    default SymbolIcon icon() {
+        return new SymbolIcon(symbol());
+    }
 
     @Override @CallSuper
     default void load(AssistActivity act) {
