@@ -3,7 +3,7 @@ package net.emilla.math;
 sealed interface CalcToken {
     sealed interface InfixToken
         extends CalcToken
-        permits BinaryOperator, LParen, RParen, FloatingPointNumber, UnaryOperator
+        permits BinaryOperator, UnaryOperator, LParen, RParen, FloatingPointNumber
     {}
 
     sealed interface BitwiseToken

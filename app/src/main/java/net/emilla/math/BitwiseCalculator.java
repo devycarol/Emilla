@@ -185,17 +185,15 @@ public enum BitwiseCalculator {
 
     try {
         for (BitwiseToken token : new BitwiseTokens(expression, errorTitle)) {
-            if (token instanceof BitwiseOperator op) {
-                result.applyOperator(op, opStk);
-            } else if (token instanceof BitwiseSign op) {
-                result.applyOperator(op);
-            } else if (token instanceof LParen) {
+            switch (token) {
+            case BitwiseOperator op -> result.applyOperator(op, opStk);
+            case BitwiseSign op -> result.applyOperator(op);
+            case LParen __ -> {
                 result.applyLParen();
                 opStk.push(BitwiseOperator.LPAREN);
-            } else if (token instanceof RParen) {
-                result.applyRParen(opStk);
-            } else if (token instanceof IntegerNumber number) {
-                result.push(number.value);
+            }
+            case RParen __ -> result.applyRParen(opStk);
+            case IntegerNumber number -> result.push(number.value);
             }
         }
 

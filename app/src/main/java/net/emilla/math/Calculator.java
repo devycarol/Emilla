@@ -201,17 +201,15 @@ public enum Calculator {
 
     try {
         for (InfixToken token : new InfixTokens(expression, errorTitle)) {
-            if (token instanceof BinaryOperator op) {
-                result.applyOperator(op, opStk);
-            } else if (token instanceof UnaryOperator op) {
-                result.applyOperator(op);
-            } else if (token instanceof LParen) {
+            switch (token) {
+            case BinaryOperator op -> result.applyOperator(op, opStk);
+            case UnaryOperator op -> result.applyOperator(op);
+            case LParen __ -> {
                 result.applyLParen();
                 opStk.push(BinaryOperator.LPAREN);
-            } else if (token instanceof RParen) {
-                result.applyRParen(opStk);
-            } else if (token instanceof FloatingPointNumber number) {
-                result.push(number.value);
+            }
+            case RParen __ -> result.applyRParen(opStk);
+            case FloatingPointNumber number -> result.push(number.value);
             }
         }
 

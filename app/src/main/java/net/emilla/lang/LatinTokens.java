@@ -114,7 +114,8 @@ public final class LatinTokens {
     @Nullable
     private String nextOfInternal(LatinToken... tokens) {
         for (LatinToken token : tokens) {
-            if (token instanceof Letter letter) {
+            switch (token) {
+            case Letter letter -> {
                 char ch = mChars[mPosition];
                 if (letter.matches(ch)) {
                     if (letter.mRequireSpaceBefore) {
@@ -124,7 +125,8 @@ public final class LatinTokens {
                     advanceImmediate();
                     return String.valueOf(ch);
                 }
-            } else if (token instanceof Word word) {
+            }
+            case Word word -> {
                 int end = mPosition + word.length();
                 if (end > mLength) {
                     continue;
@@ -139,7 +141,7 @@ public final class LatinTokens {
                     advanceFrom(end);
                     return sector;
                 }
-            }
+            }}
         }
 
         return null;
