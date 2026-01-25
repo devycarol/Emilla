@@ -1,4 +1,4 @@
-package net.emilla.view;
+package net.emilla.widget;
 
 import android.content.Context;
 import android.content.res.Resources;

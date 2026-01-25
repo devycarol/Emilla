@@ -82,7 +82,7 @@ import net.emilla.run.DialogRun;
 import net.emilla.run.MessageFailure;
 import net.emilla.util.Dialogs;
 import net.emilla.util.Views;
-import net.emilla.view.ActionButton;
+import net.emilla.widget.ActionButton;
 
 import java.util.ArrayList;
 
