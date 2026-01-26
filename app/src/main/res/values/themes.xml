@@ -14,7 +14,7 @@
     </style>
 
     <style name="Theme.Emilla" parent="Theme.Emilla.Base">
-        <item name="colorPrimary">@color/main_200</item>
+        <item name="colorPrimary">@color/main_400</item>
         <item name="colorPrimaryVariant">@color/main_700</item>
         <item name="colorOnPrimary">@android:color/black</item>
         <item name="colorSecondary">@color/secn_200</item>
@@ -22,7 +22,6 @@
         <item name="colorOnSecondary">@android:color/black</item>
         <item name="colorSecondaryContainer">@color/secn_background_dark</item>
         <item name="colorBackgroundFloating">@color/secn_background_dark</item>
-        <item name="colorSucceed">@color/main_400</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:windowBackground">@color/main_background_dark</item>
     </style>

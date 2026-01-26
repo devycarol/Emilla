@@ -3,7 +3,7 @@
     <style name="Theme.Emilla.DayNight" parent="Theme.MaterialComponents.Light.NoActionBar" />
 
     <style name="Theme.Emilla" parent="Theme.Emilla.Base">
-        <item name="colorPrimary">@color/main_500</item>
+        <item name="colorPrimary">@color/main_200</item>
         <item name="colorPrimaryVariant">@color/main_700</item>
         <item name="colorOnPrimary">@android:color/white</item>
         <item name="colorSecondary">@color/secn_500</item>
@@ -11,7 +11,6 @@
         <item name="colorOnSecondary">@android:color/black</item>
         <item name="colorSecondaryContainer">@color/secn_background_light</item>
         <item name="colorBackgroundFloating">@color/secn_background_light</item>
-        <item name="colorSucceed">@color/main_200</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:windowBackground">@color/main_background_light</item>
     </style>
