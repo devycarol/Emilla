@@ -16,8 +16,7 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.exception.EmillaException;
 
-public enum TorchManager {
-    ;
+public enum TorchManager {;
     private static final String TAG = TorchManager.class.getSimpleName();
 
     private static boolean sTorching = false;

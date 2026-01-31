@@ -8,8 +8,7 @@ import android.webkit.MimeTypeMap;
 import java.util.Iterator;
 import java.util.regex.Pattern;
 
-public enum MimeType {
-    ;
+public enum MimeType {;
     private static final Pattern SLASH = Pattern.compile("/");
 
     /// Returns the union of all MIME types in a sequence of files. The union of different

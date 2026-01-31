@@ -9,8 +9,7 @@ import android.content.Intent;
 import net.emilla.R;
 import net.emilla.exception.EmillaException;
 
-public enum AppSuccess {
-    ;
+public enum AppSuccess {;
     public static CommandRun instance(Intent intent) {
         intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
         return act -> {

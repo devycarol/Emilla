@@ -11,8 +11,7 @@ import net.emilla.lang.measure.FahrenheitConversion;
 
 import java.util.Locale;
 
-public enum FahrenheitConversionEN_US {
-    ;
+public enum FahrenheitConversionEN_US {;
     public static FahrenheitConversion instance(String s, @StringRes int errorTitle) {
         try {
             var tokens = new LatinTokens(s);

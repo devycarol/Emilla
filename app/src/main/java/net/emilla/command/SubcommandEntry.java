@@ -3,8 +3,7 @@ package net.emilla.command;
 import androidx.annotation.ArrayRes;
 import androidx.annotation.StringRes;
 
-public enum SubcommandEntry {
-    ;
+public enum SubcommandEntry {;
     @StringRes
     public final int name;
     @ArrayRes

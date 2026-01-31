@@ -13,8 +13,7 @@ import net.emilla.command.core.CoreEntry;
 import java.util.Locale;
 import java.util.Set;
 
-public enum Aliases {
-    ;
+public enum Aliases {;
     @Nullable
     public static Set<String> appSet(SharedPreferences prefs, Resources res, AppEntry app) {
         String entry = app.entry();

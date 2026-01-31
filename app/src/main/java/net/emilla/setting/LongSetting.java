@@ -15,8 +15,8 @@ enum LongSetting implements SystemSetting {
         boolean isValid(long value) {
             return false;
         }
-    };
-
+    },
+;
     private final Namespace mNamespace;
     private final String mKey;
     @ArrayRes

@@ -25,8 +25,8 @@ public enum InputField {
         R.id.field_subject,
         R.string.field_subject,
         R.drawable.ic_subject
-    );
-
+    ),
+;
     @IdRes
     public final int actionId;
     @IdRes

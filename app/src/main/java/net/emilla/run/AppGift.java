@@ -7,8 +7,7 @@ import net.emilla.activity.PassthroughActivity;
 import net.emilla.exception.EmillaException;
 import net.emilla.util.Intents;
 
-public enum AppGift {
-    ;
+public enum AppGift {;
     public static CommandRun instance(Intent intent) {
         return act -> {
             if (intent.resolveActivity(act.getPackageManager()) != null) {

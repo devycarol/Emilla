@@ -3,8 +3,7 @@ package net.emilla.util;
 import android.content.pm.PackageManager;
 import android.os.Build;
 
-public enum Features {
-    ;
+public enum Features {;
     public static boolean camera(PackageManager pm) {
         return pm.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
     }

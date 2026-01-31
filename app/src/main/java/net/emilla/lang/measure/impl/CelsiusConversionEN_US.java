@@ -11,8 +11,7 @@ import net.emilla.lang.measure.CelsiusConversion;
 
 import java.util.Locale;
 
-public enum CelsiusConversionEN_US {
-    ;
+public enum CelsiusConversionEN_US {;
     public static CelsiusConversion instance(String s, @StringRes int errorTitle) {
         try {
             var tokens = new LatinTokens(s);

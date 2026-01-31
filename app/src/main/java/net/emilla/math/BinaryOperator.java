@@ -34,8 +34,8 @@ enum BinaryOperator implements InfixToken {
         public double apply(double a, double b) {
             return Math.pow(a, b);
         }
-    };
-
+    },
+;
     public abstract double apply(double a, double b);
 
     @Nullable

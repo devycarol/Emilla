@@ -34,7 +34,8 @@ final class Tasker extends AppCommand implements DataCommand {
     private static final String COL_PROJECT_NAME = "project_name";
 
     private enum Action {
-        RUN, LIST
+        RUN,
+        LIST,
     }
 
     private final ActionMap<Action> mActionMap;

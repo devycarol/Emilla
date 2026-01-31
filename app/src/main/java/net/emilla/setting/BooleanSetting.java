@@ -11,8 +11,7 @@ import net.emilla.R;
 import net.emilla.action.box.TriResult;
 import net.emilla.lang.Lang;
 
-enum BooleanSetting implements SystemSetting {
-    ;
+enum BooleanSetting implements SystemSetting {;
     private final Namespace mNamespace;
     private final String mKey;
     @ArrayRes

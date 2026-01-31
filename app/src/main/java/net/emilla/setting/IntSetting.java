@@ -15,8 +15,8 @@ enum IntSetting implements SystemSetting {
         boolean isValid(int value) {
             return false;
         }
-    };
-
+    },
+;
     private final Namespace mNamespace;
     private final String mKey;
     @ArrayRes

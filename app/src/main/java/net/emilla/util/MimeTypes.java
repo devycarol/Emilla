@@ -2,8 +2,7 @@ package net.emilla.util;
 
 import android.webkit.MimeTypeMap;
 
-public enum MimeTypes {
-    ;
+public enum MimeTypes {;
     public static final String PREFIX_TEXT = "text/";
 
     public static final String ANY_TEXT = PREFIX_TEXT + '*';

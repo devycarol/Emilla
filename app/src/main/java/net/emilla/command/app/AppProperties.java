@@ -22,8 +22,8 @@ public enum AppProperties {
     GITHUB(GitHub::instance, R.string.instruction_app_issue, R.array.aliases_github, R.string.summary_issues, false),
     YOUTUBE(YouTube::instance, R.string.instruction_video, R.array.aliases_youtube, R.string.summary_video, false),
     DISCORD(Discord::instance, R.string.instruction_message, R.array.aliases_discord, R.string.summary_messaging, false, AppActions.FLAG_SEND_MULTILINE),
-    OUTLOOK(Outlook::instance, R.string.instruction_app_email, R.array.aliases_outlook, R.string.summary_email, false);
-
+    OUTLOOK(Outlook::instance, R.string.instruction_app_email, R.array.aliases_outlook, R.string.summary_email, false),
+;
     public final AppCommand.Maker maker;
     @StringRes
     public final int instruction;

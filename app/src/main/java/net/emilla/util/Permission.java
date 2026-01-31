@@ -34,8 +34,8 @@ public enum Permission {
     TASKER(
         R.string.perm_tasker,
         TaskerIntent.PERMISSION_RUN_TASKS
-    );
-
+    ),
+;
     @StringRes
     private final int mName;
     private final int mRestrictSdk;

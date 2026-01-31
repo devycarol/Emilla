@@ -14,8 +14,8 @@ enum StringSetting implements SystemSetting {
         boolean isValid(String value) {
             return false;
         }
-    };
-
+    },
+;
     private final Namespace mNamespace;
     private final String mKey;
     @ArrayRes

@@ -198,8 +198,8 @@ enum Namespace {
                 return false;
             }
         }
-    };
-
+    },
+;
     private static String require(String s) throws Settings.SettingNotFoundException {
         if (s == null) {
             throw new Settings.SettingNotFoundException("String setting not found");

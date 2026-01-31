@@ -96,7 +96,7 @@ public final class TaskerIntent extends Intent {
         NO_RECEIVER,
         /// You should be able to send a task to run. Still need to listen for result for e.g. task
         /// not found.
-        OK
+        OK,
     }
 
     // -------------------------- PRIVATE VARS ---------------------------- //

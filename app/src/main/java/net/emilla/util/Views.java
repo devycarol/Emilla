@@ -10,8 +10,7 @@ import androidx.core.view.ViewCompat;
 
 import net.emilla.lang.Lang;
 
-public enum Views {
-    ;
+public enum Views {;
     public static void setStateDescriptionCompat(
         Resources res,
         View view,

@@ -11,8 +11,7 @@ import net.emilla.util.Strings;
 import java.util.Arrays;
 import java.util.Iterator;
 
-public enum Calculator {
-    ;
+public enum Calculator {;
 //    private static final String ALL_OF = "all ?of", DONE = "done|good";
 //
 //    // The order in which these are parsed matters because of duplicate words in phrases like "3 by 3" versus "3 divide by 3"
@@ -238,7 +237,10 @@ public enum Calculator {
         implements Iterable<InfixToken>
     {
         enum Type {
-            LPAREN, RPAREN, OPERATOR, NUMBER
+            LPAREN,
+            RPAREN,
+            OPERATOR,
+            NUMBER,
         }
 
         @Override

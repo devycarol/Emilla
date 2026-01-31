@@ -16,8 +16,7 @@ import net.emilla.util.Intents;
 
 import java.util.Arrays;
 
-enum CategoryCommand {
-    ;
+enum CategoryCommand {;
     public static void run(AssistActivity act, String category) {
         run(act, Intents.categoryTask(category));
     }

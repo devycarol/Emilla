@@ -11,8 +11,7 @@ import net.emilla.util.Strings;
 import java.util.Arrays;
 import java.util.Iterator;
 
-public enum BitwiseCalculator {
-    ;
+public enum BitwiseCalculator {;
     private static final class OpStack {
         final BitwiseOperator[] arr;
         int size = 0;
@@ -222,7 +221,10 @@ public enum BitwiseCalculator {
         implements Iterable<BitwiseToken>
     {
         enum Type {
-            LPAREN, RPAREN, OPERATOR, NUMBER
+            LPAREN,
+            RPAREN,
+            OPERATOR,
+            NUMBER,
         }
 
         @Override

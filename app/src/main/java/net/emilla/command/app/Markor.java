@@ -5,8 +5,7 @@ import android.content.Context;
 import net.emilla.R;
 import net.emilla.annotation.internal;
 
-enum Markor {
-    ;
+enum Markor {;
     public static final String PKG = "net.gsantner.markor";
     public static final String CLS_MAIN = PKG + ".activity.MainActivity";
 

@@ -76,8 +76,8 @@ enum BitwiseOperator implements BitwiseToken {
         public long apply(long a, long b) {
             return (long) Math.pow((double) a, (double) b);
         }
-    };
-
+    },
+;
     public abstract long apply(long a, long b);
 
     @Nullable

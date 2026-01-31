@@ -8,8 +8,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.activity.AssistActivity;
 
-public enum Dialogs {
-    ;
+public enum Dialogs {;
     private static AlertDialog.Builder base(Context ctx, CharSequence title, @StringRes int noLabel) {
         return new AlertDialog.Builder(ctx).setTitle(title)
                 .setNegativeButton(noLabel, (dlg, which) -> dlg.cancel());

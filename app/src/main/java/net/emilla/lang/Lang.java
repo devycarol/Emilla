@@ -27,8 +27,8 @@ import java.util.EnumSet;
 import java.util.function.IntFunction;
 
 public enum Lang {
-    EN_US;
-
+    EN_US,
+;
     public static String normalize(String s) {
         return s.toLowerCase();
         // Todo lang: strip diacritics and handle the fact that case is really weird

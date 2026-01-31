@@ -53,8 +53,8 @@ public enum PingChannel {
         PingChannels.SLOT_POMODORO,
         R.string.ping_channel_pomodoro_break_end,
         R.string.channel_desc_pomodoro_break_end
-    );
-
+    ),
+;
     public static PingChannel of(String id) {
         return switch (id) {
             case PingChannels.ID_COMMAND -> COMMAND;

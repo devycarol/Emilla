@@ -11,8 +11,7 @@ import androidx.annotation.RequiresApi;
 /// This can only be used when [Activity#shouldShowRequestPermissionRationale(String)] is true for
 /// the permission(s) being requested.
 @RequiresApi(Build.VERSION_CODES.M)
-public enum PermissionOffering {
-    ;
+public enum PermissionOffering {;
     public static CommandRun instance(String[] permissions, @Nullable Runnable onGrant) {
         return act -> act.offerPermissions(permissions, onGrant);
     }

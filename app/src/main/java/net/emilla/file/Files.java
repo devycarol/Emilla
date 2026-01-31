@@ -21,8 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public enum Files {
-    ;
+public enum Files {;
     private static final String OVERWRITE = "wt";
     private static final String APPEND = "wa";
 

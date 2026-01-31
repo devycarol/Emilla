@@ -7,8 +7,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
-public enum Pings {
-    ;
+public enum Pings {;
     public static Notification make(
         Context ctx,
         PingChannel channel,

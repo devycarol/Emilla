@@ -24,7 +24,8 @@ import net.emilla.util.Permission;
 
 final class Pomodoro extends CoreDataCommand {
     private enum Action {
-        WORK, BREAK
+        WORK,
+        BREAK,
     }
 
     private final ActionMap<Action> mActionMap;

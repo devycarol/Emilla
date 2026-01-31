@@ -12,8 +12,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.regex.Pattern;
 
-public enum DicesEN_US {
-    ;
+public enum DicesEN_US {;
     private static final Pattern DICE_ROLL = Pattern.compile(
         "((-\\d)?\\d*D\\d+|-?\\d+)([+-]((-\\d)?\\d*D\\d+|-?\\d+))*",
         Pattern.CASE_INSENSITIVE

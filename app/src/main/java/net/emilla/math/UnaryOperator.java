@@ -28,8 +28,8 @@ enum UnaryOperator implements InfixToken {
         public double apply(double n) {
             return Maths.factorial(n);
         }
-    };
-
+    },
+;
     public abstract double apply(double n);
 
     public final boolean postfix;

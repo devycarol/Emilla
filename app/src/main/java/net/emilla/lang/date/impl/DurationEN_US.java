@@ -6,8 +6,7 @@ import net.emilla.R;
 import net.emilla.exception.EmillaException;
 import net.emilla.lang.date.Duration;
 
-public enum DurationEN_US {
-    ;
+public enum DurationEN_US {;
     public static Duration instance(String minutes, @StringRes int errorTitle) {
         try {
             var seconds = (int) (Double.parseDouble(minutes) * 60.0);

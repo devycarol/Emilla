@@ -5,8 +5,7 @@ import android.content.ClipboardManager;
 
 import net.emilla.util.Services;
 
-public enum CopyGift {
-    ;
+public enum CopyGift {;
     public static CommandRun instance(CharSequence text) {
         return act -> {
             ClipboardManager manager = Services.clipboard(act);

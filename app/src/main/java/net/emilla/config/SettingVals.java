@@ -29,8 +29,7 @@ import net.emilla.util.Features;
 import java.util.HashSet;
 import java.util.Set;
 
-public enum SettingVals {
-    ;
+public enum SettingVals {;
     public static final String DEFAULT_COMMAND = "default_command";
     public static final String CHIMER = "sound_set";
 

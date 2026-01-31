@@ -2,8 +2,7 @@ package net.emilla.ping;
 
 import net.emilla.annotation.internal;
 
-enum PingChannels {
-    ;
+enum PingChannels {;
     @internal static final int SLOT_UNLIMITED = 0;
     @internal static final int SLOT_POMODORO = 1;
 

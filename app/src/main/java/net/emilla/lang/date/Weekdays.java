@@ -6,8 +6,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-public enum Weekdays {
-    ;
+public enum Weekdays {;
     public static ArrayList<Integer> calendarArrayList(Collection<DayOfWeek> weekdays) {
         return weekdays.stream()
             .map(Weekdays::toCalendarConstant)

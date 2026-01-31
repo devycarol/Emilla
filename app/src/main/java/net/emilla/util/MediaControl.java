@@ -6,8 +6,7 @@ import static android.view.KeyEvent.ACTION_UP;
 import android.media.AudioManager;
 import android.view.KeyEvent;
 
-public enum MediaControl {
-    ;
+public enum MediaControl {;
     public static void play(AudioManager am) {
         sendButtonEvent(am, KeyEvent.KEYCODE_MEDIA_PLAY);
     }

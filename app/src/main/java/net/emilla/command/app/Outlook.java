@@ -5,8 +5,7 @@ import android.content.Context;
 import net.emilla.R;
 import net.emilla.annotation.internal;
 
-enum Outlook {
-    ;
+enum Outlook {;
     public static final String PKG = "com.microsoft.office.outlook";
 
     @internal static AppSendData instance(Context ctx, AppEntry appEntry) {

@@ -8,8 +8,7 @@ import android.hardware.camera2.CameraManager;
 import android.media.AudioManager;
 import android.view.accessibility.AccessibilityManager;
 
-public enum Services {
-    ;
+public enum Services {;
     public static AccessibilityManager accessibility(Context ctx) {
         return (AccessibilityManager) ctx.getSystemService(Context.ACCESSIBILITY_SERVICE);
     }

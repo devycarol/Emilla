@@ -10,8 +10,7 @@ import android.net.Uri;
 import net.emilla.BuildConfig;
 import net.emilla.command.app.AppEntry;
 
-public enum Apps {
-    ;
+public enum Apps {;
     public static final String MY_PKG = BuildConfig.APPLICATION_ID;
 
     public static String entry(String pkg, String cls) {

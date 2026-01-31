@@ -28,8 +28,8 @@ enum BitwiseSign implements BitwiseToken {
         public long apply(long n) {
             return Maths.factorial(n);
         }
-    };
-
+    }
+;
     public abstract long apply(long n);
 
     public final boolean postfix;

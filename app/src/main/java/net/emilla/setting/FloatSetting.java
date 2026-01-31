@@ -15,8 +15,8 @@ enum FloatSetting implements SystemSetting {
         boolean isValid(float value) {
             return false;
         }
-    };
-
+    },
+;
     private final Namespace mNamespace;
     private final String mKey;
     @ArrayRes

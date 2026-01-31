@@ -5,8 +5,7 @@ import android.os.Build;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public enum Patterns {
-    ;
+public enum Patterns {;
     public static final Pattern TRIMMING_CSV = Pattern.compile(" *, *");
     public static final Pattern TRIMMING_LINES = Pattern.compile(" *\n *");
 

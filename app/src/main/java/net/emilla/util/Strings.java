@@ -4,8 +4,7 @@ import androidx.annotation.Nullable;
 
 import net.emilla.function.CharPredicate;
 
-public enum Strings {
-    ;
+public enum Strings {;
     public static String emptyIfNull(@Nullable String s) {
         return s != null ? s : "";
     }

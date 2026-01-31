@@ -1,8 +1,12 @@
 //package net.emilla.system;
 //
 //enum BackgroundServiceState {
-//    A11Y_WAKE_WORD, A11Y, WAKE_WORD, FAST_LOAD, OFF;
-//
+//    A11Y_WAKE_WORD,
+//    A11Y,
+//    WAKE_WORD,
+//    FAST_LOAD,
+//    OFF,
+//;
 //    static {
 //        var state = ;
 //        switch (state) {
@@ -20,5 +24,4 @@
 //            ensureFastLoadService();
 //        }}
 //    }
-//
 //}

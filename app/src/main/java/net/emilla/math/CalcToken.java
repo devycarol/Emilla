@@ -12,10 +12,10 @@ sealed interface CalcToken {
     {}
 
     enum LParen implements InfixToken, BitwiseToken {
-        INSTANCE
+        INSTANCE,
     }
 
     enum RParen implements InfixToken, BitwiseToken {
-        INSTANCE
+        INSTANCE,
     }
 }

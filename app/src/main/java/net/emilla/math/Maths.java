@@ -7,8 +7,7 @@ import net.emilla.exception.EmillaException;
 
 import java.text.DecimalFormat;
 
-public enum Maths {
-    ;
+public enum Maths {;
     public static String prettyNumber(double n) {
         // todo: configurable sig digs.
         return new DecimalFormat("#.######").format(n);

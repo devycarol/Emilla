@@ -14,8 +14,8 @@ public enum Chime {
     RESUME("chime_resume", R.string.chime_resume, R.raw.nebula_resume, ToneGenerator.TONE_PROP_BEEP),
     EXIT("chime_exit", R.string.chime_exit, R.raw.nebula_exit, ToneGenerator.TONE_PROP_BEEP2),
     SUCCEED("chime_succeed", R.string.chime_succeed, R.raw.nebula_succeed, ToneGenerator.TONE_PROP_ACK),
-    FAIL("chime_fail", R.string.chime_fail, R.raw.nebula_fail, ToneGenerator.TONE_PROP_NACK);
-
+    FAIL("chime_fail", R.string.chime_fail, R.raw.nebula_fail, ToneGenerator.TONE_PROP_NACK),
+;
     public final String preferenceKey;
     @StringRes
     public final int name;

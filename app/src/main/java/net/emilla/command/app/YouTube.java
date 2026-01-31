@@ -4,8 +4,7 @@ import android.content.Context;
 
 import net.emilla.annotation.internal;
 
-enum YouTube {
-    ;
+enum YouTube {;
     public static final String PKG = "com.google.android.youtube";
 
     @internal static AppSearch instance(Context ctx, AppEntry appEntry) {

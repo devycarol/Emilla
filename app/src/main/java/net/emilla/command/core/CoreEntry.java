@@ -142,8 +142,8 @@ public enum CoreEntry implements Params {
         }
     },
     TOAST(Toast::new, R.string.command_toast, R.array.aliases_toast, R.string.instruction_text, R.drawable.ic_toast, R.string.summary_toast, R.string.manual_toast),
-    BITS(Bits::new, R.string.command_bits, R.array.aliases_bits, R.string.instruction_calculate, R.drawable.ic_command, R.string.summary_bits, R.string.manual_bits);
-
+    BITS(Bits::new, R.string.command_bits, R.array.aliases_bits, R.string.instruction_calculate, R.drawable.ic_command, R.string.summary_bits, R.string.manual_bits),
+;
     @internal final CoreMaker mMaker;
     @StringRes
     public final int name;

@@ -12,8 +12,7 @@ import java.util.EnumSet;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public enum WeekdaysEN_US {
-    ;
+public enum WeekdaysEN_US {;
     private static final Pattern WEEKDAYS = Pattern.compile("\\w+( +\\w+){0,6}");
     private static final Pattern WEEKDAY_LETTERS = Pattern.compile("[umtwrfs]{1,7}");
     private static final Pattern COMMA_OPTIONAL_LIST = Pattern.compile(", *| +");
