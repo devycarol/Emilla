@@ -94,7 +94,7 @@ final class Pomodoro extends CoreDataCommand {
     }
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
-    private void pomo(
+    private static void pomo(
         AssistActivity act,
         int seconds,
         String workMemo,
@@ -130,7 +130,7 @@ final class Pomodoro extends CoreDataCommand {
     }
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
-    private void pomo(
+    private static void pomo(
         AssistActivity act,
         int seconds,
         PingChannel startChannel,

@@ -144,7 +144,7 @@ final class Contact extends CoreDataCommand implements ContactCardReceiver {
         appSucceed(act, Intents.edit(contact));
     }
 
-    private void send(AssistActivity act, Uri contact, @Nullable String message) {
+    private static void send(AssistActivity act, Uri contact, @Nullable String message) {
         // todo: multi-selection for this particular case..
         Intent send = Intents.send(Contacts.CONTENT_VCARD_TYPE);
 
@@ -160,7 +160,7 @@ final class Contact extends CoreDataCommand implements ContactCardReceiver {
         appSucceed(act, Intent.createChooser(send, res.getString(CoreEntry.CONTACT.name)));
     }
 
-    private void offerCreate(AssistActivity act, String person, @Nullable String details) {
+    private static void offerCreate(AssistActivity act, String person, @Nullable String details) {
         var res = act.getResources();
         String msg = res.getString(R.string.notice_contact_no_match, person);
         offerDialog(
