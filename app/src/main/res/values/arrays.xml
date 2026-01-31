@@ -114,12 +114,6 @@
         <item>calc</item>
         <item>math</item>
     </string-array>
-    <string-array name="aliases_random_number">
-        <item>random number between</item>
-        <item>random</item>
-        <item>rand</item>
-        <item>rng</item>
-    </string-array>
     <string-array name="aliases_celsius" />
     <string-array name="aliases_fahrenheit" />
     <string-array name="aliases_roll">

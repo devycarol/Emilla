@@ -123,7 +123,6 @@ public enum CoreEntry implements Params {
     CELSIUS(Celsius::new, R.string.command_celsius, R.array.aliases_celsius, R.string.instruction_temperature, R.drawable.ic_temperature, R.string.summary_celsius, R.string.manual_celsius),
     FAHRENHEIT(Fahrenheit::new, R.string.command_fahrenheit, R.array.aliases_fahrenheit, R.string.instruction_temperature, R.drawable.ic_temperature, R.string.summary_fahrenheit, R.string.manual_fahrenheit),
     ROLL(Roll::new, R.string.command_roll, R.array.aliases_roll, R.string.instruction_roll, R.drawable.ic_roll, R.string.summary_roll, R.string.manual_roll),
-    RANDOM_NUMBER(RandomNumber::new, R.string.command_random_number, R.array.aliases_random_number, R.string.instruction_random_number, R.drawable.ic_random_number, R.string.summary_random_number, R.string.manual_random_number),
     INFO(Info::new, R.string.command_info, R.array.aliases_info, R.string.instruction_choose_app, R.drawable.ic_info, R.string.summary_info, R.string.manual_info) {
         @Override
         public boolean isPossible(PackageManager pm) {
