@@ -18,8 +18,7 @@ import net.emilla.lang.measure.CelsiusConversion;
 import net.emilla.lang.measure.FahrenheitConversion;
 import net.emilla.lang.measure.impl.CelsiusConversionEN_US;
 import net.emilla.lang.measure.impl.FahrenheitConversionEN_US;
-import net.emilla.lang.phrase.Dices;
-import net.emilla.lang.phrase.impl.DicesEN_US;
+import net.emilla.random.DiceRoller;
 import net.emilla.trie.PhraseTree;
 
 import java.time.DayOfWeek;
@@ -98,50 +97,46 @@ public enum Lang {
     }
 
     public static ListPhrase list(String phrase) {
-        return switch (-1) {
-            default -> new ListPhraseEN_US(phrase);
+        return switch (EN_US) {
+            case EN_US -> new ListPhraseEN_US(phrase);
         };
     }
 
     public static HourMin time(String timeStr, Context ctx, @StringRes int errorTitle) {
-        return switch (-1) {
-            default -> HourMinEN_US.instance(timeStr, ctx, errorTitle);
+        return switch (EN_US) {
+            case EN_US -> HourMinEN_US.instance(timeStr, ctx, errorTitle);
         };
     }
 
     public static Duration duration(String minutes, @StringRes int errorTitle) {
-        return switch (-1) {
-            default -> DurationEN_US.instance(minutes, errorTitle);
+        return switch (EN_US) {
+            case EN_US -> DurationEN_US.instance(minutes, errorTitle);
         };
     }
 
     @Nullable
     public static EnumSet<DayOfWeek> weekdays(String timeStr, @StringRes int errorTitle) {
-        return switch (-1) {
-            default -> WeekdaysEN_US.set(timeStr, errorTitle);
+        return switch (EN_US) {
+            case EN_US -> WeekdaysEN_US.set(timeStr, errorTitle);
         };
     }
 
     public static CelsiusConversion celsius(String temperature, @StringRes int errorTitle) {
-        return switch (-1) {
-            default -> CelsiusConversionEN_US.instance(temperature, errorTitle);
+        return switch (EN_US) {
+            case EN_US -> CelsiusConversionEN_US.instance(temperature, errorTitle);
         };
     }
 
     public static FahrenheitConversion fahrenheit(String temperature, @StringRes int errorTitle) {
-        return switch (-1) {
-            default -> FahrenheitConversionEN_US.instance(temperature, errorTitle);
+        return switch (EN_US) {
+            case EN_US -> FahrenheitConversionEN_US.instance(temperature, errorTitle);
         };
     }
 
-    /// Constructs a dice set from dice notation.
-    ///
-    /// @param roll a dice notation string, e.g. "d4 + 2d6".
-    /// @param errorTitle title of the error pop-up for ill-formatted dice.
-    /// @return the set of dices represented by `roll`.
-    public static Dices dices(String roll, @StringRes int errorTitle) {
-        return switch (-1) {
-            default -> DicesEN_US.instance(roll, errorTitle);
+    @Nullable
+    public static DiceRoller diceRoller(String roll) {
+        return switch (EN_US) {
+            case EN_US -> EnglishUnitedStates.diceRoller(roll);
         };
     }
 }

@@ -35,7 +35,7 @@ public enum Chars {;
         return ch == '.' || Character.isDigit(ch);
     }
 
-    private static boolean isSign(char ch) {
+    public static boolean isSign(char ch) {
         return switch (ch) {
             case '+', '-' -> true;
             default -> false;

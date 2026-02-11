@@ -763,6 +763,14 @@ public final class AssistActivity extends AppCompatActivity {
         chime(SUCCEED);
     }
 
+    public void fail(@StringRes int message) {
+        fail(R.string.error, message);
+    }
+
+    public void fail(@StringRes int title, @StringRes int message) {
+        fail(new MessageFailure(this, title, message));
+    }
+
     public void fail(CommandRun failure) {
         failure.run(this);
         chime(FAIL);

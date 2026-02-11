@@ -42,14 +42,6 @@ public enum Strings {;
         return stripNonMatching(s, Chars::isNumberChar);
     }
 
-    public static String stripSpaces(String s) {
-        return stripMatching(s, Character::isWhitespace);
-    }
-
-    private static String stripMatching(String s, CharPredicate filterNot) {
-        return stripNonMatching(s, ch -> !filterNot.test(ch));
-    }
-
     private static String stripNonMatching(String s, CharPredicate filter) {
         char[] chars = s.toCharArray();
         int position = 0;

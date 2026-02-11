@@ -4,6 +4,7 @@ import android.content.Context;
 
 import androidx.annotation.StringRes;
 
+import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
 import net.emilla.exception.EmillaException;
@@ -18,6 +19,11 @@ abstract class CoreCommand extends EmillaCommand {
         mName = coreEntry.name;
     }
 
+    protected final void fail(AssistActivity act, @StringRes int msg) {
+        act.fail(mName, msg);
+    }
+
+    @Deprecated
     protected final EmillaException badCommand(@StringRes int msg) {
         return new EmillaException(mName, msg);
     }

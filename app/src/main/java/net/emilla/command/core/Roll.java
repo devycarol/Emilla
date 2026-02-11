@@ -7,7 +7,7 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.lang.Lang;
-import net.emilla.lang.phrase.Dices;
+import net.emilla.random.DiceRoller;
 
 import java.util.Random;
 
@@ -24,8 +24,13 @@ final class Roll extends CoreCommand {
 
     @Override
     protected void run(AssistActivity act, String roll) {
-        Dices dices = Lang.dices(roll, CoreEntry.ROLL.name);
+        DiceRoller roller = Lang.diceRoller(roll);
+        if (roller == null) {
+            fail(act, R.string.error_invalid_dice_roll);
+            return;
+        }
+
         var rand = new Random();
-        giveText(act, String.valueOf(dices.roll(rand)));
+        giveText(act, String.valueOf(roller.roll(rand)));
     }
 }
