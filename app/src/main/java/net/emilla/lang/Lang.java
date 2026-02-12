@@ -8,10 +8,8 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.lang.date.Duration;
-import net.emilla.lang.date.HourMin;
+import net.emilla.lang.date.HourMinute;
 import net.emilla.lang.date.impl.DurationEN_US;
-import net.emilla.lang.date.impl.HourMinEN_US;
-import net.emilla.lang.date.impl.WeekdaysEN_US;
 import net.emilla.lang.grammar.ListPhrase;
 import net.emilla.lang.grammar.impl.ListPhraseEN_US;
 import net.emilla.lang.measure.CelsiusConversion;
@@ -102,9 +100,9 @@ public enum Lang {
         };
     }
 
-    public static HourMin time(String timeStr, Context ctx, @StringRes int errorTitle) {
+    public static HourMinute time(String timeStr, Context ctx, @StringRes int errorTitle) {
         return switch (EN_US) {
-            case EN_US -> HourMinEN_US.instance(timeStr, ctx, errorTitle);
+            case EN_US -> EnglishUnitedStates.hourMinute(timeStr, ctx, errorTitle);
         };
     }
 
@@ -117,7 +115,7 @@ public enum Lang {
     @Nullable
     public static EnumSet<DayOfWeek> weekdays(String timeStr, @StringRes int errorTitle) {
         return switch (EN_US) {
-            case EN_US -> WeekdaysEN_US.set(timeStr, errorTitle);
+            case EN_US -> EnglishUnitedStates.weekdays(timeStr, errorTitle);
         };
     }
 

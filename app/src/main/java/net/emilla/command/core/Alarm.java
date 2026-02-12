@@ -15,7 +15,7 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.lang.Lang;
-import net.emilla.lang.date.HourMin;
+import net.emilla.lang.date.HourMinute;
 import net.emilla.lang.date.Weekdays;
 import net.emilla.util.Apps;
 
@@ -64,7 +64,7 @@ final class Alarm extends CoreDataCommand {
     }
 
     private static Intent makeIntent(Context ctx, String timeString) {
-        HourMin time = Lang.time(timeString, ctx, CoreEntry.ALARM.name);
+        HourMinute time = Lang.time(timeString, ctx, CoreEntry.ALARM.name);
         Intent setAlarm = makeIntent(time.hour24(), time.minute());
 
         EnumSet<DayOfWeek> weekdays = Lang.weekdays(timeString, CoreEntry.ALARM.name);
