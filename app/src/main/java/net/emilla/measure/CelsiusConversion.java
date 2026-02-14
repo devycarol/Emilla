@@ -1,4 +1,4 @@
-package net.emilla.lang.measure;
+package net.emilla.measure;
 
 public record CelsiusConversion(double degrees, boolean fromKelvin) {
     public double convert() {

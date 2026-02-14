@@ -1,4 +1,4 @@
-package net.emilla.lang.measure.impl;
+package net.emilla.measure.impl;
 
 import androidx.annotation.StringRes;
 
@@ -7,7 +7,7 @@ import net.emilla.exception.EmillaException;
 import net.emilla.lang.LatinTokens;
 import net.emilla.lang.Letter;
 import net.emilla.lang.Word;
-import net.emilla.lang.measure.FahrenheitConversion;
+import net.emilla.measure.FahrenheitConversion;
 
 import java.util.Locale;
 

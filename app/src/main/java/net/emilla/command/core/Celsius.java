@@ -7,8 +7,8 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.lang.Lang;
-import net.emilla.lang.measure.CelsiusConversion;
 import net.emilla.math.Maths;
+import net.emilla.measure.CelsiusConversion;
 
 final class Celsius extends CoreCommand {
     @internal Celsius(Context ctx) {

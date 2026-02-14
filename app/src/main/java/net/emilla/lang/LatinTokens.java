@@ -2,7 +2,7 @@ package net.emilla.lang;
 
 import androidx.annotation.Nullable;
 
-import net.emilla.function.CharPredicate;
+import net.emilla.grammar.CharPredicate;
 import net.emilla.util.Chars;
 import net.emilla.util.Strings;
 

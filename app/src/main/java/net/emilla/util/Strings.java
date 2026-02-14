@@ -2,7 +2,7 @@ package net.emilla.util;
 
 import androidx.annotation.Nullable;
 
-import net.emilla.function.CharPredicate;
+import net.emilla.grammar.CharPredicate;
 
 public enum Strings {;
     public static String emptyIfNull(@Nullable String s) {

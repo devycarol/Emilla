@@ -7,8 +7,8 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.lang.Lang;
-import net.emilla.lang.measure.FahrenheitConversion;
 import net.emilla.math.Maths;
+import net.emilla.measure.FahrenheitConversion;
 
 final class Fahrenheit extends CoreCommand {
     @internal Fahrenheit(Context ctx) {

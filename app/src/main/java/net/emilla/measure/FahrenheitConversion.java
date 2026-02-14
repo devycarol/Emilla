@@ -1,4 +1,4 @@
-package net.emilla.lang.measure;
+package net.emilla.measure;
 
 public record FahrenheitConversion(double degrees, boolean fromKelvin) {
     public double convert() {
