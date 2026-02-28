@@ -13,20 +13,20 @@ import java.util.Iterator;
 public enum Calculator {;
     private static final class ValStack {
         final double[] vals;
-        final EnumStack<UnaryOperator> signs;
+        final EnumStack<ArithmeticSign> signs;
         @StringRes
         final int errorTitle;
         int size = 0;
 
         ValStack(int capacity, @StringRes int errorTitle) {
             this.vals = new double[capacity];
-            this.signs = new EnumStack<UnaryOperator>(capacity, UnaryOperator::of, errorTitle);
+            this.signs = new EnumStack<ArithmeticSign>(capacity, ArithmeticSign::of, errorTitle);
             this.errorTitle = errorTitle;
         }
 
         void push(double operand) {
             while (signs.notEmpty()) {
-                if (signs.peek() == UnaryOperator.LPAREN) {
+                if (signs.peek() == ArithmeticSign.LPAREN) {
                     break;
                 }
 
@@ -47,11 +47,11 @@ public enum Calculator {;
             vals[size - 1] = op.apply(vals[size - 1], vals[size]);
         }
 
-        void applyOperator(UnaryOperator op) {
+        void applyOperator(ArithmeticSign op) {
             if (op.postfix) {
                 int last = size - 1;
                 vals[last] = op.apply(vals[last]);
-            } else if (op != UnaryOperator.POSITIVE) {
+            } else if (op != ArithmeticSign.POSITIVE) {
                 signs.push(op);
             }
         }
@@ -70,7 +70,7 @@ public enum Calculator {;
         }
 
         void applyLParen() {
-            signs.push(UnaryOperator.LPAREN);
+            signs.push(ArithmeticSign.LPAREN);
         }
 
         void applyRParen(EnumStack<ArithmeticOperator> operators) {
@@ -95,12 +95,12 @@ public enum Calculator {;
         }
 
         private void closeSignParen() {
-            if (signs.peek() == UnaryOperator.LPAREN) {
+            if (signs.peek() == ArithmeticSign.LPAREN) {
                 signs.pop();
                 int last = size - 1;
                 while (signs.notEmpty()) {
-                    UnaryOperator peek = signs.peek();
-                    if (peek == UnaryOperator.LPAREN) {
+                    ArithmeticSign peek = signs.peek();
+                    if (peek == ArithmeticSign.LPAREN) {
                         break;
                     }
 
@@ -130,7 +130,7 @@ public enum Calculator {;
         for (InfixToken token : new InfixTokens(expression, errorTitle)) {
             switch (token) {
             case ArithmeticOperator op -> result.applyOperator(op, operators);
-            case UnaryOperator op -> result.applyOperator(op);
+            case ArithmeticSign op -> result.applyOperator(op);
             case LParen __ -> {
                 result.applyLParen();
                 operators.push(ArithmeticOperator.LPAREN);
@@ -243,13 +243,13 @@ public enum Calculator {;
                 return RParen.INSTANCE;
             }
 
-            private UnaryOperator extractUnary(boolean postfix) {
+            private ArithmeticSign extractUnary(boolean postfix) {
                 var type = postfix
                     ? Type.NUMBER
                     : Type.OPERATOR
                 ;
                 // postfix unaries are applied immediately, so act like token was a number.
-                return UnaryOperator.of(extractChar(type));
+                return ArithmeticSign.of(extractChar(type));
             }
 
             private ArithmeticOperator extractOperator() {

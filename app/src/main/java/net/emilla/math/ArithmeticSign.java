@@ -4,7 +4,7 @@ import androidx.annotation.Nullable;
 
 import net.emilla.math.CalcToken.InfixToken;
 
-enum UnaryOperator implements InfixToken {
+enum ArithmeticSign implements InfixToken {
     POSITIVE(false) {
         @Override
         public double apply(double n) {
@@ -31,22 +31,22 @@ enum UnaryOperator implements InfixToken {
     },
 ;
     @Nullable
-    public static final UnaryOperator LPAREN = null;
-    private static final UnaryOperator[] sValues = values();
+    public static final ArithmeticSign LPAREN = null;
+    private static final ArithmeticSign[] sValues = values();
 
     public final boolean postfix;
 
-    UnaryOperator(boolean postfix) {
+    ArithmeticSign(boolean postfix) {
         this.postfix = postfix;
     }
 
     public abstract double apply(double n);
 
-    public static UnaryOperator of(int ordinal) {
+    public static ArithmeticSign of(int ordinal) {
         return sValues[ordinal];
     }
 
-    public static UnaryOperator of(char token) {
+    public static ArithmeticSign of(char token) {
         return switch (token) {
             case '+' -> POSITIVE;
             case '-' -> NEGATIVE;
