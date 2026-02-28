@@ -31,13 +31,19 @@ public enum BitwiseCalculator {;
 
         @Nullable
         BitwiseOperator peek() {
-            if (size < 1) throw Maths.malformedExpression(errorTitle);
+            if (size < 1) {
+                throw Maths.malformedExpression(errorTitle);
+            }
+
             return arr[size - 1];
         }
 
         @Nullable
         BitwiseOperator pop() {
-            if (size < 1) throw Maths.malformedExpression(errorTitle);
+            if (size < 1) {
+                throw Maths.malformedExpression(errorTitle);
+            }
+
             --size;
             return arr[size];
         }
@@ -64,7 +70,10 @@ public enum BitwiseCalculator {;
 
         void push(long operand) {
             while (signs.notEmpty()) {
-                if (signs.peek() == BitwiseSign.LPAREN) break;
+                if (signs.peek() == BitwiseSign.LPAREN) {
+                    break;
+                }
+
                 operand = signs.pop().apply(operand);
                 // peek is valid, therefore pop is valid.
             }
@@ -74,7 +83,9 @@ public enum BitwiseCalculator {;
         }
 
         void squish(BitwiseOperator op) {
-            if (size < 2) throw Maths.malformedExpression(errorTitle);
+            if (size < 2) {
+                throw Maths.malformedExpression(errorTitle);
+            }
 
             --size;
             vals[size - 1] = op.apply(vals[size - 1], vals[size]);
@@ -109,16 +120,22 @@ public enum BitwiseCalculator {;
         void applyRParen(OpStack opStk) {
             while (opStk.notEmpty()) {
                 BitwiseOperator pop = opStk.pop();
-                if (pop == BitwiseOperator.LPAREN) break;
+                if (pop == BitwiseOperator.LPAREN) {
+                    break;
+                }
 
                 squish(pop);
             }
 
-            if (signs.notEmpty()) closeSignParen();
+            if (signs.notEmpty()) {
+                closeSignParen();
+            }
         }
 
         void applyRemainingSigns() {
-            while (signs.notEmpty()) closeSignParen();
+            while (signs.notEmpty()) {
+                closeSignParen();
+            }
         }
 
         private void closeSignParen() {
@@ -127,7 +144,9 @@ public enum BitwiseCalculator {;
                 int last = size - 1;
                 while (signs.notEmpty()) {
                     BitwiseSign peek = signs.peek();
-                    if (peek == BitwiseSign.LPAREN) break;
+                    if (peek == BitwiseSign.LPAREN) {
+                        break;
+                    }
 
                     vals[last] = signs.pop().apply(vals[last]);
                     // peek is valid, therefore pop is valid.
@@ -136,7 +155,10 @@ public enum BitwiseCalculator {;
         }
 
         long value() {
-            if (size != 1) throw Maths.malformedExpression(errorTitle);
+            if (size != 1) {
+                throw Maths.malformedExpression(errorTitle);
+            }
+
             return vals[0];
         }
     }
@@ -161,13 +183,19 @@ public enum BitwiseCalculator {;
 
         @Nullable
         BitwiseSign peek() {
-            if (size < 1) throw Maths.malformedExpression(errorTitle);
+            if (size < 1) {
+                throw Maths.malformedExpression(errorTitle);
+            }
+
             return arr[size - 1];
         }
 
         @Nullable
         BitwiseSign pop() {
-            if (size < 1) throw Maths.malformedExpression(errorTitle);
+            if (size < 1) {
+                throw Maths.malformedExpression(errorTitle);
+            }
+
             --size;
             return arr[size];
         }
@@ -200,11 +228,13 @@ public enum BitwiseCalculator {;
             BitwiseOperator pop = opStk.pop();
             if (pop != BitwiseOperator.LPAREN) {
                 result.squish(pop);
-            } else while (opStk.notEmpty()) {
-                if (opStk.peek() == BitwiseOperator.LPAREN) {
-                    opStk.pop();
-                } else {
-                    result.applyRParen(opStk);
+            } else {
+                while (opStk.notEmpty()) {
+                    if (opStk.peek() == BitwiseOperator.LPAREN) {
+                        opStk.pop();
+                    } else {
+                        result.applyRParen(opStk);
+                    }
                 }
             }
         }
@@ -331,7 +361,9 @@ public enum BitwiseCalculator {;
             private BitwiseOperator extractShift() {
                 char shiftType = this.expr[this.pos];
                 ++this.pos;
-                if (!nextCharIs(shiftType)) throw Maths.malformedExpression(this.errorTitle);
+                if (!nextCharIs(shiftType)) {
+                    throw Maths.malformedExpression(this.errorTitle);
+                }
 
                 ++this.pos;
                 BitwiseOperator op;
@@ -357,19 +389,23 @@ public enum BitwiseCalculator {;
             }
 
             private void advanceImmediate() {
-                do ++this.pos;
-                while (this.pos < this.length && Character.isWhitespace(this.expr[this.pos]));
+                do {
+                    ++this.pos;
+                } while (this.pos < this.length && Character.isWhitespace(this.expr[this.pos]));
             }
 
             private void advance() {
-                while (this.pos < this.length && Character.isWhitespace(this.expr[this.pos])) ++this.pos;
+                while (this.pos < this.length && Character.isWhitespace(this.expr[this.pos])) {
+                    ++this.pos;
+                }
             }
 
             private IntegerNumber extractNumber() {
                 int start = this.pos;
 
-                do ++this.pos;
-                while (this.pos < this.length && isNumberChar(this.expr[this.pos]));
+                do {
+                    ++this.pos;
+                } while (this.pos < this.length && isNumberChar(this.expr[this.pos]));
 
                 var s = new String(Arrays.copyOfRange(this.expr, start, this.pos));
                 advance();

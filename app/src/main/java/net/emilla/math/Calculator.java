@@ -45,13 +45,19 @@ public enum Calculator {;
 
         @Nullable
         BinaryOperator peek() {
-            if (this.size < 1) throw Maths.malformedExpression(this.errorTitle);
+            if (this.size < 1) {
+                throw Maths.malformedExpression(this.errorTitle);
+            }
+
             return this.arr[this.size - 1];
         }
 
         @Nullable
         BinaryOperator pop() {
-            if (this.size < 1) throw Maths.malformedExpression(this.errorTitle);
+            if (this.size < 1) {
+                throw Maths.malformedExpression(this.errorTitle);
+            }
+
             --this.size;
             return this.arr[this.size];
         }
@@ -78,7 +84,10 @@ public enum Calculator {;
 
         void push(double operand) {
             while (this.signs.notEmpty()) {
-                if (this.signs.peek() == UnaryOperator.LPAREN) break;
+                if (this.signs.peek() == UnaryOperator.LPAREN) {
+                    break;
+                }
+
                 operand = this.signs.pop().apply(operand);
                 // peek is valid, therefore pop is valid.
             }
@@ -88,7 +97,9 @@ public enum Calculator {;
         }
 
         void squish(BinaryOperator op) {
-            if (this.size < 2) throw Maths.malformedExpression(this.errorTitle);
+            if (this.size < 2) {
+                throw Maths.malformedExpression(this.errorTitle);
+            }
 
             --this.size;
             this.vals[this.size - 1] = op.apply(this.vals[this.size - 1], this.vals[this.size]);
@@ -123,16 +134,22 @@ public enum Calculator {;
         void applyRParen(OpStack opStk) {
             while (opStk.notEmpty()) {
                 BinaryOperator pop = opStk.pop();
-                if (pop == BinaryOperator.LPAREN) break;
+                if (pop == BinaryOperator.LPAREN) {
+                    break;
+                }
 
                 squish(pop);
             }
 
-            if (this.signs.notEmpty()) closeSignParen();
+            if (this.signs.notEmpty()) {
+                closeSignParen();
+            }
         }
 
         void applyRemainingSigns() {
-            while (this.signs.notEmpty()) closeSignParen();
+            while (this.signs.notEmpty()) {
+                closeSignParen();
+            }
         }
 
         private void closeSignParen() {
@@ -141,7 +158,9 @@ public enum Calculator {;
                 int last = this.size - 1;
                 while (this.signs.notEmpty()) {
                     UnaryOperator peek = this.signs.peek();
-                    if (peek == UnaryOperator.LPAREN) break;
+                    if (peek == UnaryOperator.LPAREN) {
+                        break;
+                    }
 
                     this.vals[last] = this.signs.pop().apply(this.vals[last]);
                     // peek is valid, therefore pop is valid.
@@ -150,7 +169,10 @@ public enum Calculator {;
         }
 
         double value() {
-            if (this.size != 1) throw Maths.malformedExpression(this.errorTitle);
+            if (this.size != 1) {
+                throw Maths.malformedExpression(this.errorTitle);
+            }
+
             return this.vals[0];
         }
     }
@@ -175,13 +197,19 @@ public enum Calculator {;
 
         @Nullable
         UnaryOperator peek() {
-            if (size < 1) throw Maths.malformedExpression(errorTitle);
+            if (size < 1) {
+                throw Maths.malformedExpression(errorTitle);
+            }
+
             return arr[size - 1];
         }
 
         @Nullable
         UnaryOperator pop() {
-            if (size < 1) throw Maths.malformedExpression(errorTitle);
+            if (size < 1) {
+                throw Maths.malformedExpression(errorTitle);
+            }
+
             --size;
             return arr[size];
         }
@@ -216,11 +244,13 @@ public enum Calculator {;
             BinaryOperator pop = opStk.pop();
             if (pop != BinaryOperator.LPAREN) {
                 result.squish(pop);
-            } else while (opStk.notEmpty()) {
-                if (opStk.peek() == BinaryOperator.LPAREN) {
-                    opStk.pop();
-                } else {
-                    result.applyRParen(opStk);
+            } else {
+                while (opStk.notEmpty()) {
+                    if (opStk.peek() == BinaryOperator.LPAREN) {
+                        opStk.pop();
+                    } else {
+                        result.applyRParen(opStk);
+                    }
                 }
             }
         }
@@ -341,19 +371,23 @@ public enum Calculator {;
             }
 
             private void advanceImmediate() {
-                do ++pos;
-                while (pos < length && Character.isWhitespace(expr[pos]));
+                do {
+                    ++pos;
+                } while (pos < length && Character.isWhitespace(expr[pos]));
             }
 
             private void advance() {
-                while (pos < length && Character.isWhitespace(expr[pos])) ++pos;
+                while (pos < length && Character.isWhitespace(expr[pos])) {
+                    ++pos;
+                }
             }
 
             private FloatingPointNumber extractNumber() {
                 int start = pos;
 
-                do ++pos;
-                while (pos < length && isNumberChar(expr[pos]));
+                do {
+                    ++pos;
+                } while (pos < length && isNumberChar(expr[pos]));
 
                 var s = new String(Arrays.copyOfRange(expr, start, pos));
                 advance();
