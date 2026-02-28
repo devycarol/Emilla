@@ -12,19 +12,19 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 public enum BitwiseCalculator {;
-    private static final class OpStack {
-        final BitwiseOperator[] arr;
+    private static final class OperatorStack {
+        final BitwiseOperator[] array;
         @StringRes
         final int errorTitle;
         int size = 0;
 
-        OpStack(int capacity, @StringRes int errorTitle) {
-            this.arr = new BitwiseOperator[capacity];
+        OperatorStack(int capacity, @StringRes int errorTitle) {
+            this.array = new BitwiseOperator[capacity];
             this.errorTitle = errorTitle;
         }
 
         void push(@Nullable BitwiseOperator val) {
-            arr[size] = val;
+            array[size] = val;
             ++size;
         }
 
@@ -34,7 +34,7 @@ public enum BitwiseCalculator {;
                 throw Maths.malformedExpression(errorTitle);
             }
 
-            return arr[size - 1];
+            return array[size - 1];
         }
 
         @Nullable
@@ -44,7 +44,7 @@ public enum BitwiseCalculator {;
             }
 
             --size;
-            return arr[size];
+            return array[size];
         }
 
         boolean notEmpty() {
@@ -97,26 +97,26 @@ public enum BitwiseCalculator {;
             }
         }
 
-        void applyOperator(BitwiseOperator op, OpStack opStk) {
-            while (opStk.notEmpty()) {
-                BitwiseOperator peek = opStk.peek();
+        void applyOperator(BitwiseOperator op, OperatorStack operators) {
+            while (operators.notEmpty()) {
+                BitwiseOperator peek = operators.peek();
                 if (peek == BitwiseOperator.LPAREN
                     || op.precedence > peek.precedence
                     || op.rightAssociative && op.precedence == peek.precedence) {
                     break;
                 }
-                squish(opStk.pop()); // peek is valid, therefore pop is valid.
+                squish(operators.pop()); // peek is valid, therefore pop is valid.
             }
-            opStk.push(op);
+            operators.push(op);
         }
 
         void applyLParen() {
             signs.push(BitwiseSign.LPAREN);
         }
 
-        void applyRParen(OpStack opStk) {
-            while (opStk.notEmpty()) {
-                BitwiseOperator pop = opStk.pop();
+        void applyRParen(OperatorStack operators) {
+            while (operators.notEmpty()) {
+                BitwiseOperator pop = operators.pop();
                 if (pop == BitwiseOperator.LPAREN) {
                     break;
                 }
@@ -202,33 +202,33 @@ public enum BitwiseCalculator {;
 
     public static long compute(String expression, @StringRes int errorTitle) {
         int len = expression.length();
-        var opStk = new OpStack(len, errorTitle);
+        var operators = new OperatorStack(len, errorTitle);
         var result = new ValStack(len, errorTitle);
 
     try {
         for (BitwiseToken token : new BitwiseTokens(expression, errorTitle)) {
             switch (token) {
-            case BitwiseOperator op -> result.applyOperator(op, opStk);
+            case BitwiseOperator op -> result.applyOperator(op, operators);
             case BitwiseSign op -> result.applyOperator(op);
             case LParen __ -> {
                 result.applyLParen();
-                opStk.push(BitwiseOperator.LPAREN);
+                operators.push(BitwiseOperator.LPAREN);
             }
-            case RParen __ -> result.applyRParen(opStk);
+            case RParen __ -> result.applyRParen(operators);
             case IntegerNumber number -> result.push(number.value);
             }
         }
 
-        while (opStk.notEmpty()) {
-            BitwiseOperator pop = opStk.pop();
+        while (operators.notEmpty()) {
+            BitwiseOperator pop = operators.pop();
             if (pop != BitwiseOperator.LPAREN) {
                 result.squish(pop);
             } else {
-                while (opStk.notEmpty()) {
-                    if (opStk.peek() == BitwiseOperator.LPAREN) {
-                        opStk.pop();
+                while (operators.notEmpty()) {
+                    if (operators.peek() == BitwiseOperator.LPAREN) {
+                        operators.pop();
                     } else {
-                        result.applyRParen(opStk);
+                        result.applyRParen(operators);
                     }
                 }
             }
