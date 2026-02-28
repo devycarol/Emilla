@@ -15,7 +15,8 @@ public enum Features {;
     public static boolean sms(PackageManager pm) {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
             ? pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY_MESSAGING)
-            : pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY);
+            : pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY)
+        ;
     }
 
     public static boolean torch(PackageManager pm) {

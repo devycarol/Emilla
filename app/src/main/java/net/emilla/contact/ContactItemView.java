@@ -25,6 +25,7 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.Accessibilit
 import androidx.core.view.accessibility.AccessibilityViewCommand;
 
 import net.emilla.R;
+import net.emilla.util.Booleans;
 
 public final class ContactItemView extends LinearLayout {
     private long mContactId = 0L;
@@ -126,7 +127,7 @@ public final class ContactItemView extends LinearLayout {
         mStarred = starred;
 
         var values = new ContentValues();
-        values.put(Contacts.STARRED, starred ? 1 : 0);
+        values.put(Contacts.STARRED, Booleans.bit(starred));
 
         var ctx = getContext();
         ContentResolver cr = ctx.getContentResolver();
@@ -142,15 +143,28 @@ public final class ContactItemView extends LinearLayout {
     private void setStateDesc() {
         var res = getResources();
         if (mSelected) {
-            @StringRes int stateDesc = mStarred ? R.string.selected_and_starred : R.string.selected;
+            @StringRes int stateDesc = mStarred
+                ? R.string.selected_and_starred
+                : R.string.selected
+            ;
             setStateDescription(res.getString(stateDesc));
         } else {
-            setStateDescription(mStarred ? res.getString(R.string.starred) : null);
+            setStateDescription(
+                mStarred
+                    ? res.getString(R.string.starred)
+                    : null
+
+            );
         }
     }
 
     private String starActionLabel() {
-        return getResources().getString(mStarred ? R.string.contact_unstar : R.string.contact_star);
+        return getResources().getString(
+            mStarred
+                ? R.string.contact_unstar
+                : R.string.contact_star
+
+        );
     }
 
     public void setContactDetail(String detail) {
@@ -170,7 +184,12 @@ public final class ContactItemView extends LinearLayout {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) setStateDesc();
 
-        String desc = getResources().getString(selected ? R.string.deselect : R.string.select);
+        String desc = getResources().getString(
+            selected
+                ? R.string.deselect
+                : R.string.select
+
+        );
         ViewCompat.replaceAccessibilityAction(this, ACTION_CLICK, desc, null);
     }
 }

@@ -87,6 +87,7 @@ final class Pomodoro extends CoreDataCommand {
                 isBreak
                     ? SettingVals.defaultPomoBreakMins(prefs)
                     : SettingVals.defaultPomoWorkMins(prefs)
+
             ) * 60;
         }
 

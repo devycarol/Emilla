@@ -44,7 +44,8 @@ enum FloatSetting implements SystemSetting {
         float f = Lang.parseFloat(value);
         return isValid(f) && mNamespace.putFloat(cr, mKey, f)
             ? TriResult.SUCCESS
-            : TriResult.FAILURE;
+            : TriResult.FAILURE
+        ;
     }
 
     @Override

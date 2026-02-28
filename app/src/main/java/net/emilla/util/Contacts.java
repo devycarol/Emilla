@@ -46,7 +46,9 @@ public enum Contacts {;
 
     private static int keypadNumber(char letter) {
         char uppercaseLetter = 'A' <= letter && letter <= 'Z'
-            ? letter : (char) (letter - 'a' + 'A');
+            ? letter
+            : (char) (letter - 'a' + 'A')
+        ;
         return letterDigit(uppercaseLetter);
     }
 

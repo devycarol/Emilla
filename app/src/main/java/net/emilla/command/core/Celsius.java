@@ -26,7 +26,12 @@ final class Celsius extends CoreCommand {
 
         String oldDegrees = Maths.prettyNumber(celsius.degrees());
         var res = act.getResources();
-        String unit = res.getString(celsius.fromKelvin() ? R.string.kelvin : R.string.fahrenheit);
+        String unit = res.getString(
+            celsius.fromKelvin()
+                ? R.string.kelvin
+                : R.string.fahrenheit
+
+        );
         String celsiusDegrees = Maths.prettyNumber(celsius.convert());
         giveText(act, res.getString(R.string.celsius_conversion, oldDegrees, unit, celsiusDegrees));
     }

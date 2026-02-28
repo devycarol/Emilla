@@ -104,7 +104,12 @@ public final class CommandsFragment extends PreferenceFragmentCompat {
     }
 
     private void setupPref(CommandPreference preference, @Nullable Set<String> aliases) {
-        preference.setText(aliases != null ? String.join(", ", aliases) : null);
+        preference.setText(
+            aliases != null
+                ? String.join(", ", aliases)
+                : null
+
+        );
         preference.setOnPreferenceChangeListener(mListener);
     }
 
@@ -160,10 +165,11 @@ public final class CommandsFragment extends PreferenceFragmentCompat {
     private static String cleanCommaList(CharSequence entry) {
         String cleanCommaList = Patterns.splitStream(SQUASHING_CSV, entry)
             .filter(s -> !s.isEmpty())
-            .collect(Collectors.joining(", "));
-
+            .collect(Collectors.joining(", "))
+        ;
         return cleanCommaList.indexOf(',') >= 0
             ? cleanCommaList
-            : null;
+            : null
+        ;
     }
 }

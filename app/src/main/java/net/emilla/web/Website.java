@@ -89,6 +89,7 @@ final class Website {
             searchQuery != null
                 ? mSearchEngine.url(searchQuery)
                 : mUrl
+
         );
     }
 

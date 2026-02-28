@@ -36,7 +36,10 @@ public enum Aliases {;
         String[] aliases = res.getStringArray(setId);
         return prefs.getStringSet(
             setKey(entry),
-            aliases.length > 0 ? Set.of(aliases) : null
+            aliases.length > 0
+                ? Set.of(aliases)
+                : null
+
         );
     }
 

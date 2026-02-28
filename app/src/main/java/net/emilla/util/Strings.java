@@ -6,7 +6,10 @@ import net.emilla.grammar.CharPredicate;
 
 public enum Strings {;
     public static String emptyIfNull(@Nullable String s) {
-        return s != null ? s : "";
+        return s != null
+            ? s
+            : ""
+        ;
     }
 
     public static int indexOfNonSpace(char[] chars) {

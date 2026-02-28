@@ -309,7 +309,10 @@ public enum BitwiseCalculator {;
             }
 
             private BitwiseSign extractUnary(boolean postfix) {
-                var type = postfix ? Type.NUMBER : Type.OPERATOR;
+                var type = postfix
+                    ? Type.NUMBER
+                    : Type.OPERATOR
+                ;
                 // postfix unaries are applied immediately, so act like token was a number.
                 return BitwiseSign.of(extractChar(type));
             }

@@ -97,7 +97,8 @@ public final class AssistActivity extends AppCompatActivity {
     private final PermissionRetriever mPermissionRetriever
         = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
             ? new PermissionRetriever(this)
-            : null;
+            : null
+        ;
 
     private /*late*/ LayoutInflater mInflater;
     private /*late*/ ActivityAssistBinding mBinding;
@@ -529,7 +530,10 @@ public final class AssistActivity extends AppCompatActivity {
     @Nullable
     public String dataText() {
         EditText dataField = mBinding.dataField;
-        return dataField.length() == 0 ? null : dataField.getText().toString();
+        return dataField.length() == 0
+            ? null
+            : dataField.getText().toString()
+        ;
     }
 
     public EmillaCommand command() {

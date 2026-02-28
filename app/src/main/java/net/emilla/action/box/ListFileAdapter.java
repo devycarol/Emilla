@@ -66,7 +66,10 @@ final class ListFileAdapter extends RecyclerView.Adapter<ChecklistItemHolder> {
 
     @Override
     public int getItemCount() {
-        return mItems != null ? mItems.length : 0;
+        return mItems != null
+            ? mItems.length
+            : 0
+        ;
     }
 
     public boolean loadFile(ContentResolver cr, Uri file) {

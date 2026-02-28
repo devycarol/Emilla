@@ -15,6 +15,7 @@ public final class Word extends LatinToken {
     public boolean matches(String s) {
         return ignoreCase
             ? s.equalsIgnoreCase(mWord)
-            : s.equals(mWord);
+            : s.equals(mWord)
+        ;
     }
 }

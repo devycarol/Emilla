@@ -15,6 +15,13 @@ public enum Toasts {;
     }
 
     public static void show(Context ctx, CharSequence text, boolean isLongToast) {
-        Toast.makeText(ctx, text, isLongToast ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT).show();
+        Toast.makeText(
+            ctx,
+            text,
+            isLongToast
+                ? Toast.LENGTH_LONG
+                : Toast.LENGTH_SHORT
+
+        ).show();
     }
 }

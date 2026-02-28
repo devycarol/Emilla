@@ -30,7 +30,8 @@ public enum SortedArrays {;
         int index = indexOf(array, searcher);
         return index >= 0
             ? index
-            : ~index;
+            : ~index
+        ;
     }
 
     @internal static <E> ArrayWindow<E> windowMatching(

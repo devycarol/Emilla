@@ -81,7 +81,8 @@ public final class Csv {
     private static String extractString(CharSequence text) {
         return text.isEmpty()
             ? null
-            : text.toString();
+            : text.toString()
+        ;
     }
 
     public String[] remainingValues() {

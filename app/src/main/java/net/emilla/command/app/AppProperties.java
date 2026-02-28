@@ -64,7 +64,10 @@ public enum AppProperties {
     public static AppProperties of(String pkg, String cls) {
         return switch (pkg) {
             case AospContacts.PKG -> AOSP_CONTACTS;
-            case Markor.PKG -> cls.equals(Markor.CLS_MAIN) ? MARKOR : null;
+            case Markor.PKG -> cls.equals(Markor.CLS_MAIN)
+                ? MARKOR
+                : null
+            ;
             // Markor can have multiple launchers, only the main should have special properties.
             case Firefox.PKG -> FIREFOX;
             case Tor.PKG -> TOR;

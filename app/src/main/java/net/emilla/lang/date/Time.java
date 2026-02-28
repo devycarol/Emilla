@@ -108,8 +108,8 @@ public enum Time {; // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         var meridiem
             = REGEX_AM.matcher(time).find() ? Meridiem.AM
             : REGEX_PM.matcher(time).find() ? Meridiem.PM
-            : Meridiem.UNSPECIFIED;
-
+            : Meridiem.UNSPECIFIED
+        ;
         int[] units = timeUnits(time, errorTitle);
         int h = units[0];
         int m = units[1];

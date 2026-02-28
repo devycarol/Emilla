@@ -14,7 +14,10 @@ public final class Lines implements Iterable<String> {
 //        if (!itr.hasNext()) return null;
 //
 //        Object next = itr.next();
-//        var sb = next != null ? new StringBuilder(encodeLine(next)) : new StringBuilder();
+//        var sb = next != null
+//            ? new StringBuilder(encodeLine(next))
+//            : new StringBuilder()
+//        ;
 //        while (itr.hasNext()) {
 //            sb.append('\n');
 //
@@ -35,7 +38,10 @@ public final class Lines implements Iterable<String> {
         if (!itr.hasNext()) return null;
 
         String next = itr.next();
-        var sb = next != null ? new StringBuilder(encodeLine(next)) : new StringBuilder();
+        var sb = next != null
+            ? new StringBuilder(encodeLine(next))
+            : new StringBuilder()
+        ;
         while (itr.hasNext()) {
             sb.append('\n');
 
@@ -56,7 +62,10 @@ public final class Lines implements Iterable<String> {
 //        if (!itr.hasNext()) return null;
 //
 //        CharSequence next = itr.next();
-//        var sb = next != null ? new StringBuilder(encodeLine(next)) : new StringBuilder();
+//        var sb = next != null
+//            ? new StringBuilder(encodeLine(next))
+//            : new StringBuilder()
+//        ;
 //        while (itr.hasNext()) {
 //            sb.append('\n');
 //
@@ -122,7 +131,10 @@ public final class Lines implements Iterable<String> {
 
     public Lines(String text, boolean enforceTrimming) {
         mText = text;
-        mStart = enforceTrimming ? textStart(text) : 0;
+        mStart = enforceTrimming
+            ? textStart(text)
+            : 0
+        ;
         mLen = text.length();
         mEnforceTrimming = enforceTrimming;
     }
@@ -137,7 +149,10 @@ public final class Lines implements Iterable<String> {
 
     @Override
     public Iterator<String> iterator() {
-        return mEnforceTrimming ? new TrimmingLineIterator() : new LineIterator();
+        return mEnforceTrimming
+            ? new TrimmingLineIterator()
+            : new LineIterator()
+        ;
     }
 
     private sealed class LineIterator implements Iterator<String>

@@ -12,6 +12,7 @@ public enum Patterns {;
     public static Stream<String> splitStream(Pattern pattern, CharSequence input) {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
             ? pattern.splitAsStream(input)
-            : Stream.of(pattern.split(input));
+            : Stream.of(pattern.split(input))
+        ;
     }
 }

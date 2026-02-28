@@ -64,6 +64,9 @@ public enum MimeType {;
 
     @Deprecated
     private static String partUnion(String part1, String part2) {
-        return part1.equals(part2) ? part1 : "*";
+        return part1.equals(part2)
+            ? part1
+            : "*"
+        ;
     }
 }

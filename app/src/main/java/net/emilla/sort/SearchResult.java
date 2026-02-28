@@ -39,7 +39,12 @@ public final class SearchResult<E extends SearchItem> implements IndexedStruct<E
                 }
             }
         } else {
-            E firstItem = (spliceBefore.isEmpty() ? spliceAfter : spliceBefore).get(0);
+            E firstItem = (
+                spliceBefore.isEmpty()
+                    ? spliceAfter
+                    : spliceBefore
+
+            ).get(0);
             int splicePosition = SortedArrays.indexFor(mSecondaryItems, firstItem);
 
             for (int i = 0; i < splicePosition; ++i) {

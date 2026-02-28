@@ -78,15 +78,21 @@ enum EnglishUnitedStates {;
             return null;
         }
 
-        return new Dice(minus ? -rollCount : rollCount, faceCount);
+        return new Dice(
+            minus
+                ? -rollCount
+                : rollCount
+            ,
+            faceCount
+        );
     }
 
     public static HourMinute hourMinute(String time, Context ctx, @StringRes int errorTitle) {
         var meridiem
             = Time.REGEX_AM.matcher(time).find() ? Meridiem.AM
             : Time.REGEX_PM.matcher(time).find() ? Meridiem.PM
-            : Meridiem.UNSPECIFIED;
-
+            : Meridiem.UNSPECIFIED
+        ;
         String timeDigits = Strings.stripNonDigits(time);
         if (!Strings.isOneToNDigits(timeDigits, 4)) {
             throw new EmillaException(errorTitle, R.string.error_invalid_time);

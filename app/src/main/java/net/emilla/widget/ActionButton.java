@@ -89,6 +89,7 @@ public final class ActionButton extends AppCompatImageButton implements View.OnT
                             Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
                                 ? HapticFeedbackConstants.GESTURE_END
                                 : HapticFeedbackConstants.KEYBOARD_TAP
+
                         );
                         applyIcon(mIcon);
                         mLongTouching = false;

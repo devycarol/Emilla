@@ -37,7 +37,8 @@ public final class WebsiteMap {
 
 //        var loader = isLegacy
 //            ? new ArrayLoader<String>(10, String[]::new)
-//            : null;
+//            : null
+//        ;
         while (lines.hasNext()) {
             Csv csv = lines.next();
             Website site = mapper.apply(csv);
@@ -65,6 +66,7 @@ public final class WebsiteMap {
         Website site = get.value();
         return site != null
             ? site.webIntent(get.leftovers)
-            : new Intent(ACTION_WEB_SEARCH).putExtra(SearchManager.QUERY, search);
+            : new Intent(ACTION_WEB_SEARCH).putExtra(SearchManager.QUERY, search)
+        ;
     }
 }

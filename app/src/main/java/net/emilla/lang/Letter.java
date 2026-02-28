@@ -13,6 +13,7 @@ public final class Letter extends LatinToken {
     public boolean matches(char ch) {
         return ignoreCase
             ? Chars.sameLetter(mLetter, ch)
-            : mLetter == ch;
+            : mLetter == ch
+        ;
     }
 }

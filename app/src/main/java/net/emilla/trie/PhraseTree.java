@@ -12,6 +12,7 @@ public sealed interface PhraseTree<V> permits WordsTree, GlyphsTree {
     ) {
         return wordsAreSpaceSeparated
             ? new WordsTree<V>(arrayGenerator)
-            : new GlyphsTree<V>(arrayGenerator);
+            : new GlyphsTree<V>(arrayGenerator)
+        ;
     }
 }

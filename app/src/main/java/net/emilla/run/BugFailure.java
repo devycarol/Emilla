@@ -59,7 +59,12 @@ public final class BugFailure extends DialogRun {
     }
 
     private static String deviceInfo() {
-        var device = new StringBuilder(Build.MODEL.isEmpty() ? "Unknown" : Build.MODEL);
+        var device = new StringBuilder(
+            Build.MODEL.isEmpty()
+                ? "Unknown"
+                : Build.MODEL
+
+        );
         if (!Build.DEVICE.isEmpty()) {
             device.append(" (").append(Build.DEVICE).append(')');
         }

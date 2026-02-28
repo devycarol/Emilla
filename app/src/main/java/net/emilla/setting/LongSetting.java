@@ -44,7 +44,8 @@ enum LongSetting implements SystemSetting {
         long l = Lang.parseLong(value);
         return isValid(l) && mNamespace.putLong(cr, mKey, l)
             ? TriResult.SUCCESS
-            : TriResult.FAILURE;
+            : TriResult.FAILURE
+        ;
     }
 
     @Override

@@ -112,8 +112,10 @@ public enum SettingVals {;
         AssistActivity act,
         PackageManager pm
     ) {
-        String defaultAction = Features.torch(pm) ? QuickAction.FLASHLIGHT
-                : QuickAction.ASSISTANT_SETTINGS;
+        String defaultAction = Features.torch(pm)
+            ? QuickAction.FLASHLIGHT
+            : QuickAction.ASSISTANT_SETTINGS
+        ;
         return quickAction(prefs, QuickAction.PREF_DOUBLE_ASSIST, defaultAction, act);
     }
 
@@ -203,7 +205,10 @@ public enum SettingVals {;
     @Nullable
     public static Uri noteFolder(SharedPreferences prefs) {
         String uriString = prefs.getString(NOTE_FOLDER, null);
-        return uriString != null ? Uri.parse(uriString) : null;
+        return uriString != null
+            ? Uri.parse(uriString)
+            : null
+        ;
     }
 
     public static void forgetNoteFolder(SharedPreferences prefs) {
@@ -217,7 +222,10 @@ public enum SettingVals {;
     @Nullable
     public static Uri todoFile(SharedPreferences prefs) {
         String uriString = prefs.getString(TODO_FILE, null);
-        return uriString != null ? Uri.parse(uriString) : null;
+        return uriString != null
+            ? Uri.parse(uriString)
+            : null
+        ;
     }
 
     public static void forgetTodoFile(SharedPreferences prefs) {

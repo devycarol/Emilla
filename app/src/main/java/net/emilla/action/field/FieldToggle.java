@@ -64,7 +64,12 @@ public final class FieldToggle implements QuickAction {
             mActivity.chime(ACT);
         } else {
             mActivated = mActivity.toggleField(mInputField.fieldId);
-            mActivity.chime(mActivated ? ACT : RESUME);
+            mActivity.chime(
+                mActivated
+                    ? ACT
+                    : RESUME
+
+            );
         }
     }
 

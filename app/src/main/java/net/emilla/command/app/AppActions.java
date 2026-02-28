@@ -17,7 +17,10 @@ public final class AppActions {
     public static final int FLAGS_SEND_TEXT = 0x1 | FLAG_SEND_MULTILINE;
 
     private static int flags(PackageManager pm, String pkg, @Nullable AppProperties properties) {
-        int mask = properties != null ? properties.actionMask : ~0;
+        int mask = properties != null
+            ? properties.actionMask
+            : ~0
+        ;
         int flags = 0;
 
         int sendMasked = mask & FLAGS_SEND_TEXT;

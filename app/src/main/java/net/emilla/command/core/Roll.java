@@ -19,7 +19,13 @@ final class Roll extends CoreCommand {
     @Override
     protected void run(AssistActivity act) {
         var rand = new Random();
-        giveText(act, rand.nextBoolean() ? R.string.heads : R.string.tails);
+        giveText(
+            act,
+            rand.nextBoolean()
+                ? R.string.heads
+                : R.string.tails
+
+        );
     }
 
     @Override

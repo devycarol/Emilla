@@ -55,7 +55,8 @@ public enum Lang {
     public static String wordConcat(Resources res, String a, String b) {
         return wordsAreSpaceSeparated(res)
             ? a + ' ' + b
-            : a + b;
+            : a + b
+        ;
     }
 
     public static String wordConcat(Resources res, @StringRes int a, String b) {

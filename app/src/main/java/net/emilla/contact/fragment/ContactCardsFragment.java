@@ -34,6 +34,7 @@ public final class ContactCardsFragment extends ContactsFragment<Uri> {
         int pos = contactList.getCheckedItemPosition();
         return cur.moveToPosition(pos)
             ? ContactsContract.Contacts.getLookupUri(cur.getLong(INDEX_ID), cur.getString(INDEX_KEY))
-            : null;
+            : null
+        ;
     }
 }

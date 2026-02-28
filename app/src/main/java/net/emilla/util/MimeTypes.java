@@ -25,6 +25,7 @@ public enum MimeTypes {;
 
         return mimeType != null && mimeType.startsWith(PREFIX_TEXT)
             ? filename
-            : filename + EXTENSION_TEXT;
+            : filename + EXTENSION_TEXT
+        ;
     }
 }

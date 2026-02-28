@@ -2,6 +2,8 @@ package net.emilla.random;
 
 import android.util.SparseIntArray;
 
+import net.emilla.util.Booleans;
+
 import java.util.Random;
 
 public final class DiceRoller {
@@ -35,7 +37,7 @@ public final class DiceRoller {
             roll += mDice.valueAt(0);
         }
 
-        for (int i = hasModifier ? 1 : 0; i < size; ++i) {
+        for (int i = Booleans.bit(hasModifier); i < size; ++i) {
             int rollCount = mDice.valueAt(i);
             int faceCount = mDice.keyAt(i);
             if (rollCount > 0) {

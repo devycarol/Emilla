@@ -36,7 +36,8 @@ enum BooleanSetting implements SystemSetting {;
     public final TriResult set(Resources res, ContentResolver cr, @Nullable String value) {
         return setInternal(res, cr, value)
             ? TriResult.SUCCESS
-            : TriResult.FAILURE;
+            : TriResult.FAILURE
+        ;
     }
 
     private boolean setInternal(Resources res, ContentResolver cr, @Nullable String value) {
@@ -45,8 +46,10 @@ enum BooleanSetting implements SystemSetting {;
         }
 
         value = Lang.normalize(value);
-        return value.equals(res.getString(R.string.on)) ? mNamespace.putBoolean(cr, mKey, true)
-            : value.equals(res.getString(R.string.off)) && mNamespace.putBoolean(cr, mKey, false);
+        return value.equals(res.getString(R.string.on))
+            ? mNamespace.putBoolean(cr, mKey, true)
+            : value.equals(res.getString(R.string.off)) && mNamespace.putBoolean(cr, mKey, false)
+        ;
     }
 
     private boolean toggle(ContentResolver cr) {

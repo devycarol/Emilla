@@ -3,6 +3,8 @@ package net.emilla.setting;
 import android.content.ContentResolver;
 import android.provider.Settings;
 
+import net.emilla.util.Booleans;
+
 enum Namespace {
     GLOBAL {
         @Override
@@ -232,7 +234,7 @@ enum Namespace {
     public abstract boolean putString(ContentResolver cr, String name, String value);
 
     public final boolean putBoolean(ContentResolver cr, String name, boolean value) {
-        return putInt(cr, name, value ? 1 : 0);
+        return putInt(cr, name, Booleans.bit(value));
     }
 
     public final boolean delete(ContentResolver cr, String name) {

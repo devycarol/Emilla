@@ -33,7 +33,8 @@ public final class ArrayLoader<E> {
     public E[] array() {
         return mSize == mArray.length
             ? mArray
-            : Arrays.copyOf(mArray, mSize);
+            : Arrays.copyOf(mArray, mSize)
+        ;
     }
 
     public E[] appendedTo(E[] array) {

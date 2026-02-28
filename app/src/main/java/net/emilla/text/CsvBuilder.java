@@ -6,7 +6,8 @@ public final class CsvBuilder {
     public CsvBuilder(String initialValue) {
         mBuilder = initialValue != null
             ? new StringBuilder(encode(initialValue))
-            : new StringBuilder();
+            : new StringBuilder()
+        ;
     }
 
     public void append(String... values) {

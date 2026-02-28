@@ -28,7 +28,14 @@ final class Toast extends CoreDataCommand {
         String longTag = res.getString(R.string.tag_toast_long); // todo: change this to a button
         if (message.toLowerCase().endsWith(longTag)) {
             message = message.substring(0, message.length() - longTag.length()).trim();
-            toast(act, message.isEmpty() ? res.getString(R.string.toast_hello) : message, true);
+            toast(
+                act,
+                message.isEmpty()
+                    ? res.getString(R.string.toast_hello)
+                    : message
+                ,
+                true
+            );
             // todo: configurable default message
         } else {
             toast(act, message, false);
@@ -41,7 +48,14 @@ final class Toast extends CoreDataCommand {
         String longTag = res.getString(R.string.tag_toast_long); // todo way later make configurable
         if (message.toLowerCase().endsWith(longTag)) {
             message = message.substring(0, message.length() - longTag.length()).trim();
-            toast(act, message.isEmpty() ? res.getString(R.string.toast_hello) : message, true);
+            toast(
+                act,
+                message.isEmpty()
+                    ? res.getString(R.string.toast_hello)
+                    : message
+                ,
+                true
+            );
             // todo: configurable default message
         } else {
             toast(act, message, false);

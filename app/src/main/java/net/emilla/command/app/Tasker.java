@@ -160,10 +160,17 @@ final class Tasker extends AppCommand implements DataCommand {
         return (a, b) -> {
             boolean aStarts = a.taskName.toLowerCase().startsWith(lcTask);
             boolean bStarts = b.taskName.toLowerCase().startsWith(lcTask);
-            if (aStarts != bStarts) return aStarts ? -1 : 1;
+            if (aStarts != bStarts) {
+                return aStarts
+                    ? -1
+                    : 1
+                ;
+            }
 
             int projectComp = a.projectName.compareTo(b.projectName);
-            if (projectComp != 0) return projectComp;
+            if (projectComp != 0) {
+                return projectComp;
+            }
 
             return a.taskName.compareTo(b.taskName);
         };

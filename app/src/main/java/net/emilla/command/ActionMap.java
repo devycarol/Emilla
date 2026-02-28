@@ -31,6 +31,7 @@ public final class ActionMap<A extends Enum<A>> {
 
         return action != null
             ? new Subcommand<A>(action, get.leftovers)
-            : new Subcommand<A>(mDefaultAction, instruction);
+            : new Subcommand<A>(mDefaultAction, instruction)
+        ;
     }
 }

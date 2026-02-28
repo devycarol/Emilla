@@ -44,7 +44,8 @@ enum IntSetting implements SystemSetting {
         int i = Lang.parseInt(value);
         return isValid(i) && mNamespace.putInt(cr, mKey, i)
             ? TriResult.SUCCESS
-            : TriResult.FAILURE;
+            : TriResult.FAILURE
+        ;
     }
 
     @Override

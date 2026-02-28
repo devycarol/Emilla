@@ -25,7 +25,8 @@ final class SearchEngine {
         String suffix = csv.next();
         return prefix != null || suffix != null
             ? new SearchEngine(prefix, suffix)
-            : null;
+            : null
+        ;
     }
 
     @Deprecated

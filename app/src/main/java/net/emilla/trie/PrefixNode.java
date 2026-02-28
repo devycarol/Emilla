@@ -70,6 +70,7 @@ final class PrefixNode<K, V> {
 
         return values.length > 0
             ? values
-            : null;
+            : null
+        ;
     }
 }

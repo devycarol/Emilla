@@ -100,7 +100,8 @@ public abstract class ContactsFragment<T> extends ActionBox
 
         int choiceMode = mHasMultiSelect
             ? AbsListView.CHOICE_MODE_MULTIPLE
-            : AbsListView.CHOICE_MODE_SINGLE;
+            : AbsListView.CHOICE_MODE_SINGLE
+        ;
         mContactList.setChoiceMode(choiceMode);
 
         mContactList.setOnItemClickListener(this);

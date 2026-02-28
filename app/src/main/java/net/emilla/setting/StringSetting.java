@@ -42,7 +42,8 @@ enum StringSetting implements SystemSetting {
 
         return isValid(value) && mNamespace.putString(cr, mKey, value)
             ? TriResult.SUCCESS
-            : TriResult.FAILURE;
+            : TriResult.FAILURE
+        ;
     }
 
     @Override
