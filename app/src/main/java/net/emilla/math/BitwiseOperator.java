@@ -1,96 +1,88 @@
 package net.emilla.math;
 
-import androidx.annotation.Nullable;
-
 import net.emilla.math.CalcToken.BitwiseToken;
 
-enum BitwiseOperator implements BitwiseToken {
-    OR(-3, false) {
+enum BitwiseOperator implements CalcOperator<Long>, BitwiseToken {
+    OR(-3) {
         @Override
-        public long apply(long a, long b) {
+        public Long apply(Long a, Long b) {
             return a | b;
         }
     },
-    XOR(-2, false) {
+    XOR(-2) {
         @Override
-        public long apply(long a, long b) {
+        public Long apply(Long a, Long b) {
             return a ^ b;
         }
     },
-    AND(-1, false) {
+    AND(-1) {
         @Override
-        public long apply(long a, long b) {
+        public Long apply(Long a, Long b) {
             return a & b;
         }
     },
-    SHL(0, false) {
+    SHL(0) {
         @Override
-        public long apply(long a, long b) {
+        public Long apply(Long a, Long b) {
             return a << b;
         }
     },
-    SHR(0, false) {
+    SHR(0) {
         @Override
-        public long apply(long a, long b) {
+        public Long apply(Long a, Long b) {
             return a >> b;
         }
     },
-    USHR(0, false) {
+    USHR(0) {
         @Override
-        public long apply(long a, long b) {
+        public Long apply(Long a, Long b) {
             return a >>> b;
         }
     },
-    PLUS(1, false) {
+    PLUS(1) {
         @Override
-        public long apply(long a, long b) {
+        public Long apply(Long a, Long b) {
             return a + b;
         }
     },
-    MINUS(1, false) {
+    MINUS(1) {
         @Override
-        public long apply(long a, long b) {
+        public Long apply(Long a, Long b) {
             return a - b;
         }
     },
-    TIMES(2, false) {
+    TIMES(2) {
         @Override
-        public long apply(long a, long b) {
+        public Long apply(Long a, Long b) {
             return a * b;
         }
     },
-    DIV(2, false) {
+    DIV(2) {
         @Override
-        public long apply(long a, long b) {
+        public Long apply(Long a, Long b) {
             return a / b;
         }
     },
-    MOD(2, false) {
+    MOD(2) {
         @Override
-        public long apply(long a, long b) {
+        public Long apply(Long a, Long b) {
             return a % b;
         }
     },
-    POW(3, true) {
+    POW(3) {
         @Override
-        public long apply(long a, long b) {
+        public Long apply(Long a, Long b) {
             return (long) Math.pow((double) a, (double) b);
         }
     },
 ;
-    @Nullable
-    public static final BitwiseOperator LPAREN = null;
     private static final BitwiseOperator[] sValues = values();
 
-    public final int precedence;
-    public final boolean rightAssociative;
+    private final int mPrecedence;
 
-    BitwiseOperator(int precedence, boolean rightAssociative) {
-        this.precedence = precedence;
-        this.rightAssociative = rightAssociative;
+    BitwiseOperator(int precedence) {
+        mPrecedence = precedence;
     }
-
-    public abstract long apply(long a, long b);
 
     public static BitwiseOperator of(int ordinal) {
         return sValues[ordinal];
@@ -111,5 +103,15 @@ enum BitwiseOperator implements BitwiseToken {
             case "%" -> MOD;
             default -> throw new IllegalArgumentException("Invalid bitwise operator");
         };
+    }
+
+    @Override
+    public int precedence() {
+        return mPrecedence;
+    }
+
+    @Override
+    public final boolean isRightAssociative() {
+        return this == POW;
     }
 }

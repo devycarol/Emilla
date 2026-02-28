@@ -1,54 +1,46 @@
 package net.emilla.math;
 
-import androidx.annotation.Nullable;
-
 import net.emilla.math.CalcToken.InfixToken;
 
-enum ArithmeticOperator implements InfixToken {
-    PLUS(1, false) {
+enum ArithmeticOperator implements CalcOperator<Double>, InfixToken {
+    PLUS(1) {
         @Override
-        public double apply(double a, double b) {
+        public Double apply(Double a, Double b) {
             return a + b;
         }
     },
-    MINUS(1, false) {
+    MINUS(1) {
         @Override
-        public double apply(double a, double b) {
+        public Double apply(Double a, Double b) {
             return a - b;
         }
     },
-    TIMES(2, false) {
+    TIMES(2) {
         @Override
-        public double apply(double a, double b) {
+        public Double apply(Double a, Double b) {
             return a * b;
         }
     },
-    DIV(2, false) {
+    DIV(2) {
         @Override
-        public double apply(double a, double b) {
+        public Double apply(Double a, Double b) {
             return a / b;
         }
     },
-    POW(3, true) {
+    POW(3) {
         @Override
-        public double apply(double a, double b) {
+        public Double apply(Double a, Double b) {
             return Math.pow(a, b);
         }
     },
 ;
-    @Nullable
-    public static final ArithmeticOperator LPAREN = null;
     private static final ArithmeticOperator[] sValues = values();
 
-    public final int precedence;
-    public final boolean rightAssociative;
+    private final int mPrecedence;
 
-    ArithmeticOperator(int precedence, boolean rightAssociative) {
-        this.precedence = precedence;
-        this.rightAssociative = rightAssociative;
+    ArithmeticOperator(int precedence) {
+        mPrecedence = precedence;
     }
-
-    public abstract double apply(double a, double b);
 
     public static ArithmeticOperator of(int ordinal) {
         return sValues[ordinal];
@@ -63,5 +55,15 @@ enum ArithmeticOperator implements InfixToken {
             case '^' -> POW;
             default -> throw new IllegalArgumentException("Invalid binary operator");
         };
+    }
+
+    @Override
+    public final int precedence() {
+        return mPrecedence;
+    }
+
+    @Override
+    public final boolean isRightAssociative() {
+        return this == POW;
     }
 }

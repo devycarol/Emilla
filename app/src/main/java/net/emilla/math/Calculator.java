@@ -11,154 +11,53 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 public enum Calculator {;
-    private static final class ValStack {
-        final double[] vals;
-        final EnumStack<ArithmeticSign> signs;
-        @StringRes
-        final int errorTitle;
-        int size = 0;
-
-        ValStack(int capacity, @StringRes int errorTitle) {
-            this.vals = new double[capacity];
-            this.signs = new EnumStack<ArithmeticSign>(capacity, ArithmeticSign::of, errorTitle);
-            this.errorTitle = errorTitle;
-        }
-
-        void push(double operand) {
-            while (signs.notEmpty()) {
-                if (signs.peek() == ArithmeticSign.LPAREN) {
-                    break;
-                }
-
-                operand = signs.pop().apply(operand);
-                // peek is valid, therefore pop is valid.
-            }
-
-            vals[size] = operand;
-            ++size;
-        }
-
-        void squish(ArithmeticOperator op) {
-            if (size < 2) {
-                throw Maths.malformedExpression(errorTitle);
-            }
-
-            --size;
-            vals[size - 1] = op.apply(vals[size - 1], vals[size]);
-        }
-
-        void applyOperator(ArithmeticSign op) {
-            if (op.postfix) {
-                int last = size - 1;
-                vals[last] = op.apply(vals[last]);
-            } else if (op != ArithmeticSign.POSITIVE) {
-                signs.push(op);
-            }
-        }
-
-        void applyOperator(ArithmeticOperator op, EnumStack<ArithmeticOperator> operators) {
-            while (operators.notEmpty()) {
-                ArithmeticOperator peek = operators.peek();
-                if (peek == ArithmeticOperator.LPAREN
-                    || op.precedence > peek.precedence
-                    || op.rightAssociative && op.precedence == peek.precedence) {
-                    break;
-                }
-                squish(operators.pop()); // peek is valid, therefore pop is valid.
-            }
-            operators.push(op);
-        }
-
-        void applyLParen() {
-            signs.push(ArithmeticSign.LPAREN);
-        }
-
-        void applyRParen(EnumStack<ArithmeticOperator> operators) {
-            while (operators.notEmpty()) {
-                ArithmeticOperator pop = operators.pop();
-                if (pop == ArithmeticOperator.LPAREN) {
-                    break;
-                }
-
-                squish(pop);
-            }
-
-            if (signs.notEmpty()) {
-                closeSignParen();
-            }
-        }
-
-        void applyRemainingSigns() {
-            while (signs.notEmpty()) {
-                closeSignParen();
-            }
-        }
-
-        private void closeSignParen() {
-            if (signs.peek() == ArithmeticSign.LPAREN) {
-                signs.pop();
-                int last = size - 1;
-                while (signs.notEmpty()) {
-                    ArithmeticSign peek = signs.peek();
-                    if (peek == ArithmeticSign.LPAREN) {
-                        break;
-                    }
-
-                    vals[last] = signs.pop().apply(vals[last]);
-                    // peek is valid, therefore pop is valid.
-                }
-            }
-        }
-
-        double value() {
-            if (size != 1) {
-                throw Maths.malformedExpression(errorTitle);
-            }
-
-            return vals[0];
-        }
-    }
-
     public static double compute(String expression, @StringRes int errorTitle) {
         // Todo: use big decimals to reduce overflow, esp. in operations like factorial.
 
         int len = expression.length();
         var operators = new EnumStack<ArithmeticOperator>(len,  ArithmeticOperator::of, errorTitle);
-        var result = new ValStack(len, errorTitle);
+        var result = new CalcStack<Double, ArithmeticOperator, ArithmeticSign>(
+            len,
+            ArithmeticSign::of,
+            Double[]::new,
+            errorTitle
+        );
 
-    try {
-        for (InfixToken token : new InfixTokens(expression, errorTitle)) {
-            switch (token) {
-            case ArithmeticOperator op -> result.applyOperator(op, operators);
-            case ArithmeticSign op -> result.applyOperator(op);
-            case LParen __ -> {
-                result.applyLParen();
-                operators.push(ArithmeticOperator.LPAREN);
+        try {
+            for (InfixToken token : new InfixTokens(expression, errorTitle)) {
+                switch (token) {
+                case ArithmeticOperator op -> result.applyOperator(op, operators);
+                case ArithmeticSign sign -> result.applySign(sign);
+                case LParen __ -> {
+                    result.applyLParen();
+                    operators.push(null);
+                }
+                case RParen __ -> result.applyRParen(operators);
+                case FloatingPointNumber number -> result.push(number.value);
+                }
             }
-            case RParen __ -> result.applyRParen(operators);
-            case FloatingPointNumber number -> result.push(number.value);
-            }
-        }
 
-        while (operators.notEmpty()) {
-            ArithmeticOperator pop = operators.pop();
-            if (pop != ArithmeticOperator.LPAREN) {
-                result.squish(pop);
-            } else {
-                while (operators.notEmpty()) {
-                    if (operators.peek() == ArithmeticOperator.LPAREN) {
-                        operators.pop();
-                    } else {
-                        result.applyRParen(operators);
+            while (operators.notEmpty()) {
+                ArithmeticOperator pop = operators.pop();
+                if (pop != null) {
+                    // not left paren
+                    result.squish(pop);
+                } else {
+                    while (operators.notEmpty()) {
+                        if (operators.peek() == null) {
+                            // left paren
+                            operators.pop();
+                        } else {
+                            result.applyRParen(operators);
+                        }
                     }
                 }
             }
-        }
 
-        result.applyRemainingSigns();
-    } catch (ArithmeticException e) {
-        throw Maths.undefined(errorTitle);
-    }
+            result.applyRemainingSigns();
+        } catch (ArithmeticException e) {
+            throw Maths.undefined(errorTitle);
+        }
 
         return result.value();
     }

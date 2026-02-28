@@ -1,46 +1,40 @@
 package net.emilla.math;
 
-import androidx.annotation.Nullable;
-
 import net.emilla.math.CalcToken.InfixToken;
 
-enum ArithmeticSign implements InfixToken {
+enum ArithmeticSign implements CalcSign<Double>, InfixToken {
     POSITIVE(false) {
         @Override
-        public double apply(double n) {
+        public Double apply(Double n) {
             return n;
         }
     },
     NEGATIVE(false) {
         @Override
-        public double apply(double n) {
+        public Double apply(Double n) {
             return -n;
         }
     },
     PERCENT(true) {
         @Override
-        public double apply(double n) {
+        public Double apply(Double n) {
             return n / 100.0;
         }
     },
     FACTORIAL(true) {
         @Override
-        public double apply(double n) {
+        public Double apply(Double n) {
             return Maths.factorial(n);
         }
     },
 ;
-    @Nullable
-    public static final ArithmeticSign LPAREN = null;
     private static final ArithmeticSign[] sValues = values();
 
-    public final boolean postfix;
+    private final boolean mIsPostfix;
 
-    ArithmeticSign(boolean postfix) {
-        this.postfix = postfix;
+    ArithmeticSign(boolean isPostfix) {
+        mIsPostfix = isPostfix;
     }
-
-    public abstract double apply(double n);
 
     public static ArithmeticSign of(int ordinal) {
         return sValues[ordinal];
@@ -54,5 +48,15 @@ enum ArithmeticSign implements InfixToken {
             case '!' -> FACTORIAL;
             default -> throw new IllegalArgumentException("Invalid unary operator");
         };
+    }
+
+    @Override
+    public final boolean isPostfix() {
+        return mIsPostfix;
+    }
+
+    @Override
+    public final boolean isIdempotent() {
+        return this == POSITIVE;
     }
 }

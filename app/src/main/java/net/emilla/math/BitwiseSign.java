@@ -1,46 +1,34 @@
 package net.emilla.math;
 
-import androidx.annotation.Nullable;
-
 import net.emilla.math.CalcToken.BitwiseToken;
 
-enum BitwiseSign implements BitwiseToken {
-    POSITIVE(false) {
+enum BitwiseSign implements CalcSign<Long>, BitwiseToken {
+    POSITIVE {
         @Override
-        public long apply(long n) {
+        public Long apply(Long n) {
             return n;
         }
     },
-    NEGATIVE(false) {
+    NEGATIVE {
         @Override
-        public long apply(long n) {
+        public Long apply(Long n) {
             return -n;
         }
     },
-    NOT(false) {
+    NOT {
         @Override
-        public long apply(long n) {
+        public Long apply(Long n) {
             return ~n;
         }
     },
-    FACTORIAL(true) {
+    FACTORIAL {
         @Override
-        public long apply(long n) {
+        public Long apply(Long n) {
             return Maths.factorial(n);
         }
     }
 ;
-    @Nullable
-    public static final BitwiseSign LPAREN = null;
     private static final BitwiseSign[] sValues = values();
-
-    public final boolean postfix;
-
-    BitwiseSign(boolean postfix) {
-        this.postfix = postfix;
-    }
-
-    public abstract long apply(long n);
 
     public static BitwiseSign of(int ordinal) {
         return sValues[ordinal];
@@ -54,5 +42,15 @@ enum BitwiseSign implements BitwiseToken {
             case '!' -> FACTORIAL;
             default -> throw new IllegalArgumentException("Invalid bitwise sign");
         };
+    }
+
+    @Override
+    public final boolean isPostfix() {
+        return this == FACTORIAL;
+    }
+
+    @Override
+    public final boolean isIdempotent() {
+        return this == POSITIVE;
     }
 }
