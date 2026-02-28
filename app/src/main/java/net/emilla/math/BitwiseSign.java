@@ -1,7 +1,5 @@
 package net.emilla.math;
 
-import net.emilla.math.CalcToken.BitwiseToken;
-
 enum BitwiseSign implements CalcSign<Long>, BitwiseToken {
     POSITIVE {
         @Override

@@ -1,14 +1,14 @@
 package net.emilla.math;
 
-import androidx.annotation.StringRes;
+final class IntegerNumber implements CalcValue<Long>, BitwiseToken {
+    private final long mValue;
 
-import net.emilla.annotation.internal;
-import net.emilla.math.CalcToken.BitwiseToken;
+    IntegerNumber(long value) {
+        mValue = value;
+    }
 
-final class IntegerNumber implements BitwiseToken {
-    public final long value;
-
-    @internal IntegerNumber(String number, @StringRes int errorTitle) {
-        this.value = Maths.tryParseLong(number, errorTitle);
+    @Override
+    public Long get() {
+        return mValue;
     }
 }

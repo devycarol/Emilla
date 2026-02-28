@@ -1,14 +1,14 @@
 package net.emilla.math;
 
-import androidx.annotation.StringRes;
+final class FloatingPointNumber implements CalcValue<Double>, ArithmeticToken {
+    private final double mValue;
 
-import net.emilla.annotation.internal;
-import net.emilla.math.CalcToken.InfixToken;
+    FloatingPointNumber(double value) {
+        mValue = value;
+    }
 
-final class FloatingPointNumber implements InfixToken {
-    public final double value;
-
-    @internal FloatingPointNumber(String number, @StringRes int errorTitle) {
-        this.value = Maths.tryParseDouble(number, errorTitle);
+    @Override
+    public Double get() {
+        return mValue;
     }
 }

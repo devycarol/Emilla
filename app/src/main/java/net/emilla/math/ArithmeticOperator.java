@@ -1,8 +1,6 @@
 package net.emilla.math;
 
-import net.emilla.math.CalcToken.InfixToken;
-
-enum ArithmeticOperator implements CalcOperator<Double>, InfixToken {
+enum ArithmeticOperator implements CalcOperator<Double>, ArithmeticToken {
     PLUS(1) {
         @Override
         public Double apply(Double a, Double b) {

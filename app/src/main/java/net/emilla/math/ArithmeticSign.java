@@ -1,8 +1,6 @@
 package net.emilla.math;
 
-import net.emilla.math.CalcToken.InfixToken;
-
-enum ArithmeticSign implements CalcSign<Double>, InfixToken {
+enum ArithmeticSign implements CalcSign<Double>, ArithmeticToken {
     POSITIVE(false) {
         @Override
         public Double apply(Double n) {

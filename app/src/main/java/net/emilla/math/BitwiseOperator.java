@@ -1,7 +1,5 @@
 package net.emilla.math;
 
-import net.emilla.math.CalcToken.BitwiseToken;
-
 enum BitwiseOperator implements CalcOperator<Long>, BitwiseToken {
     OR(-3) {
         @Override
