@@ -38,7 +38,7 @@ public enum Calculator {;
             ++size;
         }
 
-        void squish(BinaryOperator op) {
+        void squish(ArithmeticOperator op) {
             if (size < 2) {
                 throw Maths.malformedExpression(errorTitle);
             }
@@ -56,10 +56,10 @@ public enum Calculator {;
             }
         }
 
-        void applyOperator(BinaryOperator op, EnumStack<BinaryOperator> operators) {
+        void applyOperator(ArithmeticOperator op, EnumStack<ArithmeticOperator> operators) {
             while (operators.notEmpty()) {
-                BinaryOperator peek = operators.peek();
-                if (peek == BinaryOperator.LPAREN
+                ArithmeticOperator peek = operators.peek();
+                if (peek == ArithmeticOperator.LPAREN
                     || op.precedence > peek.precedence
                     || op.rightAssociative && op.precedence == peek.precedence) {
                     break;
@@ -73,10 +73,10 @@ public enum Calculator {;
             signs.push(UnaryOperator.LPAREN);
         }
 
-        void applyRParen(EnumStack<BinaryOperator> operators) {
+        void applyRParen(EnumStack<ArithmeticOperator> operators) {
             while (operators.notEmpty()) {
-                BinaryOperator pop = operators.pop();
-                if (pop == BinaryOperator.LPAREN) {
+                ArithmeticOperator pop = operators.pop();
+                if (pop == ArithmeticOperator.LPAREN) {
                     break;
                 }
 
@@ -123,17 +123,17 @@ public enum Calculator {;
         // Todo: use big decimals to reduce overflow, esp. in operations like factorial.
 
         int len = expression.length();
-        var operators = new EnumStack<BinaryOperator>(len,  BinaryOperator::of, errorTitle);
+        var operators = new EnumStack<ArithmeticOperator>(len,  ArithmeticOperator::of, errorTitle);
         var result = new ValStack(len, errorTitle);
 
     try {
         for (InfixToken token : new InfixTokens(expression, errorTitle)) {
             switch (token) {
-            case BinaryOperator op -> result.applyOperator(op, operators);
+            case ArithmeticOperator op -> result.applyOperator(op, operators);
             case UnaryOperator op -> result.applyOperator(op);
             case LParen __ -> {
                 result.applyLParen();
-                operators.push(BinaryOperator.LPAREN);
+                operators.push(ArithmeticOperator.LPAREN);
             }
             case RParen __ -> result.applyRParen(operators);
             case FloatingPointNumber number -> result.push(number.value);
@@ -141,12 +141,12 @@ public enum Calculator {;
         }
 
         while (operators.notEmpty()) {
-            BinaryOperator pop = operators.pop();
-            if (pop != BinaryOperator.LPAREN) {
+            ArithmeticOperator pop = operators.pop();
+            if (pop != ArithmeticOperator.LPAREN) {
                 result.squish(pop);
             } else {
                 while (operators.notEmpty()) {
-                    if (operators.peek() == BinaryOperator.LPAREN) {
+                    if (operators.peek() == ArithmeticOperator.LPAREN) {
                         operators.pop();
                     } else {
                         result.applyRParen(operators);
@@ -252,8 +252,8 @@ public enum Calculator {;
                 return UnaryOperator.of(extractChar(type));
             }
 
-            private BinaryOperator extractOperator() {
-                return BinaryOperator.of(extractChar(Type.OPERATOR));
+            private ArithmeticOperator extractOperator() {
+                return ArithmeticOperator.of(extractChar(Type.OPERATOR));
             }
 
             private char extractChar(Type type) {
@@ -263,9 +263,9 @@ public enum Calculator {;
                 return c;
             }
 
-            private BinaryOperator phantomStar() {
+            private ArithmeticOperator phantomStar() {
                 prevType = Type.OPERATOR;
-                return BinaryOperator.TIMES;
+                return ArithmeticOperator.TIMES;
             }
 
             private void advanceImmediate() {

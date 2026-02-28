@@ -4,7 +4,7 @@ import androidx.annotation.Nullable;
 
 import net.emilla.math.CalcToken.InfixToken;
 
-enum BinaryOperator implements InfixToken {
+enum ArithmeticOperator implements InfixToken {
     PLUS(1, false) {
         @Override
         public double apply(double a, double b) {
@@ -37,24 +37,24 @@ enum BinaryOperator implements InfixToken {
     },
 ;
     @Nullable
-    public static final BinaryOperator LPAREN = null;
-    private static final BinaryOperator[] sValues = values();
+    public static final ArithmeticOperator LPAREN = null;
+    private static final ArithmeticOperator[] sValues = values();
 
     public final int precedence;
     public final boolean rightAssociative;
 
-    BinaryOperator(int precedence, boolean rightAssociative) {
+    ArithmeticOperator(int precedence, boolean rightAssociative) {
         this.precedence = precedence;
         this.rightAssociative = rightAssociative;
     }
 
     public abstract double apply(double a, double b);
 
-    public static BinaryOperator of(int ordinal) {
+    public static ArithmeticOperator of(int ordinal) {
         return sValues[ordinal];
     }
 
-    public static BinaryOperator of(char token) {
+    public static ArithmeticOperator of(char token) {
         return switch (token) {
             case '+' -> PLUS;
             case '-' -> MINUS;
