@@ -1,6 +1,5 @@
 package net.emilla.math;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import net.emilla.math.CalcToken.InfixToken;
@@ -12,56 +11,16 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 public enum Calculator {;
-    private static final class OperatorStack {
-        final BinaryOperator[] array;
-        @StringRes
-        final int errorTitle;
-        int size = 0;
-
-        OperatorStack(int capacity, @StringRes int errorTitle) {
-            this.array = new BinaryOperator[capacity];
-            this.errorTitle = errorTitle;
-        }
-
-        void push(@Nullable BinaryOperator val) {
-            array[size] = val;
-            ++size;
-        }
-
-        @Nullable
-        BinaryOperator peek() {
-            if (size < 1) {
-                throw Maths.malformedExpression(errorTitle);
-            }
-
-            return array[size - 1];
-        }
-
-        @Nullable
-        BinaryOperator pop() {
-            if (size < 1) {
-                throw Maths.malformedExpression(errorTitle);
-            }
-
-            --size;
-            return array[size];
-        }
-
-        boolean notEmpty() {
-            return size > 0;
-        }
-    }
-
     private static final class ValStack {
         final double[] vals;
-        final SignStack signs;
+        final EnumStack<UnaryOperator> signs;
         @StringRes
         final int errorTitle;
         int size = 0;
 
         ValStack(int capacity, @StringRes int errorTitle) {
             this.vals = new double[capacity];
-            this.signs = new SignStack(capacity, errorTitle);
+            this.signs = new EnumStack<UnaryOperator>(capacity, UnaryOperator::of, errorTitle);
             this.errorTitle = errorTitle;
         }
 
@@ -97,7 +56,7 @@ public enum Calculator {;
             }
         }
 
-        void applyOperator(BinaryOperator op, OperatorStack operators) {
+        void applyOperator(BinaryOperator op, EnumStack<BinaryOperator> operators) {
             while (operators.notEmpty()) {
                 BinaryOperator peek = operators.peek();
                 if (peek == BinaryOperator.LPAREN
@@ -114,7 +73,7 @@ public enum Calculator {;
             signs.push(UnaryOperator.LPAREN);
         }
 
-        void applyRParen(OperatorStack operators) {
+        void applyRParen(EnumStack<BinaryOperator> operators) {
             while (operators.notEmpty()) {
                 BinaryOperator pop = operators.pop();
                 if (pop == BinaryOperator.LPAREN) {
@@ -160,51 +119,11 @@ public enum Calculator {;
         }
     }
 
-    private static final class SignStack {
-        final UnaryOperator[] arr;
-        @StringRes
-        final int errorTitle;
-        int size = 0;
-
-        SignStack(int capacity, @StringRes int errorTitle) {
-            this.arr = new UnaryOperator[capacity];
-            this.errorTitle = errorTitle;
-        }
-
-        void push(@Nullable UnaryOperator sign) {
-            arr[size] = sign;
-            ++size;
-        }
-
-        @Nullable
-        UnaryOperator peek() {
-            if (size < 1) {
-                throw Maths.malformedExpression(errorTitle);
-            }
-
-            return arr[size - 1];
-        }
-
-        @Nullable
-        UnaryOperator pop() {
-            if (size < 1) {
-                throw Maths.malformedExpression(errorTitle);
-            }
-
-            --size;
-            return arr[size];
-        }
-
-        boolean notEmpty() {
-            return size > 0;
-        }
-    }
-
     public static double compute(String expression, @StringRes int errorTitle) {
         // Todo: use big decimals to reduce overflow, esp. in operations like factorial.
 
         int len = expression.length();
-        var operators = new OperatorStack(len, errorTitle);
+        var operators = new EnumStack<BinaryOperator>(len,  BinaryOperator::of, errorTitle);
         var result = new ValStack(len, errorTitle);
 
     try {

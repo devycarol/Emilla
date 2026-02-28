@@ -36,10 +36,9 @@ enum BinaryOperator implements InfixToken {
         }
     },
 ;
-    public abstract double apply(double a, double b);
-
     @Nullable
     public static final BinaryOperator LPAREN = null;
+    private static final BinaryOperator[] sValues = values();
 
     public final int precedence;
     public final boolean rightAssociative;
@@ -47,6 +46,12 @@ enum BinaryOperator implements InfixToken {
     BinaryOperator(int precedence, boolean rightAssociative) {
         this.precedence = precedence;
         this.rightAssociative = rightAssociative;
+    }
+
+    public abstract double apply(double a, double b);
+
+    public static BinaryOperator of(int ordinal) {
+        return sValues[ordinal];
     }
 
     public static BinaryOperator of(char token) {

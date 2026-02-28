@@ -30,7 +30,9 @@ enum UnaryOperator implements InfixToken {
         }
     },
 ;
-    public abstract double apply(double n);
+    @Nullable
+    public static final UnaryOperator LPAREN = null;
+    private static final UnaryOperator[] sValues = values();
 
     public final boolean postfix;
 
@@ -38,8 +40,11 @@ enum UnaryOperator implements InfixToken {
         this.postfix = postfix;
     }
 
-    @Nullable
-    public static final UnaryOperator LPAREN = null;
+    public abstract double apply(double n);
+
+    public static UnaryOperator of(int ordinal) {
+        return sValues[ordinal];
+    }
 
     public static UnaryOperator of(char token) {
         return switch (token) {

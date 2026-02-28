@@ -30,7 +30,9 @@ enum BitwiseSign implements BitwiseToken {
         }
     }
 ;
-    public abstract long apply(long n);
+    @Nullable
+    public static final BitwiseSign LPAREN = null;
+    private static final BitwiseSign[] sValues = values();
 
     public final boolean postfix;
 
@@ -38,8 +40,11 @@ enum BitwiseSign implements BitwiseToken {
         this.postfix = postfix;
     }
 
-    @Nullable
-    public static final BitwiseSign LPAREN = null;
+    public abstract long apply(long n);
+
+    public static BitwiseSign of(int ordinal) {
+        return sValues[ordinal];
+    }
 
     public static BitwiseSign of(char token) {
         return switch (token) {

@@ -78,10 +78,9 @@ enum BitwiseOperator implements BitwiseToken {
         }
     },
 ;
-    public abstract long apply(long a, long b);
-
     @Nullable
     public static final BitwiseOperator LPAREN = null;
+    private static final BitwiseOperator[] sValues = values();
 
     public final int precedence;
     public final boolean rightAssociative;
@@ -89,6 +88,12 @@ enum BitwiseOperator implements BitwiseToken {
     BitwiseOperator(int precedence, boolean rightAssociative) {
         this.precedence = precedence;
         this.rightAssociative = rightAssociative;
+    }
+
+    public abstract long apply(long a, long b);
+
+    public static BitwiseOperator of(int ordinal) {
+        return sValues[ordinal];
     }
 
     public static BitwiseOperator of(String token) {

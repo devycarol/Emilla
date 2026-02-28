@@ -1,6 +1,5 @@
 package net.emilla.math;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import net.emilla.math.CalcToken.BitwiseToken;
@@ -12,56 +11,16 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 public enum BitwiseCalculator {;
-    private static final class OperatorStack {
-        final BitwiseOperator[] array;
-        @StringRes
-        final int errorTitle;
-        int size = 0;
-
-        OperatorStack(int capacity, @StringRes int errorTitle) {
-            this.array = new BitwiseOperator[capacity];
-            this.errorTitle = errorTitle;
-        }
-
-        void push(@Nullable BitwiseOperator val) {
-            array[size] = val;
-            ++size;
-        }
-
-        @Nullable
-        BitwiseOperator peek() {
-            if (size < 1) {
-                throw Maths.malformedExpression(errorTitle);
-            }
-
-            return array[size - 1];
-        }
-
-        @Nullable
-        BitwiseOperator pop() {
-            if (size < 1) {
-                throw Maths.malformedExpression(errorTitle);
-            }
-
-            --size;
-            return array[size];
-        }
-
-        boolean notEmpty() {
-            return size > 0;
-        }
-    }
-
     private static final class ValStack {
         final long[] vals;
-        final SignStack signs;
+        final EnumStack<BitwiseSign> signs;
         @StringRes
         final int errorTitle;
         int size = 0;
 
         ValStack(int capacity, @StringRes int errorTitle) {
             this.vals = new long[capacity];
-            this.signs = new SignStack(capacity, errorTitle);
+            this.signs = new EnumStack<BitwiseSign>(capacity, BitwiseSign::of, errorTitle);
             this.errorTitle = errorTitle;
         }
 
@@ -97,7 +56,7 @@ public enum BitwiseCalculator {;
             }
         }
 
-        void applyOperator(BitwiseOperator op, OperatorStack operators) {
+        void applyOperator(BitwiseOperator op, EnumStack<BitwiseOperator> operators) {
             while (operators.notEmpty()) {
                 BitwiseOperator peek = operators.peek();
                 if (peek == BitwiseOperator.LPAREN
@@ -114,7 +73,7 @@ public enum BitwiseCalculator {;
             signs.push(BitwiseSign.LPAREN);
         }
 
-        void applyRParen(OperatorStack operators) {
+        void applyRParen(EnumStack<BitwiseOperator> operators) {
             while (operators.notEmpty()) {
                 BitwiseOperator pop = operators.pop();
                 if (pop == BitwiseOperator.LPAREN) {
@@ -160,49 +119,9 @@ public enum BitwiseCalculator {;
         }
     }
 
-    private static final class SignStack {
-        final BitwiseSign[] arr;
-        @StringRes
-        final int errorTitle;
-        int size = 0;
-
-        SignStack(int capacity, @StringRes int errorTitle) {
-            this.arr = new BitwiseSign[capacity];
-            this.errorTitle = errorTitle;
-        }
-
-        void push(@Nullable BitwiseSign val) {
-            arr[size] = val;
-            ++size;
-        }
-
-        @Nullable
-        BitwiseSign peek() {
-            if (size < 1) {
-                throw Maths.malformedExpression(errorTitle);
-            }
-
-            return arr[size - 1];
-        }
-
-        @Nullable
-        BitwiseSign pop() {
-            if (size < 1) {
-                throw Maths.malformedExpression(errorTitle);
-            }
-
-            --size;
-            return arr[size];
-        }
-
-        boolean notEmpty() {
-            return size > 0;
-        }
-    }
-
     public static long compute(String expression, @StringRes int errorTitle) {
         int len = expression.length();
-        var operators = new OperatorStack(len, errorTitle);
+        var operators = new EnumStack<BitwiseOperator>(len, BitwiseOperator::of, errorTitle);
         var result = new ValStack(len, errorTitle);
 
     try {
