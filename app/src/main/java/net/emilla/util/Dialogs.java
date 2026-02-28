@@ -11,7 +11,8 @@ import net.emilla.activity.AssistActivity;
 public enum Dialogs {;
     private static AlertDialog.Builder base(Context ctx, CharSequence title, @StringRes int noLabel) {
         return new AlertDialog.Builder(ctx).setTitle(title)
-                .setNegativeButton(noLabel, (dlg, which) -> dlg.cancel());
+            .setNegativeButton(noLabel, (dlg, which) -> dlg.cancel())
+        ;
         // Todo: don't require to call the cancel listener.
     }
 
@@ -21,7 +22,8 @@ public enum Dialogs {;
         @StringRes int noLabel
     ) {
         return new AlertDialog.Builder(ctx).setTitle(title)
-                .setNegativeButton(noLabel, (dlg, which) -> dlg.cancel());
+            .setNegativeButton(noLabel, (dlg, which) -> dlg.cancel())
+        ;
         // Todo: don't require to call the cancel listener.
     }
 
@@ -98,11 +100,16 @@ public enum Dialogs {;
         @StringRes int yesLabel,
         DialogInterface.OnClickListener yesClick
     ) {
-        return base(act, title, msg, android.R.string.cancel)
-                .setPositiveButton(yesLabel, (dlg, which) -> {
-            act.onCloseDialog(); // Todo: don't require this.
-            yesClick.onClick(dlg, which);
-        });
+        // Todo: don't require this.yesClick.onClick(dlg, which);
+        // Even more Todo: ...what?
+        return base(
+            act, title, msg,
+
+            android.R.string.cancel
+        ).setPositiveButton(
+            yesLabel,
+            (dlg, which) -> act.onCloseDialog()
+        );
     }
 
     public static AlertDialog.Builder dual(
@@ -112,11 +119,17 @@ public enum Dialogs {;
         @StringRes int yesLabel,
         DialogInterface.OnClickListener yesClick
     ) {
-        return base(act, title, msg, android.R.string.cancel)
-                .setPositiveButton(yesLabel, (dlg, which) -> {
-            act.onCloseDialog(); // Todo: don't require this.
-            yesClick.onClick(dlg, which);
-        });
+        return base(
+            act, title, msg,
+
+            android.R.string.cancel
+        ).setPositiveButton(
+            yesLabel,
+            (dlg, which) -> {
+                act.onCloseDialog(); // Todo: don't require this.
+                yesClick.onClick(dlg, which);
+            }
+        );
     }
 
     public static AlertDialog.Builder dual(
@@ -126,10 +139,16 @@ public enum Dialogs {;
         @StringRes int yesLabel,
         DialogInterface.OnClickListener yesClick
     ) {
-        return base(act, title, msg, android.R.string.cancel)
-                .setPositiveButton(yesLabel, (dlg, which) -> {
-            act.onCloseDialog(); // Todo: don't require this.
-            yesClick.onClick(dlg, which);
-        });
+        return base(
+            act, title, msg,
+
+            android.R.string.cancel
+        ).setPositiveButton(
+            yesLabel,
+            (dlg, which) -> {
+                act.onCloseDialog(); // Todo: don't require this.
+                yesClick.onClick(dlg, which);
+            }
+        );
     }
 }

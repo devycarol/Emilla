@@ -184,12 +184,14 @@ enum EnglishUnitedStates {;
     private static Stream<DayOfWeek> weekdayStream(CharSequence weekdays, @StringRes int errorTitle) {
         if (WEEKDAY_LETTERS.matcher(weekdays).matches()) {
             return weekdays.chars()
-                .mapToObj((int letter) -> weekdayOf(letter, errorTitle));
+                .mapToObj((int letter) -> weekdayOf(letter, errorTitle))
+            ;
         }
 
         if (WEEKDAYS.matcher(weekdays).matches()) {
             return Patterns.splitStream(COMMA_OPTIONAL_LIST, weekdays)
-                .map((String word) -> weekdayOf(word, errorTitle));
+                .map((String word) -> weekdayOf(word, errorTitle))
+            ;
         }
 
         throw formatFail(errorTitle);

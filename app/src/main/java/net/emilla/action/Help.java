@@ -56,15 +56,17 @@ public final class Help implements LabeledQuickAction {
         String msg = res.getText(cmd.summary) + "\n\n" + res.getText(cmd.manual);
         // TODO: resolve weird whitespace parsing.
         AlertDialog manual = Dialogs.message(act, cmd.name, msg)
-                .setOnDismissListener(dlg -> act.setManual(null))
-                .setOnKeyListener((dlg, keyCode, event) -> {
-                    // this is necessary because the AlertDialog becomes the consumer of key-events
-                    if (keyCode == KEYCODE_MENU && event.getAction() == ACTION_UP) {
-                        dlg.cancel();
-                        return true;
-                    }
-                    return false;
-                }).create();
+            .setOnDismissListener(dlg -> act.setManual(null))
+            .setOnKeyListener((dlg, keyCode, event) -> {
+                // this is necessary because the AlertDialog becomes the consumer of key-events
+                if (keyCode == KEYCODE_MENU && event.getAction() == ACTION_UP) {
+                    dlg.cancel();
+                    return true;
+                }
+                return false;
+            })
+            .create()
+        ;
         act.setManual(manual);
         act.offer(a -> {
             manual.setOnCancelListener(dlg -> {

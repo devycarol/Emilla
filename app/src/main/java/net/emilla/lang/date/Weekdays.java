@@ -10,7 +10,8 @@ public enum Weekdays {;
     public static ArrayList<Integer> calendarArrayList(Collection<DayOfWeek> weekdays) {
         return weekdays.stream()
             .map(Weekdays::toCalendarConstant)
-            .collect(Collectors.toCollection(() -> new ArrayList<Integer>(weekdays.size())));
+            .collect(Collectors.toCollection(() -> new ArrayList<Integer>(weekdays.size())))
+        ;
     }
 
     private static int toCalendarConstant(DayOfWeek weekday) {

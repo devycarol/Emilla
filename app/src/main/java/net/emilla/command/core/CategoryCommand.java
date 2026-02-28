@@ -43,7 +43,8 @@ enum CategoryCommand {;
         //  with duplicate names. a choice between a list and grid layout would be cool.
         String[] labels = Arrays.stream(apps)
             .map(app -> app.displayName)
-            .toArray(String[]::new);
+            .toArray(String[]::new)
+        ;
         return Dialogs.list(
             act,
             R.string.dialog_app,

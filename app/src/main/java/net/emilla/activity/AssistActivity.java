@@ -584,13 +584,14 @@ public final class AssistActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
             .setReorderingAllowed(true)
             .replace(R.id.action_box, fragment)
-            .commit();
+            .commit()
+        ;
     }
 
     public void removeActionBox(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction()
-            .setReorderingAllowed(true);
-
+            .setReorderingAllowed(true)
+        ;
         if (mDefaultActionBox == null) {
             transaction.remove(fragment);
         } else {

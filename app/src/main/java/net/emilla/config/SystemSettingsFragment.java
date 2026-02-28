@@ -94,6 +94,7 @@ public final class SystemSettingsFragment extends PreferenceFragmentCompat {
         intent
             .putExtra(Settings.EXTRA_APP_PACKAGE, Apps.MY_PKG)
             .putExtra(EXTRA_FRAGMENT_ARG_KEY, showArgs)
-            .putExtra(EXTRA_SHOW_FRAGMENT_ARGUMENTS, bundle);
+            .putExtra(EXTRA_SHOW_FRAGMENT_ARGUMENTS, bundle)
+        ;
     }
 }

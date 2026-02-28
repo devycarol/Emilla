@@ -17,8 +17,8 @@ public enum Pings {;
     ) {
         var builder = new NotificationCompat.Builder(ctx, channel.id)
             .setContentTitle(title)
-            .setSmallIcon(icon);
-
+            .setSmallIcon(icon)
+        ;
         if (text != null) {
             builder.setContentText(text);
         }

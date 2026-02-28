@@ -29,7 +29,8 @@ public enum Intents {;
         return new Intent(ACTION_MAIN)
             .setPackage(app.pkg)
             .setComponent(app.componentName())
-            .addCategory(CATEGORY_LAUNCHER);
+            .addCategory(CATEGORY_LAUNCHER)
+        ;
     }
 
     public static Intent categoryTask(String category) {
@@ -100,7 +101,8 @@ public enum Intents {;
     @RequiresApi(Build.VERSION_CODES.O)
     public static Intent notificationSettings(String pkg) {
         return new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
-            .putExtra(Settings.EXTRA_APP_PACKAGE, pkg);
+            .putExtra(Settings.EXTRA_APP_PACKAGE, pkg)
+        ;
     }
 
     public static Intent me(Context ctx, Class<?> cls) {

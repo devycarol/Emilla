@@ -235,7 +235,8 @@ public enum SettingVals {;
     public static Snippet[] snippets(SharedPreferences prefs) {
         return prefs.getStringSet("snippets", defaultSnippets()).stream()
             .map(Snippet::new)
-            .toArray(Snippet[]::new);
+            .toArray(Snippet[]::new)
+        ;
     }
 
     public static String snippet(SharedPreferences prefs, String label) {
@@ -249,13 +250,15 @@ public enum SettingVals {;
         prefs.edit()
             .putString(snippetPref(label), text)
             .putStringSet("snippets", snippets)
-            .apply();
+            .apply()
+        ;
     }
 
     public static void replaceSnippet(SharedPreferences prefs, String label, String text) {
         prefs.edit()
             .putString(snippetPref(label), text)
-            .apply();
+            .apply()
+        ;
     }
 
     public static void removeSnippet(SharedPreferences prefs, String label) {
@@ -265,7 +268,8 @@ public enum SettingVals {;
         prefs.edit()
             .remove(snippetPref(label))
             .putStringSet("snippets", snippets)
-            .apply();
+            .apply()
+        ;
     }
 
     private static Set<String> defaultSnippets() {

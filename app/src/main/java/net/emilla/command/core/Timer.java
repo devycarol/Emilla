@@ -32,7 +32,8 @@ final class Timer extends CoreDataCommand {
         int durationSeconds = Time.parseDuration(duration, CoreEntry.TIMER.name).seconds;
         return makeIntent()
             .putExtra(EXTRA_SKIP_UI, true)
-            .putExtra(EXTRA_LENGTH, durationSeconds);
+            .putExtra(EXTRA_LENGTH, durationSeconds)
+        ;
     }
 
     @Override

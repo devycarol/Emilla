@@ -34,6 +34,7 @@ public enum Apps {;
         return pm.queryIntentActivities(filter, 0).stream()
             .map(resolveInfo -> AppEntry.from(pm, resolveInfo))
             .sorted()
-            .toArray(AppEntry[]::new);
+            .toArray(AppEntry[]::new)
+        ;
     }
 }

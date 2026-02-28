@@ -28,10 +28,18 @@ public final class BugFailure extends DialogRun {
         RuntimeException e,
         CharSequence commandName
     ) {
-        return Dialogs.dual(act, R.string.error_unknown, R.string.error_bug_report_please,
-                R.string.email_bug_report, (dlg, which) -> {
-                    emailBugReport(act, e, "unknown error in the " + commandName + " command");
-                }).setNeutralButton(R.string.leave, (dlg, which) -> act.cancel());
+        return Dialogs.dual(
+            act,
+            R.string.error_unknown,
+            R.string.error_bug_report_please,
+            R.string.email_bug_report,
+            (dlg, which) -> {
+                emailBugReport(act, e, "unknown error in the " + commandName + " command");
+            }
+        ).setNeutralButton(
+            R.string.leave,
+            (dlg, which) -> act.cancel()
+        );
     }
 
     private static void emailBugReport(AssistActivity act, RuntimeException e, String errorHeader) {
@@ -43,18 +51,19 @@ public final class BugFailure extends DialogRun {
         String stackTrace = sw.toString();
 
         String body = "Feel free to describe what was happening when the error occurred:\n\n\n\n"
-                 + "======== exception details ========\n\n";
+             + "======== exception details ========\n\n";
         if (!TextUtils.isEmpty(message)) {
             body += message + '\n';
         }
         body += stackTrace + '\n'
-                + "======== more helpful stuff ========\n\n"
-                + deviceInfo();
+            + "======== more helpful stuff ========\n\n"
+            + deviceInfo();
 
         var email = new Intent(ACTION_SENDTO, Uri.parse("mailto:bugs@emilla.net"))
-                // TODO: open an actual email account
-                .putExtra(EXTRA_SUBJECT, "[Android bug] " + errorHeader)
-                .putExtra(EXTRA_TEXT, body);
+            // TODO: open an actual email account
+            .putExtra(EXTRA_SUBJECT, "[Android bug] " + errorHeader)
+            .putExtra(EXTRA_TEXT, body)
+        ;
         act.succeed(AppSuccess.instance(email));
     }
 
@@ -69,13 +78,11 @@ public final class BugFailure extends DialogRun {
             device.append(" (").append(Build.DEVICE).append(')');
         }
 
-        String baseOs;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Build.VERSION.BASE_OS.isEmpty()) {
-            baseOs = Build.VERSION.BASE_OS;
-        } else {
-            baseOs = "Android";
-        }
-
+        String baseOs
+            = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Build.VERSION.BASE_OS.isEmpty()
+                ? Build.VERSION.BASE_OS
+                : "Android"
+            ;
         var os = new StringBuilder(baseOs).append(' ');
         if (!Build.VERSION.RELEASE.isEmpty()) {
             os.append(Build.VERSION.RELEASE).append(' ');
@@ -84,9 +91,11 @@ public final class BugFailure extends DialogRun {
 
         var app = new StringBuilder(BuildConfig.APPLICATION_NAME)
             .append(' ').append(BuildConfig.VERSION_NAME)
-            .append(' ').append(BuildConfig.VERSION_CODENAME);
-        if (BuildConfig.DEBUG) app.append(" (debug)");
-
+            .append(' ').append(BuildConfig.VERSION_CODENAME)
+        ;
+        if (BuildConfig.DEBUG) {
+            app.append(" (debug)");
+        }
         return "Device || " + device + "\nOS || " + os + "\nApp || " + app;
     }
 

@@ -246,6 +246,7 @@ public enum Files {;
     public static Intent viewIntent(Uri file, String mimeType) {
         return Intents.view(file, mimeType)
             .putExtra(Intent.EXTRA_STREAM, file)
-            .addFlags(FLAG_GRANT_READ_URI_PERMISSION | FLAG_GRANT_WRITE_URI_PERMISSION);
+            .addFlags(FLAG_GRANT_READ_URI_PERMISSION | FLAG_GRANT_WRITE_URI_PERMISSION)
+        ;
     }
 }

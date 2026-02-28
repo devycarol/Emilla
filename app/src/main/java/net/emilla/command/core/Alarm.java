@@ -78,6 +78,7 @@ final class Alarm extends CoreDataCommand {
     private static Intent makeIntent(int hour, int minute) {
         return new Intent(ACTION_SET_ALARM)
             .putExtra(EXTRA_HOUR, hour)
-            .putExtra(EXTRA_MINUTES, minute);
+            .putExtra(EXTRA_MINUTES, minute)
+        ;
     }
 }

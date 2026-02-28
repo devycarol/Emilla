@@ -12,19 +12,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 public enum Calculator {;
-//    private static final String ALL_OF = "all ?of", DONE = "done|good";
-//
-//    // The order in which these are parsed matters because of duplicate words in phrases like "3 by 3" versus "3 divide by 3"
-//    private static final String
-//            ADDITION = " *(add|plus|and|with|pos(itive)?) *",
-//            SUBTRACTION = " *(sub(tract)?|minus|without|neg(ative)?) *",
-//            DIVISION = " *(div(ided?( *by)?)?|over) *", // this conflicts with the potential behavior of submitting the commmand when the user utters "over"
-//            MULTIPLICATION = " *(mul(t(ipl(y|ied *by))?)?|times|x|of|by) *",
-//            EXPONENTIATION = " *(exp(onent)?|(raised? *)?to( *the( *power *of)?)?|pow(er)?|\\*\\*) *", // TTS could confuse 'to' for the number 'two'
-//            DECIMAL = " *(point|dot) *",
-//            START_PAREN = " *start *",
-//            END_PAREN = " *(all|end) *";
-
     private static final class OpStack {
         final BinaryOperator[] arr;
         int size = 0;

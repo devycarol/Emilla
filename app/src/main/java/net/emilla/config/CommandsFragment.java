@@ -43,9 +43,10 @@ public final class CommandsFragment extends PreferenceFragmentCompat {
         var joined = String.join(", ", aliases);
         cmdPref.setText(joined);
         mPrefs.edit()
-              .putString(textKey, joined)
-              .putStringSet(setKey, aliases)
-              .apply();
+            .putString(textKey, joined)
+            .putStringSet(setKey, aliases)
+            .apply()
+        ;
         return false;
     };
 
@@ -153,10 +154,10 @@ public final class CommandsFragment extends PreferenceFragmentCompat {
             ((EditTextPreference) pref).setText(revisedText);
 
             mPrefs.edit()
-                  .putString(SettingVals.ALIASES_CUSTOM_TEXT, revisedText)
-                  .putStringSet(SettingVals.ALIASES_CUSTOM, customEntries)
-                  .apply();
-
+                .putString(SettingVals.ALIASES_CUSTOM_TEXT, revisedText)
+                .putStringSet(SettingVals.ALIASES_CUSTOM, customEntries)
+                .apply()
+            ;
             return false;
         });
     }

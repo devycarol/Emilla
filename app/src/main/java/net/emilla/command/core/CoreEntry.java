@@ -242,6 +242,7 @@ public enum CoreEntry implements Params {
     private static String[] toStringArray(Function<CoreEntry, String> mapper) {
         return Arrays.stream(values())
             .map(mapper)
-            .toArray(String[]::new);
+            .toArray(String[]::new)
+        ;
     }
 }

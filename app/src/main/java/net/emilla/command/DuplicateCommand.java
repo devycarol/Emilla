@@ -30,11 +30,12 @@ public final class DuplicateCommand extends EmillaCommand {
 
         mCommands = Arrays.stream(yielders)
             .map(yielder -> yielder.command(act))
-            .toArray(EmillaCommand[]::new);
+            .toArray(EmillaCommand[]::new)
+        ;
         mLabels = Arrays.stream(mCommands)
             .map(cmd -> cmd.name)
-            .toArray(String[]::new);
-
+            .toArray(String[]::new)
+        ;
         instruct(instruction);
     }
 

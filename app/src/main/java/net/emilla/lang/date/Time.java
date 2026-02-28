@@ -271,8 +271,8 @@ public enum Time {; // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         var minutesToNextHalfHour = (long) -timeNow.getMinute() % 30L + 30L;
         LocalTime nextHalfHour = timeNow.plusMinutes(minutesToNextHalfHour)
             .withSecond(0)
-            .withNano(0);
-
+            .withNano(0)
+        ;
         var dateNow = LocalDate.now();
         var date = dateNow;
 

@@ -66,8 +66,8 @@ final class PrefixNode<K, V> {
 
         V[] values = valueStream
             .map(value -> value.value)
-            .toArray(mArrayGenerator);
-
+            .toArray(mArrayGenerator)
+        ;
         return values.length > 0
             ? values
             : null

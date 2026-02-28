@@ -23,11 +23,15 @@ public final class MediaRetriever
     }
 
     public void retrieve(FilesReceiver receiver) {
-        if (alreadyHas(receiver)) return;
+        if (alreadyHas(receiver)) {
+            return;
+        }
+
         launch(
             new PickVisualMediaRequest.Builder()
                 .setMediaType(PickVisualMedia.ImageAndVideo.INSTANCE)
                 .build()
+
         );
     }
 

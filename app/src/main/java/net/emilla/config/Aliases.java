@@ -74,17 +74,20 @@ public enum Aliases {;
 
                 if (prefs.contains(oldEnabledKey)) {
                     edit.putBoolean(newEnabledKey, prefs.getBoolean(oldEnabledKey, true))
-                        .remove(oldEnabledKey);
+                        .remove(oldEnabledKey)
+                    ;
                 }
 
                 if (prefs.contains(oldSetKey)) {
                     edit.putStringSet(newSetKey, prefs.getStringSet(oldSetKey, null))
-                        .remove(oldSetKey);
+                        .remove(oldSetKey)
+                    ;
                 }
 
                 if (prefs.contains(oldTextKey)) {
                     edit.putString(newTextKey, prefs.getString(oldTextKey, null))
-                        .remove(oldTextKey);
+                        .remove(oldTextKey)
+                    ;
                 }
             }
 

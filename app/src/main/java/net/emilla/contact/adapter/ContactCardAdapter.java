@@ -21,8 +21,9 @@ public final class ContactCardAdapter extends ContactCursorAdapter {
     @Override
     public Uri filterUri(String search) {
         return Contacts.CONTENT_FILTER_URI.buildUpon()
-                .appendPath(search)
-                .build();
+            .appendPath(search)
+            .build()
+        ;
     }
 
     @Override

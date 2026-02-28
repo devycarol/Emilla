@@ -30,8 +30,8 @@ public final class GetChimeSound extends ActivityResultContract<Chime, ChimeSoun
             .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, false)
             .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true)
             .putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION)
-            .putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, res.getString(chime.name));
-
+            .putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, res.getString(chime.name))
+        ;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
         Uri uri = SettingVals.customChimeSoundUri(prefs, chime);
         if (uri != null) {

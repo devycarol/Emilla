@@ -45,8 +45,8 @@ public final class TextFileCreator {
     ) {
         var createDocument = new Intent(ACTION_CREATE_DOCUMENT)
             .setType(MimeTypes.ANY_TEXT)
-            .addCategory(Intent.CATEGORY_OPENABLE);
-
+            .addCategory(Intent.CATEGORY_OPENABLE)
+        ;
         if (filename != null) {
             createDocument.putExtra(Intent.EXTRA_TITLE, MimeTypes.textFilename(filename));
         }

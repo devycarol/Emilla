@@ -40,15 +40,17 @@ public abstract class ContactCursorAdapter extends CursorAdapter {
 
     protected static Uri deduplicate(Uri uri) {
         return uri.buildUpon()
-                .appendQueryParameter(ContactsContract.REMOVE_DUPLICATE_ENTRIES, "true")
-                .build();
+            .appendQueryParameter(ContactsContract.REMOVE_DUPLICATE_ENTRIES, "true")
+            .build()
+        ;
     }
 
     protected static Uri deduplicateFilter(Uri filterUri, String search) {
         return filterUri.buildUpon()
-                .appendPath(search)
-                .appendQueryParameter(ContactsContract.REMOVE_DUPLICATE_ENTRIES, "true")
-                .build();
+            .appendPath(search)
+            .appendQueryParameter(ContactsContract.REMOVE_DUPLICATE_ENTRIES, "true")
+            .build()
+        ;
     }
 
     protected final Resources resources;

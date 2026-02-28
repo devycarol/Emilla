@@ -16,6 +16,7 @@ public enum AppGift {;
                     Intents.me(act, PassthroughActivity.class)
                         .putExtra(Intent.EXTRA_INTENT, intent)
                         .addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
+
                 );
             } else {
                 throw new EmillaException(R.string.error, R.string.error_no_app);

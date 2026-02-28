@@ -33,8 +33,9 @@ public final class ContactPhoneAdapter extends ContactCursorAdapter {
     @Override
     public Uri contentUri() {
         return Phone.CONTENT_URI.buildUpon()
-                .appendQueryParameter(ContactsContract.REMOVE_DUPLICATE_ENTRIES, "true")
-                .build();
+            .appendQueryParameter(ContactsContract.REMOVE_DUPLICATE_ENTRIES, "true")
+            .build()
+        ;
     }
 
     @Override

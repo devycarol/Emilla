@@ -29,7 +29,8 @@ public final class SettingsActivity extends AppCompatActivity {
         setSupportActionBar(titlebar);
 
         var host = (NavHostFragment) getSupportFragmentManager()
-            .findFragmentById(R.id.settings_nav_host);
+            .findFragmentById(R.id.settings_nav_host)
+        ;
         var controller = host.getNavController();
         NavigationUI.setupActionBarWithNavController(this, controller);
     }
