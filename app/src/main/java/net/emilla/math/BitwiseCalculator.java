@@ -14,13 +14,12 @@ import java.util.Iterator;
 public enum BitwiseCalculator {;
     private static final class OpStack {
         final BitwiseOperator[] arr;
-        int size = 0;
-
         @StringRes
         final int errorTitle;
+        int size = 0;
 
         OpStack(int capacity, @StringRes int errorTitle) {
-            arr = new BitwiseOperator[capacity];
+            this.arr = new BitwiseOperator[capacity];
             this.errorTitle = errorTitle;
         }
 
@@ -56,15 +55,13 @@ public enum BitwiseCalculator {;
     private static final class ValStack {
         final long[] vals;
         final SignStack signs;
-        int size = 0;
-
         @StringRes
         final int errorTitle;
+        int size = 0;
 
         ValStack(int capacity, @StringRes int errorTitle) {
-            vals = new long[capacity];
-            signs = new SignStack(capacity, errorTitle);
-
+            this.vals = new long[capacity];
+            this.signs = new SignStack(capacity, errorTitle);
             this.errorTitle = errorTitle;
         }
 
@@ -165,14 +162,12 @@ public enum BitwiseCalculator {;
 
     private static final class SignStack {
         final BitwiseSign[] arr;
-        int size = 0;
-
         @StringRes
         final int errorTitle;
+        int size = 0;
 
         SignStack(int capacity, @StringRes int errorTitle) {
-            arr = new BitwiseSign[capacity];
-
+            this.arr = new BitwiseSign[capacity];
             this.errorTitle = errorTitle;
         }
 
@@ -265,21 +260,18 @@ public enum BitwiseCalculator {;
         static final class BitwiseIterator implements Iterator<BitwiseToken> {
             final char[] expr;
             final int length;
-
+            @StringRes
+            final int errorTitle;
             int pos;
             Type prevType = Type.LPAREN;
             // an imaginary leading parenthesis gets us the behavior we want without worrying about
             // field nullity.
 
-            @StringRes
-            final int errorTitle;
-
             BitwiseIterator(String expression, @StringRes int errorTitle) {
                 this.expr = expression.toCharArray();
                 this.length = this.expr.length;
-                this.pos = Strings.indexOfNonSpace(this.expr);
-
                 this.errorTitle = errorTitle;
+                this.pos = Strings.indexOfNonSpace(this.expr);
             }
 
             @Override

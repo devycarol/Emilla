@@ -14,90 +14,86 @@ import java.util.Iterator;
 public enum Calculator {;
     private static final class OpStack {
         final BinaryOperator[] arr;
-        int size = 0;
-
         @StringRes
         final int errorTitle;
+        int size = 0;
 
         OpStack(int capacity, @StringRes int errorTitle) {
             this.arr = new BinaryOperator[capacity];
-
             this.errorTitle = errorTitle;
         }
 
         void push(@Nullable BinaryOperator val) {
-            this.arr[this.size] = val;
-            ++this.size;
+            arr[size] = val;
+            ++size;
         }
 
         @Nullable
         BinaryOperator peek() {
-            if (this.size < 1) {
-                throw Maths.malformedExpression(this.errorTitle);
+            if (size < 1) {
+                throw Maths.malformedExpression(errorTitle);
             }
 
-            return this.arr[this.size - 1];
+            return arr[size - 1];
         }
 
         @Nullable
         BinaryOperator pop() {
-            if (this.size < 1) {
-                throw Maths.malformedExpression(this.errorTitle);
+            if (size < 1) {
+                throw Maths.malformedExpression(errorTitle);
             }
 
-            --this.size;
-            return this.arr[this.size];
+            --size;
+            return arr[size];
         }
 
         boolean notEmpty() {
-            return this.size > 0;
+            return size > 0;
         }
     }
 
     private static final class ValStack {
         final double[] vals;
         final SignStack signs;
-        int size = 0;
-
         @StringRes
         final int errorTitle;
+        int size = 0;
 
         ValStack(int capacity, @StringRes int errorTitle) {
             this.vals = new double[capacity];
             this.signs = new SignStack(capacity, errorTitle);
-
             this.errorTitle = errorTitle;
         }
 
         void push(double operand) {
-            while (this.signs.notEmpty()) {
-                if (this.signs.peek() == UnaryOperator.LPAREN) {
+            while (signs.notEmpty()) {
+                if (signs.peek() == UnaryOperator.LPAREN) {
                     break;
                 }
 
-                operand = this.signs.pop().apply(operand);
+                operand = signs.pop().apply(operand);
                 // peek is valid, therefore pop is valid.
             }
 
-            this.vals[this.size] = operand;
-            ++this.size;
+            vals[size] = operand;
+            ++size;
         }
 
         void squish(BinaryOperator op) {
-            if (this.size < 2) {
-                throw Maths.malformedExpression(this.errorTitle);
+            if (size < 2) {
+                throw Maths.malformedExpression(errorTitle);
             }
 
-            --this.size;
-            this.vals[this.size - 1] = op.apply(this.vals[this.size - 1], this.vals[this.size]);
+            --size;
+            vals[size - 1] = op.apply(vals[size - 1], vals[size]);
         }
 
         void applyOperator(UnaryOperator op) {
             if (op.postfix) {
-                int last = this.size - 1;
-                this.vals[last] = op.apply(this.vals[last]);
+                int last = size - 1;
+                vals[last] = op.apply(vals[last]);
             } else if (op != UnaryOperator.POSITIVE) {
-                this.signs.push(op);
+                signs.push(op);
             }
         }
 
@@ -115,7 +111,7 @@ public enum Calculator {;
         }
 
         void applyLParen() {
-            this.signs.push(UnaryOperator.LPAREN);
+            signs.push(UnaryOperator.LPAREN);
         }
 
         void applyRParen(OpStack opStk) {
@@ -128,52 +124,50 @@ public enum Calculator {;
                 squish(pop);
             }
 
-            if (this.signs.notEmpty()) {
+            if (signs.notEmpty()) {
                 closeSignParen();
             }
         }
 
         void applyRemainingSigns() {
-            while (this.signs.notEmpty()) {
+            while (signs.notEmpty()) {
                 closeSignParen();
             }
         }
 
         private void closeSignParen() {
-            if (this.signs.peek() == UnaryOperator.LPAREN) {
-                this.signs.pop();
-                int last = this.size - 1;
-                while (this.signs.notEmpty()) {
-                    UnaryOperator peek = this.signs.peek();
+            if (signs.peek() == UnaryOperator.LPAREN) {
+                signs.pop();
+                int last = size - 1;
+                while (signs.notEmpty()) {
+                    UnaryOperator peek = signs.peek();
                     if (peek == UnaryOperator.LPAREN) {
                         break;
                     }
 
-                    this.vals[last] = this.signs.pop().apply(this.vals[last]);
+                    vals[last] = signs.pop().apply(vals[last]);
                     // peek is valid, therefore pop is valid.
                 }
             }
         }
 
         double value() {
-            if (this.size != 1) {
-                throw Maths.malformedExpression(this.errorTitle);
+            if (size != 1) {
+                throw Maths.malformedExpression(errorTitle);
             }
 
-            return this.vals[0];
+            return vals[0];
         }
     }
 
     private static final class SignStack {
         final UnaryOperator[] arr;
-        int size = 0;
-
         @StringRes
         final int errorTitle;
+        int size = 0;
 
         SignStack(int capacity, @StringRes int errorTitle) {
-            arr = new UnaryOperator[capacity];
-
+            this.arr = new UnaryOperator[capacity];
             this.errorTitle = errorTitle;
         }
 
@@ -268,21 +262,19 @@ public enum Calculator {;
         static final class InfixIterator implements Iterator<InfixToken> {
             final char[] expr;
             final int length;
-
+            @StringRes
+            final int errorTitle;
             int pos;
             Type prevType = Type.LPAREN;
             // an imaginary leading parenthesis gets us the behavior we want without worrying about
             // field nullity.
 
-            @StringRes
-            final int errorTitle;
 
             InfixIterator(String expression, @StringRes int errorTitle) {
-                expr = expression.toCharArray();
-                length = expr.length;
-                pos = Strings.indexOfNonSpace(expr);
-
+                this.expr = expression.toCharArray();
+                this.length = expr.length;
                 this.errorTitle = errorTitle;
+                this.pos = Strings.indexOfNonSpace(expr);
             }
 
             @Override
