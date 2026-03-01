@@ -1,28 +1,30 @@
 package net.emilla.math;
 
-enum BitwiseSign implements CalcSign<Long>, BitwiseToken {
+import java.math.BigInteger;
+
+enum BitwiseSign implements CalcSign<BigInteger>, BitwiseToken {
     POSITIVE {
         @Override
-        public Long apply(Long n) {
+        public BigInteger apply(BigInteger n) {
             return n;
         }
     },
     NEGATIVE {
         @Override
-        public Long apply(Long n) {
-            return -n;
+        public BigInteger apply(BigInteger n) {
+            return n.negate();
         }
     },
     NOT {
         @Override
-        public Long apply(Long n) {
-            return ~n;
+        public BigInteger apply(BigInteger n) {
+            return n.not();
         }
     },
     FACTORIAL {
         @Override
-        public Long apply(Long n) {
-            return Maths.factorial(n);
+        public BigInteger apply(BigInteger n) {
+            return Maths.stupidFactorial(n);
         }
     }
 ;

@@ -2,14 +2,16 @@ package net.emilla.math;
 
 import androidx.annotation.StringRes;
 
+import java.math.BigInteger;
+
 public enum BitwiseCalculator {;
-    public static long compute(String expression, @StringRes int errorTitle) {
+    public static BigInteger compute(String expression, @StringRes int errorTitle) {
         int len = expression.length();
         var operators = new EnumStack<BitwiseOperator>(len, BitwiseOperator::of, errorTitle);
-        var result = new CalcStack<Long, BitwiseOperator, BitwiseSign>(
+        var result = new CalcStack<BigInteger, BitwiseOperator, BitwiseSign>(
             len,
             BitwiseSign::of,
-            Long[]::new,
+            BigInteger[]::new,
             errorTitle
         );
 
@@ -17,14 +19,14 @@ public enum BitwiseCalculator {;
             new BitwiseTokens(expression, errorTitle).forEachRemaining(
                 (BitwiseToken token) -> {
                     switch (token) {
-                    case BitwiseOperator op -> result.applyOperator(op, operators);
-                    case BitwiseSign op -> result.applySign(op);
+                    case BitwiseOperator operator -> result.applyOperator(operator, operators);
+                    case BitwiseSign sign -> result.applySign(sign);
                     case LParen __ -> {
                         result.applyLParen();
                         operators.push(null);
                     }
                     case RParen __ -> result.applyRParen(operators);
-                    case IntegerNumber number -> result.push(number.get());
+                    case IntegerNumber number -> result.push(number.value());
                     }
                 }
             );

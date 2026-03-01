@@ -1,34 +1,37 @@
 package net.emilla.math;
 
-enum ArithmeticOperator implements CalcOperator<Double>, ArithmeticToken {
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+enum ArithmeticOperator implements CalcOperator<BigDecimal>, ArithmeticToken {
     PLUS(1) {
         @Override
-        public Double apply(Double a, Double b) {
-            return a + b;
+        public BigDecimal apply(BigDecimal a, BigDecimal b) {
+            return a.add(b);
         }
     },
     MINUS(1) {
         @Override
-        public Double apply(Double a, Double b) {
-            return a - b;
+        public BigDecimal apply(BigDecimal a, BigDecimal b) {
+            return a.subtract(b);
         }
     },
     TIMES(2) {
         @Override
-        public Double apply(Double a, Double b) {
-            return a * b;
+        public BigDecimal apply(BigDecimal a, BigDecimal b) {
+            return a.multiply(b);
         }
     },
     DIV(2) {
         @Override
-        public Double apply(Double a, Double b) {
-            return a / b;
+        public BigDecimal apply(BigDecimal a, BigDecimal b) {
+            return a.divide(b, RoundingMode.HALF_EVEN);
         }
     },
     POW(3) {
         @Override
-        public Double apply(Double a, Double b) {
-            return Math.pow(a, b);
+        public BigDecimal apply(BigDecimal a, BigDecimal b) {
+            return a.pow(Maths.exactInt(b.toBigIntegerExact()));
         }
     },
 ;

@@ -1,14 +1,6 @@
 package net.emilla.math;
 
-final class IntegerNumber implements CalcValue<Long>, BitwiseToken {
-    private final long mValue;
+import java.math.BigInteger;
 
-    IntegerNumber(long value) {
-        mValue = value;
-    }
-
-    @Override
-    public Long get() {
-        return mValue;
-    }
+record IntegerNumber(BigInteger value) implements BitwiseToken {
 }

@@ -1,14 +1,6 @@
 package net.emilla.math;
 
-final class FloatingPointNumber implements CalcValue<Double>, ArithmeticToken {
-    private final double mValue;
+import java.math.BigDecimal;
 
-    FloatingPointNumber(double value) {
-        mValue = value;
-    }
-
-    @Override
-    public Double get() {
-        return mValue;
-    }
+record FloatingPointNumber(BigDecimal value) implements ArithmeticToken {
 }

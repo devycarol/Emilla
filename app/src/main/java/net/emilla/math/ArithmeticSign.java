@@ -1,28 +1,30 @@
 package net.emilla.math;
 
-enum ArithmeticSign implements CalcSign<Double>, ArithmeticToken {
+import java.math.BigDecimal;
+
+enum ArithmeticSign implements CalcSign<BigDecimal>, ArithmeticToken {
     POSITIVE(false) {
         @Override
-        public Double apply(Double n) {
+        public BigDecimal apply(BigDecimal n) {
             return n;
         }
     },
     NEGATIVE(false) {
         @Override
-        public Double apply(Double n) {
-            return -n;
+        public BigDecimal apply(BigDecimal n) {
+            return n.negate();
         }
     },
     PERCENT(true) {
         @Override
-        public Double apply(Double n) {
-            return n / 100.0;
+        public BigDecimal apply(BigDecimal n) {
+            return n.movePointLeft(2);
         }
     },
     FACTORIAL(true) {
         @Override
-        public Double apply(Double n) {
-            return Maths.factorial(n);
+        public BigDecimal apply(BigDecimal n) {
+            return new BigDecimal(Maths.stupidFactorial(n.toBigIntegerExact()));
         }
     },
 ;

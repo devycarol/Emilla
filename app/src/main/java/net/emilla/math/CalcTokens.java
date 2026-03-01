@@ -6,15 +6,7 @@ import net.emilla.util.Strings;
 
 import java.util.Iterator;
 
-abstract class CalcTokens
-<
-    T extends CalcToken,
-    O extends CalcOperator<V>,
-    S extends CalcSign<V>,
-    V
->
-    implements Iterator<T>
-{
+abstract class CalcTokens<T> implements Iterator<T> {
     protected final char[] expression;
     protected final int length;
     @StringRes
@@ -30,12 +22,6 @@ abstract class CalcTokens
         this.errorTitle = errorTitle;
         this.position = Strings.indexOfNonSpace(this.expression);
     }
-
-    protected abstract S extractSign(boolean postfix);
-
-    protected abstract O extractOperator();
-
-    protected abstract CalcValue<V> extractNumber();
 
     protected final LParen extractLParen() {
         extractChar(TokenType.LPAREN);

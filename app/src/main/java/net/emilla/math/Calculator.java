@@ -2,28 +2,30 @@ package net.emilla.math;
 
 import androidx.annotation.StringRes;
 
+import java.math.BigDecimal;
+
 public enum Calculator {;
-    public static double compute(String expression, @StringRes int errorTitle) {
+    public static BigDecimal compute(String expression, @StringRes int errorTitle) {
         int len = expression.length();
         var operators = new EnumStack<ArithmeticOperator>(len,  ArithmeticOperator::of, errorTitle);
-        var result = new CalcStack<Double, ArithmeticOperator, ArithmeticSign>(
+        var result = new CalcStack<BigDecimal, ArithmeticOperator, ArithmeticSign>(
             len,
             ArithmeticSign::of,
-            Double[]::new,
+            BigDecimal[]::new,
             errorTitle
         );
 
         try {
             new ArithmeticTokens(expression, errorTitle).forEachRemaining((ArithmeticToken token) -> {
                 switch (token) {
-                case ArithmeticOperator op -> result.applyOperator(op, operators);
+                case ArithmeticOperator operator -> result.applyOperator(operator, operators);
                 case ArithmeticSign sign -> result.applySign(sign);
                 case LParen __ -> {
                     result.applyLParen();
                     operators.push(null);
                 }
                 case RParen __ -> result.applyRParen(operators);
-                case FloatingPointNumber number -> result.push(number.get());
+                case FloatingPointNumber number -> result.push(number.value());
                 }
             });
 

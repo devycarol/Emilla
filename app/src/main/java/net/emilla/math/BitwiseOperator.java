@@ -1,76 +1,72 @@
 package net.emilla.math;
 
-enum BitwiseOperator implements CalcOperator<Long>, BitwiseToken {
+import java.math.BigInteger;
+
+enum BitwiseOperator implements CalcOperator<BigInteger>, BitwiseToken {
     OR(-3) {
         @Override
-        public Long apply(Long a, Long b) {
-            return a | b;
+        public BigInteger apply(BigInteger a, BigInteger b) {
+            return a.or(b);
         }
     },
     XOR(-2) {
         @Override
-        public Long apply(Long a, Long b) {
-            return a ^ b;
+        public BigInteger apply(BigInteger a, BigInteger b) {
+            return a.xor(b);
         }
     },
     AND(-1) {
         @Override
-        public Long apply(Long a, Long b) {
-            return a & b;
+        public BigInteger apply(BigInteger a, BigInteger b) {
+            return a.and(b);
         }
     },
     SHL(0) {
         @Override
-        public Long apply(Long a, Long b) {
-            return a << b;
+        public BigInteger apply(BigInteger a, BigInteger b) {
+            return a.shiftLeft(Maths.exactInt(b));
         }
     },
     SHR(0) {
         @Override
-        public Long apply(Long a, Long b) {
-            return a >> b;
-        }
-    },
-    USHR(0) {
-        @Override
-        public Long apply(Long a, Long b) {
-            return a >>> b;
+        public BigInteger apply(BigInteger a, BigInteger b) {
+            return a.shiftRight(Maths.exactInt(b));
         }
     },
     PLUS(1) {
         @Override
-        public Long apply(Long a, Long b) {
-            return a + b;
+        public BigInteger apply(BigInteger a, BigInteger b) {
+            return a.add(b);
         }
     },
     MINUS(1) {
         @Override
-        public Long apply(Long a, Long b) {
-            return a - b;
+        public BigInteger apply(BigInteger a, BigInteger b) {
+            return a.subtract(b);
         }
     },
     TIMES(2) {
         @Override
-        public Long apply(Long a, Long b) {
-            return a * b;
+        public BigInteger apply(BigInteger a, BigInteger b) {
+            return a.multiply(b);
         }
     },
     DIV(2) {
         @Override
-        public Long apply(Long a, Long b) {
-            return a / b;
+        public BigInteger apply(BigInteger a, BigInteger b) {
+            return a.divide(b);
         }
     },
     MOD(2) {
         @Override
-        public Long apply(Long a, Long b) {
-            return a % b;
+        public BigInteger apply(BigInteger a, BigInteger b) {
+            return a.mod(b);
         }
     },
     POW(3) {
         @Override
-        public Long apply(Long a, Long b) {
-            return (long) Math.pow((double) a, (double) b);
+        public BigInteger apply(BigInteger a, BigInteger b) {
+            return a.pow(Maths.exactInt(b));
         }
     },
 ;
@@ -86,19 +82,18 @@ enum BitwiseOperator implements CalcOperator<Long>, BitwiseToken {
         return sValues[ordinal];
     }
 
-    public static BitwiseOperator of(String token) {
+    public static BitwiseOperator of(char token) {
         return switch (token) {
-            case "|" -> OR;
-            case "^" -> XOR;
-            case "&" -> AND;
-            case "<<" -> SHL;
-            case ">>" -> SHR;
-            case ">>>" -> USHR;
-            case "+" -> PLUS;
-            case "-" -> MINUS;
-            case "*" -> TIMES;
-            case "/" -> DIV;
-            case "%" -> MOD;
+            case '|' -> OR;
+            case '^' -> XOR;
+            case '&' -> AND;
+            case '<' -> SHL;
+            case '>' -> SHR;
+            case '+' -> PLUS;
+            case '-' -> MINUS;
+            case '*' -> TIMES;
+            case '/' -> DIV;
+            case '%' -> MOD;
             default -> throw new IllegalArgumentException("Invalid bitwise operator");
         };
     }

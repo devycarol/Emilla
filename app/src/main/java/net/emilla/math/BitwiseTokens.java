@@ -5,7 +5,7 @@ import androidx.annotation.StringRes;
 import java.util.Arrays;
 
 final class BitwiseTokens
-    extends CalcTokens<BitwiseToken, BitwiseOperator, BitwiseSign, Long>
+    extends CalcTokens<BitwiseToken>
 {
     BitwiseTokens(String expression, @StringRes int errorTitle) {
         super(expression, errorTitle);
@@ -52,19 +52,17 @@ final class BitwiseTokens
         };
     }
 
-    @Override
-    protected BitwiseSign extractSign(boolean postfix) {
+    private BitwiseSign extractSign(boolean postfix) {
         var type = postfix
             ? TokenType.NUMBER
+            // postfix unaries are applied immediately, so act like token was a number.
             : TokenType.OPERATOR
         ;
-        // postfix unaries are applied immediately, so act like token was a number.
         return BitwiseSign.of(extractChar(type));
     }
 
-    @Override
-    protected BitwiseOperator extractOperator() {
-        return BitwiseOperator.of(String.valueOf(extractChar(TokenType.OPERATOR)));
+    private BitwiseOperator extractOperator() {
+        return BitwiseOperator.of(extractChar(TokenType.OPERATOR));
     }
 
     private BitwiseOperator extractShift() {
@@ -74,18 +72,10 @@ final class BitwiseTokens
             throw Maths.malformedExpression(errorTitle);
         }
 
-        ++position;
-        BitwiseOperator op;
-        if (shiftType == '>' && nextCharIs('>')) {
-            op = BitwiseOperator.USHR;
-            advanceImmediate();
-        } else {
-            op = BitwiseOperator.of(String.valueOf(shiftType) + shiftType);
-            advance();
-        }
-
+        advanceImmediate();
         previousType = TokenType.OPERATOR;
-        return op;
+
+        return BitwiseOperator.of(shiftType);
     }
 
     private boolean nextCharIs(char c) {
@@ -97,8 +87,7 @@ final class BitwiseTokens
         return BitwiseOperator.TIMES;
     }
 
-    @Override
-    protected IntegerNumber extractNumber() {
+    private IntegerNumber extractNumber() {
         int start = position;
 
         do {
@@ -109,6 +98,6 @@ final class BitwiseTokens
         advance();
 
         previousType = TokenType.NUMBER;
-        return new IntegerNumber(Maths.tryParseLong(s, errorTitle));
+        return new IntegerNumber(Maths.tryBigInteger(s, errorTitle));
     }
 }

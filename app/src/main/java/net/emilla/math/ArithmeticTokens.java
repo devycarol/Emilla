@@ -4,9 +4,7 @@ import androidx.annotation.StringRes;
 
 import java.util.Arrays;
 
-final class ArithmeticTokens
-    extends CalcTokens<ArithmeticToken, ArithmeticOperator, ArithmeticSign, Double>
-{
+final class ArithmeticTokens extends CalcTokens<ArithmeticToken> {
     ArithmeticTokens(String expression, @StringRes int errorTitle) {
         super(expression, errorTitle);
     }
@@ -43,18 +41,16 @@ final class ArithmeticTokens
         };
     }
 
-    @Override
-    protected ArithmeticSign extractSign(boolean postfix) {
+    private ArithmeticSign extractSign(boolean postfix) {
         var type = postfix
             ? TokenType.NUMBER
+            // postfix unaries are applied immediately, so act like token was a number.
             : TokenType.OPERATOR
         ;
-        // postfix unaries are applied immediately, so act like token was a number.
         return ArithmeticSign.of(extractChar(type));
     }
 
-    @Override
-    protected ArithmeticOperator extractOperator() {
+    private ArithmeticOperator extractOperator() {
         return ArithmeticOperator.of(extractChar(TokenType.OPERATOR));
     }
 
@@ -63,8 +59,7 @@ final class ArithmeticTokens
         return ArithmeticOperator.TIMES;
     }
 
-    @Override
-    protected FloatingPointNumber extractNumber() {
+    private FloatingPointNumber extractNumber() {
         int start = position;
 
         do {
@@ -75,7 +70,7 @@ final class ArithmeticTokens
         advance();
 
         previousType = TokenType.NUMBER;
-        return new FloatingPointNumber(Maths.tryParseDouble(s, errorTitle));
+        return new FloatingPointNumber(Maths.tryBigDecimal(s, errorTitle));
     }
 
     private static boolean isNumberChar(char c) {
