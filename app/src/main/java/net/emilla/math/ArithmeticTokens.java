@@ -56,7 +56,7 @@ final class ArithmeticTokens extends CalcTokens<ArithmeticToken> {
 
     private ArithmeticOperator phantomStar() {
         previousType = TokenType.OPERATOR;
-        return ArithmeticOperator.TIMES;
+        return ArithmeticOperator.MULTIPLY;
     }
 
     private FloatingPointNumber extractNumber() {

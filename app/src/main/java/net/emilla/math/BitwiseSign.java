@@ -3,13 +3,13 @@ package net.emilla.math;
 import java.math.BigInteger;
 
 enum BitwiseSign implements CalcSign<BigInteger>, BitwiseToken {
-    POSITIVE {
+    PLUS {
         @Override
         public BigInteger apply(BigInteger n) {
             return n;
         }
     },
-    NEGATIVE {
+    NEGATE {
         @Override
         public BigInteger apply(BigInteger n) {
             return n.negate();
@@ -36,8 +36,8 @@ enum BitwiseSign implements CalcSign<BigInteger>, BitwiseToken {
 
     public static BitwiseSign of(char token) {
         return switch (token) {
-            case '+' -> POSITIVE;
-            case '-' -> NEGATIVE;
+            case '+' -> PLUS;
+            case '-' -> NEGATE;
             case '~' -> NOT;
             case '!' -> FACTORIAL;
             default -> throw new IllegalArgumentException("Invalid bitwise sign");
@@ -51,6 +51,6 @@ enum BitwiseSign implements CalcSign<BigInteger>, BitwiseToken {
 
     @Override
     public final boolean isIdempotent() {
-        return this == POSITIVE;
+        return this == PLUS;
     }
 }

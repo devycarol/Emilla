@@ -84,7 +84,7 @@ final class BitwiseTokens
 
     private BitwiseOperator phantomStar() {
         previousType = TokenType.OPERATOR;
-        return BitwiseOperator.TIMES;
+        return BitwiseOperator.MULTIPLY;
     }
 
     private IntegerNumber extractNumber() {

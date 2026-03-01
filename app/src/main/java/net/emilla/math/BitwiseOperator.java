@@ -21,37 +21,37 @@ enum BitwiseOperator implements CalcOperator<BigInteger>, BitwiseToken {
             return a.and(b);
         }
     },
-    SHL(0) {
+    SHIFT_LEFT(0) {
         @Override
         public BigInteger apply(BigInteger a, BigInteger b) {
             return a.shiftLeft(Maths.exactInt(b));
         }
     },
-    SHR(0) {
+    SHIFT_RIGHT(0) {
         @Override
         public BigInteger apply(BigInteger a, BigInteger b) {
             return a.shiftRight(Maths.exactInt(b));
         }
     },
-    PLUS(1) {
+    ADD(1) {
         @Override
         public BigInteger apply(BigInteger a, BigInteger b) {
             return a.add(b);
         }
     },
-    MINUS(1) {
+    SUBTRACT(1) {
         @Override
         public BigInteger apply(BigInteger a, BigInteger b) {
             return a.subtract(b);
         }
     },
-    TIMES(2) {
+    MULTIPLY(2) {
         @Override
         public BigInteger apply(BigInteger a, BigInteger b) {
             return a.multiply(b);
         }
     },
-    DIV(2) {
+    DIVIDE(2) {
         @Override
         public BigInteger apply(BigInteger a, BigInteger b) {
             return a.divide(b);
@@ -63,7 +63,7 @@ enum BitwiseOperator implements CalcOperator<BigInteger>, BitwiseToken {
             return a.mod(b);
         }
     },
-    POW(3) {
+    STUPID_POW(3) {
         @Override
         public BigInteger apply(BigInteger a, BigInteger b) {
             return a.pow(Maths.exactInt(b));
@@ -87,12 +87,12 @@ enum BitwiseOperator implements CalcOperator<BigInteger>, BitwiseToken {
             case '|' -> OR;
             case '^' -> XOR;
             case '&' -> AND;
-            case '<' -> SHL;
-            case '>' -> SHR;
-            case '+' -> PLUS;
-            case '-' -> MINUS;
-            case '*' -> TIMES;
-            case '/' -> DIV;
+            case '<' -> SHIFT_LEFT;
+            case '>' -> SHIFT_RIGHT;
+            case '+' -> ADD;
+            case '-' -> SUBTRACT;
+            case '*' -> MULTIPLY;
+            case '/' -> DIVIDE;
             case '%' -> MOD;
             default -> throw new IllegalArgumentException("Invalid bitwise operator");
         };
@@ -105,6 +105,6 @@ enum BitwiseOperator implements CalcOperator<BigInteger>, BitwiseToken {
 
     @Override
     public final boolean isRightAssociative() {
-        return this == POW;
+        return this == STUPID_POW;
     }
 }

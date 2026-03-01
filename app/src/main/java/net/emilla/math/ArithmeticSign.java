@@ -3,13 +3,13 @@ package net.emilla.math;
 import java.math.BigDecimal;
 
 enum ArithmeticSign implements CalcSign<BigDecimal>, ArithmeticToken {
-    POSITIVE(false) {
+    PLUS(false) {
         @Override
         public BigDecimal apply(BigDecimal n) {
             return n;
         }
     },
-    NEGATIVE(false) {
+    NEGATE(false) {
         @Override
         public BigDecimal apply(BigDecimal n) {
             return n.negate();
@@ -42,8 +42,8 @@ enum ArithmeticSign implements CalcSign<BigDecimal>, ArithmeticToken {
 
     public static ArithmeticSign of(char token) {
         return switch (token) {
-            case '+' -> POSITIVE;
-            case '-' -> NEGATIVE;
+            case '+' -> PLUS;
+            case '-' -> NEGATE;
             case '%' -> PERCENT;
             case '!' -> FACTORIAL;
             default -> throw new IllegalArgumentException("Invalid unary operator");
@@ -57,6 +57,6 @@ enum ArithmeticSign implements CalcSign<BigDecimal>, ArithmeticToken {
 
     @Override
     public final boolean isIdempotent() {
-        return this == POSITIVE;
+        return this == PLUS;
     }
 }

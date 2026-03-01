@@ -4,31 +4,31 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 enum ArithmeticOperator implements CalcOperator<BigDecimal>, ArithmeticToken {
-    PLUS(1) {
+    ADD(1) {
         @Override
         public BigDecimal apply(BigDecimal a, BigDecimal b) {
             return a.add(b);
         }
     },
-    MINUS(1) {
+    SUBTRACT(1) {
         @Override
         public BigDecimal apply(BigDecimal a, BigDecimal b) {
             return a.subtract(b);
         }
     },
-    TIMES(2) {
+    MULTIPLY(2) {
         @Override
         public BigDecimal apply(BigDecimal a, BigDecimal b) {
             return a.multiply(b);
         }
     },
-    DIV(2) {
+    DIVIDE(2) {
         @Override
         public BigDecimal apply(BigDecimal a, BigDecimal b) {
             return a.divide(b, RoundingMode.HALF_EVEN);
         }
     },
-    POW(3) {
+    STUPID_POW(3) {
         @Override
         public BigDecimal apply(BigDecimal a, BigDecimal b) {
             return a.pow(Maths.exactInt(b.toBigIntegerExact()));
@@ -49,11 +49,11 @@ enum ArithmeticOperator implements CalcOperator<BigDecimal>, ArithmeticToken {
 
     public static ArithmeticOperator of(char token) {
         return switch (token) {
-            case '+' -> PLUS;
-            case '-' -> MINUS;
-            case '*' -> TIMES;
-            case '/' -> DIV;
-            case '^' -> POW;
+            case '+' -> ADD;
+            case '-' -> SUBTRACT;
+            case '*' -> MULTIPLY;
+            case '/' -> DIVIDE;
+            case '^' -> STUPID_POW;
             default -> throw new IllegalArgumentException("Invalid binary operator");
         };
     }
@@ -65,6 +65,6 @@ enum ArithmeticOperator implements CalcOperator<BigDecimal>, ArithmeticToken {
 
     @Override
     public final boolean isRightAssociative() {
-        return this == POW;
+        return this == STUPID_POW;
     }
 }
