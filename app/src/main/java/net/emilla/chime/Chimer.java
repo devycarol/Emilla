@@ -5,8 +5,7 @@ import android.content.SharedPreferences;
 
 import net.emilla.config.SettingVals;
 
-@FunctionalInterface
-public interface Chimer {
+public sealed interface Chimer permits Silence, Nebula, Redial, Custom {
     // Preference IDs
     String SILENCE = "none";
     String NEBULA = "nebula";
