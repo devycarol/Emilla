@@ -9,11 +9,11 @@ import androidx.annotation.StringRes;
 import net.emilla.R;
 import net.emilla.exception.EmillaException;
 import net.emilla.grammar.TextStream;
-import net.emilla.lang.date.HourMinute;
-import net.emilla.lang.date.Meridiem;
 import net.emilla.lang.date.Time;
 import net.emilla.random.Dice;
 import net.emilla.random.DiceRoller;
+import net.emilla.time.HourMinute;
+import net.emilla.time.Meridiem;
 import net.emilla.util.Patterns;
 import net.emilla.util.Strings;
 

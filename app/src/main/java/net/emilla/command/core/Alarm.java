@@ -15,8 +15,8 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.lang.Lang;
-import net.emilla.lang.date.HourMinute;
 import net.emilla.lang.date.Weekdays;
+import net.emilla.time.HourMinute;
 import net.emilla.util.Apps;
 
 import java.time.DayOfWeek;

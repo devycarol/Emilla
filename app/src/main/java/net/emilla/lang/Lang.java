@@ -8,7 +8,6 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.lang.date.Duration;
-import net.emilla.lang.date.HourMinute;
 import net.emilla.lang.date.impl.DurationEN_US;
 import net.emilla.lang.grammar.ListPhrase;
 import net.emilla.lang.grammar.impl.ListPhraseEN_US;
@@ -17,6 +16,7 @@ import net.emilla.measure.FahrenheitConversion;
 import net.emilla.measure.impl.CelsiusConversionEN_US;
 import net.emilla.measure.impl.FahrenheitConversionEN_US;
 import net.emilla.random.DiceRoller;
+import net.emilla.time.HourMinute;
 import net.emilla.trie.PhraseTree;
 
 import java.time.DayOfWeek;
