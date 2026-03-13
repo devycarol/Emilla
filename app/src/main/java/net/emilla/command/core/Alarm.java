@@ -33,14 +33,14 @@ final class Alarm extends CoreDataCommand {
 
     @Override
     protected void run(AssistActivity act) {
-        appSucceed(act, makeIntent());
+        Apps.succeed(act, makeIntent());
         // todo: put time picker on this one. separate "alarms" command will require implementing
         //  the special no-args cmd tree behavior :P
     }
 
     @Override
     protected void run(AssistActivity act, String time) {
-        appSucceed(act, makeIntent(act, time));
+        Apps.succeed(act, makeIntent(act, time));
     }
 
     @Override
@@ -48,7 +48,7 @@ final class Alarm extends CoreDataCommand {
         offerTimePicker(
             act,
             (picker, hourOfDay, minute) -> {
-                appSucceed(act, makeIntent(hourOfDay, minute).putExtra(EXTRA_MESSAGE, label));
+                Apps.succeed(act, makeIntent(hourOfDay, minute).putExtra(EXTRA_MESSAGE, label));
             }
         );
         // todo: weekday widget
@@ -56,7 +56,7 @@ final class Alarm extends CoreDataCommand {
 
     @Override
     public void runWithData(AssistActivity act, String time, String label) {
-        appSucceed(act, makeIntent(act, time).putExtra(EXTRA_MESSAGE, label));
+        Apps.succeed(act, makeIntent(act, time).putExtra(EXTRA_MESSAGE, label));
     }
 
     private static Intent makeIntent() {

@@ -13,6 +13,7 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.exception.EmillaException;
 import net.emilla.file.Files;
+import net.emilla.util.Apps;
 import net.emilla.util.MimeTypes;
 
 final class Todo extends CoreCommand {
@@ -36,7 +37,7 @@ final class Todo extends CoreCommand {
 
         Uri file = mTodoFragment.file();
         if (file != null) {
-            appSucceed(act, Files.viewIntent(file, MimeTypes.PLAIN_TEXT));
+            Apps.succeed(act, Files.viewIntent(file, MimeTypes.PLAIN_TEXT));
         } else {
             act.chime(PEND);
         }

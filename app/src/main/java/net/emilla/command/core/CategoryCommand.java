@@ -26,7 +26,7 @@ enum CategoryCommand {;
 
         switch (apps.length) {
         case 0 -> throw new EmillaException(R.string.error, R.string.error_no_app);
-        case 1 -> EmillaCommand.appSucceed(act, Intents.launchApp(apps[0]));
+        case 1 -> Apps.succeed(act, Intents.launchApp(apps[0]));
         default -> EmillaCommand.offerDialog(act, appLaunches(act, apps));
         // todo: allow to select a default app, ensuring that the preference is cleared if ever the
         //  default is no longer installed or a new candidate is installed

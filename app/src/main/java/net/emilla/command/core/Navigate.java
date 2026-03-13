@@ -32,6 +32,6 @@ final class Navigate extends CoreCommand {
     @Override
     protected void run(AssistActivity act, String location) {
         // Todo: location bookmarks, navigate to contacts' addresses
-        appSucceed(act, Intents.view(Uri.parse("geo:0,0?q=" + location)));
+        Apps.succeed(act, Intents.view(Uri.parse("geo:0,0?q=" + location)));
     }
 }

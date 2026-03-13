@@ -8,6 +8,7 @@ import android.view.inputmethod.EditorInfo;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.annotation.open;
+import net.emilla.util.Apps;
 import net.emilla.util.Intents;
 
 @open class AppSend extends AppCommand {
@@ -21,6 +22,6 @@ import net.emilla.util.Intents;
 
     @Override
     protected final void run(AssistActivity act, String message) {
-        appSucceed(act, Intents.sendToApp(this.appEntry.pkg).putExtra(EXTRA_TEXT, message));
+        Apps.succeed(act, Intents.sendToApp(this.appEntry.pkg).putExtra(EXTRA_TEXT, message));
     }
 }

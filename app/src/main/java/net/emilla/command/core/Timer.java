@@ -38,12 +38,12 @@ final class Timer extends CoreDataCommand {
 
     @Override
     protected void run(AssistActivity act) {
-        appSucceed(act, makeIntent());
+        Apps.succeed(act, makeIntent());
     }
 
     @Override
     protected void run(AssistActivity act, String duration) {
-        appSucceed(act, makeIntent(duration));
+        Apps.succeed(act, makeIntent(duration));
     }
 
     @Override
@@ -57,6 +57,6 @@ final class Timer extends CoreDataCommand {
 
     @Override
     public void runWithData(AssistActivity act, String duration, String title) {
-        appSucceed(act, makeIntent(duration).putExtra(EXTRA_MESSAGE, title));
+        Apps.succeed(act, makeIntent(duration).putExtra(EXTRA_MESSAGE, title));
     }
 }

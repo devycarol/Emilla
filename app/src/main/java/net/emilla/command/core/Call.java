@@ -86,7 +86,7 @@ final class Call extends CoreCommand implements PhoneReceiver {
 
     private static void call(AssistActivity act, String nameOrNumber) {
         act.suppressChime(SUCCEED);
-        appSucceed(act, makeIntent(nameOrNumber));
+        Apps.succeed(act, makeIntent(nameOrNumber));
     }
 
     private static Intent makeIntent(String number) {

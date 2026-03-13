@@ -32,7 +32,6 @@ import net.emilla.config.SettingVals;
 import net.emilla.lang.Lang;
 import net.emilla.ping.PingChannel;
 import net.emilla.run.AppGift;
-import net.emilla.run.AppSuccess;
 import net.emilla.run.BroadcastGift;
 import net.emilla.run.DialogRun;
 import net.emilla.run.MessageFailure;
@@ -265,15 +264,6 @@ public abstract class EmillaCommand {
     /// Simply close the assistant :)
     protected static void succeed(AssistActivity act) {
         act.succeed(Activity::finishAndRemoveTask);
-    }
-
-    /// Tells the AssistActivity to close and start the `intent` activity. The succeeding activity
-    /// must never be excluded from the recents.
-    ///
-    /// @param intent is launched after the assistant closes. It's very important that this is
-    ///               resolvable, else an ANF exception will occur.
-    public static void appSucceed(AssistActivity act, Intent intent) {
-        act.succeed(AppSuccess.instance(intent));
     }
 
     protected final void giveText(AssistActivity act, @StringRes int msg) {

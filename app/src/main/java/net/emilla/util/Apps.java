@@ -8,7 +8,9 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 
 import net.emilla.BuildConfig;
+import net.emilla.activity.AssistActivity;
 import net.emilla.command.app.AppEntry;
+import net.emilla.run.AppSuccess;
 
 public enum Apps {;
     public static final String MY_PKG = BuildConfig.APPLICATION_ID;
@@ -36,5 +38,14 @@ public enum Apps {;
             .sorted()
             .toArray(AppEntry[]::new)
         ;
+    }
+
+    /// Tells the AssistActivity to close and start the `intent` activity. The succeeding activity
+    /// must never be excluded from the recents.
+    ///
+    /// @param intent is launched after the assistant closes. It's very important that this is
+    ///               resolvable, else an ANF exception will occur.
+    public static void succeed(AssistActivity act, Intent intent) {
+        act.succeed(AppSuccess.instance(intent));
     }
 }

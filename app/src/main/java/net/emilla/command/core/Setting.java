@@ -12,6 +12,7 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.exception.EmillaException;
 import net.emilla.setting.SettingMap;
+import net.emilla.util.Apps;
 
 final class Setting extends CoreCommand {
     @internal Setting(Context ctx) {
@@ -20,7 +21,7 @@ final class Setting extends CoreCommand {
 
     @Override
     protected void run(AssistActivity act) {
-        appSucceed(act, new Intent(Settings.ACTION_SETTINGS));
+        Apps.succeed(act, new Intent(Settings.ACTION_SETTINGS));
     }
 
     @Override

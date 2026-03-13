@@ -7,6 +7,7 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.annotation.open;
 import net.emilla.command.EmillaCommand;
+import net.emilla.util.Apps;
 
 public @open class AppCommand extends EmillaCommand {
     @FunctionalInterface
@@ -28,7 +29,7 @@ public @open class AppCommand extends EmillaCommand {
 
     @Override
     protected final void run(AssistActivity act) {
-        appSucceed(act, this.appEntry.launchIntent());
+        Apps.succeed(act, this.appEntry.launchIntent());
     }
 
     @Override

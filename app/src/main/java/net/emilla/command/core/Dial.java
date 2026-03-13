@@ -23,11 +23,11 @@ final class Dial extends CoreCommand {
 
     @Override
     protected void run(AssistActivity act) {
-        appSucceed(act, new Intent(ACTION_DIAL));
+        Apps.succeed(act, new Intent(ACTION_DIAL));
     }
 
     @Override
     protected void run(AssistActivity act, String numberOrPhoneword) {
-        appSucceed(act, new Intent(ACTION_DIAL).setData(Uri.parse("tel:" + numberOrPhoneword)));
+        Apps.succeed(act, new Intent(ACTION_DIAL).setData(Uri.parse("tel:" + numberOrPhoneword)));
     }
 }

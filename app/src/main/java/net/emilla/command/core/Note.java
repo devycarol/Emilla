@@ -11,6 +11,7 @@ import net.emilla.exception.EmillaException;
 import net.emilla.file.Files;
 import net.emilla.file.Folder;
 import net.emilla.file.TreeFile;
+import net.emilla.util.Apps;
 
 final class Note extends CoreDataCommand {
     private final NotesFragment mNotesFragment;
@@ -33,7 +34,7 @@ final class Note extends CoreDataCommand {
         Folder folder = mNotesFragment.folder();
         TreeFile existingFile = mNotesFragment.fileNamed(filename);
         if (folder != null && existingFile != null) {
-            appSucceed(act, existingFile.viewIntent(folder));
+            Apps.succeed(act, existingFile.viewIntent(folder));
             return;
         }
 

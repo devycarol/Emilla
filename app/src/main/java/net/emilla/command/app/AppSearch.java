@@ -8,6 +8,7 @@ import android.view.inputmethod.EditorInfo;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
+import net.emilla.util.Apps;
 import net.emilla.util.Intents;
 
 final class AppSearch extends AppCommand {
@@ -27,10 +28,10 @@ final class AppSearch extends AppCommand {
                 // Todo: visual indication that this will be used
                 query = query.substring(alias.length()).trim();
                 if (!query.isEmpty()) search.putExtra(SearchManager.QUERY, query);
-                appSucceed(act, search);
+                Apps.succeed(act, search);
                 return;
             }
         }
-        appSucceed(act, search.putExtra(SearchManager.QUERY, query));
+        Apps.succeed(act, search.putExtra(SearchManager.QUERY, query));
     }
 }

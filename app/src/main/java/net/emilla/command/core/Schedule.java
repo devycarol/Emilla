@@ -122,6 +122,6 @@ final class Schedule extends CoreDataCommand {
         // Todo: action buttons to select availability, access level, and guests—last requires
         //  contacts stuff. If possible also: reminders, repeats, timezone, event color, and
         //  calendar selection.
-        appSucceed(act, intent);
+        Apps.succeed(act, intent);
     }
 }

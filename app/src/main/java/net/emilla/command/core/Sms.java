@@ -95,7 +95,7 @@ final class Sms extends CoreDataCommand implements PhoneReceiver {
         // overwrites any existing draft to the recipient
         // Todo: detect, warn, confirm.
 
-        appSucceed(act, sendTo);
+        Apps.succeed(act, sendTo);
     }
 
     @Override

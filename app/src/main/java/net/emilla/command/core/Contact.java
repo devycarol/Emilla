@@ -137,11 +137,11 @@ final class Contact extends CoreDataCommand implements ContactCardReceiver {
     }
 
     private static void view(AssistActivity act, Uri contact) {
-        appSucceed(act, Intents.view(contact));
+        Apps.succeed(act, Intents.view(contact));
     }
 
     private static void edit(AssistActivity act, Uri contact) {
-        appSucceed(act, Intents.edit(contact));
+        Apps.succeed(act, Intents.edit(contact));
     }
 
     private static void send(AssistActivity act, Uri contact, @Nullable String message) {
@@ -157,7 +157,7 @@ final class Contact extends CoreDataCommand implements ContactCardReceiver {
         // todo: see if it's possible to detect when apps won't accept this.
 
         var res = act.getResources();
-        appSucceed(act, Intent.createChooser(send, res.getString(CoreEntry.CONTACT.name)));
+        Apps.succeed(act, Intent.createChooser(send, res.getString(CoreEntry.CONTACT.name)));
     }
 
     private static void offerCreate(AssistActivity act, String person, @Nullable String details) {
@@ -184,7 +184,7 @@ final class Contact extends CoreDataCommand implements ContactCardReceiver {
         if (person != null) insert.putExtra(Insert.NAME, person);
         if (phoneNumber != null) insert.putExtra(Insert.PHONE, phoneNumber);
         // todo: further details. a lot of them..
-        appSucceed(act, insert);
+        Apps.succeed(act, insert);
     }
 
     @Override

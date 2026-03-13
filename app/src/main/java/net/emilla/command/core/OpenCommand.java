@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import net.emilla.action.box.AppsFragment;
 import net.emilla.activity.AssistActivity;
 import net.emilla.command.app.AppEntry;
+import net.emilla.util.Apps;
 
 public abstract class OpenCommand extends CoreCommand {
     private final AppsFragment mAppsFragment;
@@ -28,14 +29,14 @@ public abstract class OpenCommand extends CoreCommand {
 
     public final void use(AssistActivity act, AppEntry app) {
         var pm = act.getPackageManager();
-        appSucceed(act, makeIntent(app, pm));
+        Apps.succeed(act, makeIntent(app, pm));
     }
 
     @Override
     protected final void run(AssistActivity act) {
         var intent = defaultIntent();
         if (intent != null) {
-            appSucceed(act, intent);
+            Apps.succeed(act, intent);
         } else {
             act.chime(PEND);
         }

@@ -28,11 +28,11 @@ final class Web extends CoreCommand {
 
     @Override
     protected void run(AssistActivity act) {
-        appSucceed(act, new Intent(ACTION_WEB_SEARCH));
+        Apps.succeed(act, new Intent(ACTION_WEB_SEARCH));
     }
 
     @Override
     protected void run(AssistActivity act, String query) {
-        appSucceed(act, mWebsiteMap.intent(query));
+        Apps.succeed(act, mWebsiteMap.intent(query));
     }
 }
