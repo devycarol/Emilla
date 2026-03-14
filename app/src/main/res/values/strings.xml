@@ -187,7 +187,7 @@
     <string name="instruction_email">person or email address</string>
     <string name="instruction_calculate">expression</string>
     <string name="instruction_roll">dice</string>
-    <string name="instruction_alarm">time and weekdays</string>
+    <string name="instruction_alarm">time</string>
     <string name="instruction_timer">minutes, duration, or until-time</string>
     <string name="instruction_schedule">event name | DATETIME</string>
     <!-- Todo: manual page that specifies abbreviations, also simplify this text -->
@@ -442,10 +442,7 @@
         \'p\'. If AM/PM isn\'t specified, either 24-hour time or the soonest occurrence of the time
         label will be used depending on locale and system preferences.\n
         \n
-        Example valid times: 10:30 PM, 4:00a, 1120, 159AM, 2p.\n
-        \n
-        For weekdays, you can use their names—full or abbreviated separated by spaces—or a simple
-        string in the form \"UMTWRFS\". Order and capitalization never matter.\n
+        Examples of valid times: 10:30 PM, 4:00a, 1120, 159AM, 2p.\n
         \n
         You can label the alarm in the data field.
     </string>
@@ -681,8 +678,6 @@
     <string name="error_excess_timespans">You can\'t have multiple timespans.</string>
     <string name="error_invalid_duration">Invalid duration!</string>
     <string name="error_invalid_date">Invalid date.</string>
-    <string name="error_invalid_weekday_format">Invalid weekday format.</string>
-    <string name="error_excess_weekdays">You can\'t have duplicate weekdays.</string>
     <string name="error_calc_malformed_expression">Malformed expression.</string>
     <string name="error_calc_undefined">Undefined.</string>
     <string name="error_bad_temperature">Invalid temperature.</string>

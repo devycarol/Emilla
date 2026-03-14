@@ -5,7 +5,6 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Notification;
-import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -37,7 +36,6 @@ import net.emilla.run.DialogRun;
 import net.emilla.run.MessageFailure;
 import net.emilla.run.PingGift;
 import net.emilla.run.TextGift;
-import net.emilla.run.TimePickerOffering;
 import net.emilla.util.ArrayLoader;
 import net.emilla.util.Dialogs;
 
@@ -289,10 +287,6 @@ public abstract class EmillaCommand {
 
     public static void offerDialog(AssistActivity act, AlertDialog.Builder builder) {
         act.offer(new DialogRun(builder));
-    }
-
-    protected static void offerTimePicker(AssistActivity act, OnTimeSetListener timeSet) {
-        act.offer(new TimePickerOffering(timeSet));
     }
 
     protected static void offerApp(AssistActivity act, Intent intent, boolean newTask) {

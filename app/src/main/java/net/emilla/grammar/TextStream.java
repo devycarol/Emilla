@@ -4,13 +4,43 @@ import androidx.annotation.Nullable;
 
 import net.emilla.util.Chars;
 
+import java.util.function.Function;
+
 public final class TextStream {
     private final char[] mChars;
     private int mPosition = 0;
 
     public TextStream(String s) {
         mChars = s.toCharArray();
-        passWhitespace();
+        boolean __ = passWhitespace();
+    }
+
+    @Nullable
+    public <T> T extract(Function<TextStream, T> extractor) {
+        int start = mPosition;
+
+        T value = extractor.apply(this);
+        if (value == null) {
+            mPosition = start;
+        }
+
+        return value;
+    }
+
+    @Nullable
+    public static <T> T extract(String s, Function<TextStream, T> extractor) {
+        var stream = new TextStream(s);
+        int start = stream.mPosition;
+
+        T value = extractor.apply(stream);
+        if (stream.hasRemaining()) {
+            value = null;
+        }
+        if (value == null) {
+            stream.mPosition = start;
+        }
+
+        return value;
     }
 
     public final class Bookmark {
@@ -37,18 +67,54 @@ public final class TextStream {
         mPosition = bookmark.mPosition;
     }
 
-    public boolean skip(char c) {
-        if (isFinished()) {
-            return false;
-        }
-        if (c != mChars[mPosition]) {
+    public boolean skip(char ch) {
+        if (isFinished() || ch != mChars[mPosition]) {
             return false;
         }
 
         ++mPosition;
-        passWhitespace();
+        boolean __ = passWhitespace();
 
         return true;
+    }
+
+    private boolean skip(String s) {
+        int start = mPosition;
+        for (char ch : s.toCharArray()) {
+            if (isFinished() || ch != mChars[mPosition]) {
+                mPosition = start;
+                return false;
+            }
+            ++mPosition;
+        }
+
+        boolean __ = passWhitespace();
+        return true;
+    }
+
+    public boolean skipFirst(String... strings) {
+        for (String s : strings) {
+            if (skip(s)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Nullable
+    public String token(CharPredicate condition) {
+        int start = mPosition;
+        while (hasRemaining() && condition.test(mChars[mPosition])) {
+            ++mPosition;
+        }
+
+        if (start == mPosition) {
+            return null;
+        }
+
+        boolean __ = passWhitespace();
+        return new String(mChars, start, mPosition - start);
     }
 
     @Nullable
@@ -60,7 +126,7 @@ public final class TextStream {
         while (hasRemaining() && Character.isDigit(mChars[mPosition])) {
             ++mPosition;
         }
-        passWhitespace();
+        boolean __ = passWhitespace();
 
         try {
             return Integer.parseInt(new String(mChars, start, mPosition - start));
@@ -70,10 +136,16 @@ public final class TextStream {
         }
     }
 
-    private void passWhitespace() {
-        while (hasRemaining() && Character.isWhitespace(mChars[mPosition])) {
-            ++mPosition;
+    private boolean passWhitespace() {
+        if (isFinished() || !Character.isWhitespace(mChars[mPosition])) {
+            return false;
         }
+
+        do {
+            ++mPosition;
+        } while (hasRemaining() && Character.isWhitespace(mChars[mPosition]));
+
+        return true;
     }
 
     public boolean hasRemaining() {

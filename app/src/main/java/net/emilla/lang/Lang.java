@@ -1,6 +1,5 @@
 package net.emilla.lang;
 
-import android.content.Context;
 import android.content.res.Resources;
 
 import androidx.annotation.Nullable;
@@ -16,11 +15,9 @@ import net.emilla.measure.FahrenheitConversion;
 import net.emilla.measure.impl.CelsiusConversionEN_US;
 import net.emilla.measure.impl.FahrenheitConversionEN_US;
 import net.emilla.random.DiceRoller;
-import net.emilla.time.HourMinute;
+import net.emilla.time.WallTime;
 import net.emilla.trie.PhraseTree;
 
-import java.time.DayOfWeek;
-import java.util.EnumSet;
 import java.util.function.IntFunction;
 
 public enum Lang {
@@ -101,22 +98,16 @@ public enum Lang {
         };
     }
 
-    public static HourMinute time(String timeStr, Context ctx, @StringRes int errorTitle) {
+    @Nullable
+    public static WallTime wallTime(String time) {
         return switch (EN_US) {
-            case EN_US -> EnglishUnitedStates.hourMinute(timeStr, ctx, errorTitle);
+            case EN_US -> EnglishUnitedStates.wallTime(time);
         };
     }
 
     public static Duration duration(String minutes, @StringRes int errorTitle) {
         return switch (EN_US) {
             case EN_US -> DurationEN_US.instance(minutes, errorTitle);
-        };
-    }
-
-    @Nullable
-    public static EnumSet<DayOfWeek> weekdays(String timeStr, @StringRes int errorTitle) {
-        return switch (EN_US) {
-            case EN_US -> EnglishUnitedStates.weekdays(timeStr, errorTitle);
         };
     }
 
