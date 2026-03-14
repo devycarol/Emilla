@@ -91,7 +91,7 @@ enum EnglishUnitedStates {;
         var meridiem
             = Time.REGEX_AM.matcher(time).find() ? Meridiem.AM
             : Time.REGEX_PM.matcher(time).find() ? Meridiem.PM
-            : Meridiem.UNSPECIFIED
+            : null
         ;
         String timeDigits = Strings.stripNonDigits(time);
         if (!Strings.isOneToNDigits(timeDigits, 4)) {
@@ -109,14 +109,7 @@ enum EnglishUnitedStates {;
             minute = 0;
         }
 
-        if (meridiem == Meridiem.UNSPECIFIED) {
-            if (shouldFlipMeridiem(ctx, hour, minute)) {
-                hour += 12;
-                if (hour == 24) {
-                    hour = 0;
-                }
-            }
-        } else {
+        if (meridiem != null) {
             if (hour < 1 || 12 < hour) {
                 throw new EmillaException(errorTitle, R.string.error_invalid_time);
             }
@@ -125,6 +118,13 @@ enum EnglishUnitedStates {;
             // 12 AM is 0, 12 PM is 12.
             if (meridiem == Meridiem.PM) hour += 12;
             // advance hour by 12 to convert to PM.
+        } else {
+            if (shouldFlipMeridiem(ctx, hour, minute)) {
+                hour += 12;
+                if (hour == 24) {
+                    hour = 0;
+                }
+            }
         }
 
         if (hour > 23 || minute > 59) {

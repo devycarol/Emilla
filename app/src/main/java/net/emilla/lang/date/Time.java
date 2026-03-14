@@ -109,14 +109,14 @@ public enum Time {; // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         var meridiem
             = REGEX_AM.matcher(time).find() ? Meridiem.AM
             : REGEX_PM.matcher(time).find() ? Meridiem.PM
-            : Meridiem.UNSPECIFIED
+            : null
         ;
         int[] units = timeUnits(time, errorTitle);
         int h = units[0];
         int m = units[1];
         int s = units[2];
 
-        if (meridiem != Meridiem.UNSPECIFIED) {
+        if (meridiem != null) {
             if (h < 1 || 12 < h) throw new EmillaException(errorTitle, R.string.error_invalid_time);
             if (h == 12) h = 0;
             if (meridiem == Meridiem.PM) h += 12;
