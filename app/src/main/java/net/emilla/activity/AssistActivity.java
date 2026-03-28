@@ -155,7 +155,9 @@ public final class AssistActivity extends AppCompatActivity {
         Views.setClickActionLabel(res, titleTouchTarget, R.string.action_desc_help);
 
         setupCommandField();
-        if (mVm.dataVisible) showDataField();
+        if (mVm.dataVisible) {
+            showDataField();
+        }
         mBinding.emptySpace.setOnClickListener(v -> cancelIfWarranted());
         setupDataButtons();
         setupMoreActions();
@@ -232,10 +234,14 @@ public final class AssistActivity extends AppCompatActivity {
         EditText dataField = mBinding.dataField;
 
         if (available) {
-            if (!mVm.alwaysShowData) enableDataButton();
+            if (!mVm.alwaysShowData) {
+                enableDataButton();
+            }
             dataField.setEnabled(true);
         } else if (dataField.getVisibility() == View.GONE) {
-            if (!mVm.alwaysShowData) disableDataButton();
+            if (!mVm.alwaysShowData) {
+                disableDataButton();
+            }
         } else {
             dataField.setEnabled(false);
         }
@@ -296,16 +302,22 @@ public final class AssistActivity extends AppCompatActivity {
 
     private void focusDataField() {
         EditText dataField = mBinding.dataField;
-        if (dataField.hasFocus()) return;
+        if (dataField.hasFocus()) {
+            return;
+        }
 
-        if (dataField.getVisibility() == View.GONE) showDataField();
+        if (dataField.getVisibility() == View.GONE) {
+            showDataField();
+        }
         dataField.requestFocus();
     }
 
     private void showDataField() {
         mBinding.dataField.setVisibility(View.VISIBLE);
         mVm.dataVisible = true;
-        if (mVm.alwaysShowData) return;
+        if (mVm.alwaysShowData) {
+            return;
+        }
 
         mBinding.hideDataButton.setVisibility(View.VISIBLE);
         mBinding.showDataButton.setVisibility(View.GONE);
@@ -351,7 +363,9 @@ public final class AssistActivity extends AppCompatActivity {
         mVm.dataVisible = false;
 
         mBinding.hideDataButton.setVisibility(View.GONE);
-        if (!mVm.dataAvailable) disableDataButton();
+        if (!mVm.dataAvailable) {
+            disableDataButton();
+        }
         mBinding.showDataButton.setVisibility(View.VISIBLE);
     }
 
@@ -403,7 +417,9 @@ public final class AssistActivity extends AppCompatActivity {
         // Todo: it's vague which field is which. First step: order them consistently.
         EditText box = findViewById(id);
         if (box.getVisibility() == View.VISIBLE) {
-            if (box.hasFocus()) mBinding.commandField.requestFocus();
+            if (box.hasFocus()) {
+                mBinding.commandField.requestFocus();
+            }
             box.setVisibility(View.GONE);
             return false;
         }
@@ -420,7 +436,9 @@ public final class AssistActivity extends AppCompatActivity {
     public void hideField(@IdRes int id) {
         EditText box = findViewById(id);
         if (box != null && box.getVisibility() == View.VISIBLE) {
-            if (box.hasFocus()) mBinding.commandField.requestFocus();
+            if (box.hasFocus()) {
+                mBinding.commandField.requestFocus();
+            }
             box.setVisibility(View.GONE);
         }
     }
@@ -430,7 +448,9 @@ public final class AssistActivity extends AppCompatActivity {
         super.onNewIntent(intent);
 
         String action = intent.getAction();
-        if (action == null) return;
+        if (action == null) {
+            return;
+        }
 
         if (!mOpen) {
             if (action.equals(ACTION_ASSIST)) {
@@ -452,7 +472,9 @@ public final class AssistActivity extends AppCompatActivity {
         long currentTime = System.currentTimeMillis();
         if (currentTime - mLastAssistTime > 150L /*ms*/) {
             mLastAssistTime = currentTime;
-            if (performAction) mDoubleAssistAction.perform();
+            if (performAction) {
+                mDoubleAssistAction.perform();
+            }
         } else {
             mLastAssistTime = 0L;
         }
@@ -464,16 +486,20 @@ public final class AssistActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (!mOpen) {
-            if (mLaunched) resume();
-            else mLaunched = true;
-
+            if (mLaunched) {
+                resume();
+            } else {
+                mLaunched = true;
+            }
             mOpen = true;
         }
     }
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (event.isCanceled()) return false;
+        if (event.isCanceled()) {
+            return false;
+        }
 
         switch (keyCode) {
         case KEYCODE_BACK -> cancelIfWarranted(); // todo config? command history?
@@ -491,9 +517,12 @@ public final class AssistActivity extends AppCompatActivity {
 
         mOpen = false;
         if (!(isChangingConfigurations() || isFinishing())) {
-            if (shouldCancel()) cancel();
-            // TODO: the launch fail bug is caused by focus stealing
-            else if (!mVm.dialogOpen) chime(PEND);
+            if (shouldCancel()) {
+                // TODO: the launch fail bug is caused by focus stealing
+                cancel();
+            } else if (!mVm.dialogOpen) {
+                chime(PEND);
+            }
         }
     }
 
@@ -623,8 +652,9 @@ public final class AssistActivity extends AppCompatActivity {
     }
 
     public void setImeAction(int action) {
-        if (mVm.noCommand) action = IME_ACTION_NEXT;
-
+        if (mVm.noCommand) {
+            action = IME_ACTION_NEXT;
+        }
         if (action != mVm.imeAction) {
             mBinding.commandField.setImeOptions(action);
             mVm.imeAction = action;
@@ -645,7 +675,10 @@ public final class AssistActivity extends AppCompatActivity {
     }
 
     public boolean cancelManualIfShowing() {
-        if (mManual == null || !mManual.isShowing()) return false;
+        if (mManual == null || !mManual.isShowing()) {
+            return false;
+        }
+
         mManual.cancel();
         return true;
     }
@@ -659,7 +692,9 @@ public final class AssistActivity extends AppCompatActivity {
     }
 
     public void resume() {
-        if (!mVm.dialogOpen) chime(RESUME);
+        if (!mVm.dialogOpen) {
+            chime(RESUME);
+        }
     }
 
     public boolean shouldCancel() {
@@ -679,7 +714,9 @@ public final class AssistActivity extends AppCompatActivity {
     }
 
     private void cancelIfWarranted() {
-        if (!mVm.askTryCancel()) return;
+        if (!mVm.askTryCancel()) {
+            return;
+        }
 
         if (shouldCancel()) {
             cancel();

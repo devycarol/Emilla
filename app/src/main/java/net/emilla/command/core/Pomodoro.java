@@ -66,11 +66,12 @@ final class Pomodoro extends CoreDataCommand {
     @Override
     public void runWithData(AssistActivity act, String minutes, String memo) {
         Subcommand<Action> subcmd = mActionMap.get(minutes);
-
         boolean isBreak = subcmd.action == Action.BREAK;
-        if (isBreak) mBreakMemo = memo;
-        else mWorkMemo = memo;
-
+        if (isBreak) {
+            mBreakMemo = memo;
+        } else {
+            mWorkMemo = memo;
+        }
         tryPomo(act, subcmd.instruction, isBreak);
     }
 

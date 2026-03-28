@@ -22,8 +22,9 @@ public final class CsvLines implements Iterator<Csv> {
     public Csv next() {
         int start = mPosition;
 
-        do ++mPosition;
-        while (mPosition < mLength && mText[mPosition] != '\n');
+        do {
+            ++mPosition;
+        } while (mPosition < mLength && mText[mPosition] != '\n');
 
         int span = mPosition - start;
         return new Csv(mText, start, span);

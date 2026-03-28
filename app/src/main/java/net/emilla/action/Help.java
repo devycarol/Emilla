@@ -48,7 +48,10 @@ public final class Help implements LabeledQuickAction {
     }
 
     public static void perform(AssistActivity act) {
-        if (act.cancelManualIfShowing()) return;
+        if (act.cancelManualIfShowing()) {
+            return;
+        }
+
         // it's the double assist action and the manual is already open
         EmillaCommand cmd = act.command();
         // Todo: pull up a general manual when no command.

@@ -68,8 +68,9 @@ public final class ActionButton extends AppCompatImageButton implements View.OnT
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         AccessibilityManager am = Services.accessibility(getContext());
-        if (!am.isTouchExplorationEnabled()) switch (event.getAction()) {
+        if (!am.isTouchExplorationEnabled()) {
             // do not perform special behavior if a screen reader is in use.
+            switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN -> {
                 setPressed(true);
                 performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP);
@@ -117,8 +118,9 @@ public final class ActionButton extends AppCompatImageButton implements View.OnT
                     cancelLongPress();
                     return true;
                 }
-            }
+            }}
         }
+
         return onTouchEvent(event);
     }
 

@@ -23,10 +23,12 @@ public final class CsvBuilder {
         char[] chars = s.toCharArray();
         var sb = new StringBuilder(chars.length);
 
-        for (char c : chars) switch (c) {
+        for (char c : chars) {
+            switch (c) {
             case '\\' -> sb.append("\\\\");
             case ',' -> sb.append("\\,");
             default -> sb.append(c);
+            }
         }
 
         return sb.toString();

@@ -163,7 +163,9 @@ public abstract class EmillaCommand {
             // we don't assume this is true because input editor bugs may cause onTextChanged() to
             // be called repeatedly for the same text.
             mInstruction = instruction;
-            if (mActive) onInstruct(instruction);
+            if (mActive) {
+                onInstruct(instruction);
+            }
         }
     }
 

@@ -117,9 +117,16 @@ public enum Time {; // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         int s = units[2];
 
         if (meridiem != null) {
-            if (h < 1 || 12 < h) throw new EmillaException(errorTitle, R.string.error_invalid_time);
-            if (h == 12) h = 0;
-            if (meridiem == Meridiem.PM) h += 12;
+            if (h < 1 || 12 < h) {
+                throw new EmillaException(errorTitle, R.string.error_invalid_time);
+            }
+
+            if (h == 12) {
+                h = 0;
+            }
+            if (meridiem == Meridiem.PM) {
+                h += 12;
+            }
         }
 
         if (h > 23 || Math.max(m, s) > 59) {

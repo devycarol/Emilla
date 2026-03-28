@@ -35,7 +35,9 @@ public final class Lines implements Iterable<String> {
     @Nullable
     public static String of(Iterable<String> iterable, boolean haveTrailing) {
         Iterator<String> itr = iterable.iterator();
-        if (!itr.hasNext()) return null;
+        if (!itr.hasNext()) {
+            return null;
+        }
 
         String next = itr.next();
         var sb = next != null
@@ -50,9 +52,9 @@ public final class Lines implements Iterable<String> {
                 sb.append(encodeLine(next));
             }
         }
-
-        if (haveTrailing) sb.append('\n');
-
+        if (haveTrailing) {
+            sb.append('\n');
+        }
         return sb.toString();
     }
 
@@ -86,7 +88,9 @@ public final class Lines implements Iterable<String> {
 
     public static String encodeLine(String s) {
         var sb = new StringBuilder(s.length());
-        for (char c : s.toCharArray()) appendEscape(sb, c);
+        for (char c : s.toCharArray()) {
+            appendEscape(sb, c);
+        }
         return sb.toString();
     }
 
@@ -112,15 +116,16 @@ public final class Lines implements Iterable<String> {
     @Nullable
     public static String trim(String text) {
         var sb = new StringBuilder(text.length());
-
-        Iterator<String> itr = new Lines(text, true).iterator();
-        if (!itr.hasNext()) return null;
+        var lines = new Lines(text, true);
+        Iterator<String> itr = lines.iterator();
+        if (!itr.hasNext()) {
+            return null;
+        }
 
         sb.append(itr.next());
         while (itr.hasNext()) {
             sb.append('\n').append(itr.next());
         }
-
         return sb.toString();
     }
 
@@ -142,8 +147,11 @@ public final class Lines implements Iterable<String> {
     private static int textStart(String s) {
         for (int i = 0; i < s.length(); ++i) {
             char c = s.charAt(i);
-            if (!Chars.isNonLineSpace(c)) return i;
+            if (!Chars.isNonLineSpace(c)) {
+                return i;
+            }
         }
+
         return s.length();
     }
 
@@ -213,16 +221,19 @@ public final class Lines implements Iterable<String> {
     private final class TrimmingLineIterator extends LineIterator {
         @Override
         protected void advanceToNextLine() {
-            do ++this.pos;
-            // advance past the newline
-            while (this.pos < mLen && Chars.isNonLineSpace(mText.charAt(this.pos)));
+            do {
+                ++this.pos;
+                // advance past the newline
+            } while (this.pos < mLen && Chars.isNonLineSpace(mText.charAt(this.pos)));
             // continue advancing as needed
         }
 
         @Override
         protected String makeLine(StringBuilder sb) {
             int len = sb.length();
-            while (len > 0 && Chars.isNonLineSpace(sb.charAt(len - 1))) --len;
+            while (len > 0 && Chars.isNonLineSpace(sb.charAt(len - 1))) {
+                --len;
+            }
             sb.setLength(len);
             // remove trailing non-line spaces, leading ones are handled by `advanceToNextLine()`
             // and `textStart(String)`.

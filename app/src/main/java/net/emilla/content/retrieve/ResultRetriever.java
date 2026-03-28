@@ -34,9 +34,12 @@ abstract class ResultRetriever<I, O, C extends ResultReceiver> {
     @Deprecated
     protected final boolean alreadyHas(C receiver) {
         if (mReceiver != null) {
-            if (DEBUG) Log.d(TAG, "retrieve: result launcher already engaged. Not launching again.");
+            if (DEBUG) {
+                Log.d(TAG, "retrieve: result launcher already engaged. Not launching again.");
+            }
             return true;
         }
+
         mReceiver = receiver;
         return false;
     }

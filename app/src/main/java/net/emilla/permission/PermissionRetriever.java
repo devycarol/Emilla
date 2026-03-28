@@ -34,9 +34,12 @@ public final class PermissionRetriever {
 
     public void retrieve(String[] permissions, @Nullable Runnable onGrant) {
         if (mOnGrant != null) {
-            if (DEBUG) Log.d(TAG, "retrieve: result launcher already engaged. Not launching again.");
+            if (DEBUG) {
+                Log.d(TAG, "retrieve: result launcher already engaged. Not launching again.");
+            }
             return;
         }
+
         mOnGrant = onGrant;
         ResultLaunchers.tryLaunch(mActivity, mLauncher, permissions);
     }

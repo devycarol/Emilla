@@ -99,10 +99,12 @@ final class Contact extends CoreDataCommand implements ContactCardReceiver {
         switch (mAction) {
         case VIEW, EDIT, SHARE -> {
             Uri contact = mContactsFragment.selectedContacts();
-            if (contact != null) switch (mAction) {
+            if (contact != null) {
+                switch (mAction) {
                 case VIEW -> view(act, contact);
                 case EDIT -> edit(act, contact);
                 case SHARE -> send(act, contact, null);
+                }
             } else if (person != null) {
                 offerCreate(act, person, null);
             } else {
@@ -147,15 +149,14 @@ final class Contact extends CoreDataCommand implements ContactCardReceiver {
     private static void send(AssistActivity act, Uri contact, @Nullable String message) {
         // todo: multi-selection for this particular case..
         Intent send = Intents.send(Contacts.CONTENT_VCARD_TYPE);
-
         List<String> segments = contact.getPathSegments();
         String lookupKey = segments.get(segments.size() - 2);
         Uri vcard = Uri.withAppendedPath(Contacts.CONTENT_VCARD_URI, lookupKey);
         send.putExtra(EXTRA_STREAM, vcard);
-
-        if (message != null) send.putExtra(EXTRA_TEXT, message);
-        // todo: see if it's possible to detect when apps won't accept this.
-
+        if (message != null) {
+            // todo: see if it's possible to detect when apps won't accept this.
+            send.putExtra(EXTRA_TEXT, message);
+        }
         var res = act.getResources();
         Apps.succeed(act, Intent.createChooser(send, res.getString(CoreEntry.CONTACT.name)));
     }
@@ -181,8 +182,12 @@ final class Contact extends CoreDataCommand implements ContactCardReceiver {
         @Nullable String phoneNumber
     ) {
         Intent insert = Intents.insert(Contacts.CONTENT_TYPE);
-        if (person != null) insert.putExtra(Insert.NAME, person);
-        if (phoneNumber != null) insert.putExtra(Insert.PHONE, phoneNumber);
+        if (person != null) {
+            insert.putExtra(Insert.NAME, person);
+        }
+        if (phoneNumber != null) {
+            insert.putExtra(Insert.PHONE, phoneNumber);
+        }
         // todo: further details. a lot of them..
         Apps.succeed(act, insert);
     }

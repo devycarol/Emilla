@@ -116,9 +116,10 @@ public abstract class ContactsFragment<T> extends ActionBox
     @Override
     public final void instruct(@Nullable String search) {
         mSearchString = search;
-
         var ctx = getContext();
-        if (ctx == null || !Permission.CONTACTS.has(ctx)) return;
+        if (ctx == null || !Permission.CONTACTS.has(ctx)) {
+            return;
+        }
 
         LoaderManager.getInstance(this).restartLoader(0, null, this);
     }
@@ -195,7 +196,10 @@ public abstract class ContactsFragment<T> extends ActionBox
 
     @Override
     public final boolean onItemLongClick(AdapterView<?> parent, View view, int pos, long id) {
-        if (!mContactList.isItemChecked(pos)) return false;
+        if (!mContactList.isItemChecked(pos)) {
+            return false;
+        }
+
         mContactList.setItemChecked(pos, false);
         var item = (ContactItemView) view;
         item.markSelected(false);
@@ -220,7 +224,6 @@ public abstract class ContactsFragment<T> extends ActionBox
     @Nullable
     protected final String multiSelectedCsv(ListView contactList, Cursor cur, int colIndex) {
         int count = cur.getCount();
-
         if (count == 1) {
             cur.moveToFirst();
             return cur.getString(colIndex);
@@ -230,23 +233,24 @@ public abstract class ContactsFragment<T> extends ActionBox
             if (hasMultiSelect()) {
                 SparseBooleanArray selecteds = contactList.getCheckedItemPositions();
                 int selectedCount = selecteds.size();
-                if (selectedCount == 0) return null;
+                if (selectedCount == 0) {
+                    return null;
+                }
 
                 int firstPos = selecteds.keyAt(0);
                 cur.moveToPosition(firstPos);
                 String firstContact = cur.getString(colIndex);
 
-                if (selectedCount == 1) return firstContact;
+                if (selectedCount == 1) {
+                    return firstContact;
+                }
 
                 var contacts = new StringBuilder(firstContact);
-
                 for (int i = 1; i < selectedCount; ++i) {
                     int pos = selecteds.keyAt(i);
                     cur.moveToPosition(pos);
-
                     contacts.append(',').append(cur.getString(colIndex));
                 }
-
                 return contacts.toString();
             }
 

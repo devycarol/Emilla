@@ -111,31 +111,28 @@ public final class ContactItemView extends LinearLayout {
 
     private void setStarred(boolean starred) {
         mStarred = starred;
-
         mStar.setOnCheckedChangeListener(null);
         mStar.setChecked(starred);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) setStateDesc();
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            setStateDesc();
+        }
         String label = starActionLabel();
         mStarAction = new AccessibilityActionCompat(R.id.action_toggle_star, label);
         ViewCompat.replaceAccessibilityAction(this, mStarAction, label, mStarCommand);
-
         mStar.setOnCheckedChangeListener((btn, checked) -> onStarChanged(checked));
     }
 
     private void onStarChanged(boolean starred) {
         mStarred = starred;
-
         var values = new ContentValues();
         values.put(Contacts.STARRED, Booleans.bit(starred));
-
         var ctx = getContext();
         ContentResolver cr = ctx.getContentResolver();
         String[] selectionArgs = {String.valueOf(mContactId)};
         cr.update(Contacts.CONTENT_URI, values, Contacts._ID + " = ?", selectionArgs);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) setStateDesc();
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            setStateDesc();
+        }
         ViewCompat.replaceAccessibilityAction(this, mStarAction, starActionLabel(), mStarCommand);
     }
 
@@ -181,9 +178,9 @@ public final class ContactItemView extends LinearLayout {
         //  visual retentions are 1:1 with what is actually yielded by `selectedContacts()`
         //  bottom line: enforce a sensible, consistent behavior.
         mSelected = selected;
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) setStateDesc();
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            setStateDesc();
+        }
         String desc = getResources().getString(
             selected
                 ? R.string.deselect

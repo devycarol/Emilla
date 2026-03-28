@@ -17,7 +17,10 @@ public final class ContactCardRetriever extends ResultRetriever<Void, Uri, Conta
     }
 
     public void retrieve(ContactCardReceiver receiver) {
-        if (alreadyHas(receiver)) return;
+        if (alreadyHas(receiver)) {
+            return;
+        }
+
         launch(null);
     }
 

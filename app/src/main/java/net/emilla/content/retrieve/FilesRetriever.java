@@ -17,7 +17,10 @@ public final class FilesRetriever extends ResultRetriever<String, List<Uri>, Fil
     }
 
     public void retrieve(FilesReceiver receiver, String mimeType) {
-        if (alreadyHas(receiver)) return;
+        if (alreadyHas(receiver)) {
+            return;
+        }
+
         launch(mimeType);
     }
 

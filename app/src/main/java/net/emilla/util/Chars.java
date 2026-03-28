@@ -17,7 +17,9 @@ public enum Chars {;
         if (a != b && Character.toUpperCase(a) != Character.toUpperCase(b)) {
             a = Character.toLowerCase(a);
             b = Character.toLowerCase(b);
-            if (a != b) return a - b;
+            if (a != b) {
+                return a - b;
+            }
         }
 
         return 0;

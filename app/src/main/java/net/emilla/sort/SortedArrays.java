@@ -135,9 +135,9 @@ public enum SortedArrays {;
             if (i == last || index + 1 != sortedIndices[i + 1]) {
                 loader.add(new IndexPortion(index));
             } else {
-                do ++i;
-                while (i < last && sortedIndices[i] + 1 == sortedIndices[i + 1]);
-
+                do {
+                    ++i;
+                } while (i < last && sortedIndices[i] + 1 == sortedIndices[i + 1]);
                 int end = sortedIndices[i] + 1;
                 loader.add(IndexSpan.window(index, end));
             }

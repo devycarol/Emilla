@@ -23,7 +23,9 @@ public final class AppChoiceRetriever
     }
 
     public void retrieve(AppChoiceReceiver receiver, Intent target, @StringRes int title) {
-        if (alreadyHas(receiver)) return;
+        if (alreadyHas(receiver)) {
+            return;
+        }
 
         AppChooserBroadcastReceiver.sRetriever = this;
 
@@ -65,7 +67,10 @@ public final class AppChoiceRetriever
     private final class AppCallback extends ResultCallback {
         @Override
         protected void onActivityResult(ActivityResult output, AppChoiceReceiver receiver) {
-            if (receiver == null) return;
+            if (receiver == null) {
+                return;
+            }
+
             receiver.provide(false);
             AppChooserBroadcastReceiver.deleteRetriever();
         }
@@ -86,7 +91,10 @@ public final class AppChoiceRetriever
         public void onReceive(Context ctx, Intent intent) {
             // Because Intent.createChooser(Intent, CharSequence, IntentSender) requires API 22, this
             // will not occur on devices older than Lollipop MR1.
-            if (sRetriever == null) return;
+            if (sRetriever == null) {
+                return;
+            }
+
             AppChoiceReceiver receiver = sRetriever.receiver();
             if (receiver != null) {
                 receiver.provide(true);

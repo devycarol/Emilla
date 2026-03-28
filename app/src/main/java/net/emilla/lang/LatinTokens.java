@@ -161,15 +161,17 @@ public final class LatinTokens {
         ensureNext(precondition);
         int start = mPosition;
 
-        do ++mPosition;
-        while (mPosition < mLength && condition.test(mChars[mPosition]));
+        do {
+            ++mPosition;
+        } while (mPosition < mLength && condition.test(mChars[mPosition]));
 
         return start;
     }
 
     private void advanceImmediate() {
-        do ++mPosition;
-        while (mPosition < mLength && Character.isWhitespace(mChars[mPosition]));
+        do {
+            ++mPosition;
+        } while (mPosition < mLength && Character.isWhitespace(mChars[mPosition]));
     }
 
     private void advance() {

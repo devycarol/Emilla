@@ -19,7 +19,6 @@ final class AppSearch extends AppCommand {
     @Override
     protected void run(AssistActivity act, String query) {
         var res = act.getResources();
-
         String[] searchAliases = res.getStringArray(R.array.subcmd_search);
         String lcQuery = query.toLowerCase();
         Intent search = Intents.searchToApp(this.appEntry.pkg);
@@ -27,11 +26,14 @@ final class AppSearch extends AppCommand {
             if (lcQuery.startsWith(alias)) {
                 // Todo: visual indication that this will be used
                 query = query.substring(alias.length()).trim();
-                if (!query.isEmpty()) search.putExtra(SearchManager.QUERY, query);
+                if (!query.isEmpty()) {
+                    search.putExtra(SearchManager.QUERY, query);
+                }
                 Apps.succeed(act, search);
                 return;
             }
         }
+
         Apps.succeed(act, search.putExtra(SearchManager.QUERY, query));
     }
 }

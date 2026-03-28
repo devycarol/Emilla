@@ -11,13 +11,11 @@ final class Words extends Phrase<String> {
     @Override
     protected String normalizedNext() {
         int start = mPosition;
-
-        do ++mPosition;
-        while (mPosition < mLength && !Character.isWhitespace(mPhrase[mPosition]));
-
+        do {
+            ++mPosition;
+        } while (mPosition < mLength && !Character.isWhitespace(mPhrase[mPosition]));
         int span = mPosition - start;
         var word = new String(mPhrase, start, span);
-
         return Lang.normalize(word);
     }
 }

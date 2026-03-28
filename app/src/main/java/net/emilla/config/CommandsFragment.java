@@ -147,9 +147,10 @@ public final class CommandsFragment extends PreferenceFragmentCompat {
             }
 
             int len = revised.length();
-            if (len > 0) revised.setLength(len - 1);
-            // snip trailing newline
-
+            if (len > 0) {
+                revised.setLength(len - 1);
+                // snip trailing newline
+            }
             String revisedText = revised.toString();
             ((EditTextPreference) pref).setText(revisedText);
 

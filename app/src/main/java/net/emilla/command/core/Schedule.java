@@ -114,11 +114,13 @@ final class Schedule extends CoreDataCommand {
 
     private void schedule(AssistActivity act, Intent intent) {
         String location = mLocationToggle.fieldText();
-        if (location != null) intent.putExtra(EVENT_LOCATION, location);
-
+        if (location != null) {
+            intent.putExtra(EVENT_LOCATION, location);
+        }
         String url = mUrlToggle.fieldText();
-        if (url != null) intent.putExtra("url", url);
-
+        if (url != null) {
+            intent.putExtra("url", url);
+        }
         // Todo: action buttons to select availability, access level, and guests—last requires
         //  contacts stuff. If possible also: reminders, repeats, timezone, event color, and
         //  calendar selection.

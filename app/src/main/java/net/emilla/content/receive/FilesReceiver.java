@@ -20,22 +20,29 @@ public final class FilesReceiver implements ResultReceiver {
     }
 
     public void provide(List<? extends Uri> attachments) {
-        if (attachments.isEmpty()) return;
+        if (attachments.isEmpty()) {
+            return;
+        }
 
         ArrayList<Uri> attaches = mActivity.attachments(mCommandEntry);
         if (attaches == null) {
             attaches = new ArrayList<Uri>(attachments);
-        } else for (Uri attachment : attachments) {
-            int index = attaches.indexOf(attachment);
-            if (index == -1) attaches.add(attachment);
-            else attaches.remove(index); // TODO: better attachment UI.
+        } else {
+            for (Uri attachment : attachments) {
+                int index = attaches.indexOf(attachment);
+                if (index == -1) {
+                    attaches.add(attachment);
+                } else {
+                    attaches.remove(index);
+                    // TODO: better attachment UI.
+                }
+            }
         }
-
         int size = attaches.size();
-        if (size == 0) attaches = null;
-
+        if (size == 0) {
+            attaches = null;
+        }
         mActivity.putAttachments(mCommandEntry, attaches);
-
         Resources res = mActivity.getResources();
         Toasts.show(mActivity, res.getQuantityString(R.plurals.toast_files_attached, size, size));
         // Todo: better feedback.

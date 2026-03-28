@@ -125,10 +125,22 @@ public final class TaskerIntent extends Intent {
     // still need to test the *result after* sending intent
 
     public static Status testStatus(Context ctx) {
-        if (prefNotSet(ctx, PROVIDER_COL_NAME_ENABLED)) return NOT_ENABLED;
-        if (prefNotSet(ctx, PROVIDER_COL_NAME_EXTERNAL_ACCESS)) return NO_ACCESS;
-        if (!hasPermission(ctx)) return NO_PERMISSION;
-        if (!new TaskerIntent("").receiverExists(ctx)) return NO_RECEIVER;
+        if (prefNotSet(ctx, PROVIDER_COL_NAME_ENABLED)) {
+            return NOT_ENABLED;
+        }
+
+        if (prefNotSet(ctx, PROVIDER_COL_NAME_EXTERNAL_ACCESS)) {
+            return NO_ACCESS;
+        }
+
+        if (!hasPermission(ctx)) {
+            return NO_PERMISSION;
+        }
+
+        if (!new TaskerIntent("").receiverExists(ctx)) {
+            return NO_RECEIVER;
+        }
+
         return OK;
     }
 
@@ -191,7 +203,6 @@ public final class TaskerIntent extends Intent {
     // Sets subsequently %par1, %par2 etc
     public TaskerIntent addParameter(String value) {
         int index = 1;
-
         Bundle extras = getExtras();
         if (extras != null && extras.containsKey(EXTRA_VAR_NAMES_LIST)) {
             ArrayList<String> varNames = extras.getStringArrayList(EXTRA_VAR_NAMES_LIST);
@@ -199,11 +210,10 @@ public final class TaskerIntent extends Intent {
                 index = varNames.size() + 1;
             }
         }
-
-        if (DEBUG) Log.d(TAG, "index: " + index);
-
+        if (DEBUG) {
+            Log.d(TAG, "index: " + index);
+        }
         addLocalVariable('%' + PARAM_VAR_NAME_PREFIX + index, value);
-
         return this;
     }
 
@@ -320,7 +330,9 @@ public final class TaskerIntent extends Intent {
         Bundle actionBundle = null;
 
         if (mArgCount > MAX_ARGS) {
-            if (DEBUG) Log.e(TAG, "maximum number of arguments exceeded (" + MAX_ARGS + ')');
+            if (DEBUG) {
+                Log.e(TAG, "maximum number of arguments exceeded (" + MAX_ARGS + ')');
+            }
         } else {
             String key = EXTRA_ACTION_INDEX_PREFIX + mActionCount;
 
@@ -342,22 +354,22 @@ public final class TaskerIntent extends Intent {
     // for testing that Tasker is enabled and external access is allowed
 
     private static boolean prefNotSet(Context ctx, String col) {
-        String[] proj = {col};
-
+        String[] proj = {
+            col,
+        };
         Cursor c = ctx.getContentResolver().query(Uri.parse(TASKER_PREFS_URI), proj, null, null, null);
-
         boolean notAccepting = true;
-
         if (c == null) {
-            if (DEBUG) Log.w(TAG, "no cursor for " + TASKER_PREFS_URI);
+            if (DEBUG) {
+                Log.w(TAG, "no cursor for " + TASKER_PREFS_URI);
+            }
         } else {
             c.moveToFirst();
-
-            if (Boolean.TRUE.toString().equals(c.getString(0))) notAccepting = false;
-
+            if (Boolean.TRUE.toString().equals(c.getString(0))) {
+                notAccepting = false;
+            }
             c.close();
         }
-
         return notAccepting;
     }
 }

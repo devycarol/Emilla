@@ -74,15 +74,15 @@ final class Email extends CoreDataCommand implements EmailReceiver {
 
     private void tryEmail(AssistActivity act, String recipients, @Nullable String body) {
         String addresses = mContactsFragment.selectedContacts();
-        if (addresses != null) recipients = addresses;
-
+        if (addresses != null) {
+            recipients = addresses;
+        }
         email(act, recipients, body);
         // todo: validate the raw recipients
     }
 
     private void email(AssistActivity act, String addresses, @Nullable String body) {
         ArrayList<Uri> attachments = act.attachments(CoreEntry.EMAIL.name());
-
         Intent email;
         var sendTo = new Intent(ACTION_SENDTO, Uri.parse("mailto:"));
         if (attachments == null) {
@@ -93,12 +93,13 @@ final class Email extends CoreDataCommand implements EmailReceiver {
         }
         email.putExtra(EXTRA_EMAIL, Patterns.TRIMMING_CSV.split(addresses));
         // TODO: CC and BCC selections
-
-        if (body != null) email.putExtra(EXTRA_TEXT, body);
-
+        if (body != null) {
+            email.putExtra(EXTRA_TEXT, body);
+        }
         String subject = mSubjectToggle.fieldText();
-        if (subject != null) email.putExtra(EXTRA_SUBJECT, subject);
-
+        if (subject != null) {
+            email.putExtra(EXTRA_SUBJECT, subject);
+        }
         giveApp(act, email);
     }
 

@@ -67,7 +67,9 @@ public final class CommandPreference extends EditTextPreference {
         var switchView = (SwitchCompat) holder.findViewById(R.id.switch_widget);
         switchView.setOnCheckedChangeListener(null);
         switchView.setChecked(mChecked);
-        if (enabled) switchView.setClickable(true);
+        if (enabled) {
+            switchView.setClickable(true);
+        }
         switchView.setOnCheckedChangeListener(this::setChecked);
     }
 

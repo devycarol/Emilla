@@ -38,8 +38,11 @@ public enum MimeType {;
     public static String of(String type, Iterable<? extends Uri> fileUris, Context ctx) {
         for (Uri fileUri : fileUris) {
             type = union(type, of(fileUri, ctx));
-            if (type.equals("*/*")) return "*/*";
+            if (type.equals("*/*")) {
+                return "*/*";
+            }
         }
+
         return type;
     }
 

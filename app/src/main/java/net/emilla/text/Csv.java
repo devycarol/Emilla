@@ -92,8 +92,9 @@ public final class Csv {
 
         var loader = new ArrayLoader<String>(1, String[]::new);
 
-        do loader.growingAdd(nextInternal());
-        while (hasNext());
+        do {
+            loader.growingAdd(nextInternal());
+        } while (hasNext());
 
         return loader.array();
     }

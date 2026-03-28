@@ -65,13 +65,13 @@ final class Sms extends CoreDataCommand implements PhoneReceiver {
 
     private void tryMessage(AssistActivity act, String recipients, @Nullable String message) {
         String numbers = mContactsFragment.selectedContacts();
-        if (numbers == null && Contacts.isPhoneNumbers(recipients)) numbers = recipients;
-
+        if (numbers == null && Contacts.isPhoneNumbers(recipients)) {
+            numbers = recipients;
+        }
         if (numbers != null) {
             message(act, numbers, message);
         } else {
             var res = act.getResources();
-
             String toNumbers = Contacts.phonewordsToNumbers(recipients);
             String msg = res.getString(R.string.notice_sms_not_numbers, recipients, toNumbers);
             // todo: better message.
@@ -90,11 +90,11 @@ final class Sms extends CoreDataCommand implements PhoneReceiver {
 
     private static void message(AssistActivity act, String numbers, @Nullable String message) {
         var sendTo = new Intent(ACTION_SENDTO, Uris.sms(numbers));
-
-        if (message != null) sendTo.putExtra(Intents.EXTRA_SMS_BODY, message);
+        if (message != null) {
+            sendTo.putExtra(Intents.EXTRA_SMS_BODY, message);
+        }
         // overwrites any existing draft to the recipient
         // Todo: detect, warn, confirm.
-
         Apps.succeed(act, sendTo);
     }
 

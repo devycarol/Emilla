@@ -73,8 +73,9 @@ final class TextListReader {
 
         int start = mPosition;
 
-        do ++mPosition;
-        while (mPosition < mLength && !Chars.isLineSeparator(mText[mPosition]));
+        do {
+            ++mPosition;
+        } while (mPosition < mLength && !Chars.isLineSeparator(mText[mPosition]));
 
         int span = mPosition - start;
 

@@ -52,7 +52,10 @@ public abstract class ContactDataRetriever extends ResultRetriever<Void, String,
     }
 
     public final void retrieve(ContactDataReceiver receiver) {
-        if (alreadyHas(receiver)) return;
+        if (alreadyHas(receiver)) {
+            return;
+        }
+
         launch(null);
     }
 
