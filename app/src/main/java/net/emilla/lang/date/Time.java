@@ -211,12 +211,12 @@ public enum Time {; // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         var timeUnits = new double[3];
         Pattern[] patterns = {HOURS, MINUTES, SECONDS};
 
-        boolean hit = false;
+        boolean found = false;
         boolean notEmpty = true;
         for (int i = 0; i < 3 && notEmpty; ++i) {
             Pattern pattern = patterns[i];
             if (pattern.matcher(dur).find()) {
-                hit = true;
+                found = true;
 
                 String[] withoutHours = pattern.split(dur);
                 if (withoutHours.length > 2) {
@@ -241,7 +241,7 @@ public enum Time {; // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
             }
         }
 
-        if (hit) {
+        if (found) {
             if (notEmpty) {
                 throw new EmillaException(errorTitle, R.string.error_excess_time_units);
             }

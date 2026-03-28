@@ -676,7 +676,7 @@
     <string name="error_excess_time_units">Too many time units!</string>
     <string name="error_excess_timespan">You can\'t span more than 2 times.</string>
     <string name="error_excess_timespans">You can\'t have multiple timespans.</string>
-    <string name="error_invalid_duration">Invalid duration!</string>
+    <string name="error_invalid_duration">Invalid duration.</string>
     <string name="error_invalid_date">Invalid date.</string>
     <string name="error_calc_malformed_expression">Malformed expression.</string>
     <string name="error_calc_undefined">Undefined.</string>
@@ -692,7 +692,6 @@
     <string name="error_unfinished_feature">Unfinished feature!</string>
     <string name="error_unfinished_version">Sorry! This command doesn\'t support your Android version yet.</string>
     <string name="error_unfinished_categorical_app_search">Sorry! I don\'t have categorical app search yet.</string>
-    <string name="error_unfinished_timer_label">Sorry! I can\'t label the timer without a duration.</string>
     <string name="error_unfinished_copy">Unfinished feature! The idea is to copy a file when text isn\'t provided.</string>
     <string name="error_unknown">Unknown error</string>
     <string name="error_bug_report_please">Please submit the bug report!</string>
