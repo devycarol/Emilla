@@ -672,7 +672,7 @@
 
     <!-- Error messages for failed commands. -->
     <string name="error_bad_minutes">Invalid minute value.</string>
-    <string name="error_invalid_time">Invalid time!</string>
+    <string name="error_invalid_time">Invalid time.</string>
     <string name="error_excess_time_units">Too many time units!</string>
     <string name="error_excess_timespan">You can\'t span more than 2 times.</string>
     <string name="error_excess_timespans">You can\'t have multiple timespans.</string>

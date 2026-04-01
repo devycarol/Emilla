@@ -1,5 +1,6 @@
 package net.emilla.lang.date;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import net.emilla.R;
@@ -98,10 +99,11 @@ public enum Time {; // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         }
     }
 
-    private static MutableTime timeUnits(String time, @StringRes int errorTitle) {
+    @Nullable
+    private static MutableTime timeUnits(String time) {
         String timeDigits = Strings.stripNonDigits(time);
         if (!Strings.isOneToNDigits(timeDigits, 6)) {
-            throw new EmillaException(errorTitle, R.string.error_invalid_time);
+            return null;
         }
 
         var units = MutableTime.midnight();
@@ -126,16 +128,25 @@ public enum Time {; // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         return units;
     }
 
-    private static MutableTime parseTime(String time, @StringRes int errorTitle) {
+    @Nullable
+    private static MutableTime parseTime(String time) {
+        MutableTime units = timeUnits(time);
+        if (units == null) {
+            return null;
+        }
+
         var meridiem
             = REGEX_AM.matcher(time).find() ? Meridiem.AM
             : REGEX_PM.matcher(time).find() ? Meridiem.PM
             : null
         ;
-        MutableTime units = timeUnits(time, errorTitle);
-        if (meridiem != null) {
+        if (meridiem == null) {
+            if (units.hour < 0 || 23 < units.hour) {
+                return null;
+            }
+        } else {
             if (units.hour < 1 || 12 < units.hour) {
-                throw new EmillaException(errorTitle, R.string.error_invalid_time);
+                return null;
             }
 
             if (units.hour == 12) {
@@ -146,15 +157,20 @@ public enum Time {; // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
             }
         }
 
-        if (units.hour > 23 || units.minute > 59 || units.second > 59) {
-            throw new EmillaException(errorTitle, R.string.error_invalid_time);
+        if (units.minute > 59 || units.second > 59) {
+            return null;
         }
 
         return units;
     }
 
-    private static int parseDurationUntil(String until, @StringRes int errorTitle) {
-        MutableTime endUnits = parseTime(until, errorTitle);
+    @Nullable
+    private static Integer parseDurationUntil(String until) {
+        MutableTime endUnits = parseTime(until);
+        if (endUnits == null) {
+            return null;
+        }
+
         var timeNow = LocalTime.now();
         int hour24Now = timeNow.getHour();
         int minuteNow = timeNow.getMinute();
@@ -213,10 +229,11 @@ public enum Time {; // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         return seconds((int) h, (int) m, (int) s);
     }
 
-    public static int parseDuration(String dur, @StringRes int errorTitle) {
+    @Nullable
+    public static Integer parseDuration(String dur, @StringRes int errorTitle) {
         // TODO: handle 24h time properly
         if (DURATION_UNTIL.matcher(dur).find()) {
-            return parseDurationUntil(dur, errorTitle);
+            return parseDurationUntil(dur);
         }
 
         var timeUnits = new double[3];
@@ -368,10 +385,16 @@ public enum Time {; // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
                 } else if (Lang.normalize(endStr).contains("on ")) {
                     // todo
                 }
-                endTime = parseTime(endStr, errorTitle);
+                endTime = parseTime(endStr);
+                if (endTime == null) {
+                    throw new EmillaException(errorTitle, R.string.error_invalid_time);
+                }
                 // fallthrough
             case 1:
-                startTime = parseTime(times[0], errorTitle);
+                startTime = parseTime(times[0]);
+                if (startTime == null) {
+                    throw new EmillaException(errorTitle, R.string.error_invalid_time);
+                }
                 break;
             default:
                 throw new EmillaException(errorTitle, R.string.error_excess_timespan);
