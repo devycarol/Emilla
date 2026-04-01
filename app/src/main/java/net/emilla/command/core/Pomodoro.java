@@ -77,11 +77,17 @@ final class Pomodoro extends CoreDataCommand {
 
     @SuppressLint("MissingPermission")
     private void tryPomo(AssistActivity act, @Nullable String minutes, boolean isBreak) {
-        int seconds = seconds(act, minutes, isBreak);
+        Integer seconds = seconds(act, minutes, isBreak);
+        if (seconds == null) {
+            fail(act, R.string.error_bad_minutes);
+            return;
+        }
+
         Permission.PINGS.with(act, () -> pomo(act, seconds, mWorkMemo, mBreakMemo, isBreak));
     }
 
-    private static int seconds(AssistActivity act, @Nullable String minutes, boolean isBreak) {
+    @Nullable
+    private static Integer seconds(AssistActivity act, @Nullable String minutes, boolean isBreak) {
         if (minutes == null) {
             var prefs = act.getSharedPreferences();
             return (
@@ -92,7 +98,7 @@ final class Pomodoro extends CoreDataCommand {
             ) * 60;
         }
 
-        return Lang.duration(minutes, CoreEntry.POMODORO.name).seconds;
+        return Lang.durationSeconds(minutes);
     }
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)

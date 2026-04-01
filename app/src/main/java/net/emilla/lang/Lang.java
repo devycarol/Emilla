@@ -6,7 +6,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import net.emilla.R;
-import net.emilla.lang.date.Duration;
 import net.emilla.lang.date.impl.DurationEN_US;
 import net.emilla.lang.grammar.ListPhrase;
 import net.emilla.lang.grammar.impl.ListPhraseEN_US;
@@ -105,9 +104,10 @@ public enum Lang {
         };
     }
 
-    public static Duration duration(String minutes, @StringRes int errorTitle) {
+    @Nullable
+    public static Integer durationSeconds(String minutes) {
         return switch (EN_US) {
-            case EN_US -> DurationEN_US.instance(minutes, errorTitle);
+            case EN_US -> DurationEN_US.seconds(minutes);
         };
     }
 

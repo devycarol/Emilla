@@ -1,19 +1,20 @@
 package net.emilla.lang.date.impl;
 
-import androidx.annotation.StringRes;
-
-import net.emilla.R;
-import net.emilla.exception.EmillaException;
-import net.emilla.lang.date.Duration;
+import androidx.annotation.Nullable;
 
 public enum DurationEN_US {;
-    public static Duration instance(String minutes, @StringRes int errorTitle) {
+    @Nullable
+    public static Integer seconds(String minutes) {
         try {
-            var seconds = (int) (Double.parseDouble(minutes) * 60.0);
             // Todo: other time units, clock notation.
-            return new Duration(seconds, errorTitle);
+            var seconds = (int) (Double.parseDouble(minutes) * 60.0);
+            if (seconds <= 0) {
+                return null;
+            }
+
+            return seconds;
         } catch (NumberFormatException e) {
-            throw new EmillaException(errorTitle, R.string.error_bad_minutes);
+            return null;
         }
     }
 }

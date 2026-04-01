@@ -32,8 +32,8 @@ public enum Time {; // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
 
     private static final String TOMORROW = "tomorrow";
 
-    public static final Pattern REGEX_AM = Pattern.compile("\\d *A", Pattern.CASE_INSENSITIVE);
-    public static final Pattern REGEX_PM = Pattern.compile("\\d *P", Pattern.CASE_INSENSITIVE);
+    private static final Pattern REGEX_AM = Pattern.compile("\\d *A", Pattern.CASE_INSENSITIVE);
+    private static final Pattern REGEX_PM = Pattern.compile("\\d *P", Pattern.CASE_INSENSITIVE);
     private static final Pattern MERIDIEM = Pattern.compile("\\d *[AP]", Pattern.CASE_INSENSITIVE);
 
     private static final Pattern DURATION_SPLITTER = Pattern.compile(" *: *| +");
@@ -136,7 +136,7 @@ public enum Time {; // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         return new int[]{h, m, s};
     }
 
-    private static Duration parseDurationUntil(String until, @StringRes int errorTitle) {
+    private static int parseDurationUntil(String until, @StringRes int errorTitle) {
         int[] endUnits = parseTime(until, errorTitle);
         int endHour = endUnits[0];
         int endMinute = endUnits[1];
@@ -147,16 +147,14 @@ public enum Time {; // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         int minuteNow = timeNow.getMinute();
         int secondNow = timeNow.getSecond();
 
-        int h = 0;
         int m = 0;
-        int s = 0;
-
-        s = endSecond - secondNow;
+        int s = endSecond - secondNow;
         if (s < 0) {
             s += 60;
             --m;
         }
 
+        int h = 0;
         m += endMinute - minuteNow;
         if (m < 0) {
             m += 60;
@@ -174,11 +172,11 @@ public enum Time {; // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
             }
         }
 
-        return new Duration(h, m, s - 1);
+        return seconds(h, m, s - 1);
         // we subtract 1 to give an extra second of leeway
     }
 
-    private static Duration splitDurationString(String dur) {
+    private static int splitDurationString(String dur) {
         String[] units = DURATION_SPLITTER.split(dur);
 
         double h = 0.0;
@@ -199,10 +197,10 @@ public enum Time {; // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         m += h % 1.0 * 60.0;
         s += m % 1.0 * 60.0;
 
-        return new Duration((int) h, (int) m, (int) s);
+        return seconds((int) h, (int) m, (int) s);
     }
 
-    public static Duration parseDuration(String dur, @StringRes int errorTitle) {
+    public static int parseDuration(String dur, @StringRes int errorTitle) {
         // TODO: handle 24h time properly
         if (DURATION_UNTIL.matcher(dur).find()) {
             return parseDurationUntil(dur, errorTitle);
@@ -249,10 +247,14 @@ public enum Time {; // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
             timeUnits[1] += timeUnits[0] % 1.0 * 60.0;
             timeUnits[2] += timeUnits[1] % 1.0 * 60.0;
 
-            return new Duration((int) timeUnits[0], (int) timeUnits[1], (int) timeUnits[2]);
+            return seconds((int) timeUnits[0], (int) timeUnits[1], (int) timeUnits[2]);
         }
 
         return splitDurationString(dur);
+    }
+
+    private static int seconds(int hours, int minutes, int seconds) {
+        return hours * 60 * 60 + minutes * 60 + seconds;
     }
 
     private static Month parseMonth(String month) {
