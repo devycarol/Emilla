@@ -78,90 +78,103 @@ public enum Time {; // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
         Pattern.CASE_INSENSITIVE
     );
 
-    private static int[] timeUnits(String time, @StringRes int errorTitle) {
+    private static final class MutableTime {
+        int hour;
+        int minute;
+        int second;
+
+        MutableTime(int hour, int minute, int second) {
+            this.hour = hour;
+            this.minute = minute;
+            this.second = second;
+        }
+
+        public static MutableTime midnight() {
+            return new MutableTime(0, 0, 0);
+        }
+
+        public LocalTime toLocalTime() {
+            return LocalTime.of(hour, minute, second);
+        }
+    }
+
+    private static MutableTime timeUnits(String time, @StringRes int errorTitle) {
         String timeDigits = Strings.stripNonDigits(time);
         if (!Strings.isOneToNDigits(timeDigits, 6)) {
             throw new EmillaException(errorTitle, R.string.error_invalid_time);
         }
 
-        int h = 0;
-        int m = 0;
-        int s = 0;
-        int len = timeDigits.length();
-        switch ((len + 1) / 2) {
-        case 1 -> {
-            h = Integer.parseInt(timeDigits);
+        var units = MutableTime.midnight();
+        int length = timeDigits.length();
+        switch (length) {
+        case 1, 2 -> {
+            units.hour = Integer.parseInt(timeDigits);
         }
-        case 2 -> {
-            h = Integer.parseInt(timeDigits.substring(0, len - 2));
-            m = Integer.parseInt(timeDigits.substring(len - 2));
+        case 3, 4 -> {
+            int minuteStart = length - 2;
+            units.hour = Integer.parseInt(timeDigits.substring(0, minuteStart));
+            units.minute = Integer.parseInt(timeDigits.substring(minuteStart));
         }
-        case 3 -> {
-            h = Integer.parseInt(timeDigits.substring(0, len - 4));
-            m = Integer.parseInt(timeDigits.substring(len - 4, len - 2));
-            s = Integer.parseInt(timeDigits.substring(len - 2));
+        case 5, 6 -> {
+            int minuteStart = length - 4;
+            int secondStart = length - 2;
+            units.hour = Integer.parseInt(timeDigits.substring(0, minuteStart));
+            units.minute = Integer.parseInt(timeDigits.substring(minuteStart, secondStart));
+            units.second = Integer.parseInt(timeDigits.substring(secondStart));
         }}
 
-        return new int[]{h, m, s};
+        return units;
     }
 
-    private static int[] parseTime(String time, @StringRes int errorTitle) {
+    private static MutableTime parseTime(String time, @StringRes int errorTitle) {
         var meridiem
             = REGEX_AM.matcher(time).find() ? Meridiem.AM
             : REGEX_PM.matcher(time).find() ? Meridiem.PM
             : null
         ;
-        int[] units = timeUnits(time, errorTitle);
-        int h = units[0];
-        int m = units[1];
-        int s = units[2];
-
+        MutableTime units = timeUnits(time, errorTitle);
         if (meridiem != null) {
-            if (h < 1 || 12 < h) {
+            if (units.hour < 1 || 12 < units.hour) {
                 throw new EmillaException(errorTitle, R.string.error_invalid_time);
             }
 
-            if (h == 12) {
-                h = 0;
+            if (units.hour == 12) {
+                units.hour = 0;
             }
             if (meridiem == Meridiem.PM) {
-                h += 12;
+                units.hour += 12;
             }
         }
 
-        if (h > 23 || Math.max(m, s) > 59) {
+        if (units.hour > 23 || units.minute > 59 || units.second > 59) {
             throw new EmillaException(errorTitle, R.string.error_invalid_time);
         }
 
-        return new int[]{h, m, s};
+        return units;
     }
 
     private static int parseDurationUntil(String until, @StringRes int errorTitle) {
-        int[] endUnits = parseTime(until, errorTitle);
-        int endHour = endUnits[0];
-        int endMinute = endUnits[1];
-        int endSecond = endUnits[2];
-
+        MutableTime endUnits = parseTime(until, errorTitle);
         var timeNow = LocalTime.now();
         int hour24Now = timeNow.getHour();
         int minuteNow = timeNow.getMinute();
         int secondNow = timeNow.getSecond();
 
         int m = 0;
-        int s = endSecond - secondNow;
+        int s = endUnits.second - secondNow;
         if (s < 0) {
             s += 60;
             --m;
         }
 
         int h = 0;
-        m += endMinute - minuteNow;
+        m += endUnits.minute - minuteNow;
         if (m < 0) {
             m += 60;
             --h;
         }
 
-        h += endHour - hour24Now;
+        h += endUnits.hour - hour24Now;
         if (h < 0) {
             h += 24;
         }
@@ -338,8 +351,8 @@ public enum Time {; // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
     public static DateTimeRange parseDateAndTimes(String dateString, @StringRes int errorTitle) {
         String[] dateTime = DATE_TIME_SPLITTER.split(dateString);
 
-        int[] startTime = null;
-        int[] endTime = null;
+        MutableTime startTime = null;
+        MutableTime endTime = null;
         boolean endTomorrow = false; // TODO
         int len = dateTime.length;
         if (len == 2) {
@@ -373,13 +386,13 @@ public enum Time {; // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
             if (endTime != null) {
                 endDate = LocalDateTime.of(
                     startDate.toLocalDate(),
-                    LocalTime.of(endTime[0], endTime[1], endTime[2])
+                    endTime.toLocalTime()
                 );
             }
 
             startDate = LocalDateTime.of(
                 startDate.toLocalDate(),
-                LocalTime.of(startTime[0], startTime[1], startTime[2])
+                startTime.toLocalTime()
             );
         }
 
