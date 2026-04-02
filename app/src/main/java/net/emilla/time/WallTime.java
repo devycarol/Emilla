@@ -8,6 +8,8 @@ import androidx.annotation.Nullable;
 import java.time.LocalTime;
 
 public final class WallTime {
+    // TODO: simplify this class by just storing a minute count and using modular subtraction to do
+    //  meridiem flips and such.
     private final int mHour;
     private final int mMinute;
     private final boolean mMeridiemIsKnown;
@@ -19,7 +21,7 @@ public final class WallTime {
     }
 
     @Nullable
-    public static WallTime of(int hour, int minute, @Nullable Meridiem meridiem) {
+    public static WallTime of(Context ctx, int hour, int minute, @Nullable Meridiem meridiem) {
         if (minute < 0 || 59 < minute) {
             return null;
         }
@@ -29,7 +31,12 @@ public final class WallTime {
                 return null;
             }
 
-            return new WallTime(hour, minute, hour == 0 || hour >= 13);
+            return new WallTime(
+                hour,
+                minute,
+                hour == 0 || hour >= 13 || DateFormat.is24HourFormat(ctx)
+                // todo: this doesn't respect LineageOS 24h time
+            );
         }
 
         if (hour < 1 || 12 < hour) {
@@ -49,9 +56,9 @@ public final class WallTime {
         return new WallTime(hour, minute, true);
     }
 
-    public HourMinute nextOccurrence(Context ctx) {
+    public HourMinute nextOccurrence() {
         return new HourMinute(
-            shouldFlipMeridiem(ctx)
+            shouldFlipMeridiem()
                 ? mHour == 12
                     ? 0
                     : mHour + 12
@@ -61,9 +68,8 @@ public final class WallTime {
         );
     }
 
-    private boolean shouldFlipMeridiem(Context ctx) {
-        if (mMeridiemIsKnown || DateFormat.is24HourFormat(ctx)) {
-            // todo: this doesn't respect LineageOS 24h time
+    private boolean shouldFlipMeridiem() {
+        if (mMeridiemIsKnown) {
             return false;
         }
 
@@ -87,5 +93,37 @@ public final class WallTime {
             // from 1pm to 1am, we need to flip the meridiem if it's later than the time 12 hours
             // ago.
         }
+    }
+
+    public int secondsToNextOccurrence() {
+        var now = LocalTime.now();
+
+        int minute = 0;
+        int second = -now.getSecond();
+        if (second < 0) {
+            second += 60;
+            --minute;
+        }
+
+        int hour = 0;
+        minute += mMinute - now.getMinute();
+        if (minute < 0) {
+            minute += 60;
+            --hour;
+        }
+
+        hour += mHour - now.getHour();
+        if (hour < 0) {
+            hour += 24;
+        }
+
+        if (!mMeridiemIsKnown) {
+            if (hour > 12 || hour == 12 && (minute > 0 || second > 0)) {
+                hour -= 12;
+            }
+        }
+
+        return hour * 60 * 60 + minute * 60 + second - 1;
+        // we subtract 1 to give an extra second of leeway
     }
 }

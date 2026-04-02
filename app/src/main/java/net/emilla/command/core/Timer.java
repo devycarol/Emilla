@@ -10,8 +10,9 @@ import androidx.annotation.Nullable;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
-import net.emilla.lang.date.Time;
+import net.emilla.lang.Lang;
 import net.emilla.util.Apps;
+import net.emilla.util.Int;
 
 final class Timer extends CoreDataCommand {
     public static boolean possible(PackageManager pm) {
@@ -43,15 +44,16 @@ final class Timer extends CoreDataCommand {
 
     @Override
     public void runWithData(AssistActivity act, String duration, @Nullable String title) {
-        Integer durationSeconds = Time.parseDuration(duration, CoreEntry.TIMER.name);
-        if (durationSeconds == null) {
+        Int box = Lang.durationSeconds(act, duration);
+        if (box == null) {
             fail(act, R.string.error_invalid_duration);
             return;
         }
 
+        int seconds = box.intValue();
         Intent intent = baseIntent()
             .putExtra(AlarmClock.EXTRA_SKIP_UI, true)
-            .putExtra(AlarmClock.EXTRA_LENGTH, durationSeconds.intValue())
+            .putExtra(AlarmClock.EXTRA_LENGTH, seconds)
         ;
         if (title != null) {
             intent.putExtra(AlarmClock.EXTRA_MESSAGE, title);

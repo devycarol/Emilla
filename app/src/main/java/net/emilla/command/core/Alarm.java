@@ -55,13 +55,13 @@ final class Alarm extends CoreDataCommand {
 
     @Override
     public void runWithData(AssistActivity act, String time, @Nullable String label) {
-        WallTime wallTime = Lang.wallTime(time);
+        WallTime wallTime = Lang.wallTime(act, time);
         if (wallTime == null) {
             failMessage(act, R.string.error_invalid_time);
             return;
         }
 
-        HourMinute hourMinute = wallTime.nextOccurrence(act);
+        HourMinute hourMinute = wallTime.nextOccurrence();
         Intent setAlarm = hourMinute.setAlarm();
         if (label != null) {
             setAlarm.putExtra(AlarmClock.EXTRA_MESSAGE, label);

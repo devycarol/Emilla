@@ -1,12 +1,12 @@
 package net.emilla.lang;
 
+import android.content.Context;
 import android.content.res.Resources;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import net.emilla.R;
-import net.emilla.lang.date.impl.DurationEN_US;
 import net.emilla.lang.grammar.ListPhrase;
 import net.emilla.lang.grammar.impl.ListPhraseEN_US;
 import net.emilla.measure.CelsiusConversion;
@@ -16,6 +16,7 @@ import net.emilla.measure.impl.FahrenheitConversionEN_US;
 import net.emilla.random.DiceRoller;
 import net.emilla.time.WallTime;
 import net.emilla.trie.PhraseTree;
+import net.emilla.util.Int;
 
 import java.util.function.IntFunction;
 
@@ -98,16 +99,16 @@ public enum Lang {
     }
 
     @Nullable
-    public static WallTime wallTime(String time) {
+    public static WallTime wallTime(Context ctx, String time) {
         return switch (EN_US) {
-            case EN_US -> EnglishUnitedStates.wallTime(time);
+            case EN_US -> EnglishUnitedStates.wallTime(ctx, time);
         };
     }
 
     @Nullable
-    public static Integer durationSeconds(String minutes) {
+    public static Int durationSeconds(Context ctx, String duration) {
         return switch (EN_US) {
-            case EN_US -> DurationEN_US.seconds(minutes);
+            case EN_US -> EnglishUnitedStates.durationSeconds(ctx, duration);
         };
     }
 

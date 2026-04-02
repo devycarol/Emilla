@@ -41,10 +41,6 @@ public enum Strings {;
         return stripNonMatching(s, Character::isDigit);
     }
 
-    public static String stripNonNumbers(String s) {
-        return stripNonMatching(s, Chars::isNumberChar);
-    }
-
     private static String stripNonMatching(String s, CharPredicate filter) {
         char[] chars = s.toCharArray();
         int position = 0;

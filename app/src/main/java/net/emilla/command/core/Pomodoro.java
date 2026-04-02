@@ -20,6 +20,7 @@ import net.emilla.event.Plan;
 import net.emilla.lang.Lang;
 import net.emilla.ping.PingChannel;
 import net.emilla.ping.Pings;
+import net.emilla.util.Int;
 import net.emilla.util.Permission;
 
 final class Pomodoro extends CoreDataCommand {
@@ -52,8 +53,8 @@ final class Pomodoro extends CoreDataCommand {
     }
 
     @Override
-    protected void run(AssistActivity act, String minutes) {
-        Subcommand<Action> subcmd = mActionMap.get(minutes);
+    protected void run(AssistActivity act, String duration) {
+        Subcommand<Action> subcmd = mActionMap.get(duration);
         tryPomo(act, subcmd.instruction, subcmd.action == Action.BREAK);
     }
 
@@ -64,8 +65,8 @@ final class Pomodoro extends CoreDataCommand {
     }
 
     @Override
-    public void runWithData(AssistActivity act, String minutes, String memo) {
-        Subcommand<Action> subcmd = mActionMap.get(minutes);
+    public void runWithData(AssistActivity act, String duration, String memo) {
+        Subcommand<Action> subcmd = mActionMap.get(duration);
         boolean isBreak = subcmd.action == Action.BREAK;
         if (isBreak) {
             mBreakMemo = memo;
@@ -76,29 +77,36 @@ final class Pomodoro extends CoreDataCommand {
     }
 
     @SuppressLint("MissingPermission")
-    private void tryPomo(AssistActivity act, @Nullable String minutes, boolean isBreak) {
-        Integer seconds = seconds(act, minutes, isBreak);
-        if (seconds == null) {
-            fail(act, R.string.error_bad_minutes);
+    private void tryPomo(AssistActivity act, @Nullable String duration, boolean isBreak) {
+        Int box = durationSeconds(act, duration, isBreak);
+        if (box == null) {
+            fail(act, R.string.error_invalid_duration);
             return;
         }
 
+        int seconds = box.intValue();
         Permission.PINGS.with(act, () -> pomo(act, seconds, mWorkMemo, mBreakMemo, isBreak));
     }
 
     @Nullable
-    private static Integer seconds(AssistActivity act, @Nullable String minutes, boolean isBreak) {
-        if (minutes == null) {
+    private static Int durationSeconds(
+        AssistActivity act,
+        @Nullable String duration,
+        boolean isBreak
+    ) {
+        if (duration == null) {
             var prefs = act.getSharedPreferences();
-            return (
-                isBreak
-                    ? SettingVals.defaultPomoBreakMins(prefs)
-                    : SettingVals.defaultPomoWorkMins(prefs)
+            return new Int(
+                (
+                    isBreak
+                        ? SettingVals.defaultPomoBreakMins(prefs)
+                        : SettingVals.defaultPomoWorkMins(prefs)
 
-            ) * 60;
+                ) * 60
+            );
         }
 
-        return Lang.durationSeconds(minutes);
+        return Lang.durationSeconds(act, duration);
     }
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
