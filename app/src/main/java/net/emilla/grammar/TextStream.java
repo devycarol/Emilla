@@ -179,6 +179,10 @@ public final class TextStream {
         return true;
     }
 
+    public boolean isAtWordStart() {
+        return mPosition == 0 || Character.isWhitespace(mChars[mPosition - 1]);
+    }
+
     public boolean hasRemaining() {
         return mPosition != mChars.length;
     }

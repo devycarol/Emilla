@@ -105,8 +105,7 @@ enum EnglishUnitedStates {;
 
     @Nullable
     private static Int untilDuration(Context ctx, TextStream stream) {
-        // todo ig: "timer until3"
-        if (!stream.skipFirst("until", "till", "til", "to")) {
+        if (!stream.skipFirst("until", "till", "til", "to") || !stream.isAtWordStart()) {
             return null;
         }
 
