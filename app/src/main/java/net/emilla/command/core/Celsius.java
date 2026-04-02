@@ -22,12 +22,16 @@ final class Celsius extends CoreCommand {
 
     @Override
     protected void run(AssistActivity act, String temperature) {
-        CelsiusConversion celsius = Lang.celsius(temperature, CoreEntry.CELSIUS.name);
+        CelsiusConversion celsius = Lang.toCelsius(temperature);
+        if (celsius == null) {
+            fail(act, R.string.error_bad_temperature);
+            return;
+        }
 
         String oldDegrees = Maths.prettyNumber(celsius.degrees());
         var res = act.getResources();
         String unit = res.getString(
-            celsius.fromKelvin()
+            celsius.wasFromKelvin()
                 ? R.string.kelvin
                 : R.string.fahrenheit
 

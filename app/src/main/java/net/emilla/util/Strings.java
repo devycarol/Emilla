@@ -28,15 +28,6 @@ public enum Strings {;
         return position;
     }
 
-    public static String substring(char[] chars, int start) {
-        return substring(chars, start, chars.length);
-    }
-
-    public static String substring(char[] chars, int start, int end) {
-        int span = end - start;
-        return new String(chars, start, span);
-    }
-
     public static String stripNonDigits(String s) {
         return stripNonMatching(s, Character::isDigit);
     }

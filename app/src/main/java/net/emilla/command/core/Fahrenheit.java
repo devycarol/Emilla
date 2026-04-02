@@ -22,13 +22,16 @@ final class Fahrenheit extends CoreCommand {
 
     @Override
     protected void run(AssistActivity act, String temperature) {
-        var res = act.getResources();
-
-        FahrenheitConversion fahrenheit = Lang.fahrenheit(temperature, CoreEntry.FAHRENHEIT.name);
+        FahrenheitConversion fahrenheit = Lang.toFahrenheit(temperature);
+        if (fahrenheit == null) {
+            fail(act, R.string.error_bad_temperature);
+            return;
+        }
 
         String oldDegrees = Maths.prettyNumber(fahrenheit.degrees());
+        var res = act.getResources();
         String unit = res.getString(
-            fahrenheit.fromKelvin()
+            fahrenheit.wasFromKelvin()
                 ? R.string.kelvin
                 : R.string.celsius
 

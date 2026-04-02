@@ -12,8 +12,6 @@ import net.emilla.lang.grammar.ListPhrase;
 import net.emilla.lang.grammar.impl.ListPhraseEN_US;
 import net.emilla.measure.CelsiusConversion;
 import net.emilla.measure.FahrenheitConversion;
-import net.emilla.measure.impl.CelsiusConversionEN_US;
-import net.emilla.measure.impl.FahrenheitConversionEN_US;
 import net.emilla.random.DiceRoller;
 import net.emilla.time.WallTime;
 import net.emilla.trie.PhraseTree;
@@ -115,15 +113,17 @@ public enum Lang {
         };
     }
 
-    public static CelsiusConversion celsius(String temperature, @StringRes int errorTitle) {
+    @Nullable
+    public static CelsiusConversion toCelsius(String temperature) {
         return switch (EN_US) {
-            case EN_US -> CelsiusConversionEN_US.instance(temperature, errorTitle);
+            case EN_US -> EnglishUnitedStates.toCelsius(temperature);
         };
     }
 
-    public static FahrenheitConversion fahrenheit(String temperature, @StringRes int errorTitle) {
+    @Nullable
+    public static FahrenheitConversion toFahrenheit(String temperature) {
         return switch (EN_US) {
-            case EN_US -> FahrenheitConversionEN_US.instance(temperature, errorTitle);
+            case EN_US -> EnglishUnitedStates.toFahrenheit(temperature);
         };
     }
 

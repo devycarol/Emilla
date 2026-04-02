@@ -72,7 +72,7 @@ public final class TextStream {
         return true;
     }
 
-    private boolean skip(@Normalized String s) {
+    public boolean skip(@Normalized String s) {
         int start = mPosition;
         for (char ch : s.toCharArray()) {
             if (isFinished() || different(ch)) {
@@ -112,12 +112,16 @@ public final class TextStream {
         return new String(mChars, start, mPosition - start);
     }
 
-    @Nullable
-    public Int integer() {
-        int start = mPosition;
+    private void passSign() {
         if (hasRemaining() && Chars.isSign(mChars[mPosition])) {
             ++mPosition;
         }
+    }
+
+    @Nullable
+    public Int integer() {
+        int start = mPosition;
+        passSign();
         return finishInt(start);
     }
 
@@ -142,8 +146,20 @@ public final class TextStream {
     }
 
     @Nullable
+    public DoubleFloat doubleFloat() {
+        int start = mPosition;
+        passSign();
+        return finishDouble(start);
+    }
+
+    @Nullable
     public DoubleFloat unsignedDouble() {
         int start = mPosition;
+        return finishDouble(start);
+    }
+
+    @Nullable
+    private DoubleFloat finishDouble(int start) {
         while (hasRemaining() && Chars.isNumberChar(mChars[mPosition])) {
             ++mPosition;
         }

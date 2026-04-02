@@ -5,6 +5,8 @@ import android.content.Context;
 import androidx.annotation.Nullable;
 
 import net.emilla.grammar.TextStream;
+import net.emilla.measure.CelsiusConversion;
+import net.emilla.measure.FahrenheitConversion;
 import net.emilla.random.Dice;
 import net.emilla.random.DiceRoller;
 import net.emilla.time.ClockUnit;
@@ -147,21 +149,21 @@ enum EnglishUnitedStates {;
 
     @Nullable
     private static ClockUnit clockUnit(EnumSet<ClockUnit> used, TextStream stream) {
-        if (stream.skipFirst("hours", "hour", "h")) {
+        if (stream.skipFirst("hours", "hour") || stream.skip('h')) {
             return used.add(ClockUnit.HOUR)
                 ? ClockUnit.HOUR
                 : null
             ;
         }
 
-        if (stream.skipFirst("minutes", "minute", "min", "m")) {
+        if (stream.skipFirst("minutes", "minute", "min") || stream.skip('m')) {
             return used.add(ClockUnit.MINUTE)
                 ? ClockUnit.MINUTE
                 : null
             ;
         }
 
-        if (stream.skipFirst("seconds", "second", "secs", "sec", "s")) {
+        if (stream.skipFirst("seconds", "second", "secs", "sec") || stream.skip('s')) {
             return used.add(ClockUnit.SECOND)
                 ? ClockUnit.SECOND
                 : null
@@ -203,6 +205,48 @@ enum EnglishUnitedStates {;
     private static ClockUnit defaultUnit() {
         // todo config
         return ClockUnit.MINUTE;
+    }
+
+    @Nullable
+    public static CelsiusConversion toCelsius(String temperature) {
+        return TextStream.extract(temperature, stream -> {
+            DoubleFloat box = stream.doubleFloat();
+            if (box == null) {
+                return null;
+            }
+
+            double degrees = box.doubleValue();
+            if (stream.isFinished()) {
+                return new CelsiusConversion(degrees, false);
+            }
+
+            boolean __ = stream.skip("degrees") || stream.skip('°');
+            boolean wasFromKelvin = stream.skip("kelvin") || stream.skip('k');
+            __ = wasFromKelvin || stream.skip("fahrenheit") || stream.skip('f');
+
+            return new CelsiusConversion(degrees, wasFromKelvin);
+        });
+    }
+
+    @Nullable
+    public static FahrenheitConversion toFahrenheit(String temperature) {
+        return TextStream.extract(temperature, stream -> {
+            DoubleFloat box = stream.doubleFloat();
+            if (box == null) {
+                return null;
+            }
+
+            double degrees = box.doubleValue();
+            if (stream.isFinished()) {
+                return new FahrenheitConversion(degrees, false);
+            }
+
+            boolean __ = stream.skip("degrees") || stream.skip('°');
+            boolean wasFromKelvin = stream.skip("kelvin") || stream.skip('k');
+            __ = wasFromKelvin || stream.skip("celsius") || stream.skip('c');
+
+            return new FahrenheitConversion(degrees, wasFromKelvin);
+        });
     }
 
     @Nullable

@@ -25,14 +25,6 @@ public enum Chars {;
         return 0;
     }
 
-    public static boolean isSignOrDigit(char ch) {
-        return isSign(ch) || Character.isDigit(ch);
-    }
-
-    public static boolean isSignOrNumberChar(char ch) {
-        return isSign(ch) || isNumberChar(ch);
-    }
-
     public static boolean isNumberChar(char ch) {
         return ch == '.' || Character.isDigit(ch);
     }
