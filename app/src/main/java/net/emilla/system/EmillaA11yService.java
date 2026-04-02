@@ -17,10 +17,12 @@ public final class EmillaA11yService extends AccessibilityService {
     //  should also do this. I wonder if you can add items to that menu..
 
     @Override
-    public void onAccessibilityEvent(AccessibilityEvent event) {}
+    public void onAccessibilityEvent(AccessibilityEvent event) {
+    }
 
     @Override
-    public void onInterrupt() {}
+    public void onInterrupt() {
+    }
 
     @Override @RequiresApi(Build.VERSION_CODES.O)
     public void onCreate() {

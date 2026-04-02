@@ -7,7 +7,8 @@ import net.emilla.activity.AssistActivity;
 public abstract class CommandYielder {
     private EmillaCommand mCommand = null;
 
-    protected CommandYielder() {}
+    protected CommandYielder() {
+    }
 
     public abstract boolean usesInstruction();
     protected abstract EmillaCommand makeCommand(AssistActivity act);

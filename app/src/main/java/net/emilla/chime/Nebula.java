@@ -7,7 +7,8 @@ import net.emilla.annotation.internal;
 
 /// The default chimer, Nebula.
 final class Nebula implements Chimer {
-    @internal Nebula() {}
+    @internal Nebula() {
+    }
 
     @Override
     public void chime(Context ctx, Chime chime) {

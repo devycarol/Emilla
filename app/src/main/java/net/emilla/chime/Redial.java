@@ -12,7 +12,8 @@ final class Redial implements Chimer {
         ToneGenerator.MAX_VOLUME
     );
 
-    @internal Redial() {}
+    @internal Redial() {
+    }
 
     @Override
     public void chime(Context ctx, Chime chime) {

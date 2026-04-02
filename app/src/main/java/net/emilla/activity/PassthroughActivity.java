@@ -27,7 +27,8 @@ public final class PassthroughActivity extends AppCompatActivity {
         }
     );
 
-    public PassthroughActivity() {}
+    public PassthroughActivity() {
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,4 +46,3 @@ public final class PassthroughActivity extends AppCompatActivity {
         mResultLauncher.launch(intent);
     }
 }
-

@@ -14,7 +14,8 @@ final class DuplicateParams implements Params {
     @StringRes
     private static final int NAME = R.string.command_duplicate;
 
-    @internal DuplicateParams() {}
+    @internal DuplicateParams() {
+    }
 
     @Override
     public String name(Resources res) {

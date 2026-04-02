@@ -4,4 +4,5 @@ import androidx.annotation.Nullable;
 
 import java.time.LocalDateTime;
 
-public record DateTimeRange(LocalDateTime start, @Nullable LocalDateTime end) {}
+public record DateTimeRange(LocalDateTime start, @Nullable LocalDateTime end) {
+}

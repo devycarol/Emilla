@@ -86,7 +86,8 @@ final class Schedule extends CoreDataCommand {
 
         String[] nameAndTime = TRIMMING_PSV.split(title);
         switch (nameAndTime.length) {
-        case 1 -> {}
+        case 1 -> {
+        }
         case 2 -> {
             title = nameAndTime[0];
             DateTimeRange times = Time.parseDateAndTimes(nameAndTime[1], CoreEntry.SCHEDULE.name);

@@ -50,7 +50,8 @@ public final class CommandsFragment extends PreferenceFragmentCompat {
         return false;
     };
 
-    public CommandsFragment() {}
+    public CommandsFragment() {
+    }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {

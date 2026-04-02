@@ -18,7 +18,8 @@ public final class GetChimeSound extends ActivityResultContract<Chime, ChimeSoun
     @Nullable
     private Chime mRaceCondition = null;
 
-    public GetChimeSound() {}
+    public GetChimeSound() {
+    }
 
     @Override
     public Intent createIntent(Context ctx, Chime chime) {

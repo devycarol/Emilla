@@ -188,10 +188,12 @@ public final class AssistActivity extends AppCompatActivity {
     }
 
     private final class CommandWatcher implements TextWatcher {
-        CommandWatcher() {}
+        CommandWatcher() {
+        }
 
         @Override
-        public void beforeTextChanged(CharSequence text, int start, int count, int after) {}
+        public void beforeTextChanged(CharSequence text, int start, int count, int after) {
+        }
 
         @Override
         public void onTextChanged(CharSequence text, int start, int before, int count) {
@@ -227,7 +229,8 @@ public final class AssistActivity extends AppCompatActivity {
         }
 
         @Override
-        public void afterTextChanged(Editable s) {}
+        public void afterTextChanged(Editable s) {
+        }
     }
 
     private void updateDataAvailability(boolean available) {
