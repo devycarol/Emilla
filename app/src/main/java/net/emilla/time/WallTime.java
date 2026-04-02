@@ -8,15 +8,16 @@ import androidx.annotation.Nullable;
 import java.time.LocalTime;
 
 public final class WallTime {
-    // TODO: simplify this class by just storing a minute count and using modular subtraction to do
-    //  meridiem flips and such.
-    private final int mHour;
-    private final int mMinute;
+    private static final int MINUTE_OF_NOON = 12 * 60;
+    private static final int MINUTES_IN_DAY = MINUTE_OF_NOON * 2;
+    private static final int SECOND_OF_NOON = MINUTE_OF_NOON * 60;
+    private static final int SECONDS_IN_DAY = SECOND_OF_NOON * 2;
+
+    private final int mMinuteOfDay;
     private final boolean mMeridiemIsKnown;
 
     private WallTime(int hour, int minute, boolean meridiemIsKnown) {
-        mHour = hour;
-        mMinute = minute;
+        mMinuteOfDay = hour * 60 + minute;
         mMeridiemIsKnown = meridiemIsKnown;
     }
 
@@ -56,74 +57,36 @@ public final class WallTime {
         return new WallTime(hour, minute, true);
     }
 
-    public HourMinute nextOccurrence() {
-        return new HourMinute(
-            shouldFlipMeridiem()
-                ? mHour == 12
-                    ? 0
-                    : mHour + 12
-                : mHour
-            ,
-            mMinute
-        );
+    private static int until(int start, int end, int period) {
+        return Math.floorMod(end - start, period);
     }
 
-    private boolean shouldFlipMeridiem() {
-        if (mMeridiemIsKnown) {
-            return false;
+    public HourMinute nextOccurrence() {
+        int minuteOfNext = mMinuteOfDay;
+        if (!mMeridiemIsKnown) {
+            var now = LocalTime.now();
+            int minuteOfNow = now.getHour() * 60 + now.getMinute();
+            int minutesUntil = until(minuteOfNow, minuteOfNext, MINUTES_IN_DAY);
+            if (minutesUntil == 0 || minutesUntil > MINUTE_OF_NOON) {
+                minuteOfNext = until(MINUTE_OF_NOON, minuteOfNext, MINUTES_IN_DAY);
+            }
         }
 
-        var now = LocalTime.now();
-        int hour = now.getHour();
-        if (hour == 0) {
-            hour = 24;
-            // handle 12am as "24pm"
-        }
-
-        int minuteNow = now.getMinute();
-        if (hour <= 12) {
-            return mHour < hour
-                || mHour == hour && mMinute <= minuteNow;
-            // from 1am to 1pm, we need to flip the meridiem if it's earlier or equal to the current
-            // time.
-        } else {
-            hour -= 12;
-            return mHour > hour
-                || mHour == hour && mMinute > minuteNow;
-            // from 1pm to 1am, we need to flip the meridiem if it's later than the time 12 hours
-            // ago.
-        }
+        return new HourMinute(minuteOfNext / 60, minuteOfNext % 60);
     }
 
     public int secondsToNextOccurrence() {
         var now = LocalTime.now();
-
-        int minute = 0;
-        int second = -now.getSecond();
-        if (second < 0) {
-            second += 60;
-            --minute;
+        int secondOfNow = now.toSecondOfDay();
+        if (now.getNano() != 0) {
+            // ceiling the current second to give some leeway for alarms to fire
+            ++secondOfNow;
         }
 
-        int hour = 0;
-        minute += mMinute - now.getMinute();
-        if (minute < 0) {
-            minute += 60;
-            --hour;
-        }
-
-        hour += mHour - now.getHour();
-        if (hour < 0) {
-            hour += 24;
-        }
-
-        if (!mMeridiemIsKnown) {
-            if (hour > 12 || hour == 12 && (minute > 0 || second > 0)) {
-                hour -= 12;
-            }
-        }
-
-        return hour * 60 * 60 + minute * 60 + second - 1;
-        // we subtract 1 to give an extra second of leeway
+        int period = mMeridiemIsKnown
+            ? SECONDS_IN_DAY
+            : SECOND_OF_NOON
+        ;
+        return until(secondOfNow, mMinuteOfDay * 60, period);
     }
 }
