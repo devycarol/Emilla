@@ -207,36 +207,36 @@ enum EnglishUnitedStates {;
 
     @Nullable
     public static DiceRoller diceRoller(String roll) {
-        var stream = new TextStream(roll);
-        Dice dice = diceFrom(stream, false);
-        if (dice == null) {
-            return null;
-        }
-
-        var roller = new DiceRoller();
-        roller.add(dice);
-
-        while (stream.hasRemaining()) {
-            boolean minus = stream.skip('-');
-            if (minus || stream.skip('+')) {
-                dice = diceFrom(stream, minus);
-                if (dice == null) {
-                    return null;
-                }
-
-                roller.add(dice);
-            } else {
+        return TextStream.extract(roll, stream -> {
+            boolean isNegative = stream.skip('-');
+            Dice dice = diceFrom(stream, isNegative);
+            if (dice == null) {
                 return null;
             }
-        }
 
-        return roller;
+            var roller = new DiceRoller();
+            roller.add(dice);
+
+            while (stream.hasRemaining()) {
+                isNegative = stream.skip('-');
+                if (isNegative || stream.skip('+')) {
+                    dice = diceFrom(stream, isNegative);
+                    if (dice == null) {
+                        return null;
+                    }
+
+                    roller.add(dice);
+                } else {
+                    return null;
+                }
+            }
+
+            return roller;
+        });
     }
 
     @Nullable
-    private static Dice diceFrom(TextStream stream, boolean minus) {
-        TextStream.Bookmark start = stream.position();
-
+    private static Dice diceFrom(TextStream stream, boolean isNegative) {
         Int box = stream.integer();
         if (box == null) {
             return null;
@@ -247,24 +247,20 @@ enum EnglishUnitedStates {;
             return Dice.modifier(rollCount);
         }
 
-        box = stream.integer();
+        box = stream.unsignedInt();
         if (box == null) {
-            stream.reset(start);
             return null;
         }
 
         int faceCount = box.intValue();
-        if (faceCount <= 0) {
-            stream.reset(start);
+        if (faceCount == 0) {
             return null;
         }
 
-        return new Dice(
-            minus
-                ? -rollCount
-                : rollCount
-            ,
-            faceCount
-        );
+        if (isNegative) {
+            rollCount = -rollCount;
+        }
+
+        return new Dice(rollCount, faceCount);
     }
 }

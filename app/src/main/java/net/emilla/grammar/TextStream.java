@@ -14,7 +14,7 @@ public final class TextStream {
     private final char[] mChars;
     private int mPosition = 0;
 
-    public TextStream(String s) {
+    private TextStream(String s) {
         mChars = s.toCharArray();
         boolean __ = passWhitespace();
     }
@@ -24,51 +24,37 @@ public final class TextStream {
         var stream = new TextStream(s);
 
         T value = extractor.apply(stream);
-        if (value != null && stream.isFinished()) {
-            return value;
+        if (stream.hasRemaining()) {
+            return null;
         }
 
-        return null;
+        return value;
     }
 
     @Nullable @SafeVarargs
     public static <T> T extractFirst(String s, Function<TextStream, T>... candidates) {
         var stream = new TextStream(s);
-        int start = stream.mPosition;
         for (Function<TextStream, T> extractor : candidates) {
-            T value = extractor.apply(stream);
-            if (value != null && stream.isFinished()) {
+            T value = stream.extract(extractor);
+            if (value != null) {
                 return value;
             }
-
-            stream.mPosition = start;
         }
 
         return null;
     }
 
-    public final class Bookmark {
-        private final int mPosition;
+    @Nullable
+    private <T> T extract(Function<TextStream, T> extractor) {
+        int start = mPosition;
 
-        private Bookmark(int position) {
-            mPosition = position;
+        T value = extractor.apply(this);
+        if (value == null || hasRemaining()) {
+            mPosition = start;
+            return null;
         }
 
-        private TextStream issuer() {
-            return TextStream.this;
-        }
-    }
-
-    public Bookmark position() {
-        return new Bookmark(mPosition);
-    }
-
-    public void reset(Bookmark bookmark) {
-        if (bookmark.issuer() != this) {
-            throw new IllegalArgumentException("The bookmark isn't from this text stream");
-        }
-
-        mPosition = bookmark.mPosition;
+        return value;
     }
 
     private boolean different(@Normalized char ch) {
@@ -132,16 +118,16 @@ public final class TextStream {
         if (hasRemaining() && Chars.isSign(mChars[mPosition])) {
             ++mPosition;
         }
-        return unsignedInt(start);
+        return finishInt(start);
     }
 
     @Nullable
     public Int unsignedInt() {
-        return unsignedInt(mPosition);
+        return finishInt(mPosition);
     }
 
     @Nullable
-    private Int unsignedInt(int start) {
+    private Int finishInt(int start) {
         while (hasRemaining() && Character.isDigit(mChars[mPosition])) {
             ++mPosition;
         }
