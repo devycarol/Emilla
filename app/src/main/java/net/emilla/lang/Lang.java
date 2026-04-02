@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import net.emilla.R;
+import net.emilla.annotation.Normalized;
 import net.emilla.lang.grammar.ListPhrase;
 import net.emilla.lang.grammar.impl.ListPhraseEN_US;
 import net.emilla.measure.CelsiusConversion;
@@ -23,11 +24,13 @@ import java.util.function.IntFunction;
 public enum Lang {
     EN_US,
 ;
+    @Normalized
     public static String normalize(String s) {
         return s.toLowerCase();
         // Todo lang: strip diacritics and handle the fact that case is really weird
     }
 
+    @Normalized
     public static int normalize(int codePoint) {
         return Character.toLowerCase(codePoint);
         // Todo lang: strip diacritics and handle the fact that case is really weird

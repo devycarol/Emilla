@@ -2,6 +2,8 @@ package net.emilla.grammar;
 
 import androidx.annotation.Nullable;
 
+import net.emilla.annotation.Normalized;
+import net.emilla.lang.Lang;
 import net.emilla.util.Chars;
 import net.emilla.util.DoubleFloat;
 import net.emilla.util.Int;
@@ -69,8 +71,12 @@ public final class TextStream {
         mPosition = bookmark.mPosition;
     }
 
-    public boolean skip(char ch) {
-        if (isFinished() || ch != mChars[mPosition]) {
+    private boolean different(@Normalized char ch) {
+        return ch != Lang.normalize(mChars[mPosition]);
+    }
+
+    public boolean skip(@Normalized char ch) {
+        if (isFinished() || different(ch)) {
             return false;
         }
 
@@ -80,10 +86,10 @@ public final class TextStream {
         return true;
     }
 
-    private boolean skip(String s) {
+    private boolean skip(@Normalized String s) {
         int start = mPosition;
         for (char ch : s.toCharArray()) {
-            if (isFinished() || ch != mChars[mPosition]) {
+            if (isFinished() || different(ch)) {
                 mPosition = start;
                 return false;
             }
@@ -95,7 +101,7 @@ public final class TextStream {
         return true;
     }
 
-    public boolean skipFirst(String... strings) {
+    public boolean skipFirst(@Normalized String... strings) {
         for (String s : strings) {
             if (skip(s)) {
                 return true;
