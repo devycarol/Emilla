@@ -1,6 +1,7 @@
 package net.emilla.command.core;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.inputmethod.EditorInfo;
 
 import net.emilla.R;
@@ -8,7 +9,11 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.lang.Lang;
 import net.emilla.math.Maths;
+import net.emilla.measure.ConversionRequest;
 import net.emilla.measure.FahrenheitConversion;
+import net.emilla.measure.MeasureUnit;
+
+import java.math.BigDecimal;
 
 final class Fahrenheit extends CoreCommand {
     @internal Fahrenheit(Context ctx) {
@@ -24,7 +29,7 @@ final class Fahrenheit extends CoreCommand {
     protected void run(AssistActivity act, String temperature) {
         FahrenheitConversion fahrenheit = Lang.toFahrenheit(temperature);
         if (fahrenheit == null) {
-            fail(act, R.string.error_bad_temperature);
+            fail(act, R.string.error_invalid_conversion);
             return;
         }
 
@@ -38,5 +43,33 @@ final class Fahrenheit extends CoreCommand {
         );
         String fahrenheitDegrees = Maths.prettyNumber(fahrenheit.convert());
         giveText(act, res.getString(R.string.fahrenheit_conversion, oldDegrees, unit, fahrenheitDegrees));
+
+        if (false) {
+            ConversionRequest conversion = Lang.unitConversion(temperature);
+            if (conversion == null) {
+                fail(act, R.string.error_invalid_conversion);
+                return;
+            }
+
+            MeasureUnit from = conversion.from();
+            BigDecimal value = conversion.value();
+            MeasureUnit to = conversion.to();
+            BigDecimal convert = from.convert(value, to);
+            if (convert == null) {
+                fail(act, R.string.error_invalid_conversion);
+                return;
+            }
+
+            String message = res.getString(
+                R.string.unit_conversion,
+                measurement(res, from, value),
+                measurement(res, to, convert)
+            );
+            giveText(act, message);
+        }
+    }
+
+    private static String measurement(Resources res, MeasureUnit unit, BigDecimal value) {
+        return res.getQuantityString(unit.plural(), value.intValue(), value);
     }
 }

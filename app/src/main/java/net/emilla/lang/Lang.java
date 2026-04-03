@@ -11,6 +11,7 @@ import net.emilla.annotation.Normalized;
 import net.emilla.lang.grammar.ListPhrase;
 import net.emilla.lang.grammar.impl.ListPhraseEN_US;
 import net.emilla.measure.CelsiusConversion;
+import net.emilla.measure.ConversionRequest;
 import net.emilla.measure.FahrenheitConversion;
 import net.emilla.random.DiceRoller;
 import net.emilla.time.WallTime;
@@ -110,6 +111,13 @@ public enum Lang {
     public static Int durationSeconds(Context ctx, String duration) {
         return switch (EN_US) {
             case EN_US -> EnglishUnitedStates.durationSeconds(ctx, duration);
+        };
+    }
+
+    @Nullable
+    public static ConversionRequest unitConversion(String units) {
+        return switch (EN_US) {
+            case EN_US -> EnglishUnitedStates.unitConversion(units);
         };
     }
 

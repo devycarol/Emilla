@@ -24,7 +24,7 @@ final class Celsius extends CoreCommand {
     protected void run(AssistActivity act, String temperature) {
         CelsiusConversion celsius = Lang.toCelsius(temperature);
         if (celsius == null) {
-            fail(act, R.string.error_bad_temperature);
+            fail(act, R.string.error_invalid_conversion);
             return;
         }
 

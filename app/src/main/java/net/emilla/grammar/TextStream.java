@@ -8,6 +8,7 @@ import net.emilla.util.Chars;
 import net.emilla.util.DoubleFloat;
 import net.emilla.util.Int;
 
+import java.math.BigDecimal;
 import java.util.function.Function;
 
 public final class TextStream {
@@ -169,6 +170,30 @@ public final class TextStream {
             return new DoubleFloat(
                 Double.parseDouble(new String(mChars, start, mPosition - start))
             );
+        } catch (NumberFormatException e) {
+            mPosition = start;
+            return null;
+        }
+    }
+
+    @Nullable
+    public BigDecimal bigDecimal() {
+        int start = mPosition;
+        passSign();
+        return finishBigDecimal(start);
+    }
+
+    @Nullable
+    private BigDecimal finishBigDecimal(int start) {
+        while (hasRemaining() && Chars.isNumberChar(mChars[mPosition])) {
+            ++mPosition;
+        }
+
+        var s = new String(mChars, start, mPosition - start);
+        boolean __ = passWhitespace();
+
+        try {
+            return new BigDecimal(s);
         } catch (NumberFormatException e) {
             mPosition = start;
             return null;

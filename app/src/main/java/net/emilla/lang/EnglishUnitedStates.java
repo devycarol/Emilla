@@ -6,7 +6,9 @@ import androidx.annotation.Nullable;
 
 import net.emilla.grammar.TextStream;
 import net.emilla.measure.CelsiusConversion;
+import net.emilla.measure.ConversionRequest;
 import net.emilla.measure.FahrenheitConversion;
+import net.emilla.measure.MeasureUnit;
 import net.emilla.random.Dice;
 import net.emilla.random.DiceRoller;
 import net.emilla.time.ClockUnit;
@@ -15,6 +17,7 @@ import net.emilla.time.WallTime;
 import net.emilla.util.DoubleFloat;
 import net.emilla.util.Int;
 
+import java.math.BigDecimal;
 import java.util.EnumSet;
 
 enum EnglishUnitedStates {;
@@ -205,6 +208,38 @@ enum EnglishUnitedStates {;
     private static ClockUnit defaultUnit() {
         // todo config
         return ClockUnit.MINUTE;
+    }
+
+    @Nullable
+    public static ConversionRequest unitConversion(String units) {
+        return TextStream.extract(units, stream -> {
+            BigDecimal value = stream.bigDecimal();
+            if (value == null) {
+                return null;
+            }
+
+            MeasureUnit from = measureUnit(stream);
+            if (from == null || !stream.isAtWordStart()) {
+                return null;
+            }
+
+            if (!(stream.skip("to") && stream.isAtWordStart())) {
+                return null;
+            }
+
+            MeasureUnit to = measureUnit(stream);
+            if (to == null) {
+                return null;
+            }
+
+            return new ConversionRequest(from, value, to);
+        });
+    }
+
+    @Nullable
+    private static MeasureUnit measureUnit(TextStream stream) {
+        // TODO
+        return null;
     }
 
     @Nullable
