@@ -756,4 +756,235 @@
     <string name="toast_snippet_deleted">Deleted \"%s\".</string>
 
     <string name="tag_toast_long">/long</string>
+
+    <plurals name="picometer">
+        <item quantity="one">1 picometer</item>
+        <item quantity="other">%s picometers</item>
+    </plurals>
+    <plurals name="nanometer">
+        <item quantity="one">1 nanometer</item>
+        <item quantity="other">%s nanometers</item>
+    </plurals>
+    <plurals name="micrometer">
+        <item quantity="one">1 micrometer</item>
+        <item quantity="other">%s micrometers</item>
+    </plurals>
+    <plurals name="millimeter">
+        <item quantity="one">1 millimeter</item>
+        <item quantity="other">%s millimeters</item>
+    </plurals>
+    <plurals name="centimeter">
+        <item quantity="one">1 centimeter</item>
+        <item quantity="other">%s centimeters</item>
+    </plurals>
+    <plurals name="decimeter">
+        <item quantity="one">1 decimeter</item>
+        <item quantity="other">%s decimeters</item>
+    </plurals>
+    <plurals name="meter">
+        <item quantity="one">1 meter</item>
+        <item quantity="other">%s meters</item>
+    </plurals>
+    <plurals name="decameter">
+        <item quantity="one">1 decameter</item>
+        <item quantity="other">%s decameters</item>
+    </plurals>
+    <plurals name="hectometer">
+        <item quantity="one">1 hectometer</item>
+        <item quantity="other">%s hectometers</item>
+    </plurals>
+    <plurals name="kilometer">
+        <item quantity="one">1 kilometer</item>
+        <item quantity="other">%s kilometers</item>
+    </plurals>
+    <plurals name="megameter">
+        <item quantity="one">1 megameter</item>
+        <item quantity="other">%s megameters</item>
+    </plurals>
+    <plurals name="gigameter">
+        <item quantity="one">1 gigameter</item>
+        <item quantity="other">%s gigameters</item>
+    </plurals>
+    <plurals name="terameter">
+        <item quantity="one">1 terameter</item>
+        <item quantity="other">%s terameters</item>
+    </plurals>
+
+    <plurals name="picoliter">
+        <item quantity="one">1 picoliter</item>
+        <item quantity="other">%s picoliters</item>
+    </plurals>
+    <plurals name="nanoliter">
+        <item quantity="one">1 nanoliter</item>
+        <item quantity="other">%s nanoliters</item>
+    </plurals>
+    <plurals name="microliter">
+        <item quantity="one">1 microliter</item>
+        <item quantity="other">%s microliters</item>
+    </plurals>
+    <plurals name="milliliter">
+        <item quantity="one">1 milliliter</item>
+        <item quantity="other">%s milliliters</item>
+    </plurals>
+    <plurals name="centiliter">
+        <item quantity="one">1 centiliter</item>
+        <item quantity="other">%s centiliters</item>
+    </plurals>
+    <plurals name="deciliter">
+        <item quantity="one">1 deciliter</item>
+        <item quantity="other">%s deciliters</item>
+    </plurals>
+    <plurals name="liter">
+        <item quantity="one">1 liter</item>
+        <item quantity="other">%s liters</item>
+    </plurals>
+    <plurals name="decaliter">
+        <item quantity="one">1 decaliter</item>
+        <item quantity="other">%s decaliters</item>
+    </plurals>
+    <plurals name="hectoliter">
+        <item quantity="one">1 hectoliter</item>
+        <item quantity="other">%s hectoliters</item>
+    </plurals>
+    <plurals name="kiloliter">
+        <item quantity="one">1 kiloliter</item>
+        <item quantity="other">%s kiloliters</item>
+    </plurals>
+    <plurals name="megaliter">
+        <item quantity="one">1 megaliter</item>
+        <item quantity="other">%s megaliters</item>
+    </plurals>
+    <plurals name="gigaliter">
+        <item quantity="one">1 gigaliter</item>
+        <item quantity="other">%s gigaliters</item>
+    </plurals>
+    <plurals name="teraliter">
+        <item quantity="one">1 teraliter</item>
+        <item quantity="other">%s teraliters</item>
+    </plurals>
+
+    <plurals name="picogram">
+        <item quantity="one">1 picogram</item>
+        <item quantity="other">%s picograms</item>
+    </plurals>
+    <plurals name="nanogram">
+        <item quantity="one">1 nanogram</item>
+        <item quantity="other">%s nanograms</item>
+    </plurals>
+    <plurals name="microgram">
+        <item quantity="one">1 microgram</item>
+        <item quantity="other">%s micrograms</item>
+    </plurals>
+    <plurals name="milligram">
+        <item quantity="one">1 milligram</item>
+        <item quantity="other">%s milligrams</item>
+    </plurals>
+    <plurals name="centigram">
+        <item quantity="one">1 centigram</item>
+        <item quantity="other">%s centigrams</item>
+    </plurals>
+    <plurals name="decigram">
+        <item quantity="one">1 decigram</item>
+        <item quantity="other">%s decigrams</item>
+    </plurals>
+    <plurals name="gram">
+        <item quantity="one">1 gram</item>
+        <item quantity="other">%s grams</item>
+    </plurals>
+    <plurals name="decagram">
+        <item quantity="one">1 decagram</item>
+        <item quantity="other">%s decagrams</item>
+    </plurals>
+    <plurals name="hectogram">
+        <item quantity="one">1 hectogram</item>
+        <item quantity="other">%s hectograms</item>
+    </plurals>
+    <plurals name="kilogram">
+        <item quantity="one">1 kilogram</item>
+        <item quantity="other">%s kilograms</item>
+    </plurals>
+    <plurals name="megagram">
+        <item quantity="one">1 megagram</item>
+        <item quantity="other">%s megagrams</item>
+    </plurals>
+    <plurals name="gigagram">
+        <item quantity="one">1 gigagram</item>
+        <item quantity="other">%s gigagrams</item>
+    </plurals>
+    <plurals name="teragram">
+        <item quantity="one">1 teragram</item>
+        <item quantity="other">%s teragrams</item>
+    </plurals>
+
+    <plurals name="inch">
+        <item quantity="one">1 inch</item>
+        <item quantity="other">%s inches</item>
+    </plurals>
+    <plurals name="foot">
+        <item quantity="one">1 foot</item>
+        <item quantity="other">%s feet</item>
+    </plurals>
+    <plurals name="yard">
+        <item quantity="one">1 yard</item>
+        <item quantity="other">%s yards</item>
+    </plurals>
+    <plurals name="mile">
+        <item quantity="one">1 mile</item>
+        <item quantity="other">%s miles</item>
+    </plurals>
+
+    <plurals name="teaspoon">
+        <item quantity="one">1 teaspoon</item>
+        <item quantity="other">%s teaspoons</item>
+    </plurals>
+    <plurals name="tablespoon">
+        <item quantity="one">1 tablespoon</item>
+        <item quantity="other">%s tablepoons</item>
+    </plurals>
+    <plurals name="fluid_ounce">
+        <item quantity="one">1 fluid ounce</item>
+        <item quantity="other">%s fluid ounces</item>
+    </plurals>
+    <plurals name="cup">
+        <item quantity="one">1 cup</item>
+        <item quantity="other">%s cups</item>
+    </plurals>
+    <plurals name="pint">
+        <item quantity="one">1 pint</item>
+        <item quantity="other">%s pints</item>
+    </plurals>
+    <plurals name="quart">
+        <item quantity="one">1 quart</item>
+        <item quantity="other">%s quarts</item>
+    </plurals>
+    <plurals name="gallon">
+        <item quantity="one">1 gallon</item>
+        <item quantity="other">%s gallons</item>
+    </plurals>
+
+    <plurals name="ounce">
+        <item quantity="one">1 ounce</item>
+        <item quantity="other">%s ounces</item>
+    </plurals>
+    <plurals name="pound">
+        <item quantity="one">1 pound</item>
+        <item quantity="other">%s pounds</item>
+    </plurals>
+    <plurals name="ton">
+        <item quantity="one">1 ton</item>
+        <item quantity="other">%s tons</item>
+    </plurals>
+
+    <plurals name="fahrenheit">
+        <item quantity="one">1 degree Fahrenheit</item>
+        <item quantity="other">%s degrees Fahrenheit</item>
+    </plurals>
+    <plurals name="celsius">
+        <item quantity="one">1 degree Celsius</item>
+        <item quantity="other">%s degrees Celsius</item>
+    </plurals>
+    <plurals name="kelvin">
+        <item quantity="one">1 Kelvin</item>
+        <item quantity="other">%s Kelvin</item>
+    </plurals>
 </resources>
