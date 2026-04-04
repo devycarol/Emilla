@@ -1,7 +1,7 @@
 package net.emilla.math;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
+import java.math.MathContext;
 
 enum ArithmeticOperator implements CalcOperator<BigDecimal>, ArithmeticToken {
     ADD(1) {
@@ -25,7 +25,7 @@ enum ArithmeticOperator implements CalcOperator<BigDecimal>, ArithmeticToken {
     DIVIDE(2) {
         @Override
         public BigDecimal apply(BigDecimal a, BigDecimal b) {
-            return a.divide(b, RoundingMode.HALF_EVEN);
+            return a.divide(b, MathContext.DECIMAL128);
         }
     },
     STUPID_POW(3) {

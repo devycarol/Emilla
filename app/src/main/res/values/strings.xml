@@ -383,10 +383,8 @@
     </string>
     <!-- "Compute math equations" -->
     <string name="manual_calculate">
-        The text you enter will be evaluated as a math expression.\n
-        \n
-        In the future, more functions will be supported.
-    </string><!--todo-->
+        The text you enter will be evaluated as a math expression.
+    </string>
     <!-- "Convert temperature to Celsius" -->
     <string name="manual_celsius">
         To convert to Celsius, enter a Fahrenheit temperature as a number. To convert from Kelvin,
