@@ -3,8 +3,8 @@ package net.emilla.measure;
 import androidx.annotation.Nullable;
 import androidx.annotation.PluralsRes;
 
-import net.emilla.grammar.TextStream;
 import net.emilla.lang.Lang;
+import net.emilla.lang.TextStream;
 
 import java.math.BigDecimal;
 

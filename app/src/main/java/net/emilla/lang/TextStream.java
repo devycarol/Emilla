@@ -1,9 +1,8 @@
-package net.emilla.grammar;
+package net.emilla.lang;
 
 import androidx.annotation.Nullable;
 
 import net.emilla.annotation.Normalized;
-import net.emilla.lang.Lang;
 import net.emilla.util.Chars;
 import net.emilla.util.DoubleFloat;
 import net.emilla.util.Int;
@@ -96,6 +95,11 @@ public final class TextStream {
         }
 
         return false;
+    }
+
+    @Nullable
+    public String token() {
+        return token(ch -> !Character.isWhitespace(ch));
     }
 
     @Nullable

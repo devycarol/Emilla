@@ -1,6 +1,4 @@
-package net.emilla.lang.grammar.impl;
-
-import net.emilla.lang.grammar.ListPhrase;
+package net.emilla.lang;
 
 import java.util.regex.Pattern;
 

@@ -2,8 +2,8 @@ package net.emilla.measure;
 
 import androidx.annotation.Nullable;
 
-import net.emilla.grammar.TextStream;
 import net.emilla.lang.Lang;
+import net.emilla.lang.TextStream;
 
 enum EnglishUS {;
     @Nullable
@@ -24,7 +24,7 @@ enum EnglishUS {;
             return null;
         }
 
-        String word = stream.token(ch -> !Character.isWhitespace(ch));
+        String word = stream.token();
         if (word == null) {
             return null;
         }

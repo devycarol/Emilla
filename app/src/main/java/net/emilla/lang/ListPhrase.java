@@ -1,4 +1,4 @@
-package net.emilla.lang.grammar;
+package net.emilla.lang;
 
 @FunctionalInterface
 public interface ListPhrase {

@@ -8,8 +8,6 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.annotation.Normalized;
-import net.emilla.lang.grammar.ListPhrase;
-import net.emilla.lang.grammar.impl.ListPhraseEN_US;
 import net.emilla.measure.ConversionRequest;
 import net.emilla.random.DiceRoller;
 import net.emilla.time.WallTime;
@@ -101,28 +99,28 @@ public enum Lang {
     @Nullable
     public static WallTime wallTime(Context ctx, String time) {
         return switch (EN_US) {
-            case EN_US -> EnglishUnitedStates.wallTime(ctx, time);
+            case EN_US -> EnglishUS.wallTime(ctx, time);
         };
     }
 
     @Nullable
     public static Int durationSeconds(Context ctx, String duration) {
         return switch (EN_US) {
-            case EN_US -> EnglishUnitedStates.durationSeconds(ctx, duration);
+            case EN_US -> EnglishUS.durationSeconds(ctx, duration);
         };
     }
 
     @Nullable
     public static ConversionRequest unitConversion(String units) {
         return switch (EN_US) {
-            case EN_US -> EnglishUnitedStates.unitConversion(units);
+            case EN_US -> EnglishUS.unitConversion(units);
         };
     }
 
     @Nullable
     public static DiceRoller diceRoller(String roll) {
         return switch (EN_US) {
-            case EN_US -> EnglishUnitedStates.diceRoller(roll);
+            case EN_US -> EnglishUS.diceRoller(roll);
         };
     }
 }

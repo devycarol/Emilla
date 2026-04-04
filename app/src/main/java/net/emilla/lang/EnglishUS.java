@@ -4,7 +4,6 @@ import android.content.Context;
 
 import androidx.annotation.Nullable;
 
-import net.emilla.grammar.TextStream;
 import net.emilla.measure.ConversionRequest;
 import net.emilla.measure.MeasureUnit;
 import net.emilla.random.Dice;
@@ -18,7 +17,7 @@ import net.emilla.util.Int;
 import java.math.BigDecimal;
 import java.util.EnumSet;
 
-enum EnglishUnitedStates {;
+enum EnglishUS {;
     @Nullable
     public static WallTime wallTime(Context ctx, String s) {
         return TextStream.extract(s, stream -> wallTime(ctx, stream));
@@ -70,7 +69,7 @@ enum EnglishUnitedStates {;
         }}
 
         Meridiem meridiem;
-        String meridiemChars = stream.token(EnglishUnitedStates::isMeridiemCharacter);
+        String meridiemChars = stream.token(EnglishUS::isMeridiemCharacter);
         if (meridiemChars != null) {
             switch (meridiemChars.toUpperCase()) {
             case "AM", "A" -> meridiem = Meridiem.AM;
@@ -101,8 +100,8 @@ enum EnglishUnitedStates {;
         return TextStream.extractFirst(
             s,
             stream -> untilDuration(ctx, stream),
-            EnglishUnitedStates::unitDuration,
-            EnglishUnitedStates::clockDuration
+            EnglishUS::unitDuration,
+            EnglishUS::clockDuration
         );
     }
 

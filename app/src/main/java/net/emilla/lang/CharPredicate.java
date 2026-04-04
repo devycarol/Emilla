@@ -1,4 +1,4 @@
-package net.emilla.grammar;
+package net.emilla.lang;
 
 @FunctionalInterface
 public interface CharPredicate {

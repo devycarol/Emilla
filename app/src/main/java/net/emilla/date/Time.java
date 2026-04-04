@@ -1,4 +1,4 @@
-package net.emilla.lang.date;
+package net.emilla.date;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -16,7 +16,6 @@ import java.time.Month;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-// Todo: this class is utterly unreadable
 public enum Time {; // TODO LAAAAAAAAAAAAAAAAAAAAAAAAANG TODO LANG
     private static final String JAN = "jan(uary)?";
     private static final String FEB = "feb(ruary)?";

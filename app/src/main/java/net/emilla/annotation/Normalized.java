@@ -15,7 +15,6 @@ import java.lang.annotation.Target;
     ElementType.LOCAL_VARIABLE,
     ElementType.TYPE_PARAMETER,
     ElementType.TYPE_USE,
-    ElementType.MODULE,
     ElementType.RECORD_COMPONENT,
 })
 public @interface Normalized {
