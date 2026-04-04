@@ -674,7 +674,6 @@
     <string name="error_torch_failed">Failed to toggle the flashlight.</string>
     <string name="error_invalid_setting_value">Invalid setting value.</string>
     <string name="error_unfinished_feature">Unfinished feature!</string>
-    <string name="error_unfinished_version">Sorry! This command doesn\'t support your Android version yet.</string>
     <string name="error_unfinished_categorical_app_search">Sorry! I don\'t have categorical app search yet.</string>
     <string name="error_unfinished_copy">Unfinished feature! The idea is to copy a file when text isn\'t provided.</string>
     <string name="error_unknown">Unknown error</string>

@@ -6,14 +6,9 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.exception.EmillaException;
-import net.emilla.run.MessageFailure;
 import net.emilla.util.TorchManager;
 
 public final class Flashlight implements LabeledQuickAction {
-    @StringRes
-    private static final int NAME = R.string.action_flashlight;
-
     private final AssistActivity mActivity;
 
     public Flashlight(AssistActivity act) {
@@ -32,7 +27,7 @@ public final class Flashlight implements LabeledQuickAction {
 
     @Override @StringRes
     public int label() {
-        return NAME;
+        return R.string.action_flashlight;
     }
 
     @Override @StringRes
@@ -42,10 +37,8 @@ public final class Flashlight implements LabeledQuickAction {
 
     @Override
     public void perform() {
-        try {
-            TorchManager.toggle(mActivity, NAME);
-        } catch (EmillaException e) {
-            mActivity.fail(new MessageFailure(mActivity, e));
+        if (!TorchManager.toggle(mActivity)) {
+            mActivity.fail(R.string.action_flashlight, R.string.error_torch_failed);
         }
     }
 }

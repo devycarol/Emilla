@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.view.inputmethod.EditorInfo;
 
+import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.util.Features;
@@ -20,7 +21,9 @@ final class Torch extends CoreCommand {
 
     @Override
     protected void run(AssistActivity act) {
-        TorchManager.toggle(act, CoreEntry.TORCH.name);
+        if (!TorchManager.toggle(act)) {
+            fail(act, R.string.error_torch_failed);
+        }
     }
 
     @Override
