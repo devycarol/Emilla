@@ -2,7 +2,6 @@ package net.emilla.sort;
 
 import net.emilla.annotation.internal;
 import net.emilla.struct.IndexedStruct;
-import net.emilla.util.Exceptions;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
@@ -24,13 +23,11 @@ public final class ArrayWindow<E> implements IndexedStruct<E> {
 
     @Override
     public E get(int index) {
-        if (index < 0) {
-            throw Exceptions.iob(index);
-        }
-
         index += mStart;
-        if (index >= mEnd) {
-            throw Exceptions.iob(index);
+        if (index < mStart || mEnd <= index) {
+            throw new IndexOutOfBoundsException(
+                "Index " + (index - mStart) + " out of range for size " + size()
+            );
         }
 
         return mArray[index];
