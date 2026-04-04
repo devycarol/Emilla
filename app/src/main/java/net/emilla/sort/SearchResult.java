@@ -83,7 +83,6 @@ public final class SearchResult<E extends SearchItem> implements IndexedStruct<E
         }
 
         index -= primaryCount;
-
         if (index < mSecondaryItems.length) {
             return mSecondaryItems[index];
         }
