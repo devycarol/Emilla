@@ -28,7 +28,7 @@ final class Time extends CoreCommand {
 
     @Override
     protected void run(AssistActivity act, String location) {
-        throw badCommand(R.string.error_unfinished_feature);
+        fail(act, R.string.error_unfinished_feature);
         // TODO: locations, time-elapse
     }
 }

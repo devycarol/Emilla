@@ -7,7 +7,6 @@ import net.emilla.R;
 import net.emilla.action.box.NotesFragment;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
-import net.emilla.exception.EmillaException;
 import net.emilla.file.Files;
 import net.emilla.file.Folder;
 import net.emilla.file.TreeFile;
@@ -51,18 +50,17 @@ final class Note extends CoreDataCommand {
         Folder folder = mNotesFragment.folder();
         TreeFile existingFile = mNotesFragment.fileNamed(filename);
         if (folder != null && existingFile != null) {
-            appendToFile(act, existingFile.uri(folder), text);
+            Uri file = existingFile.uri(folder);
+            if (Files.appendLine(act.getContentResolver(), file, text)){
+                act.give(a -> {});
+            } else {
+                fail(act, R.string.error_cant_use_file);
+            }
+
             return;
         }
 
         act.offerSaveFile(filename, folder, text);
     }
 
-    private static void appendToFile(AssistActivity act, Uri file, String text) {
-        if (Files.appendLine(act.getContentResolver(), file, text)){
-            act.give(a -> {});
-        } else {
-            throw new EmillaException(R.string.error_cant_use_file);
-        }
-    }
 }

@@ -8,7 +8,6 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.command.EmillaCommand;
 import net.emilla.command.app.AppEntry;
-import net.emilla.exception.EmillaException;
 import net.emilla.run.AppSuccess;
 import net.emilla.util.Apps;
 import net.emilla.util.Dialogs;
@@ -25,7 +24,7 @@ enum CategoryCommand {;
         AppEntry[] apps = Apps.filter(act.getPackageManager(), filter);
 
         switch (apps.length) {
-        case 0 -> throw new EmillaException(R.string.error, R.string.error_no_app);
+        case 0 -> act.fail(R.string.error, R.string.error_no_app);
         case 1 -> Apps.succeed(act, Intents.launchApp(apps[0]));
         default -> EmillaCommand.offerDialog(act, appLaunches(act, apps));
         // todo: allow to select a default app, ensuring that the preference is cleared if ever the

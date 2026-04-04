@@ -20,7 +20,7 @@ final class Copy extends CoreCommand {
 
     @Override
     protected void run(AssistActivity act) {
-        throw badCommand(R.string.error_unfinished_copy);
+        fail(act, R.string.error_unfinished_copy);
         // Todo
     }
 

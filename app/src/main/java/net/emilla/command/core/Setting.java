@@ -10,7 +10,6 @@ import android.view.inputmethod.EditorInfo;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
-import net.emilla.exception.EmillaException;
 import net.emilla.setting.SettingMap;
 import net.emilla.util.Apps;
 
@@ -27,8 +26,9 @@ final class Setting extends CoreCommand {
     @Override
     protected void run(AssistActivity act, String directive) {
         if (true) {
-            throw new EmillaException(R.string.error_unfinished_feature);
+            fail(act, R.string.error_unfinished_feature);
             // Todo
+            return;
         }
 
         var res = act.getResources();
@@ -39,7 +39,7 @@ final class Setting extends CoreCommand {
         case SUCCESS -> act.give(a -> {});
         // todo: visually indicate the setting change
         case WAITING -> act.chime(PEND);
-        case FAILURE -> throw new EmillaException(R.string.error_invalid_setting_value);
+        case FAILURE -> fail(act, R.string.error_invalid_setting_value);
         }
     }
 }

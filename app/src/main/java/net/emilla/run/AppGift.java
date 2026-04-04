@@ -4,7 +4,6 @@ import android.content.Intent;
 
 import net.emilla.R;
 import net.emilla.activity.PassthroughActivity;
-import net.emilla.exception.EmillaException;
 import net.emilla.util.Intents;
 
 public enum AppGift {;
@@ -19,7 +18,7 @@ public enum AppGift {;
 
                 );
             } else {
-                throw new EmillaException(R.string.error, R.string.error_no_app);
+                act.fail(R.string.error, R.string.error_no_app);
             }
         };
     }

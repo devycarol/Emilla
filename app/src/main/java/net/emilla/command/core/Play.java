@@ -24,6 +24,6 @@ final class Play extends CoreCommand {
 
     @Override
     protected void run(AssistActivity act, String media) {
-        throw badCommand(R.string.error_unfinished_feature);
+        fail(act, R.string.error_unfinished_feature);
     }
 }

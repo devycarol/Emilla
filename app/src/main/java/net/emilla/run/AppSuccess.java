@@ -7,7 +7,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 
 import net.emilla.R;
-import net.emilla.exception.EmillaException;
 
 public enum AppSuccess {;
     public static CommandRun instance(Intent intent) {
@@ -19,7 +18,7 @@ public enum AppSuccess {;
             } else try {
                 succeed(act, intent);
             } catch (ActivityNotFoundException e) {
-                throw new EmillaException(R.string.error, R.string.error_no_app);
+                act.fail(R.string.error, R.string.error_no_app);
             }
         };
     }

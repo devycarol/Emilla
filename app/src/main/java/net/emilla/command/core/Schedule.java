@@ -19,6 +19,7 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.date.DateTimeRange;
 import net.emilla.date.Time;
+import net.emilla.exception.EmillaException;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
 import net.emilla.util.MimeTypes;
@@ -99,7 +100,7 @@ final class Schedule extends CoreDataCommand {
                 intent.putExtra(EXTRA_EVENT_END_TIME, epochMilliOf(end));
             }
         }
-        default -> throw badCommand(R.string.error_invalid_date);
+        default -> throw new EmillaException(CoreEntry.SCHEDULE.name, R.string.error_invalid_date);
         }
 
         if (!title.isEmpty()) {

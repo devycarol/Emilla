@@ -11,7 +11,6 @@ import net.emilla.action.box.ListFileFragment;
 import net.emilla.action.box.TriResult;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
-import net.emilla.exception.EmillaException;
 import net.emilla.file.Files;
 import net.emilla.util.Apps;
 import net.emilla.util.MimeTypes;
@@ -55,11 +54,11 @@ final class Todo extends CoreCommand {
         actionFeedback(act, mTodoFragment.addTask(cr, task));
     }
 
-    private static void actionFeedback(AssistActivity act, TriResult result) {
+    private void actionFeedback(AssistActivity act, TriResult result) {
         switch (result) {
         case SUCCESS -> act.selectInstruction();
         case WAITING -> act.chime(PEND);
-        case FAILURE -> throw new EmillaException(R.string.error_cant_use_file);
+        case FAILURE -> fail(act, R.string.error_cant_use_file);
         }
     }
 }
