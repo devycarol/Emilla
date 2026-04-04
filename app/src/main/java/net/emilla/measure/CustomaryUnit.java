@@ -9,7 +9,7 @@ import net.emilla.exception.UnreachableError;
 import java.math.BigDecimal;
 import java.math.MathContext;
 
-public enum CustomaryUnit implements MeasureUnit {
+enum CustomaryUnit implements MeasureUnit {
     INCH(Customary.INCHES_IN_INCH, Measurement.LENGTH, R.plurals.inch),
     FOOT(Customary.INCHES_IN_FOOT, Measurement.LENGTH, R.plurals.foot),
     YARD(Customary.INCHES_IN_YARD, Measurement.LENGTH, R.plurals.yard),

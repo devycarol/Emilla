@@ -8,9 +8,7 @@ import net.emilla.exception.UnreachableError;
 import java.math.BigDecimal;
 import java.math.MathContext;
 
-public record MetricUnit(@Override Measurement measurement, MetricScale scale)
-    implements MeasureUnit
-{
+record MetricUnit(@Override Measurement measurement, MetricScale scale) implements MeasureUnit {
     @Override @Nullable
     public BigDecimal convert(BigDecimal value, MeasureUnit toUnit) {
         if (toUnit.measurement() != measurement) {

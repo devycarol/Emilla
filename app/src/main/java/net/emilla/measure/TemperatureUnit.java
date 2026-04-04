@@ -8,7 +8,7 @@ import net.emilla.R;
 import java.math.BigDecimal;
 import java.math.MathContext;
 
-public enum TemperatureUnit implements MeasureUnit {
+enum TemperatureUnit implements MeasureUnit {
     FAHRENHEIT(R.plurals.fahrenheit) {
         @Override
         BigDecimal toFahrenheit(BigDecimal value) {
