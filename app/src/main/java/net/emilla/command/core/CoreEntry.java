@@ -27,7 +27,7 @@ public enum CoreEntry implements Params {
     WEB(Web::new, R.string.command_web, R.array.aliases_web, R.string.instruction_web, R.drawable.ic_web, R.string.summary_web, R.string.manual_web) {
         @Override
         public boolean isPossible(PackageManager pm) {
-            return Web.possible(pm);
+            return Web.possible();
         }
     },
     LAUNCH(Launch::new, R.string.command_launch, R.array.aliases_launch, R.string.instruction_choose_app, R.drawable.ic_launch, R.string.summary_launch, R.string.manual_launch),

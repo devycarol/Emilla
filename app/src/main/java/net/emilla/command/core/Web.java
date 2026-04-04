@@ -3,7 +3,6 @@ package net.emilla.command.core;
 import static android.content.Intent.ACTION_WEB_SEARCH;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.view.inputmethod.EditorInfo;
 
 import net.emilla.activity.AssistActivity;
@@ -12,8 +11,8 @@ import net.emilla.util.Apps;
 import net.emilla.web.WebsiteMap;
 
 final class Web extends CoreCommand {
-    public static boolean possible(PackageManager pm) {
-        return Apps.canDo(pm, new Intent(ACTION_WEB_SEARCH));
+    public static boolean possible() {
+        return true;
     }
 
     private final WebsiteMap mWebsiteMap;
