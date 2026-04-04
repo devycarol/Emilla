@@ -109,8 +109,9 @@ public final class TextStream {
             return null;
         }
 
+        var token = new String(mChars, start, mPosition - start);
         boolean __ = passWhitespace();
-        return new String(mChars, start, mPosition - start);
+        return token;
     }
 
     private void passSign() {
@@ -136,10 +137,12 @@ public final class TextStream {
         while (hasRemaining() && Character.isDigit(mChars[mPosition])) {
             ++mPosition;
         }
+
+        var s = new String(mChars, start, mPosition - start);
         boolean __ = passWhitespace();
 
         try {
-            return new Int(Integer.parseInt(new String(mChars, start, mPosition - start)));
+            return new Int(Integer.parseInt(s));
         } catch (NumberFormatException e) {
             mPosition = start;
             return null;
@@ -164,12 +167,12 @@ public final class TextStream {
         while (hasRemaining() && Chars.isNumberChar(mChars[mPosition])) {
             ++mPosition;
         }
+
+        var s = new String(mChars, start, mPosition - start);
         boolean __ = passWhitespace();
 
         try {
-            return new DoubleFloat(
-                Double.parseDouble(new String(mChars, start, mPosition - start))
-            );
+            return new DoubleFloat(Double.parseDouble(s));
         } catch (NumberFormatException e) {
             mPosition = start;
             return null;
