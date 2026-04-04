@@ -102,6 +102,7 @@ public enum CoreEntry implements Params {
         }
     },
     CALCULATE(Calculate::new, R.string.command_calculate, R.array.aliases_calculate, R.string.instruction_calculate, R.drawable.ic_calculate, R.string.summary_calculate, R.string.manual_calculate),
+    CONVERT(Convert::new, R.string.command_convert, R.array.aliases_convert, R.string.instruction_convert, R.drawable.ic_temperature, R.string.summary_convert, R.string.manual_convert),
     TIME(Time::new, R.string.command_time, R.array.aliases_time, R.string.instruction_location, R.drawable.ic_clock, R.string.summary_time, R.string.manual_time),
     ALARM(Alarm::new, R.string.command_alarm, R.array.aliases_alarm, R.string.instruction_alarm, R.drawable.ic_alarm, R.string.summary_alarm, R.string.manual_alarm) {
         @Override
@@ -120,8 +121,6 @@ public enum CoreEntry implements Params {
     COPY(Copy::new, R.string.command_copy, R.array.aliases_copy, R.string.instruction_text, R.drawable.ic_copy, R.string.summary_copy, R.string.manual_copy),
     SNIPPETS(Snippets::new, R.string.command_snippets, R.array.aliases_snippets, R.string.instruction_name_label, R.drawable.ic_snippets, R.string.summary_snippets, R.string.manual_snippets),
     SETTING(Setting::new, R.string.command_setting, R.array.aliases_setting, R.string.instruction_setting, R.drawable.ic_settings, R.string.summary_setting, R.string.manual_setting, true),
-    CELSIUS(Celsius::new, R.string.command_celsius, R.array.aliases_celsius, R.string.instruction_temperature, R.drawable.ic_temperature, R.string.summary_celsius, R.string.manual_celsius),
-    FAHRENHEIT(Fahrenheit::new, R.string.command_fahrenheit, R.array.aliases_fahrenheit, R.string.instruction_temperature, R.drawable.ic_temperature, R.string.summary_fahrenheit, R.string.manual_fahrenheit),
     ROLL(Roll::new, R.string.command_roll, R.array.aliases_roll, R.string.instruction_roll, R.drawable.ic_roll, R.string.summary_roll, R.string.manual_roll),
     INFO(Info::new, R.string.command_info, R.array.aliases_info, R.string.instruction_choose_app, R.drawable.ic_info, R.string.summary_info, R.string.manual_info) {
         @Override

@@ -150,13 +150,6 @@ public final class TextStream {
     }
 
     @Nullable
-    public DoubleFloat doubleFloat() {
-        int start = mPosition;
-        passSign();
-        return finishDouble(start);
-    }
-
-    @Nullable
     public DoubleFloat unsignedDouble() {
         int start = mPosition;
         return finishDouble(start);

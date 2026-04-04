@@ -114,8 +114,7 @@
         <item>calc</item>
         <item>math</item>
     </string-array>
-    <string-array name="aliases_celsius" />
-    <string-array name="aliases_fahrenheit" />
+    <string-array name="aliases_convert" />
     <string-array name="aliases_roll">
         <item>dice</item>
         <item>flip a coin</item>

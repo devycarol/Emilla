@@ -10,9 +10,7 @@ import net.emilla.R;
 import net.emilla.annotation.Normalized;
 import net.emilla.lang.grammar.ListPhrase;
 import net.emilla.lang.grammar.impl.ListPhraseEN_US;
-import net.emilla.measure.CelsiusConversion;
 import net.emilla.measure.ConversionRequest;
-import net.emilla.measure.FahrenheitConversion;
 import net.emilla.random.DiceRoller;
 import net.emilla.time.WallTime;
 import net.emilla.trie.PhraseTree;
@@ -118,20 +116,6 @@ public enum Lang {
     public static ConversionRequest unitConversion(String units) {
         return switch (EN_US) {
             case EN_US -> EnglishUnitedStates.unitConversion(units);
-        };
-    }
-
-    @Nullable
-    public static CelsiusConversion toCelsius(String temperature) {
-        return switch (EN_US) {
-            case EN_US -> EnglishUnitedStates.toCelsius(temperature);
-        };
-    }
-
-    @Nullable
-    public static FahrenheitConversion toFahrenheit(String temperature) {
-        return switch (EN_US) {
-            case EN_US -> EnglishUnitedStates.toFahrenheit(temperature);
         };
     }
 

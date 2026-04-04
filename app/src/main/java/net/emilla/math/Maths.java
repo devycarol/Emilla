@@ -12,11 +12,6 @@ import java.math.BigInteger;
 import java.text.DecimalFormat;
 
 public enum Maths {;
-    public static String prettyNumber(double n) {
-        // todo: configurable sig digs.
-        return new DecimalFormat("#.######").format(n);
-    }
-
     public static String prettyNumber(BigDecimal n) {
         // todo: configurable sig digs.
         return new DecimalFormat("#.######").format(n);

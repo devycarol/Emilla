@@ -7,7 +7,7 @@ import net.emilla.exception.UnreachableError;
 
 import java.math.BigDecimal;
 
-enum MetricScale {
+public enum MetricScale {
     PICO(-12, R.plurals.picometer, R.plurals.picoliter, R.plurals.picogram),
     NANO(-9, R.plurals.nanometer, R.plurals.nanoliter, R.plurals.nanogram),
     MICRO(-6, R.plurals.micrometer, R.plurals.microliter, R.plurals.microgram),
