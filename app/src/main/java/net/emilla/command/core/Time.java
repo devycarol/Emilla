@@ -6,7 +6,8 @@ import android.view.inputmethod.EditorInfo;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
-import net.emilla.run.TextGift;
+import net.emilla.lang.Lang;
+import net.emilla.time.TimeZone;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -19,16 +20,26 @@ final class Time extends CoreCommand {
 
     @Override
     protected void run(AssistActivity act) {
-        var timeNow = LocalTime.now();
-        var formatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT);
-        // todo: also show date info
-        // todo: configurable format
-        act.give(new TextGift(act, R.string.local_time, timeNow.format(formatter)));
+        giveTime(act, TimeZone.LOCAL);
     }
 
     @Override
     protected void run(AssistActivity act, String location) {
-        fail(act, R.string.error_unfinished_feature);
-        // TODO: locations, time-elapse
+        var zone = TimeZone.of(Lang.EN_US, location);
+        if (zone == null) {
+            fail(act, R.string.error_invalid_time_zone);
+            return;
+        }
+
+        giveTime(act, zone);
+    }
+
+    private void giveTime(AssistActivity act, TimeZone zone) {
+        var now = LocalTime.now(zone.id());
+        var formatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT);
+        String time = now.format(formatter);
+        var res = act.getResources();
+        var zoneName = res.getString(zone.name);
+        giveText(act, res.getString(R.string.zoned_time, time, zoneName));
     }
 }

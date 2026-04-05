@@ -657,6 +657,7 @@
 
     <!-- Error messages for failed commands. -->
     <string name="error_invalid_time">Invalid time.</string>
+    <string name="error_invalid_time_zone">Unknown time zone.</string>
     <string name="error_excess_time_units">Too many time units.</string>
     <string name="error_excess_timespan">You can\'t span more than 2 times.</string>
     <string name="error_excess_timespans">You can\'t have multiple timespans.</string>
@@ -740,6 +741,16 @@
     <string name="toast_snippet_deleted">Deleted \"%s\".</string>
 
     <string name="tag_toast_long">/long</string>
+
+    <string name="zoned_time">It\'s %1$s %2$s.</string>
+
+    <string name="time_zone_local">local time</string>
+    <string name="time_zone_alaska">Alaska Time</string>
+    <string name="time_zone_pacific">Pacific Time</string>
+    <string name="time_zone_mountain">Mountain Time</string>
+    <string name="time_zone_arizona">Arizona Time</string>
+    <string name="time_zone_central">Central Time</string>
+    <string name="time_zone_eastern">Eastern Time</string>
 
     <string name="unit_conversion">%1$s is %2$s.</string>
 
