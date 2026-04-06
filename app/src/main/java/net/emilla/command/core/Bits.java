@@ -4,9 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.inputmethod.EditorInfo;
 
+import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.math.BitwiseCalculator;
+
+import java.math.BigInteger;
 
 final class Bits extends CoreCommand {
     @internal Bits(Context ctx) {
@@ -20,6 +23,17 @@ final class Bits extends CoreCommand {
 
     @Override
     protected void run(AssistActivity act, String expression) {
-        giveText(act, String.valueOf(BitwiseCalculator.compute(expression, CoreEntry.BITS.name)));
+        BigInteger result;
+        try {
+            result = BitwiseCalculator.compute(expression);
+        } catch (ArithmeticException __) {
+            fail(act, R.string.error_calc_undefined);
+            return;
+        } catch (NumberFormatException __) {
+            fail(act, R.string.error_calc_malformed_expression);
+            return;
+        }
+
+        giveText(act, result.toString());
     }
 }

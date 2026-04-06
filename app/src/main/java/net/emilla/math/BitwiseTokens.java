@@ -1,14 +1,11 @@
 package net.emilla.math;
 
-import androidx.annotation.StringRes;
-
+import java.math.BigInteger;
 import java.util.Arrays;
 
-final class BitwiseTokens
-    extends CalcTokens<BitwiseToken>
-{
-    BitwiseTokens(String expression, @StringRes int errorTitle) {
-        super(expression, errorTitle);
+final class BitwiseTokens extends CalcTokens<BitwiseToken> {
+    BitwiseTokens(String expression) {
+        super(expression);
     }
 
     @Override
@@ -24,15 +21,15 @@ final class BitwiseTokens
                 // note that a binary-looking tilde is treated with adjacency multiplication.
             };
             case '!' -> switch (previousType) {
-                case LPAREN, OPERATOR -> throw Maths.malformedExpression(errorTitle);
+                case LPAREN, OPERATOR -> throw Maths.malformedExpression();
                 case RPAREN, NUMBER -> extractSign(true);
             };
             case '|', '^', '&', '*', '/', '%' -> switch (previousType) {
-                case LPAREN, OPERATOR -> throw Maths.malformedExpression(errorTitle);
+                case LPAREN, OPERATOR -> throw Maths.malformedExpression();
                 case RPAREN, NUMBER -> extractOperator();
             };
             case '<', '>' -> switch (previousType) {
-                case LPAREN, OPERATOR -> throw Maths.malformedExpression(errorTitle);
+                case LPAREN, OPERATOR -> throw Maths.malformedExpression();
                 case RPAREN, NUMBER -> extractShift();
             };
             case '(' -> switch (previousType) {
@@ -40,7 +37,7 @@ final class BitwiseTokens
                 case RPAREN, NUMBER -> phantomStar();
             };
             case ')' -> switch (previousType) {
-                case LPAREN, OPERATOR -> throw Maths.malformedExpression(errorTitle);
+                case LPAREN, OPERATOR -> throw Maths.malformedExpression();
                 case RPAREN, NUMBER -> extractRParen();
             };
             case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> switch (previousType) {
@@ -48,7 +45,7 @@ final class BitwiseTokens
                 case RPAREN, NUMBER -> phantomStar();
                 // note that this treats space-separated numbers as multiplication.
             };
-            default -> throw Maths.malformedExpression(errorTitle);
+            default -> throw Maths.malformedExpression();
         };
     }
 
@@ -69,7 +66,7 @@ final class BitwiseTokens
         char shiftType = expression[position];
         ++position;
         if (!nextCharIs(shiftType)) {
-            throw Maths.malformedExpression(errorTitle);
+            throw Maths.malformedExpression();
         }
 
         advanceImmediate();
@@ -98,6 +95,6 @@ final class BitwiseTokens
         advance();
 
         previousType = TokenType.NUMBER;
-        return new IntegerNumber(Maths.tryBigInteger(s, errorTitle));
+        return new IntegerNumber(new BigInteger(s));
     }
 }

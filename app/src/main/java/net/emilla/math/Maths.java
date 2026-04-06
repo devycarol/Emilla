@@ -2,11 +2,6 @@ package net.emilla.math;
 
 import android.os.Build;
 
-import androidx.annotation.StringRes;
-
-import net.emilla.R;
-import net.emilla.exception.EmillaException;
-
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.DecimalFormat;
@@ -15,22 +10,6 @@ public enum Maths {;
     public static String prettyNumber(BigDecimal n) {
         // todo: configurable sig digs.
         return new DecimalFormat("#.######").format(n);
-    }
-
-    public static BigInteger tryBigInteger(String number, @StringRes int errorTitle) {
-        try {
-            return new BigInteger(number);
-        } catch (NumberFormatException e) {
-            throw malformedExpression(errorTitle);
-        }
-    }
-
-    public static BigDecimal tryBigDecimal(String number, @StringRes int errorTitle) {
-        try {
-            return new BigDecimal(number);
-        } catch (NumberFormatException e) {
-            throw malformedExpression(errorTitle);
-        }
     }
 
     public static int exactInt(BigInteger n) {
@@ -45,12 +24,8 @@ public enum Maths {;
         throw new ArithmeticException("BigInteger out of int range");
     }
 
-    public static EmillaException malformedExpression(@StringRes int errorTitle) {
-        return new EmillaException(errorTitle, R.string.error_calc_malformed_expression);
-    }
-
-    public static EmillaException undefined(@StringRes int errorTitle) {
-        return new EmillaException(errorTitle, R.string.error_calc_undefined);
+    public static NumberFormatException malformedExpression() {
+        return new NumberFormatException("Malformed expression");
     }
 
     public static BigInteger stupidFactorial(BigInteger n) {

@@ -1,7 +1,6 @@
 package net.emilla.math;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 
 import java.util.function.IntFunction;
 
@@ -10,14 +9,11 @@ final class EnumStack<O extends Enum<O>> {
 
     private final byte[] mArray;
     private final IntFunction<O> mValues;
-    @StringRes
-    private final int mErrorTitle;
     private int mSize = 0;
 
-    EnumStack(int capacity, IntFunction<O> values, @StringRes int errorTitle) {
+    EnumStack(int capacity, IntFunction<O> values) {
         mArray = new byte[capacity];
         mValues = values;
-        mErrorTitle = errorTitle;
     }
 
     public void push(@Nullable O item) {
@@ -31,7 +27,7 @@ final class EnumStack<O extends Enum<O>> {
     @Nullable
     public O peek() {
         if (isEmpty()) {
-            throw Maths.malformedExpression(mErrorTitle);
+            throw Maths.malformedExpression();
         }
 
         return item(mArray[mSize - 1]);
@@ -40,7 +36,7 @@ final class EnumStack<O extends Enum<O>> {
     @Nullable
     public O pop() {
         if (isEmpty()) {
-            throw Maths.malformedExpression(mErrorTitle);
+            throw Maths.malformedExpression();
         }
 
         --mSize;

@@ -1,7 +1,5 @@
 package net.emilla.math;
 
-import androidx.annotation.StringRes;
-
 import net.emilla.util.Strings;
 
 import java.util.Iterator;
@@ -9,17 +7,14 @@ import java.util.Iterator;
 abstract class CalcTokens<T> implements Iterator<T> {
     protected final char[] expression;
     protected final int length;
-    @StringRes
-    protected final int errorTitle;
     protected int position;
     protected TokenType previousType = TokenType.LPAREN;
     // an imaginary leading parenthesis gets us the behavior we want without worrying about
     // field nullity.
 
-    CalcTokens(String expression, @StringRes int errorTitle) {
+    CalcTokens(String expression) {
         this.expression = expression.toCharArray();
         this.length = this.expression.length;
-        this.errorTitle = errorTitle;
         this.position = Strings.indexOfNonSpace(this.expression);
     }
 

@@ -1,7 +1,5 @@
 package net.emilla.math;
 
-import androidx.annotation.StringRes;
-
 import java.util.function.IntFunction;
 
 final class CalcStack
@@ -13,19 +11,11 @@ final class CalcStack
 {
     private final V[] vals;
     private final EnumStack<S> signs;
-    @StringRes
-    private final int errorTitle;
     private int size = 0;
 
-    CalcStack(
-        int capacity,
-        IntFunction<S> signs,
-        IntFunction<V[]> generator,
-        @StringRes int errorTitle
-    ) {
+    CalcStack(int capacity, IntFunction<S> signs, IntFunction<V[]> generator) {
         this.vals = generator.apply(capacity);
-        this.signs = new EnumStack<S>(capacity, signs, errorTitle);
-        this.errorTitle = errorTitle;
+        this.signs = new EnumStack<S>(capacity, signs);
     }
 
     public void push(V operand) {
@@ -45,7 +35,7 @@ final class CalcStack
 
     public void squish(O operator) {
         if (size < 2) {
-            throw Maths.malformedExpression(errorTitle);
+            throw Maths.malformedExpression();
         }
 
         --size;
@@ -122,7 +112,7 @@ final class CalcStack
 
     public V value() {
         if (size != 1) {
-            throw Maths.malformedExpression(errorTitle);
+            throw Maths.malformedExpression();
         }
 
         return vals[0];

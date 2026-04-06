@@ -1,12 +1,11 @@
 package net.emilla.math;
 
-import androidx.annotation.StringRes;
-
+import java.math.BigDecimal;
 import java.util.Arrays;
 
 final class ArithmeticTokens extends CalcTokens<ArithmeticToken> {
-    ArithmeticTokens(String expression, @StringRes int errorTitle) {
-        super(expression, errorTitle);
+    ArithmeticTokens(String expression) {
+        super(expression);
     }
 
     @Override
@@ -17,11 +16,11 @@ final class ArithmeticTokens extends CalcTokens<ArithmeticToken> {
                 case RPAREN, NUMBER -> extractOperator();
             };
             case '%', '!' -> switch (previousType) {
-                case LPAREN, OPERATOR -> throw Maths.malformedExpression(errorTitle);
+                case LPAREN, OPERATOR -> throw Maths.malformedExpression();
                 case RPAREN, NUMBER -> extractSign(true);
             };
             case '*', '/', '^' -> switch (previousType) {
-                case LPAREN, OPERATOR -> throw Maths.malformedExpression(errorTitle);
+                case LPAREN, OPERATOR -> throw Maths.malformedExpression();
                 case RPAREN, NUMBER -> extractOperator();
             };
             case '(' -> switch (previousType) {
@@ -29,7 +28,7 @@ final class ArithmeticTokens extends CalcTokens<ArithmeticToken> {
                 case RPAREN, NUMBER -> phantomStar();
             };
             case ')' -> switch (previousType) {
-                case LPAREN, OPERATOR -> throw Maths.malformedExpression(errorTitle);
+                case LPAREN, OPERATOR -> throw Maths.malformedExpression();
                 case RPAREN, NUMBER -> extractRParen();
             };
             case '.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> switch (previousType) {
@@ -37,7 +36,7 @@ final class ArithmeticTokens extends CalcTokens<ArithmeticToken> {
                 case RPAREN, NUMBER -> phantomStar();
                 // note that this treats space-separated numbers as multiplication.
             };
-            default -> throw Maths.malformedExpression(errorTitle);
+            default -> throw Maths.malformedExpression();
         };
     }
 
@@ -70,7 +69,7 @@ final class ArithmeticTokens extends CalcTokens<ArithmeticToken> {
         advance();
 
         previousType = TokenType.NUMBER;
-        return new FloatingPointNumber(Maths.tryBigDecimal(s, errorTitle));
+        return new FloatingPointNumber(new BigDecimal(s));
     }
 
     private static boolean isNumberChar(char c) {

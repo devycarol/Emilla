@@ -4,10 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.inputmethod.EditorInfo;
 
+import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.math.Calculator;
 import net.emilla.math.Maths;
+
+import java.math.BigDecimal;
 
 final class Calculate extends CoreCommand {
     @internal Calculate(Context ctx) {
@@ -21,6 +24,17 @@ final class Calculate extends CoreCommand {
 
     @Override
     protected void run(AssistActivity act, String expression) {
-        giveText(act, Maths.prettyNumber(Calculator.compute(expression, CoreEntry.CALCULATE.name)));
+        BigDecimal result;
+        try {
+            result = Calculator.compute(expression);
+        } catch (ArithmeticException __) {
+            fail(act, R.string.error_calc_undefined);
+            return;
+        } catch (NumberFormatException __) {
+            fail(act, R.string.error_calc_malformed_expression);
+            return;
+        }
+
+        giveText(act, Maths.prettyNumber(result));
     }
 }
