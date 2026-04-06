@@ -237,9 +237,13 @@ enum EnglishUS {;
     public static DiceRoller diceRoller(String roll) {
         return TextStream.extract(roll, stream -> {
             boolean isNegative = stream.skip('-');
-            Dice dice = diceFrom(stream, isNegative);
+            Dice dice = dice(stream);
             if (dice == null) {
                 return null;
+            }
+
+            if (isNegative) {
+                dice = dice.negate();
             }
 
             var roller = new DiceRoller();
@@ -248,11 +252,14 @@ enum EnglishUS {;
             while (stream.hasRemaining()) {
                 isNegative = stream.skip('-');
                 if (isNegative || stream.skip('+')) {
-                    dice = diceFrom(stream, isNegative);
+                    dice = dice(stream);
                     if (dice == null) {
                         return null;
                     }
 
+                    if (isNegative) {
+                        dice = dice.negate();
+                    }
                     roller.add(dice);
                 } else {
                     return null;
@@ -264,15 +271,20 @@ enum EnglishUS {;
     }
 
     @Nullable
-    private static Dice diceFrom(TextStream stream, boolean isNegative) {
+    private static Dice dice(TextStream stream) {
         Int box = stream.integer();
-        if (box == null) {
-            return null;
-        }
+        int rollCount;
+        if (box != null) {
+            rollCount = box.intValue();
+            if (!stream.skip('d')) {
+                return Dice.modifier(rollCount);
+            }
+        } else {
+            if (!stream.skip('d')) {
+                return null;
+            }
 
-        int rollCount = box.intValue();
-        if (!stream.skip('d')) {
-            return Dice.modifier(rollCount);
+            rollCount = 1;
         }
 
         box = stream.unsignedInt();
@@ -283,10 +295,6 @@ enum EnglishUS {;
         int faceCount = box.intValue();
         if (faceCount == 0) {
             return null;
-        }
-
-        if (isNegative) {
-            rollCount = -rollCount;
         }
 
         return new Dice(rollCount, faceCount);
