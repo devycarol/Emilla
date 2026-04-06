@@ -837,7 +837,7 @@ public final class AssistActivity extends AppCompatActivity {
                 mCommand.execute(this);
             }
         } catch (EmillaException e) {
-            fail(new MessageFailure(this, e));
+            fail(new MessageFailure(this, e.title, e.message));
         } catch (RuntimeException e) {
             fail(new BugFailure(this, e, mCommand.name));
         }

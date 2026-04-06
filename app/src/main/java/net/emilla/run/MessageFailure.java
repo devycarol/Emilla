@@ -6,14 +6,9 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.exception.EmillaException;
 import net.emilla.util.Dialogs;
 
 public final class MessageFailure extends DialogRun {
-    public MessageFailure(Context ctx, EmillaException e) {
-        this(ctx, e.title, e.message);
-    }
-
     public MessageFailure(Context ctx, @StringRes int title, @StringRes int msg) {
         super(Dialogs.message(ctx, title, msg));
     }
