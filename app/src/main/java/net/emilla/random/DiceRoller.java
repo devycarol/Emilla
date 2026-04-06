@@ -2,6 +2,10 @@ package net.emilla.random;
 
 import android.util.SparseIntArray;
 
+import androidx.annotation.Nullable;
+
+import net.emilla.annotation.internal;
+import net.emilla.lang.Lang;
 import net.emilla.util.Booleans;
 
 import java.util.Random;
@@ -9,10 +13,17 @@ import java.util.Random;
 public final class DiceRoller {
     private final SparseIntArray mDice = new SparseIntArray();
 
-    public DiceRoller() {
+    @internal DiceRoller() {
     }
 
-    public void add(Dice dice) {
+    @Nullable
+    public static DiceRoller of(Lang lang, String roll) {
+        return switch (lang) {
+            case EN_US -> EnglishUS.diceRoller(roll);
+        };
+    }
+
+    @internal void add(Dice dice) {
         add(dice.rollCount(), dice.faceCount());
     }
 

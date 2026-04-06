@@ -30,7 +30,7 @@ final class Roll extends CoreCommand {
 
     @Override
     protected void run(AssistActivity act, String roll) {
-        DiceRoller roller = Lang.diceRoller(roll);
+        var roller = DiceRoller.of(Lang.EN_US, roll);
         if (roller == null) {
             fail(act, R.string.error_invalid_dice_roll);
             return;

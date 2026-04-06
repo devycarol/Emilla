@@ -9,7 +9,6 @@ import androidx.annotation.StringRes;
 import net.emilla.R;
 import net.emilla.annotation.Normalized;
 import net.emilla.measure.ConversionRequest;
-import net.emilla.random.DiceRoller;
 import net.emilla.time.WallTime;
 import net.emilla.trie.PhraseTree;
 import net.emilla.util.Int;
@@ -114,13 +113,6 @@ public enum Lang {
     public static ConversionRequest unitConversion(String units) {
         return switch (EN_US) {
             case EN_US -> EnglishUS.unitConversion(units);
-        };
-    }
-
-    @Nullable
-    public static DiceRoller diceRoller(String roll) {
-        return switch (EN_US) {
-            case EN_US -> EnglishUS.diceRoller(roll);
         };
     }
 }
