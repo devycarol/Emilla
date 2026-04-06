@@ -1,13 +1,11 @@
 package net.emilla.math;
 
-import net.emilla.util.Strings;
-
 import java.util.Iterator;
 
 abstract class CalcTokens<T> implements Iterator<T> {
     protected final char[] expression;
     protected final int length;
-    protected int position;
+    protected int position = 0;
     protected TokenType previousType = TokenType.LPAREN;
     // an imaginary leading parenthesis gets us the behavior we want without worrying about
     // field nullity.
@@ -15,24 +13,24 @@ abstract class CalcTokens<T> implements Iterator<T> {
     CalcTokens(String expression) {
         this.expression = expression.toCharArray();
         this.length = this.expression.length;
-        this.position = Strings.indexOfNonSpace(this.expression);
+        advance();
     }
 
     protected final LParen extractLParen() {
-        extractChar(TokenType.LPAREN);
+        char __ = extractChar(TokenType.LPAREN);
         return LParen.INSTANCE;
     }
 
     protected final RParen extractRParen() {
-        extractChar(TokenType.RPAREN);
+        char __ = extractChar(TokenType.RPAREN);
         return RParen.INSTANCE;
     }
 
     protected final char extractChar(TokenType itsType) {
-        char c = expression[position];
+        char ch = expression[position];
         advanceImmediate();
         previousType = itsType;
-        return c;
+        return ch;
     }
 
     protected final void advanceImmediate() {

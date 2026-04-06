@@ -71,7 +71,6 @@ import net.emilla.content.retrieve.FilesRetriever;
 import net.emilla.content.retrieve.MediaRetriever;
 import net.emilla.content.retrieve.TextFileCreator;
 import net.emilla.databinding.ActivityAssistBinding;
-import net.emilla.exception.EmillaException;
 import net.emilla.file.Folder;
 import net.emilla.lang.Lang;
 import net.emilla.permission.PermissionRetriever;
@@ -836,8 +835,6 @@ public final class AssistActivity extends AppCompatActivity {
             } else {
                 mCommand.execute(this);
             }
-        } catch (EmillaException e) {
-            fail(new MessageFailure(this, e.title, e.message));
         } catch (RuntimeException e) {
             fail(new BugFailure(this, e, mCommand.name));
         }

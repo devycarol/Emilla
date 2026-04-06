@@ -1,131 +1,86 @@
 package net.emilla.command.core;
 
-import static android.provider.CalendarContract.EXTRA_EVENT_ALL_DAY;
-import static android.provider.CalendarContract.EXTRA_EVENT_BEGIN_TIME;
-import static android.provider.CalendarContract.EXTRA_EVENT_END_TIME;
-import static android.provider.CalendarContract.Events.DESCRIPTION;
-import static android.provider.CalendarContract.Events.EVENT_LOCATION;
-import static android.provider.CalendarContract.Events.TITLE;
-import static java.util.regex.Pattern.CASE_INSENSITIVE;
-
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.provider.CalendarContract.Events;
+
+import androidx.annotation.Nullable;
 
 import net.emilla.R;
 import net.emilla.action.field.FieldToggle;
 import net.emilla.action.field.InputField;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
-import net.emilla.date.DateTimeRange;
-import net.emilla.date.Time;
-import net.emilla.exception.EmillaException;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
 import net.emilla.util.MimeTypes;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 final class Schedule extends CoreDataCommand {
-    private static final Pattern TAG_ALL_DAY = Pattern.compile(" */all(day)?", CASE_INSENSITIVE);
-    private static final Pattern TRIMMING_PSV = Pattern.compile(" *\\| *");
-    // TODO LANG: please stop.
-
     public static boolean possible(PackageManager pm) {
-        return Apps.canDo(pm, makeIntent());
+        return Apps.canDo(pm, baseIntent());
     }
 
-    private final FieldToggle mLocationToggle;
-    private final FieldToggle mUrlToggle;
+    // Todo: date/time range widget
+    // Todo: all-day toggle
+    // Todo: action buttons to select availability, access level, and guests—last requires
+    //  contacts stuff. If possible also: reminders, repeats, timezone, event color, and
+    //  calendar selection.
+    private final FieldToggle mLocation;
+    private final FieldToggle mUrl;
 
     @internal Schedule(AssistActivity act) {
         super(act, CoreEntry.SCHEDULE, R.string.data_hint_schedule);
 
-        mLocationToggle = InputField.LOCATION.toggler(act);
-        mUrlToggle = InputField.URL.toggler(act);
+        mLocation = InputField.LOCATION.toggler(act);
+        mUrl = InputField.URL.toggler(act);
 
-        giveGadgets(mLocationToggle, mUrlToggle);
+        giveGadgets(mLocation, mUrl);
     }
 
-    @Override
-    protected void run(AssistActivity act) {
-        schedule(act, makeIntent());
-    }
-
-    @Override
-    protected void run(AssistActivity act, String titleAndDate) {
-        schedule(act, makeIntent(titleAndDate));
-    }
-
-    @Override
-    public void runWithData(AssistActivity act, String details) {
-        schedule(act, makeIntent().putExtra(DESCRIPTION, details));
-    }
-
-    @Override
-    public void runWithData(AssistActivity act, String titleAndDate, String details) {
-        schedule(act, makeIntent(titleAndDate).putExtra(DESCRIPTION, details));
-    }
-
-    private static Intent makeIntent() {
+    private static Intent baseIntent() {
         return Intents.insert(Events.CONTENT_URI, MimeTypes.CALENDAR_EVENT);
         // Todo: Etar is broken if already open. May be a flags issue?
     }
 
-    private Intent makeIntent(String titleAndDate) {
-        Intent intent = makeIntent();
+    @Override
+    protected void run(AssistActivity act) {
+        runWithData(act, null, null);
+    }
 
-        String title = titleAndDate;
-        Matcher m = TAG_ALL_DAY.matcher(title);
-        if (m.find()) {
-            title = m.replaceFirst("");
-            intent.putExtra(EXTRA_EVENT_ALL_DAY, true);
+    @Override
+    protected void run(AssistActivity act, String title) {
+        runWithData(act, title, null);
+    }
+
+    @Override
+    public void runWithData(AssistActivity act, String details) {
+        runWithData(act, null, details);
+    }
+
+    @Override
+    public void runWithData(AssistActivity act, @Nullable String title, @Nullable String details) {
+        Intent intent = baseIntent();
+        if (title != null) {
+            intent.putExtra(Events.TITLE, title);
         }
-
-        String[] nameAndTime = TRIMMING_PSV.split(title);
-        switch (nameAndTime.length) {
-        case 1 -> {
+        if (details != null) {
+            intent.putExtra(Events.DESCRIPTION, details);
         }
-        case 2 -> {
-            title = nameAndTime[0];
-            DateTimeRange times = Time.parseDateAndTimes(nameAndTime[1], CoreEntry.SCHEDULE.name);
-
-            intent.putExtra(EXTRA_EVENT_BEGIN_TIME, epochMilliOf(times.start()));
-
-            LocalDateTime end = times.end();
-            if (end != null) {
-                intent.putExtra(EXTRA_EVENT_END_TIME, epochMilliOf(end));
-            }
+        String location = mLocation.fieldText();
+        if (location != null) {
+            intent.putExtra(Events.EVENT_LOCATION, location);
         }
-        default -> throw new EmillaException(CoreEntry.SCHEDULE.name, R.string.error_invalid_date);
+        String url = mUrl.fieldText();
+        if (url != null) {
+            intent.putExtra("url", url);
         }
-
-        if (!title.isEmpty()) {
-            intent.putExtra(TITLE, title);
-        }
-
-        return intent;
+        Apps.succeed(act, intent);
     }
 
     private static long epochMilliOf(LocalDateTime dateTime) {
         return dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-    }
-
-    private void schedule(AssistActivity act, Intent intent) {
-        String location = mLocationToggle.fieldText();
-        if (location != null) {
-            intent.putExtra(EVENT_LOCATION, location);
-        }
-        String url = mUrlToggle.fieldText();
-        if (url != null) {
-            intent.putExtra("url", url);
-        }
-        // Todo: action buttons to select availability, access level, and guests—last requires
-        //  contacts stuff. If possible also: reminders, repeats, timezone, event color, and
-        //  calendar selection.
-        Apps.succeed(act, intent);
     }
 }
