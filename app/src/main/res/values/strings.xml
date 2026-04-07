@@ -414,10 +414,7 @@
     <string name="manual_time">
         Tells the local time.\n
         \n
-        In the future, you\'ll be able to give a time zone or location to tell the time from.\n
-        \n
-        In the future, you\'ll be able to tell what time it was some duration ago or the time will
-        be after a certain duration has passed.
+        You can provide a time zone by name or by city to tell the time for that time zone.
     </string>
     <!-- "Set alarms" -->
     <string name="manual_alarm">
@@ -457,31 +454,11 @@
     <!-- "Create calendar events" -->
     <string name="manual_schedule">
         The details you enter will be sent to your calendar app. You can label the event in the
-        command instruction. You can also set the date and time.\n
-        \n
-        To do so, separate the event title with the pipe \'|\' character and provide DATE @ TIME,
-        which can also be separated by the words \'at\' and \'from\'\n
-        \n
-        For now, date is formatted as a month name, day number, and/or year in any order. Months may
-        be abbreviated. Whole years can be given, or the shorthand \'YY with the apostrophe will
-        default to the current century.\n
-        \n
-        \'Tomorrow\' is also a valid date. In the future, more shorthands such as weekdays will be
-        supported.\n
-        \n
-        The time can be just the start time or START-END. The words \'until\', \'till\', \'til\',
-        and \'to\' can also be used to split start and end time. Times can include seconds, see the
-        \'alarm\' command for format instructions.\n
-        \n
-        In the future, these will all be separate fields. Example command: Schedule Tennis match |
-        tomorrow from 3 to 5.\n
+        command instruction.
         \n
         You can add a location or URL to your event by using their respective field-toggle buttons.
         In the future, more details such as confidentiality and repetition pattern will be
-        supported.\n
-        \n
-        You can use /allday to make it a whole-day event, where time-of-day info is ignored. In the
-        future, this will be a toggle button.
+        supported.
     </string>
     <!-- "Set notification reminders" -->
     <string name="manual_notify">
