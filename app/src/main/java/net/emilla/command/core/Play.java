@@ -21,8 +21,8 @@ final class Play extends CoreCommand {
 
     @Override
     protected void run(AssistActivity act) {
-        AudioManager am = Services.audio(act);
-        MediaControl.play(am);
+        AudioManager audio = Services.audio(act);
+        MediaControl.play(audio);
         act.give(a -> {});
     }
 

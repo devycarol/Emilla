@@ -8,8 +8,8 @@ import net.emilla.util.Services;
 public enum CopyGift {;
     public static CommandRun instance(CharSequence text) {
         return act -> {
-            ClipboardManager manager = Services.clipboard(act);
-            manager.setPrimaryClip(ClipData.newPlainText(null, text));
+            ClipboardManager clipboard = Services.clipboard(act);
+            clipboard.setPrimaryClip(ClipData.newPlainText(null, text));
         };
     }
 }

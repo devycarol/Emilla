@@ -25,8 +25,8 @@ final class ChanneledPinger extends Pinger {
 
     @Override @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     public void ping() {
-        if (this.pingManager.getNotificationChannel(mChannel.id) == null) {
-            this.pingManager.createNotificationChannel(mChannel.make(mRes));
+        if (this.notifier.getNotificationChannel(mChannel.id) == null) {
+            this.notifier.createNotificationChannel(mChannel.make(mRes));
             // TODO LANG: you need to update the channel name & description when language changes.
             // todo: more centralized channel ensurement so there's consistent order in the app
             //  notifications settings.

@@ -34,12 +34,12 @@ public sealed class Pinger permits ChanneledPinger {
         return sSlot;
     }
 
-    protected final NotificationManager pingManager;
+    protected final NotificationManager notifier;
     private final Notification mPing;
     private final int mSlot;
 
     @internal Pinger(Context ctx, Notification ping, PingChannel channel) {
-        this.pingManager = Services.notification(ctx);
+        this.notifier = Services.notification(ctx);
         mPing = ping;
         mSlot = channel.slot;
     }
@@ -51,6 +51,6 @@ public sealed class Pinger permits ChanneledPinger {
             : mSlot
         ;
         // this can be used to edit or remove the notification later.
-        this.pingManager.notify(id, mPing);
+        this.notifier.notify(id, mPing);
     }
 }

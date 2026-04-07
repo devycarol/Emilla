@@ -42,7 +42,7 @@ public final class PlayPause implements LabeledQuickAction {
 
     @Override
     public void perform() {
-        AudioManager am = Services.audio(mActivity);
-        MediaControl.playPause(am);
+        AudioManager audio = Services.audio(mActivity);
+        MediaControl.playPause(audio);
     }
 }

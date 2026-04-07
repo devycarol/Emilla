@@ -10,25 +10,25 @@ import net.emilla.util.Services;
 
 public abstract class EventScheduler<P extends Plan> {
     protected final Context context;
-    private final AlarmManager mAlarmManager;
+    private final AlarmManager mAlarm;
 
     public EventScheduler(Context ctx) {
         this.context = ctx;
-        mAlarmManager = Services.alarm(ctx);
+        mAlarm = Services.alarm(ctx);
     }
 
     public final void plan(P plan) {
         PendingIntent pendingIntent = pendingIntentFor(plan);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S || mAlarmManager.canScheduleExactAlarms()) {
-            mAlarmManager.setExact(AlarmManager.RTC_WAKEUP, plan.time, pendingIntent);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S || mAlarm.canScheduleExactAlarms()) {
+            mAlarm.setExact(AlarmManager.RTC_WAKEUP, plan.time, pendingIntent);
         } else {
-            mAlarmManager.set(AlarmManager.RTC_WAKEUP, plan.time, pendingIntent);
+            mAlarm.set(AlarmManager.RTC_WAKEUP, plan.time, pendingIntent);
         }
         // Todo: communicate which will happen in the settings.
     }
 
     public final void cancel(P plan) {
-        mAlarmManager.cancel(pendingIntentFor(plan));
+        mAlarm.cancel(pendingIntentFor(plan));
     }
 
     private PendingIntent pendingIntentFor(P plan) {

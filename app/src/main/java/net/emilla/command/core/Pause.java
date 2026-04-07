@@ -16,8 +16,8 @@ final class Pause extends CoreCommand {
 
     @Override
     protected void run(AssistActivity act) {
-        AudioManager am = Services.audio(act);
-        MediaControl.pause(am);
+        AudioManager audio = Services.audio(act);
+        MediaControl.pause(audio);
         act.give(a -> {});
     }
 
