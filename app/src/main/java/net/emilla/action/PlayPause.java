@@ -8,7 +8,7 @@ import androidx.annotation.StringRes;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.util.MediaControl;
+import net.emilla.media.MediaControl;
 import net.emilla.util.Services;
 
 public final class PlayPause implements LabeledQuickAction {

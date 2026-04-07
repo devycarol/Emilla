@@ -1,13 +1,17 @@
 package net.emilla.command.core;
 
+import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
+import android.provider.MediaStore;
 import android.view.inputmethod.EditorInfo;
 
-import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
-import net.emilla.util.MediaControl;
+import net.emilla.media.MediaControl;
+import net.emilla.media.MediaType;
+import net.emilla.util.Apps;
 import net.emilla.util.Services;
 
 final class Play extends CoreCommand {
@@ -24,6 +28,15 @@ final class Play extends CoreCommand {
 
     @Override
     protected void run(AssistActivity act, String media) {
-        fail(act, R.string.error_unfinished_feature);
+        var intent = new Intent(MediaStore.INTENT_ACTION_MEDIA_PLAY_FROM_SEARCH);
+        // bruh please WHY does no one update the documentation to reflect that no one supports this
+        // anymore
+        intent.putExtra(SearchManager.QUERY, media);
+        // note that at least an empty string is required in all cases
+
+        var type = MediaType.of(media);
+        intent.putExtra(MediaStore.EXTRA_MEDIA_FOCUS, type.focus);
+
+        Apps.succeed(act, intent);
     }
 }

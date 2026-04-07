@@ -6,7 +6,7 @@ import android.view.inputmethod.EditorInfo;
 
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
-import net.emilla.util.MediaControl;
+import net.emilla.media.MediaControl;
 import net.emilla.util.Services;
 
 final class Pause extends CoreCommand {

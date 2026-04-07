@@ -1,4 +1,4 @@
-package net.emilla.util;
+package net.emilla.media;
 
 import static android.view.KeyEvent.ACTION_DOWN;
 import static android.view.KeyEvent.ACTION_UP;
