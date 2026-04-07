@@ -231,7 +231,7 @@
     <string name="summary_calculate">Compute math equations</string>
     <string name="summary_convert">Convert units of measure</string>
     <string name="summary_roll">Roll virtual dice</string>
-    <string name="summary_bits">Compute bitwise equations</string>
+    <string name="summary_bits">Perform integer arithmetic</string>
     <string name="summary_weather">Open a weather app</string>
     <string name="summary_time">Tell the time</string>
     <string name="summary_alarm">Set alarms</string>
