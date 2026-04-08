@@ -9,7 +9,7 @@ android {
     defaultConfig {
         applicationId = "net.emilla.nebula"
         minSdk = 21
-        versionCode = 8
+        versionCode = 9
         versionName = "Delta"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
