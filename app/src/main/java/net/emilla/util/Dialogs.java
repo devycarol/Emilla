@@ -100,15 +100,17 @@ public enum Dialogs {;
         @StringRes int yesLabel,
         DialogInterface.OnClickListener yesClick
     ) {
-        // Todo: don't require this.yesClick.onClick(dlg, which);
-        // Even more Todo: ...what?
+        // Todo: don't require yesClick.onClick(dlg, which);
         return base(
             act, title, msg,
 
             android.R.string.cancel
         ).setPositiveButton(
             yesLabel,
-            (dlg, which) -> act.onCloseDialog()
+            (dlg, which) -> {
+                yesClick.onClick(dlg, which);
+                act.onCloseDialog();
+            }
         );
     }
 

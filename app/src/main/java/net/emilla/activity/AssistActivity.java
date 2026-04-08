@@ -728,10 +728,12 @@ public final class AssistActivity extends AppCompatActivity {
     }
 
     private AlertDialog.Builder cancelDialog() {
-        return Dialogs.dual(
+        return Dialogs.base(
             this,
             R.string.exit,
             R.string.dlg_msg_exit,
+            android.R.string.cancel
+        ).setPositiveButton(
             R.string.leave,
             (dlg, which) -> cancel()
         ).setOnKeyListener((dlg, keyCode, event) -> {
