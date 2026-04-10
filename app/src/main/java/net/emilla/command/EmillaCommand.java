@@ -170,16 +170,16 @@ public abstract class EmillaCommand {
     }
 
     public final void decorate(AssistActivity act, Resources res, boolean setIcon, boolean isDefault) {
-        CharSequence title;
-        if (isDefault) {
-            String sentenceName = mParams.isProperNoun()
-                ? this.name
-                : this.name.toLowerCase()
-            ;
-            title = Lang.colonConcat(res, R.string.command_default, sentenceName);
-        } else {
-            title = mParams.title(res);
-        }
+        CharSequence title = isDefault
+            ? Lang.colonConcat(
+                res, R.string.command_default,
+
+                mParams.isProperNoun()
+                    ? this.name
+                    : this.name.toLowerCase()
+
+            ) : mParams.title(res)
+        ;
         act.updateTitle(title);
         act.updateDataHint();
         act.setImeAction(mImeAction);

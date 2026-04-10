@@ -13,6 +13,7 @@ import androidx.annotation.StringRes;
 import net.emilla.R;
 import net.emilla.annotation.internal;
 import net.emilla.annotation.open;
+import net.emilla.command.CommandYielder;
 import net.emilla.command.Params;
 import net.emilla.config.Aliases;
 import net.emilla.config.SettingVals;
@@ -201,7 +202,7 @@ public enum CoreEntry implements Params {
         return SettingVals.commandEnabled(pm, prefs, this);
     }
 
-    public final CoreYielder yielder() {
+    public final CommandYielder yielder() {
         return new CoreYielder(this);
     }
 

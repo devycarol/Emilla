@@ -107,8 +107,10 @@ public final class AppEntry extends SearchItem implements Params {
             return new SymbolIcon(R.drawable.ic_app);
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
-            && icon instanceof AdaptiveIconDrawable adaptive) {
+        if (
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+            && icon instanceof AdaptiveIconDrawable adaptive
+        ) {
             Drawable monochrome = adaptive.getMonochrome();
             if (monochrome != null) {
                 monochrome.setTint(attribute(ctx, com.google.android.material.R.attr.colorOnSurface));
