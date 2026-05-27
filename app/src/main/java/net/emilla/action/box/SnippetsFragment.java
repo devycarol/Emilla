@@ -97,9 +97,10 @@ public final class SnippetsFragment extends ActionBox {
 
         Snippet snippet = selectedSnippet(act, snippetLabel);
         if (snippet != null) {
+            String text = snippet.text(mPrefs);
             snippet.delete(act, mPrefs);
             mAdapter.remove(snippet);
-            giveCopy(act, snippet.text(mPrefs));
+            giveCopy(act, text);
         }
     }
 
