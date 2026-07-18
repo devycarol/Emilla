@@ -7,8 +7,8 @@ import android.provider.CalendarContract.Events;
 import androidx.annotation.Nullable;
 
 import net.emilla.R;
-import net.emilla.action.field.FieldToggle;
-import net.emilla.action.field.InputField;
+import net.emilla.action.InputField;
+import net.emilla.action.box.FieldsFragment;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.util.Apps;
@@ -25,19 +25,18 @@ final class Schedule extends CoreDataCommand {
 
     // Todo: date/time range widget
     // Todo: all-day toggle
-    // Todo: action buttons to select availability, access level, and guests—last requires
-    //  contacts stuff. If possible also: reminders, repeats, timezone, event color, and
-    //  calendar selection.
-    private final FieldToggle mLocation;
-    private final FieldToggle mUrl;
+    // Todo: action buttons to select availability, access level, and
+    //  guests—requires contacts stuff. If possible also: reminders, repeats,
+    //  timezone, event color, and calendar selection.
+    private final FieldsFragment mFieldsFragment = FieldsFragment.newInstance(
+        InputField.URL,
+        InputField.LOCATION
+    );
 
     @internal Schedule(AssistActivity act) {
         super(act, CoreEntry.SCHEDULE, R.string.data_hint_schedule);
 
-        mLocation = InputField.LOCATION.toggler(act);
-        mUrl = InputField.URL.toggler(act);
-
-        giveGadgets(mLocation, mUrl);
+        giveGadgets(mFieldsFragment);
     }
 
     private static Intent baseIntent() {
@@ -69,11 +68,11 @@ final class Schedule extends CoreDataCommand {
         if (details != null) {
             intent.putExtra(Events.DESCRIPTION, details);
         }
-        String location = mLocation.fieldText();
+        String location = mFieldsFragment.get(InputField.LOCATION);
         if (location != null) {
             intent.putExtra(Events.EVENT_LOCATION, location);
         }
-        String url = mUrl.fieldText();
+        String url = mFieldsFragment.get(InputField.URL);
         if (url != null) {
             intent.putExtra("url", url);
         }

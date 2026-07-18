@@ -2,10 +2,6 @@ package net.emilla.command.core;
 
 import static android.content.Intent.ACTION_SENDTO;
 import static android.content.Intent.ACTION_SEND_MULTIPLE;
-import static android.content.Intent.EXTRA_EMAIL;
-import static android.content.Intent.EXTRA_STREAM;
-import static android.content.Intent.EXTRA_SUBJECT;
-import static android.content.Intent.EXTRA_TEXT;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,11 +12,9 @@ import androidx.annotation.Nullable;
 import net.emilla.R;
 import net.emilla.action.FileFetcher;
 import net.emilla.action.MediaFetcher;
-import net.emilla.action.field.FieldToggle;
-import net.emilla.action.field.InputField;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
-import net.emilla.contact.fragment.ContactEmailsFragment;
+import net.emilla.contact.fragment.EmailFragment;
 import net.emilla.content.receive.EmailReceiver;
 import net.emilla.util.Apps;
 import net.emilla.util.Patterns;
@@ -32,22 +26,17 @@ final class Email extends CoreDataCommand implements EmailReceiver {
         return Apps.canDo(pm, new Intent(ACTION_SENDTO, Uri.parse("mailto:")));
     }
 
-    private final ContactEmailsFragment mContactsFragment;
-    private final FieldToggle mSubjectToggle;
+    private final EmailFragment mEmailFragment = EmailFragment.newInstance();
 
     @internal Email(AssistActivity act) {
         super(act, CoreEntry.EMAIL, R.string.data_hint_email);
 
-        mContactsFragment = ContactEmailsFragment.newInstance(true);
-        mSubjectToggle = InputField.SUBJECT.toggler(act);
-
         String entry = CoreEntry.EMAIL.name();
         giveGadgets(
-            mContactsFragment,
-            mSubjectToggle,
+            mEmailFragment,
             new FileFetcher(act, entry, "*/*"),
-            // TODO: Thunderbird doesn't like certain filetypes. See if you can find a type
-            //  statement that's consistently email-friendly.
+            // Todo: Thunderbird doesn't like certain filetypes. Can we find a
+            //  type statement that's consistently email-friendly?
             new MediaFetcher(act, entry)
         );
     }
@@ -73,12 +62,12 @@ final class Email extends CoreDataCommand implements EmailReceiver {
     }
 
     private void tryEmail(AssistActivity act, String recipients, @Nullable String body) {
-        String addresses = mContactsFragment.selectedContacts();
+        String addresses = mEmailFragment.selectedContacts();
         if (addresses != null) {
             recipients = addresses;
         }
         email(act, recipients, body);
-        // todo: validate the raw recipients
+        // Todo: validate the raw recipients
     }
 
     private void email(AssistActivity act, String addresses, @Nullable String body) {
@@ -88,17 +77,17 @@ final class Email extends CoreDataCommand implements EmailReceiver {
         if (attachments == null) {
             email = sendTo;
         } else {
-            email = new Intent(ACTION_SEND_MULTIPLE).putExtra(EXTRA_STREAM, attachments);
+            email = new Intent(ACTION_SEND_MULTIPLE).putExtra(Intent.EXTRA_STREAM, attachments);
             email.setSelector(sendTo);
         }
-        email.putExtra(EXTRA_EMAIL, Patterns.TRIMMING_CSV.split(addresses));
-        // TODO: CC and BCC selections
+        email.putExtra(Intent.EXTRA_EMAIL, Patterns.TRIMMING_CSV.split(addresses));
+        // Todo: CC and BCC selections
         if (body != null) {
-            email.putExtra(EXTRA_TEXT, body);
+            email.putExtra(Intent.EXTRA_TEXT, body);
         }
-        String subject = mSubjectToggle.fieldText();
+        String subject = mEmailFragment.subject();
         if (subject != null) {
-            email.putExtra(EXTRA_SUBJECT, subject);
+            email.putExtra(Intent.EXTRA_SUBJECT, subject);
         }
         giveApp(act, email);
     }

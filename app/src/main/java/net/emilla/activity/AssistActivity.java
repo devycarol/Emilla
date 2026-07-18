@@ -398,53 +398,6 @@ public final class AssistActivity extends AppCompatActivity {
         mBinding.actionsContainer.removeView(findViewById(action));
     }
 
-    public EditText createField(@IdRes int id, @StringRes int hint) {
-        LinearLayout fieldsContainer = mBinding.fieldsContainer;
-
-        var box = (EditText) mInflater.inflate(R.layout.field_extra, fieldsContainer, false);
-        box.setId(id);
-        box.setHint(hint);
-
-        fieldsContainer.addView(box);
-        box.requestFocus();
-
-        return box;
-    }
-
-    /// Toggles the visibility of an input field.
-    ///
-    /// @param id the field to toggle.
-    /// @return true if the field is visible now, false if it's hidden.
-    public boolean toggleField(@IdRes int id) {
-        // Todo: it's vague which field is which. First step: order them consistently.
-        EditText box = findViewById(id);
-        if (box.getVisibility() == View.VISIBLE) {
-            if (box.hasFocus()) {
-                mBinding.commandField.requestFocus();
-            }
-            box.setVisibility(View.GONE);
-            return false;
-        }
-        box.setVisibility(View.VISIBLE);
-        box.requestFocus();
-        return true;
-    }
-
-    public void reshowField(@IdRes int id) {
-        EditText box = findViewById(id);
-        box.setVisibility(View.VISIBLE);
-    }
-
-    public void hideField(@IdRes int id) {
-        EditText box = findViewById(id);
-        if (box != null && box.getVisibility() == View.VISIBLE) {
-            if (box.hasFocus()) {
-                mBinding.commandField.requestFocus();
-            }
-            box.setVisibility(View.GONE);
-        }
-    }
-
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);

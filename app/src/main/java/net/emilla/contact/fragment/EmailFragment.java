@@ -10,9 +10,9 @@ import androidx.annotation.Nullable;
 import net.emilla.contact.adapter.ContactCursorAdapter;
 import net.emilla.contact.adapter.ContactEmailAdapter;
 
-public final class ContactEmailsFragment extends ContactsFragment<String> {
-    public static ContactEmailsFragment newInstance(boolean multiSelect) {
-        return newInstance(new ContactEmailsFragment(), multiSelect);
+public final class EmailFragment extends ContactsFragment<String> {
+    public static EmailFragment newInstance() {
+        return newInstance(new EmailFragment(), true);
     }
 
     @Override
@@ -23,5 +23,11 @@ public final class ContactEmailsFragment extends ContactsFragment<String> {
     @Override @Nullable
     protected String selectedContactsInternal(ListView contactList, Cursor cur) {
         return multiSelectedCsv(contactList, cur, INDEX_ADDRESS);
+    }
+
+    @Nullable
+    public String subject() {
+        // Todo
+        return null;
     }
 }
