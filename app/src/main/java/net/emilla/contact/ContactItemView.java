@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
@@ -28,6 +29,9 @@ import net.emilla.R;
 import net.emilla.util.Booleans;
 
 public final class ContactItemView extends LinearLayout {
+    @IdRes
+    private static final int ACTION_TOGGLE_STAR = View.generateViewId();
+
     private long mContactId = 0L;
     private String mLookupKey = null;
     private boolean mStarred = false;
@@ -117,7 +121,7 @@ public final class ContactItemView extends LinearLayout {
             setStateDesc();
         }
         String label = starActionLabel();
-        mStarAction = new AccessibilityActionCompat(R.id.action_toggle_star, label);
+        mStarAction = new AccessibilityActionCompat(ACTION_TOGGLE_STAR, label);
         ViewCompat.replaceAccessibilityAction(this, mStarAction, label, mStarCommand);
         mStar.setOnCheckedChangeListener((btn, checked) -> onStarChanged(checked));
     }

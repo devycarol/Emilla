@@ -11,7 +11,4 @@
 
     <item type="id" name="action_get_files" />
     <item type="id" name="action_get_media" />
-
-    <!-- Contacts list actions -->
-    <item type="id" name="action_toggle_star" />
 </resources>
