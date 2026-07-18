@@ -33,8 +33,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.IdRes;
@@ -146,12 +146,12 @@ public final class AssistActivity extends AppCompatActivity {
 
         var res = getResources();
 
-        mBinding.titleText.setText(mVm.motd);
-        FrameLayout titleTouchTarget = mBinding.titleTouchTarget;
-        titleTouchTarget.setOnClickListener(v -> {
+        TextView titleText = mBinding.titleText;
+        titleText.setText(mVm.motd);
+        titleText.setOnClickListener(v -> {
             Help.perform(this);
         });
-        Views.setClickActionLabel(res, titleTouchTarget, R.string.action_desc_help);
+        Views.setClickActionLabel(res, titleText, R.string.action_desc_help);
 
         setupCommandField();
         if (mVm.dataVisible) {
