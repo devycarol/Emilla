@@ -77,7 +77,6 @@
     <string name="action_attach_media">Media</string>
     <string name="action_desc_attach_media">Attach media</string>
     <string name="spoken_description_submit_command">Submit command</string>
-    <string name="spoken_description_empty_space">Empty space</string>
     <string name="spoken_description_show_data">Show data field</string>
     <string name="spoken_description_hide_data">Hide data field</string>
     <string name="welcome_message">Hello!</string>

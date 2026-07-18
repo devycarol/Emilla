@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
-
+    android:fitsSystemWindows="true"
+>
     <FrameLayout
         android:id="@+id/empty_space"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:contentDescription="@string/spoken_description_empty_space"
+        android:importantForAccessibility="no"
         app:layout_constraintBottom_toTopOf="@id/assistant_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintTop_toTopOf="parent"
+    />
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/action_box"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="@dimen/margin_narrow"
         app:layout_constraintBottom_toTopOf="@id/actions_container"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintTop_toTopOf="parent"
+    />
     <FrameLayout
         android:id="@+id/title_touch_target"
         android:layout_width="0dp"
@@ -34,8 +35,8 @@
         android:minHeight="@dimen/width_action"
         app:layout_constraintBottom_toTopOf="@id/assistant_container"
         app:layout_constraintEnd_toStartOf="@id/actions_container"
-        app:layout_constraintStart_toStartOf="parent">
-
+        app:layout_constraintStart_toStartOf="parent"
+    >
         <TextView
             android:id="@+id/title_text"
             android:layout_width="match_parent"
@@ -45,8 +46,8 @@
             android:paddingStart="@dimen/margin_narrow"
             android:paddingTop="@dimen/margin_narrow"
             android:textIsSelectable="false"
-            android:textSize="18sp" />
-
+            android:textSize="18sp"
+        />
     </FrameLayout>
 
     <LinearLayout
@@ -60,8 +61,8 @@
         android:paddingTop="@dimen/margin_narrow"
         android:paddingEnd="@dimen/margin_narrow"
         app:layout_constraintBottom_toTopOf="@id/assistant_container"
-        app:layout_constraintEnd_toEndOf="parent">
-
+        app:layout_constraintEnd_toEndOf="parent"
+    >
         <net.emilla.widget.ActionButton
             android:id="@+id/show_data_button"
             android:layout_width="@dimen/width_action"
@@ -71,8 +72,8 @@
             android:contentDescription="@string/spoken_description_show_data"
             android:padding="@dimen/action_button_padding"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_show_data" />
-
+            android:src="@drawable/ic_show_data"
+        />
     </LinearLayout>
 
     <LinearLayout
@@ -86,13 +87,13 @@
         android:padding="@dimen/margin_narrow"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
+        app:layout_constraintStart_toStartOf="parent"
+    >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
+            android:orientation="horizontal"
+        >
             <EditText
                 android:id="@+id/data_field"
                 android:layout_width="0dp"
@@ -106,8 +107,8 @@
                 android:inputType="textMultiLine|textCapSentences"
                 android:minHeight="@dimen/width_action"
                 android:textColorHint="?attr/colorControlNormal"
-                android:visibility="gone" />
-
+                android:visibility="gone"
+            />
             <net.emilla.widget.ActionButton
                 android:id="@+id/hide_data_button"
                 android:layout_width="@dimen/width_action"
@@ -119,16 +120,16 @@
                 android:padding="@dimen/action_button_padding"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_hide_data"
-                android:visibility="gone" />
-
+                android:visibility="gone"
+            />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/container_command"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
+            android:orientation="horizontal"
+        >
             <EditText
                 android:id="@+id/command_field"
                 android:layout_width="0dp"
@@ -140,8 +141,8 @@
                 android:inputType="text|textCapSentences"
                 android:minHeight="@dimen/width_action"
                 android:textColorHint="?attr/colorControlNormal"
-                tools:ignore="VisualLintTextFieldSize" />
-
+                tools:ignore="VisualLintTextFieldSize"
+            />
             <net.emilla.widget.ActionButton
                 android:id="@+id/submit_button"
                 android:layout_width="@dimen/width_action"
@@ -151,10 +152,8 @@
                 android:contentDescription="@string/spoken_description_submit_command"
                 android:padding="@dimen/action_button_padding"
                 android:scaleType="fitCenter"
-                app:elevation="0dp" />
-
+                app:elevation="0dp"
+            />
         </LinearLayout>
-
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

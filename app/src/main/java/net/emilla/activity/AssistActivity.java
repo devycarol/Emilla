@@ -70,7 +70,7 @@ import net.emilla.content.retrieve.ContactPhoneRetriever;
 import net.emilla.content.retrieve.FilesRetriever;
 import net.emilla.content.retrieve.MediaRetriever;
 import net.emilla.content.retrieve.TextFileCreator;
-import net.emilla.databinding.ActivityAssistBinding;
+import net.emilla.databinding.AssistActivityBinding;
 import net.emilla.file.Folder;
 import net.emilla.lang.Lang;
 import net.emilla.permission.PermissionRetriever;
@@ -100,7 +100,7 @@ public final class AssistActivity extends AppCompatActivity {
         ;
 
     private /*late*/ LayoutInflater mInflater;
-    private /*late*/ ActivityAssistBinding mBinding;
+    private /*late*/ AssistActivityBinding mBinding;
     private /*late*/ AssistViewModel mVm;
 
     @Nullable
@@ -133,7 +133,7 @@ public final class AssistActivity extends AppCompatActivity {
         }
 
         mInflater = getLayoutInflater();
-        mBinding = ActivityAssistBinding.inflate(mInflater);
+        mBinding = AssistActivityBinding.inflate(mInflater);
         setContentView(mBinding.getRoot());
 
         var factory = new AssistViewModel.Factory(this);
