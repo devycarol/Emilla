@@ -3,15 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="@dimen/margin_narrow_half">
-
+    android:padding="@dimen/margin_narrow_half"
+>
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:columnCount="2"
-        android:rowCount="2">
-
+        android:rowCount="2"
+    >
         <TextView
             android:id="@+id/layout"
             android:layout_rowWeight="1"
@@ -20,8 +20,8 @@
             android:background="@color/bg_tile_button"
             android:gravity="center"
             android:text="@string/header_layout"
-            android:textSize="24sp" />
-
+            android:textSize="24sp"
+        />
         <TextView
             android:id="@+id/system"
             android:layout_rowWeight="1"
@@ -30,8 +30,8 @@
             android:background="@color/bg_tile_button"
             android:gravity="center"
             android:text="@string/header_system"
-            android:textSize="24sp" />
-
+            android:textSize="24sp"
+        />
         <TextView
             android:id="@+id/behavior"
             android:layout_rowWeight="1"
@@ -40,8 +40,8 @@
             android:background="@color/bg_tile_button"
             android:gravity="center"
             android:text="@string/header_behavior"
-            android:textSize="24sp" />
-
+            android:textSize="24sp"
+        />
         <TextView
             android:id="@+id/commands"
             android:layout_rowWeight="1"
@@ -50,8 +50,8 @@
             android:background="@color/bg_tile_button"
             android:gravity="center"
             android:text="@string/header_commands"
-            android:textSize="24sp" />
-
+            android:textSize="24sp"
+        />
     </GridLayout>
 
     <TextView
@@ -62,6 +62,6 @@
         android:background="@color/bg_tile_button"
         android:gravity="center"
         android:text="@string/title_assistant"
-        android:textSize="24sp" />
-
+        android:textSize="24sp"
+    />
 </LinearLayout>

@@ -4,14 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:orientation="vertical">
-
+    android:orientation="vertical"
+>
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/settings_titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:title="@string/app_name" />
-
+        android:title="@string/app_name"
+    />
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/settings_nav_host"
         android:name="androidx.navigation.fragment.NavHostFragment"
@@ -19,6 +19,6 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_settings" />
-
+        app:navGraph="@navigation/nav_settings"
+    />
 </LinearLayout>
