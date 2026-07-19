@@ -1,9 +1,7 @@
 package net.emilla.action.box;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,14 +9,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.annotation.internal;
 import net.emilla.command.app.AppEntry;
 import net.emilla.command.core.OpenCommand;
-import net.emilla.databinding.FragmentItemListBinding;
 import net.emilla.sort.ItemSearchAdapter;
 
 public final class AppsFragment extends ActionBox {
-    @internal AppsFragment() {
+    public AppsFragment() {
         super(R.layout.fragment_item_list);
     }
 
@@ -27,16 +23,6 @@ public final class AppsFragment extends ActionBox {
     }
 
     private ItemSearchAdapter<AppEntry> mAdapter;
-
-    @Override
-    public View onCreateView(
-        LayoutInflater inflater,
-        @Nullable ViewGroup container,
-        @Nullable Bundle savedInstanceState
-    ) {
-        var binding = FragmentItemListBinding.inflate(inflater, container, false);
-        return binding.recycler;
-    }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

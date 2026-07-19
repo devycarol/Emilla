@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -19,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.annotation.internal;
 import net.emilla.config.SettingVals;
 import net.emilla.content.ResultLaunchers;
 import net.emilla.databinding.FragmentNotesBinding;
@@ -32,7 +29,7 @@ public final class NotesFragment extends ActionBox {
         this::onFolderChosen
     );
 
-    @internal NotesFragment() {
+    public NotesFragment() {
         super(R.layout.fragment_notes);
     }
 
@@ -44,19 +41,10 @@ public final class NotesFragment extends ActionBox {
     private /*late*/ FileSearchAdapter mAdapter;
 
     @Override
-    public View onCreateView(
-        LayoutInflater inflater,
-        @Nullable ViewGroup container,
-        @Nullable Bundle savedInstanceState
-    ) {
-        mBinding = FragmentNotesBinding.inflate(inflater, container, false);
-        return mBinding.getRoot();
-    }
-
-    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mBinding = FragmentNotesBinding.bind(view);
         Toolbar toolbar = mBinding.toolbar;
         toolbar.inflateMenu(R.menu.notes_toolbar);
         toolbar.setOnMenuItemClickListener(menuItem -> {

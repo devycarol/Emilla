@@ -1,9 +1,7 @@
 package net.emilla.config;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
@@ -23,19 +21,10 @@ public final class SettingPagesFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(
-        LayoutInflater inflater,
-        @Nullable ViewGroup container,
-        @Nullable Bundle savedInstanceState
-    ) {
-        mBinding = FragmentSettingPagesBinding.inflate(inflater, container, false);
-        return mBinding.getRoot();
-    }
-
-    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mBinding = FragmentSettingPagesBinding.bind(view);
         setupSettingPageTile(mBinding.behavior, R.id.fragment_behavior_settings);
         setupSettingPageTile(mBinding.commands, R.id.fragment_commands_settings);
         setupSettingPageTile(mBinding.layout, R.id.fragment_layout_settings);
