@@ -84,11 +84,6 @@ public enum SettingVals {;
         return prefs.getString("motd", res.getString(R.string.welcome_message));
     }
 
-    public static boolean alwaysShowData(SharedPreferences prefs) {
-        return prefs.getBoolean("always_show_data", false);
-        // TODO ACC: no reason for a hidden data field if a screen reader is in use.
-    }
-
     public static boolean showCursorStartButton(SharedPreferences prefs) {
         return prefs.getBoolean("show_cursor_start_button", false);
         // Todo: put these in an editor.

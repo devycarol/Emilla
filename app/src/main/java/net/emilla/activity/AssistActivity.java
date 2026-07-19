@@ -222,7 +222,12 @@ public final class AssistActivity extends AppCompatActivity {
 
                 boolean dataAvailable = noCommand || mCommand instanceof DataCommand;
                 if (dataAvailable != mVm.dataAvailable) {
-                    updateDataAvailability(dataAvailable);
+                    mVm.dataAvailable = dataAvailable;
+                    if (dataAvailable) {
+                        mBinding.showDataButton.setVisibility(View.VISIBLE);
+                    } else {
+                        hideDataField();
+                    }
                 }
             }
         }
@@ -230,37 +235,6 @@ public final class AssistActivity extends AppCompatActivity {
         @Override
         public void afterTextChanged(Editable s) {
         }
-    }
-
-    private void updateDataAvailability(boolean available) {
-        EditText dataField = mBinding.dataField;
-
-        if (available) {
-            if (!mVm.alwaysShowData) {
-                enableDataButton();
-            }
-            dataField.setEnabled(true);
-        } else if (dataField.getVisibility() == View.GONE) {
-            if (!mVm.alwaysShowData) {
-                disableDataButton();
-            }
-        } else {
-            dataField.setEnabled(false);
-        }
-
-        mVm.dataAvailable = available;
-    }
-
-    private void enableDataButton() {
-        ActionButton showDataButton = mBinding.showDataButton;
-        showDataButton.setEnabled(true);
-        showDataButton.setAlpha(1.0f);
-    }
-
-    private void disableDataButton() {
-        ActionButton showDataButton = mBinding.showDataButton;
-        showDataButton.setEnabled(false);
-        showDataButton.setAlpha(0.3f);
     }
 
     private boolean onActionKey(int actionId) {
@@ -294,12 +268,8 @@ public final class AssistActivity extends AppCompatActivity {
     }
 
     private void setupDataButtons() {
-        if (mVm.alwaysShowData) {
-            mBinding.showDataButton.setVisibility(View.GONE);
-        } else {
-            mBinding.showDataButton.setOnClickListener(v -> focusDataField());
-            mBinding.hideDataButton.setOnClickListener(v -> hideDataField());
-        }
+        mBinding.showDataButton.setOnClickListener(v -> focusDataField());
+        mBinding.hideDataButton.setOnClickListener(v -> hideDataField());
     }
 
     private void focusDataField() {
@@ -308,7 +278,7 @@ public final class AssistActivity extends AppCompatActivity {
             return;
         }
 
-        if (dataField.getVisibility() == View.GONE) {
+        if (dataField.getVisibility() != View.VISIBLE) {
             showDataField();
         }
         dataField.requestFocus();
@@ -317,58 +287,19 @@ public final class AssistActivity extends AppCompatActivity {
     private void showDataField() {
         mBinding.dataField.setVisibility(View.VISIBLE);
         mVm.dataVisible = true;
-        if (mVm.alwaysShowData) {
-            return;
-        }
-
         mBinding.hideDataButton.setVisibility(View.VISIBLE);
         mBinding.showDataButton.setVisibility(View.GONE);
     }
 
     private void hideDataField() {
-        EditText commandField = mBinding.commandField;
-        EditText dataField = mBinding.dataField;
-
-        int start;
-        int end;
-        boolean dataFocused = dataField.hasFocus();
-        if (dataFocused) {
-            int dataLen = dataField.length();
-            start = dataField.getSelectionStart() - dataLen;
-            end = dataField.getSelectionEnd() - dataLen;
-        } else {
-            start = commandField.getSelectionStart();
-            end = commandField.getSelectionEnd();
-        }
-        commandField.requestFocus();
-        if (dataField.length() > 0) {
-            Editable commandText = commandField.getText();
-            Editable dataText = dataField.getText();
-
-            int length = commandText.length();
-            if (length == 0 || Character.isWhitespace(commandText.charAt(length - 1))) {
-                commandField.append(dataText);
-            } else {
-                commandField.append(Lang.wordConcat(mVm.res, "", dataText.toString()));
-            }
-
-            dataField.setText(null);
-        }
-        int newLen = commandField.length();
-        if (dataFocused) {
-            commandField.setSelection(newLen + start, newLen + end);
-        } else {
-            commandField.setSelection(start, end);
-        }
-
-        dataField.setVisibility(View.GONE);
+        mBinding.commandField.requestFocus();
+        mBinding.dataField.setVisibility(View.GONE);
         mVm.dataVisible = false;
-
         mBinding.hideDataButton.setVisibility(View.GONE);
-        if (!mVm.dataAvailable) {
-            disableDataButton();
-        }
-        mBinding.showDataButton.setVisibility(View.VISIBLE);
+        mBinding.showDataButton.setVisibility(mVm.dataAvailable
+            ? View.VISIBLE
+            : View.GONE
+        );
     }
 
     private void setupMoreActions() {
@@ -653,7 +584,9 @@ public final class AssistActivity extends AppCompatActivity {
     }
 
     public boolean shouldCancel() {
-        return (mBinding.commandField.length() | mBinding.dataField.length()) == 0;
+        return mBinding.commandField.length() == 0
+            && mBinding.dataField.length() == 0
+        ;
     }
 
     public void cancel() {

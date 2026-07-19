@@ -43,8 +43,6 @@ final class AssistViewModel extends ViewModel {
     public final Resources res;
     public final SharedPreferences prefs;
 
-    public final boolean alwaysShowData;
-
     public boolean noCommand = true;
     public boolean dataAvailable = true;
     public boolean dataVisible;
@@ -74,8 +72,7 @@ final class AssistViewModel extends ViewModel {
         this.res = appContext.getResources();
         this.prefs = PreferenceManager.getDefaultSharedPreferences(appContext);
 
-        this.alwaysShowData = SettingVals.alwaysShowData(prefs);
-        this.dataVisible = this.alwaysShowData;
+        this.dataVisible = false;
 
         this.motd = SettingVals.motd(this.prefs, this.res);
 
