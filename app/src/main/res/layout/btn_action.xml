@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<net.emilla.widget.ActionButton xmlns:android="http://schemas.android.com/apk/res/android"
+<net.emilla.widget.ActionButton
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="@dimen/width_action"
     android:layout_height="@dimen/width_action"
-    android:layout_margin="@dimen/margin_narrow_half"
+    android:layout_marginTop="@dimen/margin_narrow"
     android:background="@drawable/bg_action_button"
     android:padding="@dimen/action_button_padding"
     android:scaleType="fitCenter"
-    app:elevation="0dp" />
+    app:elevation="0dp"
+/>

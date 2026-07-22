@@ -1,37 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:importantForAccessibility="no"
 >
     <!-- stupid shit needed to coddle eDgE tO eDgE slop -->
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraints"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/margin_narrow_half"
+        android:padding="@dimen/margin_narrow"
     >
-        <FrameLayout
-            android:id="@+id/empty_space"
-            android:layout_width="match_parent"
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/action_box"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginHorizontal="@dimen/margin_narrow_half"
-            android:layout_marginTop="@dimen/margin_narrow_half"
             android:layout_marginBottom="@dimen/margin_narrow"
-            android:importantForAccessibility="no"
             app:layout_constraintBottom_toTopOf="@id/barrier"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-        >
-            <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/action_box"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-            />
-        </FrameLayout>
+        />
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier"
             android:layout_width="match_parent"
@@ -39,128 +31,110 @@
             app:barrierDirection="top"
             app:constraint_referenced_ids="title_text,actions_container"
         />
+        <LinearLayout
+            android:id="@+id/actions_container"
+            android:layout_width="@dimen/width_action_plus_wide_margin"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_narrow"
+            android:background="?attr/colorBackgroundFloating"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/margin_narrow"
+            app:layout_constraintBottom_toTopOf="@id/data_button_frame"
+            app:layout_constraintEnd_toEndOf="parent"
+        />
         <TextView
             android:id="@+id/title_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginStart="@dimen/margin_narrow_half"
             android:background="?attr/colorBackgroundFloating"
-            android:paddingVertical="@dimen/margin_narrow_half"
-            android:paddingStart="@dimen/margin_narrow"
+            android:paddingHorizontal="@dimen/margin_narrow"
+            android:paddingTop="@dimen/margin_narrow"
             android:textIsSelectable="false"
             android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@id/assistant_container"
+            app:layout_constraintBottom_toTopOf="@id/data_field_frame"
             app:layout_constraintEnd_toStartOf="@id/actions_container"
             app:layout_constraintStart_toStartOf="parent"
         />
+        <FrameLayout
+            android:id="@+id/data_field_frame"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorBackgroundFloating"
+            android:paddingStart="@dimen/margin_narrow"
+            android:paddingTop="@dimen/margin_narrow"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/command_container"
+            app:layout_constraintEnd_toStartOf="@id/data_button_frame"
+            app:layout_constraintStart_toStartOf="parent"
+        >
+            <EditText
+                android:id="@+id/data_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_edit_box"
+                android:hint="@string/data_hint_default"
+                android:imeOptions="flagNavigatePrevious"
+                android:inputType="textMultiLine|textCapSentences"
+                android:minHeight="@dimen/width_action"
+            />
+        </FrameLayout>
 
-        <LinearLayout
-            android:id="@+id/actions_container"
+        <FrameLayout
+            android:id="@+id/data_button_frame"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_narrow_half"
-            android:layout_marginTop="@dimen/margin_narrow_half"
             android:background="?attr/colorBackgroundFloating"
-            android:gravity="end"
-            android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/margin_narrow_half"
-            android:paddingTop="@dimen/margin_narrow_half"
-            app:layout_constraintBottom_toTopOf="@id/assistant_container"
+            android:paddingHorizontal="@dimen/margin_narrow"
+            android:paddingTop="@dimen/margin_narrow"
+            app:layout_constraintBottom_toTopOf="@id/command_container"
             app:layout_constraintEnd_toEndOf="parent"
         >
+            <!--todo: the data button doesn't grow when the data field gets tall -->
             <net.emilla.widget.ActionButton
-                android:id="@+id/show_data_button"
+                android:id="@+id/data_button"
                 android:layout_width="@dimen/width_action"
                 android:layout_height="@dimen/width_action"
-                android:layout_margin="@dimen/margin_narrow_half"
                 android:background="@drawable/bg_action_button"
                 android:contentDescription="@string/spoken_description_show_data"
                 android:padding="@dimen/action_button_padding"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_show_data"
+                app:elevation="0dp"
             />
-        </LinearLayout>
+        </FrameLayout>
 
         <LinearLayout
-            android:id="@+id/assistant_container"
+            android:id="@+id/command_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_narrow_half"
             android:background="?attr/colorBackgroundFloating"
-            android:orientation="vertical"
-            android:paddingHorizontal="@dimen/margin_narrow_half"
-            android:paddingBottom="@dimen/margin_narrow_half"
+            android:orientation="horizontal"
+            android:padding="@dimen/margin_narrow_half"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
         >
-            <LinearLayout
-                android:layout_width="match_parent"
+            <EditText
+                android:id="@+id/command_field"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-            >
-                <EditText
-                    android:id="@+id/data_field"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin_narrow_half"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_edit_box"
-                    android:hint="@string/data_hint_default"
-                    android:imeOptions="flagNavigatePrevious"
-                    android:importantForAutofill="no"
-                    android:inputType="textMultiLine|textCapSentences"
-                    android:minHeight="@dimen/width_action"
-                    android:textColorHint="?attr/colorControlNormal"
-                    android:visibility="gone"
-                />
-                <net.emilla.widget.ActionButton
-                    android:id="@+id/hide_data_button"
-                    android:layout_width="@dimen/width_action"
-                    android:layout_height="match_parent"
-                    android:layout_margin="@dimen/margin_narrow_half"
-                    android:background="@drawable/bg_action_button"
-                    android:contentDescription="@string/spoken_description_hide_data"
-                    android:padding="@dimen/action_button_padding"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_hide_data"
-                    android:visibility="gone"
-                />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/container_command"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-            >
-                <EditText
-                    android:id="@+id/command_field"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin_narrow_half"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_edit_box"
-                    android:hint="@string/field_command"
-                    android:importantForAutofill="no"
-                    android:inputType="text|textCapSentences"
-                    android:minHeight="@dimen/width_action"
-                    android:textColorHint="?attr/colorControlNormal"
-                    tools:ignore="VisualLintTextFieldSize"
-                />
-                <net.emilla.widget.ActionButton
-                    android:id="@+id/submit_button"
-                    android:layout_width="@dimen/width_action"
-                    android:layout_height="match_parent"
-                    android:layout_margin="@dimen/margin_narrow_half"
-                    android:background="@drawable/bg_action_button"
-                    android:contentDescription="@string/spoken_description_submit_command"
-                    android:padding="@dimen/action_button_padding"
-                    android:scaleType="fitCenter"
-                    app:elevation="0dp"
-                />
-            </LinearLayout>
+                android:layout_margin="@dimen/margin_narrow_half"
+                android:layout_weight="1"
+                android:background="@drawable/bg_edit_box"
+                android:hint="@string/field_command"
+                android:importantForAutofill="no"
+                android:inputType="text|textCapSentences"
+                android:minHeight="@dimen/width_action"
+            />
+            <net.emilla.widget.ActionButton
+                android:id="@+id/submit_button"
+                android:layout_width="@dimen/width_action"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/margin_narrow_half"
+                android:background="@drawable/bg_action_button"
+                android:contentDescription="@string/spoken_description_submit_command"
+                android:padding="@dimen/action_button_padding"
+                android:scaleType="fitCenter"
+                app:elevation="0dp"
+            />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

@@ -32,8 +32,8 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -43,6 +43,7 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
@@ -82,6 +83,7 @@ import net.emilla.util.Dialogs;
 import net.emilla.util.Views;
 import net.emilla.widget.ActionButton;
 import net.emilla.widget.ActionIcon;
+import net.emilla.widget.SymbolIcon;
 
 import java.util.ArrayList;
 
@@ -148,17 +150,21 @@ public final class AssistActivity extends AppCompatActivity {
 
         TextView titleText = mBinding.titleText;
         titleText.setText(mVm.motd);
-        titleText.setOnClickListener(v -> {
-            Help.perform(this);
-        });
+        titleText.setOnClickListener(v -> Help.perform(this));
         Views.setClickActionLabel(res, titleText, R.string.action_desc_help);
 
         setupCommandField();
         if (mVm.dataVisible) {
             showDataField();
         }
-        mBinding.emptySpace.setOnClickListener(v -> cancelIfWarranted());
-        setupDataButtons();
+        mBinding.getRoot().setOnClickListener(v -> cancelIfWarranted());
+        mBinding.dataButton.setOnClickListener(v -> {
+            if (mBinding.dataFieldFrame.getVisibility() != View.VISIBLE) {
+                focusDataField();
+            } else {
+                hideDataField();
+            }
+        });
         setupMoreActions();
 
         SharedPreferences prefs = mVm.prefs;
@@ -224,9 +230,19 @@ public final class AssistActivity extends AppCompatActivity {
                 if (dataAvailable != mVm.dataAvailable) {
                     mVm.dataAvailable = dataAvailable;
                     if (dataAvailable) {
-                        mBinding.showDataButton.setVisibility(View.VISIBLE);
+                        mBinding.dataButtonFrame.setVisibility(View.VISIBLE);
+                        onIncreaseActionOverflow(
+                            mBinding.actionsContainer.getChildCount() + 1
+                        );
                     } else {
-                        hideDataField();
+                        if (mBinding.dataFieldFrame.getVisibility() != View.GONE
+                        ) {
+                            hideDataField();
+                        }
+                        mBinding.dataButtonFrame.setVisibility(View.GONE);
+                        onDecreaseActionOverflow(
+                            mBinding.actionsContainer.getChildCount()
+                        );
                     }
                 }
             }
@@ -267,42 +283,123 @@ public final class AssistActivity extends AppCompatActivity {
         submitButton.setLongPress(SettingVals.longSubmit(mVm.prefs, this), mVm.res);
     }
 
-    private void setupDataButtons() {
-        mBinding.showDataButton.setOnClickListener(v -> focusDataField());
-        mBinding.hideDataButton.setOnClickListener(v -> hideDataField());
-    }
-
     private void focusDataField() {
-        EditText dataField = mBinding.dataField;
-        if (dataField.hasFocus()) {
+        if (mBinding.dataField.hasFocus()) {
             return;
         }
 
-        if (dataField.getVisibility() != View.VISIBLE) {
+        if (mBinding.dataFieldFrame.getVisibility() != View.VISIBLE) {
             showDataField();
         }
-        dataField.requestFocus();
+        mBinding.dataField.requestFocus();
     }
 
     private void showDataField() {
-        mBinding.dataField.setVisibility(View.VISIBLE);
+        mBinding.dataFieldFrame.setVisibility(View.VISIBLE);
         mVm.dataVisible = true;
-        mBinding.hideDataButton.setVisibility(View.VISIBLE);
-        mBinding.showDataButton.setVisibility(View.GONE);
+        mBinding.dataButton.setIcon(new SymbolIcon(R.drawable.ic_hide_data));
+        var res = getResources();
+        mBinding.dataButton.setContentDescription(
+            res.getString(R.string.spoken_description_hide_data)
+        );
+        onDecreaseActionOverflow(mBinding.actionsContainer.getChildCount());
     }
 
     private void hideDataField() {
         mBinding.commandField.requestFocus();
-        mBinding.dataField.setVisibility(View.GONE);
+        mBinding.dataFieldFrame.setVisibility(View.GONE);
         mVm.dataVisible = false;
-        mBinding.hideDataButton.setVisibility(View.GONE);
-        mBinding.showDataButton.setVisibility(mVm.dataAvailable
-            ? View.VISIBLE
-            : View.GONE
+        mBinding.dataButton.setIcon(new SymbolIcon(R.drawable.ic_show_data));
+        var res = getResources();
+        mBinding.dataButton.setContentDescription(
+            res.getString(R.string.spoken_description_show_data)
         );
+        onIncreaseActionOverflow(mBinding.actionsContainer.getChildCount() + 1);
+    }
+
+    private int actionOverflowLevel() {
+        int overflowLevel = mBinding.actionsContainer.getChildCount();
+        if (mBinding.dataButtonFrame.getVisibility() != View.GONE
+            && mBinding.dataFieldFrame.getVisibility() != View.VISIBLE
+        ) {
+            ++overflowLevel;
+        }
+        return overflowLevel;
+    }
+
+    private void onIncreaseActionOverflow(int overflowLevel) {
+        var constraints = new ConstraintSet();
+        constraints.clone(mBinding.constraints);
+        switch (overflowLevel) {
+        case 1 -> constraints.connect(
+            R.id.title_text,
+            ConstraintSet.END,
+            R.id.actions_container,
+            ConstraintSet.START
+        );
+        case 2 -> {
+            constraints.connect(
+                R.id.actions_container,
+                ConstraintSet.START,
+                R.id.action_box,
+                ConstraintSet.END,
+                getResources().getDimensionPixelSize(R.dimen.margin_narrow)
+            );
+            constraints.connect(
+                R.id.action_box,
+                ConstraintSet.END,
+                R.id.actions_container,
+                ConstraintSet.START
+            );
+            constraints.connect(
+                R.id.action_box,
+                ConstraintSet.BOTTOM,
+                R.id.title_text,
+                ConstraintSet.TOP
+            );
+        }
+        }
+        constraints.applyTo(mBinding.constraints);
+    }
+
+    private void onDecreaseActionOverflow(int overflowLevel) {
+        var constraints = new ConstraintSet();
+        constraints.clone(mBinding.constraints);
+        switch (overflowLevel) {
+        case 0 -> constraints.clear(R.id.title_text, ConstraintSet.END);
+        case 1 -> {
+            constraints.connect(
+                R.id.action_box,
+                ConstraintSet.BOTTOM,
+                R.id.barrier,
+                ConstraintSet.TOP
+            );
+            constraints.clear(R.id.actions_container, ConstraintSet.START);
+            constraints.connect(
+                R.id.action_box,
+                ConstraintSet.END,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.END
+            );
+        }
+        }
+        constraints.applyTo(mBinding.constraints);
     }
 
     private void setupMoreActions() {
+        mBinding.actionsContainer.setOnHierarchyChangeListener(
+            new ViewGroup.OnHierarchyChangeListener() {
+                @Override
+                public void onChildViewAdded(View parent, View child) {
+                    onIncreaseActionOverflow(actionOverflowLevel());
+                }
+
+                @Override
+                public void onChildViewRemoved(View parent, View child) {
+                    onDecreaseActionOverflow(actionOverflowLevel());
+                }
+            }
+        );
         SharedPreferences prefs = mVm.prefs;
         // TODO: save state hell
         if (SettingVals.showCursorStartButton(prefs)) {
@@ -314,15 +411,16 @@ public final class AssistActivity extends AppCompatActivity {
     }
 
     public void addAction(QuickAction action) {
-        LinearLayout actionsContainer = mBinding.actionsContainer;
-        var button = (ActionButton) mInflater.inflate(R.layout.btn_action, actionsContainer, false);
-
+        var button = (ActionButton) mInflater.inflate(
+            R.layout.btn_action,
+            mBinding.actionsContainer,
+            false
+        );
         button.setId(action.id());
         button.setIcon(action.icon());
         button.setContentDescription(action.label(mVm.res));
         button.setOnClickListener(v -> action.perform());
-
-        actionsContainer.addView(button, 0);
+        mBinding.actionsContainer.addView(button, 0);
     }
 
     public void removeAction(@IdRes int action) {
@@ -596,7 +694,7 @@ public final class AssistActivity extends AppCompatActivity {
 
     @Deprecated
     public void onCloseDialog() {
-        mBinding.emptySpace.setEnabled(true);
+        mBinding.getRoot().setEnabled(true);
         mBinding.submitButton.setEnabled(true);
         mVm.dialogOpen = false;
     }
@@ -636,7 +734,7 @@ public final class AssistActivity extends AppCompatActivity {
         //  mother of all views (whatever that is) or get to the bottom of why views can be clicked
         //  in the split-second after dialog invocation in the first place
         mVm.dialogOpen = true;
-        mBinding.emptySpace.setEnabled(false);
+        mBinding.getRoot().setEnabled(false);
         mBinding.submitButton.setEnabled(false);
     }
 

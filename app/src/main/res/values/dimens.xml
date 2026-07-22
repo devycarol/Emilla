@@ -3,5 +3,6 @@
     <dimen name="margin_narrow">8dp</dimen>
     <dimen name="margin_narrow_half">4dp</dimen>
     <dimen name="width_action">48dp</dimen>
+    <dimen name="width_action_plus_wide_margin">64dp</dimen>
     <dimen name="action_button_padding">6dp</dimen>
 </resources>

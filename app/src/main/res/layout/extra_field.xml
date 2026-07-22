@@ -7,9 +7,7 @@
     android:drawablePadding="@dimen/margin_narrow"
     android:hint="@null"
     android:imeOptions="flagNavigatePrevious"
-    android:importantForAutofill="no"
     android:inputType="textMultiLine|textCapSentences"
-    android:minHeight="48dp"
+    android:minHeight="@dimen/width_action"
     android:paddingStart="@dimen/margin_narrow"
-    android:textColorHint="?attr/colorControlNormal"
 />
