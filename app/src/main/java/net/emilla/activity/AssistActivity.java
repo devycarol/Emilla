@@ -817,7 +817,7 @@ public final class AssistActivity extends AppCompatActivity {
         try {
             EditText dataField = mBinding.dataField;
             if (mCommand instanceof DataCommand dataCmd && dataField.length() > 0) {
-                DataCommand.execute(dataCmd, this, dataField.getText().toString());
+                dataCmd.execute(this, dataField.getText().toString());
             } else {
                 mCommand.execute(this);
             }
