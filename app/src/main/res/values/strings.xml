@@ -525,9 +525,11 @@
         You\'ll be presented with a list of apps matching your search. The uninstall prompt will
         show immediately for an exact match or single result.
     </string>
-    <!-- "Show a little message!" -->
+    <!-- "Text to speech" -->
     <string name="manual_say">
-        The text you enter will be shown in a brief pop-up message.
+        The phrase you enter will be uttered by the device\'s speech synthesizer. If you provide no
+        instruction, your welcome message will be used. You can stop playback at any time by tapping
+        in the action box.
     </string>
     <!-- "Add tasks to a todo.txt file" -->
     <string name="manual_todo">
@@ -695,7 +697,6 @@
     <string name="switch_file">Switch file</string>
 
     <!-- Toast messages -->
-    <string name="toast_hello">Hello!</string>
     <string name="toast_file_not_created">A file wasn\'t created.</string>
     <string name="toast_files_not_selected">Files weren\'t selected.</string>
     <string name="toast_media_not_selected">Media weren\'t selected.</string>
@@ -948,4 +949,8 @@
     <plurals name="kelvin">
         <item quantity="other">%s Kelvin</item>
     </plurals>
+
+    <string name="tts_waiting">Loading speech synthesizer…</string>
+    <string name="tts_ready">Ready!</string>
+    <string name="tts_failed">Speech synthesizer is missing or unresponsive</string>
 </resources>

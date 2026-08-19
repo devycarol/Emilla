@@ -1,25 +1,32 @@
 package net.emilla.command.core;
 
 import android.content.Context;
+import android.view.inputmethod.EditorInfo;
 
-import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
-import net.emilla.run.ToastGift;
+import net.emilla.config.SettingVals;
+import net.emilla.speech.TtsFragment;
 
 final class Say extends CoreCommand {
+    private final TtsFragment mFragment = TtsFragment.newInstance();
+
     @internal Say(Context ctx) {
-        super(ctx, CoreEntry.SAY, R.string.data_hint_say);
+        super(ctx, CoreEntry.SAY, EditorInfo.IME_ACTION_DONE);
+
+        giveGadgets(mFragment);
     }
 
-    private static void say(AssistActivity act, CharSequence message) {
-        act.give(ToastGift.instance(message, false));
+    private void say(AssistActivity act, String phrase) {
+        mFragment.say(phrase);
+        act.selectInstruction();
     }
 
     @Override
     protected void run(AssistActivity act) {
+        var prefs = act.getSharedPreferences();
         var res = act.getResources();
-        say(act, res.getString(R.string.toast_hello));
+        say(act, SettingVals.motd(prefs, res));
     }
 
     @Override
