@@ -74,9 +74,6 @@ public final class AppEntry extends SearchItem implements Params {
 
         pkg = packageName;
         cls = name;
-        // TODO: this is the biggest performance bottleneck I've found so far. Look into how the
-        //  launcher caches labels for ideas on how to improve the performance of this critical
-        //  onCreate task. That is, if they do to begin with..
         properties = AppProperties.of(pkg, cls);
         actions = new AppActions(pm, pkg, properties);
         Drawable icon;

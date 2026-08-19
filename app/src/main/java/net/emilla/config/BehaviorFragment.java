@@ -7,6 +7,8 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.Nullable;
@@ -24,7 +26,13 @@ import net.emilla.result.ChimeSoundResult;
 import net.emilla.result.GetChimeSound;
 import net.emilla.util.Features;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public final class BehaviorFragment extends PreferenceFragmentCompat {
+    private static final ExecutorService BACKGROUND = Executors.newFixedThreadPool(1);
+    private static final Handler MAIN_HANDLER = new Handler(Looper.getMainLooper());
+
     private final ActivityResultLauncher<Chime> mSoundPickerLauncher = registerForActivityResult(
         new GetChimeSound(),
         this::onPickChimeSound
@@ -114,7 +122,11 @@ public final class BehaviorFragment extends PreferenceFragmentCompat {
                     for (var chime : Chime.values()) {
                         Preference customSound = findPreference(chime.preferenceKey);
                         customSound.setVisible(usingCustomSounds);
-                        activateCustomSoundPref(ctx, prefs, res, customSound, chime);
+                        activateCustomSoundPref(
+                            customSound,
+                            chime,
+                            customSoundTitle(ctx, prefs, res, chime)
+                        );
                     }
                     mUsingCustomSounds = usingCustomSounds;
                 }
@@ -133,7 +145,12 @@ public final class BehaviorFragment extends PreferenceFragmentCompat {
         for (var chime : Chime.values()) {
             Preference customSound = findPreference(chime.preferenceKey);
             if (isEnabled) {
-                activateCustomSoundPref(ctx, prefs, res, customSound, chime);
+                BACKGROUND.execute(() -> {
+                    String summary = customSoundTitle(ctx, prefs, res, chime);
+                    MAIN_HANDLER.post(() -> {
+                        activateCustomSoundPref(customSound, chime, summary);
+                    });
+                });
             } else {
                 customSound.setVisible(false);
             }
@@ -141,18 +158,16 @@ public final class BehaviorFragment extends PreferenceFragmentCompat {
     }
 
     private void activateCustomSoundPref(
-        Context ctx,
-        SharedPreferences prefs,
-        Resources res,
         Preference customSound,
-        Chime chime
+        Chime chime,
+        String summary
     ) {
         customSound.setOnPreferenceClickListener(pref -> {
             mSoundPickerLauncher.launch(chime);
             return false;
         });
 
-        customSound.setSummary(customSoundTitle(ctx, prefs, res, chime));
+        customSound.setSummary(summary);
     }
 
     private void onPickChimeSound(ChimeSoundResult chimeSoundResult) {
