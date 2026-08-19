@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 
 import androidx.annotation.ArrayRes;
 import androidx.annotation.Nullable;
@@ -22,10 +24,14 @@ import net.emilla.util.Patterns;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public final class CommandsFragment extends PreferenceFragmentCompat {
+    private static final ExecutorService BACKGROUND = Executors.newFixedThreadPool(1);
+    private static final Handler MAIN_HANDLER = new Handler(Looper.getMainLooper());
     private static final Pattern SQUASHING_CSV = Pattern.compile("( *, *)+");
 
     private /*late*/ Context mContext;
@@ -116,13 +122,17 @@ public final class CommandsFragment extends PreferenceFragmentCompat {
     }
 
     private void setupApps() {
-        // Todo: priority-sort the apps with hard-coded support?
         PreferenceCategory apps = findPreference("category_apps");
-        for (AppEntry app : Apps.launchers(mPm)) {
-            var appPref = new CommandPreference(mContext, app);
-            apps.addPreference(appPref);
-            setupPref(appPref, Aliases.appSet(mPrefs, mRes, app));
-        }
+        BACKGROUND.execute(() -> {
+            AppEntry[] launchers = Apps.launchers(mPm);
+            MAIN_HANDLER.post(() -> {
+                for (AppEntry app : launchers) {
+                    var appPref = new CommandPreference(mContext, app);
+                    apps.addPreference(appPref);
+                    setupPref(appPref, Aliases.appSet(mPrefs, mRes, app));
+                }
+            });
+        });
     }
 
     private void setupCustoms() {

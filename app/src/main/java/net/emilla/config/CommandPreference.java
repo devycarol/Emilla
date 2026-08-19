@@ -19,7 +19,6 @@ import java.util.Objects;
 
 public final class CommandPreference extends EditTextPreference {
     public final String setKey;
-
     private final String mEnabledKey;
 
     public CommandPreference(Context ctx, @Nullable AttributeSet attrs) {
@@ -39,7 +38,7 @@ public final class CommandPreference extends EditTextPreference {
 
         setTitle(appEntry.displayName);
         setSummary(appEntry.summary());
-        setIcon(appEntry.icon(ctx));
+        setIcon(appEntry.icon);
     }
 
     private CommandPreference(Context ctx, @Nullable AttributeSet attrs, @Nullable String entry) {

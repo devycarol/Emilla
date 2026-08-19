@@ -62,8 +62,14 @@ public final class AppEntry extends SearchItem implements Params {
     @Nullable
     public final AppProperties properties;
     public final AppActions actions;
+    public final Drawable icon;
 
-    private AppEntry(PackageManager pm, String label, String packageName, String name) {
+    private AppEntry(
+        PackageManager pm,
+        String label,
+        String packageName,
+        String name
+    ) {
         super(label);
 
         pkg = packageName;
@@ -73,6 +79,13 @@ public final class AppEntry extends SearchItem implements Params {
         //  onCreate task. That is, if they do to begin with..
         properties = AppProperties.of(pkg, cls);
         actions = new AppActions(pm, pkg, properties);
+        Drawable icon;
+        try {
+            icon = pm.getActivityIcon(componentName());
+        } catch (PackageManager.NameNotFoundException e) {
+            icon = null;
+        }
+        this.icon = icon;
     }
 
     public String entry() {
@@ -102,7 +115,6 @@ public final class AppEntry extends SearchItem implements Params {
 
     @Override
     public ActionIcon actionIcon(Context ctx) {
-        Drawable icon = icon(ctx);
         if (icon == null) {
             return new SymbolIcon(R.drawable.ic_app);
         }
@@ -128,16 +140,6 @@ public final class AppEntry extends SearchItem implements Params {
             return value.data;
         }
         return Color.BLACK;
-    }
-
-    @Nullable
-    public Drawable icon(Context ctx) {
-        try {
-            var pm = ctx.getPackageManager();
-            return pm.getActivityIcon(componentName());
-        } catch (PackageManager.NameNotFoundException e) {
-            return null;
-        }
     }
 
     @Override
