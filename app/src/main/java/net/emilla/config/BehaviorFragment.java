@@ -30,7 +30,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public final class BehaviorFragment extends PreferenceFragmentCompat {
-    private static final ExecutorService BACKGROUND = Executors.newFixedThreadPool(1);
+    private static final ExecutorService BACKGROUND = Executors.newSingleThreadExecutor();
     private static final Handler MAIN_HANDLER = new Handler(Looper.getMainLooper());
 
     private final ActivityResultLauncher<Chime> mSoundPickerLauncher = registerForActivityResult(

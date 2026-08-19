@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public final class CommandsFragment extends PreferenceFragmentCompat {
-    private static final ExecutorService BACKGROUND = Executors.newFixedThreadPool(1);
+    private static final ExecutorService BACKGROUND = Executors.newSingleThreadExecutor();
     private static final Handler MAIN_HANDLER = new Handler(Looper.getMainLooper());
     private static final Pattern SQUASHING_CSV = Pattern.compile("( *, *)+");
 
