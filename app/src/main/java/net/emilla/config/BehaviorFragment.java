@@ -113,20 +113,14 @@ public final class BehaviorFragment extends PreferenceFragmentCompat {
         findPreference(SettingVals.CHIMER).setOnPreferenceChangeListener(
             (pref, newVal) -> {
                 boolean usingCustomSounds = newVal.equals(Chimer.CUSTOM);
-
                 if (mUsingCustomSounds != usingCustomSounds) {
                     var ctx = requireContext();
                     var res = ctx.getResources();
-                    var manager = getPreferenceManager();
-                    var prefs = manager.getSharedPreferences();
+                    var prefs = getPreferenceManager().getSharedPreferences();
                     for (var chime : Chime.values()) {
                         Preference customSound = findPreference(chime.preferenceKey);
                         customSound.setVisible(usingCustomSounds);
-                        activateCustomSoundPref(
-                            customSound,
-                            chime,
-                            customSoundTitle(ctx, prefs, res, chime)
-                        );
+                        activateCustomSoundPref(customSound, chime, ctx, prefs, res);
                     }
                     mUsingCustomSounds = usingCustomSounds;
                 }
@@ -145,12 +139,7 @@ public final class BehaviorFragment extends PreferenceFragmentCompat {
         for (var chime : Chime.values()) {
             Preference customSound = findPreference(chime.preferenceKey);
             if (isEnabled) {
-                BACKGROUND.execute(() -> {
-                    String summary = customSoundTitle(ctx, prefs, res, chime);
-                    MAIN_HANDLER.post(() -> {
-                        activateCustomSoundPref(customSound, chime, summary);
-                    });
-                });
+                activateCustomSoundPref(customSound, chime, ctx, prefs, res);
             } else {
                 customSound.setVisible(false);
             }
@@ -160,14 +149,26 @@ public final class BehaviorFragment extends PreferenceFragmentCompat {
     private void activateCustomSoundPref(
         Preference customSound,
         Chime chime,
-        String summary
+        Context ctx,
+        SharedPreferences prefs,
+        Resources res
     ) {
-        customSound.setOnPreferenceClickListener(pref -> {
-            mSoundPickerLauncher.launch(chime);
-            return false;
-        });
+        BACKGROUND.execute(() -> {
+            String summary = customSoundTitle(
+                ctx,
+                prefs,
+                res,
+                chime
+            );
+            MAIN_HANDLER.post(() -> {
+                customSound.setOnPreferenceClickListener(pref -> {
+                    mSoundPickerLauncher.launch(chime);
+                    return false;
+                });
 
-        customSound.setSummary(summary);
+                customSound.setSummary(summary);
+            });
+        });
     }
 
     private void onPickChimeSound(ChimeSoundResult chimeSoundResult) {
