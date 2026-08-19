@@ -28,7 +28,7 @@
 
     <fragment
         android:id="@+id/fragment_behavior_settings"
-        android:name="net.emilla.config.BehaviorSettingsFragment"
+        android:name="net.emilla.config.BehaviorFragment"
         android:label="@string/header_behavior"
     />
     <fragment

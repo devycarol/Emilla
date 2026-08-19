@@ -24,7 +24,7 @@ import net.emilla.result.ChimeSoundResult;
 import net.emilla.result.GetChimeSound;
 import net.emilla.util.Features;
 
-public final class BehaviorSettingsFragment extends PreferenceFragmentCompat {
+public final class BehaviorFragment extends PreferenceFragmentCompat {
     private final ActivityResultLauncher<Chime> mSoundPickerLauncher = registerForActivityResult(
         new GetChimeSound(),
         this::onPickChimeSound
@@ -32,7 +32,7 @@ public final class BehaviorSettingsFragment extends PreferenceFragmentCompat {
 
     private boolean mUsingCustomSounds;
 
-    public BehaviorSettingsFragment() {
+    public BehaviorFragment() {
         super();
     }
 
