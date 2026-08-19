@@ -141,7 +141,7 @@ public enum CoreEntry implements Params {
             return Uninstall.possible(pm);
         }
     },
-    TOAST(Toast::new, R.string.command_toast, R.array.aliases_toast, R.string.instruction_text, R.drawable.ic_toast, R.string.summary_toast, R.string.manual_toast),
+    SAY(Say::new, R.string.command_say, R.array.aliases_say, R.string.instruction_text, R.drawable.ic_toast, R.string.summary_say, R.string.manual_say),
     BITS(Bits::new, R.string.command_bits, R.array.aliases_bits, R.string.instruction_calculate, R.drawable.ic_command, R.string.summary_bits, R.string.manual_bits),
 ;
     @internal final CoreMaker mMaker;

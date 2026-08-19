@@ -132,8 +132,8 @@
         <item>remove</item>
         <item>delete</item>
     </string-array>
-    <string-array name="aliases_toast">
-        <item>say</item>
+    <string-array name="aliases_say">
+        <item>toast</item>
     </string-array>
 
     <!-- App aliases -->

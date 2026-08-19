@@ -161,7 +161,7 @@
     <string name="command_info">Info</string>
     <string name="command_notifications">Notifications</string>
     <string name="command_uninstall">Uninstall</string>
-    <string name="command_toast">Toast</string>
+    <string name="command_say">Say</string>
     <string name="command_todo">To-do</string>
     <string name="command_pomodoro">Pomodoro</string>
     <string name="command_custom">Custom</string>
@@ -244,7 +244,7 @@
     <string name="summary_info">View application details</string>
     <string name="summary_notifications">Configure app notifications</string>
     <string name="summary_uninstall">Remove installed apps</string>
-    <string name="summary_toast">Show a little message!</string>
+    <string name="summary_say">Text to speech</string>
     <string name="summary_todo">Add tasks to a todo.txt file</string>
     <string name="summary_pomodoro">Set timers for work and breaks</string>
     <string name="summary_duplicate">Select ambiguous command</string>
@@ -526,11 +526,8 @@
         show immediately for an exact match or single result.
     </string>
     <!-- "Show a little message!" -->
-    <string name="manual_toast">
-        The text you enter will be shown in a short pop-up message. The command instruction and data
-        field will be line-separated if applicable.\n
-        \n
-        More than 2 lines of text are usually ellipsized.
+    <string name="manual_say">
+        The text you enter will be shown in a brief pop-up message.
     </string>
     <!-- "Add tasks to a todo.txt file" -->
     <string name="manual_todo">
@@ -611,7 +608,7 @@
     <string name="data_hint_schedule">Event details</string>
     <string name="data_hint_contact">Contact info</string>
     <string name="data_hint_notify">Notification text</string>
-    <string name="data_hint_toast">More text</string>
+    <string name="data_hint_say">More text</string>
     <!-- Generic hint for text -->
     <string name="data_hint_text">Text</string>
     <!-- Generic hint for labels -->
@@ -698,7 +695,7 @@
     <string name="switch_file">Switch file</string>
 
     <!-- Toast messages -->
-    <string name="toast_hello">Hi there!</string>
+    <string name="toast_hello">Hello!</string>
     <string name="toast_file_not_created">A file wasn\'t created.</string>
     <string name="toast_files_not_selected">Files weren\'t selected.</string>
     <string name="toast_media_not_selected">Media weren\'t selected.</string>
@@ -709,8 +706,6 @@
     <string name="toast_contact_not_selected">A contact wasn\'t selected.</string>
     <string name="toast_saved">Saved!</string>
     <string name="toast_snippet_deleted">Deleted \"%s\".</string>
-
-    <string name="tag_toast_long">/long</string>
 
     <string name="zoned_time">It\'s %1$s %2$s.</string>
 
