@@ -9,7 +9,11 @@ import androidx.appcompat.app.AlertDialog;
 import net.emilla.activity.AssistActivity;
 
 public enum Dialogs {;
-    private static AlertDialog.Builder base(Context ctx, CharSequence title, @StringRes int noLabel) {
+    private static AlertDialog.Builder base(
+        Context ctx,
+        CharSequence title,
+        @StringRes int noLabel
+    ) {
         return new AlertDialog.Builder(ctx).setTitle(title)
             .setNegativeButton(noLabel, (dlg, which) -> dlg.cancel())
         ;
@@ -102,8 +106,9 @@ public enum Dialogs {;
     ) {
         // Todo: don't require yesClick.onClick(dlg, which);
         return base(
-            act, title, msg,
-
+            act,
+            title,
+            msg,
             android.R.string.cancel
         ).setPositiveButton(
             yesLabel,
@@ -122,8 +127,9 @@ public enum Dialogs {;
         DialogInterface.OnClickListener yesClick
     ) {
         return base(
-            act, title, msg,
-
+            act,
+            title,
+            msg,
             android.R.string.cancel
         ).setPositiveButton(
             yesLabel,
@@ -142,8 +148,9 @@ public enum Dialogs {;
         DialogInterface.OnClickListener yesClick
     ) {
         return base(
-            act, title, msg,
-
+            act,
+            title,
+            msg,
             android.R.string.cancel
         ).setPositiveButton(
             yesLabel,
