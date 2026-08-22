@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
@@ -124,6 +125,8 @@ public abstract class EmillaCommand {
     private String mInstruction = null;
     private boolean mActive = false;
 
+    @StringRes
+    public final int dataHint;
     @Nullable
     private Gadget[] mGadgets = null;
     @Nullable
@@ -136,14 +139,7 @@ public abstract class EmillaCommand {
         @StringRes int manual,
         int imeAction
     ) {
-        mParams = params;
-
-        var res = surface.getResources();
-
-        this.name = params.name(res);
-        this.summary = summary;
-        this.manual = manual;
-        this.mImeAction = imeAction;
+        this(surface, params, summary, manual, imeAction, null);
     }
 
     protected EmillaCommand(
@@ -151,7 +147,28 @@ public abstract class EmillaCommand {
         CoreEntry coreEntry,
         int imeAction
     ) {
-        this(surface, coreEntry, coreEntry.summary, coreEntry.manual, imeAction);
+        this(
+            surface,
+            coreEntry,
+            coreEntry.summary,
+            coreEntry.manual,
+            imeAction
+        );
+    }
+
+    protected EmillaCommand(
+        ActionSurface surface,
+        CoreEntry coreEntry,
+        DataField dataField
+    ) {
+        this(
+            surface,
+            coreEntry,
+            coreEntry.summary,
+            coreEntry.manual,
+            EditorInfo.IME_ACTION_NEXT,
+            dataField
+        );
     }
 
     protected EmillaCommand(
@@ -166,6 +183,40 @@ public abstract class EmillaCommand {
             appEntry.actions.manual(),
             imeAction
         );
+    }
+
+    protected EmillaCommand(
+        ActionSurface surface,
+        AppEntry appEntry,
+        DataField dataField
+    ) {
+        this(
+            surface,
+            appEntry,
+            appEntry.summary(),
+            appEntry.actions.manual(),
+            EditorInfo.IME_ACTION_NEXT,
+            dataField
+        );
+    }
+
+    private EmillaCommand(
+        ActionSurface surface,
+        Params params,
+        @StringRes int summary,
+        @StringRes int manual,
+        int imeAction,
+        @Nullable DataField dataField
+    ) {
+        mParams = params;
+        this.name = params.name(surface.getResources());
+        this.summary = summary;
+        this.manual = manual;
+        mImeAction = imeAction;
+        this.dataHint = dataField != null
+            ? dataField.hint()
+            : 0
+        ;
     }
 
     @internal final void instruct(@Nullable String instruction) {

@@ -3,17 +3,15 @@ package net.emilla.command.app;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 
 import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.ActionMap;
-import net.emilla.command.DataCommand;
+import net.emilla.command.DataField;
 import net.emilla.lang.Lines;
 import net.emilla.util.Dialogs;
 import net.emilla.util.Permission;
@@ -24,13 +22,8 @@ import net.emilla.wadget.ActionSurface;
 import java.util.Comparator;
 import java.util.TreeSet;
 
-final class Tasker extends AppCommand implements DataCommand {
+final class Tasker extends AppCommand {
     public static final String PKG = TaskerIntent.TASKER_PACKAGE_MARKET;
-
-    @Override @StringRes
-    public int dataHint() {
-        return R.string.data_hint_app_tasker;
-    }
 
     private static final String COL_TASK_NAME = "name";
     private static final String COL_PROJECT_NAME = "project_name";
@@ -43,7 +36,7 @@ final class Tasker extends AppCommand implements DataCommand {
     private final ActionMap<Action> mActionMap;
 
     @internal Tasker(ActionSurface surface, AppEntry appEntry) {
-        super(surface, appEntry, EditorInfo.IME_ACTION_NEXT);
+        super(surface, appEntry, new DataField(R.string.data_hint_app_tasker));
 
         var res = surface.getResources();
         mActionMap = new ActionMap<Action>(res, Action.RUN, Action[]::new);
@@ -55,18 +48,17 @@ final class Tasker extends AppCommand implements DataCommand {
     }
 
     @Override
+    protected Feedback run(ActionSurface surface) {
+        String params = surface.dataText();
+        return params != null
+            ? trySearchRun(surface, "", params)
+            : super.run(surface)
+        ;
+    }
+
+    @Override
     protected Feedback run(ActionSurface surface, String task) {
-        return trySearchRun(surface, extractAction(task), null);
-    }
-
-    @Override
-    public Feedback runWithData(ActionSurface surface, String params) {
-        return trySearchRun(surface, "", params);
-    }
-
-    @Override
-    public Feedback runWithData(ActionSurface surface, String task, String params) {
-        return trySearchRun(surface, extractAction(task), params);
+        return trySearchRun(surface, extractAction(task), surface.dataText());
     }
 
     private String extractAction(String task) {

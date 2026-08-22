@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import net.emilla.R;
@@ -30,10 +29,7 @@ public final class TtsFragment extends ActionBox {
     }
 
     @Override
-    public void onViewCreated(
-        @NonNull View view,
-        @Nullable Bundle savedInstanceState
-    ) {
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mBinding = TtsFragmentBinding.bind(view);
         mTts = new TextToSpeech(

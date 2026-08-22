@@ -7,19 +7,24 @@ import net.emilla.R;
 import net.emilla.action.box.SnippetsFragment;
 import net.emilla.annotation.internal;
 import net.emilla.command.ActionMap;
+import net.emilla.command.DataField;
+import net.emilla.command.EmillaCommand;
 import net.emilla.command.Subcommand;
 import net.emilla.exception.UnreachableError;
 import net.emilla.wadget.ActionSurface;
 
-final class Snippets extends CoreDataCommand {
+final class Snippets extends EmillaCommand {
     private final SnippetsFragment mSnippetsFragment;
 
     private final ActionMap<SnippetAction> mActionMap;
     private SnippetAction mAction = SnippetAction.GET;
 
     @internal Snippets(ActionSurface surface) {
-        super(surface, CoreEntry.SNIPPETS, R.string.data_hint_text);
-
+        super(
+            surface,
+            CoreEntry.SNIPPETS,
+            new DataField(R.string.data_hint_text)
+        );
         mSnippetsFragment = SnippetsFragment.newInstance();
 
         giveGadgets(mSnippetsFragment);
@@ -58,6 +63,11 @@ final class Snippets extends CoreDataCommand {
 
     @Override
     protected Feedback run(ActionSurface surface, String label) {
+        String text = surface.dataText();
+        if (text != null) {
+            return mSnippetsFragment.add(label, text);
+        }
+
         label = extractAction(label);
         if (label == null) {
             return run(surface);
@@ -70,15 +80,5 @@ final class Snippets extends CoreDataCommand {
             case REMOVE -> mSnippetsFragment.remove(label);
             case ADD -> throw new UnreachableError();
         };
-    }
-
-    @Override
-    public Feedback runWithData(ActionSurface surface, String text) {
-        return run(surface);
-    }
-
-    @Override
-    public Feedback runWithData(ActionSurface surface, String label, String text) {
-        return mSnippetsFragment.add(label, text);
     }
 }

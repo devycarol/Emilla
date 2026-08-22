@@ -57,7 +57,6 @@ import net.emilla.action.PlayPause;
 import net.emilla.action.QuickAction;
 import net.emilla.chime.Chime;
 import net.emilla.command.CommandMap;
-import net.emilla.command.DataCommand;
 import net.emilla.command.EmillaCommand;
 import net.emilla.command.app.AppEntry;
 import net.emilla.config.SettingVals;
@@ -237,7 +236,7 @@ public final class AssistActivity
                     cmd.load(act);
                 }
 
-                boolean dataAvailable = noCommand || mCommand instanceof DataCommand;
+                boolean dataAvailable = noCommand || mCommand.dataHint != 0;
                 if (dataAvailable != mVm.dataAvailable) {
                     mVm.dataAvailable = dataAvailable;
                     if (dataAvailable) {
@@ -547,15 +546,6 @@ public final class AssistActivity
         // default to the command field
     }
 
-    @Nullable
-    public String dataText() {
-        EditText dataField = mBinding.dataField;
-        return dataField.length() == 0
-            ? null
-            : dataField.getText().toString()
-        ;
-    }
-
     public EmillaCommand command() {
         return mCommand;
     }
@@ -630,8 +620,8 @@ public final class AssistActivity
 
     public void updateDataHint() {
         EditText dataField = mBinding.dataField;
-        if (!mVm.noCommand && mCommand instanceof DataCommand dataCmd) {
-            dataField.setHint(dataCmd.dataHint());
+        if (!mVm.noCommand && mCommand.dataHint != 0) {
+            dataField.setHint(mCommand.dataHint);
         } else {
             dataField.setHint(R.string.data_hint_default);
         }
@@ -810,22 +800,25 @@ public final class AssistActivity
 
     private void submitCommand() {
         String fullCommand = mBinding.commandField.getText().toString().trim();
-
         if (fullCommand.isEmpty()) {
             mNoCommandAction.perform();
             return;
         }
 
         try {
-            EditText dataField = mBinding.dataField;
-            if (mCommand instanceof DataCommand dataCmd && dataField.length() > 0) {
-                take(dataCmd.execute(this, this, dataField.getText().toString()));
-            } else {
-                take(mCommand.execute(this));
-            }
+            take(mCommand.execute(this));
         } catch (RuntimeException e) {
             fail(new BugFailure(this, e, mCommand.name));
         }
+    }
+
+    @Override @Nullable
+    public String dataText() {
+        EditText dataField = mBinding.dataField;
+        return dataField.length() == 0
+            ? null
+            : dataField.getText().toString()
+        ;
     }
 
     @Override

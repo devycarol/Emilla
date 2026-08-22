@@ -17,6 +17,8 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.ActionMap;
+import net.emilla.command.DataField;
+import net.emilla.command.EmillaCommand;
 import net.emilla.command.Subcommand;
 import net.emilla.contact.fragment.ContactCardsFragment;
 import net.emilla.content.receive.ContactCardReceiver;
@@ -28,12 +30,13 @@ import net.emilla.wadget.ActionSurface;
 
 import java.util.List;
 
-final class Contact extends CoreDataCommand implements ContactCardReceiver {
+final class Contact extends EmillaCommand implements ContactCardReceiver {
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, Intents.view(Contacts.CONTENT_URI, Contacts.CONTENT_TYPE))
             || Apps.canDo(pm, Intents.edit(Contacts.CONTENT_URI, Contacts.CONTENT_TYPE))
             || Apps.canDo(pm, Intents.send(Contacts.CONTENT_VCARD_TYPE))
-            || Apps.canDo(pm, Intents.insert(Contacts.CONTENT_TYPE));
+            || Apps.canDo(pm, Intents.insert(Contacts.CONTENT_TYPE))
+        ;
     }
 
     private enum Action {
@@ -49,8 +52,11 @@ final class Contact extends CoreDataCommand implements ContactCardReceiver {
     private Action mAction = Action.VIEW;
 
     @internal Contact(ActionSurface surface) {
-        super(surface, CoreEntry.CONTACT, R.string.data_hint_contact);
-
+        super(
+            surface,
+            CoreEntry.CONTACT,
+            new DataField(R.string.data_hint_contact)
+        );
         mContactsFragment = ContactCardsFragment.newInstance();
 
         giveGadgets(mContactsFragment);
@@ -84,23 +90,33 @@ final class Contact extends CoreDataCommand implements ContactCardReceiver {
 
     @Override
     protected Feedback run(ActionSurface surface) {
+        String details = surface.dataText();
+        if (details != null && mAction != Action.SHARE) {
+            return create(null, details);
+        }
+
         surface.getAssistActivity().offerContactCards(this);
-        return Feedback.silence();
         // intrinsic 'pend' by the contacts chooser
+        return Feedback.silence();
     }
 
     @Override
     protected Feedback run(ActionSurface surface, String person) {
-        return contact(surface, extractAction(person));
-    }
+        String details = surface.dataText();
+        if (details != null) {
+            return mAction == Action.SHARE
+                ? offerCreate(surface, person, details)
+                : create(person, details)
+            ;
+        }
 
-    private Feedback contact(ActionSurface surface, @Nullable String person) {
-        // todo: search by other details as well? nicknames certainly. phones, addresses, phone
-        //  types (cell, work, ..) probably, depending on the command.
+        person = extractAction(person);
+        // todo: search by other details as well? nicknames certainly. phones,
+        //  addresses, phone types (cell, work, ..) probably, depending on the
+        //  command.
         //  special cases:
         //  - me: share your own contact card
-        //  - emergency/sos: contact emergency numbers (SOS could be its own command, "panic button")
-        //    - see calyx's panic button functionality
+        //  - emergency/sos: contact emergency numbers
         return switch (mAction) {
             case VIEW, EDIT, SHARE -> {
                 Uri contact = mContactsFragment.selectedContacts();
@@ -123,37 +139,6 @@ final class Contact extends CoreDataCommand implements ContactCardReceiver {
             }
             case CREATE -> create(person, null);
         };
-    }
-
-    @Override
-    public Feedback runWithData(ActionSurface surface, String details) {
-        // TODO LANG: only show data field in 'create' or 'send' mode.
-        return contact(surface, null, details);
-    }
-
-    @Override
-    public Feedback runWithData(ActionSurface surface, String person, String details) {
-        // TODO LANG: only show data field in 'create' or 'send' mode.
-        return contact(surface, person, details);
-    }
-
-    private Feedback contact(
-        ActionSurface surface,
-        @Nullable String person,
-        String details
-    ) {
-        // Todo: dynamic data hint
-        if (mAction != Action.SHARE) {
-            return create(person, details);
-        }
-
-        if (person != null) {
-            return offerCreate(surface, person, details);
-        }
-
-        surface.getAssistActivity().offerContactCards(this);
-        return Feedback.silence();
-        // intrinsic 'pend' by the contacts chooser
     }
 
     private static Feedback view(Uri contact) {

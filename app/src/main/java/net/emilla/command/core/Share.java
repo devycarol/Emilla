@@ -15,6 +15,8 @@ import net.emilla.action.MediaFetcher;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.chime.Chime;
+import net.emilla.command.DataField;
+import net.emilla.command.EmillaCommand;
 import net.emilla.content.receive.AppChoiceReceiver;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
@@ -24,7 +26,7 @@ import net.emilla.wadget.ActionSurface;
 
 import java.util.ArrayList;
 
-final class Share extends CoreDataCommand implements AppChoiceReceiver {
+final class Share extends EmillaCommand implements AppChoiceReceiver {
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, Intents.send(MimeTypes.PLAIN_TEXT));
     }
@@ -33,8 +35,11 @@ final class Share extends CoreDataCommand implements AppChoiceReceiver {
     private final AssistActivity mActivity;
 
     @internal Share(ActionSurface surface) {
-        super(surface, CoreEntry.SHARE, R.string.data_hint_text);
-
+        super(
+            surface,
+            CoreEntry.SHARE,
+            new DataField(R.string.data_hint_text)
+        );
         mActivity = surface.getAssistActivity();
         String entry = CoreEntry.SHARE.name();
         giveGadgets(
@@ -45,15 +50,16 @@ final class Share extends CoreDataCommand implements AppChoiceReceiver {
 
     private static Intent makeIntent(AssistActivity act) {
         ArrayList<Uri> attachments = act.attachments(CoreEntry.SHARE.name());
-
         if (attachments == null) {
             return Intents.send(MimeTypes.PLAIN_TEXT);
         }
+
         if (attachments.size() == 1) {
             Intent in = Intents.send(MimeTypes.PLAIN_TEXT).putExtra(EXTRA_STREAM, attachments.get(0));
             in.setSelector(Intents.send(MimeType.of(attachments, act)));
             return in;
         }
+
         Intent in = Intents.sendMultiple(MimeTypes.PLAIN_TEXT).putExtra(EXTRA_STREAM, attachments);
         in.setSelector(Intents.sendMultiple(MimeType.of(attachments, act)));
         return in;
@@ -83,25 +89,24 @@ final class Share extends CoreDataCommand implements AppChoiceReceiver {
     @Override
     protected Feedback run(ActionSurface surface) {
         var act = surface.getAssistActivity();
-        act.offerChooser(this, makeIntent(act), CoreEntry.SHARE.name);
+        String text = surface.dataText();
+        Intent intent = text != null
+            ? makeIntent(act, text)
+            : makeIntent(act)
+        ;
+        act.offerChooser(this, intent, CoreEntry.SHARE.name);
         return Feedback.silence();
     }
 
     @Override
     protected Feedback run(ActionSurface surface, String app) {
-        return runWithData(surface, app); // TODO: allow to specify app, conversation, and (ideally) person
-    }
-
-    @Override
-    public Feedback runWithData(ActionSurface surface, String text) {
+        String text = surface.dataText();
+        if (text != null) {
+            app += '\n' + text;
+        }
         var act = surface.getAssistActivity();
-        act.offerChooser(this, makeIntent(act, text), CoreEntry.SHARE.name);
+        act.offerChooser(this, makeIntent(act, app), CoreEntry.SHARE.name);
         return Feedback.silence();
-    }
-
-    @Override
-    public Feedback runWithData(ActionSurface surface, String app, String text) {
-        return runWithData(surface, app + '\n' + text);
     }
 
     @Override

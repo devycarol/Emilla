@@ -13,6 +13,8 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.ActionMap;
+import net.emilla.command.DataField;
+import net.emilla.command.EmillaCommand;
 import net.emilla.command.Subcommand;
 import net.emilla.config.SettingVals;
 import net.emilla.event.PingPlan;
@@ -25,20 +27,21 @@ import net.emilla.util.Int;
 import net.emilla.util.Permission;
 import net.emilla.wadget.ActionSurface;
 
-final class Pomodoro extends CoreDataCommand {
+final class Pomodoro extends EmillaCommand {
     private enum Action {
         WORK,
         BREAK,
     }
 
     private final ActionMap<Action> mActionMap;
+    // Todo: these shouldn't be fields
     @Nullable
     private String mWorkMemo;
     @Nullable
     private String mBreakMemo;
 
     @internal Pomodoro(ActionSurface surface) {
-        super(surface, CoreEntry.POMODORO, R.string.data_hint_pomodoro);
+        super(surface, CoreEntry.POMODORO, new DataField(R.string.data_hint_pomodoro));
 
         var res = surface.getResources();
         mActionMap = new ActionMap<Action>(res, Action.WORK, Action[]::new);
@@ -51,29 +54,24 @@ final class Pomodoro extends CoreDataCommand {
 
     @Override
     protected Feedback run(ActionSurface surface) {
+        String memo = surface.dataText();
+        if (memo != null) {
+            mWorkMemo = memo;
+        }
         return tryPomo(surface.getAssistActivity(), null, false);
     }
 
     @Override
     protected Feedback run(ActionSurface surface, String duration) {
         Subcommand<Action> subcmd = mActionMap.get(duration);
-        return tryPomo(surface.getAssistActivity(), subcmd.instruction, subcmd.action == Action.BREAK);
-    }
-
-    @Override
-    public Feedback runWithData(ActionSurface surface, String memo) {
-        mWorkMemo = memo;
-        return tryPomo(surface.getAssistActivity(), null, false);
-    }
-
-    @Override
-    public Feedback runWithData(ActionSurface surface, String duration, String memo) {
-        Subcommand<Action> subcmd = mActionMap.get(duration);
         boolean isBreak = subcmd.action == Action.BREAK;
-        if (isBreak) {
-            mBreakMemo = memo;
-        } else {
-            mWorkMemo = memo;
+        String memo = surface.dataText();
+        if (memo != null) {
+            if (isBreak) {
+                mBreakMemo = memo;
+            } else {
+                mWorkMemo = memo;
+            }
         }
         return tryPomo(surface.getAssistActivity(), subcmd.instruction, isBreak);
     }

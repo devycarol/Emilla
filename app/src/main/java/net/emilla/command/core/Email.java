@@ -15,6 +15,8 @@ import net.emilla.action.FileFetcher;
 import net.emilla.action.MediaFetcher;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
+import net.emilla.command.DataField;
+import net.emilla.command.EmillaCommand;
 import net.emilla.contact.fragment.EmailFragment;
 import net.emilla.content.receive.EmailReceiver;
 import net.emilla.util.Apps;
@@ -23,7 +25,7 @@ import net.emilla.wadget.ActionSurface;
 
 import java.util.ArrayList;
 
-final class Email extends CoreDataCommand implements EmailReceiver {
+final class Email extends EmillaCommand implements EmailReceiver {
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, new Intent(ACTION_SENDTO, Uri.parse("mailto:")));
     }
@@ -31,8 +33,11 @@ final class Email extends CoreDataCommand implements EmailReceiver {
     private final EmailFragment mEmailFragment = EmailFragment.newInstance();
 
     @internal Email(ActionSurface surface) {
-        super(surface, CoreEntry.EMAIL, R.string.data_hint_email);
-
+        super(
+            surface,
+            CoreEntry.EMAIL,
+            new DataField(R.string.data_hint_email)
+        );
         var act = surface.getAssistActivity();
         String entry = CoreEntry.EMAIL.name();
         giveGadgets(
@@ -46,31 +51,17 @@ final class Email extends CoreDataCommand implements EmailReceiver {
 
     @Override
     protected Feedback run(ActionSurface surface) {
-        return tryEmail(surface.getAssistActivity(), "", null);
+        return run(surface, "");
     }
 
     @Override
     protected Feedback run(ActionSurface surface, String recipients) {
-        return tryEmail(surface.getAssistActivity(), recipients, null);
-    }
-
-    @Override
-    public Feedback runWithData(ActionSurface surface, String body) {
-        return tryEmail(surface.getAssistActivity(), "", body);
-    }
-
-    @Override
-    public Feedback runWithData(ActionSurface surface, String recipients, String body) {
-        return tryEmail(surface.getAssistActivity(), recipients, body);
-    }
-
-    private Feedback tryEmail(AssistActivity act, String recipients, @Nullable String body) {
         String addresses = mEmailFragment.selectedContacts();
         if (addresses != null) {
             recipients = addresses;
         }
-        return email(act, recipients, body);
         // Todo: validate the raw recipients
+        return email(surface.getAssistActivity(), recipients, surface.dataText());
     }
 
     private Feedback email(AssistActivity act, String addresses, @Nullable String body) {

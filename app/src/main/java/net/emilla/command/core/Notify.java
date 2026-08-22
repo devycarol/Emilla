@@ -10,42 +10,31 @@ import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
+import net.emilla.command.DataField;
+import net.emilla.command.EmillaCommand;
 import net.emilla.ping.PingChannel;
 import net.emilla.ping.Pings;
 import net.emilla.util.Permission;
 import net.emilla.wadget.ActionSurface;
 
-final class Notify extends CoreDataCommand {
+final class Notify extends EmillaCommand {
     @internal Notify(ActionSurface surface) {
-        super(surface, CoreEntry.NOTIFY, R.string.data_hint_notify);
+        super(
+            surface,
+            CoreEntry.NOTIFY,
+            new DataField(R.string.data_hint_notify)
+        );
     }
 
     @Override
     protected Feedback run(ActionSurface surface) {
-        var act = surface.getAssistActivity();
         var res = surface.getResources();
-        return tryPing(act, res.getString(R.string.ping_command), null);
+        return run(surface, res.getString(R.string.ping_command));
     }
 
     @Override
     protected Feedback run(ActionSurface surface, String title) {
-        return tryPing(surface.getAssistActivity(), title, null);
-    }
-
-    @Override
-    public Feedback runWithData(ActionSurface surface, String text) {
-        var act = surface.getAssistActivity();
-        var res = surface.getResources();
-        return tryPing(act, res.getString(R.string.ping_command), text);
-    }
-
-    @Override
-    public Feedback runWithData(
-        ActionSurface surface,
-        String title,
-        String text
-    ) {
-        return tryPing(surface.getAssistActivity(), title, text);
+        return tryPing(surface.getAssistActivity(), title, surface.dataText());
     }
 
     @SuppressLint("MissingPermission")

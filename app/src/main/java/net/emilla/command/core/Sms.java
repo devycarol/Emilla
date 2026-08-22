@@ -12,6 +12,8 @@ import net.emilla.R;
 import net.emilla.action.MediaFetcher;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
+import net.emilla.command.DataField;
+import net.emilla.command.EmillaCommand;
 import net.emilla.contact.fragment.ContactPhonesFragment;
 import net.emilla.content.receive.PhoneReceiver;
 import net.emilla.util.Apps;
@@ -23,7 +25,7 @@ import net.emilla.util.Strings;
 import net.emilla.util.Uris;
 import net.emilla.wadget.ActionSurface;
 
-final class Sms extends CoreDataCommand implements PhoneReceiver {
+final class Sms extends EmillaCommand implements PhoneReceiver {
     public static boolean possible(PackageManager pm) {
         return Features.sms(pm) || Apps.canDo(pm, Intents.send(Uris.sms("")));
     }
@@ -31,8 +33,11 @@ final class Sms extends CoreDataCommand implements PhoneReceiver {
     private final ContactPhonesFragment mContactsFragment;
 
     @internal Sms(ActionSurface surface) {
-        super(surface, CoreEntry.SMS, R.string.data_hint_message);
-
+        super(
+            surface,
+            CoreEntry.SMS,
+            new DataField(R.string.data_hint_message)
+        );
         mContactsFragment = ContactPhonesFragment.newInstance(true);
 
         giveGadgets(
@@ -43,33 +48,18 @@ final class Sms extends CoreDataCommand implements PhoneReceiver {
 
     @Override
     protected Feedback run(ActionSurface surface) {
-        return tryMessage(null);
-    }
-
-    @Override
-    protected Feedback run(ActionSurface surface, String recipients) {
-        return tryMessage(surface.getAssistActivity(), recipients, null);
-    }
-
-    private Feedback tryMessage(@Nullable String message) {
         String numbers = mContactsFragment.selectedContacts();
+        String message = surface.dataText();
         return message(Strings.emptyIfNull(numbers), message);
     }
 
     @Override
-    public Feedback runWithData(ActionSurface surface, String message) {
-        return tryMessage(message);
-    }
-
-    @Override
-    public Feedback runWithData(ActionSurface surface, String recipients, String message) {
+    protected Feedback run(ActionSurface surface, String recipients) {
         // todo: immediate texting. likely requires a feature check and special permissions.
         //  attachments, feedback for delivered/not delivered..
-        return tryMessage(surface.getAssistActivity(), recipients, message);
-    }
-
-    private Feedback tryMessage(AssistActivity act, String recipients, @Nullable String message) {
+        AssistActivity act = surface.getAssistActivity();
         String numbers = mContactsFragment.selectedContacts();
+        String message = surface.dataText();
         if (numbers == null && Contacts.isPhoneNumbers(recipients)) {
             numbers = recipients;
         }
@@ -83,10 +73,10 @@ final class Sms extends CoreDataCommand implements PhoneReceiver {
         // todo: better message.
         return Feedback.offer(
             Dialogs.dual(
-                act, CoreEntry.SMS.name,
-
-                msg, R.string.message_directly,
-
+                act,
+                CoreEntry.SMS.name,
+                msg,
+                R.string.message_directly,
                 (dlg, which) -> act.take(message(toNumbers, message))
             )
         );

@@ -8,6 +8,7 @@ import android.view.inputmethod.EditorInfo;
 import net.emilla.Feedback;
 import net.emilla.annotation.internal;
 import net.emilla.annotation.open;
+import net.emilla.command.DataField;
 import net.emilla.util.Intents;
 import net.emilla.wadget.ActionSurface;
 
@@ -20,8 +21,16 @@ import net.emilla.wadget.ActionSurface;
         super(surface, appEntry, imeAction);
     }
 
+    @internal AppSend(
+        ActionSurface surface,
+        AppEntry appEntry,
+        DataField dataField
+    ) {
+        super(surface, appEntry, dataField);
+    }
+
     @Override
-    protected final Feedback run(ActionSurface surface, String message) {
+    protected @open Feedback run(ActionSurface surface, String message) {
         Intent intent = Intents.sendToApp(this.appEntry.pkg)
             .putExtra(EXTRA_TEXT, message)
         ;

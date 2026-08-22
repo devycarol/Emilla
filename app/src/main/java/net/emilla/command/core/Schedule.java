@@ -11,6 +11,8 @@ import net.emilla.R;
 import net.emilla.action.InputField;
 import net.emilla.action.box.FieldsFragment;
 import net.emilla.annotation.internal;
+import net.emilla.command.DataField;
+import net.emilla.command.EmillaCommand;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
 import net.emilla.util.MimeTypes;
@@ -19,7 +21,7 @@ import net.emilla.wadget.ActionSurface;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
-final class Schedule extends CoreDataCommand {
+final class Schedule extends EmillaCommand {
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, baseIntent());
     }
@@ -35,8 +37,11 @@ final class Schedule extends CoreDataCommand {
     );
 
     @internal Schedule(ActionSurface surface) {
-        super(surface, CoreEntry.SCHEDULE, R.string.data_hint_schedule);
-
+        super(
+            surface,
+            CoreEntry.SCHEDULE,
+            new DataField(R.string.data_hint_schedule)
+        );
         giveGadgets(mFieldsFragment);
     }
 
@@ -47,25 +52,16 @@ final class Schedule extends CoreDataCommand {
 
     @Override
     protected Feedback run(ActionSurface surface) {
-        return runWithData(surface, null, null);
+        return run(surface, null);
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, String title) {
-        return runWithData(surface, title, null);
-    }
-
-    @Override
-    public Feedback runWithData(ActionSurface surface, String details) {
-        return runWithData(surface, null, details);
-    }
-
-    @Override
-    public Feedback runWithData(ActionSurface surface, @Nullable String title, @Nullable String details) {
+    protected Feedback run(ActionSurface surface, @Nullable String title) {
         Intent intent = baseIntent();
         if (title != null) {
             intent.putExtra(Events.TITLE, title);
         }
+        String details = surface.dataText();
         if (details != null) {
             intent.putExtra(Events.DESCRIPTION, details);
         }

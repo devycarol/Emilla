@@ -16,6 +16,7 @@ public interface ActionSurface {
 //    ActionSurface THIN_AIR = ;
 //    ActionSurface BACKGROUND = ;
 
+    String dataText();
     Context getContext();
     @Deprecated
     AssistActivity getAssistActivity();
@@ -26,5 +27,4 @@ public interface ActionSurface {
 
     // TODO: remove
     void take(Feedback feedback);
-
 }

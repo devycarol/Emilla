@@ -6,17 +6,22 @@ import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.action.box.NotesFragment;
 import net.emilla.annotation.internal;
+import net.emilla.command.DataField;
+import net.emilla.command.EmillaCommand;
 import net.emilla.file.Files;
 import net.emilla.file.Folder;
 import net.emilla.file.TreeFile;
 import net.emilla.wadget.ActionSurface;
 
-final class Note extends CoreDataCommand {
+final class Note extends EmillaCommand {
     private final NotesFragment mNotesFragment;
 
     @internal Note(ActionSurface surface) {
-        super(surface, CoreEntry.NOTE, R.string.data_hint_text);
-
+        super(
+            surface,
+            CoreEntry.NOTE,
+            new DataField(R.string.data_hint_text)
+        );
         mNotesFragment = NotesFragment.newInstance();
 
         giveGadgets(mNotesFragment);
@@ -24,36 +29,24 @@ final class Note extends CoreDataCommand {
 
     @Override
     protected Feedback run(ActionSurface surface) {
-        surface.getAssistActivity().offerSaveFile(null, mNotesFragment.folder(), null);
+        String text = surface.dataText();
+        surface.getAssistActivity()
+            .offerSaveFile(null, mNotesFragment.folder(), text)
+        ;
         return Feedback.silence();
         // intrinsic 'pend' by the file manager
     }
 
     @Override
     protected Feedback run(ActionSurface surface, String filename) {
+        String text = surface.dataText();
         Folder folder = mNotesFragment.folder();
         TreeFile existingFile = mNotesFragment.fileNamed(filename);
         if (folder != null && existingFile != null) {
-            return Feedback.succeed(existingFile.viewIntent(folder));
-        }
+            if (text == null) {
+                return Feedback.succeed(existingFile.viewIntent(folder));
+            }
 
-        surface.getAssistActivity().offerSaveFile(filename, folder, null);
-        return Feedback.silence();
-        // intrinsic 'pend' by the file manager
-    }
-
-    @Override
-    public Feedback runWithData(ActionSurface surface, String text) {
-        surface.getAssistActivity().offerSaveFile(null, mNotesFragment.folder(), text);
-        return Feedback.silence();
-        // intrinsic 'pend' by the file manager
-    }
-
-    @Override
-    public Feedback runWithData(ActionSurface surface, String filename, String text) {
-        Folder folder = mNotesFragment.folder();
-        TreeFile existingFile = mNotesFragment.fileNamed(filename);
-        if (folder != null && existingFile != null) {
             Uri file = existingFile.uri(folder);
             return Files.appendLine(surface.getContentResolver(), file, text)
                 ? Feedback.give()

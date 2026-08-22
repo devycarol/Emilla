@@ -5,6 +5,7 @@ import android.view.inputmethod.EditorInfo;
 import net.emilla.Feedback;
 import net.emilla.annotation.internal;
 import net.emilla.annotation.open;
+import net.emilla.command.DataField;
 import net.emilla.command.EmillaCommand;
 import net.emilla.wadget.ActionSurface;
 
@@ -20,14 +21,28 @@ public @open class AppCommand extends EmillaCommand {
         this(surface, appEntry, EditorInfo.IME_ACTION_GO);
     }
 
-    @internal AppCommand(ActionSurface surface, AppEntry appEntry, int imeAction) {
+    @internal AppCommand(
+        ActionSurface surface,
+        AppEntry appEntry,
+        int imeAction
+    ) {
         super(surface, appEntry, imeAction);
 
         this.appEntry = appEntry;
     }
 
+    @internal AppCommand(
+        ActionSurface surface,
+        AppEntry appEntry,
+        DataField dataField
+    ) {
+        super(surface, appEntry, dataField);
+
+        this.appEntry = appEntry;
+    }
+
     @Override
-    protected final Feedback run(ActionSurface surface) {
+    protected @open Feedback run(ActionSurface surface) {
         return Feedback.succeed(this.appEntry.launchIntent());
     }
 
