@@ -1,6 +1,5 @@
 package net.emilla.command.core;
 
-import android.content.Context;
 import android.view.inputmethod.EditorInfo;
 
 import net.emilla.Feedback;
@@ -13,8 +12,8 @@ import net.emilla.wadget.ActionSurface;
 final class Say extends EmillaCommand {
     private final TtsFragment mFragment = TtsFragment.newInstance();
 
-    @internal Say(Context ctx) {
-        super(ctx, CoreEntry.SAY, EditorInfo.IME_ACTION_DONE);
+    @internal Say(ActionSurface surface) {
+        super(surface, CoreEntry.SAY, EditorInfo.IME_ACTION_DONE);
 
         giveGadgets(mFragment);
     }

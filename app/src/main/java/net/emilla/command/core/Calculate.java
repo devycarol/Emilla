@@ -1,6 +1,5 @@
 package net.emilla.command.core;
 
-import android.content.Context;
 import android.content.Intent;
 import android.view.inputmethod.EditorInfo;
 
@@ -15,8 +14,8 @@ import net.emilla.wadget.ActionSurface;
 import java.math.BigDecimal;
 
 final class Calculate extends EmillaCommand {
-    @internal Calculate(Context ctx) {
-        super(ctx, CoreEntry.CALCULATE, EditorInfo.IME_ACTION_DONE);
+    @internal Calculate(ActionSurface surface) {
+        super(surface, CoreEntry.CALCULATE, EditorInfo.IME_ACTION_DONE);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package net.emilla.command.core;
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.view.inputmethod.EditorInfo;
 
@@ -17,8 +16,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 
 final class Time extends EmillaCommand {
-    @internal Time(Context ctx) {
-        super(ctx, CoreEntry.TIME, EditorInfo.IME_ACTION_DONE);
+    @internal Time(ActionSurface surface) {
+        super(surface, CoreEntry.TIME, EditorInfo.IME_ACTION_DONE);
     }
 
     @Override

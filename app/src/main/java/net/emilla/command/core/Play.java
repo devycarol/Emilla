@@ -1,7 +1,6 @@
 package net.emilla.command.core;
 
 import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.provider.MediaStore;
@@ -16,8 +15,8 @@ import net.emilla.util.Services;
 import net.emilla.wadget.ActionSurface;
 
 final class Play extends EmillaCommand {
-    @internal Play(Context ctx) {
-        super(ctx, CoreEntry.PLAY, EditorInfo.IME_ACTION_GO);
+    @internal Play(ActionSurface surface) {
+        super(surface, CoreEntry.PLAY, EditorInfo.IME_ACTION_GO);
     }
 
     @Override

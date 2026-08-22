@@ -2,7 +2,6 @@ package net.emilla.command.core;
 
 import static android.content.Intent.ACTION_DIAL;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -19,8 +18,8 @@ final class Dial extends EmillaCommand {
         return Apps.canDo(pm, new Intent(ACTION_DIAL));
     }
 
-    @internal Dial(Context ctx) {
-        super(ctx, CoreEntry.DIAL, EditorInfo.IME_ACTION_GO);
+    @internal Dial(ActionSurface surface) {
+        super(surface, CoreEntry.DIAL, EditorInfo.IME_ACTION_GO);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package net.emilla.command.core;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.provider.AlarmClock;
@@ -28,8 +27,8 @@ final class Alarm extends CoreDataCommand {
 
     private final WeekdayWidget mWeekdays = WeekdayWidget.COOKED;
 
-    @internal Alarm(Context ctx) {
-        super(ctx, CoreEntry.ALARM, R.string.data_hint_label);
+    @internal Alarm(ActionSurface surface) {
+        super(surface, CoreEntry.ALARM, R.string.data_hint_label);
 
         giveGadgets(mWeekdays);
     }

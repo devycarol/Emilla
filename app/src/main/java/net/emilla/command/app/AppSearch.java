@@ -1,7 +1,6 @@
 package net.emilla.command.app;
 
 import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.view.inputmethod.EditorInfo;
 
@@ -12,8 +11,8 @@ import net.emilla.util.Intents;
 import net.emilla.wadget.ActionSurface;
 
 final class AppSearch extends AppCommand {
-    @internal AppSearch(Context ctx, AppEntry appEntry) {
-        super(ctx, appEntry, EditorInfo.IME_ACTION_SEARCH);
+    @internal AppSearch(ActionSurface surface, AppEntry appEntry) {
+        super(surface, appEntry, EditorInfo.IME_ACTION_SEARCH);
     }
 
     @Override

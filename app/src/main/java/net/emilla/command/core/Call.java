@@ -3,7 +3,6 @@ package net.emilla.command.core;
 import static android.content.Intent.ACTION_CALL;
 import static net.emilla.chime.Chime.SUCCEED;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -30,8 +29,8 @@ final class Call extends EmillaCommand implements PhoneReceiver {
 
     private final ContactPhonesFragment mContactsFragment;
 
-    @internal Call(Context ctx) {
-        super(ctx, CoreEntry.CALL, EditorInfo.IME_ACTION_GO);
+    @internal Call(ActionSurface surface) {
+        super(surface, CoreEntry.CALL, EditorInfo.IME_ACTION_GO);
 
         mContactsFragment = ContactPhonesFragment.newInstance(false);
 

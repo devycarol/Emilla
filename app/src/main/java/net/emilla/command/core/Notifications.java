@@ -1,6 +1,5 @@
 package net.emilla.command.core;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -13,6 +12,7 @@ import net.emilla.annotation.internal;
 import net.emilla.command.app.AppEntry;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
+import net.emilla.wadget.ActionSurface;
 
 final class Notifications extends OpenCommand {
     public static boolean possible(PackageManager pm) {
@@ -20,8 +20,8 @@ final class Notifications extends OpenCommand {
             && Apps.canDo(pm, new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS));
     }
 
-    @internal Notifications(Context ctx) {
-        super(ctx, CoreEntry.NOTIFICATIONS, EditorInfo.IME_ACTION_GO);
+    @internal Notifications(ActionSurface surface) {
+        super(surface, CoreEntry.NOTIFICATIONS, EditorInfo.IME_ACTION_GO);
     }
 
     @Override @RequiresApi(Build.VERSION_CODES.O)

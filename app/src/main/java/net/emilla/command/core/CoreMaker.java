@@ -1,9 +1,9 @@
 package net.emilla.command.core;
 
-import net.emilla.activity.AssistActivity;
 import net.emilla.command.EmillaCommand;
+import net.emilla.wadget.ActionSurface;
 
 @FunctionalInterface
 interface CoreMaker {
-    EmillaCommand make(AssistActivity act);
+    EmillaCommand make(ActionSurface surface);
 }

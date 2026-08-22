@@ -1,6 +1,5 @@
 package net.emilla.command.core;
 
-import android.content.Context;
 import android.media.AudioManager;
 import android.view.inputmethod.EditorInfo;
 
@@ -12,8 +11,8 @@ import net.emilla.util.Services;
 import net.emilla.wadget.ActionSurface;
 
 final class Pause extends EmillaCommand {
-    @internal Pause(Context ctx) {
-        super(ctx, CoreEntry.PAUSE, EditorInfo.IME_ACTION_DONE);
+    @internal Pause(ActionSurface surface) {
+        super(surface, CoreEntry.PAUSE, EditorInfo.IME_ACTION_DONE);
     }
 
     @Override

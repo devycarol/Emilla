@@ -1,7 +1,5 @@
 package net.emilla.command.core;
 
-import android.content.Context;
-
 import androidx.annotation.Nullable;
 
 import net.emilla.Feedback;
@@ -19,14 +17,14 @@ final class Snippets extends CoreDataCommand {
     private final ActionMap<SnippetAction> mActionMap;
     private SnippetAction mAction = SnippetAction.GET;
 
-    @internal Snippets(Context ctx) {
-        super(ctx, CoreEntry.SNIPPETS, R.string.data_hint_text);
+    @internal Snippets(ActionSurface surface) {
+        super(surface, CoreEntry.SNIPPETS, R.string.data_hint_text);
 
         mSnippetsFragment = SnippetsFragment.newInstance();
 
         giveGadgets(mSnippetsFragment);
 
-        var res = ctx.getResources();
+        var res = surface.getResources();
         mActionMap = new ActionMap<SnippetAction>(res, SnippetAction.GET, SnippetAction[]::new);
 
         mActionMap.put(res, SnippetAction.PEEK, R.array.subcmd_snippet_peek, true);

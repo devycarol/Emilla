@@ -1,6 +1,5 @@
 package net.emilla.command.core;
 
-import android.content.Context;
 import android.content.Intent;
 import android.provider.Settings;
 import android.view.inputmethod.EditorInfo;
@@ -13,8 +12,8 @@ import net.emilla.setting.SettingMap;
 import net.emilla.wadget.ActionSurface;
 
 final class Setting extends EmillaCommand {
-    @internal Setting(Context ctx) {
-        super(ctx, CoreEntry.SETTING, EditorInfo.IME_ACTION_DONE);
+    @internal Setting(ActionSurface surface) {
+        super(surface, CoreEntry.SETTING, EditorInfo.IME_ACTION_DONE);
     }
 
     @Override

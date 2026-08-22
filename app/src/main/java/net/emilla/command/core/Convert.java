@@ -1,6 +1,5 @@
 package net.emilla.command.core;
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.view.inputmethod.EditorInfo;
 
@@ -18,8 +17,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 final class Convert extends EmillaCommand {
-    @internal Convert(Context ctx) {
-        super(ctx, CoreEntry.CONVERT, EditorInfo.IME_ACTION_DONE);
+    @internal Convert(ActionSurface surface) {
+        super(surface, CoreEntry.CONVERT, EditorInfo.IME_ACTION_DONE);
     }
 
     @Override

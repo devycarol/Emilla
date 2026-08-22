@@ -1,12 +1,11 @@
 package net.emilla.command.app;
 
-import android.content.Context;
-
 import net.emilla.R;
 import net.emilla.annotation.internal;
+import net.emilla.wadget.ActionSurface;
 
 final class MultilineMessenger extends AppSendData {
-    @internal MultilineMessenger(Context ctx, AppEntry appEntry) {
-        super(ctx, appEntry, R.string.data_hint_message_cont);
+    @internal MultilineMessenger(ActionSurface surface, AppEntry appEntry) {
+        super(surface, appEntry, R.string.data_hint_message_cont);
     }
 }

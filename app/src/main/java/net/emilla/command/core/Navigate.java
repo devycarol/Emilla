@@ -1,6 +1,5 @@
 package net.emilla.command.core;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -18,8 +17,8 @@ final class Navigate extends EmillaCommand {
         return Apps.canDo(pm, makeFilter());
     }
 
-    @internal Navigate(Context ctx) {
-        super(ctx, CoreEntry.NAVIGATE, EditorInfo.IME_ACTION_SEARCH);
+    @internal Navigate(ActionSurface surface) {
+        super(surface, CoreEntry.NAVIGATE, EditorInfo.IME_ACTION_SEARCH);
     }
 
     private static Intent makeFilter() {

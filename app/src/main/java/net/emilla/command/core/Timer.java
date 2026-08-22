@@ -1,6 +1,5 @@
 package net.emilla.command.core;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.provider.AlarmClock;
@@ -20,8 +19,8 @@ final class Timer extends CoreDataCommand {
         return Apps.canDo(pm, baseIntent());
     }
 
-    @internal Timer(Context ctx) {
-        super(ctx, CoreEntry.TIMER, R.string.data_hint_label);
+    @internal Timer(ActionSurface surface) {
+        super(surface, CoreEntry.TIMER, R.string.data_hint_label);
     }
 
     private static Intent baseIntent() {

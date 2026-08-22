@@ -1,6 +1,5 @@
 package net.emilla.command.core;
 
-import android.content.Context;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.Nullable;
@@ -17,8 +16,8 @@ final class Copy extends EmillaCommand {
     @Nullable
     private String mCopiedText = null;
 
-    @internal Copy(Context ctx) {
-        super(ctx, CoreEntry.COPY, EditorInfo.IME_ACTION_DONE);
+    @internal Copy(ActionSurface surface) {
+        super(surface, CoreEntry.COPY, EditorInfo.IME_ACTION_DONE);
     }
 
     @Override

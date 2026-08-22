@@ -30,12 +30,15 @@ final class Sms extends CoreDataCommand implements PhoneReceiver {
 
     private final ContactPhonesFragment mContactsFragment;
 
-    @internal Sms(AssistActivity act) {
-        super(act, CoreEntry.SMS, R.string.data_hint_message);
+    @internal Sms(ActionSurface surface) {
+        super(surface, CoreEntry.SMS, R.string.data_hint_message);
 
         mContactsFragment = ContactPhonesFragment.newInstance(true);
 
-        giveGadgets(mContactsFragment, new MediaFetcher(act, CoreEntry.SMS.name()));
+        giveGadgets(
+            mContactsFragment,
+            new MediaFetcher(surface.getAssistActivity(), CoreEntry.SMS.name())
+        );
     }
 
     @Override

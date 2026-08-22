@@ -30,9 +30,10 @@ final class Email extends CoreDataCommand implements EmailReceiver {
 
     private final EmailFragment mEmailFragment = EmailFragment.newInstance();
 
-    @internal Email(AssistActivity act) {
-        super(act, CoreEntry.EMAIL, R.string.data_hint_email);
+    @internal Email(ActionSurface surface) {
+        super(surface, CoreEntry.EMAIL, R.string.data_hint_email);
 
+        var act = surface.getAssistActivity();
         String entry = CoreEntry.EMAIL.name();
         giveGadgets(
             mEmailFragment,

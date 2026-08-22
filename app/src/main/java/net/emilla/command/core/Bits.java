@@ -1,6 +1,5 @@
 package net.emilla.command.core;
 
-import android.content.Context;
 import android.content.Intent;
 import android.view.inputmethod.EditorInfo;
 
@@ -14,8 +13,8 @@ import net.emilla.wadget.ActionSurface;
 import java.math.BigInteger;
 
 final class Bits extends EmillaCommand {
-    @internal Bits(Context ctx) {
-        super(ctx, CoreEntry.BITS, EditorInfo.IME_ACTION_DONE);
+    @internal Bits(ActionSurface surface) {
+        super(surface, CoreEntry.BITS, EditorInfo.IME_ACTION_DONE);
     }
 
     @Override

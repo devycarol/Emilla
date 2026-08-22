@@ -2,7 +2,6 @@ package net.emilla.command.core;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Context;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
@@ -17,8 +16,8 @@ import net.emilla.util.Permission;
 import net.emilla.wadget.ActionSurface;
 
 final class Notify extends CoreDataCommand {
-    @internal Notify(Context ctx) {
-        super(ctx, CoreEntry.NOTIFY, R.string.data_hint_notify);
+    @internal Notify(ActionSurface surface) {
+        super(surface, CoreEntry.NOTIFY, R.string.data_hint_notify);
     }
 
     @Override

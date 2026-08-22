@@ -32,15 +32,14 @@ final class Share extends CoreDataCommand implements AppChoiceReceiver {
     @Deprecated
     private final AssistActivity mActivity;
 
-    @internal Share(AssistActivity act) {
-        super(act, CoreEntry.SHARE, R.string.data_hint_text);
+    @internal Share(ActionSurface surface) {
+        super(surface, CoreEntry.SHARE, R.string.data_hint_text);
 
-        mActivity = act;
-
+        mActivity = surface.getAssistActivity();
         String entry = CoreEntry.SHARE.name();
         giveGadgets(
-            new FileFetcher(act, entry, "*/*"),
-            new MediaFetcher(act, entry)
+            new FileFetcher(mActivity, entry, "*/*"),
+            new MediaFetcher(mActivity, entry)
         );
     }
 

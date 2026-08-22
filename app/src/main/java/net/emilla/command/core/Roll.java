@@ -1,6 +1,5 @@
 package net.emilla.command.core;
 
-import android.content.Context;
 import android.view.inputmethod.EditorInfo;
 
 import net.emilla.Feedback;
@@ -14,8 +13,8 @@ import net.emilla.wadget.ActionSurface;
 import java.util.Random;
 
 final class Roll extends EmillaCommand {
-    @internal Roll(Context ctx) {
-        super(ctx, CoreEntry.ROLL, EditorInfo.IME_ACTION_DONE);
+    @internal Roll(ActionSurface surface) {
+        super(surface, CoreEntry.ROLL, EditorInfo.IME_ACTION_DONE);
     }
 
     @Override

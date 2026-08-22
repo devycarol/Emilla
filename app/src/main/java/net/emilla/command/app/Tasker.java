@@ -42,10 +42,10 @@ final class Tasker extends AppCommand implements DataCommand {
 
     private final ActionMap<Action> mActionMap;
 
-    @internal Tasker(Context ctx, AppEntry appEntry) {
-        super(ctx, appEntry, EditorInfo.IME_ACTION_NEXT);
+    @internal Tasker(ActionSurface surface, AppEntry appEntry) {
+        super(surface, appEntry, EditorInfo.IME_ACTION_NEXT);
 
-        var res = ctx.getResources();
+        var res = surface.getResources();
         mActionMap = new ActionMap<Action>(res, Action.RUN, Action[]::new);
 
         mActionMap.put(res, Action.RUN, R.array.subcmd_tasker_run, true);

@@ -1,6 +1,5 @@
 package net.emilla.command.core;
 
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.view.inputmethod.EditorInfo;
 
@@ -17,8 +16,8 @@ final class Torch extends EmillaCommand {
         return Features.torch(pm);
     }
 
-    @internal Torch(Context ctx) {
-        super(ctx, CoreEntry.TORCH, EditorInfo.IME_ACTION_DONE);
+    @internal Torch(ActionSurface surface) {
+        super(surface, CoreEntry.TORCH, EditorInfo.IME_ACTION_DONE);
     }
 
     @Override

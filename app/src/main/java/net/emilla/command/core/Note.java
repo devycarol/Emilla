@@ -1,6 +1,5 @@
 package net.emilla.command.core;
 
-import android.content.Context;
 import android.net.Uri;
 
 import net.emilla.Feedback;
@@ -15,8 +14,8 @@ import net.emilla.wadget.ActionSurface;
 final class Note extends CoreDataCommand {
     private final NotesFragment mNotesFragment;
 
-    @internal Note(Context ctx) {
-        super(ctx, CoreEntry.NOTE, R.string.data_hint_text);
+    @internal Note(ActionSurface surface) {
+        super(surface, CoreEntry.NOTE, R.string.data_hint_text);
 
         mNotesFragment = NotesFragment.newInstance();
 

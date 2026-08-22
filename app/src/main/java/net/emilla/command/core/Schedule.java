@@ -10,7 +10,6 @@ import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.action.InputField;
 import net.emilla.action.box.FieldsFragment;
-import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
@@ -35,8 +34,8 @@ final class Schedule extends CoreDataCommand {
         InputField.LOCATION
     );
 
-    @internal Schedule(AssistActivity act) {
-        super(act, CoreEntry.SCHEDULE, R.string.data_hint_schedule);
+    @internal Schedule(ActionSurface surface) {
+        super(surface, CoreEntry.SCHEDULE, R.string.data_hint_schedule);
 
         giveGadgets(mFieldsFragment);
     }

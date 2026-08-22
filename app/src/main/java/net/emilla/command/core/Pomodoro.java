@@ -37,14 +37,14 @@ final class Pomodoro extends CoreDataCommand {
     @Nullable
     private String mBreakMemo;
 
-    @internal Pomodoro(AssistActivity act) {
-        super(act, CoreEntry.POMODORO, R.string.data_hint_pomodoro);
+    @internal Pomodoro(ActionSurface surface) {
+        super(surface, CoreEntry.POMODORO, R.string.data_hint_pomodoro);
 
-        var res = act.getResources();
+        var res = surface.getResources();
         mActionMap = new ActionMap<Action>(res, Action.WORK, Action[]::new);
         mActionMap.put(res, Action.BREAK, R.array.subcmd_pomodoro_break, true);
 
-        var prefs = act.getSharedPreferences();
+        var prefs = surface.getSharedPreferences();
         mWorkMemo = SettingVals.defaultPomoWorkMemo(prefs, res);
         mBreakMemo = SettingVals.defaultPomoBreakMemo(prefs, res);
     }

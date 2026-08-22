@@ -1,6 +1,5 @@
 package net.emilla.command.app;
 
-import android.content.Context;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.StringRes;
@@ -16,12 +15,12 @@ import net.emilla.wadget.ActionSurface;
     @StringRes
     private final int mHint;
 
-    @internal AppSendData(Context ctx, AppEntry appEntry) {
-        this(ctx, appEntry, R.string.data_hint_text);
+    @internal AppSendData(ActionSurface surface, AppEntry appEntry) {
+        this(surface, appEntry, R.string.data_hint_text);
     }
 
-    @internal AppSendData(Context ctx, AppEntry appEntry, @StringRes int hint) {
-        super(ctx, appEntry, EditorInfo.IME_ACTION_NEXT);
+    @internal AppSendData(ActionSurface surface, AppEntry appEntry, @StringRes int hint) {
+        super(surface, appEntry, EditorInfo.IME_ACTION_NEXT);
 
         mHint = hint;
     }

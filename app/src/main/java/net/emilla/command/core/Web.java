@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.view.inputmethod.EditorInfo;
 
 import net.emilla.Feedback;
-import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
 import net.emilla.wadget.ActionSurface;
@@ -19,11 +18,11 @@ final class Web extends EmillaCommand {
 
     private final WebsiteMap mWebsiteMap;
 
-    @internal Web(AssistActivity act) {
-        super(act, CoreEntry.WEB, EditorInfo.IME_ACTION_SEARCH);
+    @internal Web(ActionSurface surface) {
+        super(surface, CoreEntry.WEB, EditorInfo.IME_ACTION_SEARCH);
 
-        var prefs = act.getSharedPreferences();
-        var res = act.getResources();
+        var prefs = surface.getSharedPreferences();
+        var res = surface.getResources();
         mWebsiteMap = new WebsiteMap(prefs, res);
     }
 

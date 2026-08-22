@@ -1,6 +1,5 @@
 package net.emilla.command.core;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 
@@ -15,8 +14,8 @@ import net.emilla.wadget.ActionSurface;
 public abstract class OpenCommand extends EmillaCommand {
     private final AppsFragment mAppsFragment;
 
-    protected OpenCommand(Context ctx, CoreEntry coreEntry, int imeAction) {
-        super(ctx, coreEntry, imeAction);
+    protected OpenCommand(ActionSurface surface, CoreEntry coreEntry, int imeAction) {
+        super(surface, coreEntry, imeAction);
 
         mAppsFragment = AppsFragment.newInstance();
         giveGadgets(mAppsFragment);

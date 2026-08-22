@@ -1,6 +1,5 @@
 package net.emilla.command.app;
 
-import android.content.Context;
 import android.view.inputmethod.EditorInfo;
 
 import net.emilla.Feedback;
@@ -12,17 +11,17 @@ import net.emilla.wadget.ActionSurface;
 public @open class AppCommand extends EmillaCommand {
     @FunctionalInterface
     public interface Maker {
-        AppCommand make(Context ctx, AppEntry appEntry);
+        AppCommand make(ActionSurface surface, AppEntry appEntry);
     }
 
     protected final AppEntry appEntry;
 
-    @internal AppCommand(Context ctx, AppEntry appEntry) {
-        this(ctx, appEntry, EditorInfo.IME_ACTION_GO);
+    @internal AppCommand(ActionSurface surface, AppEntry appEntry) {
+        this(surface, appEntry, EditorInfo.IME_ACTION_GO);
     }
 
-    @internal AppCommand(Context ctx, AppEntry appEntry, int imeAction) {
-        super(ctx, appEntry, imeAction);
+    @internal AppCommand(ActionSurface surface, AppEntry appEntry, int imeAction) {
+        super(surface, appEntry, imeAction);
 
         this.appEntry = appEntry;
     }

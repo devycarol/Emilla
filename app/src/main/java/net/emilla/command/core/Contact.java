@@ -3,7 +3,6 @@ package net.emilla.command.core;
 import static android.content.Intent.EXTRA_STREAM;
 import static android.content.Intent.EXTRA_TEXT;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -49,14 +48,14 @@ final class Contact extends CoreDataCommand implements ContactCardReceiver {
     private final ActionMap<Action> mActionMap;
     private Action mAction = Action.VIEW;
 
-    @internal Contact(Context ctx) {
-        super(ctx, CoreEntry.CONTACT, R.string.data_hint_contact);
+    @internal Contact(ActionSurface surface) {
+        super(surface, CoreEntry.CONTACT, R.string.data_hint_contact);
 
         mContactsFragment = ContactCardsFragment.newInstance();
 
         giveGadgets(mContactsFragment);
 
-        var res = ctx.getResources();
+        var res = surface.getResources();
         mActionMap = new ActionMap<Action>(res, Action.VIEW, Action[]::new);
 
         mActionMap.put(res, Action.VIEW, R.array.subcmd_view, true);

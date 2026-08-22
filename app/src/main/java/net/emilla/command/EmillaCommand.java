@@ -4,7 +4,6 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 import android.Manifest;
 import android.app.Notification;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -131,7 +130,7 @@ public abstract class EmillaCommand {
     private InstructyGadget[] mInstructyGadgets = null;
 
     protected EmillaCommand(
-        Context ctx,
+        ActionSurface surface,
         Params params,
         @StringRes int summary,
         @StringRes int manual,
@@ -139,7 +138,7 @@ public abstract class EmillaCommand {
     ) {
         mParams = params;
 
-        var res = ctx.getResources();
+        var res = surface.getResources();
 
         this.name = params.name(res);
         this.summary = summary;
@@ -147,12 +146,26 @@ public abstract class EmillaCommand {
         this.mImeAction = imeAction;
     }
 
-    protected EmillaCommand(Context ctx, CoreEntry coreEntry, int imeAction) {
-        this(ctx, coreEntry, coreEntry.summary, coreEntry.manual, imeAction);
+    protected EmillaCommand(
+        ActionSurface surface,
+        CoreEntry coreEntry,
+        int imeAction
+    ) {
+        this(surface, coreEntry, coreEntry.summary, coreEntry.manual, imeAction);
     }
 
-    protected EmillaCommand(Context ctx, AppEntry appEntry, int imeAction) {
-        this(ctx, appEntry, appEntry.summary(), appEntry.actions.manual(), imeAction);
+    protected EmillaCommand(
+        ActionSurface surface,
+        AppEntry appEntry,
+        int imeAction
+    ) {
+        this(
+            surface,
+            appEntry,
+            appEntry.summary(),
+            appEntry.actions.manual(),
+            imeAction
+        );
     }
 
     @internal final void instruct(@Nullable String instruction) {

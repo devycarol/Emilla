@@ -1,6 +1,5 @@
 package net.emilla.command.core;
 
-import android.content.Context;
 import android.net.Uri;
 import android.view.inputmethod.EditorInfo;
 
@@ -17,8 +16,8 @@ import net.emilla.wadget.ActionSurface;
 final class Todo extends EmillaCommand {
     private final ListFileFragment mTodoFragment;
 
-    @internal Todo(Context ctx) {
-        super(ctx, CoreEntry.TODO, EditorInfo.IME_ACTION_DONE);
+    @internal Todo(ActionSurface surface) {
+        super(surface, CoreEntry.TODO, EditorInfo.IME_ACTION_DONE);
 
         mTodoFragment = ListFileFragment.newInstance();
         giveGadgets(mTodoFragment);

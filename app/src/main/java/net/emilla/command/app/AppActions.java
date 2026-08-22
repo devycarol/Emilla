@@ -1,6 +1,5 @@
 package net.emilla.command.app;
 
-import android.content.Context;
 import android.content.pm.PackageManager;
 
 import androidx.annotation.Nullable;
@@ -9,6 +8,7 @@ import androidx.annotation.StringRes;
 import net.emilla.R;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
+import net.emilla.wadget.ActionSurface;
 
 public final class AppActions {
     public static final int FLAG_TASKER         = 0x8;
@@ -101,17 +101,17 @@ public final class AppActions {
         return R.string.manual_app;
     }
 
-    public AppCommand defaultCommand(Context ctx, AppEntry appEntry) {
+    public AppCommand defaultCommand(ActionSurface surface, AppEntry appEntry) {
         if (hasMultilineSend()) {
-            return new AppSendData(ctx, appEntry);
+            return new AppSendData(surface, appEntry);
         }
         if (hasSend()) {
-            return new AppSend(ctx, appEntry);
+            return new AppSend(surface, appEntry);
         }
         if (hasSearch()) {
-            return new AppSearch(ctx, appEntry);
+            return new AppSearch(surface, appEntry);
         }
         // Todo: allow multiple actions
-        return new AppCommand(ctx, appEntry);
+        return new AppCommand(surface, appEntry);
     }
 }

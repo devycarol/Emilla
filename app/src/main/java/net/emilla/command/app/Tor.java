@@ -1,13 +1,12 @@
 package net.emilla.command.app;
 
-import android.content.Context;
-
 import net.emilla.annotation.internal;
+import net.emilla.wadget.ActionSurface;
 
 enum Tor {;
     public static final String PKG = "org.torproject.torbrowser";
 
-    @internal static AppCommand instance(Context ctx, AppEntry appEntry) {
-        return new AppCommand(ctx, appEntry);
+    @internal static AppCommand instance(ActionSurface surface, AppEntry appEntry) {
+        return new AppCommand(surface, appEntry);
     }
 }

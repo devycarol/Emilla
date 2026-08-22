@@ -2,7 +2,6 @@ package net.emilla.command.app;
 
 import static android.content.Intent.EXTRA_TEXT;
 
-import android.content.Context;
 import android.content.Intent;
 import android.view.inputmethod.EditorInfo;
 
@@ -13,12 +12,12 @@ import net.emilla.util.Intents;
 import net.emilla.wadget.ActionSurface;
 
 @open class AppSend extends AppCommand {
-    @internal AppSend(Context ctx, AppEntry appEntry) {
-        this(ctx, appEntry, EditorInfo.IME_ACTION_SEND);
+    @internal AppSend(ActionSurface surface, AppEntry appEntry) {
+        this(surface, appEntry, EditorInfo.IME_ACTION_SEND);
     }
 
-    @internal AppSend(Context ctx, AppEntry appEntry, int imeAction) {
-        super(ctx, appEntry, imeAction);
+    @internal AppSend(ActionSurface surface, AppEntry appEntry, int imeAction) {
+        super(surface, appEntry, imeAction);
     }
 
     @Override
