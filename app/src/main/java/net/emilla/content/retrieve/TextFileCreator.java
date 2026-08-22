@@ -14,12 +14,12 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;
 import androidx.annotation.Nullable;
 
+import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.content.ResultLaunchers;
 import net.emilla.file.Files;
 import net.emilla.file.Folder;
-import net.emilla.run.MessageFailure;
 import net.emilla.util.MimeTypes;
 import net.emilla.util.Toasts;
 
@@ -89,12 +89,14 @@ public final class TextFileCreator {
 
         mActivity.suppressChime(RESUME);
 
-        if (Files.writeLine(mActivity.getContentResolver(), createdFile, text)) {
-            mActivity.give(a -> {});
-        } else {
-            mActivity.fail(
-                new MessageFailure(mActivity, R.string.error, R.string.error_cant_use_file)
-            );
-        }
+        var feedback = Files.writeLine(
+            mActivity.getContentResolver(),
+            createdFile,
+            text
+        )
+            ? Feedback.give()
+            : Feedback.fail(R.string.error, R.string.error_cant_use_file)
+        ;
+        mActivity.take(feedback);
     }
 }

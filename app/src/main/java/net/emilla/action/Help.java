@@ -10,6 +10,7 @@ import androidx.annotation.IdRes;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
+import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.command.EmillaCommand;
@@ -71,13 +72,12 @@ public final class Help implements LabeledQuickAction {
             .create()
         ;
         act.setManual(manual);
-        act.offer(a -> {
-            manual.setOnCancelListener(dlg -> {
-                act.onCloseDialog(); // Todo: don't require this
-                act.resume();
-            });
-            act.prepareForDialog();
-            manual.show();
+        manual.setOnCancelListener(dlg -> {
+            act.onCloseDialog(); // Todo: don't require this
+            act.resume();
         });
+        act.prepareForDialog();
+        manual.show();
+        act.take(Feedback.pend());
     }
 }

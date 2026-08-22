@@ -2,6 +2,8 @@ package net.emilla.command.core;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.content.Context;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
@@ -13,6 +15,7 @@ import net.emilla.annotation.internal;
 import net.emilla.command.DataField;
 import net.emilla.command.EmillaCommand;
 import net.emilla.ping.PingChannel;
+import net.emilla.ping.Pinger;
 import net.emilla.ping.Pings;
 import net.emilla.util.Permission;
 import net.emilla.wadget.ActionSurface;
@@ -40,29 +43,27 @@ final class Notify extends EmillaCommand {
     @SuppressLint("MissingPermission")
     private static Feedback tryPing(
         AssistActivity act,
-        String title,
-        @Nullable String text
+        CharSequence title,
+        @Nullable CharSequence text
     ) {
-        Permission.PINGS.with(act, () -> ping(act, title, text));
+        Permission.PINGS.with(act, () -> act.take(ping(act, title, text)));
         return Feedback.silence();
     }
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
-    private static void ping(
-        AssistActivity act,
-        String title,
-        @Nullable String text
+    private static Feedback ping(
+        Context ctx,
+        CharSequence title,
+        @Nullable CharSequence text
     ) {
-        givePing(
-            act,
-            Pings.make(
-                act,
-                PingChannel.COMMAND,
-                title,
-                text,
-                R.drawable.ic_notify
-            ),
-            PingChannel.COMMAND
+        Notification ping = Pings.make(
+            ctx,
+            PingChannel.COMMAND,
+            title,
+            text,
+            R.drawable.ic_notify
         );
+        Pinger.of(ctx, ping, PingChannel.COMMAND).ping();
+        return Feedback.give();
     }
 }

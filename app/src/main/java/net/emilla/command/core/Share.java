@@ -112,10 +112,8 @@ final class Share extends EmillaCommand implements AppChoiceReceiver {
     @Override
     public void provide(boolean chosen) {
         if (chosen) {
-            mActivity.succeed(a -> {
-                a.finishAndRemoveTask();
-                a.suppressChime(Chime.PEND);
-            });
+            mActivity.suppressChime(Chime.PEND);
+            mActivity.take(Feedback.succeed());
         } else {
             mActivity.chime(RESUME);
         }

@@ -23,12 +23,12 @@ final class Say extends EmillaCommand {
         var prefs = surface.getSharedPreferences();
         var res = surface.getResources();
         mFragment.say(SettingVals.motd(prefs, res));
-        return Feedback.selectInstruction();
+        return Feedback.selectInstructionSilently();
     }
 
     @Override
     protected Feedback run(ActionSurface surface, String message) {
         mFragment.say(message);
-        return Feedback.selectInstruction();
+        return Feedback.selectInstructionSilently();
     }
 }

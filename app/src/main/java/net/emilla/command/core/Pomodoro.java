@@ -22,6 +22,7 @@ import net.emilla.event.PingScheduler;
 import net.emilla.event.Plan;
 import net.emilla.lang.Lang;
 import net.emilla.ping.PingChannel;
+import net.emilla.ping.Pinger;
 import net.emilla.ping.Pings;
 import net.emilla.util.Int;
 import net.emilla.util.Permission;
@@ -111,8 +112,8 @@ final class Pomodoro extends EmillaCommand {
     private static void pomo(
         AssistActivity act,
         int seconds,
-        String workMemo,
-        String breakMemo,
+        CharSequence workMemo,
+        CharSequence breakMemo,
         boolean isBreak
     ) {
         var res = act.getResources();
@@ -148,12 +149,12 @@ final class Pomodoro extends EmillaCommand {
         AssistActivity act,
         int seconds,
         PingChannel startChannel,
-        String mainTitle,
-        String startMemo,
+        CharSequence mainTitle,
+        CharSequence startMemo,
         PingChannel warnChannel,
         PingChannel endChannel,
-        String endTitle,
-        String endMemo
+        CharSequence endTitle,
+        CharSequence endMemo
     ) {
         var res = act.getResources();
         String warnMemo = res.getString(R.string.ping_pomodoro_warn_text);
@@ -184,11 +185,12 @@ final class Pomodoro extends EmillaCommand {
     }
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
-    private static void givePing(AssistActivity act, PingChannel channel, String title, String memo) {
-        givePing(act, makePing(act, channel, title, memo), channel);
+    private static void givePing(AssistActivity act, PingChannel channel, CharSequence title, CharSequence memo) {
+        Pinger.of(act, makePing(act, channel, title, memo), channel).ping();
+        act.take(Feedback.give());
     }
 
-    private static Notification makePing(Context ctx, PingChannel channel, String title, String memo) {
+    private static Notification makePing(Context ctx, PingChannel channel, CharSequence title, CharSequence memo) {
         return Pings.make(ctx, channel, title, memo, R.drawable.ic_pomodoro);
     }
 }

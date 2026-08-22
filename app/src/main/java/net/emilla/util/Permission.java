@@ -4,17 +4,18 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
+import androidx.appcompat.app.AlertDialog;
 
+import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.run.PermissionFailure;
-import net.emilla.run.PermissionOffering;
 
 public enum Permission {
     CALL(
@@ -23,8 +24,8 @@ public enum Permission {
     ),
     CONTACTS(
         R.string.perm_contacts,
-
-        Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS
+        Manifest.permission.READ_CONTACTS,
+        Manifest.permission.WRITE_CONTACTS
     ),
     PINGS(
         R.string.perm_notifications,
@@ -52,17 +53,39 @@ public enum Permission {
         mPermissions = permissions;
     }
 
+    private static AlertDialog.Builder failDialog(
+        AssistActivity act,
+        @StringRes int permissionName
+    ) {
+        // todo: this often results in an activity restart, which messes with
+        //  the resume chime and probably other elements of state. handle
+        //  accordingly.
+        Intent appInfo = Intents.appInfo();
+        var pm = act.getPackageManager();
+        if (appInfo.resolveActivity(pm) != null) {
+            return Dialogs.dual(
+                act,
+                permissionName,
+                R.string.dlg_msg_perm_denial,
+                R.string.app_info,
+                (dlg, which) -> act.startActivity(appInfo)
+            );
+        }
+
+        return Dialogs.message(act, permissionName, R.string.dlg_msg_perm_denial);
+        // this should pretty much never happen.
+    }
+
     @SuppressLint("NewApi")
     public void flow(AssistActivity act, @Nullable Runnable onGrant) {
         if (has(act)) {
             return;
         }
 
-        if (isPromptAllowed(act)) {
-            act.offer(PermissionOffering.instance(mPermissions, onGrant));
-        } else {
-            act.fail(new PermissionFailure(act, mName));
-        }
+        act.take(isPromptAllowed(act)
+            ? Feedback.offerPermissions(mPermissions, onGrant)
+            : Feedback.fail(failDialog(act, mName))
+        );
     }
 
     @SuppressLint("NewApi")
@@ -72,26 +95,33 @@ public enum Permission {
             return;
         }
 
-        if (isPromptAllowed(act)) {
-            act.offer(PermissionOffering.instance(mPermissions, onGrant));
-        } else {
-            act.fail(new PermissionFailure(act, mName));
-        }
+        act.take(isPromptAllowed(act)
+            ? Feedback.offerPermissions(mPermissions, onGrant)
+            : Feedback.fail(failDialog(act, mName))
+        );
     }
 
     @SuppressLint("NewApi")
-    public void with(AssistActivity act, Runnable onGrant, Runnable onNoPrompt, Runnable afterGrant) {
+    public void with(
+        AssistActivity act,
+        Runnable onGrant,
+        Runnable onNoPrompt,
+        Runnable afterGrant
+    ) {
         if (has(act)) {
             onGrant.run();
             return;
         }
 
         if (isPromptAllowed(act)) {
-            act.offer(
-                PermissionOffering.instance(mPermissions, () -> {
-                    onGrant.run();
-                    afterGrant.run();
-                })
+            act.take(
+                Feedback.offerPermissions(
+                    mPermissions,
+                    () -> {
+                        onGrant.run();
+                        afterGrant.run();
+                    }
+                )
             );
         } else {
             onNoPrompt.run();

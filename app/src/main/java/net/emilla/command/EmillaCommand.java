@@ -1,20 +1,12 @@
 package net.emilla.command;
 
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-
-import android.Manifest;
-import android.app.Notification;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresPermission;
 import androidx.annotation.StringRes;
-import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.Feedback;
 import net.emilla.R;
@@ -29,11 +21,7 @@ import net.emilla.command.core.CoreEntry;
 import net.emilla.config.Aliases;
 import net.emilla.config.SettingVals;
 import net.emilla.lang.Lang;
-import net.emilla.ping.PingChannel;
-import net.emilla.run.DialogRun;
-import net.emilla.run.PingGift;
 import net.emilla.util.ArrayLoader;
-import net.emilla.util.Dialogs;
 import net.emilla.wadget.ActionSurface;
 
 import java.util.Objects;
@@ -316,52 +304,6 @@ public abstract class EmillaCommand {
             : run(surface)
         ;
     }
-
-    /*======================================================================================*
-     * IMPORTANT: One of the following methods should be called at the end of each command. *
-     *======================================================================================*/
-
-    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
-    protected static void givePing(AssistActivity act, Notification ping, PingChannel channel) {
-        act.give(PingGift.instance(ping, channel));
-    }
-
-    protected static void offerDialog(AssistActivity act, AlertDialog.Builder builder) {
-        act.offer(new DialogRun(builder));
-    }
-
-    protected static void offerApp(AssistActivity act, Intent intent, boolean newTask) {
-        if (newTask) {
-            intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-        } else {
-            act.suppressBackCancellation();
-        }
-
-        act.startActivity(intent);
-    }
-
-    protected final Feedback failDialog(
-        AssistActivity act,
-        @StringRes int msg,
-        @StringRes int yesLabel,
-        DialogInterface.OnClickListener yesClick
-    ) {
-        return Feedback.fail(
-            Dialogs.dual(act, this.name, msg, yesLabel, yesClick)
-        );
-    }
-
-    protected final Feedback failMessage(@StringRes int msg) {
-        return Feedback.fail(this.name, msg);
-    }
-
-    protected final Feedback failMessage(CharSequence msg) {
-        return Feedback.fail(this.name, msg);
-    }
-
-    /*==========================*
-     * End of finisher methods. *
-     *==========================*/
 
     /// Runs the command.
     protected abstract Feedback run(ActionSurface surface);

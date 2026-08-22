@@ -49,7 +49,7 @@ final class Alarm extends EmillaCommand {
     protected Feedback run(ActionSurface surface, String time) {
         WallTime wallTime = Lang.wallTime(surface.getContext(), time);
         if (wallTime == null) {
-            return failMessage(R.string.error_invalid_time);
+            return Feedback.fail(R.string.error_invalid_time);
         }
 
         HourMinute hourMinute = wallTime.nextOccurrence();

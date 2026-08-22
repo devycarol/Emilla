@@ -1,21 +1,22 @@
 package net.emilla;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-
 import static net.emilla.chime.Chime.ACT;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.os.Build;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.activity.AssistActivity;
 import net.emilla.activity.PassthroughActivity;
 import net.emilla.chime.Chime;
-import net.emilla.run.DialogRun;
-import net.emilla.run.MessageFailure;
-import net.emilla.run.TextGift;
+import net.emilla.util.Clipboard;
+import net.emilla.util.Dialogs;
 import net.emilla.util.Intents;
 
 public interface Feedback {
@@ -44,23 +45,29 @@ public interface Feedback {
         return act -> fail(act.command().name, message).run(act);
     }
 
+    static Feedback fail(CharSequence message) {
+        return act -> fail(act.command().name, message).run(act);
+    }
+
     static Feedback fail(@StringRes int title, @StringRes int message) {
         return act -> {
-            new MessageFailure(act, title, message).run(act);
-            act.chime(Chime.FAIL);
+            var res = act.getResources();
+            fail(res.getString(title), res.getString(message)).run(act);
         };
     }
 
     static Feedback fail(CharSequence title, @StringRes int message) {
         return act -> {
-            new MessageFailure(act, title, message).run(act);
-            act.chime(Chime.FAIL);
+            var res = act.getResources();
+            fail(title, res.getString(message)).run(act);
         };
     }
 
     static Feedback fail(CharSequence title, CharSequence message) {
         return act -> {
-            new MessageFailure(act, title, message).run(act);
+            AlertDialog.Builder dialog = Dialogs.message(act, title, message);
+            dialog.setNeutralButton(R.string.leave, (dlg, which) -> act.cancel());
+            dialogRun(act, dialog);
             act.chime(Chime.FAIL);
         };
     }
@@ -70,7 +77,10 @@ public interface Feedback {
     }
 
     static Feedback give() {
-        return act -> act.chime(Chime.ACT);
+        return act -> {
+            act.focusedEditBox().selectAll();
+            act.chime(Chime.ACT);
+        };
     }
 
     static Feedback give(Intent email) {
@@ -92,7 +102,7 @@ public interface Feedback {
 
     static Feedback fail(AlertDialog.Builder dialog) {
         return act -> {
-            new DialogRun(dialog).run(act);
+            dialogRun(act, dialog);
             act.chime(Chime.FAIL);
         };
     }
@@ -103,9 +113,28 @@ public interface Feedback {
 
     static Feedback offer(AlertDialog.Builder dialog) {
         return act -> {
-            new DialogRun(dialog).run(act);
+            dialogRun(act, dialog);
             act.chime(Chime.PEND);
         };
+    }
+
+    static Feedback offer(Intent intent, boolean newTask) {
+        return act -> {
+            if (newTask) {
+                intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+            } else {
+                act.suppressBackCancellation();
+            }
+            act.startActivity(intent);
+        };
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    static Feedback offerPermissions(
+        String[] permissions,
+        @Nullable Runnable onGrant
+    ) {
+        return act -> act.offerPermissions(permissions, onGrant);
     }
 
     static Feedback giveText(@StringRes int text) {
@@ -121,7 +150,13 @@ public interface Feedback {
 
     static Feedback giveText(CharSequence title, CharSequence text) {
         return act -> {
-            new TextGift(act, title, text).run(act);
+            AlertDialog.Builder dialog = Dialogs.message(act, title, text);
+            dialog.setNeutralButton(android.R.string.copy, (dlg, which) -> {
+                act.onCloseDialog(); // Todo: don't require this.
+                Clipboard.copy(act, text);
+                act.take(give());
+            });
+            dialogRun(act, dialog);
             act.chime(Chime.ACT);
         };
     }
@@ -131,5 +166,18 @@ public interface Feedback {
             act.selectInstruction();
             act.chime(ACT);
         };
+    }
+
+    static Feedback selectInstructionSilently() {
+        return AssistActivity::selectInstruction;
+    }
+
+    private static void dialogRun(AssistActivity act, AlertDialog.Builder dialog) {
+        dialog.setOnCancelListener(dlg -> {
+            act.onCloseDialog(); // Todo: don't require this
+            act.resume();
+        });
+        act.prepareForDialog();
+        dialog.show();
     }
 }

@@ -47,7 +47,7 @@ public final class SnippetsFragment extends ActionBox {
         mAdapter = Snippet.adapter(
             inflater,
             mPrefs,
-            snippet -> giveText(act, snippet.displayName, snippet.text(mPrefs))
+            snippet -> act.take(Feedback.giveText(snippet.displayName, snippet.text(mPrefs)))
         );
         recycler.setAdapter(mAdapter);
     }

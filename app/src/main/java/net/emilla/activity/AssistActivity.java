@@ -14,12 +14,9 @@ import static android.view.inputmethod.EditorInfo.IME_ACTION_PREVIOUS;
 import static android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH;
 import static android.view.inputmethod.EditorInfo.IME_ACTION_SEND;
 import static android.view.inputmethod.EditorInfo.IME_ACTION_UNSPECIFIED;
-import static net.emilla.chime.Chime.ACT;
 import static net.emilla.chime.Chime.EXIT;
-import static net.emilla.chime.Chime.FAIL;
 import static net.emilla.chime.Chime.PEND;
 import static net.emilla.chime.Chime.RESUME;
-import static net.emilla.chime.Chime.SUCCEED;
 
 import android.content.Context;
 import android.content.Intent;
@@ -71,9 +68,6 @@ import net.emilla.file.Folder;
 import net.emilla.lang.Lang;
 import net.emilla.permission.PermissionRetriever;
 import net.emilla.run.BugFailure;
-import net.emilla.run.CommandRun;
-import net.emilla.run.DialogRun;
-import net.emilla.run.MessageFailure;
 import net.emilla.util.Dialogs;
 import net.emilla.util.Views;
 import net.emilla.wadget.ActionSurface;
@@ -489,7 +483,7 @@ public final class AssistActivity
         switch (keyCode) {
         case KEYCODE_BACK -> cancelIfWarranted(); // todo config? command history?
         case KEYCODE_MENU -> mMenuKeyAction.perform();
-        case KEYCODE_SEARCH -> give(act -> {}); // todo config
+        case KEYCODE_SEARCH -> take(Feedback.give()); // todo config
         default -> {
             return false;
         }}
@@ -694,7 +688,7 @@ public final class AssistActivity
         if (shouldCancel()) {
             cancel();
         } else {
-            offer(new DialogRun(cancelDialog()));
+            take(Feedback.offer(cancelDialog()));
         }
     }
 
@@ -725,11 +719,6 @@ public final class AssistActivity
         mBinding.submitButton.setEnabled(false);
     }
 
-    public void offer(CommandRun offering) {
-        offering.run(this);
-        chime(PEND);
-    }
-
     public void offerSaveFile(
         @Nullable String filename,
         @Nullable Folder defaultFolder,
@@ -747,34 +736,21 @@ public final class AssistActivity
         chime(PEND);
     }
 
-    public void offerChooser(AppChoiceReceiver receiver, Intent target, @StringRes int title) {
+    public void offerChooser(
+        AppChoiceReceiver receiver,
+        Intent target,
+        @StringRes int title
+    ) {
         mAppChoiceRetriever.retrieve(receiver, target, title);
         chime(PEND);
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    public void offerPermissions(String[] permissions, Runnable onGrant) {
+    public void offerPermissions(
+        String[] permissions,
+        @Nullable Runnable onGrant
+    ) {
         mPermissionRetriever.retrieve(permissions, onGrant);
-    }
-
-    public void give(CommandRun gift) {
-        focusedEditBox().selectAll();
-        gift.run(this);
-        chime(ACT);
-    }
-
-    public void succeed(CommandRun success) {
-        success.run(this);
-        chime(SUCCEED);
-    }
-
-    public void fail(@StringRes int title, @StringRes int message) {
-        fail(new MessageFailure(this, title, message));
-    }
-
-    public void fail(CommandRun failure) {
-        failure.run(this);
-        chime(FAIL);
     }
 
     private void submitCommand() {
@@ -787,7 +763,7 @@ public final class AssistActivity
         try {
             take(mCommand.execute(this));
         } catch (RuntimeException e) {
-            fail(new BugFailure(this, e, mCommand.name));
+            take(Feedback.fail(BugFailure.dialog(this, e, mCommand.name)));
         }
     }
 

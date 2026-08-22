@@ -5,9 +5,9 @@ import android.content.ActivityNotFoundException;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.Nullable;
 
+import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
-import net.emilla.run.MessageFailure;
 
 public enum ResultLaunchers {;
     public static <I> boolean tryLaunch(
@@ -19,7 +19,7 @@ public enum ResultLaunchers {;
             launcher.launch(input);
             return true;
         } catch (ActivityNotFoundException e) {
-            act.fail(new MessageFailure(act, R.string.error, R.string.error_no_app));
+            act.take(Feedback.fail(R.string.error, R.string.error_no_app));
             return false;
         }
     }

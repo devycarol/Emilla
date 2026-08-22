@@ -22,14 +22,15 @@ import net.emilla.wadget.ActionSurface;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-public final class BugFailure extends DialogRun {
+public enum BugFailure {;
     private static final String TAG = BugFailure.class.getSimpleName();
 
-    private static AlertDialog.Builder makeDialog(
+    public static AlertDialog.Builder dialog(
         AssistActivity act,
         RuntimeException e,
         CharSequence commandName
     ) {
+        Log.e(TAG, "unknown error in the " + commandName + " command", e);
         return Dialogs.dual(
             act,
             R.string.error_unknown,
@@ -126,10 +127,5 @@ public final class BugFailure extends DialogRun {
             case Build.VERSION_CODES.VANILLA_ICE_CREAM -> "Vanilla Ice Cream";
             default -> "API level " + Build.VERSION.SDK_INT;
         };
-    }
-
-    public BugFailure(AssistActivity act, RuntimeException e, CharSequence commandName) {
-        super(makeDialog(act, e, commandName));
-        Log.e(TAG, "unknown error in the " + commandName + " command", e);
     }
 }

@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.StringRes;
 
+import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.util.TorchManager;
@@ -38,7 +39,12 @@ public final class Flashlight implements LabeledQuickAction {
     @Override
     public void perform() {
         if (!TorchManager.toggle(mActivity)) {
-            mActivity.fail(R.string.action_flashlight, R.string.error_torch_failed);
+            mActivity.take(
+                Feedback.fail(
+                    R.string.action_flashlight,
+                    R.string.error_torch_failed
+                )
+            );
         }
     }
 }

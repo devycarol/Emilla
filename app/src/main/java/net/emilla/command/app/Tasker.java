@@ -73,17 +73,33 @@ final class Tasker extends AppCommand {
         var act = surface.getAssistActivity();
         return switch (TaskerIntent.testStatus(act)) {
             case OK -> searchRun(act, task, params);
-            case NOT_ENABLED -> failDialog(
-                act, R.string.error_tasker_not_enabled,
-
-                R.string.dlg_yes_tasker_open,
-                (dlg, which) -> offerApp(act, this.appEntry.launchIntent(), true)
+            case NOT_ENABLED -> Feedback.fail(
+                Dialogs.dual(
+                    act,
+                    this.name,
+                    R.string.error_tasker_not_enabled,
+                    R.string.dlg_yes_tasker_open,
+                    (dlg, which) -> act.take(
+                        Feedback.offer(
+                            this.appEntry.launchIntent(),
+                            true
+                        )
+                    )
+                )
             );
-            case NO_ACCESS -> failDialog(
-                act, R.string.error_tasker_blocked,
-
-                R.string.dlg_yes_tasker_external_access_settings,
-                (dlg, which) -> offerApp(act, TaskerIntent.getExternalAccessPrefsIntent(), false)
+            case NO_ACCESS -> Feedback.fail(
+                Dialogs.dual(
+                    act,
+                    this.name,
+                    R.string.error_tasker_blocked,
+                    R.string.dlg_yes_tasker_external_access_settings,
+                    (dlg, which) -> act.take(
+                        Feedback.offer(
+                            TaskerIntent.getExternalAccessPrefsIntent(),
+                            false
+                        )
+                    )
+                )
             );
             case NO_PERMISSION -> {
                 Permission.TASKER.flow(
@@ -92,11 +108,11 @@ final class Tasker extends AppCommand {
                 );
                 yield Feedback.silence();
             }
-            case NO_RECEIVER -> failMessage(R.string.error_tasker_no_receiver);
+            case NO_RECEIVER -> Feedback.fail(R.string.error_tasker_no_receiver);
         };
     }
 
-    private Feedback searchRun(AssistActivity act, String task, @Nullable String params) {
+    private static Feedback searchRun(AssistActivity act, String task, @Nullable String params) {
         var res = act.getResources();
         var cr = act.getContentResolver();
         var contentUri = Uri.parse("content://net.dinglisch.android.tasker/tasks");
@@ -104,7 +120,7 @@ final class Tasker extends AppCommand {
         Cursor cur = cr.query(contentUri, projection, null, null, null);
 
         if (cur == null) {
-            return failMessage(res.getString(R.string.error_tasker_no_tasks, task));
+            return Feedback.fail(res.getString(R.string.error_tasker_no_tasks, task));
         }
 
         int nameCol = 0;
@@ -124,7 +140,7 @@ final class Tasker extends AppCommand {
         cur.close();
 
         if (tasks.isEmpty()) {
-            return failMessage(res.getString(R.string.error_tasker_no_tasks, task));
+            return Feedback.fail(res.getString(R.string.error_tasker_no_tasks, task));
         }
 
         int size = tasks.size();
