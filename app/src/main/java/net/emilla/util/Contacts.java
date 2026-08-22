@@ -1,13 +1,5 @@
 package net.emilla.util;
 
-import android.content.ContentResolver;
-import android.database.Cursor;
-import android.net.Uri;
-import android.provider.ContactsContract.CommonDataKinds.Email;
-import android.provider.ContactsContract.CommonDataKinds.Phone;
-
-import androidx.annotation.Nullable;
-
 import java.util.regex.Pattern;
 
 public enum Contacts {;
@@ -64,35 +56,5 @@ public enum Contacts {;
             case 'W', 'X', 'Y', 'Z' -> 9;
             default -> -1;
         };
-    }
-
-    @Nullable
-    public static String phoneNumber(Uri contact, ContentResolver cr) {
-        Uri contentUri = Phone.CONTENT_URI;
-        String[] projection = {Phone.NUMBER};
-        int INDEX_NUMBER = 0;
-        String selection = Phone.CONTACT_ID + " = ?";
-        String[] selectionArgs = {contact.getLastPathSegment()};
-        try (Cursor cur = cr.query(contentUri, projection, selection, selectionArgs, null)) {
-            if (cur != null && cur.moveToFirst()) {
-                return cur.getString(INDEX_NUMBER);
-            }
-        }
-        return null;
-    }
-
-    @Nullable
-    public static String emailAddress(Uri contact, ContentResolver cr) {
-        Uri contentUri = Email.CONTENT_URI;
-        String[] projection = {Email.ADDRESS};
-        int INDEX_ADDRESS = 0;
-        String selection = Email.CONTACT_ID + " = ?";
-        String[] selectionArgs = {contact.getLastPathSegment()};
-        try (Cursor cur = cr.query(contentUri, projection, selection, selectionArgs, null)) {
-            if (cur != null && cur.moveToFirst()) {
-                return cur.getString(INDEX_ADDRESS);
-            }
-        }
-        return null;
     }
 }

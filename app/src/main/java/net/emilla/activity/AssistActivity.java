@@ -61,14 +61,8 @@ import net.emilla.command.EmillaCommand;
 import net.emilla.command.app.AppEntry;
 import net.emilla.config.SettingVals;
 import net.emilla.content.receive.AppChoiceReceiver;
-import net.emilla.content.receive.ContactCardReceiver;
-import net.emilla.content.receive.EmailReceiver;
 import net.emilla.content.receive.FilesReceiver;
-import net.emilla.content.receive.PhoneReceiver;
 import net.emilla.content.retrieve.AppChoiceRetriever;
-import net.emilla.content.retrieve.ContactCardRetriever;
-import net.emilla.content.retrieve.ContactEmailRetriever;
-import net.emilla.content.retrieve.ContactPhoneRetriever;
 import net.emilla.content.retrieve.FilesRetriever;
 import net.emilla.content.retrieve.MediaRetriever;
 import net.emilla.content.retrieve.TextFileCreator;
@@ -96,9 +90,6 @@ public final class AssistActivity
     private final TextFileCreator mTextFileCreator = new TextFileCreator(this);
     private final FilesRetriever mFilesRetriever = new FilesRetriever(this);
     private final MediaRetriever mMediaRetriever = new MediaRetriever(this);
-    private final ContactCardRetriever mContactCardRetriever = new ContactCardRetriever(this);
-    private final ContactPhoneRetriever mContactPhoneRetriever = new ContactPhoneRetriever(this);
-    private final ContactEmailRetriever mContactEmailRetriever = new ContactEmailRetriever(this);
     private final AppChoiceRetriever mAppChoiceRetriever = new AppChoiceRetriever(this);
     private final PermissionRetriever mPermissionRetriever
         = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
@@ -754,18 +745,6 @@ public final class AssistActivity
     public void offerMedia(FilesReceiver receiver) {
         mMediaRetriever.retrieve(receiver);
         chime(PEND);
-    }
-
-    public void offerContactCards(ContactCardReceiver receiver) {
-        mContactCardRetriever.retrieve(receiver);
-    }
-
-    public void offerContactPhones(PhoneReceiver receiver) {
-        mContactPhoneRetriever.retrieve(receiver);
-    }
-
-    public void offerContactEmails(EmailReceiver receiver) {
-        mContactEmailRetriever.retrieve(receiver);
     }
 
     public void offerChooser(AppChoiceReceiver receiver, Intent target, @StringRes int title) {

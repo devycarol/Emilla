@@ -91,13 +91,10 @@ final class Contact extends EmillaCommand implements ContactCardReceiver {
     @Override
     protected Feedback run(ActionSurface surface) {
         String details = surface.dataText();
-        if (details != null && mAction != Action.SHARE) {
-            return create(null, details);
-        }
-
-        surface.getAssistActivity().offerContactCards(this);
-        // intrinsic 'pend' by the contacts chooser
-        return Feedback.silence();
+        return details != null && mAction != Action.SHARE
+            ? create(null, details)
+            : Feedback.pend()
+        ;
     }
 
     @Override
@@ -129,13 +126,10 @@ final class Contact extends EmillaCommand implements ContactCardReceiver {
                     };
                 }
 
-                if (person != null) {
-                    yield offerCreate(surface, person, null);
-                }
-
-                surface.getAssistActivity().offerContactCards(this);
-                yield Feedback.silence();
-                // intrinsic 'pend' by the contacts chooser
+                yield person != null
+                    ? offerCreate(surface, person, null)
+                    : Feedback.pend()
+                ;
             }
             case CREATE -> create(person, null);
         };

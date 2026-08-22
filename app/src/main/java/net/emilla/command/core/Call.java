@@ -46,13 +46,10 @@ final class Call extends EmillaCommand implements PhoneReceiver {
 
     private Feedback tryCall(AssistActivity act) {
         String number = mContactsFragment.selectedContacts();
-        if (number == null) {
-            act.offerContactPhones(this);
-            return Feedback.silence();
-            // intrinsic 'pend' by the contacts chooser
-        }
-
-        return call(act, number);
+        return number != null
+            ? call(act, number)
+            : Feedback.pend()
+        ;
     }
 
     @Override
