@@ -68,9 +68,4 @@ public final class FieldsFragment extends ActionBox {
 
         return field.getText().toString();
     }
-
-    @Override
-    public void instruct(@Nullable String instruction) {
-        // do nothing
-    }
 }

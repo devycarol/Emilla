@@ -612,10 +612,6 @@ public final class AssistActivity
         }
     }
 
-    public void setSubmitIcon(ActionIcon icon) {
-        mBinding.submitButton.setIcon(icon);
-    }
-
     public void setImeAction(int action) {
         if (mVm.noCommand) {
             action = IME_ACTION_NEXT;
@@ -770,10 +766,20 @@ public final class AssistActivity
     @Override @Nullable
     public String dataText() {
         EditText dataField = mBinding.dataField;
-        return dataField.length() == 0
-            ? null
-            : dataField.getText().toString()
+        return dataField.length() != 0
+            ? dataField.getText().toString()
+            : null
         ;
+    }
+
+    @Override
+    public void setSubmitIcon(ActionIcon icon) {
+        mBinding.submitButton.setIcon(icon);
+    }
+
+    @Override
+    public void resetSubmitIcon() {
+        mBinding.submitButton.setIcon(mCommand.params.actionIcon(this));
     }
 
     @Override

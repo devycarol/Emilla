@@ -5,6 +5,7 @@ import android.view.inputmethod.EditorInfo;
 
 import net.emilla.Feedback;
 import net.emilla.R;
+import net.emilla.action.Widget;
 import net.emilla.action.box.ListFileFragment;
 import net.emilla.action.box.TriResult;
 import net.emilla.annotation.internal;
@@ -14,13 +15,17 @@ import net.emilla.util.MimeTypes;
 import net.emilla.wadget.ActionSurface;
 
 final class Todo extends EmillaCommand {
-    private final ListFileFragment mTodoFragment;
+    private final ListFileFragment mTodoFragment = ListFileFragment.newInstance();
 
     @internal Todo(ActionSurface surface) {
         super(surface, CoreEntry.TODO, EditorInfo.IME_ACTION_DONE);
+    }
 
-        mTodoFragment = ListFileFragment.newInstance();
-        giveGadgets(mTodoFragment);
+    @Override
+    protected Widget[] widgets() {
+        return new Widget[] {
+            mTodoFragment,
+        };
     }
 
     @Override

@@ -26,30 +26,10 @@ public final class ArrayLoader<E> {
         add(e);
     }
 
-    public boolean notEmpty() {
-        return mSize > 0;
-    }
-
     public E[] array() {
         return mSize == mArray.length
             ? mArray
             : Arrays.copyOf(mArray, mSize)
         ;
-    }
-
-    public E[] appendedTo(E[] array) {
-        return concat(array, mArray, mSize);
-    }
-
-    public static <E> E[] concat(E[] a, E[] b) {
-        return concat(a, b, b.length);
-    }
-
-    private static <E> E[] concat(E[] a, E[] b, int bLimit) {
-        int previousEnd = a.length;
-        E[] concat = Arrays.copyOf(a, previousEnd + bLimit);
-        System.arraycopy(b, 0, concat, previousEnd, bLimit);
-
-        return concat;
     }
 }

@@ -1,8 +1,9 @@
 package net.emilla.action;
 
-import net.emilla.activity.AssistActivity;
+import androidx.annotation.Nullable;
+
+import net.emilla.wadget.ActionSurface;
 
 public interface Gadget {
-    void load(AssistActivity act);
-    void unload(AssistActivity act);
+    void instruct(ActionSurface surface, @Nullable String instruction);
 }

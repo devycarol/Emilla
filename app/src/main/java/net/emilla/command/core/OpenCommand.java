@@ -6,19 +6,36 @@ import android.content.pm.PackageManager;
 import androidx.annotation.Nullable;
 
 import net.emilla.Feedback;
+import net.emilla.action.Gadget;
+import net.emilla.action.Widget;
 import net.emilla.action.box.AppsFragment;
 import net.emilla.command.EmillaCommand;
 import net.emilla.command.app.AppEntry;
 import net.emilla.wadget.ActionSurface;
 
 public abstract class OpenCommand extends EmillaCommand {
-    private final AppsFragment mAppsFragment;
+    private final AppsFragment mAppsFragment = AppsFragment.newInstance();
 
-    protected OpenCommand(ActionSurface surface, CoreEntry coreEntry, int imeAction) {
+    protected OpenCommand(
+        ActionSurface surface,
+        CoreEntry coreEntry,
+        int imeAction
+    ) {
         super(surface, coreEntry, imeAction);
+    }
 
-        mAppsFragment = AppsFragment.newInstance();
-        giveGadgets(mAppsFragment);
+    @Override
+    protected Widget[] widgets() {
+        return new Widget[] {
+            mAppsFragment,
+        };
+    }
+
+    @Override
+    protected Gadget[] gadgets() {
+        return new Gadget[] {
+            mAppsFragment,
+        };
     }
 
     @Nullable

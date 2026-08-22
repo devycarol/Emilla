@@ -4,6 +4,8 @@ import android.net.Uri;
 
 import net.emilla.Feedback;
 import net.emilla.R;
+import net.emilla.action.Gadget;
+import net.emilla.action.Widget;
 import net.emilla.action.box.NotesFragment;
 import net.emilla.annotation.internal;
 import net.emilla.command.DataField;
@@ -14,7 +16,7 @@ import net.emilla.file.TreeFile;
 import net.emilla.wadget.ActionSurface;
 
 final class Note extends EmillaCommand {
-    private final NotesFragment mNotesFragment;
+    private final NotesFragment mNotesFragment = NotesFragment.newInstance();
 
     @internal Note(ActionSurface surface) {
         super(
@@ -22,9 +24,20 @@ final class Note extends EmillaCommand {
             CoreEntry.NOTE,
             new DataField(R.string.data_hint_text)
         );
-        mNotesFragment = NotesFragment.newInstance();
+    }
 
-        giveGadgets(mNotesFragment);
+    @Override
+    protected Widget[] widgets() {
+        return new Widget[] {
+            mNotesFragment,
+        };
+    }
+
+    @Override
+    protected Gadget[] gadgets() {
+        return new Gadget[] {
+            mNotesFragment,
+        };
     }
 
     @Override

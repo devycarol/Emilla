@@ -4,6 +4,8 @@ import androidx.annotation.Nullable;
 
 import net.emilla.Feedback;
 import net.emilla.R;
+import net.emilla.action.Gadget;
+import net.emilla.action.Widget;
 import net.emilla.action.box.SnippetsFragment;
 import net.emilla.annotation.internal;
 import net.emilla.command.ActionMap;
@@ -14,7 +16,7 @@ import net.emilla.exception.UnreachableError;
 import net.emilla.wadget.ActionSurface;
 
 final class Snippets extends EmillaCommand {
-    private final SnippetsFragment mSnippetsFragment;
+    private final SnippetsFragment mSnippetsFragment = SnippetsFragment.newInstance();
 
     private final ActionMap<SnippetAction> mActionMap;
     private SnippetAction mAction = SnippetAction.GET;
@@ -25,10 +27,6 @@ final class Snippets extends EmillaCommand {
             CoreEntry.SNIPPETS,
             new DataField(R.string.data_hint_text)
         );
-        mSnippetsFragment = SnippetsFragment.newInstance();
-
-        giveGadgets(mSnippetsFragment);
-
         var res = surface.getResources();
         mActionMap = new ActionMap<SnippetAction>(res, SnippetAction.GET, SnippetAction[]::new);
 
@@ -39,8 +37,17 @@ final class Snippets extends EmillaCommand {
     }
 
     @Override
-    protected void onInstruct(@Nullable String person) {
-        super.onInstruct(extractAction(person));
+    protected Widget[] widgets() {
+        return new Widget[] {
+            mSnippetsFragment,
+        };
+    }
+
+    @Override
+    protected Gadget[] gadgets() {
+        return new Gadget[] {
+            mSnippetsFragment,
+        };
     }
 
     @Nullable

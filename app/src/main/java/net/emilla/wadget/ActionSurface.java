@@ -8,6 +8,7 @@ import android.content.res.Resources;
 
 import net.emilla.Feedback;
 import net.emilla.activity.AssistActivity;
+import net.emilla.widget.ActionIcon;
 
 public interface ActionSurface {
 //    ActionSurface FULL_ASSISTANT = ;
@@ -17,6 +18,9 @@ public interface ActionSurface {
 //    ActionSurface BACKGROUND = ;
 
     String dataText();
+    void setSubmitIcon(ActionIcon icon);
+    void resetSubmitIcon();
+
     Context getContext();
     @Deprecated
     AssistActivity getAssistActivity();

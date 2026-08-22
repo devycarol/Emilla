@@ -10,6 +10,8 @@ import android.view.inputmethod.EditorInfo;
 
 import net.emilla.Feedback;
 import net.emilla.R;
+import net.emilla.action.Gadget;
+import net.emilla.action.Widget;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
@@ -27,14 +29,26 @@ final class Call extends EmillaCommand implements PhoneReceiver {
         return Features.phone(pm) || Apps.canDo(pm, makeIntent(""));
     }
 
-    private final ContactPhonesFragment mContactsFragment;
+    private final ContactPhonesFragment mContactsFragment
+        = ContactPhonesFragment.newInstance(false)
+    ;
 
     @internal Call(ActionSurface surface) {
         super(surface, CoreEntry.CALL, EditorInfo.IME_ACTION_GO);
+    }
 
-        mContactsFragment = ContactPhonesFragment.newInstance(false);
+    @Override
+    protected Widget[] widgets() {
+        return new Widget[] {
+            mContactsFragment,
+        };
+    }
 
-        giveGadgets(mContactsFragment);
+    @Override
+    protected Gadget[] gadgets() {
+        return new Gadget[] {
+            mContactsFragment,
+        };
     }
 
     @Override

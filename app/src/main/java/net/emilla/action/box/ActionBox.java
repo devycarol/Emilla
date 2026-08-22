@@ -3,10 +3,10 @@ package net.emilla.action.box;
 import androidx.annotation.LayoutRes;
 import androidx.fragment.app.Fragment;
 
-import net.emilla.action.InstructyGadget;
+import net.emilla.action.Widget;
 import net.emilla.activity.AssistActivity;
 
-public abstract class ActionBox extends Fragment implements InstructyGadget {
+public abstract class ActionBox extends Fragment implements Widget {
     protected ActionBox(@LayoutRes int contentLayout) {
         super(contentLayout);
     }

@@ -23,8 +23,8 @@ public final class DuplicateCommand extends EmillaCommand {
         @Nullable String instruction
     ) {
         super(
-            act, new DuplicateParams(),
-
+            act,
+            new DuplicateParams(),
             R.string.summary_duplicate,
             R.string.manual_duplicate,
             EditorInfo.IME_ACTION_DONE
@@ -38,7 +38,7 @@ public final class DuplicateCommand extends EmillaCommand {
             .map(cmd -> cmd.name)
             .toArray(String[]::new)
         ;
-        instruct(instruction);
+        instruct(act, instruction);
     }
 
     @Override
@@ -57,7 +57,7 @@ public final class DuplicateCommand extends EmillaCommand {
         var act = surface.getAssistActivity();
         return chooseCommand(act, (dlg, which) -> {
             EmillaCommand cmd = mCommands[which];
-            cmd.instruct(instruction);
+            cmd.instruct(act, instruction);
             cmd.load(act);
             surface.take(cmd.execute(surface));
             cmd.unload(act);

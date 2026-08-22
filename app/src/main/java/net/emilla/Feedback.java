@@ -19,6 +19,7 @@ import net.emilla.util.Clipboard;
 import net.emilla.util.Dialogs;
 import net.emilla.util.Intents;
 
+@FunctionalInterface
 public interface Feedback {
     void run(AssistActivity act);
 

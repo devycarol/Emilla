@@ -8,12 +8,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import net.emilla.R;
+import net.emilla.action.Gadget;
 import net.emilla.activity.AssistActivity;
 import net.emilla.command.app.AppEntry;
 import net.emilla.command.core.OpenCommand;
 import net.emilla.sort.ItemSearchAdapter;
+import net.emilla.wadget.ActionSurface;
 
-public final class AppsFragment extends ActionBox {
+public final class AppsFragment extends ActionBox implements Gadget {
     public AppsFragment() {
         super(R.layout.fragment_item_list);
     }
@@ -55,11 +57,12 @@ public final class AppsFragment extends ActionBox {
     }
 
     @Override
-    public void instruct(@Nullable String instruction) {
+    public void instruct(ActionSurface surface, @Nullable String instruction) {
         if (mAdapter != null) {
-            // TODO: figure out how this damn life cycle works. The adapter should never be null
-            //  while the fragment is alive, but this method may be called outside of that window.
-            //  I want to actually understand when and how this happens and how to generally avoid
+            // TODO: figure out how this damn life cycle works. The adapter
+            //  should never be null while the fragment is alive, but this
+            //  method may be called outside of that window. I want to actually
+            //  understand when and how this happens and how to generally avoid
             //  it.
             mAdapter.search(instruction);
         }

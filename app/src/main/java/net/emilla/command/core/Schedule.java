@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.action.InputField;
+import net.emilla.action.Widget;
 import net.emilla.action.box.FieldsFragment;
 import net.emilla.annotation.internal;
 import net.emilla.command.DataField;
@@ -42,7 +43,13 @@ final class Schedule extends EmillaCommand {
             CoreEntry.SCHEDULE,
             new DataField(R.string.data_hint_schedule)
         );
-        giveGadgets(mFieldsFragment);
+    }
+
+    @Override
+    protected Widget[] widgets() {
+        return new Widget[] {
+            mFieldsFragment,
+        };
     }
 
     private static Intent baseIntent() {

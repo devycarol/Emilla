@@ -2,49 +2,48 @@ package net.emilla.command.core;
 
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.Nullable;
-
 import net.emilla.Feedback;
 import net.emilla.R;
-import net.emilla.activity.AssistActivity;
+import net.emilla.action.Gadget;
+import net.emilla.action.Widget;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
+import net.emilla.gadget.DoubleSubmit;
 import net.emilla.util.Clipboard;
 import net.emilla.wadget.ActionSurface;
 
 final class Copy extends EmillaCommand {
-    @Nullable
-    private String mCopiedText = null;
+    private final DoubleSubmit mDoubleSubmit = new DoubleSubmit();
 
     @internal Copy(ActionSurface surface) {
         super(surface, CoreEntry.COPY, EditorInfo.IME_ACTION_DONE);
     }
 
     @Override
+    protected Widget[] widgets() {
+        return new Widget[] {
+            mDoubleSubmit,
+        };
+    }
+
+    @Override
+    protected Gadget[] gadgets() {
+        return new Gadget[] {
+            mDoubleSubmit,
+        };
+    }
+
+    @Override
     protected Feedback run(ActionSurface surface) {
-        return Feedback.fail(R.string.error_unfinished_copy);
-        // Todo
+        return Feedback.fail(R.string.error_unfinished_feature);
+        // Todo: copy a file?
     }
 
     @Override
     protected Feedback run(ActionSurface surface, String text) {
-        if (text.equals(mCopiedText)) {
-            // todo: you could change the submit icon to indicate this behavior. it would require
-            //  monitoring text changes and updating the icon each time the user types. if the
-            //  instruction is the already-copied text, set the close icon. otherwise, set/keep the
-            //  copy icon. you could even query the system clipboard instead for this check, and
-            //  listen for copy events that change what the behavior & icon should be.
-            return Feedback.succeed();
-        }
-        mCopiedText = text;
-        Clipboard.copy(surface.getContext(), text);
-        return Feedback.give();
-    }
-
-    @Override
-    public void unload(AssistActivity act) {
-        super.unload(act);
-        mCopiedText = null;
-        // forget the copied text
+        return mDoubleSubmit.tap(surface, surf -> {
+            Clipboard.copy(surf.getContext(), text);
+            return Feedback.selectInstruction();
+        });
     }
 }

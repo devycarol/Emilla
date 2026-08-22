@@ -151,9 +151,4 @@ public final class ListFileFragment extends ActionBox {
     public TriResult completeSelection(ContentResolver cr) {
         return mAdapter.dismissSelection(cr);
     }
-
-    @Override
-    public void instruct(@Nullable String instruction) {
-        // do nothing
-    }
 }

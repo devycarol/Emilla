@@ -21,6 +21,7 @@ import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
 import net.emilla.R;
+import net.emilla.action.Gadget;
 import net.emilla.action.box.ActionBox;
 import net.emilla.activity.AssistActivity;
 import net.emilla.contact.ContactItemView;
@@ -29,10 +30,13 @@ import net.emilla.contact.adapter.ContactCursorAdapter;
 import net.emilla.content.receive.ContactReceiver;
 import net.emilla.util.Intents;
 import net.emilla.util.Permission;
+import net.emilla.wadget.ActionSurface;
 
-public abstract class ContactsFragment<T> extends ActionBox
-    implements LoaderManager.LoaderCallbacks<Cursor>,
-    AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener
+public abstract class ContactsFragment<T> extends ActionBox implements
+    Gadget,
+    LoaderManager.LoaderCallbacks<Cursor>,
+    AdapterView.OnItemClickListener,
+    AdapterView.OnItemLongClickListener
 {
     private /*late*/ ListView mContactList;
     private /*late*/ LinearLayout mPermissionContainer;
@@ -114,7 +118,7 @@ public abstract class ContactsFragment<T> extends ActionBox
     protected abstract ContactCursorAdapter cursorAdapter();
 
     @Override
-    public final void instruct(@Nullable String search) {
+    public final void instruct(ActionSurface surface, @Nullable String search) {
         mSearchString = search;
         var ctx = getContext();
         if (ctx == null || !Permission.CONTACTS.has(ctx)) {

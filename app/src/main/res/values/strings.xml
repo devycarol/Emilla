@@ -645,7 +645,6 @@
     <string name="error_invalid_setting_value">Invalid setting value.</string>
     <string name="error_unfinished_feature">Unfinished feature!</string>
     <string name="error_unfinished_categorical_app_search">Sorry! I don\'t have categorical app search yet.</string>
-    <string name="error_unfinished_copy">Unfinished feature! The idea is to copy a file when text isn\'t provided.</string>
     <string name="error_unknown">Unknown error</string>
     <string name="error_bug_report_please">Please submit the bug report!</string>
     <string name="email_bug_report">Email report</string>

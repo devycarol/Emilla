@@ -14,6 +14,8 @@ import androidx.annotation.Nullable;
 
 import net.emilla.Feedback;
 import net.emilla.R;
+import net.emilla.action.Gadget;
+import net.emilla.action.Widget;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.ActionMap;
@@ -46,7 +48,7 @@ final class Contact extends EmillaCommand implements ContactCardReceiver {
         CREATE,
     }
 
-    private final ContactCardsFragment mContactsFragment;
+    private final ContactCardsFragment mContactsFragment = ContactCardsFragment.newInstance();
 
     private final ActionMap<Action> mActionMap;
     private Action mAction = Action.VIEW;
@@ -57,10 +59,6 @@ final class Contact extends EmillaCommand implements ContactCardReceiver {
             CoreEntry.CONTACT,
             new DataField(R.string.data_hint_contact)
         );
-        mContactsFragment = ContactCardsFragment.newInstance();
-
-        giveGadgets(mContactsFragment);
-
         var res = surface.getResources();
         mActionMap = new ActionMap<Action>(res, Action.VIEW, Action[]::new);
 
@@ -71,8 +69,17 @@ final class Contact extends EmillaCommand implements ContactCardReceiver {
     }
 
     @Override
-    protected void onInstruct(@Nullable String person) {
-        super.onInstruct(extractAction(person));
+    protected Widget[] widgets() {
+        return new Widget[] {
+            mContactsFragment,
+        };
+    }
+
+    @Override
+    protected Gadget[] gadgets() {
+        return new Gadget[] {
+            mContactsFragment,
+        };
     }
 
     @Nullable

@@ -12,8 +12,9 @@ public interface Params {
     /// @return the name of the command.
     String name(Resources res);
 
-    /// The command's title as it should appear in the assistant's action-bar. Usually, this
-    /// should be the command name followed by a brief description of what it takes as input.
+    /// The command's title as it should appear in the assistant's action-bar.
+    /// Usually, this should be the command name followed by a brief description
+    /// of what it takes as input.
     ///
     /// @param res can be used to retrieve the title from string resources.
     /// @return the command's slightly detailed title.

@@ -12,7 +12,9 @@ import androidx.annotation.Nullable;
 import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.action.FileFetcher;
+import net.emilla.action.Gadget;
 import net.emilla.action.MediaFetcher;
+import net.emilla.action.Widget;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.DataField;
@@ -31,6 +33,8 @@ final class Email extends EmillaCommand implements EmailReceiver {
     }
 
     private final EmailFragment mEmailFragment = EmailFragment.newInstance();
+    private final FileFetcher mFileFetcher;
+    private final MediaFetcher mMediaFetcher;
 
     @internal Email(ActionSurface surface) {
         super(
@@ -40,13 +44,26 @@ final class Email extends EmillaCommand implements EmailReceiver {
         );
         var act = surface.getAssistActivity();
         String entry = CoreEntry.EMAIL.name();
-        giveGadgets(
+        mFileFetcher = new FileFetcher(act, entry, "*/*");
+        // Todo: Thunderbird doesn't like certain filetypes. Can we find a type
+        //  statement that's consistently email-friendly?
+        mMediaFetcher = new MediaFetcher(act, entry);
+    }
+
+    @Override
+    protected Widget[] widgets() {
+        return new Widget[] {
             mEmailFragment,
-            new FileFetcher(act, entry, "*/*"),
-            // Todo: Thunderbird doesn't like certain filetypes. Can we find a
-            //  type statement that's consistently email-friendly?
-            new MediaFetcher(act, entry)
-        );
+            mFileFetcher,
+            mMediaFetcher,
+        };
+    }
+
+    @Override
+    protected Gadget[] gadgets() {
+        return new Gadget[] {
+            mEmailFragment,
+        };
     }
 
     @Override

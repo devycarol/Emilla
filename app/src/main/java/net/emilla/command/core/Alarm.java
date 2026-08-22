@@ -6,6 +6,7 @@ import android.provider.AlarmClock;
 
 import net.emilla.Feedback;
 import net.emilla.R;
+import net.emilla.action.Widget;
 import net.emilla.annotation.internal;
 import net.emilla.command.DataField;
 import net.emilla.command.EmillaCommand;
@@ -33,7 +34,13 @@ final class Alarm extends EmillaCommand {
             CoreEntry.ALARM,
             new DataField(R.string.data_hint_label)
         );
-        giveGadgets(mWeekdays);
+    }
+
+    @Override
+    protected Widget[] widgets() {
+        return new Widget[] {
+            mWeekdays,
+        };
     }
 
     @Override

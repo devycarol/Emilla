@@ -20,9 +20,12 @@ public abstract class CommandYielder {
         return mCommand;
     }
 
-    public final EmillaCommand command(AssistActivity act, @Nullable String instruction) {
+    public final EmillaCommand command(
+        AssistActivity act,
+        @Nullable String instruction
+    ) {
         EmillaCommand command = command(act);
-        command.instruct(instruction);
+        command.instruct(act, instruction);
         return command;
     }
 }

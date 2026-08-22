@@ -9,7 +9,9 @@ import androidx.annotation.Nullable;
 
 import net.emilla.Feedback;
 import net.emilla.R;
+import net.emilla.action.Gadget;
 import net.emilla.action.MediaFetcher;
+import net.emilla.action.Widget;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.DataField;
@@ -30,7 +32,10 @@ final class Sms extends EmillaCommand implements PhoneReceiver {
         return Features.sms(pm) || Apps.canDo(pm, Intents.send(Uris.sms("")));
     }
 
-    private final ContactPhonesFragment mContactsFragment;
+    private final ContactPhonesFragment mContactsFragment
+        = ContactPhonesFragment.newInstance(true)
+    ;
+    private final MediaFetcher mMediaFetcher;
 
     @internal Sms(ActionSurface surface) {
         super(
@@ -38,12 +43,25 @@ final class Sms extends EmillaCommand implements PhoneReceiver {
             CoreEntry.SMS,
             new DataField(R.string.data_hint_message)
         );
-        mContactsFragment = ContactPhonesFragment.newInstance(true);
-
-        giveGadgets(
-            mContactsFragment,
-            new MediaFetcher(surface.getAssistActivity(), CoreEntry.SMS.name())
+        mMediaFetcher = new MediaFetcher(
+            surface.getAssistActivity(),
+            CoreEntry.SMS.name()
         );
+    }
+
+    @Override
+    protected Widget[] widgets() {
+        return new Widget[] {
+            mContactsFragment,
+            mMediaFetcher,
+        };
+    }
+
+    @Override
+    protected Gadget[] gadgets() {
+        return new Gadget[] {
+            mContactsFragment,
+        };
     }
 
     @Override

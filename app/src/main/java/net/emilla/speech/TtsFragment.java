@@ -85,9 +85,4 @@ public final class TtsFragment extends ActionBox {
         mReady = TriResult.WAITING;
         super.onDestroyView();
     }
-
-    @Override
-    public void instruct(@Nullable String instruction) {
-        // do nothing
-    }
 }

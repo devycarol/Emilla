@@ -12,6 +12,7 @@ import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.action.FileFetcher;
 import net.emilla.action.MediaFetcher;
+import net.emilla.action.Widget;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.chime.Chime;
@@ -33,6 +34,8 @@ final class Share extends EmillaCommand implements AppChoiceReceiver {
 
     @Deprecated
     private final AssistActivity mActivity;
+    private final FileFetcher mFileFetcher;
+    private final MediaFetcher mMediaFetcher;
 
     @internal Share(ActionSurface surface) {
         super(
@@ -42,10 +45,17 @@ final class Share extends EmillaCommand implements AppChoiceReceiver {
         );
         mActivity = surface.getAssistActivity();
         String entry = CoreEntry.SHARE.name();
-        giveGadgets(
-            new FileFetcher(mActivity, entry, "*/*"),
-            new MediaFetcher(mActivity, entry)
-        );
+
+        mFileFetcher = new FileFetcher(mActivity, entry, "*/*");
+        mMediaFetcher = new MediaFetcher(mActivity, entry);
+    }
+
+    @Override
+    protected Widget[] widgets() {
+        return new Widget[] {
+            mFileFetcher,
+            mMediaFetcher,
+        };
     }
 
     private static Intent makeIntent(AssistActivity act) {

@@ -2,14 +2,14 @@ package net.emilla.widget;
 
 import androidx.annotation.Nullable;
 
-import net.emilla.action.Gadget;
+import net.emilla.action.Widget;
 import net.emilla.activity.AssistActivity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 
-public enum WeekdayWidget implements Gadget {
+public enum WeekdayWidget implements Widget {
     COOKED,
 ;
     private static final int FLAG_MONDAY    = 0x01;

@@ -11,7 +11,7 @@ import androidx.annotation.StringRes;
 import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.action.Gadget;
-import net.emilla.action.InstructyGadget;
+import net.emilla.action.Widget;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.annotation.open;
@@ -21,7 +21,6 @@ import net.emilla.command.core.CoreEntry;
 import net.emilla.config.Aliases;
 import net.emilla.config.SettingVals;
 import net.emilla.lang.Lang;
-import net.emilla.util.ArrayLoader;
 import net.emilla.wadget.ActionSurface;
 
 import java.util.Objects;
@@ -92,7 +91,7 @@ public abstract class EmillaCommand {
         return map;
     }
 
-    private final Params mParams;
+    public final Params params;
 
     public final String name;
     @StringRes
@@ -115,10 +114,6 @@ public abstract class EmillaCommand {
 
     @StringRes
     public final int dataHint;
-    @Nullable
-    private Gadget[] mGadgets = null;
-    @Nullable
-    private InstructyGadget[] mInstructyGadgets = null;
 
     protected EmillaCommand(
         ActionSurface surface,
@@ -196,7 +191,7 @@ public abstract class EmillaCommand {
         int imeAction,
         @Nullable DataField dataField
     ) {
-        mParams = params;
+        this.params = params;
         this.name = params.name(surface.getResources());
         this.summary = summary;
         this.manual = manual;
@@ -207,88 +202,70 @@ public abstract class EmillaCommand {
         ;
     }
 
-    @internal final void instruct(@Nullable String instruction) {
+    @internal final void instruct(ActionSurface surface, @Nullable String instruction) {
         if (!Objects.equals(mInstruction, instruction)) {
-            // we don't assume this is true because input editor bugs may cause onTextChanged() to
-            // be called repeatedly for the same text.
+            // we don't assume this is true because input editor bugs may cause
+            // onTextChanged() to be called repeatedly for the same text.
             mInstruction = instruction;
             if (mActive) {
-                onInstruct(instruction);
+                onInstruct(surface, instruction);
             }
         }
     }
 
-    public final void decorate(AssistActivity act, Resources res, boolean setIcon, boolean isDefault) {
+    public final void decorate(
+        AssistActivity act,
+        Resources res,
+        boolean setIcon,
+        boolean isDefault
+    ) {
         CharSequence title = isDefault
             ? Lang.colonConcat(
-                res, R.string.command_default,
-
-                mParams.isProperNoun()
+                res,
+                R.string.command_default,
+                params.isProperNoun()
                     ? this.name
                     : this.name.toLowerCase()
-
-            ) : mParams.title(res)
+                //
+            ) : params.title(res)
         ;
         act.updateTitle(title);
         act.updateDataHint();
         act.setImeAction(mImeAction);
         if (setIcon) {
-            act.setSubmitIcon(mParams.actionIcon(act));
+            act.setSubmitIcon(params.actionIcon(act));
         }
     }
 
     public final void load(AssistActivity act) {
-        if (mGadgets != null) {
-            for (Gadget gadget : mGadgets) {
-                gadget.load(act);
+        Widget[] widgets = widgets();
+        if (widgets != null) {
+            for (Widget widget : widgets) {
+                widget.load(act);
             }
-
-            onInstruct(mInstruction);
         }
-
+        onInstruct(act, mInstruction);
         mActive = true;
     }
 
-    public @open void unload(AssistActivity act) {
-        if (mGadgets != null) {
-            for (Gadget gadget : mGadgets) {
-                gadget.unload(act);
+    public final void unload(AssistActivity act) {
+        Widget[] widgets = widgets();
+        if (widgets != null) {
+            for (Widget widget : widgets) {
+                widget.unload(act);
             }
         }
-
         mActive = false;
     }
 
-    protected final void giveGadgets(Gadget... gadgets) {
-        int gadgetCount = gadgets.length;
-
-        if (mGadgets == null) {
-            mGadgets = gadgets;
-        } else {
-            mGadgets = ArrayLoader.concat(mGadgets, gadgets);
-        }
-
-        var instructyGadgets = new ArrayLoader<InstructyGadget>(gadgetCount, InstructyGadget[]::new);
-        for (Gadget gadget : gadgets) {
-            if (gadget instanceof InstructyGadget instructyGadget) {
-                instructyGadgets.add(instructyGadget);
-            }
-        }
-
-        if (instructyGadgets.notEmpty()) {
-            if (mInstructyGadgets == null) {
-                mInstructyGadgets = instructyGadgets.array();
-            } else {
-                mInstructyGadgets = instructyGadgets.appendedTo(mInstructyGadgets);
-            }
-        }
-    }
-
-    // TODO: make final and handle subcommands in a more centralized manner
-    protected @open void onInstruct(@Nullable String instruction) {
-        if (mInstructyGadgets != null) {
-            for (InstructyGadget gadget : mInstructyGadgets) {
-                gadget.instruct(instruction);
+    private void onInstruct(
+        ActionSurface surface,
+        @Nullable String instruction
+    ) {
+        Gadget[] gadgets = gadgets();
+        if (gadgets != null) {
+            for (Gadget gadget : gadgets) {
+                gadget.instruct(surface, instruction);
             }
         }
     }
@@ -313,4 +290,14 @@ public abstract class EmillaCommand {
     /// @param instruction is provided after in the command field after the command's name. It's
     /// always space-trimmed and should remain as such.
     protected abstract Feedback run(ActionSurface surface, String instruction);
+
+    @Nullable
+    protected @open Widget[] widgets() {
+        return null;
+    }
+
+    @Nullable
+    protected @open Gadget[] gadgets() {
+        return null;
+    }
 }

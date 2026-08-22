@@ -12,12 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import net.emilla.Feedback;
 import net.emilla.R;
+import net.emilla.action.Gadget;
 import net.emilla.activity.AssistActivity;
 import net.emilla.sort.ItemSearchAdapter;
 import net.emilla.util.Clipboard;
 import net.emilla.util.Dialogs;
+import net.emilla.wadget.ActionSurface;
 
-public final class SnippetsFragment extends ActionBox {
+public final class SnippetsFragment extends ActionBox implements Gadget {
     public SnippetsFragment() {
         super(R.layout.fragment_item_list);
     }
@@ -124,7 +126,7 @@ public final class SnippetsFragment extends ActionBox {
     }
 
     @Override
-    public void instruct(@Nullable String instruction) {
+    public void instruct(ActionSurface surface, @Nullable String instruction) {
         if (mAdapter != null) {
             // TODO: figure out how this damn life cycle works. The adapter should never be null
             //  while the fragment is alive, but this method may be called outside of that window.

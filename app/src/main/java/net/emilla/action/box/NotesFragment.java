@@ -16,14 +16,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import net.emilla.R;
+import net.emilla.action.Gadget;
 import net.emilla.activity.AssistActivity;
 import net.emilla.config.SettingVals;
 import net.emilla.content.ResultLaunchers;
 import net.emilla.databinding.FragmentNotesBinding;
 import net.emilla.file.Folder;
 import net.emilla.file.TreeFile;
+import net.emilla.wadget.ActionSurface;
 
-public final class NotesFragment extends ActionBox {
+public final class NotesFragment extends ActionBox implements Gadget {
     private final ActivityResultLauncher<Uri> mFolderSwitcher = registerForActivityResult(
         new OpenDocumentTree(),
         this::onFolderChosen
@@ -150,7 +152,7 @@ public final class NotesFragment extends ActionBox {
     }
 
     @Override
-    public void instruct(@Nullable String instruction) {
+    public void instruct(ActionSurface surface, @Nullable String instruction) {
         if (mAdapter != null) {
             // TODO BUG: does not search when "pre-instructed" i.e. move the cursor to the start of
             //  the command field and type the command

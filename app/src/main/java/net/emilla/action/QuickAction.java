@@ -9,7 +9,7 @@ import androidx.annotation.IdRes;
 import net.emilla.activity.AssistActivity;
 import net.emilla.widget.SymbolIcon;
 
-public interface QuickAction extends Gadget {
+public interface QuickAction extends Widget {
     // Preference keys
     String PREF_NO_COMMAND = "action_no_command";
     String PREF_LONG_SUBMIT = "action_long_submit";
