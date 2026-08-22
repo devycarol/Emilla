@@ -22,13 +22,13 @@ final class Copy extends EmillaCommand {
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act) {
+    protected Feedback run(ActionSurface surface) {
         return Feedback.fail(R.string.error_unfinished_copy);
         // Todo
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act, String text) {
+    protected Feedback run(ActionSurface surface, String text) {
         if (text.equals(mCopiedText)) {
             // todo: you could change the submit icon to indicate this behavior. it would require
             //  monitoring text changes and updating the icon each time the user types. if the
@@ -38,7 +38,7 @@ final class Copy extends EmillaCommand {
             return Feedback.succeed();
         }
         mCopiedText = text;
-        Clipboard.copy(act, text);
+        Clipboard.copy(surface.getContext(), text);
         return Feedback.give();
     }
 

@@ -6,7 +6,6 @@ import android.view.inputmethod.EditorInfo;
 
 import net.emilla.Feedback;
 import net.emilla.R;
-import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
 import net.emilla.lang.Lang;
@@ -24,12 +23,12 @@ final class Convert extends EmillaCommand {
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act) {
+    protected Feedback run(ActionSurface surface) {
         return Feedback.pend();
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act, String units) {
+    protected Feedback run(ActionSurface surface, String units) {
         ConversionRequest conversion = Lang.unitConversion(units);
         if (conversion == null) {
             return Feedback.fail(R.string.error_invalid_conversion);
@@ -43,7 +42,7 @@ final class Convert extends EmillaCommand {
             return Feedback.fail(R.string.error_invalid_conversion);
         }
 
-        var res = act.getResources();
+        var res = surface.getResources();
         String message = res.getString(
             R.string.unit_conversion,
             measurement(res, from, value),

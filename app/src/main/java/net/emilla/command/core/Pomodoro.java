@@ -50,24 +50,24 @@ final class Pomodoro extends CoreDataCommand {
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act) {
-        return tryPomo(act, null, false);
+    protected Feedback run(ActionSurface surface) {
+        return tryPomo(surface.getAssistActivity(), null, false);
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act, String duration) {
+    protected Feedback run(ActionSurface surface, String duration) {
         Subcommand<Action> subcmd = mActionMap.get(duration);
-        return tryPomo(act, subcmd.instruction, subcmd.action == Action.BREAK);
+        return tryPomo(surface.getAssistActivity(), subcmd.instruction, subcmd.action == Action.BREAK);
     }
 
     @Override
-    public Feedback runWithData(ActionSurface surface, AssistActivity act, String memo) {
+    public Feedback runWithData(ActionSurface surface, String memo) {
         mWorkMemo = memo;
-        return tryPomo(act, null, false);
+        return tryPomo(surface.getAssistActivity(), null, false);
     }
 
     @Override
-    public Feedback runWithData(ActionSurface surface, AssistActivity act, String duration, String memo) {
+    public Feedback runWithData(ActionSurface surface, String duration, String memo) {
         Subcommand<Action> subcmd = mActionMap.get(duration);
         boolean isBreak = subcmd.action == Action.BREAK;
         if (isBreak) {
@@ -75,7 +75,7 @@ final class Pomodoro extends CoreDataCommand {
         } else {
             mWorkMemo = memo;
         }
-        return tryPomo(act, subcmd.instruction, isBreak);
+        return tryPomo(surface.getAssistActivity(), subcmd.instruction, isBreak);
     }
 
     @SuppressLint("MissingPermission")

@@ -7,7 +7,6 @@ import androidx.annotation.StringRes;
 
 import net.emilla.Feedback;
 import net.emilla.R;
-import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.annotation.open;
 import net.emilla.command.DataCommand;
@@ -33,12 +32,12 @@ import net.emilla.wadget.ActionSurface;
     }
 
     @Override
-    public final Feedback runWithData(ActionSurface surface, AssistActivity act, String message) {
-        return run(surface, act, message);
+    public final Feedback runWithData(ActionSurface surface, String message) {
+        return run(surface, message);
     }
 
     @Override
-    public final Feedback runWithData(ActionSurface surface, AssistActivity act, String message, String cont) {
-        return run(surface, act, message + '\n' + cont);
+    public final Feedback runWithData(ActionSurface surface, String message, String cont) {
+        return run(surface, message + '\n' + cont);
     }
 }

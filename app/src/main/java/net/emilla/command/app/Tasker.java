@@ -55,18 +55,18 @@ final class Tasker extends AppCommand implements DataCommand {
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act, String task) {
-        return trySearchRun(surface, act, extractAction(task), null);
+    protected Feedback run(ActionSurface surface, String task) {
+        return trySearchRun(surface, extractAction(task), null);
     }
 
     @Override
-    public Feedback runWithData(ActionSurface surface, AssistActivity act, String params) {
-        return trySearchRun(surface, act, "", params);
+    public Feedback runWithData(ActionSurface surface, String params) {
+        return trySearchRun(surface, "", params);
     }
 
     @Override
-    public Feedback runWithData(ActionSurface surface, AssistActivity act, String task, String params) {
-        return trySearchRun(surface, act, extractAction(task), params);
+    public Feedback runWithData(ActionSurface surface, String task, String params) {
+        return trySearchRun(surface, extractAction(task), params);
     }
 
     private String extractAction(String task) {
@@ -75,10 +75,10 @@ final class Tasker extends AppCommand implements DataCommand {
 
     private Feedback trySearchRun(
         ActionSurface surface,
-        AssistActivity act,
         String task,
         @Nullable String params
     ) {
+        var act = surface.getAssistActivity();
         return switch (TaskerIntent.testStatus(act)) {
             case OK -> searchRun(act, task, params);
             case NOT_ENABLED -> failDialog(
@@ -96,7 +96,7 @@ final class Tasker extends AppCommand implements DataCommand {
             case NO_PERMISSION -> {
                 Permission.TASKER.flow(
                     act,
-                    () -> surface.take(trySearchRun(surface, act, task, params))
+                    () -> surface.take(trySearchRun(surface, task, params))
                 );
                 yield Feedback.silence();
             }
@@ -191,7 +191,7 @@ final class Tasker extends AppCommand implements DataCommand {
     }
 
     private static Feedback runTask(
-        Context act,
+        Context ctx,
         String taskName,
         @Nullable String params
     ) {
@@ -201,7 +201,7 @@ final class Tasker extends AppCommand implements DataCommand {
                 intent.addParameter(param);
             }
         }
-        act.sendBroadcast(intent);
+        ctx.sendBroadcast(intent);
         return Feedback.give();
     }
 }

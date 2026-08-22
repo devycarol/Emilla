@@ -8,7 +8,6 @@ import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.action.box.ListFileFragment;
 import net.emilla.action.box.TriResult;
-import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
 import net.emilla.file.Files;
@@ -26,8 +25,8 @@ final class Todo extends EmillaCommand {
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act) {
-        var cr = act.getContentResolver();
+    protected Feedback run(ActionSurface surface) {
+        var cr = surface.getContentResolver();
         TriResult result = mTodoFragment.completeSelection(cr);
         if (result != null) {
             return actionFeedback(result);
@@ -41,8 +40,8 @@ final class Todo extends EmillaCommand {
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act, String task) {
-        var cr = act.getContentResolver();
+    protected Feedback run(ActionSurface surface, String task) {
+        var cr = surface.getContentResolver();
         TriResult result = mTodoFragment.completeSelection(cr);
         return result != null
             ? actionFeedback(result)

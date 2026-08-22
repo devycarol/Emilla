@@ -44,23 +44,23 @@ final class Email extends CoreDataCommand implements EmailReceiver {
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act) {
-        return tryEmail(act, "", null);
+    protected Feedback run(ActionSurface surface) {
+        return tryEmail(surface.getAssistActivity(), "", null);
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act, String recipients) {
-        return tryEmail(act, recipients, null);
+    protected Feedback run(ActionSurface surface, String recipients) {
+        return tryEmail(surface.getAssistActivity(), recipients, null);
     }
 
     @Override
-    public Feedback runWithData(ActionSurface surface, AssistActivity act, String body) {
-        return tryEmail(act, "", body);
+    public Feedback runWithData(ActionSurface surface, String body) {
+        return tryEmail(surface.getAssistActivity(), "", body);
     }
 
     @Override
-    public Feedback runWithData(ActionSurface surface, AssistActivity act, String recipients, String body) {
-        return tryEmail(act, recipients, body);
+    public Feedback runWithData(ActionSurface surface, String recipients, String body) {
+        return tryEmail(surface.getAssistActivity(), recipients, body);
     }
 
     private Feedback tryEmail(AssistActivity act, String recipients, @Nullable String body) {

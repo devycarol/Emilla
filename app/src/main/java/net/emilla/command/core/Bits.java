@@ -6,7 +6,6 @@ import android.view.inputmethod.EditorInfo;
 
 import net.emilla.Feedback;
 import net.emilla.R;
-import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
 import net.emilla.math.BitwiseCalculator;
@@ -20,12 +19,12 @@ final class Bits extends EmillaCommand {
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act) {
-        return CategoryCommand.run(surface, act, Intent.CATEGORY_APP_CALCULATOR);
+    protected Feedback run(ActionSurface surface) {
+        return CategoryCommand.run(surface, Intent.CATEGORY_APP_CALCULATOR);
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act, String expression) {
+    protected Feedback run(ActionSurface surface, String expression) {
         BigInteger result;
         try {
             result = BitwiseCalculator.compute(expression);

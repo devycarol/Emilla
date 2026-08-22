@@ -5,7 +5,6 @@ import android.view.inputmethod.EditorInfo;
 
 import net.emilla.Feedback;
 import net.emilla.R;
-import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
 import net.emilla.lang.Lang;
@@ -20,7 +19,7 @@ final class Roll extends EmillaCommand {
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act) {
+    protected Feedback run(ActionSurface surface) {
         var rand = new Random();
         return Feedback.giveText(
             rand.nextBoolean()
@@ -31,7 +30,7 @@ final class Roll extends EmillaCommand {
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act, String roll) {
+    protected Feedback run(ActionSurface surface, String roll) {
         var roller = DiceRoller.of(Lang.EN_US, roll);
         if (roller == null) {
             return Feedback.fail(R.string.error_invalid_dice_roll);

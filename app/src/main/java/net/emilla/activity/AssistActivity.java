@@ -531,10 +531,6 @@ public final class AssistActivity
      * Getters *
      *=========*/
 
-    public SharedPreferences getSharedPreferences() {
-        return mVm.prefs;
-    }
-
     public AppEntry[] apps() {
         return mVm.apps;
     }
@@ -825,7 +821,7 @@ public final class AssistActivity
             if (mCommand instanceof DataCommand dataCmd && dataField.length() > 0) {
                 take(dataCmd.execute(this, this, dataField.getText().toString()));
             } else {
-                take(mCommand.execute(this, this));
+                take(mCommand.execute(this));
             }
         } catch (RuntimeException e) {
             fail(new BugFailure(this, e, mCommand.name));
@@ -835,5 +831,15 @@ public final class AssistActivity
     @Override
     public Context getContext() {
         return getApplicationContext();
+    }
+
+    @Override
+    public AssistActivity getAssistActivity() {
+        return this;
+    }
+
+    @Override
+    public SharedPreferences getSharedPreferences() {
+        return mVm.prefs;
     }
 }

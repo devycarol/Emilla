@@ -6,7 +6,6 @@ import android.view.inputmethod.EditorInfo;
 
 import net.emilla.Feedback;
 import net.emilla.R;
-import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
 import net.emilla.util.Features;
@@ -23,15 +22,15 @@ final class Torch extends EmillaCommand {
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act) {
-        return TorchManager.toggle(act)
+    protected Feedback run(ActionSurface surface) {
+        return TorchManager.toggle(surface.getAssistActivity())
             ? Feedback.silence()
             : Feedback.fail(R.string.error_torch_failed)
         ;
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act, String ignored) {
-        return run(surface, act); // Todo: remove this from the interface for non-instructables.
+    protected Feedback run(ActionSurface surface, String ignored) {
+        return run(surface); // Todo: remove this from the interface for non-instructables.
     }
 }

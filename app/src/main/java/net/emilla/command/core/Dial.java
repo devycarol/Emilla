@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.view.inputmethod.EditorInfo;
 
 import net.emilla.Feedback;
-import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
 import net.emilla.util.Apps;
@@ -25,12 +24,12 @@ final class Dial extends EmillaCommand {
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act) {
+    protected Feedback run(ActionSurface surface) {
         return Feedback.succeed(new Intent(ACTION_DIAL));
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act, String numberOrPhoneword) {
+    protected Feedback run(ActionSurface surface, String numberOrPhoneword) {
         return Feedback.succeed(new Intent(ACTION_DIAL)
             .setData(Uri.parse("tel:" + numberOrPhoneword))
         );

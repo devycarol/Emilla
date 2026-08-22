@@ -7,7 +7,6 @@ import androidx.annotation.Nullable;
 import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.action.box.SnippetsFragment;
-import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.ActionMap;
 import net.emilla.command.Subcommand;
@@ -55,15 +54,15 @@ final class Snippets extends CoreDataCommand {
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act) {
+    protected Feedback run(ActionSurface surface) {
         return Feedback.pend();
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act, String label) {
+    protected Feedback run(ActionSurface surface, String label) {
         label = extractAction(label);
         if (label == null) {
-            return run(surface, act);
+            return run(surface);
         }
 
         return switch (mAction) {
@@ -76,12 +75,12 @@ final class Snippets extends CoreDataCommand {
     }
 
     @Override
-    public Feedback runWithData(ActionSurface surface, AssistActivity act, String text) {
-        return run(surface, act);
+    public Feedback runWithData(ActionSurface surface, String text) {
+        return run(surface);
     }
 
     @Override
-    public Feedback runWithData(ActionSurface surface, AssistActivity act, String label, String text) {
+    public Feedback runWithData(ActionSurface surface, String label, String text) {
         return mSnippetsFragment.add(label, text);
     }
 }

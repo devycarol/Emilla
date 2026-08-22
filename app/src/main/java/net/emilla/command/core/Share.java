@@ -82,25 +82,27 @@ final class Share extends CoreDataCommand implements AppChoiceReceiver {
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act) {
+    protected Feedback run(ActionSurface surface) {
+        var act = surface.getAssistActivity();
         act.offerChooser(this, makeIntent(act), CoreEntry.SHARE.name);
         return Feedback.silence();
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act, String app) {
-        return runWithData(surface, act, app); // TODO: allow to specify app, conversation, and (ideally) person
+    protected Feedback run(ActionSurface surface, String app) {
+        return runWithData(surface, app); // TODO: allow to specify app, conversation, and (ideally) person
     }
 
     @Override
-    public Feedback runWithData(ActionSurface surface, AssistActivity act, String text) {
+    public Feedback runWithData(ActionSurface surface, String text) {
+        var act = surface.getAssistActivity();
         act.offerChooser(this, makeIntent(act, text), CoreEntry.SHARE.name);
         return Feedback.silence();
     }
 
     @Override
-    public Feedback runWithData(ActionSurface surface, AssistActivity act, String app, String text) {
-        return runWithData(surface, act, app + '\n' + text);
+    public Feedback runWithData(ActionSurface surface, String app, String text) {
+        return runWithData(surface, app + '\n' + text);
     }
 
     @Override

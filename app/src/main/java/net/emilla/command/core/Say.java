@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.inputmethod.EditorInfo;
 
 import net.emilla.Feedback;
-import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
 import net.emilla.config.SettingVals;
@@ -21,15 +20,15 @@ final class Say extends EmillaCommand {
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act) {
-        var prefs = act.getSharedPreferences();
-        var res = act.getResources();
+    protected Feedback run(ActionSurface surface) {
+        var prefs = surface.getSharedPreferences();
+        var res = surface.getResources();
         mFragment.say(SettingVals.motd(prefs, res));
         return Feedback.selectInstruction();
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act, String message) {
+    protected Feedback run(ActionSurface surface, String message) {
         mFragment.say(message);
         return Feedback.selectInstruction();
     }

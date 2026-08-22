@@ -9,7 +9,6 @@ import androidx.annotation.Nullable;
 
 import net.emilla.Feedback;
 import net.emilla.R;
-import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.lang.Lang;
 import net.emilla.time.HourMinute;
@@ -36,7 +35,7 @@ final class Alarm extends CoreDataCommand {
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act) {
+    protected Feedback run(ActionSurface surface) {
         if (mWeekdays.anyAreSet()) {
             return Feedback.pend();
         }
@@ -45,18 +44,18 @@ final class Alarm extends CoreDataCommand {
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act, String time) {
-        return runWithData(surface, act, time, null);
+    protected Feedback run(ActionSurface surface, String time) {
+        return runWithData(surface, time, null);
     }
 
     @Override
-    public Feedback runWithData(ActionSurface surface, AssistActivity act, String label) {
+    public Feedback runWithData(ActionSurface surface, String label) {
         return Feedback.pend();
     }
 
     @Override
-    public Feedback runWithData(ActionSurface surface, AssistActivity act, String time, @Nullable String label) {
-        WallTime wallTime = Lang.wallTime(act, time);
+    public Feedback runWithData(ActionSurface surface, String time, @Nullable String label) {
+        WallTime wallTime = Lang.wallTime(surface.getContext(), time);
         if (wallTime == null) {
             return failMessage(R.string.error_invalid_time);
         }

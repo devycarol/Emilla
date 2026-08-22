@@ -28,12 +28,12 @@ final class Web extends EmillaCommand {
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act) {
+    protected Feedback run(ActionSurface surface) {
         return Feedback.succeed(new Intent(ACTION_WEB_SEARCH));
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act, String query) {
+    protected Feedback run(ActionSurface surface, String query) {
         return Feedback.succeed(mWebsiteMap.intent(query));
     }
 }

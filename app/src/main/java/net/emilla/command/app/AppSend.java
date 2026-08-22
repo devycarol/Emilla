@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.view.inputmethod.EditorInfo;
 
 import net.emilla.Feedback;
-import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.annotation.open;
 import net.emilla.util.Intents;
@@ -23,7 +22,7 @@ import net.emilla.wadget.ActionSurface;
     }
 
     @Override
-    protected final Feedback run(ActionSurface surface, AssistActivity act, String message) {
+    protected final Feedback run(ActionSurface surface, String message) {
         Intent intent = Intents.sendToApp(this.appEntry.pkg)
             .putExtra(EXTRA_TEXT, message)
         ;

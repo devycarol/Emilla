@@ -42,22 +42,24 @@ public final class DuplicateCommand extends EmillaCommand {
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act) {
+    protected Feedback run(ActionSurface surface) {
+        var act = surface.getAssistActivity();
         return chooseCommand(act, (dlg, which) -> {
             EmillaCommand cmd = mCommands[which];
             cmd.load(act);
-            surface.take(cmd.execute(surface, act));
+            surface.take(cmd.execute(surface));
             cmd.unload(act);
         });
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act, String instruction) {
+    protected Feedback run(ActionSurface surface, String instruction) {
+        var act = surface.getAssistActivity();
         return chooseCommand(act, (dlg, which) -> {
             EmillaCommand cmd = mCommands[which];
             cmd.instruct(instruction);
             cmd.load(act);
-            surface.take(cmd.execute(surface, act));
+            surface.take(cmd.execute(surface));
             cmd.unload(act);
         });
     }

@@ -8,7 +8,6 @@ import androidx.annotation.Nullable;
 
 import net.emilla.Feedback;
 import net.emilla.action.box.AppsFragment;
-import net.emilla.activity.AssistActivity;
 import net.emilla.command.EmillaCommand;
 import net.emilla.command.app.AppEntry;
 import net.emilla.wadget.ActionSurface;
@@ -27,13 +26,13 @@ public abstract class OpenCommand extends EmillaCommand {
     protected abstract Intent defaultIntent();
     protected abstract Intent makeIntent(AppEntry app, PackageManager pm);
 
-    public final Feedback use(AssistActivity act, AppEntry app) {
-        var pm = act.getPackageManager();
+    public final Feedback use(ActionSurface surface, AppEntry app) {
+        var pm = surface.getPackageManager();
         return Feedback.succeed(makeIntent(app, pm));
     }
 
     @Override
-    protected final Feedback run(ActionSurface surface, AssistActivity act) {
+    protected final Feedback run(ActionSurface surface) {
         var intent = defaultIntent();
         return intent != null
             ? Feedback.succeed(intent)
@@ -42,10 +41,10 @@ public abstract class OpenCommand extends EmillaCommand {
     }
 
     @Override
-    protected final Feedback run(ActionSurface surface, AssistActivity act, String instruction) {
+    protected final Feedback run(ActionSurface surface, String instruction) {
         AppEntry app = mAppsFragment.selectedApp(instruction);
         return app != null
-            ? use(act, app)
+            ? use(surface, app)
             : Feedback.pend()
         ;
     }

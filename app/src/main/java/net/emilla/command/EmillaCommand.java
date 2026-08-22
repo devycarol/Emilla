@@ -246,10 +246,10 @@ public abstract class EmillaCommand {
         return mInstruction;
     }
 
-    public final Feedback execute(ActionSurface surface, AssistActivity act) {
+    public final Feedback execute(ActionSurface surface) {
         return mInstruction != null
-            ? run(surface, act, mInstruction)
-            : run(surface, act)
+            ? run(surface, mInstruction)
+            : run(surface)
         ;
     }
 
@@ -300,11 +300,11 @@ public abstract class EmillaCommand {
      *==========================*/
 
     /// Runs the command.
-    protected abstract Feedback run(ActionSurface surface, AssistActivity act);
+    protected abstract Feedback run(ActionSurface surface);
     /// Runs the command with instruction.
     ///
     /// @param surface
     /// @param instruction is provided after in the command field after the command's name. It's
     /// always space-trimmed and should remain as such.
-    protected abstract Feedback run(ActionSurface surface, AssistActivity act, String instruction);
+    protected abstract Feedback run(ActionSurface surface, String instruction);
 }

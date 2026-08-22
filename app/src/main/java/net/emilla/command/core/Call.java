@@ -39,7 +39,8 @@ final class Call extends EmillaCommand implements PhoneReceiver {
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act) {
+    protected Feedback run(ActionSurface surface) {
+        var act = surface.getAssistActivity();
         Permission.CONTACTS.with(act, () -> act.take(tryCall(act)));
         return Feedback.silence();
     }
@@ -56,8 +57,9 @@ final class Call extends EmillaCommand implements PhoneReceiver {
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act, String nameOrNumber) {
+    protected Feedback run(ActionSurface surface, String nameOrNumber) {
         // todo: conference calls?
+        var act = surface.getAssistActivity();
         Permission.CALL.with(act, () -> act.take(tryCall(act, nameOrNumber)));
         return Feedback.silence();
     }

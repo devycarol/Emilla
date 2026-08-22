@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.inputmethod.EditorInfo;
 
 import net.emilla.Feedback;
-import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.annotation.open;
 import net.emilla.command.EmillaCommand;
@@ -29,12 +28,12 @@ public @open class AppCommand extends EmillaCommand {
     }
 
     @Override
-    protected final Feedback run(ActionSurface surface, AssistActivity act) {
+    protected final Feedback run(ActionSurface surface) {
         return Feedback.succeed(this.appEntry.launchIntent());
     }
 
     @Override
-    protected @open Feedback run(ActionSurface surface, AssistActivity act, String ignored) {
-        return run(surface, act); // Todo: remove this from the interface for non-instructables.
+    protected @open Feedback run(ActionSurface surface, String ignored) {
+        return run(surface); // Todo: remove this from the interface for non-instructables.
     }
 }

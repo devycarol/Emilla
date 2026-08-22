@@ -39,13 +39,13 @@ final class Sms extends CoreDataCommand implements PhoneReceiver {
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act) {
+    protected Feedback run(ActionSurface surface) {
         return tryMessage(null);
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act, String recipients) {
-        return tryMessage(act, recipients, null);
+    protected Feedback run(ActionSurface surface, String recipients) {
+        return tryMessage(surface.getAssistActivity(), recipients, null);
     }
 
     private Feedback tryMessage(@Nullable String message) {
@@ -54,15 +54,15 @@ final class Sms extends CoreDataCommand implements PhoneReceiver {
     }
 
     @Override
-    public Feedback runWithData(ActionSurface surface, AssistActivity act, String message) {
+    public Feedback runWithData(ActionSurface surface, String message) {
         return tryMessage(message);
     }
 
     @Override
-    public Feedback runWithData(ActionSurface surface, AssistActivity act, String recipients, String message) {
+    public Feedback runWithData(ActionSurface surface, String recipients, String message) {
         // todo: immediate texting. likely requires a feature check and special permissions.
         //  attachments, feedback for delivered/not delivered..
-        return tryMessage(act, recipients, message);
+        return tryMessage(surface.getAssistActivity(), recipients, message);
     }
 
     private Feedback tryMessage(AssistActivity act, String recipients, @Nullable String message) {

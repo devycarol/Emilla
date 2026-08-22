@@ -9,7 +9,6 @@ import androidx.annotation.Nullable;
 
 import net.emilla.Feedback;
 import net.emilla.R;
-import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.lang.Lang;
 import net.emilla.util.Apps;
@@ -30,23 +29,23 @@ final class Timer extends CoreDataCommand {
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act) {
+    protected Feedback run(ActionSurface surface) {
         return Feedback.succeed(baseIntent());
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act, String duration) {
-        return runWithData(surface, act, duration, null);
+    protected Feedback run(ActionSurface surface, String duration) {
+        return runWithData(surface, duration, null);
     }
 
     @Override
-    public Feedback runWithData(ActionSurface surface, AssistActivity act, String title) {
+    public Feedback runWithData(ActionSurface surface, String title) {
         return Feedback.pend();
     }
 
     @Override
-    public Feedback runWithData(ActionSurface surface, AssistActivity act, String duration, @Nullable String title) {
-        Int box = Lang.durationSeconds(act, duration);
+    public Feedback runWithData(ActionSurface surface, String duration, @Nullable String title) {
+        Int box = Lang.durationSeconds(surface.getAssistActivity(), duration);
         if (box == null) {
             return Feedback.fail(R.string.error_invalid_duration);
         }

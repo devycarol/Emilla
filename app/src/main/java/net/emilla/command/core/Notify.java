@@ -22,38 +22,31 @@ final class Notify extends CoreDataCommand {
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act) {
-        var res = act.getResources();
+    protected Feedback run(ActionSurface surface) {
+        var act = surface.getAssistActivity();
+        var res = surface.getResources();
         return tryPing(act, res.getString(R.string.ping_command), null);
     }
 
     @Override
-    protected Feedback run(
-        ActionSurface surface,
-        AssistActivity act,
-        String title
-    ) {
-        return tryPing(act, title, null);
+    protected Feedback run(ActionSurface surface, String title) {
+        return tryPing(surface.getAssistActivity(), title, null);
     }
 
     @Override
-    public Feedback runWithData(
-        ActionSurface surface,
-        AssistActivity act,
-        String text
-    ) {
-        var res = act.getResources();
+    public Feedback runWithData(ActionSurface surface, String text) {
+        var act = surface.getAssistActivity();
+        var res = surface.getResources();
         return tryPing(act, res.getString(R.string.ping_command), text);
     }
 
     @Override
     public Feedback runWithData(
         ActionSurface surface,
-        AssistActivity act,
         String title,
         String text
     ) {
-        return tryPing(act, title, text);
+        return tryPing(surface.getAssistActivity(), title, text);
     }
 
     @SuppressLint("MissingPermission")

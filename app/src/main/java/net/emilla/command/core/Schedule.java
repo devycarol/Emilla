@@ -47,22 +47,22 @@ final class Schedule extends CoreDataCommand {
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act) {
-        return runWithData(surface, act, null, null);
+    protected Feedback run(ActionSurface surface) {
+        return runWithData(surface, null, null);
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act, String title) {
-        return runWithData(surface, act, title, null);
+    protected Feedback run(ActionSurface surface, String title) {
+        return runWithData(surface, title, null);
     }
 
     @Override
-    public Feedback runWithData(ActionSurface surface, AssistActivity act, String details) {
-        return runWithData(surface, act, null, details);
+    public Feedback runWithData(ActionSurface surface, String details) {
+        return runWithData(surface, null, details);
     }
 
     @Override
-    public Feedback runWithData(ActionSurface surface, AssistActivity act, @Nullable String title, @Nullable String details) {
+    public Feedback runWithData(ActionSurface surface, @Nullable String title, @Nullable String details) {
         Intent intent = baseIntent();
         if (title != null) {
             intent.putExtra(Events.TITLE, title);

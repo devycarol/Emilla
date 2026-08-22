@@ -8,7 +8,6 @@ import android.provider.MediaStore;
 import android.view.inputmethod.EditorInfo;
 
 import net.emilla.Feedback;
-import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
 import net.emilla.media.MediaControl;
@@ -22,14 +21,14 @@ final class Play extends EmillaCommand {
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act) {
-        AudioManager audio = Services.audio(act);
+    protected Feedback run(ActionSurface surface) {
+        AudioManager audio = Services.audio(surface.getContext());
         MediaControl.play(audio);
         return Feedback.give();
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act, String media) {
+    protected Feedback run(ActionSurface surface, String media) {
         var intent = new Intent(MediaStore.INTENT_ACTION_MEDIA_PLAY_FROM_SEARCH);
         // bruh please WHY does no one update the documentation to reflect that no one supports this
         // anymore

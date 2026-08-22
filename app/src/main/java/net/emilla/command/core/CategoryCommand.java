@@ -6,7 +6,6 @@ import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.Feedback;
 import net.emilla.R;
-import net.emilla.activity.AssistActivity;
 import net.emilla.command.app.AppEntry;
 import net.emilla.util.Apps;
 import net.emilla.util.Dialogs;
@@ -16,17 +15,18 @@ import net.emilla.wadget.ActionSurface;
 import java.util.Arrays;
 
 enum CategoryCommand {;
-    public static Feedback run(ActionSurface surface, AssistActivity act, String category) {
-        return run(surface, act, Intents.categoryTask(category));
+    public static Feedback run(ActionSurface surface, String category) {
+        return run(surface, Intents.categoryTask(category));
     }
 
-    public static Feedback run(ActionSurface surface, AssistActivity act, Intent filter) {
+    public static Feedback run(ActionSurface surface, Intent filter) {
+        var act = surface.getAssistActivity();
         AppEntry[] apps = Apps.filter(act.getPackageManager(), filter);
 
         return switch (apps.length) {
             case 0 -> Feedback.fail(R.string.error_no_app);
             case 1 -> Feedback.succeed(Intents.launchApp(apps[0]));
-            default -> Feedback.offer(appLaunches(surface, act, apps));
+            default -> Feedback.offer(appLaunches(surface, apps));
             // todo: allow to select a default app, ensuring that the preference is cleared if ever the
             //  default is no longer installed or a new candidate is installed
             // interestingly, Tasker is included if you remove CATEGORY_LAUNCHER from the intent. i
@@ -39,7 +39,6 @@ enum CategoryCommand {;
 
     private static AlertDialog.Builder appLaunches(
         ActionSurface surface,
-        AssistActivity act,
         AppEntry[] apps
     ) {
         // TODO: include app icons in this dialog for better visual clarity and to disambiguate apps
@@ -49,7 +48,7 @@ enum CategoryCommand {;
             .toArray(String[]::new)
         ;
         return Dialogs.list(
-            act,
+            surface.getAssistActivity(),
             R.string.dialog_app,
             labels,
             (dlg, which) -> surface.take(

@@ -7,7 +7,6 @@ import android.view.inputmethod.EditorInfo;
 
 import net.emilla.Feedback;
 import net.emilla.R;
-import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
 import net.emilla.setting.SettingMap;
@@ -19,21 +18,21 @@ final class Setting extends EmillaCommand {
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act) {
+    protected Feedback run(ActionSurface surface) {
         return Feedback.succeed(new Intent(Settings.ACTION_SETTINGS));
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act, String directive) {
+    protected Feedback run(ActionSurface surface, String directive) {
         if (true) {
             return Feedback.fail(R.string.error_unfinished_feature);
             // Todo
         }
 
-        var res = act.getResources();
+        var res = surface.getResources();
         var settings = new SettingMap(res);
 
-        var cr = act.getContentResolver();
+        var cr = surface.getContentResolver();
         return switch (settings.set(res, cr, directive)) {
             case SUCCESS -> Feedback.give();
             // todo: visually indicate the setting change

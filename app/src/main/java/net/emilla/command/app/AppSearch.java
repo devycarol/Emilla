@@ -7,7 +7,6 @@ import android.view.inputmethod.EditorInfo;
 
 import net.emilla.Feedback;
 import net.emilla.R;
-import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.util.Intents;
 import net.emilla.wadget.ActionSurface;
@@ -18,8 +17,8 @@ final class AppSearch extends AppCommand {
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act, String query) {
-        var res = act.getResources();
+    protected Feedback run(ActionSurface surface, String query) {
+        var res = surface.getResources();
         String[] searchAliases = res.getStringArray(R.array.subcmd_search);
         String lcQuery = query.toLowerCase();
         Intent search = Intents.searchToApp(this.appEntry.pkg);

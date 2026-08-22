@@ -84,22 +84,18 @@ final class Contact extends CoreDataCommand implements ContactCardReceiver {
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act) {
-        act.offerContactCards(this);
+    protected Feedback run(ActionSurface surface) {
+        surface.getAssistActivity().offerContactCards(this);
         return Feedback.silence();
         // intrinsic 'pend' by the contacts chooser
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, AssistActivity act, String person) {
-        return contact(surface, act, extractAction(person));
+    protected Feedback run(ActionSurface surface, String person) {
+        return contact(surface, extractAction(person));
     }
 
-    private Feedback contact(
-        ActionSurface surface,
-        AssistActivity act,
-        @Nullable String person
-    ) {
+    private Feedback contact(ActionSurface surface, @Nullable String person) {
         // todo: search by other details as well? nicknames certainly. phones, addresses, phone
         //  types (cell, work, ..) probably, depending on the command.
         //  special cases:
@@ -113,16 +109,16 @@ final class Contact extends CoreDataCommand implements ContactCardReceiver {
                     yield switch (mAction) {
                         case VIEW -> view(contact);
                         case EDIT -> edit(contact);
-                        case SHARE -> send(act.getResources(), contact, null);
+                        case SHARE -> send(surface.getResources(), contact, null);
                         case CREATE -> throw new UnreachableError();
                     };
                 }
 
                 if (person != null) {
-                    yield offerCreate(surface, act, person, null);
+                    yield offerCreate(surface, person, null);
                 }
 
-                act.offerContactCards(this);
+                surface.getAssistActivity().offerContactCards(this);
                 yield Feedback.silence();
                 // intrinsic 'pend' by the contacts chooser
             }
@@ -131,28 +127,32 @@ final class Contact extends CoreDataCommand implements ContactCardReceiver {
     }
 
     @Override
-    public Feedback runWithData(ActionSurface surface, AssistActivity act, String details) {
+    public Feedback runWithData(ActionSurface surface, String details) {
         // TODO LANG: only show data field in 'create' or 'send' mode.
-        return contact(surface, act, null, details);
+        return contact(surface, null, details);
     }
 
     @Override
-    public Feedback runWithData(ActionSurface surface, AssistActivity act, String person, String details) {
+    public Feedback runWithData(ActionSurface surface, String person, String details) {
         // TODO LANG: only show data field in 'create' or 'send' mode.
-        return contact(surface, act, person, details);
+        return contact(surface, person, details);
     }
 
-    private Feedback contact(ActionSurface surface, AssistActivity act, @Nullable String person, String details) {
+    private Feedback contact(
+        ActionSurface surface,
+        @Nullable String person,
+        String details
+    ) {
         // Todo: dynamic data hint
         if (mAction != Action.SHARE) {
             return create(person, details);
         }
 
         if (person != null) {
-            return offerCreate(surface, act, person, details);
+            return offerCreate(surface, person, details);
         }
 
-        act.offerContactCards(this);
+        surface.getAssistActivity().offerContactCards(this);
         return Feedback.silence();
         // intrinsic 'pend' by the contacts chooser
     }
@@ -181,15 +181,14 @@ final class Contact extends CoreDataCommand implements ContactCardReceiver {
 
     private static Feedback offerCreate(
         ActionSurface surface,
-        AssistActivity act,
         String person,
         @Nullable String details
     ) {
-        var res = act.getResources();
+        var res = surface.getResources();
         String msg = res.getString(R.string.notice_contact_no_match, person);
         return Feedback.offer(
             Dialogs.dual(
-                act,
+                surface.getAssistActivity(),
                 CoreEntry.CONTACT.name,
                 msg,
                 R.string.create,
