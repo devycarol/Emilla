@@ -77,7 +77,7 @@ public final class NotesFragment extends ActionBox {
         var prefs = act.getSharedPreferences();
         Uri noteFolder = SettingVals.noteFolder(prefs);
         if (noteFolder != null) {
-            loadFolder(cr, prefs, noteFolder);
+            boolean __ = loadFolder(cr, prefs, noteFolder);
         }
     }
 
@@ -89,7 +89,7 @@ public final class NotesFragment extends ActionBox {
             ? noteFolder.treeUri()
             : null
         ;
-        ResultLaunchers.tryLaunch(act, mFolderSwitcher, initialUri);
+        boolean __ = ResultLaunchers.tryLaunch(act, mFolderSwitcher, initialUri);
     }
 
     private void onFolderChosen(@Nullable Uri folder) {

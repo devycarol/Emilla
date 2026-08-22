@@ -3,6 +3,7 @@ package net.emilla.command.core;
 import android.content.Context;
 import android.net.Uri;
 
+import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.action.box.NotesFragment;
 import net.emilla.activity.AssistActivity;
@@ -10,7 +11,7 @@ import net.emilla.annotation.internal;
 import net.emilla.file.Files;
 import net.emilla.file.Folder;
 import net.emilla.file.TreeFile;
-import net.emilla.util.Apps;
+import net.emilla.wadget.ActionSurface;
 
 final class Note extends CoreDataCommand {
     private final NotesFragment mNotesFragment;
@@ -24,43 +25,46 @@ final class Note extends CoreDataCommand {
     }
 
     @Override
-    protected void run(AssistActivity act) {
+    protected Feedback run(ActionSurface surface, AssistActivity act) {
         act.offerSaveFile(null, mNotesFragment.folder(), null);
+        return Feedback.silence();
+        // intrinsic 'pend' by the file manager
     }
 
     @Override
-    protected void run(AssistActivity act, String filename) {
+    protected Feedback run(ActionSurface surface, AssistActivity act, String filename) {
         Folder folder = mNotesFragment.folder();
         TreeFile existingFile = mNotesFragment.fileNamed(filename);
         if (folder != null && existingFile != null) {
-            Apps.succeed(act, existingFile.viewIntent(folder));
-            return;
+            return Feedback.succeed(existingFile.viewIntent(folder));
         }
 
         act.offerSaveFile(filename, folder, null);
+        return Feedback.silence();
+        // intrinsic 'pend' by the file manager
     }
 
     @Override
-    public void runWithData(AssistActivity act, String text) {
+    public Feedback runWithData(ActionSurface surface, AssistActivity act, String text) {
         act.offerSaveFile(null, mNotesFragment.folder(), text);
+        return Feedback.silence();
+        // intrinsic 'pend' by the file manager
     }
 
     @Override
-    public void runWithData(AssistActivity act, String filename, String text) {
+    public Feedback runWithData(ActionSurface surface, AssistActivity act, String filename, String text) {
         Folder folder = mNotesFragment.folder();
         TreeFile existingFile = mNotesFragment.fileNamed(filename);
         if (folder != null && existingFile != null) {
             Uri file = existingFile.uri(folder);
-            if (Files.appendLine(act.getContentResolver(), file, text)){
-                act.give(a -> {});
-            } else {
-                fail(act, R.string.error_cant_use_file);
-            }
-
-            return;
+            return Files.appendLine(act.getContentResolver(), file, text)
+                ? Feedback.give()
+                : Feedback.fail(R.string.error_cant_use_file)
+            ;
         }
 
         act.offerSaveFile(filename, folder, text);
+        return Feedback.silence();
+        // intrinsic 'pend' by the file manager
     }
-
 }

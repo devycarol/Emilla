@@ -6,12 +6,15 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.view.inputmethod.EditorInfo;
 
+import net.emilla.Feedback;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
+import net.emilla.command.EmillaCommand;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
+import net.emilla.wadget.ActionSurface;
 
-final class Navigate extends CoreCommand {
+final class Navigate extends EmillaCommand {
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, makeFilter());
     }
@@ -25,13 +28,13 @@ final class Navigate extends CoreCommand {
     }
 
     @Override
-    protected void run(AssistActivity act) {
-        CategoryCommand.run(act, makeFilter());
+    protected Feedback run(ActionSurface surface, AssistActivity act) {
+        return CategoryCommand.run(surface, act, makeFilter());
     }
 
     @Override
-    protected void run(AssistActivity act, String location) {
+    protected Feedback run(ActionSurface surface, AssistActivity act, String location) {
         // Todo: location bookmarks, navigate to contacts' addresses
-        Apps.succeed(act, Intents.view(Uri.parse("geo:0,0?q=" + location)));
+        return Feedback.succeed(Intents.view(Uri.parse("geo:0,0?q=" + location)));
     }
 }

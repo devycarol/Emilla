@@ -21,6 +21,7 @@ import static net.emilla.chime.Chime.PEND;
 import static net.emilla.chime.Chime.RESUME;
 import static net.emilla.chime.Chime.SUCCEED;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -48,6 +49,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
+import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.action.CursorStart;
 import net.emilla.action.Help;
@@ -81,13 +83,17 @@ import net.emilla.run.DialogRun;
 import net.emilla.run.MessageFailure;
 import net.emilla.util.Dialogs;
 import net.emilla.util.Views;
+import net.emilla.wadget.ActionSurface;
 import net.emilla.widget.ActionButton;
 import net.emilla.widget.ActionIcon;
 import net.emilla.widget.SymbolIcon;
 
 import java.util.ArrayList;
 
-public final class AssistActivity extends AppCompatActivity {
+public final class AssistActivity
+    extends AppCompatActivity
+    implements ActionSurface
+{
     private final TextFileCreator mTextFileCreator = new TextFileCreator(this);
     private final FilesRetriever mFilesRetriever = new FilesRetriever(this);
     private final MediaRetriever mMediaRetriever = new MediaRetriever(this);
@@ -190,6 +196,11 @@ public final class AssistActivity extends AppCompatActivity {
         commandField.setOnEditorActionListener((v, actionId, event) -> onActionKey(actionId));
 
         commandField.requestFocus();
+    }
+
+    @Override
+    public void take(Feedback feedback) {
+        feedback.run(this);
     }
 
     private final class CommandWatcher implements TextWatcher {
@@ -569,7 +580,6 @@ public final class AssistActivity extends AppCompatActivity {
     public void selectInstruction() {
         EditText commandField = mBinding.commandField;
         commandField.setSelection(mInstructionPosition, commandField.length());
-        chime(ACT);
     }
 
     public void setInstruction(String instruction) {
@@ -793,10 +803,6 @@ public final class AssistActivity extends AppCompatActivity {
         chime(SUCCEED);
     }
 
-    public void fail(@StringRes int message) {
-        fail(R.string.error, message);
-    }
-
     public void fail(@StringRes int title, @StringRes int message) {
         fail(new MessageFailure(this, title, message));
     }
@@ -817,12 +823,17 @@ public final class AssistActivity extends AppCompatActivity {
         try {
             EditText dataField = mBinding.dataField;
             if (mCommand instanceof DataCommand dataCmd && dataField.length() > 0) {
-                dataCmd.execute(this, dataField.getText().toString());
+                take(dataCmd.execute(this, this, dataField.getText().toString()));
             } else {
-                mCommand.execute(this);
+                take(mCommand.execute(this, this));
             }
         } catch (RuntimeException e) {
             fail(new BugFailure(this, e, mCommand.name));
         }
+    }
+
+    @Override
+    public Context getContext() {
+        return getApplicationContext();
     }
 }

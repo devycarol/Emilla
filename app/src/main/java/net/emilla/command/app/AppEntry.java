@@ -25,7 +25,6 @@ import net.emilla.config.Aliases;
 import net.emilla.config.SettingVals;
 import net.emilla.lang.Lang;
 import net.emilla.sort.SearchItem;
-import net.emilla.struct.IndexedStruct;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
 import net.emilla.widget.ActionIcon;
@@ -35,17 +34,6 @@ import net.emilla.widget.SymbolIcon;
 import java.util.Set;
 
 public final class AppEntry extends SearchItem implements Params {
-    public static String[] labels(IndexedStruct<AppEntry> apps) {
-        int size = apps.size();
-        var labels = new String[size];
-
-        for (int i = 0; i < size; ++i) {
-            labels[i] = apps.get(i).displayName;
-        }
-
-        return labels;
-    }
-
     public static AppEntry from(PackageManager pm, ResolveInfo resolveInfo) {
         ActivityInfo activityInfo = resolveInfo.activityInfo;
 

@@ -7,8 +7,9 @@ import androidx.annotation.StringRes;
 
 import net.emilla.annotation.internal;
 import net.emilla.command.DataCommand;
+import net.emilla.command.EmillaCommand;
 
-abstract class CoreDataCommand extends CoreCommand implements DataCommand {
+abstract class CoreDataCommand extends EmillaCommand implements DataCommand {
     @StringRes
     private final int mHint;
 

@@ -8,6 +8,7 @@ import android.content.Context;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
 
+import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
@@ -22,6 +23,7 @@ import net.emilla.ping.PingChannel;
 import net.emilla.ping.Pings;
 import net.emilla.util.Int;
 import net.emilla.util.Permission;
+import net.emilla.wadget.ActionSurface;
 
 final class Pomodoro extends CoreDataCommand {
     private enum Action {
@@ -48,24 +50,24 @@ final class Pomodoro extends CoreDataCommand {
     }
 
     @Override
-    protected void run(AssistActivity act) {
-        tryPomo(act, null, false);
+    protected Feedback run(ActionSurface surface, AssistActivity act) {
+        return tryPomo(act, null, false);
     }
 
     @Override
-    protected void run(AssistActivity act, String duration) {
+    protected Feedback run(ActionSurface surface, AssistActivity act, String duration) {
         Subcommand<Action> subcmd = mActionMap.get(duration);
-        tryPomo(act, subcmd.instruction, subcmd.action == Action.BREAK);
+        return tryPomo(act, subcmd.instruction, subcmd.action == Action.BREAK);
     }
 
     @Override
-    public void runWithData(AssistActivity act, String memo) {
+    public Feedback runWithData(ActionSurface surface, AssistActivity act, String memo) {
         mWorkMemo = memo;
-        tryPomo(act, null, false);
+        return tryPomo(act, null, false);
     }
 
     @Override
-    public void runWithData(AssistActivity act, String duration, String memo) {
+    public Feedback runWithData(ActionSurface surface, AssistActivity act, String duration, String memo) {
         Subcommand<Action> subcmd = mActionMap.get(duration);
         boolean isBreak = subcmd.action == Action.BREAK;
         if (isBreak) {
@@ -73,19 +75,19 @@ final class Pomodoro extends CoreDataCommand {
         } else {
             mWorkMemo = memo;
         }
-        tryPomo(act, subcmd.instruction, isBreak);
+        return tryPomo(act, subcmd.instruction, isBreak);
     }
 
     @SuppressLint("MissingPermission")
-    private void tryPomo(AssistActivity act, @Nullable String duration, boolean isBreak) {
+    private Feedback tryPomo(AssistActivity act, @Nullable String duration, boolean isBreak) {
         Int box = durationSeconds(act, duration, isBreak);
         if (box == null) {
-            fail(act, R.string.error_invalid_duration);
-            return;
+            return Feedback.fail(R.string.error_invalid_duration);
         }
 
         int seconds = box.intValue();
         Permission.PINGS.with(act, () -> pomo(act, seconds, mWorkMemo, mBreakMemo, isBreak));
+        return Feedback.silence();
     }
 
     @Nullable
@@ -97,11 +99,9 @@ final class Pomodoro extends CoreDataCommand {
         if (duration == null) {
             var prefs = act.getSharedPreferences();
             return new Int(
-                (
-                    isBreak
-                        ? SettingVals.defaultPomoBreakMins(prefs)
-                        : SettingVals.defaultPomoWorkMins(prefs)
-
+                (isBreak
+                    ? SettingVals.defaultPomoBreakMins(prefs)
+                    : SettingVals.defaultPomoWorkMins(prefs)
                 ) * 60
             );
         }
@@ -120,8 +120,8 @@ final class Pomodoro extends CoreDataCommand {
         var res = act.getResources();
         if (isBreak) {
             pomo(
-                act, seconds,
-
+                act,
+                seconds,
                 PingChannel.POMODORO_BREAK_START,
                 res.getString(R.string.ping_pomodoro_break),
                 breakMemo,
@@ -132,8 +132,8 @@ final class Pomodoro extends CoreDataCommand {
             );
         } else {
             pomo(
-                act, seconds,
-
+                act,
+                seconds,
                 PingChannel.POMODORO_START,
                 res.getString(R.string.ping_pomodoro),
                 workMemo,

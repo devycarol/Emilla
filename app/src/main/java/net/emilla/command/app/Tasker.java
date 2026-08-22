@@ -8,6 +8,7 @@ import android.view.inputmethod.EditorInfo;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
+import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
@@ -18,6 +19,7 @@ import net.emilla.util.Dialogs;
 import net.emilla.util.Permission;
 import net.emilla.util.Strings;
 import net.emilla.util.TaskerIntent;
+import net.emilla.wadget.ActionSurface;
 
 import java.util.Comparator;
 import java.util.TreeSet;
@@ -53,47 +55,56 @@ final class Tasker extends AppCommand implements DataCommand {
     }
 
     @Override
-    protected void run(AssistActivity act, String task) {
-        trySearchRun(act, extractAction(task), null);
+    protected Feedback run(ActionSurface surface, AssistActivity act, String task) {
+        return trySearchRun(surface, act, extractAction(task), null);
     }
 
     @Override
-    public void runWithData(AssistActivity act, String params) {
-        trySearchRun(act, "", params);
+    public Feedback runWithData(ActionSurface surface, AssistActivity act, String params) {
+        return trySearchRun(surface, act, "", params);
     }
 
     @Override
-    public void runWithData(AssistActivity act, String task, String params) {
-        trySearchRun(act, extractAction(task), params);
+    public Feedback runWithData(ActionSurface surface, AssistActivity act, String task, String params) {
+        return trySearchRun(surface, act, extractAction(task), params);
     }
 
     private String extractAction(String task) {
         return Strings.emptyIfNull(mActionMap.get(task).instruction);
     }
 
-    private void trySearchRun(AssistActivity act, String task, @Nullable String params) {
-        switch (TaskerIntent.testStatus(act)) {
-        case OK -> searchRun(act, task, params);
-        case NOT_ENABLED -> failDialog(
-            act, R.string.error_tasker_not_enabled,
+    private Feedback trySearchRun(
+        ActionSurface surface,
+        AssistActivity act,
+        String task,
+        @Nullable String params
+    ) {
+        return switch (TaskerIntent.testStatus(act)) {
+            case OK -> searchRun(act, task, params);
+            case NOT_ENABLED -> failDialog(
+                act, R.string.error_tasker_not_enabled,
 
-            R.string.dlg_yes_tasker_open,
-            (dlg, which) -> offerApp(act, this.appEntry.launchIntent(), true)
-        );
-        case NO_ACCESS -> failDialog(
-            act, R.string.error_tasker_blocked,
+                R.string.dlg_yes_tasker_open,
+                (dlg, which) -> offerApp(act, this.appEntry.launchIntent(), true)
+            );
+            case NO_ACCESS -> failDialog(
+                act, R.string.error_tasker_blocked,
 
-            R.string.dlg_yes_tasker_external_access_settings,
-            (dlg, which) -> offerApp(act, TaskerIntent.getExternalAccessPrefsIntent(), false)
-        );
-        case NO_PERMISSION -> Permission.TASKER.flow(
-            act, () -> trySearchRun(act, task, params)
-        );
-        case NO_RECEIVER -> failMessage(act, R.string.error_tasker_no_receiver);
-        }
+                R.string.dlg_yes_tasker_external_access_settings,
+                (dlg, which) -> offerApp(act, TaskerIntent.getExternalAccessPrefsIntent(), false)
+            );
+            case NO_PERMISSION -> {
+                Permission.TASKER.flow(
+                    act,
+                    () -> surface.take(trySearchRun(surface, act, task, params))
+                );
+                yield Feedback.silence();
+            }
+            case NO_RECEIVER -> failMessage(R.string.error_tasker_no_receiver);
+        };
     }
 
-    private void searchRun(AssistActivity act, String task, @Nullable String params) {
+    private Feedback searchRun(AssistActivity act, String task, @Nullable String params) {
         var res = act.getResources();
         var cr = act.getContentResolver();
         var contentUri = Uri.parse("content://net.dinglisch.android.tasker/tasks");
@@ -101,8 +112,7 @@ final class Tasker extends AppCommand implements DataCommand {
         Cursor cur = cr.query(contentUri, projection, null, null, null);
 
         if (cur == null) {
-            failMessage(act, res.getString(R.string.error_tasker_no_tasks, task));
-            return;
+            return failMessage(res.getString(R.string.error_tasker_no_tasks, task));
         }
 
         int nameCol = 0;
@@ -122,16 +132,14 @@ final class Tasker extends AppCommand implements DataCommand {
         cur.close();
 
         if (tasks.isEmpty()) {
-            failMessage(act, res.getString(R.string.error_tasker_no_tasks, task));
-            return;
+            return failMessage(res.getString(R.string.error_tasker_no_tasks, task));
         }
 
         int size = tasks.size();
         if (size == 1) {
             String taskName = tasks.first().taskName;
             if (taskName.equalsIgnoreCase(task)) {
-                runTask(act, taskName, params);
-                return;
+                return runTask(act, taskName, params);
             }
         }
 
@@ -144,13 +152,12 @@ final class Tasker extends AppCommand implements DataCommand {
             ++i;
         }
 
-        offerDialog(
-            act,
+        return Feedback.offer(
             Dialogs.list(
-                act, R.string.dialog_tasker_select_task,
-
+                act,
+                R.string.dialog_tasker_select_task,
                 taskLabels,
-                (dlg, which) -> runTask(act, taskNames[which], params)
+                (dlg, which) -> act.take(runTask(act, taskNames[which], params))
             )
         );
         // todo: see if it's possible to display task/project icons
@@ -183,13 +190,18 @@ final class Tasker extends AppCommand implements DataCommand {
         }
     }
 
-    private static void runTask(AssistActivity act, String taskName, @Nullable String params) {
+    private static Feedback runTask(
+        Context act,
+        String taskName,
+        @Nullable String params
+    ) {
         var intent = new TaskerIntent(taskName);
         if (params != null) {
             for (String param : new Lines(params, false)) {
                 intent.addParameter(param);
             }
         }
-        giveBroadcast(act, intent);
+        act.sendBroadcast(intent);
+        return Feedback.give();
     }
 }

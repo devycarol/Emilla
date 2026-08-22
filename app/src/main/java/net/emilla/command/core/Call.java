@@ -9,9 +9,11 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.view.inputmethod.EditorInfo;
 
+import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
+import net.emilla.command.EmillaCommand;
 import net.emilla.contact.fragment.ContactPhonesFragment;
 import net.emilla.content.receive.PhoneReceiver;
 import net.emilla.util.Apps;
@@ -19,8 +21,9 @@ import net.emilla.util.Contacts;
 import net.emilla.util.Dialogs;
 import net.emilla.util.Features;
 import net.emilla.util.Permission;
+import net.emilla.wadget.ActionSurface;
 
-final class Call extends CoreCommand implements PhoneReceiver {
+final class Call extends EmillaCommand implements PhoneReceiver {
     public static boolean possible(PackageManager pm) {
         return Features.phone(pm) || Apps.canDo(pm, makeIntent(""));
     }
@@ -36,57 +39,58 @@ final class Call extends CoreCommand implements PhoneReceiver {
     }
 
     @Override
-    protected void run(AssistActivity act) {
-        Permission.CONTACTS.with(act, () -> tryCall(act));
+    protected Feedback run(ActionSurface surface, AssistActivity act) {
+        Permission.CONTACTS.with(act, () -> act.take(tryCall(act)));
+        return Feedback.silence();
     }
 
-    private void tryCall(AssistActivity act) {
+    private Feedback tryCall(AssistActivity act) {
         String number = mContactsFragment.selectedContacts();
-        if (number != null) {
-            call(act, number);
-        } else {
+        if (number == null) {
             act.offerContactPhones(this);
+            return Feedback.silence();
+            // intrinsic 'pend' by the contacts chooser
         }
+
+        return call(act, number);
     }
 
     @Override
-    protected void run(AssistActivity act, String nameOrNumber) {
+    protected Feedback run(ActionSurface surface, AssistActivity act, String nameOrNumber) {
         // todo: conference calls?
-        Permission.CALL.with(act, () -> tryCall(act, nameOrNumber));
+        Permission.CALL.with(act, () -> act.take(tryCall(act, nameOrNumber)));
+        return Feedback.silence();
     }
 
-    private void tryCall(AssistActivity act, String nameOrNumber) {
+    private Feedback tryCall(AssistActivity act, String nameOrNumber) {
         String number = mContactsFragment.selectedContacts();
-
         if (number == null && Contacts.isPhoneNumbers(nameOrNumber)) {
             number = nameOrNumber;
         }
-
         if (number != null) {
-            call(act, number);
-        } else {
-            var res = act.getResources();
-            String msg = res.getString(
-                R.string.notice_call_not_number,
-                nameOrNumber,
-                Contacts.phonewordsToNumbers(nameOrNumber)
-            );
-            offerDialog(
-                act,
-                Dialogs.dual(
-                    act, CoreEntry.CALL.name,
-
-                    msg, R.string.call_directly,
-
-                    (dlg, which) -> call(act, nameOrNumber)
-                )
-            );
+            return call(act, number);
         }
+
+        var res = act.getResources();
+        String msg = res.getString(
+            R.string.notice_call_not_number,
+            nameOrNumber,
+            Contacts.phonewordsToNumbers(nameOrNumber)
+        );
+        return Feedback.offer(
+            Dialogs.dual(
+                act, CoreEntry.CALL.name,
+
+                msg, R.string.call_directly,
+
+                (dlg, which) -> act.take(call(act, nameOrNumber))
+            )
+        );
     }
 
-    private static void call(AssistActivity act, String nameOrNumber) {
+    private static Feedback call(AssistActivity act, String nameOrNumber) {
         act.suppressChime(SUCCEED);
-        Apps.succeed(act, makeIntent(nameOrNumber));
+        return Feedback.succeed(makeIntent(nameOrNumber));
     }
 
     private static Intent makeIntent(String number) {
@@ -95,6 +99,6 @@ final class Call extends CoreCommand implements PhoneReceiver {
 
     @Override
     public void provide(AssistActivity act, String phoneNumber) {
-        Permission.CALL.with(act, () -> call(act, phoneNumber));
+        Permission.CALL.with(act, () -> act.take(call(act, phoneNumber)));
     }
 }

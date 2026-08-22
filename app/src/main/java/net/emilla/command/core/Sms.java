@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 
 import androidx.annotation.Nullable;
 
+import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.action.MediaFetcher;
 import net.emilla.activity.AssistActivity;
@@ -20,6 +21,7 @@ import net.emilla.util.Features;
 import net.emilla.util.Intents;
 import net.emilla.util.Strings;
 import net.emilla.util.Uris;
+import net.emilla.wadget.ActionSurface;
 
 final class Sms extends CoreDataCommand implements PhoneReceiver {
     public static boolean possible(PackageManager pm) {
@@ -37,69 +39,68 @@ final class Sms extends CoreDataCommand implements PhoneReceiver {
     }
 
     @Override
-    protected void run(AssistActivity act) {
-        tryMessage(act, null);
+    protected Feedback run(ActionSurface surface, AssistActivity act) {
+        return tryMessage(null);
     }
 
     @Override
-    protected void run(AssistActivity act, String recipients) {
-        tryMessage(act, recipients, null);
+    protected Feedback run(ActionSurface surface, AssistActivity act, String recipients) {
+        return tryMessage(act, recipients, null);
     }
 
-    private void tryMessage(AssistActivity act, @Nullable String message) {
+    private Feedback tryMessage(@Nullable String message) {
         String numbers = mContactsFragment.selectedContacts();
-        message(act, Strings.emptyIfNull(numbers), message);
+        return message(Strings.emptyIfNull(numbers), message);
     }
 
     @Override
-    public void runWithData(AssistActivity act, String message) {
-        tryMessage(act, message);
+    public Feedback runWithData(ActionSurface surface, AssistActivity act, String message) {
+        return tryMessage(message);
     }
 
     @Override
-    public void runWithData(AssistActivity act, String recipients, String message) {
+    public Feedback runWithData(ActionSurface surface, AssistActivity act, String recipients, String message) {
         // todo: immediate texting. likely requires a feature check and special permissions.
         //  attachments, feedback for delivered/not delivered..
-        tryMessage(act, recipients, message);
+        return tryMessage(act, recipients, message);
     }
 
-    private void tryMessage(AssistActivity act, String recipients, @Nullable String message) {
+    private Feedback tryMessage(AssistActivity act, String recipients, @Nullable String message) {
         String numbers = mContactsFragment.selectedContacts();
         if (numbers == null && Contacts.isPhoneNumbers(recipients)) {
             numbers = recipients;
         }
         if (numbers != null) {
-            message(act, numbers, message);
-        } else {
-            var res = act.getResources();
-            String toNumbers = Contacts.phonewordsToNumbers(recipients);
-            String msg = res.getString(R.string.notice_sms_not_numbers, recipients, toNumbers);
-            // todo: better message.
-            offerDialog(
-                act,
-                Dialogs.dual(
-                    act, CoreEntry.SMS.name,
-
-                    msg, R.string.message_directly,
-
-                    (dlg, which) -> message(act, toNumbers, message)
-                )
-            );
+            return message(numbers, message);
         }
+
+        var res = act.getResources();
+        String toNumbers = Contacts.phonewordsToNumbers(recipients);
+        String msg = res.getString(R.string.notice_sms_not_numbers, recipients, toNumbers);
+        // todo: better message.
+        return Feedback.offer(
+            Dialogs.dual(
+                act, CoreEntry.SMS.name,
+
+                msg, R.string.message_directly,
+
+                (dlg, which) -> act.take(message(toNumbers, message))
+            )
+        );
     }
 
-    private static void message(AssistActivity act, String numbers, @Nullable String message) {
+    private static Feedback message(String numbers, @Nullable String message) {
         var sendTo = new Intent(ACTION_SENDTO, Uris.sms(numbers));
         if (message != null) {
             sendTo.putExtra(Intents.EXTRA_SMS_BODY, message);
         }
         // overwrites any existing draft to the recipient
         // Todo: detect, warn, confirm.
-        Apps.succeed(act, sendTo);
+        return Feedback.succeed(sendTo);
     }
 
     @Override
     public void provide(AssistActivity act, String phoneNumber) {
-        message(act, phoneNumber, act.dataText());
+        act.take(message(phoneNumber, act.dataText()));
     }
 }

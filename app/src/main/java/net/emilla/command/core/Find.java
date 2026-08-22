@@ -6,7 +6,7 @@ package net.emilla.command.core;
 //import net.emilla.activity.AssistActivity;
 //import net.emilla.annotation.internal;
 //
-//final class Find extends CoreCommand {
+//final class Find extends EmillaCommand {
 //
 //    @internal Find(Context ctx) {
 //        super(ctx, CoreEntry.FIND, EditorInfo.IME_ACTION_SEARCH);

@@ -5,12 +5,14 @@ import static android.content.Intent.ACTION_WEB_SEARCH;
 import android.content.Intent;
 import android.view.inputmethod.EditorInfo;
 
+import net.emilla.Feedback;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
-import net.emilla.util.Apps;
+import net.emilla.command.EmillaCommand;
+import net.emilla.wadget.ActionSurface;
 import net.emilla.web.WebsiteMap;
 
-final class Web extends CoreCommand {
+final class Web extends EmillaCommand {
     public static boolean possible() {
         return true;
     }
@@ -26,12 +28,12 @@ final class Web extends CoreCommand {
     }
 
     @Override
-    protected void run(AssistActivity act) {
-        Apps.succeed(act, new Intent(ACTION_WEB_SEARCH));
+    protected Feedback run(ActionSurface surface, AssistActivity act) {
+        return Feedback.succeed(new Intent(ACTION_WEB_SEARCH));
     }
 
     @Override
-    protected void run(AssistActivity act, String query) {
-        Apps.succeed(act, mWebsiteMap.intent(query));
+    protected Feedback run(ActionSurface surface, AssistActivity act, String query) {
+        return Feedback.succeed(mWebsiteMap.intent(query));
     }
 }

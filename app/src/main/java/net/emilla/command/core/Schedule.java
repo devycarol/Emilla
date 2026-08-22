@@ -6,6 +6,7 @@ import android.provider.CalendarContract.Events;
 
 import androidx.annotation.Nullable;
 
+import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.action.InputField;
 import net.emilla.action.box.FieldsFragment;
@@ -14,6 +15,7 @@ import net.emilla.annotation.internal;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
 import net.emilla.util.MimeTypes;
+import net.emilla.wadget.ActionSurface;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -45,22 +47,22 @@ final class Schedule extends CoreDataCommand {
     }
 
     @Override
-    protected void run(AssistActivity act) {
-        runWithData(act, null, null);
+    protected Feedback run(ActionSurface surface, AssistActivity act) {
+        return runWithData(surface, act, null, null);
     }
 
     @Override
-    protected void run(AssistActivity act, String title) {
-        runWithData(act, title, null);
+    protected Feedback run(ActionSurface surface, AssistActivity act, String title) {
+        return runWithData(surface, act, title, null);
     }
 
     @Override
-    public void runWithData(AssistActivity act, String details) {
-        runWithData(act, null, details);
+    public Feedback runWithData(ActionSurface surface, AssistActivity act, String details) {
+        return runWithData(surface, act, null, details);
     }
 
     @Override
-    public void runWithData(AssistActivity act, @Nullable String title, @Nullable String details) {
+    public Feedback runWithData(ActionSurface surface, AssistActivity act, @Nullable String title, @Nullable String details) {
         Intent intent = baseIntent();
         if (title != null) {
             intent.putExtra(Events.TITLE, title);
@@ -76,7 +78,7 @@ final class Schedule extends CoreDataCommand {
         if (url != null) {
             intent.putExtra("url", url);
         }
-        Apps.succeed(act, intent);
+        return Feedback.succeed(intent);
     }
 
     private static long epochMilliOf(LocalDateTime dateTime) {

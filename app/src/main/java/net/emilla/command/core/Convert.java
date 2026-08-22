@@ -4,33 +4,35 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.view.inputmethod.EditorInfo;
 
+import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
+import net.emilla.command.EmillaCommand;
 import net.emilla.lang.Lang;
 import net.emilla.math.Maths;
 import net.emilla.measure.ConversionRequest;
 import net.emilla.measure.MeasureUnit;
+import net.emilla.wadget.ActionSurface;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-final class Convert extends CoreCommand {
+final class Convert extends EmillaCommand {
     @internal Convert(Context ctx) {
         super(ctx, CoreEntry.CONVERT, EditorInfo.IME_ACTION_DONE);
     }
 
     @Override
-    protected void run(AssistActivity act) {
-        act.offer(a -> {});
+    protected Feedback run(ActionSurface surface, AssistActivity act) {
+        return Feedback.pend();
     }
 
     @Override
-    protected void run(AssistActivity act, String units) {
+    protected Feedback run(ActionSurface surface, AssistActivity act, String units) {
         ConversionRequest conversion = Lang.unitConversion(units);
         if (conversion == null) {
-            fail(act, R.string.error_invalid_conversion);
-            return;
+            return Feedback.fail(R.string.error_invalid_conversion);
         }
 
         MeasureUnit from = conversion.from();
@@ -38,8 +40,7 @@ final class Convert extends CoreCommand {
         MeasureUnit to = conversion.to();
         BigDecimal convert = from.convert(value, to);
         if (convert == null) {
-            fail(act, R.string.error_invalid_conversion);
-            return;
+            return Feedback.fail(R.string.error_invalid_conversion);
         }
 
         var res = act.getResources();
@@ -48,7 +49,7 @@ final class Convert extends CoreCommand {
             measurement(res, from, value),
             measurement(res, to, convert)
         );
-        giveText(act, message);
+        return Feedback.giveText(message);
     }
 
     private static String measurement(Resources res, MeasureUnit unit, BigDecimal value) {

@@ -41,7 +41,7 @@ public final class PermissionRetriever {
         }
 
         mOnGrant = onGrant;
-        ResultLaunchers.tryLaunch(mActivity, mLauncher, permissions);
+        boolean __ = ResultLaunchers.tryLaunch(mActivity, mLauncher, permissions);
     }
 
     private final class PermissionCallback implements ActivityResultCallback<Map<String, Boolean>> {

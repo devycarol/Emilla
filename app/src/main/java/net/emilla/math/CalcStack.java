@@ -95,7 +95,7 @@ final class CalcStack
     private void closeSignParen() {
         if (signs.peek() == null) {
             // left paren
-            signs.pop();
+            S __ = signs.pop();
             int last = size - 1;
             while (signs.notEmpty()) {
                 S peek = signs.peek();

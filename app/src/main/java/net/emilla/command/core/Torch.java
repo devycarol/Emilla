@@ -4,13 +4,16 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.view.inputmethod.EditorInfo;
 
+import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
+import net.emilla.command.EmillaCommand;
 import net.emilla.util.Features;
 import net.emilla.util.TorchManager;
+import net.emilla.wadget.ActionSurface;
 
-final class Torch extends CoreCommand {
+final class Torch extends EmillaCommand {
     public static boolean possible(PackageManager pm) {
         return Features.torch(pm);
     }
@@ -20,14 +23,15 @@ final class Torch extends CoreCommand {
     }
 
     @Override
-    protected void run(AssistActivity act) {
-        if (!TorchManager.toggle(act)) {
-            fail(act, R.string.error_torch_failed);
-        }
+    protected Feedback run(ActionSurface surface, AssistActivity act) {
+        return TorchManager.toggle(act)
+            ? Feedback.silence()
+            : Feedback.fail(R.string.error_torch_failed)
+        ;
     }
 
     @Override
-    protected void run(AssistActivity act, String ignored) {
-        run(act); // Todo: remove this from the interface for non-instructables.
+    protected Feedback run(ActionSurface surface, AssistActivity act, String ignored) {
+        return run(surface, act); // Todo: remove this from the interface for non-instructables.
     }
 }

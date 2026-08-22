@@ -5,9 +5,11 @@ import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.Nullable;
 
+import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.util.Dialogs;
+import net.emilla.wadget.ActionSurface;
 
 import java.util.Arrays;
 
@@ -40,27 +42,32 @@ public final class DuplicateCommand extends EmillaCommand {
     }
 
     @Override
-    protected void run(AssistActivity act) {
-        chooseCommand(act, (dlg, which) -> {
+    protected Feedback run(ActionSurface surface, AssistActivity act) {
+        return chooseCommand(act, (dlg, which) -> {
             EmillaCommand cmd = mCommands[which];
             cmd.load(act);
-            cmd.execute(act);
+            surface.take(cmd.execute(surface, act));
             cmd.unload(act);
         });
     }
 
     @Override
-    protected void run(AssistActivity act, String instruction) {
-        chooseCommand(act, (dlg, which) -> {
+    protected Feedback run(ActionSurface surface, AssistActivity act, String instruction) {
+        return chooseCommand(act, (dlg, which) -> {
             EmillaCommand cmd = mCommands[which];
             cmd.instruct(instruction);
             cmd.load(act);
-            cmd.execute(act);
+            surface.take(cmd.execute(surface, act));
             cmd.unload(act);
         });
     }
 
-    private void chooseCommand(AssistActivity act, DialogInterface.OnClickListener onChoose) {
-        offerDialog(act, Dialogs.list(act, R.string.dialog_command, mLabels, onChoose));
+    private Feedback chooseCommand(
+        AssistActivity act,
+        DialogInterface.OnClickListener onChoose
+    ) {
+        return Feedback.offer(
+            Dialogs.list(act, R.string.dialog_command, mLabels, onChoose)
+        );
     }
 }

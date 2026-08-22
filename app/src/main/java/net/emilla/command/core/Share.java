@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 
+import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.action.FileFetcher;
 import net.emilla.action.MediaFetcher;
@@ -19,6 +20,7 @@ import net.emilla.util.Apps;
 import net.emilla.util.Intents;
 import net.emilla.util.MimeType;
 import net.emilla.util.MimeTypes;
+import net.emilla.wadget.ActionSurface;
 
 import java.util.ArrayList;
 
@@ -80,23 +82,25 @@ final class Share extends CoreDataCommand implements AppChoiceReceiver {
     }
 
     @Override
-    protected void run(AssistActivity act) {
+    protected Feedback run(ActionSurface surface, AssistActivity act) {
         act.offerChooser(this, makeIntent(act), CoreEntry.SHARE.name);
+        return Feedback.silence();
     }
 
     @Override
-    protected void run(AssistActivity act, String app) {
-        runWithData(act, app); // TODO: allow to specify app, conversation, and (ideally) person
+    protected Feedback run(ActionSurface surface, AssistActivity act, String app) {
+        return runWithData(surface, act, app); // TODO: allow to specify app, conversation, and (ideally) person
     }
 
     @Override
-    public void runWithData(AssistActivity act, String text) {
+    public Feedback runWithData(ActionSurface surface, AssistActivity act, String text) {
         act.offerChooser(this, makeIntent(act, text), CoreEntry.SHARE.name);
+        return Feedback.silence();
     }
 
     @Override
-    public void runWithData(AssistActivity act, String app, String text) {
-        runWithData(act, app + '\n' + text);
+    public Feedback runWithData(ActionSurface surface, AssistActivity act, String app, String text) {
+        return runWithData(surface, act, app + '\n' + text);
     }
 
     @Override

@@ -9,6 +9,7 @@ import android.net.Uri;
 
 import androidx.annotation.Nullable;
 
+import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.action.FileFetcher;
 import net.emilla.action.MediaFetcher;
@@ -18,6 +19,7 @@ import net.emilla.contact.fragment.EmailFragment;
 import net.emilla.content.receive.EmailReceiver;
 import net.emilla.util.Apps;
 import net.emilla.util.Patterns;
+import net.emilla.wadget.ActionSurface;
 
 import java.util.ArrayList;
 
@@ -42,35 +44,35 @@ final class Email extends CoreDataCommand implements EmailReceiver {
     }
 
     @Override
-    protected void run(AssistActivity act) {
-        tryEmail(act, "", null);
+    protected Feedback run(ActionSurface surface, AssistActivity act) {
+        return tryEmail(act, "", null);
     }
 
     @Override
-    protected void run(AssistActivity act, String recipients) {
-        tryEmail(act, recipients, null);
+    protected Feedback run(ActionSurface surface, AssistActivity act, String recipients) {
+        return tryEmail(act, recipients, null);
     }
 
     @Override
-    public void runWithData(AssistActivity act, String body) {
-        tryEmail(act, "", body);
+    public Feedback runWithData(ActionSurface surface, AssistActivity act, String body) {
+        return tryEmail(act, "", body);
     }
 
     @Override
-    public void runWithData(AssistActivity act, String recipients, String body) {
-        tryEmail(act, recipients, body);
+    public Feedback runWithData(ActionSurface surface, AssistActivity act, String recipients, String body) {
+        return tryEmail(act, recipients, body);
     }
 
-    private void tryEmail(AssistActivity act, String recipients, @Nullable String body) {
+    private Feedback tryEmail(AssistActivity act, String recipients, @Nullable String body) {
         String addresses = mEmailFragment.selectedContacts();
         if (addresses != null) {
             recipients = addresses;
         }
-        email(act, recipients, body);
+        return email(act, recipients, body);
         // Todo: validate the raw recipients
     }
 
-    private void email(AssistActivity act, String addresses, @Nullable String body) {
+    private Feedback email(AssistActivity act, String addresses, @Nullable String body) {
         ArrayList<Uri> attachments = act.attachments(CoreEntry.EMAIL.name());
         Intent email;
         var sendTo = new Intent(ACTION_SENDTO, Uri.parse("mailto:"));
@@ -89,11 +91,11 @@ final class Email extends CoreDataCommand implements EmailReceiver {
         if (subject != null) {
             email.putExtra(Intent.EXTRA_SUBJECT, subject);
         }
-        giveApp(act, email);
+        return Feedback.give(email);
     }
 
     @Override
     public void provide(AssistActivity act, String emailAddress) {
-        email(act, emailAddress, act.dataText());
+        act.take(email(act, emailAddress, act.dataText()));
     }
 }

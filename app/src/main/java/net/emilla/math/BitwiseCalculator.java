@@ -38,7 +38,7 @@ public enum BitwiseCalculator {;
                 while (operators.notEmpty()) {
                     if (operators.peek() == null) {
                         // left paren
-                        operators.pop();
+                        BitwiseOperator __ = operators.pop();
                     } else {
                         result.applyRParen(operators);
                     }

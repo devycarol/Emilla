@@ -7,6 +7,7 @@ import android.provider.AlarmClock;
 
 import androidx.annotation.Nullable;
 
+import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
@@ -14,6 +15,7 @@ import net.emilla.lang.Lang;
 import net.emilla.time.HourMinute;
 import net.emilla.time.WallTime;
 import net.emilla.util.Apps;
+import net.emilla.wadget.ActionSurface;
 import net.emilla.widget.WeekdayWidget;
 
 import java.util.ArrayList;
@@ -34,31 +36,29 @@ final class Alarm extends CoreDataCommand {
     }
 
     @Override
-    protected void run(AssistActivity act) {
+    protected Feedback run(ActionSurface surface, AssistActivity act) {
         if (mWeekdays.anyAreSet()) {
-            act.offer(a -> {});
-            return;
+            return Feedback.pend();
         }
 
-        Apps.succeed(act, new Intent(AlarmClock.ACTION_SHOW_ALARMS));
+        return Feedback.succeed(new Intent(AlarmClock.ACTION_SHOW_ALARMS));
     }
 
     @Override
-    protected void run(AssistActivity act, String time) {
-        runWithData(act, time, null);
+    protected Feedback run(ActionSurface surface, AssistActivity act, String time) {
+        return runWithData(surface, act, time, null);
     }
 
     @Override
-    public void runWithData(AssistActivity act, String label) {
-        act.offer(a -> {});
+    public Feedback runWithData(ActionSurface surface, AssistActivity act, String label) {
+        return Feedback.pend();
     }
 
     @Override
-    public void runWithData(AssistActivity act, String time, @Nullable String label) {
+    public Feedback runWithData(ActionSurface surface, AssistActivity act, String time, @Nullable String label) {
         WallTime wallTime = Lang.wallTime(act, time);
         if (wallTime == null) {
-            failMessage(act, R.string.error_invalid_time);
-            return;
+            return failMessage(R.string.error_invalid_time);
         }
 
         HourMinute hourMinute = wallTime.nextOccurrence();
@@ -72,6 +72,6 @@ final class Alarm extends CoreDataCommand {
             setAlarm.putExtra(AlarmClock.EXTRA_DAYS, weekdays);
         }
 
-        Apps.succeed(act, setAlarm);
+        return Feedback.succeed(setAlarm);
     }
 }

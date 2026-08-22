@@ -3,7 +3,6 @@ package net.emilla.command;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.Notification;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,6 +16,7 @@ import androidx.annotation.RequiresPermission;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
+import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.action.Gadget;
 import net.emilla.action.InstructyGadget;
@@ -30,14 +30,11 @@ import net.emilla.config.Aliases;
 import net.emilla.config.SettingVals;
 import net.emilla.lang.Lang;
 import net.emilla.ping.PingChannel;
-import net.emilla.run.AppGift;
-import net.emilla.run.BroadcastGift;
 import net.emilla.run.DialogRun;
-import net.emilla.run.MessageFailure;
 import net.emilla.run.PingGift;
-import net.emilla.run.TextGift;
 import net.emilla.util.ArrayLoader;
 import net.emilla.util.Dialogs;
+import net.emilla.wadget.ActionSurface;
 
 import java.util.Objects;
 import java.util.Set;
@@ -249,45 +246,23 @@ public abstract class EmillaCommand {
         return mInstruction;
     }
 
-    public final void execute(AssistActivity act) {
-        if (mInstruction != null) {
-            run(act, mInstruction);
-        } else {
-            run(act);
-        }
+    public final Feedback execute(ActionSurface surface, AssistActivity act) {
+        return mInstruction != null
+            ? run(surface, act, mInstruction)
+            : run(surface, act)
+        ;
     }
 
     /*======================================================================================*
      * IMPORTANT: One of the following methods should be called at the end of each command. *
      *======================================================================================*/
 
-    /// Simply close the assistant :)
-    protected static void succeed(AssistActivity act) {
-        act.succeed(Activity::finishAndRemoveTask);
-    }
-
-    protected final void giveText(AssistActivity act, @StringRes int msg) {
-        act.give(new TextGift(act, this.name, msg));
-    }
-
-    protected final void giveText(AssistActivity act, CharSequence msg) {
-        act.give(new TextGift(act, this.name, msg));
-    }
-
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     protected static void givePing(AssistActivity act, Notification ping, PingChannel channel) {
         act.give(PingGift.instance(ping, channel));
     }
 
-    protected static void giveBroadcast(AssistActivity act, Intent intent) {
-        act.give(BroadcastGift.instance(intent));
-    }
-
-    protected static void giveApp(AssistActivity act, Intent intent) {
-        act.give(AppGift.instance(intent));
-    }
-
-    public static void offerDialog(AssistActivity act, AlertDialog.Builder builder) {
+    protected static void offerDialog(AssistActivity act, AlertDialog.Builder builder) {
         act.offer(new DialogRun(builder));
     }
 
@@ -301,21 +276,23 @@ public abstract class EmillaCommand {
         act.startActivity(intent);
     }
 
-    protected final void failDialog(
+    protected final Feedback failDialog(
         AssistActivity act,
         @StringRes int msg,
         @StringRes int yesLabel,
         DialogInterface.OnClickListener yesClick
     ) {
-        act.fail(new DialogRun(Dialogs.dual(act, this.name, msg, yesLabel, yesClick)));
+        return Feedback.fail(
+            Dialogs.dual(act, this.name, msg, yesLabel, yesClick)
+        );
     }
 
-    protected final void failMessage(AssistActivity act, @StringRes int msg) {
-        act.fail(new MessageFailure(act, this.name, msg));
+    protected final Feedback failMessage(@StringRes int msg) {
+        return Feedback.fail(this.name, msg);
     }
 
-    protected final void failMessage(AssistActivity act, CharSequence msg) {
-        act.fail(new MessageFailure(act, this.name, msg));
+    protected final Feedback failMessage(CharSequence msg) {
+        return Feedback.fail(this.name, msg);
     }
 
     /*==========================*
@@ -323,10 +300,11 @@ public abstract class EmillaCommand {
      *==========================*/
 
     /// Runs the command.
-    protected abstract void run(AssistActivity act);
+    protected abstract Feedback run(ActionSurface surface, AssistActivity act);
     /// Runs the command with instruction.
     ///
+    /// @param surface
     /// @param instruction is provided after in the command field after the command's name. It's
     /// always space-trimmed and should remain as such.
-    protected abstract void run(AssistActivity act, String instruction);
+    protected abstract Feedback run(ActionSurface surface, AssistActivity act, String instruction);
 }

@@ -5,12 +5,15 @@ import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.Nullable;
 
+import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
-import net.emilla.run.CopyGift;
+import net.emilla.command.EmillaCommand;
+import net.emilla.util.Clipboard;
+import net.emilla.wadget.ActionSurface;
 
-final class Copy extends CoreCommand {
+final class Copy extends EmillaCommand {
     @Nullable
     private String mCopiedText = null;
 
@@ -19,24 +22,24 @@ final class Copy extends CoreCommand {
     }
 
     @Override
-    protected void run(AssistActivity act) {
-        fail(act, R.string.error_unfinished_copy);
+    protected Feedback run(ActionSurface surface, AssistActivity act) {
+        return Feedback.fail(R.string.error_unfinished_copy);
         // Todo
     }
 
     @Override
-    protected void run(AssistActivity act, String text) {
+    protected Feedback run(ActionSurface surface, AssistActivity act, String text) {
         if (text.equals(mCopiedText)) {
             // todo: you could change the submit icon to indicate this behavior. it would require
             //  monitoring text changes and updating the icon each time the user types. if the
             //  instruction is the already-copied text, set the close icon. otherwise, set/keep the
             //  copy icon. you could even query the system clipboard instead for this check, and
             //  listen for copy events that change what the behavior & icon should be.
-            succeed(act);
-            return;
+            return Feedback.succeed();
         }
         mCopiedText = text;
-        act.give(CopyGift.instance(text));
+        Clipboard.copy(act, text);
+        return Feedback.give();
     }
 
     @Override

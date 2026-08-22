@@ -75,7 +75,7 @@ public final class ListFileFragment extends ActionBox {
         var prefs = act.getSharedPreferences();
         Uri todoFile = SettingVals.todoFile(prefs);
         if (todoFile != null) {
-            loadFile(cr, prefs, todoFile);
+            boolean __ = loadFile(cr, prefs, todoFile);
         }
     }
 
@@ -83,7 +83,7 @@ public final class ListFileFragment extends ActionBox {
         var act = (AssistActivity) requireActivity();
 
         String[] mimeTypes = { MimeTypes.ANY_TEXT };
-        ResultLaunchers.tryLaunch(act, mFileSwitcher, mimeTypes);
+        boolean __ = ResultLaunchers.tryLaunch(act, mFileSwitcher, mimeTypes);
     }
 
     private void onFileChosen(@Nullable Uri file) {

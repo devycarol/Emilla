@@ -45,7 +45,7 @@ abstract class ResultRetriever<I, O, C extends ResultReceiver> {
     }
 
     protected final void launch(@Nullable I input) {
-        ResultLaunchers.tryLaunch(this.activity, mLauncher, input);
+        boolean __ = ResultLaunchers.tryLaunch(this.activity, mLauncher, input);
     }
 
     @Deprecated @Nullable

@@ -35,16 +35,16 @@ public enum Files {;
 
     @FunctionalInterface
     private interface Reader<T> {
-        T readFrom(InputStream istream) throws IOException;
+        T readFrom(InputStream in) throws IOException;
     }
 
     private static <T> T read(ContentResolver cr, Uri file, Reader<T> reader)
         throws IOException, FileNotFoundException
     {
-        try (InputStream istream = cr.openInputStream(file)) {
-            requireStream(istream);
+        try (InputStream in = cr.openInputStream(file)) {
+            requireStream(in);
 
-            return reader.readFrom(istream);
+            return reader.readFrom(in);
         } catch (SecurityException e) {
             throw new IOException(e);
         }
@@ -186,26 +186,26 @@ public enum Files {;
     {
         long fileSize = sizeOf(cr, file);
 
-        try (InputStream istream = cr.openInputStream(file)) {
-            requireStream(istream);
+        try (InputStream in = cr.openInputStream(file)) {
+            requireStream(in);
 
             if (fileSize == 0L) {
-                assertEnded(istream);
+                assertEnded(in);
                 return true;
             }
 
-            return Chars.isLineSeparator(lastByteOf(istream, fileSize));
+            return Chars.isLineSeparator(lastByteOf(in, fileSize));
         } catch (SecurityException e) {
             throw new IOException(e);
         }
     }
 
-    private static int lastByteOf(InputStream istream, long size) throws IOException {
+    private static int lastByteOf(InputStream in, long size) throws IOException {
         int lastByte;
         if (size == SIZE_UNKNOWN) {
             lastByte = -1;
             do {
-                int b = istream.read();
+                int b = in.read();
                 if (b == -1) {
                     break;
                 }
@@ -213,11 +213,11 @@ public enum Files {;
                 lastByte = b;
             } while (true);
         } else {
-            istream.skipNBytes(size - 1L);
+            in.skipNBytes(size - 1L);
 
-            lastByte = istream.read();
+            lastByte = in.read();
 
-            assertEnded(istream);
+            assertEnded(in);
         }
 
         if (lastByte == -1) {
@@ -233,8 +233,8 @@ public enum Files {;
         }
     }
 
-    private static void assertEnded(InputStream istream) throws IOException {
-        if (istream.read() != -1) {
+    private static void assertEnded(InputStream in) throws IOException {
+        if (in.read() != -1) {
             throw wrongFileSize();
         }
     }

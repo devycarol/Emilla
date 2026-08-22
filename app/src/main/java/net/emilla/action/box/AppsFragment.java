@@ -41,7 +41,7 @@ public final class AppsFragment extends ActionBox {
             act.apps(),
             appEntry -> {
                 if (act.command() instanceof OpenCommand cmd) {
-                    cmd.use(act, appEntry);
+                    act.take(cmd.use(act, appEntry));
                 }
             },
             AppEntry[]::new

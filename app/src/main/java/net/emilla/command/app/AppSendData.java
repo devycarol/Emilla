@@ -5,11 +5,13 @@ import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.StringRes;
 
+import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.annotation.open;
 import net.emilla.command.DataCommand;
+import net.emilla.wadget.ActionSurface;
 
 @open class AppSendData extends AppSend implements DataCommand {
     @StringRes
@@ -31,12 +33,12 @@ import net.emilla.command.DataCommand;
     }
 
     @Override
-    public final void runWithData(AssistActivity act, String message) {
-        run(act, message);
+    public final Feedback runWithData(ActionSurface surface, AssistActivity act, String message) {
+        return run(surface, act, message);
     }
 
     @Override
-    public final void runWithData(AssistActivity act, String message, String cont) {
-        run(act, message + '\n' + cont);
+    public final Feedback runWithData(ActionSurface surface, AssistActivity act, String message, String cont) {
+        return run(surface, act, message + '\n' + cont);
     }
 }

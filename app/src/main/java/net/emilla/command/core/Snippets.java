@@ -1,17 +1,18 @@
 package net.emilla.command.core;
 
-import static net.emilla.chime.Chime.PEND;
-
 import android.content.Context;
 
 import androidx.annotation.Nullable;
 
+import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.action.box.SnippetsFragment;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.ActionMap;
 import net.emilla.command.Subcommand;
+import net.emilla.exception.UnreachableError;
+import net.emilla.wadget.ActionSurface;
 
 final class Snippets extends CoreDataCommand {
     private final SnippetsFragment mSnippetsFragment;
@@ -54,33 +55,33 @@ final class Snippets extends CoreDataCommand {
     }
 
     @Override
-    protected void run(AssistActivity act) {
-        act.chime(PEND);
+    protected Feedback run(ActionSurface surface, AssistActivity act) {
+        return Feedback.pend();
     }
 
     @Override
-    protected void run(AssistActivity act, String label) {
+    protected Feedback run(ActionSurface surface, AssistActivity act, String label) {
         label = extractAction(label);
         if (label == null) {
-            run(act);
-            return;
+            return run(surface, act);
         }
 
-        switch (mAction) {
-        case PEEK -> mSnippetsFragment.peek(label);
-        case GET -> mSnippetsFragment.copy(label);
-        case POP -> mSnippetsFragment.pop(label);
-        case REMOVE -> mSnippetsFragment.remove(label);
-        }
+        return switch (mAction) {
+            case PEEK -> mSnippetsFragment.peek(label);
+            case GET -> mSnippetsFragment.copy(label);
+            case POP -> mSnippetsFragment.pop(label);
+            case REMOVE -> mSnippetsFragment.remove(label);
+            case ADD -> throw new UnreachableError();
+        };
     }
 
     @Override
-    public void runWithData(AssistActivity act, String text) {
-        run(act);
+    public Feedback runWithData(ActionSurface surface, AssistActivity act, String text) {
+        return run(surface, act);
     }
 
     @Override
-    public void runWithData(AssistActivity act, String label, String text) {
-        mSnippetsFragment.add(label, text);
+    public Feedback runWithData(ActionSurface surface, AssistActivity act, String label, String text) {
+        return mSnippetsFragment.add(label, text);
     }
 }

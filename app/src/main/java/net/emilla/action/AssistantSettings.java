@@ -9,10 +9,10 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.StringRes;
 
+import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.config.SettingsActivity;
-import net.emilla.run.AppSuccess;
 import net.emilla.util.Intents;
 
 public final class AssistantSettings implements LabeledQuickAction {
@@ -46,7 +46,7 @@ public final class AssistantSettings implements LabeledQuickAction {
     public void perform() {
         Intent assistantSettings = Intents.me(mActivity, SettingsActivity.class);
         if (mActivity.shouldCancel()) {
-            mActivity.succeed(AppSuccess.instance(assistantSettings));
+            mActivity.take(Feedback.succeed(assistantSettings));
         } else {
             mActivity.suppressChime(PEND);
             mActivity.startActivity(assistantSettings.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));

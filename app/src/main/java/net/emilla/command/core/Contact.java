@@ -6,12 +6,14 @@ import static android.content.Intent.EXTRA_TEXT;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents.Insert;
 
 import androidx.annotation.Nullable;
 
+import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
@@ -19,9 +21,11 @@ import net.emilla.command.ActionMap;
 import net.emilla.command.Subcommand;
 import net.emilla.contact.fragment.ContactCardsFragment;
 import net.emilla.content.receive.ContactCardReceiver;
+import net.emilla.exception.UnreachableError;
 import net.emilla.util.Apps;
 import net.emilla.util.Dialogs;
 import net.emilla.util.Intents;
+import net.emilla.wadget.ActionSurface;
 
 import java.util.List;
 
@@ -80,73 +84,88 @@ final class Contact extends CoreDataCommand implements ContactCardReceiver {
     }
 
     @Override
-    protected void run(AssistActivity act) {
+    protected Feedback run(ActionSurface surface, AssistActivity act) {
         act.offerContactCards(this);
+        return Feedback.silence();
+        // intrinsic 'pend' by the contacts chooser
     }
 
     @Override
-    protected void run(AssistActivity act, String person) {
-        contact(act, extractAction(person));
+    protected Feedback run(ActionSurface surface, AssistActivity act, String person) {
+        return contact(surface, act, extractAction(person));
     }
 
-    private void contact(AssistActivity act, @Nullable String person) {
+    private Feedback contact(
+        ActionSurface surface,
+        AssistActivity act,
+        @Nullable String person
+    ) {
         // todo: search by other details as well? nicknames certainly. phones, addresses, phone
         //  types (cell, work, ..) probably, depending on the command.
         //  special cases:
         //  - me: share your own contact card
         //  - emergency/sos: contact emergency numbers (SOS could be its own command, "panic button")
         //    - see calyx's panic button functionality
-        switch (mAction) {
-        case VIEW, EDIT, SHARE -> {
-            Uri contact = mContactsFragment.selectedContacts();
-            if (contact != null) {
-                switch (mAction) {
-                case VIEW -> view(act, contact);
-                case EDIT -> edit(act, contact);
-                case SHARE -> send(act, contact, null);
+        return switch (mAction) {
+            case VIEW, EDIT, SHARE -> {
+                Uri contact = mContactsFragment.selectedContacts();
+                if (contact != null) {
+                    yield switch (mAction) {
+                        case VIEW -> view(contact);
+                        case EDIT -> edit(contact);
+                        case SHARE -> send(act.getResources(), contact, null);
+                        case CREATE -> throw new UnreachableError();
+                    };
                 }
-            } else if (person != null) {
-                offerCreate(act, person, null);
-            } else {
+
+                if (person != null) {
+                    yield offerCreate(surface, act, person, null);
+                }
+
                 act.offerContactCards(this);
+                yield Feedback.silence();
+                // intrinsic 'pend' by the contacts chooser
             }
-        }
-        case CREATE -> create(act, person, null);
-        }
+            case CREATE -> create(person, null);
+        };
     }
 
     @Override
-    public void runWithData(AssistActivity act, String details) {
+    public Feedback runWithData(ActionSurface surface, AssistActivity act, String details) {
         // TODO LANG: only show data field in 'create' or 'send' mode.
-        contact(act, null, details);
+        return contact(surface, act, null, details);
     }
 
     @Override
-    public void runWithData(AssistActivity act, String person, String details) {
+    public Feedback runWithData(ActionSurface surface, AssistActivity act, String person, String details) {
         // TODO LANG: only show data field in 'create' or 'send' mode.
-        contact(act, person, details);
+        return contact(surface, act, person, details);
     }
 
-    private void contact(AssistActivity act, @Nullable String person, String details) {
+    private Feedback contact(ActionSurface surface, AssistActivity act, @Nullable String person, String details) {
         // Todo: dynamic data hint
         if (mAction != Action.SHARE) {
-            create(act, person, details);
-        } else if (person != null) {
-            offerCreate(act, person, details);
-        } else {
-            act.offerContactCards(this);
+            return create(person, details);
         }
+
+        if (person != null) {
+            return offerCreate(surface, act, person, details);
+        }
+
+        act.offerContactCards(this);
+        return Feedback.silence();
+        // intrinsic 'pend' by the contacts chooser
     }
 
-    private static void view(AssistActivity act, Uri contact) {
-        Apps.succeed(act, Intents.view(contact));
+    private static Feedback view(Uri contact) {
+        return Feedback.succeed(Intents.view(contact));
     }
 
-    private static void edit(AssistActivity act, Uri contact) {
-        Apps.succeed(act, Intents.edit(contact));
+    private static Feedback edit(Uri contact) {
+        return Feedback.succeed(Intents.edit(contact));
     }
 
-    private static void send(AssistActivity act, Uri contact, @Nullable String message) {
+    private static Feedback send(Resources res, Uri contact, @Nullable String message) {
         // todo: multi-selection for this particular case..
         Intent send = Intents.send(Contacts.CONTENT_VCARD_TYPE);
         List<String> segments = contact.getPathSegments();
@@ -157,27 +176,31 @@ final class Contact extends CoreDataCommand implements ContactCardReceiver {
             // todo: see if it's possible to detect when apps won't accept this.
             send.putExtra(EXTRA_TEXT, message);
         }
-        var res = act.getResources();
-        Apps.succeed(act, Intent.createChooser(send, res.getString(CoreEntry.CONTACT.name)));
+        return Feedback.succeed(Intent.createChooser(send, res.getString(CoreEntry.CONTACT.name)));
     }
 
-    private static void offerCreate(AssistActivity act, String person, @Nullable String details) {
+    private static Feedback offerCreate(
+        ActionSurface surface,
+        AssistActivity act,
+        String person,
+        @Nullable String details
+    ) {
         var res = act.getResources();
         String msg = res.getString(R.string.notice_contact_no_match, person);
-        offerDialog(
-            act,
+        return Feedback.offer(
             Dialogs.dual(
-                act, CoreEntry.CONTACT.name,
-
-                msg, R.string.create,
-
-                (dlg, which) -> create(act, person, details)
+                act,
+                CoreEntry.CONTACT.name,
+                msg,
+                R.string.create,
+                (dlg, which) -> {
+                    surface.take(create(person, details));
+                }
             )
         );
     }
 
-    private static void create(
-        AssistActivity act,
+    private static Feedback create(
         @Nullable String person,
         @Nullable String phoneNumber
     ) {
@@ -189,15 +212,16 @@ final class Contact extends CoreDataCommand implements ContactCardReceiver {
             insert.putExtra(Insert.PHONE, phoneNumber);
         }
         // todo: further details. a lot of them..
-        Apps.succeed(act, insert);
+        return Feedback.succeed(insert);
     }
 
     @Override
     public void provide(AssistActivity act, Uri contact) {
-        switch (mAction) {
-        case EDIT -> edit(act, contact);
-        case SHARE -> send(act, contact, act.dataText());
-        default -> view(act, contact);
-        }
+        act.take(switch (mAction) {
+            case VIEW -> view(contact);
+            case EDIT -> edit(contact);
+            case SHARE -> send(act.getResources(), contact, act.dataText());
+            case CREATE -> throw new UnreachableError();
+        });
     }
 }

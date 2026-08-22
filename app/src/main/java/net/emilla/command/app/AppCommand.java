@@ -3,11 +3,12 @@ package net.emilla.command.app;
 import android.content.Context;
 import android.view.inputmethod.EditorInfo;
 
+import net.emilla.Feedback;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.annotation.open;
 import net.emilla.command.EmillaCommand;
-import net.emilla.util.Apps;
+import net.emilla.wadget.ActionSurface;
 
 public @open class AppCommand extends EmillaCommand {
     @FunctionalInterface
@@ -28,12 +29,12 @@ public @open class AppCommand extends EmillaCommand {
     }
 
     @Override
-    protected final void run(AssistActivity act) {
-        Apps.succeed(act, this.appEntry.launchIntent());
+    protected final Feedback run(ActionSurface surface, AssistActivity act) {
+        return Feedback.succeed(this.appEntry.launchIntent());
     }
 
     @Override
-    protected @open void run(AssistActivity act, String ignored) {
-        run(act); // Todo: remove this from the interface for non-instructables.
+    protected @open Feedback run(ActionSurface surface, AssistActivity act, String ignored) {
+        return run(surface, act); // Todo: remove this from the interface for non-instructables.
     }
 }

@@ -8,11 +8,14 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.view.inputmethod.EditorInfo;
 
+import net.emilla.Feedback;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
+import net.emilla.command.EmillaCommand;
 import net.emilla.util.Apps;
+import net.emilla.wadget.ActionSurface;
 
-final class Dial extends CoreCommand {
+final class Dial extends EmillaCommand {
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, new Intent(ACTION_DIAL));
     }
@@ -22,12 +25,14 @@ final class Dial extends CoreCommand {
     }
 
     @Override
-    protected void run(AssistActivity act) {
-        Apps.succeed(act, new Intent(ACTION_DIAL));
+    protected Feedback run(ActionSurface surface, AssistActivity act) {
+        return Feedback.succeed(new Intent(ACTION_DIAL));
     }
 
     @Override
-    protected void run(AssistActivity act, String numberOrPhoneword) {
-        Apps.succeed(act, new Intent(ACTION_DIAL).setData(Uri.parse("tel:" + numberOrPhoneword)));
+    protected Feedback run(ActionSurface surface, AssistActivity act, String numberOrPhoneword) {
+        return Feedback.succeed(new Intent(ACTION_DIAL)
+            .setData(Uri.parse("tel:" + numberOrPhoneword))
+        );
     }
 }

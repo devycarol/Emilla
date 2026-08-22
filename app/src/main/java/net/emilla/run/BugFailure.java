@@ -13,9 +13,11 @@ import android.util.Log;
 import androidx.appcompat.app.AlertDialog;
 
 import net.emilla.BuildConfig;
+import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.util.Dialogs;
+import net.emilla.wadget.ActionSurface;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -42,7 +44,11 @@ public final class BugFailure extends DialogRun {
         );
     }
 
-    private static void emailBugReport(AssistActivity act, RuntimeException e, String errorHeader) {
+    private static void emailBugReport(
+        ActionSurface surface,
+        RuntimeException e,
+        String errorHeader
+    ) {
         String message = e.getMessage();
 
         var sw = new StringWriter();
@@ -64,7 +70,7 @@ public final class BugFailure extends DialogRun {
             .putExtra(EXTRA_SUBJECT, "[Android bug] " + errorHeader)
             .putExtra(EXTRA_TEXT, body)
         ;
-        act.succeed(AppSuccess.instance(email));
+        surface.take(Feedback.succeed(email));
     }
 
     private static String deviceInfo() {

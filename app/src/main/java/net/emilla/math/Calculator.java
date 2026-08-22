@@ -36,7 +36,7 @@ public enum Calculator {;
                 while (operators.notEmpty()) {
                     if (operators.peek() == null) {
                         // left paren
-                        operators.pop();
+                        ArithmeticOperator __ = operators.pop();
                     } else {
                         result.applyRParen(operators);
                     }

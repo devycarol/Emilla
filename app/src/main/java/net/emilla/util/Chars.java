@@ -9,22 +9,6 @@ public enum Chars {;
         return !isLineSeparator(ch) && Character.isWhitespace(ch);
     }
 
-    public static boolean sameLetter(char a, char b) {
-        return compareIgnoreCase(a, b) == 0;
-    }
-
-    private static int compareIgnoreCase(char a, char b) {
-        if (a != b && Character.toUpperCase(a) != Character.toUpperCase(b)) {
-            a = Character.toLowerCase(a);
-            b = Character.toLowerCase(b);
-            if (a != b) {
-                return a - b;
-            }
-        }
-
-        return 0;
-    }
-
     public static boolean isNumberChar(char ch) {
         return ch == '.' || Character.isDigit(ch);
     }

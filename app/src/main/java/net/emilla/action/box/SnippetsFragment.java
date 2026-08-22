@@ -1,6 +1,5 @@
 package net.emilla.action.box;
 
-import static net.emilla.chime.Chime.PEND;
 import static net.emilla.chime.Chime.RESUME;
 
 import android.content.SharedPreferences;
@@ -11,9 +10,11 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.sort.ItemSearchAdapter;
+import net.emilla.util.Clipboard;
 import net.emilla.util.Dialogs;
 
 public final class SnippetsFragment extends ActionBox {
@@ -51,67 +52,63 @@ public final class SnippetsFragment extends ActionBox {
         recycler.setAdapter(mAdapter);
     }
 
-    @Nullable
-    private Snippet selectedSnippet(AssistActivity act, String search) {
-        Snippet selected = mAdapter.preferredItem(search);
-        if (selected == null) {
-            act.chime(PEND);
-        }
-        return selected;
+    public Feedback peek(String snippetLabel) {
+        Snippet snippet = mAdapter.preferredItem(snippetLabel);
+        return snippet != null
+            ? Feedback.giveText(snippet.displayName, snippet.text(mPrefs))
+            : Feedback.pend()
+        ;
     }
 
-    public void peek(String snippetLabel) {
-        var act = (AssistActivity) requireActivity();
-
-        Snippet snippet = selectedSnippet(act, snippetLabel);
-        if (snippet != null) {
-            giveText(act, snippet.displayName, snippet.text(mPrefs));
+    public Feedback copy(String snippetLabel) {
+        Snippet snippet = mAdapter.preferredItem(snippetLabel);
+        if (snippet == null) {
+            return Feedback.pend();
         }
+
+        Clipboard.copy(requireContext(), snippet.text(mPrefs));
+        return Feedback.give();
     }
 
-    public void copy(String snippetLabel) {
-        var act = (AssistActivity) requireActivity();
+    public Feedback pop(String snippetLabel) {
 
-        Snippet snippet = selectedSnippet(act, snippetLabel);
-        if (snippet != null) {
-            giveCopy(act, snippet.text(mPrefs));
+        Snippet snippet = mAdapter.preferredItem(snippetLabel);
+        if (snippet == null) {
+            return Feedback.pend();
         }
+
+        var ctx = requireContext();
+        String text = snippet.text(mPrefs);
+        snippet.delete(ctx, mPrefs);
+        mAdapter.remove(snippet);
+        Clipboard.copy(ctx, text);
+        return Feedback.give();
     }
 
-    public void pop(String snippetLabel) {
-        var act = (AssistActivity) requireActivity();
-
-        Snippet snippet = selectedSnippet(act, snippetLabel);
-        if (snippet != null) {
-            String text = snippet.text(mPrefs);
-            snippet.delete(act, mPrefs);
-            mAdapter.remove(snippet);
-            giveCopy(act, text);
+    public Feedback remove(String snippetLabel) {
+        Snippet snippet = mAdapter.preferredItem(snippetLabel);
+        if (snippet == null) {
+            return Feedback.pend();
         }
+
+        snippet.delete(requireContext(), mPrefs);
+        mAdapter.remove(snippet);
+        return Feedback.give();
     }
 
-    public void remove(String snippetLabel) {
-        var act = (AssistActivity) requireActivity();
-
-        Snippet snippet = selectedSnippet(act, snippetLabel);
-        if (snippet != null) {
-            snippet.delete(act, mPrefs);
-            mAdapter.remove(snippet);
-            act.give(a -> {});
-        }
-    }
-
-    public void add(String snippetLabel, String text) {
-        var act = (AssistActivity) requireActivity();
-
+    public Feedback add(String snippetLabel, String text) {
         var snippet = new Snippet(snippetLabel);
         if (mAdapter.exactItem(snippetLabel) != null) {
+            var act = (AssistActivity) requireActivity();
             var res = act.getResources();
-            offerDialog(
-                act, Dialogs.dual(
-                    act, R.string.dialog_overwrite_snippet,
-
-                    res.getString(R.string.dlg_msg_overwrite_snippet, snippetLabel),
+            return Feedback.offer(
+                Dialogs.dual(
+                    act,
+                    R.string.dialog_overwrite_snippet,
+                    res.getString(
+                        R.string.dlg_msg_overwrite_snippet,
+                        snippetLabel
+                    ),
                     R.string.overwrite,
                     (dlg, which) -> {
                         snippet.overwrite(act, mPrefs, text);
@@ -119,11 +116,11 @@ public final class SnippetsFragment extends ActionBox {
                     }
                 )
             );
-        } else {
-            snippet.saveNew(act, mPrefs, text);
-            mAdapter.add(snippet);
-            act.give(a -> {});
         }
+
+        snippet.saveNew(requireContext(), mPrefs, text);
+        mAdapter.add(snippet);
+        return Feedback.give();
     }
 
     @Override

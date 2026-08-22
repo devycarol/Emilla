@@ -52,21 +52,4 @@ public final class ArrayLoader<E> {
 
         return concat;
     }
-
-    @Nullable
-    public static String join(ArrayLoader<String> loader, char delimiter) {
-        int size = loader.mSize;
-        if (size == 0) {
-            return null;
-        }
-
-        String[] array = loader.mArray;
-        var sb = new StringBuilder(array[0]);
-
-        for (int i = 1; i < size; ++i) {
-            sb.append(delimiter).append(array[i]);
-        }
-
-        return sb.toString();
-    }
 }

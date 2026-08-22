@@ -7,12 +7,14 @@ import android.provider.AlarmClock;
 
 import androidx.annotation.Nullable;
 
+import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.lang.Lang;
 import net.emilla.util.Apps;
 import net.emilla.util.Int;
+import net.emilla.wadget.ActionSurface;
 
 final class Timer extends CoreDataCommand {
     public static boolean possible(PackageManager pm) {
@@ -28,26 +30,25 @@ final class Timer extends CoreDataCommand {
     }
 
     @Override
-    protected void run(AssistActivity act) {
-        Apps.succeed(act, baseIntent());
+    protected Feedback run(ActionSurface surface, AssistActivity act) {
+        return Feedback.succeed(baseIntent());
     }
 
     @Override
-    protected void run(AssistActivity act, String duration) {
-        runWithData(act, duration, null);
+    protected Feedback run(ActionSurface surface, AssistActivity act, String duration) {
+        return runWithData(surface, act, duration, null);
     }
 
     @Override
-    public void runWithData(AssistActivity act, String title) {
-        act.offer(a -> {});
+    public Feedback runWithData(ActionSurface surface, AssistActivity act, String title) {
+        return Feedback.pend();
     }
 
     @Override
-    public void runWithData(AssistActivity act, String duration, @Nullable String title) {
+    public Feedback runWithData(ActionSurface surface, AssistActivity act, String duration, @Nullable String title) {
         Int box = Lang.durationSeconds(act, duration);
         if (box == null) {
-            fail(act, R.string.error_invalid_duration);
-            return;
+            return Feedback.fail(R.string.error_invalid_duration);
         }
 
         int seconds = box.intValue();
@@ -58,6 +59,6 @@ final class Timer extends CoreDataCommand {
         if (title != null) {
             intent.putExtra(AlarmClock.EXTRA_MESSAGE, title);
         }
-        Apps.succeed(act, intent);
+        return Feedback.succeed(intent);
     }
 }

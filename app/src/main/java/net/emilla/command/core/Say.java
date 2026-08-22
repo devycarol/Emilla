@@ -3,12 +3,15 @@ package net.emilla.command.core;
 import android.content.Context;
 import android.view.inputmethod.EditorInfo;
 
+import net.emilla.Feedback;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
+import net.emilla.command.EmillaCommand;
 import net.emilla.config.SettingVals;
 import net.emilla.speech.TtsFragment;
+import net.emilla.wadget.ActionSurface;
 
-final class Say extends CoreCommand {
+final class Say extends EmillaCommand {
     private final TtsFragment mFragment = TtsFragment.newInstance();
 
     @internal Say(Context ctx) {
@@ -17,20 +20,17 @@ final class Say extends CoreCommand {
         giveGadgets(mFragment);
     }
 
-    private void say(AssistActivity act, String phrase) {
-        mFragment.say(phrase);
-        act.selectInstruction();
-    }
-
     @Override
-    protected void run(AssistActivity act) {
+    protected Feedback run(ActionSurface surface, AssistActivity act) {
         var prefs = act.getSharedPreferences();
         var res = act.getResources();
-        say(act, SettingVals.motd(prefs, res));
+        mFragment.say(SettingVals.motd(prefs, res));
+        return Feedback.selectInstruction();
     }
 
     @Override
-    protected void run(AssistActivity act, String message) {
-        say(act, message);
+    protected Feedback run(ActionSurface surface, AssistActivity act, String message) {
+        mFragment.say(message);
+        return Feedback.selectInstruction();
     }
 }
