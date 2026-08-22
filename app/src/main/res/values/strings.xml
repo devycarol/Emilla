@@ -127,8 +127,6 @@
     <string name="category_custom">Custom</string>
 
     <!-- Command names -->
-    <!-- These will be lowercased mid-sentence unless they're marked as proper nouns/initialisms in EmillaCommand.java -->
-    <!-- If this should vary for your locale, please let me know. -->
     <string name="command_default">Default command</string>
     <string name="command_duplicate">Duplicate command</string>
     <string name="command_web">Web</string>

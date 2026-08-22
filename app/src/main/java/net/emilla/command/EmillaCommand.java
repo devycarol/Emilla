@@ -1,5 +1,6 @@
 package net.emilla.command;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -9,7 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import net.emilla.Feedback;
-import net.emilla.R;
 import net.emilla.action.Gadget;
 import net.emilla.action.Widget;
 import net.emilla.activity.AssistActivity;
@@ -20,8 +20,8 @@ import net.emilla.command.app.AppYielder;
 import net.emilla.command.core.CoreEntry;
 import net.emilla.config.Aliases;
 import net.emilla.config.SettingVals;
-import net.emilla.lang.Lang;
 import net.emilla.wadget.ActionSurface;
+import net.emilla.widget.ActionIcon;
 
 import java.util.Objects;
 import java.util.Set;
@@ -91,7 +91,7 @@ public abstract class EmillaCommand {
         return map;
     }
 
-    public final Params params;
+    private final Params mParams;
 
     public final String name;
     @StringRes
@@ -102,7 +102,7 @@ public abstract class EmillaCommand {
     /// are GO, SEARCH, SEND, DONE, and NEXT. GO is usually a forward arrow, SEARCH is usually a
     /// magnifying glass, SEND is usually a paper airplane, and DONE is usually a checkmark. NEXT is
     /// the 'tab' function and should be used when the data field is available.
-    private final int mImeAction;
+    public final int imeAction;
     // todo: you should be able to long-click the enter key in the command or data field to
     //  submit the command, using an appropriate action icon.
     // requires changing the input method code directly
@@ -191,18 +191,29 @@ public abstract class EmillaCommand {
         int imeAction,
         @Nullable DataField dataField
     ) {
-        this.params = params;
+        mParams = params;
         this.name = params.name(surface.getResources());
         this.summary = summary;
         this.manual = manual;
-        mImeAction = imeAction;
+        this.imeAction = imeAction;
         this.dataHint = dataField != null
             ? dataField.hint()
             : 0
         ;
     }
 
-    @internal final void instruct(ActionSurface surface, @Nullable String instruction) {
+    public final CharSequence title(Resources res) {
+        return mParams.title(res);
+    }
+
+    public final ActionIcon actionIcon(Context ctx) {
+        return mParams.actionIcon(ctx);
+    }
+
+    @internal final void instruct(
+        ActionSurface surface,
+        @Nullable String instruction
+    ) {
         if (!Objects.equals(mInstruction, instruction)) {
             // we don't assume this is true because input editor bugs may cause
             // onTextChanged() to be called repeatedly for the same text.
@@ -210,30 +221,6 @@ public abstract class EmillaCommand {
             if (mActive) {
                 onInstruct(surface, instruction);
             }
-        }
-    }
-
-    public final void decorate(
-        AssistActivity act,
-        Resources res,
-        boolean setIcon,
-        boolean isDefault
-    ) {
-        CharSequence title = isDefault
-            ? Lang.colonConcat(
-                res,
-                R.string.command_default,
-                params.isProperNoun()
-                    ? this.name
-                    : this.name.toLowerCase()
-                //
-            ) : params.title(res)
-        ;
-        act.updateTitle(title);
-        act.updateDataHint();
-        act.setImeAction(mImeAction);
-        if (setIcon) {
-            act.setSubmitIcon(params.actionIcon(act));
         }
     }
 

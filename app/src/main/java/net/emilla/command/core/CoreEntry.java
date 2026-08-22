@@ -49,11 +49,6 @@ public enum CoreEntry implements Params {
         public boolean isPossible(PackageManager pm) {
             return Sms.possible(pm);
         }
-
-        @Override
-        public boolean isProperNoun() {
-            return true;
-        }
     },
     SCHEDULE(Schedule::new, R.string.command_schedule, R.array.aliases_schedule, R.string.instruction_schedule, R.drawable.ic_schedule, R.string.summary_schedule, R.string.manual_schedule) {
         @Override
@@ -229,11 +224,6 @@ public enum CoreEntry implements Params {
     @Override
     public final SymbolIcon actionIcon(Context ctx) {
         return new SymbolIcon(icon);
-    }
-
-    @Override
-    public @open boolean isProperNoun() {
-        return false;
     }
 
     public static String[] entryNames(Resources res) {

@@ -21,7 +21,6 @@ import static net.emilla.chime.Chime.RESUME;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -201,8 +200,7 @@ public final class AssistActivity
 
             var act = AssistActivity.this;
             EmillaCommand cmd = mCommandMap.get(act, command);
-            boolean isDefault = cmd == null;
-            if (isDefault) {
+            if (cmd == null) {
                 cmd = mCommandMap.getDefault(act, command);
             }
 
@@ -212,12 +210,14 @@ public final class AssistActivity
                 mCommand = cmd;
                 mVm.noCommand = noCommand;
 
-                Resources res = mVm.res;
-                cmd.decorate(act, res, !noCommand, isDefault);
-
+                CharSequence title = cmd.title(mVm.res);
+                act.updateTitle(title);
+                act.updateDataHint();
+                act.setImeAction(cmd.imeAction);
                 if (noCommand) {
                     mBinding.submitButton.setIcon(mNoCommandAction.icon());
                 } else {
+                    act.setSubmitIcon(cmd.actionIcon(act));
                     cmd.load(act);
                 }
 
@@ -779,7 +779,7 @@ public final class AssistActivity
 
     @Override
     public void resetSubmitIcon() {
-        mBinding.submitButton.setIcon(mCommand.params.actionIcon(this));
+        mBinding.submitButton.setIcon(mCommand.actionIcon(this));
     }
 
     @Override

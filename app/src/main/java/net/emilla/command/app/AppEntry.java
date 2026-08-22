@@ -127,11 +127,6 @@ public final class AppEntry extends SearchItem implements Params {
         return Color.BLACK;
     }
 
-    @Override
-    public boolean isProperNoun() {
-        return true;
-    }
-
     @Nullable
     public Set<String> aliases(SharedPreferences prefs, Resources res) {
         return Aliases.appSet(prefs, res, this);

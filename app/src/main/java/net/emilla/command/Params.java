@@ -11,7 +11,6 @@ public interface Params {
     /// @param res can be used to retrieve the name from string resources.
     /// @return the name of the command.
     String name(Resources res);
-
     /// The command's title as it should appear in the assistant's action-bar.
     /// Usually, this should be the command name followed by a brief description
     /// of what it takes as input.
@@ -19,14 +18,8 @@ public interface Params {
     /// @param res can be used to retrieve the title from string resources.
     /// @return the command's slightly detailed title.
     CharSequence title(Resources res);
-
     /// The command's icon for the submit button.
     ///
     /// @return the command's icon drawable.
     ActionIcon actionIcon(Context ctx);
-
-    /// Whether the command should be lowercased mid-sentence.
-    ///
-    /// @return true if the command is a common noun, false if the command is a proper noun.
-    boolean isProperNoun();
 }

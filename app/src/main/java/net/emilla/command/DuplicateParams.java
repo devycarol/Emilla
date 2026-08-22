@@ -31,9 +31,4 @@ final class DuplicateParams implements Params {
     public SymbolIcon actionIcon(Context ctx) {
         return new SymbolIcon(R.drawable.ic_command);
     }
-
-    @Override
-    public boolean isProperNoun() {
-        return false;
-    }
 }
