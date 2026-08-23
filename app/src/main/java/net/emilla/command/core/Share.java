@@ -16,9 +16,11 @@ import net.emilla.action.Widget;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.chime.Chime;
-import net.emilla.command.DataField;
 import net.emilla.command.EmillaCommand;
+import net.emilla.command.ImeAction;
 import net.emilla.content.receive.AppChoiceReceiver;
+import net.emilla.datafield.DataDirective;
+import net.emilla.datafield.DataField;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
 import net.emilla.util.MimeType;
@@ -38,16 +40,17 @@ final class Share extends EmillaCommand implements AppChoiceReceiver {
     private final MediaFetcher mMediaFetcher;
 
     @internal Share(ActionSurface surface) {
-        super(
-            surface,
-            CoreEntry.SHARE,
-            new DataField(R.string.data_hint_text)
-        );
+        super(surface, CoreEntry.SHARE, ImeAction.SEND);
         mActivity = surface.getAssistActivity();
         String entry = CoreEntry.SHARE.name();
 
         mFileFetcher = new FileFetcher(mActivity, entry, "*/*");
         mMediaFetcher = new MediaFetcher(mActivity, entry);
+    }
+
+    @Override
+    protected DataDirective dataDirective() {
+        return new DataField(R.string.data_hint_text);
     }
 
     @Override

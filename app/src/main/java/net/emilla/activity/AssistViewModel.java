@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.net.Uri;
-import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModel;
@@ -48,8 +47,6 @@ final class AssistViewModel extends ViewModel {
     public boolean dataVisible;
     public boolean dialogOpen = false;
     // todo: you can probably hard-code these UI-state properties into views, fragments, .. directly?
-
-    public int imeAction = EditorInfo.IME_ACTION_NEXT;
 
     public final String motd;
 

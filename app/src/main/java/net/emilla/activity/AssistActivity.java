@@ -6,14 +6,6 @@ import static android.view.KeyEvent.ACTION_UP;
 import static android.view.KeyEvent.KEYCODE_BACK;
 import static android.view.KeyEvent.KEYCODE_MENU;
 import static android.view.KeyEvent.KEYCODE_SEARCH;
-import static android.view.inputmethod.EditorInfo.IME_ACTION_DONE;
-import static android.view.inputmethod.EditorInfo.IME_ACTION_GO;
-import static android.view.inputmethod.EditorInfo.IME_ACTION_NEXT;
-import static android.view.inputmethod.EditorInfo.IME_ACTION_NONE;
-import static android.view.inputmethod.EditorInfo.IME_ACTION_PREVIOUS;
-import static android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH;
-import static android.view.inputmethod.EditorInfo.IME_ACTION_SEND;
-import static android.view.inputmethod.EditorInfo.IME_ACTION_UNSPECIFIED;
 import static net.emilla.chime.Chime.EXIT;
 import static net.emilla.chime.Chime.PEND;
 import static net.emilla.chime.Chime.RESUME;
@@ -30,6 +22,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -116,7 +109,7 @@ public final class AssistActivity
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) {
@@ -213,7 +206,7 @@ public final class AssistActivity
                 CharSequence title = cmd.title(mVm.res);
                 act.updateTitle(title);
                 act.updateDataHint();
-                act.setImeAction(cmd.imeAction);
+                act.setImeAction(cmd.imeAction());
                 if (noCommand) {
                     mBinding.submitButton.setIcon(mNoCommandAction.icon());
                 } else {
@@ -221,7 +214,7 @@ public final class AssistActivity
                     cmd.load(act);
                 }
 
-                boolean dataAvailable = noCommand || mCommand.dataHint != 0;
+                boolean dataAvailable = noCommand || mCommand.dataHint() != 0;
                 if (dataAvailable != mVm.dataAvailable) {
                     mVm.dataAvailable = dataAvailable;
                     if (dataAvailable) {
@@ -250,22 +243,23 @@ public final class AssistActivity
 
     private boolean onActionKey(int actionId) {
         return switch (actionId) {
-            case IME_ACTION_UNSPECIFIED, IME_ACTION_NONE, IME_ACTION_PREVIOUS -> false;
-            default -> switch (mVm.imeAction) {
-                // TODO ACC: There must be clarity on what the enter key will do if you can't see
-                //  the screen.
-                case IME_ACTION_NEXT:
-                    if (mVm.dataAvailable) {
-                        focusDataField();
-                        yield true;
-                    }
-                    // fallthrough
-                case IME_ACTION_GO, IME_ACTION_SEARCH, IME_ACTION_SEND, IME_ACTION_DONE:
+            case
+                EditorInfo.IME_ACTION_UNSPECIFIED,
+                EditorInfo.IME_ACTION_NONE,
+                EditorInfo.IME_ACTION_PREVIOUS
+            -> false;
+            default -> {
+                if (mCommand.imeAction() == EditorInfo.IME_ACTION_NEXT
+                    && mVm.dataAvailable
+                ) {
+                    // TODO ACC: There must be clarity on what the enter key
+                    //  will do if you can't see the screen.
+                    focusDataField();
+                } else {
                     submitCommand();
-                    yield true;
-                default:
-                    yield false;
-            };
+                }
+                yield true;
+            }
         };
     }
 
@@ -595,7 +589,7 @@ public final class AssistActivity
         transaction.commit();
     }
 
-    public void updateTitle(CharSequence title) {
+    private void updateTitle(CharSequence title) {
         if (mVm.noCommand) {
             title = mVm.motd;
         }
@@ -603,22 +597,22 @@ public final class AssistActivity
         mBinding.titleText.setText(title);
     }
 
-    public void updateDataHint() {
+    private void updateDataHint() {
         EditText dataField = mBinding.dataField;
-        if (!mVm.noCommand && mCommand.dataHint != 0) {
-            dataField.setHint(mCommand.dataHint);
+        @StringRes int dataHint;
+        if (!mVm.noCommand && (dataHint = mCommand.dataHint()) != 0) {
+            dataField.setHint(dataHint);
         } else {
             dataField.setHint(R.string.data_hint_default);
         }
     }
 
-    public void setImeAction(int action) {
+    private void setImeAction(int action) {
         if (mVm.noCommand) {
-            action = IME_ACTION_NEXT;
+            action = EditorInfo.IME_ACTION_NEXT;
         }
-        if (action != mVm.imeAction) {
+        if (action != mBinding.commandField.getImeActionId()) {
             mBinding.commandField.setImeOptions(action);
-            mVm.imeAction = action;
         }
     }
 

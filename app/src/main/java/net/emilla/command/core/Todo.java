@@ -1,7 +1,6 @@
 package net.emilla.command.core;
 
 import android.net.Uri;
-import android.view.inputmethod.EditorInfo;
 
 import net.emilla.Feedback;
 import net.emilla.R;
@@ -10,6 +9,7 @@ import net.emilla.action.box.ListFileFragment;
 import net.emilla.action.box.TriResult;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
+import net.emilla.command.ImeAction;
 import net.emilla.file.Files;
 import net.emilla.util.MimeTypes;
 import net.emilla.wadget.ActionSurface;
@@ -18,7 +18,7 @@ final class Todo extends EmillaCommand {
     private final ListFileFragment mTodoFragment = ListFileFragment.newInstance();
 
     @internal Todo(ActionSurface surface) {
-        super(surface, CoreEntry.TODO, EditorInfo.IME_ACTION_DONE);
+        super(surface, CoreEntry.TODO, ImeAction.DO);
     }
 
     @Override

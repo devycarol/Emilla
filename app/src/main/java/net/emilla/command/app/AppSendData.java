@@ -6,20 +6,32 @@ import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.annotation.internal;
 import net.emilla.annotation.open;
-import net.emilla.command.DataField;
+import net.emilla.command.ImeAction;
+import net.emilla.datafield.DataDirective;
+import net.emilla.datafield.DataField;
 import net.emilla.wadget.ActionSurface;
 
 @open class AppSendData extends AppSend {
+    @StringRes
+    private final int mDataHint;
+
     @internal AppSendData(ActionSurface surface, AppEntry appEntry) {
-        this(surface, appEntry, R.string.data_hint_text);
+        this(surface, appEntry, ImeAction.SEND, R.string.data_hint_text);
     }
 
     @internal AppSendData(
         ActionSurface surface,
         AppEntry appEntry,
-        @StringRes int hint
+        ImeAction imeAction,
+        @StringRes int dataHint
     ) {
-        super(surface, appEntry, new DataField(hint));
+        super(surface, appEntry, imeAction);
+        mDataHint = dataHint;
+    }
+
+    @Override
+    protected final DataDirective dataDirective() {
+        return new DataField(mDataHint);
     }
 
     @Override

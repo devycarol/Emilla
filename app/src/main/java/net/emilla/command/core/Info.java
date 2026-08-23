@@ -2,9 +2,9 @@ package net.emilla.command.core;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.view.inputmethod.EditorInfo;
 
 import net.emilla.annotation.internal;
+import net.emilla.command.ImeAction;
 import net.emilla.command.app.AppEntry;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
@@ -16,7 +16,7 @@ final class Info extends OpenCommand {
     }
 
     @internal Info(ActionSurface surface) {
-        super(surface, CoreEntry.INFO, EditorInfo.IME_ACTION_GO);
+        super(surface, CoreEntry.INFO, ImeAction.GO);
     }
 
     @Override

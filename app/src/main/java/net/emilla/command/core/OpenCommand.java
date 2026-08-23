@@ -10,6 +10,7 @@ import net.emilla.action.Gadget;
 import net.emilla.action.Widget;
 import net.emilla.action.box.AppsFragment;
 import net.emilla.command.EmillaCommand;
+import net.emilla.command.ImeAction;
 import net.emilla.command.app.AppEntry;
 import net.emilla.wadget.ActionSurface;
 
@@ -19,7 +20,7 @@ public abstract class OpenCommand extends EmillaCommand {
     protected OpenCommand(
         ActionSurface surface,
         CoreEntry coreEntry,
-        int imeAction
+        ImeAction imeAction
     ) {
         super(surface, coreEntry, imeAction);
     }

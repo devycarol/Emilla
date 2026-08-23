@@ -9,9 +9,11 @@ import net.emilla.action.Widget;
 import net.emilla.action.box.SnippetsFragment;
 import net.emilla.annotation.internal;
 import net.emilla.command.ActionMap;
-import net.emilla.command.DataField;
 import net.emilla.command.EmillaCommand;
+import net.emilla.command.ImeAction;
 import net.emilla.command.Subcommand;
+import net.emilla.datafield.DataDirective;
+import net.emilla.datafield.DataField;
 import net.emilla.exception.UnreachableError;
 import net.emilla.wadget.ActionSurface;
 
@@ -22,11 +24,7 @@ final class Snippets extends EmillaCommand {
     private SnippetAction mAction = SnippetAction.GET;
 
     @internal Snippets(ActionSurface surface) {
-        super(
-            surface,
-            CoreEntry.SNIPPETS,
-            new DataField(R.string.data_hint_text)
-        );
+        super(surface, CoreEntry.SNIPPETS, ImeAction.DO);
         var res = surface.getResources();
         mActionMap = new ActionMap<SnippetAction>(res, SnippetAction.GET, SnippetAction[]::new);
 
@@ -34,6 +32,11 @@ final class Snippets extends EmillaCommand {
         mActionMap.put(res, SnippetAction.GET, R.array.subcmd_snippet_get, true);
         mActionMap.put(res, SnippetAction.POP, R.array.subcmd_snippet_pop, true);
         mActionMap.put(res, SnippetAction.REMOVE, R.array.subcmd_snippet_remove, true);
+    }
+
+    @Override
+    protected DataDirective dataDirective() {
+        return new DataField(R.string.data_hint_text);
     }
 
     @Override

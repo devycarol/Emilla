@@ -1,12 +1,10 @@
 package net.emilla.command.app;
 
-import android.view.inputmethod.EditorInfo;
-
 import net.emilla.Feedback;
 import net.emilla.annotation.internal;
 import net.emilla.annotation.open;
-import net.emilla.command.DataField;
 import net.emilla.command.EmillaCommand;
+import net.emilla.command.ImeAction;
 import net.emilla.wadget.ActionSurface;
 
 public @open class AppCommand extends EmillaCommand {
@@ -18,25 +16,15 @@ public @open class AppCommand extends EmillaCommand {
     protected final AppEntry appEntry;
 
     @internal AppCommand(ActionSurface surface, AppEntry appEntry) {
-        this(surface, appEntry, EditorInfo.IME_ACTION_GO);
+        this(surface, appEntry, ImeAction.GO);
     }
 
     @internal AppCommand(
         ActionSurface surface,
         AppEntry appEntry,
-        int imeAction
+        ImeAction imeAction
     ) {
         super(surface, appEntry, imeAction);
-
-        this.appEntry = appEntry;
-    }
-
-    @internal AppCommand(
-        ActionSurface surface,
-        AppEntry appEntry,
-        DataField dataField
-    ) {
-        super(surface, appEntry, dataField);
 
         this.appEntry = appEntry;
     }

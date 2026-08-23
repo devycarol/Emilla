@@ -3,11 +3,11 @@ package net.emilla.command.core;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.view.inputmethod.EditorInfo;
 
 import net.emilla.Feedback;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
+import net.emilla.command.ImeAction;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
 import net.emilla.wadget.ActionSurface;
@@ -18,7 +18,7 @@ final class Navigate extends EmillaCommand {
     }
 
     @internal Navigate(ActionSurface surface) {
-        super(surface, CoreEntry.NAVIGATE, EditorInfo.IME_ACTION_SEARCH);
+        super(surface, CoreEntry.NAVIGATE, ImeAction.SEARCH);
     }
 
     private static Intent makeFilter() {

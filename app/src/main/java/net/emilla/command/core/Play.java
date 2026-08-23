@@ -4,11 +4,11 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.provider.MediaStore;
-import android.view.inputmethod.EditorInfo;
 
 import net.emilla.Feedback;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
+import net.emilla.command.ImeAction;
 import net.emilla.media.MediaControl;
 import net.emilla.media.MediaType;
 import net.emilla.util.Services;
@@ -16,7 +16,7 @@ import net.emilla.wadget.ActionSurface;
 
 final class Play extends EmillaCommand {
     @internal Play(ActionSurface surface) {
-        super(surface, CoreEntry.PLAY, EditorInfo.IME_ACTION_GO);
+        super(surface, CoreEntry.PLAY, ImeAction.GO);
     }
 
     @Override

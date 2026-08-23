@@ -1,7 +1,6 @@
 package net.emilla.command;
 
 import android.content.DialogInterface;
-import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.Nullable;
 
@@ -27,7 +26,7 @@ public final class DuplicateCommand extends EmillaCommand {
             new DuplicateParams(),
             R.string.summary_duplicate,
             R.string.manual_duplicate,
-            EditorInfo.IME_ACTION_DONE
+            ImeAction.DO
         );
 
         mCommands = Arrays.stream(yielders)

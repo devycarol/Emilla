@@ -13,10 +13,12 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.ActionMap;
-import net.emilla.command.DataField;
 import net.emilla.command.EmillaCommand;
+import net.emilla.command.ImeAction;
 import net.emilla.command.Subcommand;
 import net.emilla.config.SettingVals;
+import net.emilla.datafield.DataDirective;
+import net.emilla.datafield.DataField;
 import net.emilla.event.PingPlan;
 import net.emilla.event.PingScheduler;
 import net.emilla.event.Plan;
@@ -42,7 +44,7 @@ final class Pomodoro extends EmillaCommand {
     private String mBreakMemo;
 
     @internal Pomodoro(ActionSurface surface) {
-        super(surface, CoreEntry.POMODORO, new DataField(R.string.data_hint_pomodoro));
+        super(surface, CoreEntry.POMODORO, ImeAction.DO);
 
         var res = surface.getResources();
         mActionMap = new ActionMap<Action>(res, Action.WORK, Action[]::new);
@@ -51,6 +53,11 @@ final class Pomodoro extends EmillaCommand {
         var prefs = surface.getSharedPreferences();
         mWorkMemo = SettingVals.defaultPomoWorkMemo(prefs, res);
         mBreakMemo = SettingVals.defaultPomoBreakMemo(prefs, res);
+    }
+
+    @Override
+    protected DataDirective dataDirective() {
+        return new DataField(R.string.data_hint_pomodoro);
     }
 
     @Override

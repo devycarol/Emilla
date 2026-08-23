@@ -11,7 +11,9 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.ActionMap;
-import net.emilla.command.DataField;
+import net.emilla.command.ImeAction;
+import net.emilla.datafield.DataDirective;
+import net.emilla.datafield.DataField;
 import net.emilla.lang.Lines;
 import net.emilla.util.Dialogs;
 import net.emilla.util.Permission;
@@ -36,7 +38,7 @@ final class Tasker extends AppCommand {
     private final ActionMap<Action> mActionMap;
 
     @internal Tasker(ActionSurface surface, AppEntry appEntry) {
-        super(surface, appEntry, new DataField(R.string.data_hint_app_tasker));
+        super(surface, appEntry, ImeAction.DO);
 
         var res = surface.getResources();
         mActionMap = new ActionMap<Action>(res, Action.RUN, Action[]::new);
@@ -45,6 +47,11 @@ final class Tasker extends AppCommand {
         mActionMap.put(res, Action.LIST, R.array.subcmd_tasker_list, false);
         // todo: list with search—when you do, change usesInstruction from false to true.
         // todo: in the far future, you could have a rudimentary UI for creating tasks
+    }
+
+    @Override
+    protected DataDirective dataDirective() {
+        return new DataField(R.string.data_hint_app_tasker);
     }
 
     @Override

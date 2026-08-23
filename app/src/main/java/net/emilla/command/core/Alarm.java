@@ -8,8 +8,10 @@ import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.action.Widget;
 import net.emilla.annotation.internal;
-import net.emilla.command.DataField;
 import net.emilla.command.EmillaCommand;
+import net.emilla.command.ImeAction;
+import net.emilla.datafield.DataDirective;
+import net.emilla.datafield.DataField;
 import net.emilla.lang.Lang;
 import net.emilla.time.HourMinute;
 import net.emilla.time.WallTime;
@@ -29,11 +31,12 @@ final class Alarm extends EmillaCommand {
     private final WeekdayWidget mWeekdays = WeekdayWidget.COOKED;
 
     @internal Alarm(ActionSurface surface) {
-        super(
-            surface,
-            CoreEntry.ALARM,
-            new DataField(R.string.data_hint_label)
-        );
+        super(surface, CoreEntry.ALARM, ImeAction.GO);
+    }
+
+    @Override
+    protected DataDirective dataDirective() {
+        return new DataField(R.string.data_hint_label);
     }
 
     @Override

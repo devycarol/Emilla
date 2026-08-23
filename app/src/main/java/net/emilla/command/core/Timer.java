@@ -7,8 +7,10 @@ import android.provider.AlarmClock;
 import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.annotation.internal;
-import net.emilla.command.DataField;
 import net.emilla.command.EmillaCommand;
+import net.emilla.command.ImeAction;
+import net.emilla.datafield.DataDirective;
+import net.emilla.datafield.DataField;
 import net.emilla.lang.Lang;
 import net.emilla.util.Apps;
 import net.emilla.util.Int;
@@ -20,11 +22,12 @@ final class Timer extends EmillaCommand {
     }
 
     @internal Timer(ActionSurface surface) {
-        super(
-            surface,
-            CoreEntry.TIMER,
-            new DataField(R.string.data_hint_label)
-        );
+        super(surface, CoreEntry.TIMER, ImeAction.DO);
+    }
+
+    @Override
+    protected DataDirective dataDirective() {
+        return new DataField(R.string.data_hint_label);
     }
 
     private static Intent baseIntent() {

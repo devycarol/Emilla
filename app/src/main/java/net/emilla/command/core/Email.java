@@ -17,10 +17,12 @@ import net.emilla.action.MediaFetcher;
 import net.emilla.action.Widget;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
-import net.emilla.command.DataField;
 import net.emilla.command.EmillaCommand;
+import net.emilla.command.ImeAction;
 import net.emilla.contact.fragment.EmailFragment;
 import net.emilla.content.receive.EmailReceiver;
+import net.emilla.datafield.DataDirective;
+import net.emilla.datafield.DataField;
 import net.emilla.util.Apps;
 import net.emilla.util.Patterns;
 import net.emilla.wadget.ActionSurface;
@@ -37,17 +39,18 @@ final class Email extends EmillaCommand implements EmailReceiver {
     private final MediaFetcher mMediaFetcher;
 
     @internal Email(ActionSurface surface) {
-        super(
-            surface,
-            CoreEntry.EMAIL,
-            new DataField(R.string.data_hint_email)
-        );
+        super(surface, CoreEntry.EMAIL, ImeAction.SEND);
         var act = surface.getAssistActivity();
         String entry = CoreEntry.EMAIL.name();
         mFileFetcher = new FileFetcher(act, entry, "*/*");
         // Todo: Thunderbird doesn't like certain filetypes. Can we find a type
         //  statement that's consistently email-friendly?
         mMediaFetcher = new MediaFetcher(act, entry);
+    }
+
+    @Override
+    protected DataDirective dataDirective() {
+        return new DataField(R.string.data_hint_email);
     }
 
     @Override

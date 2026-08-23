@@ -5,11 +5,11 @@ import static android.content.Intent.ACTION_UNINSTALL_PACKAGE;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.provider.Settings;
-import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.Nullable;
 
 import net.emilla.annotation.internal;
+import net.emilla.command.ImeAction;
 import net.emilla.command.app.AppEntry;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
@@ -24,7 +24,7 @@ final class Uninstall extends OpenCommand {
     }
 
     @internal Uninstall(ActionSurface surface) {
-        super(surface, CoreEntry.UNINSTALL, EditorInfo.IME_ACTION_GO);
+        super(surface, CoreEntry.UNINSTALL, ImeAction.GO);
     }
 
     @Override @Nullable

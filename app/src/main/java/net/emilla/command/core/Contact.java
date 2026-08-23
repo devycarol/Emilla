@@ -19,11 +19,13 @@ import net.emilla.action.Widget;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.ActionMap;
-import net.emilla.command.DataField;
 import net.emilla.command.EmillaCommand;
+import net.emilla.command.ImeAction;
 import net.emilla.command.Subcommand;
 import net.emilla.contact.fragment.ContactCardsFragment;
 import net.emilla.content.receive.ContactCardReceiver;
+import net.emilla.datafield.DataDirective;
+import net.emilla.datafield.DataField;
 import net.emilla.exception.UnreachableError;
 import net.emilla.util.Apps;
 import net.emilla.util.Dialogs;
@@ -54,11 +56,7 @@ final class Contact extends EmillaCommand implements ContactCardReceiver {
     private Action mAction = Action.VIEW;
 
     @internal Contact(ActionSurface surface) {
-        super(
-            surface,
-            CoreEntry.CONTACT,
-            new DataField(R.string.data_hint_contact)
-        );
+        super(surface, CoreEntry.CONTACT, ImeAction.GO);
         var res = surface.getResources();
         mActionMap = new ActionMap<Action>(res, Action.VIEW, Action[]::new);
 
@@ -66,6 +64,11 @@ final class Contact extends EmillaCommand implements ContactCardReceiver {
         mActionMap.put(res, Action.EDIT, R.array.subcmd_edit, true);
         mActionMap.put(res, Action.SHARE, R.array.subcmd_share, true);
         mActionMap.put(res, Action.CREATE, R.array.subcmd_create, true);
+    }
+
+    @Override
+    protected DataDirective dataDirective() {
+        return new DataField(R.string.data_hint_contact);
     }
 
     @Override

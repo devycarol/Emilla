@@ -2,18 +2,18 @@ package net.emilla.command.core;
 
 import android.content.Intent;
 import android.provider.Settings;
-import android.view.inputmethod.EditorInfo;
 
 import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
+import net.emilla.command.ImeAction;
 import net.emilla.setting.SettingMap;
 import net.emilla.wadget.ActionSurface;
 
 final class Setting extends EmillaCommand {
     @internal Setting(ActionSurface surface) {
-        super(surface, CoreEntry.SETTING, EditorInfo.IME_ACTION_DONE);
+        super(surface, CoreEntry.SETTING, ImeAction.DO);
     }
 
     @Override

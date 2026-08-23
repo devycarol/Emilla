@@ -1,12 +1,12 @@
 package net.emilla.command.core;
 
 import android.content.res.Resources;
-import android.view.inputmethod.EditorInfo;
 
 import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
+import net.emilla.command.ImeAction;
 import net.emilla.lang.Lang;
 import net.emilla.math.Maths;
 import net.emilla.measure.ConversionRequest;
@@ -18,7 +18,7 @@ import java.math.BigInteger;
 
 final class Convert extends EmillaCommand {
     @internal Convert(ActionSurface surface) {
-        super(surface, CoreEntry.CONVERT, EditorInfo.IME_ACTION_DONE);
+        super(surface, CoreEntry.CONVERT, ImeAction.DO);
     }
 
     @Override

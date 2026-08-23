@@ -1,12 +1,12 @@
 package net.emilla.command.core;
 
 import android.content.res.Resources;
-import android.view.inputmethod.EditorInfo;
 
 import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
+import net.emilla.command.ImeAction;
 import net.emilla.lang.Lang;
 import net.emilla.time.TimeZone;
 import net.emilla.wadget.ActionSurface;
@@ -17,7 +17,7 @@ import java.time.format.FormatStyle;
 
 final class Time extends EmillaCommand {
     @internal Time(ActionSurface surface) {
-        super(surface, CoreEntry.TIME, EditorInfo.IME_ACTION_DONE);
+        super(surface, CoreEntry.TIME, ImeAction.DO);
     }
 
     @Override

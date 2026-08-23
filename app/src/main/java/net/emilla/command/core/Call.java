@@ -6,7 +6,6 @@ import static net.emilla.chime.Chime.SUCCEED;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.view.inputmethod.EditorInfo;
 
 import net.emilla.Feedback;
 import net.emilla.R;
@@ -15,6 +14,7 @@ import net.emilla.action.Widget;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
+import net.emilla.command.ImeAction;
 import net.emilla.contact.fragment.ContactPhonesFragment;
 import net.emilla.content.receive.PhoneReceiver;
 import net.emilla.util.Apps;
@@ -34,7 +34,7 @@ final class Call extends EmillaCommand implements PhoneReceiver {
     ;
 
     @internal Call(ActionSurface surface) {
-        super(surface, CoreEntry.CALL, EditorInfo.IME_ACTION_GO);
+        super(surface, CoreEntry.CALL, ImeAction.GO);
     }
 
     @Override

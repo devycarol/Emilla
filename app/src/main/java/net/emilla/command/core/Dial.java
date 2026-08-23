@@ -5,11 +5,11 @@ import static android.content.Intent.ACTION_DIAL;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.view.inputmethod.EditorInfo;
 
 import net.emilla.Feedback;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
+import net.emilla.command.ImeAction;
 import net.emilla.util.Apps;
 import net.emilla.wadget.ActionSurface;
 
@@ -19,7 +19,7 @@ final class Dial extends EmillaCommand {
     }
 
     @internal Dial(ActionSurface surface) {
-        super(surface, CoreEntry.DIAL, EditorInfo.IME_ACTION_GO);
+        super(surface, CoreEntry.DIAL, ImeAction.GO);
     }
 
     @Override

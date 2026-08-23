@@ -12,8 +12,10 @@ import net.emilla.action.InputField;
 import net.emilla.action.Widget;
 import net.emilla.action.box.FieldsFragment;
 import net.emilla.annotation.internal;
-import net.emilla.command.DataField;
 import net.emilla.command.EmillaCommand;
+import net.emilla.command.ImeAction;
+import net.emilla.datafield.DataDirective;
+import net.emilla.datafield.DataField;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
 import net.emilla.util.MimeTypes;
@@ -38,11 +40,12 @@ final class Schedule extends EmillaCommand {
     );
 
     @internal Schedule(ActionSurface surface) {
-        super(
-            surface,
-            CoreEntry.SCHEDULE,
-            new DataField(R.string.data_hint_schedule)
-        );
+        super(surface, CoreEntry.SCHEDULE, ImeAction.GO);
+    }
+
+    @Override
+    protected DataDirective dataDirective() {
+        return new DataField(R.string.data_hint_schedule);
     }
 
     @Override

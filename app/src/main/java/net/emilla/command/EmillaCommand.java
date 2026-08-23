@@ -20,6 +20,8 @@ import net.emilla.command.app.AppYielder;
 import net.emilla.command.core.CoreEntry;
 import net.emilla.config.Aliases;
 import net.emilla.config.SettingVals;
+import net.emilla.datafield.DataDirective;
+import net.emilla.datafield.DataField;
 import net.emilla.wadget.ActionSurface;
 import net.emilla.widget.ActionIcon;
 
@@ -98,108 +100,52 @@ public abstract class EmillaCommand {
     public final int summary;
     @StringRes
     public final int manual;
-    /// The command's "IME action." This determines the soft keyboard's enter key icon. The options
-    /// are GO, SEARCH, SEND, DONE, and NEXT. GO is usually a forward arrow, SEARCH is usually a
-    /// magnifying glass, SEND is usually a paper airplane, and DONE is usually a checkmark. NEXT is
-    /// the 'tab' function and should be used when the data field is available.
-    public final int imeAction;
-    // todo: you should be able to long-click the enter key in the command or data field to
-    //  submit the command, using an appropriate action icon.
-    // requires changing the input method code directly
-    // it's also proven cumbersome to get the key icon to actually update to begin with..
+    private final ImeAction mImeAction;
 
     @Nullable
     private String mInstruction = null;
     private boolean mActive = false;
 
-    @StringRes
-    public final int dataHint;
-
     protected EmillaCommand(
         ActionSurface surface,
         Params params,
         @StringRes int summary,
         @StringRes int manual,
-        int imeAction
-    ) {
-        this(surface, params, summary, manual, imeAction, null);
-    }
-
-    protected EmillaCommand(
-        ActionSurface surface,
-        CoreEntry coreEntry,
-        int imeAction
-    ) {
-        this(
-            surface,
-            coreEntry,
-            coreEntry.summary,
-            coreEntry.manual,
-            imeAction
-        );
-    }
-
-    protected EmillaCommand(
-        ActionSurface surface,
-        CoreEntry coreEntry,
-        DataField dataField
-    ) {
-        this(
-            surface,
-            coreEntry,
-            coreEntry.summary,
-            coreEntry.manual,
-            EditorInfo.IME_ACTION_NEXT,
-            dataField
-        );
-    }
-
-    protected EmillaCommand(
-        ActionSurface surface,
-        AppEntry appEntry,
-        int imeAction
-    ) {
-        this(
-            surface,
-            appEntry,
-            appEntry.summary(),
-            appEntry.actions.manual(),
-            imeAction
-        );
-    }
-
-    protected EmillaCommand(
-        ActionSurface surface,
-        AppEntry appEntry,
-        DataField dataField
-    ) {
-        this(
-            surface,
-            appEntry,
-            appEntry.summary(),
-            appEntry.actions.manual(),
-            EditorInfo.IME_ACTION_NEXT,
-            dataField
-        );
-    }
-
-    private EmillaCommand(
-        ActionSurface surface,
-        Params params,
-        @StringRes int summary,
-        @StringRes int manual,
-        int imeAction,
-        @Nullable DataField dataField
+        ImeAction imeAction
     ) {
         mParams = params;
         this.name = params.name(surface.getResources());
         this.summary = summary;
         this.manual = manual;
-        this.imeAction = imeAction;
-        this.dataHint = dataField != null
-            ? dataField.hint()
-            : 0
-        ;
+        mImeAction = imeAction;
+    }
+
+    protected EmillaCommand(
+        ActionSurface surface,
+        CoreEntry coreEntry,
+        ImeAction imeAction
+    ) {
+        this(
+            surface,
+            coreEntry,
+            coreEntry.summary,
+            coreEntry.manual,
+            imeAction
+        );
+    }
+
+    protected EmillaCommand(
+        ActionSurface surface,
+        AppEntry appEntry,
+        ImeAction imeAction
+    ) {
+        this(
+            surface,
+            appEntry,
+            appEntry.summary(),
+            appEntry.actions.manual(),
+            imeAction
+        );
     }
 
     public final CharSequence title(Resources res) {
@@ -208,6 +154,21 @@ public abstract class EmillaCommand {
 
     public final ActionIcon actionIcon(Context ctx) {
         return mParams.actionIcon(ctx);
+    }
+
+    public int imeAction() {
+        return switch (dataDirective()) {
+            case null -> mImeAction.id;
+            // todo: also include the command's ImeAction in the "IME options"
+            case DataField __ -> EditorInfo.IME_ACTION_NEXT;
+        };
+    }
+
+    public int dataHint() {
+        return switch (dataDirective()) {
+            case null -> 0;
+            case DataField(@StringRes int hint) -> hint;
+        };
     }
 
     @internal final void instruct(
@@ -273,10 +234,14 @@ public abstract class EmillaCommand {
     protected abstract Feedback run(ActionSurface surface);
     /// Runs the command with instruction.
     ///
-    /// @param surface
     /// @param instruction is provided after in the command field after the command's name. It's
     /// always space-trimmed and should remain as such.
     protected abstract Feedback run(ActionSurface surface, String instruction);
+
+    @Nullable
+    protected @open DataDirective dataDirective() {
+        return null;
+    }
 
     @Nullable
     protected @open Widget[] widgets() {
