@@ -2,7 +2,6 @@ package net.emilla.command.app;
 
 import net.emilla.R;
 import net.emilla.annotation.internal;
-import net.emilla.command.ImeAction;
 import net.emilla.wadget.ActionSurface;
 
 enum Markor {;
@@ -13,11 +12,6 @@ enum Markor {;
         ActionSurface surface,
         AppEntry appEntry
     ) {
-        return new AppSendData(
-            surface,
-            appEntry,
-            ImeAction.GO,
-            R.string.data_hint_text
-        );
+        return new AppSendData(surface, appEntry, R.string.data_hint_text);
     }
 }

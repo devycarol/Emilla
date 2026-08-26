@@ -17,7 +17,6 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.chime.Chime;
 import net.emilla.command.EmillaCommand;
-import net.emilla.command.ImeAction;
 import net.emilla.content.receive.AppChoiceReceiver;
 import net.emilla.datafield.DataDirective;
 import net.emilla.datafield.DataField;
@@ -40,7 +39,7 @@ final class Share extends EmillaCommand implements AppChoiceReceiver {
     private final MediaFetcher mMediaFetcher;
 
     @internal Share(ActionSurface surface) {
-        super(surface, CoreEntry.SHARE, ImeAction.SEND);
+        super(surface, CoreEntry.SHARE);
         mActivity = surface.getAssistActivity();
         String entry = CoreEntry.SHARE.name();
 

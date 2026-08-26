@@ -9,7 +9,6 @@ import net.emilla.action.box.ListFileFragment;
 import net.emilla.action.box.TriResult;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
-import net.emilla.command.ImeAction;
 import net.emilla.file.Files;
 import net.emilla.util.MimeTypes;
 import net.emilla.wadget.ActionSurface;
@@ -18,7 +17,7 @@ final class Todo extends EmillaCommand {
     private final ListFileFragment mTodoFragment = ListFileFragment.newInstance();
 
     @internal Todo(ActionSurface surface) {
-        super(surface, CoreEntry.TODO, ImeAction.DO);
+        super(surface, CoreEntry.TODO);
     }
 
     @Override

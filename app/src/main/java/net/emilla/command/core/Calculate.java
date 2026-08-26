@@ -6,7 +6,6 @@ import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
-import net.emilla.command.ImeAction;
 import net.emilla.math.Calculator;
 import net.emilla.math.Maths;
 import net.emilla.wadget.ActionSurface;
@@ -15,7 +14,7 @@ import java.math.BigDecimal;
 
 final class Calculate extends EmillaCommand {
     @internal Calculate(ActionSurface surface) {
-        super(surface, CoreEntry.CALCULATE, ImeAction.DO);
+        super(surface, CoreEntry.CALCULATE);
     }
 
     @Override

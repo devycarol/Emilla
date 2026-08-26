@@ -7,21 +7,12 @@ import android.content.Intent;
 import net.emilla.Feedback;
 import net.emilla.annotation.internal;
 import net.emilla.annotation.open;
-import net.emilla.command.ImeAction;
 import net.emilla.util.Intents;
 import net.emilla.wadget.ActionSurface;
 
 @open class AppSend extends AppCommand {
     @internal AppSend(ActionSurface surface, AppEntry appEntry) {
-        this(surface, appEntry, ImeAction.SEND);
-    }
-
-    @internal AppSend(
-        ActionSurface surface,
-        AppEntry appEntry,
-        ImeAction imeAction
-    ) {
-        super(surface, appEntry, imeAction);
+        super(surface, appEntry);
     }
 
     @Override

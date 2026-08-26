@@ -14,7 +14,6 @@ import net.emilla.action.Widget;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
-import net.emilla.command.ImeAction;
 import net.emilla.contact.fragment.ContactPhonesFragment;
 import net.emilla.content.receive.PhoneReceiver;
 import net.emilla.util.Apps;
@@ -34,7 +33,7 @@ final class Call extends EmillaCommand implements PhoneReceiver {
     ;
 
     @internal Call(ActionSurface surface) {
-        super(surface, CoreEntry.CALL, ImeAction.GO);
+        super(surface, CoreEntry.CALL);
     }
 
     @Override

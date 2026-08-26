@@ -4,7 +4,6 @@ import net.emilla.Feedback;
 import net.emilla.annotation.internal;
 import net.emilla.annotation.open;
 import net.emilla.command.EmillaCommand;
-import net.emilla.command.ImeAction;
 import net.emilla.wadget.ActionSurface;
 
 public @open class AppCommand extends EmillaCommand {
@@ -16,15 +15,7 @@ public @open class AppCommand extends EmillaCommand {
     protected final AppEntry appEntry;
 
     @internal AppCommand(ActionSurface surface, AppEntry appEntry) {
-        this(surface, appEntry, ImeAction.GO);
-    }
-
-    @internal AppCommand(
-        ActionSurface surface,
-        AppEntry appEntry,
-        ImeAction imeAction
-    ) {
-        super(surface, appEntry, imeAction);
+        super(surface, appEntry);
 
         this.appEntry = appEntry;
     }

@@ -18,7 +18,6 @@ import net.emilla.action.Widget;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
-import net.emilla.command.ImeAction;
 import net.emilla.contact.fragment.EmailFragment;
 import net.emilla.content.receive.EmailReceiver;
 import net.emilla.datafield.DataDirective;
@@ -39,7 +38,7 @@ final class Email extends EmillaCommand implements EmailReceiver {
     private final MediaFetcher mMediaFetcher;
 
     @internal Email(ActionSurface surface) {
-        super(surface, CoreEntry.EMAIL, ImeAction.SEND);
+        super(surface, CoreEntry.EMAIL);
         var act = surface.getAssistActivity();
         String entry = CoreEntry.EMAIL.name();
         mFileFetcher = new FileFetcher(act, entry, "*/*");

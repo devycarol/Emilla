@@ -4,7 +4,6 @@ import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
-import net.emilla.command.ImeAction;
 import net.emilla.lang.Lang;
 import net.emilla.random.DiceRoller;
 import net.emilla.wadget.ActionSurface;
@@ -13,7 +12,7 @@ import java.util.Random;
 
 final class Roll extends EmillaCommand {
     @internal Roll(ActionSurface surface) {
-        super(surface, CoreEntry.ROLL, ImeAction.DO);
+        super(surface, CoreEntry.ROLL);
     }
 
     @Override

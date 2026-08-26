@@ -8,7 +8,6 @@ import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
-import net.emilla.command.ImeAction;
 import net.emilla.datafield.DataDirective;
 import net.emilla.datafield.DataField;
 import net.emilla.lang.Lang;
@@ -22,7 +21,7 @@ final class Timer extends EmillaCommand {
     }
 
     @internal Timer(ActionSurface surface) {
-        super(surface, CoreEntry.TIMER, ImeAction.DO);
+        super(surface, CoreEntry.TIMER);
     }
 
     @Override

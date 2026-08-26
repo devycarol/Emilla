@@ -9,7 +9,6 @@ import android.net.Uri;
 import net.emilla.Feedback;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
-import net.emilla.command.ImeAction;
 import net.emilla.util.Apps;
 import net.emilla.wadget.ActionSurface;
 
@@ -19,7 +18,7 @@ final class Dial extends EmillaCommand {
     }
 
     @internal Dial(ActionSurface surface) {
-        super(surface, CoreEntry.DIAL, ImeAction.GO);
+        super(surface, CoreEntry.DIAL);
     }
 
     @Override

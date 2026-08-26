@@ -13,7 +13,6 @@ import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
-import net.emilla.command.ImeAction;
 import net.emilla.datafield.DataDirective;
 import net.emilla.datafield.DataField;
 import net.emilla.ping.PingChannel;
@@ -24,7 +23,7 @@ import net.emilla.wadget.ActionSurface;
 
 final class Notify extends EmillaCommand {
     @internal Notify(ActionSurface surface) {
-        super(surface, CoreEntry.NOTIFY, ImeAction.DO);
+        super(surface, CoreEntry.NOTIFY);
     }
 
     @Override

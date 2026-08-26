@@ -2,7 +2,6 @@ package net.emilla.command.app;
 
 import net.emilla.R;
 import net.emilla.annotation.internal;
-import net.emilla.command.ImeAction;
 import net.emilla.wadget.ActionSurface;
 
 enum GitHub {;
@@ -12,11 +11,6 @@ enum GitHub {;
         ActionSurface surface,
         AppEntry appEntry
     ) {
-        return new AppSendData(
-            surface,
-            appEntry,
-            ImeAction.SEND,
-            R.string.data_hint_issue
-        );
+        return new AppSendData(surface, appEntry, R.string.data_hint_issue);
     }
 }

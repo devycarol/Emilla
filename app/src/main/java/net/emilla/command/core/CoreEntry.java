@@ -14,6 +14,7 @@ import net.emilla.R;
 import net.emilla.annotation.internal;
 import net.emilla.annotation.open;
 import net.emilla.command.CommandYielder;
+import net.emilla.command.ImeAction;
 import net.emilla.command.Params;
 import net.emilla.config.Aliases;
 import net.emilla.config.SettingVals;
@@ -25,124 +26,124 @@ import java.util.Set;
 import java.util.function.Function;
 
 public enum CoreEntry implements Params {
-    WEB(Web::new, R.string.command_web, R.array.aliases_web, R.string.instruction_web, R.drawable.ic_web, R.string.summary_web, R.string.manual_web) {
+    WEB(Web::new, R.string.command_web, R.array.aliases_web, R.string.instruction_web, R.drawable.ic_web, R.string.summary_web, R.string.manual_web, ImeAction.SEARCH) {
         @Override
         public boolean isPossible(PackageManager pm) {
             return Web.possible();
         }
     },
-    LAUNCH(Launch::new, R.string.command_launch, R.array.aliases_launch, R.string.instruction_choose_app, R.drawable.ic_launch, R.string.summary_launch, R.string.manual_launch),
-    CALL(Call::new, R.string.command_call, R.array.aliases_call, R.string.instruction_phone, R.drawable.ic_call, R.string.summary_call, R.string.manual_call) {
+    LAUNCH(Launch::new, R.string.command_launch, R.array.aliases_launch, R.string.instruction_choose_app, R.drawable.ic_launch, R.string.summary_launch, R.string.manual_launch, ImeAction.GO),
+    CALL(Call::new, R.string.command_call, R.array.aliases_call, R.string.instruction_phone, R.drawable.ic_call, R.string.summary_call, R.string.manual_call, ImeAction.DO) {
         @Override
         public boolean isPossible(PackageManager pm) {
             return Call.possible(pm);
         }
     },
-    DIAL(Dial::new, R.string.command_dial, R.array.aliases_dial, R.string.instruction_dial, R.drawable.ic_dial, R.string.summary_dial, R.string.manual_dial) {
+    DIAL(Dial::new, R.string.command_dial, R.array.aliases_dial, R.string.instruction_dial, R.drawable.ic_dial, R.string.summary_dial, R.string.manual_dial, ImeAction.GO) {
         @Override
         public boolean isPossible(PackageManager pm) {
             return Dial.possible(pm);
         }
     },
-    SMS(Sms::new, R.string.command_sms, R.array.aliases_sms, R.string.instruction_phone, R.drawable.ic_sms, R.string.summary_sms, R.string.manual_sms) {
+    SMS(Sms::new, R.string.command_sms, R.array.aliases_sms, R.string.instruction_phone, R.drawable.ic_sms, R.string.summary_sms, R.string.manual_sms, ImeAction.SEND) {
         @Override
         public boolean isPossible(PackageManager pm) {
             return Sms.possible(pm);
         }
     },
-    SCHEDULE(Schedule::new, R.string.command_schedule, R.array.aliases_schedule, R.string.instruction_schedule, R.drawable.ic_schedule, R.string.summary_schedule, R.string.manual_schedule) {
+    SCHEDULE(Schedule::new, R.string.command_schedule, R.array.aliases_schedule, R.string.instruction_schedule, R.drawable.ic_schedule, R.string.summary_schedule, R.string.manual_schedule, ImeAction.GO) {
         @Override
         public boolean isPossible(PackageManager pm) {
             return Schedule.possible(pm);
         }
     },
-    CONTACT(Contact::new, R.string.command_contact, R.array.aliases_contact, R.string.instruction_contact, R.drawable.ic_contact, R.string.summary_contact, R.string.manual_contact) {
+    CONTACT(Contact::new, R.string.command_contact, R.array.aliases_contact, R.string.instruction_contact, R.drawable.ic_contact, R.string.summary_contact, R.string.manual_contact, ImeAction.GO) {
         @Override
         public boolean isPossible(PackageManager pm) {
             return Contact.possible(pm);
         }
     },
-    PLAY(Play::new, R.string.command_play, R.array.aliases_play, R.string.instruction_play, R.drawable.ic_play, R.string.summary_play, R.string.manual_play),
-    PAUSE(Pause::new, R.string.command_pause, R.array.aliases_pause, R.string.instruction_pause, R.drawable.ic_pause, R.string.summary_pause, R.string.manual_pause, false),
-    NAVIGATE(Navigate::new, R.string.command_navigate, R.array.aliases_navigate, R.string.instruction_location, R.drawable.ic_navigate, R.string.summary_navigate, R.string.manual_navigate) {
+    PLAY(Play::new, R.string.command_play, R.array.aliases_play, R.string.instruction_play, R.drawable.ic_play, R.string.summary_play, R.string.manual_play, ImeAction.DO),
+    PAUSE(Pause::new, R.string.command_pause, R.array.aliases_pause, R.string.instruction_pause, R.drawable.ic_pause, R.string.summary_pause, R.string.manual_pause, ImeAction.DO, false),
+    NAVIGATE(Navigate::new, R.string.command_navigate, R.array.aliases_navigate, R.string.instruction_location, R.drawable.ic_navigate, R.string.summary_navigate, R.string.manual_navigate, ImeAction.SEARCH) {
         @Override
         public boolean isPossible(PackageManager pm) {
             return Navigate.possible(pm);
         }
     },
-//    WEATHER(Weather::new, R.string.command_weather, R.array.aliases_weather, R.string.instruction_app, R.drawable.ic_weather, R.string.summary_weather, R.string.manual_weather) {
+//    WEATHER(Weather::new, R.string.command_weather, R.array.aliases_weather, R.string.instruction_app, R.drawable.ic_weather, R.string.summary_weather, R.string.manual_weather, ImeAction.GO) {
 //        @Override
 //        public boolean isPossible(PackageManager pm) {
 //            return Weather.possible(pm);
 //        }
 //    },
-    NOTE(Note::new, R.string.command_note, R.array.aliases_note, R.string.instruction_file, R.drawable.ic_note, R.string.summary_note, R.string.manual_note, true),
-    TODO(Todo::new, R.string.command_todo, R.array.aliases_todo, R.string.instruction_todo, R.drawable.ic_todo, R.string.summary_todo, R.string.manual_todo, true),
-//    FIND(Find::new, R.string.command_find, R.array.aliases_find, R.string.instruction_find, R.drawable.ic_find, R.string.summary_find, R.string.manual_find, true),
-    EMAIL(Email::new, R.string.command_email, R.array.aliases_email, R.string.instruction_email, R.drawable.ic_email, R.string.summary_email, R.string.manual_email) {
+    NOTE(Note::new, R.string.command_note, R.array.aliases_note, R.string.instruction_file, R.drawable.ic_note, R.string.summary_note, R.string.manual_note, ImeAction.DO, true),
+    TODO(Todo::new, R.string.command_todo, R.array.aliases_todo, R.string.instruction_todo, R.drawable.ic_todo, R.string.summary_todo, R.string.manual_todo, ImeAction.DO, true),
+//    FIND(Find::new, R.string.command_find, R.array.aliases_find, R.string.instruction_find, R.drawable.ic_find, R.string.summary_find, R.string.manual_find, ImeAction.SEARCH, true),
+    EMAIL(Email::new, R.string.command_email, R.array.aliases_email, R.string.instruction_email, R.drawable.ic_email, R.string.summary_email, R.string.manual_email, ImeAction.SEND) {
         @Override
         public boolean isPossible(PackageManager pm) {
             return Email.possible(pm);
         }
     },
-    SHARE(Share::new, R.string.command_share, R.array.aliases_share, R.string.instruction_choose_app, R.drawable.ic_share, R.string.summary_share, R.string.manual_share) {
+    SHARE(Share::new, R.string.command_share, R.array.aliases_share, R.string.instruction_choose_app, R.drawable.ic_share, R.string.summary_share, R.string.manual_share, ImeAction.SEND) {
         @Override
         public boolean isPossible(PackageManager pm) {
             return Share.possible(pm);
         }
     },
-    TORCH(Torch::new, R.string.command_torch, R.array.aliases_torch, R.string.instruction_torch, R.drawable.ic_torch, R.string.summary_torch, R.string.manual_torch, false) {
+    TORCH(Torch::new, R.string.command_torch, R.array.aliases_torch, R.string.instruction_torch, R.drawable.ic_torch, R.string.summary_torch, R.string.manual_torch, ImeAction.DO, false) {
         @Override
         public boolean isPossible(PackageManager pm) {
             return Torch.possible(pm);
         }
     },
-    CALCULATE(Calculate::new, R.string.command_calculate, R.array.aliases_calculate, R.string.instruction_calculate, R.drawable.ic_calculate, R.string.summary_calculate, R.string.manual_calculate),
-    CONVERT(Convert::new, R.string.command_convert, R.array.aliases_convert, R.string.instruction_convert, R.drawable.ic_temperature, R.string.summary_convert, R.string.manual_convert),
-    TIME(Time::new, R.string.command_time, R.array.aliases_time, R.string.instruction_location, R.drawable.ic_clock, R.string.summary_time, R.string.manual_time),
-    ALARM(Alarm::new, R.string.command_alarm, R.array.aliases_alarm, R.string.instruction_alarm, R.drawable.ic_alarm, R.string.summary_alarm, R.string.manual_alarm) {
+    CALCULATE(Calculate::new, R.string.command_calculate, R.array.aliases_calculate, R.string.instruction_calculate, R.drawable.ic_calculate, R.string.summary_calculate, R.string.manual_calculate, ImeAction.DO),
+    CONVERT(Convert::new, R.string.command_convert, R.array.aliases_convert, R.string.instruction_convert, R.drawable.ic_temperature, R.string.summary_convert, R.string.manual_convert, ImeAction.DO),
+    TIME(Time::new, R.string.command_time, R.array.aliases_time, R.string.instruction_location, R.drawable.ic_clock, R.string.summary_time, R.string.manual_time, ImeAction.DO),
+    ALARM(Alarm::new, R.string.command_alarm, R.array.aliases_alarm, R.string.instruction_alarm, R.drawable.ic_alarm, R.string.summary_alarm, R.string.manual_alarm, ImeAction.GO) {
         @Override
         public boolean isPossible(PackageManager pm) {
             return Alarm.possible(pm);
         }
     },
-    TIMER(Timer::new, R.string.command_timer, R.array.aliases_timer, R.string.instruction_timer, R.drawable.ic_timer, R.string.summary_timer, R.string.manual_timer) {
+    TIMER(Timer::new, R.string.command_timer, R.array.aliases_timer, R.string.instruction_timer, R.drawable.ic_timer, R.string.summary_timer, R.string.manual_timer, ImeAction.DO) {
         @Override
         public boolean isPossible(PackageManager pm) {
             return Timer.possible(pm);
         }
     },
-    POMODORO(Pomodoro::new, R.string.command_pomodoro, R.array.aliases_pomodoro, R.string.instruction_pomodoro, R.drawable.ic_pomodoro, R.string.summary_pomodoro, R.string.manual_pomodoro),
-    NOTIFY(Notify::new, R.string.command_notify, R.array.aliases_notify, R.string.instruction_title, R.drawable.ic_notify, R.string.summary_notify, R.string.manual_notify),
-    COPY(Copy::new, R.string.command_copy, R.array.aliases_copy, R.string.instruction_text, R.drawable.ic_copy, R.string.summary_copy, R.string.manual_copy),
-    SNIPPETS(Snippets::new, R.string.command_snippets, R.array.aliases_snippets, R.string.instruction_name_label, R.drawable.ic_snippets, R.string.summary_snippets, R.string.manual_snippets),
-    SETTING(Setting::new, R.string.command_setting, R.array.aliases_setting, R.string.instruction_setting, R.drawable.ic_settings, R.string.summary_setting, R.string.manual_setting, true),
-    ROLL(Roll::new, R.string.command_roll, R.array.aliases_roll, R.string.instruction_roll, R.drawable.ic_roll, R.string.summary_roll, R.string.manual_roll),
-    INFO(Info::new, R.string.command_info, R.array.aliases_info, R.string.instruction_choose_app, R.drawable.ic_info, R.string.summary_info, R.string.manual_info) {
+    POMODORO(Pomodoro::new, R.string.command_pomodoro, R.array.aliases_pomodoro, R.string.instruction_pomodoro, R.drawable.ic_pomodoro, R.string.summary_pomodoro, R.string.manual_pomodoro, ImeAction.DO),
+    NOTIFY(Notify::new, R.string.command_notify, R.array.aliases_notify, R.string.instruction_title, R.drawable.ic_notify, R.string.summary_notify, R.string.manual_notify, ImeAction.DO),
+    COPY(Copy::new, R.string.command_copy, R.array.aliases_copy, R.string.instruction_text, R.drawable.ic_copy, R.string.summary_copy, R.string.manual_copy, ImeAction.DO),
+    SNIPPETS(Snippets::new, R.string.command_snippets, R.array.aliases_snippets, R.string.instruction_name_label, R.drawable.ic_snippets, R.string.summary_snippets, R.string.manual_snippets, ImeAction.DO),
+    SETTING(Setting::new, R.string.command_setting, R.array.aliases_setting, R.string.instruction_setting, R.drawable.ic_settings, R.string.summary_setting, R.string.manual_setting, ImeAction.DO, true),
+    ROLL(Roll::new, R.string.command_roll, R.array.aliases_roll, R.string.instruction_roll, R.drawable.ic_roll, R.string.summary_roll, R.string.manual_roll, ImeAction.DO),
+    INFO(Info::new, R.string.command_info, R.array.aliases_info, R.string.instruction_choose_app, R.drawable.ic_info, R.string.summary_info, R.string.manual_info, ImeAction.GO) {
         @Override
         public boolean isPossible(PackageManager pm) {
             return Info.possible(pm);
         }
     },
-    NOTIFICATIONS(Notifications::new, R.string.command_notifications, R.array.aliases_notifications, R.string.instruction_choose_app, R.drawable.ic_notifications, R.string.summary_notifications, R.string.manual_notifications) {
+    NOTIFICATIONS(Notifications::new, R.string.command_notifications, R.array.aliases_notifications, R.string.instruction_choose_app, R.drawable.ic_notifications, R.string.summary_notifications, R.string.manual_notifications, ImeAction.GO) {
         @Override
         public boolean isPossible(PackageManager pm) {
             return Notifications.possible(pm);
         }
     },
-    UNINSTALL(Uninstall::new, R.string.command_uninstall, R.array.aliases_uninstall, R.string.instruction_choose_app, R.drawable.ic_delete, R.string.summary_uninstall, R.string.manual_uninstall) {
+    UNINSTALL(Uninstall::new, R.string.command_uninstall, R.array.aliases_uninstall, R.string.instruction_choose_app, R.drawable.ic_delete, R.string.summary_uninstall, R.string.manual_uninstall, ImeAction.DO) {
         @Override
         public boolean isPossible(PackageManager pm) {
             return Uninstall.possible(pm);
         }
     },
-    SAY(Say::new, R.string.command_say, R.array.aliases_say, R.string.instruction_text, R.drawable.ic_say, R.string.summary_say, R.string.manual_say) {
+    SAY(Say::new, R.string.command_say, R.array.aliases_say, R.string.instruction_text, R.drawable.ic_say, R.string.summary_say, R.string.manual_say, ImeAction.DO) {
         @Override
         public boolean isPossible(PackageManager pm) {
             return super.isPossible(pm);
         }
     },
-    BITS(Bits::new, R.string.command_bits, R.array.aliases_bits, R.string.instruction_calculate, R.drawable.ic_command, R.string.summary_bits, R.string.manual_bits),
+    BITS(Bits::new, R.string.command_bits, R.array.aliases_bits, R.string.instruction_calculate, R.drawable.ic_command, R.string.summary_bits, R.string.manual_bits, ImeAction.DO),
 ;
     @internal final CoreMaker mMaker;
     @StringRes
@@ -157,6 +158,7 @@ public enum CoreEntry implements Params {
     public final int summary;
     @StringRes
     public final int manual;
+    public final ImeAction imeAction;
     public final boolean usesInstruction;
 
     CoreEntry(
@@ -166,9 +168,20 @@ public enum CoreEntry implements Params {
         @StringRes int instruction,
         @DrawableRes int icon,
         @StringRes int summary,
-        @StringRes int manual
+        @StringRes int manual,
+        ImeAction imeAction
     ) {
-        this(maker, name, aliases, instruction, icon, summary, manual, true);
+        this(
+            maker,
+            name,
+            aliases,
+            instruction,
+            icon,
+            summary,
+            manual,
+            imeAction,
+            true
+        );
     }
 
     CoreEntry(
@@ -179,6 +192,7 @@ public enum CoreEntry implements Params {
         @DrawableRes int icon,
         @StringRes int summary,
         @StringRes int manual,
+        ImeAction imeAction,
         boolean usesInstruction
     ) {
         mMaker = maker;
@@ -188,14 +202,15 @@ public enum CoreEntry implements Params {
         this.icon = icon;
         this.summary = summary;
         this.manual = manual;
+        this.imeAction = imeAction;
         this.usesInstruction = usesInstruction;
     }
 
     public @open boolean isPossible(PackageManager pm) {
         return true;
-        // todo: be more granular about deactivating certain command elements based on which intents
-        //  are/n't doable. currently these methods are generally permissive if just one of their
-        //  intents is doable.
+        // todo: be more granular about deactivating certain command elements
+        //  based on which intents are/n't doable. currently these methods are
+        //  generally permissive if just one of their intents is doable.
     }
 
     public final boolean isEnabled(PackageManager pm, SharedPreferences prefs) {

@@ -15,7 +15,6 @@ import net.emilla.action.Widget;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
-import net.emilla.command.ImeAction;
 import net.emilla.contact.fragment.ContactPhonesFragment;
 import net.emilla.content.receive.PhoneReceiver;
 import net.emilla.datafield.DataDirective;
@@ -40,7 +39,7 @@ final class Sms extends EmillaCommand implements PhoneReceiver {
     private final MediaFetcher mMediaFetcher;
 
     @internal Sms(ActionSurface surface) {
-        super(surface, CoreEntry.SMS, ImeAction.SEND);
+        super(surface, CoreEntry.SMS);
         mMediaFetcher = new MediaFetcher(
             surface.getAssistActivity(),
             CoreEntry.SMS.name()

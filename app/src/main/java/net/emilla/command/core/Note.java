@@ -9,7 +9,6 @@ import net.emilla.action.Widget;
 import net.emilla.action.box.NotesFragment;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
-import net.emilla.command.ImeAction;
 import net.emilla.datafield.DataDirective;
 import net.emilla.datafield.DataField;
 import net.emilla.file.Files;
@@ -21,7 +20,7 @@ final class Note extends EmillaCommand {
     private final NotesFragment mNotesFragment = NotesFragment.newInstance();
 
     @internal Note(ActionSurface surface) {
-        super(surface, CoreEntry.NOTE, ImeAction.GO);
+        super(surface, CoreEntry.NOTE);
     }
 
     @Override

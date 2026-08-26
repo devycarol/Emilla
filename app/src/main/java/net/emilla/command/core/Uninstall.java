@@ -9,7 +9,6 @@ import android.provider.Settings;
 import androidx.annotation.Nullable;
 
 import net.emilla.annotation.internal;
-import net.emilla.command.ImeAction;
 import net.emilla.command.app.AppEntry;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
@@ -24,7 +23,7 @@ final class Uninstall extends OpenCommand {
     }
 
     @internal Uninstall(ActionSurface surface) {
-        super(surface, CoreEntry.UNINSTALL, ImeAction.GO);
+        super(surface, CoreEntry.UNINSTALL);
     }
 
     @Override @Nullable

@@ -52,7 +52,7 @@ final class Tasker extends AppCommand {
     );
 
     @internal Tasker(ActionSurface surface, AppEntry appEntry) {
-        super(surface, appEntry, ImeAction.DO);
+        super(surface, appEntry);
         // todo: in the far future, you could have a rudimentary UI for creating
         //  tasks
     }

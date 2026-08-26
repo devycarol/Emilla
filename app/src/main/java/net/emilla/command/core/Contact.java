@@ -80,7 +80,7 @@ final class Contact extends EmillaCommand implements ContactCardReceiver {
     );
 
     @internal Contact(ActionSurface surface) {
-        super(surface, CoreEntry.CONTACT, ImeAction.GO);
+        super(surface, CoreEntry.CONTACT);
     }
 
     @Override

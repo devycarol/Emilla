@@ -6,7 +6,6 @@ import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.annotation.internal;
 import net.emilla.annotation.open;
-import net.emilla.command.ImeAction;
 import net.emilla.datafield.DataDirective;
 import net.emilla.datafield.DataField;
 import net.emilla.wadget.ActionSurface;
@@ -16,16 +15,15 @@ import net.emilla.wadget.ActionSurface;
     private final int mDataHint;
 
     @internal AppSendData(ActionSurface surface, AppEntry appEntry) {
-        this(surface, appEntry, ImeAction.SEND, R.string.data_hint_text);
+        this(surface, appEntry, R.string.data_hint_text);
     }
 
     @internal AppSendData(
         ActionSurface surface,
         AppEntry appEntry,
-        ImeAction imeAction,
         @StringRes int dataHint
     ) {
-        super(surface, appEntry, imeAction);
+        super(surface, appEntry);
         mDataHint = dataHint;
     }
 

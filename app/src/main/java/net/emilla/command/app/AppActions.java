@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import net.emilla.R;
+import net.emilla.command.ImeAction;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
 import net.emilla.wadget.ActionSurface;
@@ -103,6 +104,14 @@ public final class AppActions {
         }
         // Todo: allow multiple actions
         return R.string.manual_app;
+    }
+
+    public ImeAction imeAction() {
+        return isTasker() ? ImeAction.DO
+            : hasSend() ? ImeAction.SEND
+            : hasSearch() ? ImeAction.SEARCH
+            : ImeAction.GO
+        ;
     }
 
     public AppCommand defaultCommand(ActionSurface surface, AppEntry appEntry) {

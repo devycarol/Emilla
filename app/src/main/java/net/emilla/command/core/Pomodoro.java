@@ -54,7 +54,7 @@ final class Pomodoro extends EmillaCommand {
     );
 
     @internal Pomodoro(ActionSurface surface) {
-        super(surface, CoreEntry.POMODORO, ImeAction.DO);
+        super(surface, CoreEntry.POMODORO);
     }
 
     @Override

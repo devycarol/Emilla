@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 
 import net.emilla.annotation.internal;
-import net.emilla.command.ImeAction;
 import net.emilla.command.app.AppEntry;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
@@ -16,7 +15,7 @@ final class Info extends OpenCommand {
     }
 
     @internal Info(ActionSurface surface) {
-        super(surface, CoreEntry.INFO, ImeAction.GO);
+        super(surface, CoreEntry.INFO);
     }
 
     @Override

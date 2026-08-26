@@ -48,7 +48,7 @@ final class Snippets extends EmillaCommand {
     ;
 
     @internal Snippets(ActionSurface surface) {
-        super(surface, CoreEntry.SNIPPETS, ImeAction.DO);
+        super(surface, CoreEntry.SNIPPETS);
     }
 
     @Override

@@ -6,14 +6,13 @@ import android.content.pm.PackageManager;
 import androidx.annotation.Nullable;
 
 import net.emilla.annotation.internal;
-import net.emilla.command.ImeAction;
 import net.emilla.command.app.AppEntry;
 import net.emilla.util.Intents;
 import net.emilla.wadget.ActionSurface;
 
 final class Launch extends OpenCommand {
     @internal Launch(ActionSurface surface) {
-        super(surface, CoreEntry.LAUNCH, ImeAction.GO);
+        super(surface, CoreEntry.LAUNCH);
     }
 
     @Override @Nullable

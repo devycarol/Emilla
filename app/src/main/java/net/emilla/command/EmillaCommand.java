@@ -121,31 +121,23 @@ public abstract class EmillaCommand {
         mImeAction = imeAction;
     }
 
-    protected EmillaCommand(
-        ActionSurface surface,
-        CoreEntry coreEntry,
-        ImeAction imeAction
-    ) {
+    protected EmillaCommand(ActionSurface surface, CoreEntry coreEntry) {
         this(
             surface,
             coreEntry,
             coreEntry.summary,
             coreEntry.manual,
-            imeAction
+            coreEntry.imeAction
         );
     }
 
-    protected EmillaCommand(
-        ActionSurface surface,
-        AppEntry appEntry,
-        ImeAction imeAction
-    ) {
+    protected EmillaCommand(ActionSurface surface, AppEntry appEntry) {
         this(
             surface,
             appEntry,
             appEntry.summary(),
             appEntry.actions.manual(),
-            imeAction
+            appEntry.actions.imeAction()
         );
     }
 

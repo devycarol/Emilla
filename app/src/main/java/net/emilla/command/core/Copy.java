@@ -6,7 +6,6 @@ import net.emilla.action.Gadget;
 import net.emilla.action.Widget;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
-import net.emilla.command.ImeAction;
 import net.emilla.gadget.DoubleSubmit;
 import net.emilla.util.Clipboard;
 import net.emilla.wadget.ActionSurface;
@@ -15,7 +14,7 @@ final class Copy extends EmillaCommand {
     private final DoubleSubmit mDoubleSubmit = new DoubleSubmit();
 
     @internal Copy(ActionSurface surface) {
-        super(surface, CoreEntry.COPY, ImeAction.DO);
+        super(surface, CoreEntry.COPY);
     }
 
     @Override

@@ -7,7 +7,6 @@ import android.content.Intent;
 import net.emilla.Feedback;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
-import net.emilla.command.ImeAction;
 import net.emilla.wadget.ActionSurface;
 import net.emilla.web.WebsiteMap;
 
@@ -19,7 +18,7 @@ final class Web extends EmillaCommand {
     private final WebsiteMap mWebsiteMap;
 
     @internal Web(ActionSurface surface) {
-        super(surface, CoreEntry.WEB, ImeAction.SEARCH);
+        super(surface, CoreEntry.WEB);
 
         var prefs = surface.getSharedPreferences();
         var res = surface.getResources();

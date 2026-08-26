@@ -13,7 +13,6 @@ import net.emilla.action.Widget;
 import net.emilla.action.box.FieldsFragment;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
-import net.emilla.command.ImeAction;
 import net.emilla.datafield.DataDirective;
 import net.emilla.datafield.DataField;
 import net.emilla.util.Apps;
@@ -40,7 +39,7 @@ final class Schedule extends EmillaCommand {
     );
 
     @internal Schedule(ActionSurface surface) {
-        super(surface, CoreEntry.SCHEDULE, ImeAction.GO);
+        super(surface, CoreEntry.SCHEDULE);
     }
 
     @Override
