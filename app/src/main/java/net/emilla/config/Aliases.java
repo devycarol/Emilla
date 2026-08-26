@@ -7,7 +7,7 @@ import androidx.annotation.ArrayRes;
 import androidx.annotation.Nullable;
 
 import net.emilla.command.app.AppEntry;
-import net.emilla.command.app.AppProperties;
+import net.emilla.command.app.KnownApp;
 import net.emilla.command.core.CoreEntry;
 
 import java.util.Locale;
@@ -18,9 +18,9 @@ public enum Aliases {;
     public static Set<String> appSet(SharedPreferences prefs, Resources res, AppEntry app) {
         String entry = app.entry();
 
-        AppProperties properties = app.properties;
-        if (properties != null) {
-            return coreSet(prefs, res, entry, properties.aliases);
+        KnownApp known = app.known;
+        if (known != null) {
+            return coreSet(prefs, res, entry, known.aliases);
         }
 
         return prefs.getStringSet(setKey(entry), null);

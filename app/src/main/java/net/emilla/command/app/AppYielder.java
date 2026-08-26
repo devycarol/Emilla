@@ -18,9 +18,9 @@ public final class AppYielder extends CommandYielder {
 
     @Override
     protected AppCommand makeCommand(AssistActivity act) {
-        AppProperties properties = mApp.properties;
-        if (properties != null) {
-            return properties.maker.make(act, mApp);
+        KnownApp known = mApp.known;
+        if (known != null) {
+            return known.maker.make(act, mApp);
         }
 
         return mApp.actions.defaultCommand(act, mApp);

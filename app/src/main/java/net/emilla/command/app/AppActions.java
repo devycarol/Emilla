@@ -16,9 +16,13 @@ public final class AppActions {
     public static final int FLAG_SEND_MULTILINE = 0x2;
     public static final int FLAGS_SEND_TEXT = 0x1 | FLAG_SEND_MULTILINE;
 
-    private static int flags(PackageManager pm, String pkg, @Nullable AppProperties properties) {
-        int mask = properties != null
-            ? properties.actionMask
+    private static int flags(
+        PackageManager pm,
+        String pkg,
+        @Nullable KnownApp known
+    ) {
+        int mask = known != null
+            ? known.actionMask
             : ~0
         ;
         int flags = 0;
@@ -36,8 +40,8 @@ public final class AppActions {
 
     private final int mFlags;
 
-    public AppActions(PackageManager pm, String pkg, @Nullable AppProperties properties) {
-        mFlags = flags(pm, pkg, properties);
+    public AppActions(PackageManager pm, String pkg, @Nullable KnownApp known) {
+        mFlags = flags(pm, pkg, known);
     }
 
     public boolean usesInstruction() {

@@ -48,7 +48,7 @@ public final class AppEntry extends SearchItem implements Params {
     public final String pkg;
     public final String cls;
     @Nullable
-    public final AppProperties properties;
+    public final KnownApp known;
     public final AppActions actions;
     public final Drawable icon;
 
@@ -62,8 +62,8 @@ public final class AppEntry extends SearchItem implements Params {
 
         pkg = packageName;
         cls = name;
-        properties = AppProperties.of(pkg, cls);
-        actions = new AppActions(pm, pkg, properties);
+        known = KnownApp.of(pkg, cls);
+        actions = new AppActions(pm, pkg, known);
         Drawable icon;
         try {
             icon = pm.getActivityIcon(componentName());
@@ -89,8 +89,8 @@ public final class AppEntry extends SearchItem implements Params {
 
     @StringRes
     private int instruction() {
-        if (properties != null) {
-            int instruction = properties.instruction;
+        if (known != null) {
+            int instruction = known.instruction;
             if (instruction != 0) {
                 return instruction;
             }
@@ -134,8 +134,8 @@ public final class AppEntry extends SearchItem implements Params {
 
     @StringRes
     public int summary() {
-        if (properties != null) {
-            return properties.summary;
+        if (known != null) {
+            return known.summary;
         }
         return actions.summary();
     }

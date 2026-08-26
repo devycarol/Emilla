@@ -8,7 +8,7 @@ import android.content.res.Resources;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import net.emilla.command.app.AppProperties;
+import net.emilla.command.app.KnownApp;
 import net.emilla.command.core.CoreEntry;
 
 import org.junit.Test;
@@ -43,8 +43,8 @@ public final class TestCommandNamesAndAliases {
             }
         }
 
-        for (var appProperties : AppProperties.values()) {
-            if (!Arrays.stream(res.getStringArray(appProperties.aliases)).allMatch(predicate)) {
+        for (var known : KnownApp.values()) {
+            if (!Arrays.stream(res.getStringArray(known.aliases)).allMatch(predicate)) {
                 fail();
             }
         }

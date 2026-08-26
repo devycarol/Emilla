@@ -58,7 +58,7 @@ public enum SettingVals {;
 
     public static boolean appEnabled(SharedPreferences prefs, AppEntry app) {
         String key = appEnabledKey(app.pkg, app.cls);
-        return prefs.getBoolean(key, true /*allowProprietary(prefs) || isFoss(pkg)*/);
+        return prefs.getBoolean(key, true);
     }
 
     private static String appEnabledKey(String pkg, String cls) {
