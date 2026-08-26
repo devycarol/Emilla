@@ -22,6 +22,7 @@ import net.emilla.config.Aliases;
 import net.emilla.config.SettingVals;
 import net.emilla.datafield.DataDirective;
 import net.emilla.datafield.DataField;
+import net.emilla.datafield.Subcommands;
 import net.emilla.wadget.ActionSurface;
 import net.emilla.widget.ActionIcon;
 
@@ -161,6 +162,7 @@ public abstract class EmillaCommand {
             case null -> mImeAction.id;
             // todo: also include the command's ImeAction in the "IME options"
             case DataField __ -> EditorInfo.IME_ACTION_NEXT;
+            case Subcommands<?> subcommands -> subcommands.imeAction().id;
         };
     }
 
@@ -168,6 +170,7 @@ public abstract class EmillaCommand {
         return switch (dataDirective()) {
             case null -> 0;
             case DataField(@StringRes int hint) -> hint;
+            case Subcommands<?> subcommands -> subcommands.dataHint();
         };
     }
 
@@ -239,7 +242,7 @@ public abstract class EmillaCommand {
     protected abstract Feedback run(ActionSurface surface, String instruction);
 
     @Nullable
-    protected @open DataDirective dataDirective() {
+    public @open DataDirective dataDirective() {
         return null;
     }
 

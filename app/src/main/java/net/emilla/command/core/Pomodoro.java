@@ -1,7 +1,6 @@
 package net.emilla.command.core;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.content.Context;
 
@@ -12,13 +11,12 @@ import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
-import net.emilla.command.ActionMap;
 import net.emilla.command.EmillaCommand;
 import net.emilla.command.ImeAction;
-import net.emilla.command.Subcommand;
 import net.emilla.config.SettingVals;
 import net.emilla.datafield.DataDirective;
-import net.emilla.datafield.DataField;
+import net.emilla.datafield.DataSubcommand;
+import net.emilla.datafield.Subcommands;
 import net.emilla.event.PingPlan;
 import net.emilla.event.PingScheduler;
 import net.emilla.event.Plan;
@@ -31,79 +29,89 @@ import net.emilla.util.Permission;
 import net.emilla.wadget.ActionSurface;
 
 final class Pomodoro extends EmillaCommand {
-    private enum Action {
-        WORK,
-        BREAK,
+    private sealed interface PomoAction permits Work, Break {
     }
 
-    private final ActionMap<Action> mActionMap;
-    // Todo: these shouldn't be fields
-    @Nullable
-    private String mWorkMemo;
-    @Nullable
-    private String mBreakMemo;
+    private record Work(@Nullable String memo) implements PomoAction {
+    }
+
+    private record Break(@Nullable String memo) implements PomoAction {
+    }
+
+    private final Subcommands<PomoAction> mSubcommands = new Subcommands<>(
+        new DataSubcommand<>(
+            Work::new,
+            R.drawable.ic_work,
+            ImeAction.DO,
+            R.string.data_hint_memo
+        ),
+        new DataSubcommand<>(
+            Break::new,
+            R.drawable.ic_break,
+            ImeAction.DO,
+            R.string.data_hint_memo
+        )
+    );
 
     @internal Pomodoro(ActionSurface surface) {
         super(surface, CoreEntry.POMODORO, ImeAction.DO);
-
-        var res = surface.getResources();
-        mActionMap = new ActionMap<Action>(res, Action.WORK, Action[]::new);
-        mActionMap.put(res, Action.BREAK, R.array.subcmd_pomodoro_break, true);
-
-        var prefs = surface.getSharedPreferences();
-        mWorkMemo = SettingVals.defaultPomoWorkMemo(prefs, res);
-        mBreakMemo = SettingVals.defaultPomoBreakMemo(prefs, res);
     }
 
     @Override
-    protected DataDirective dataDirective() {
-        return new DataField(R.string.data_hint_pomodoro);
+    public DataDirective dataDirective() {
+        return mSubcommands;
     }
 
     @Override
     protected Feedback run(ActionSurface surface) {
-        String memo = surface.dataText();
-        if (memo != null) {
-            mWorkMemo = memo;
-        }
-        return tryPomo(surface.getAssistActivity(), null, false);
+        return run(surface, null);
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, String duration) {
-        Subcommand<Action> subcmd = mActionMap.get(duration);
-        boolean isBreak = subcmd.action == Action.BREAK;
-        String memo = surface.dataText();
-        if (memo != null) {
-            if (isBreak) {
-                mBreakMemo = memo;
-            } else {
-                mWorkMemo = memo;
+    protected Feedback run(ActionSurface surface, @Nullable String duration) {
+        var prefs = surface.getSharedPreferences();
+        var res = surface.getResources();
+        String workMemo;
+        String breakMemo;
+        boolean isBreak;
+        PomoAction pomoAction = mSubcommands.get(surface);
+        switch (pomoAction) {
+            case Break(@Nullable String memo) -> {
+                workMemo = SettingVals.defaultPomoWorkMemo(prefs, res);
+                breakMemo = memo != null
+                    ? memo
+                    : SettingVals.defaultPomoBreakMemo(prefs, res)
+                ;
+                isBreak = true;
+            }
+            case Work(@Nullable String memo) -> {
+                workMemo = memo != null
+                    ? memo
+                    : SettingVals.defaultPomoWorkMemo(prefs, res)
+                ;
+                breakMemo = SettingVals.defaultPomoBreakMemo(prefs, res);
+                isBreak = false;
             }
         }
-        return tryPomo(surface.getAssistActivity(), subcmd.instruction, isBreak);
-    }
-
-    @SuppressLint("MissingPermission")
-    private Feedback tryPomo(AssistActivity act, @Nullable String duration, boolean isBreak) {
-        Int box = durationSeconds(act, duration, isBreak);
+        Int box = durationSeconds(surface, duration, isBreak);
         if (box == null) {
             return Feedback.fail(R.string.error_invalid_duration);
         }
 
         int seconds = box.intValue();
-        Permission.PINGS.with(act, () -> pomo(act, seconds, mWorkMemo, mBreakMemo, isBreak));
+        var act = surface.getAssistActivity();
+        Permission.PINGS.with(act, () -> pomo(act, seconds, workMemo, breakMemo, isBreak));
         return Feedback.silence();
     }
 
     @Nullable
     private static Int durationSeconds(
-        AssistActivity act,
+        ActionSurface surface,
         @Nullable String duration,
         boolean isBreak
     ) {
         if (duration == null) {
-            var prefs = act.getSharedPreferences();
+            var prefs = surface.getSharedPreferences();
             return new Int(
                 (isBreak
                     ? SettingVals.defaultPomoBreakMins(prefs)
@@ -112,7 +120,7 @@ final class Pomodoro extends EmillaCommand {
             );
         }
 
-        return Lang.durationSeconds(act, duration);
+        return Lang.durationSeconds(surface.getContext(), duration);
     }
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
@@ -153,7 +161,7 @@ final class Pomodoro extends EmillaCommand {
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     private static void pomo(
-        AssistActivity act,
+        ActionSurface surface,
         int seconds,
         PingChannel startChannel,
         CharSequence mainTitle,
@@ -163,41 +171,53 @@ final class Pomodoro extends EmillaCommand {
         CharSequence endTitle,
         CharSequence endMemo
     ) {
-        var res = act.getResources();
+        var ctx = surface.getContext();
+        var res = surface.getResources();
         String warnMemo = res.getString(R.string.ping_pomodoro_warn_text);
-        var scheduler = new PingScheduler(act);
+        var scheduler = new PingScheduler(ctx);
         if (seconds > 60) {
-            givePing(act, startChannel, mainTitle, startMemo);
+            givePing(surface, startChannel, mainTitle, startMemo);
 
             scheduler.plan(
                 PingPlan.afterSeconds(
                     Plan.POMODORO_WARNING,
                     seconds - 60,
-                    makePing(act, warnChannel, mainTitle, warnMemo),
+                    makePing(ctx, warnChannel, mainTitle, warnMemo),
                     warnChannel
                 )
             );
         } else {
-            givePing(act, warnChannel, mainTitle, warnMemo);
+            givePing(surface, warnChannel, mainTitle, warnMemo);
         }
 
         scheduler.plan(
             PingPlan.afterSeconds(
                 Plan.POMODORO_ENDED,
                 seconds,
-                makePing(act, endChannel, endTitle, endMemo),
+                makePing(ctx, endChannel, endTitle, endMemo),
                 endChannel
             )
         );
     }
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
-    private static void givePing(AssistActivity act, PingChannel channel, CharSequence title, CharSequence memo) {
-        Pinger.of(act, makePing(act, channel, title, memo), channel).ping();
-        act.take(Feedback.give());
+    private static void givePing(
+        ActionSurface surface,
+        PingChannel channel,
+        CharSequence title,
+        CharSequence memo
+    ) {
+        var ctx = surface.getContext();
+        Pinger.of(ctx, makePing(ctx, channel, title, memo), channel).ping();
+        surface.take(Feedback.give());
     }
 
-    private static Notification makePing(Context ctx, PingChannel channel, CharSequence title, CharSequence memo) {
+    private static Notification makePing(
+        Context ctx,
+        PingChannel channel,
+        CharSequence title,
+        CharSequence memo
+    ) {
         return Pings.make(ctx, channel, title, memo, R.drawable.ic_pomodoro);
     }
 }

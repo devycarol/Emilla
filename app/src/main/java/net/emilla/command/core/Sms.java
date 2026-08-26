@@ -48,7 +48,7 @@ final class Sms extends EmillaCommand implements PhoneReceiver {
     }
 
     @Override
-    protected DataDirective dataDirective() {
+    public DataDirective dataDirective() {
         return new DataField(R.string.data_hint_message);
     }
 

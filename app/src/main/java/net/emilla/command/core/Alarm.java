@@ -35,7 +35,7 @@ final class Alarm extends EmillaCommand {
     }
 
     @Override
-    protected DataDirective dataDirective() {
+    public DataDirective dataDirective() {
         return new DataField(R.string.data_hint_label);
     }
 

@@ -10,14 +10,15 @@ import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
-import net.emilla.command.ActionMap;
 import net.emilla.command.ImeAction;
 import net.emilla.datafield.DataDirective;
 import net.emilla.datafield.DataField;
+import net.emilla.datafield.DataSubcommand;
+import net.emilla.datafield.IdSubcommand;
+import net.emilla.datafield.Subcommands;
 import net.emilla.lang.Lines;
 import net.emilla.util.Dialogs;
 import net.emilla.util.Permission;
-import net.emilla.util.Strings;
 import net.emilla.util.TaskerIntent;
 import net.emilla.wadget.ActionSurface;
 
@@ -30,28 +31,35 @@ final class Tasker extends AppCommand {
     private static final String COL_TASK_NAME = "name";
     private static final String COL_PROJECT_NAME = "project_name";
 
-    private enum Action {
-        RUN,
-        LIST,
+    private sealed interface TaskerAction permits Id, Run {
     }
 
-    private final ActionMap<Action> mActionMap;
+    private enum Id implements TaskerAction {
+        LIST, // Todo: replace with live search
+    }
+
+    private record Run(@Nullable String params) implements TaskerAction {
+    }
+
+    private final Subcommands<TaskerAction> mSubcommands = new Subcommands<>(
+        new DataSubcommand<>(
+            Run::new,
+            R.drawable.ic_command,
+            ImeAction.DO,
+            R.string.data_hint_parameters
+        ),
+        new IdSubcommand<>(Id.LIST, R.drawable.ic_list, ImeAction.DO)
+    );
 
     @internal Tasker(ActionSurface surface, AppEntry appEntry) {
         super(surface, appEntry, ImeAction.DO);
-
-        var res = surface.getResources();
-        mActionMap = new ActionMap<Action>(res, Action.RUN, Action[]::new);
-
-        mActionMap.put(res, Action.RUN, R.array.subcmd_tasker_run, true);
-        mActionMap.put(res, Action.LIST, R.array.subcmd_tasker_list, false);
-        // todo: list with search—when you do, change usesInstruction from false to true.
-        // todo: in the far future, you could have a rudimentary UI for creating tasks
+        // todo: in the far future, you could have a rudimentary UI for creating
+        //  tasks
     }
 
     @Override
-    protected DataDirective dataDirective() {
-        return new DataField(R.string.data_hint_app_tasker);
+    public DataDirective dataDirective() {
+        return new DataField(R.string.data_hint_parameters);
     }
 
     @Override
@@ -65,11 +73,7 @@ final class Tasker extends AppCommand {
 
     @Override
     protected Feedback run(ActionSurface surface, String task) {
-        return trySearchRun(surface, extractAction(task), surface.dataText());
-    }
-
-    private String extractAction(String task) {
-        return Strings.emptyIfNull(mActionMap.get(task).instruction);
+        return trySearchRun(surface, task, surface.dataText());
     }
 
     private Feedback trySearchRun(

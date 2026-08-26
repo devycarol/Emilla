@@ -130,7 +130,7 @@ public enum CoreEntry implements Params {
             return Notifications.possible(pm);
         }
     },
-    UNINSTALL(Uninstall::new, R.string.command_uninstall, R.array.aliases_uninstall, R.string.instruction_choose_app, R.drawable.ic_uninstall, R.string.summary_uninstall, R.string.manual_uninstall) {
+    UNINSTALL(Uninstall::new, R.string.command_uninstall, R.array.aliases_uninstall, R.string.instruction_choose_app, R.drawable.ic_delete, R.string.summary_uninstall, R.string.manual_uninstall) {
         @Override
         public boolean isPossible(PackageManager pm) {
             return Uninstall.possible(pm);

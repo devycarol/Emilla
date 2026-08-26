@@ -1,17 +1,5 @@
 package net.emilla.command.core;
 
-import static android.content.Intent.CATEGORY_APP_WEATHER;
-
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.view.inputmethod.EditorInfo;
-
-import net.emilla.R;
-import net.emilla.activity.AssistActivity;
-import net.emilla.annotation.internal;
-import net.emilla.util.Apps;
-import net.emilla.util.Intents;
-
 //final class Weather extends CategoryCommand {
 //    public static boolean possible(PackageManager pm) {
 //        return Apps.canDo(pm, Intents.categoryTask(CATEGORY_APP_WEATHER));

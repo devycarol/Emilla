@@ -1,4 +1,4 @@
 package net.emilla.datafield;
 
-public sealed interface DataDirective permits DataField {
+public sealed interface DataDirective permits DataField, Subcommands {
 }

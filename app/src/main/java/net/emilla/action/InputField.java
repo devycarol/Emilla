@@ -9,7 +9,6 @@ public enum InputField {
     LOCATION(R.string.field_location, R.drawable.ic_location),
     URL(R.string.field_url, R.drawable.ic_web),
     // Todo: 'link' icon
-    SUBJECT(R.string.field_subject, R.drawable.ic_subject),
 ;
     private static final InputField[] sValues = values();
 

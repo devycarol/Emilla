@@ -8,7 +8,6 @@ import android.content.res.Resources;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import net.emilla.command.SubcommandEntry;
 import net.emilla.command.app.AppProperties;
 import net.emilla.command.core.CoreEntry;
 
@@ -35,12 +34,6 @@ public final class TestCommandNamesAndAliases {
                 fail();
             }
         }
-
-        for (var subcommandEntry : SubcommandEntry.values()) {
-            if (!predicate.test(res.getString(subcommandEntry.name))) {
-                fail();
-            }
-        }
     }
 
     private static void assertAllAliasesMatch(Resources res, Predicate<? super String> predicate) {
@@ -52,12 +45,6 @@ public final class TestCommandNamesAndAliases {
 
         for (var appProperties : AppProperties.values()) {
             if (!Arrays.stream(res.getStringArray(appProperties.aliases)).allMatch(predicate)) {
-                fail();
-            }
-        }
-
-        for (var subcommandEntry : SubcommandEntry.values()) {
-            if (!Arrays.stream(res.getStringArray(subcommandEntry.aliases)).allMatch(predicate)) {
                 fail();
             }
         }

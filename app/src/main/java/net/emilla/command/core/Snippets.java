@@ -8,35 +8,52 @@ import net.emilla.action.Gadget;
 import net.emilla.action.Widget;
 import net.emilla.action.box.SnippetsFragment;
 import net.emilla.annotation.internal;
-import net.emilla.command.ActionMap;
 import net.emilla.command.EmillaCommand;
 import net.emilla.command.ImeAction;
-import net.emilla.command.Subcommand;
 import net.emilla.datafield.DataDirective;
-import net.emilla.datafield.DataField;
-import net.emilla.exception.UnreachableError;
+import net.emilla.datafield.DataSubcommand;
+import net.emilla.datafield.IdSubcommand;
+import net.emilla.datafield.Subcommands;
 import net.emilla.wadget.ActionSurface;
 
 final class Snippets extends EmillaCommand {
-    private final SnippetsFragment mSnippetsFragment = SnippetsFragment.newInstance();
+    private sealed interface SnippetAction permits Id, Edit {
+    }
 
-    private final ActionMap<SnippetAction> mActionMap;
-    private SnippetAction mAction = SnippetAction.GET;
+    private enum Id implements SnippetAction {
+        COPY,
+        CUT,
+        VIEW,
+        // Todo: 'rename'
+        DELETE,
+    }
+
+    private record Edit(@Nullable String text) implements SnippetAction {
+    }
+
+    private final Subcommands<SnippetAction> mSubcommands = new Subcommands<>(
+        new IdSubcommand<>(Id.COPY, R.drawable.ic_copy, ImeAction.DO),
+        new DataSubcommand<>(
+            Edit::new,
+            R.drawable.ic_edit,
+            ImeAction.DO,
+            R.string.data_hint_text
+        ),
+        new IdSubcommand<>(Id.CUT, R.drawable.ic_cut, ImeAction.DO),
+        new IdSubcommand<>(Id.VIEW, R.drawable.ic_view, ImeAction.DO),
+        new IdSubcommand<>(Id.DELETE, R.drawable.ic_delete, ImeAction.DO)
+    );
+    private final SnippetsFragment mSnippetsFragment
+        = SnippetsFragment.newInstance()
+    ;
 
     @internal Snippets(ActionSurface surface) {
         super(surface, CoreEntry.SNIPPETS, ImeAction.DO);
-        var res = surface.getResources();
-        mActionMap = new ActionMap<SnippetAction>(res, SnippetAction.GET, SnippetAction[]::new);
-
-        mActionMap.put(res, SnippetAction.PEEK, R.array.subcmd_snippet_peek, true);
-        mActionMap.put(res, SnippetAction.GET, R.array.subcmd_snippet_get, true);
-        mActionMap.put(res, SnippetAction.POP, R.array.subcmd_snippet_pop, true);
-        mActionMap.put(res, SnippetAction.REMOVE, R.array.subcmd_snippet_remove, true);
     }
 
     @Override
-    protected DataDirective dataDirective() {
-        return new DataField(R.string.data_hint_text);
+    public DataDirective dataDirective() {
+        return mSubcommands;
     }
 
     @Override
@@ -53,19 +70,6 @@ final class Snippets extends EmillaCommand {
         };
     }
 
-    @Nullable
-    private String extractAction(@Nullable String person) {
-        if (person == null) {
-            mAction = SnippetAction.GET;
-            return null;
-        }
-
-        Subcommand<SnippetAction> subcmd = mActionMap.get(person);
-        mAction = subcmd.action;
-
-        return subcmd.instruction;
-    }
-
     @Override
     protected Feedback run(ActionSurface surface) {
         return Feedback.pend();
@@ -73,22 +77,20 @@ final class Snippets extends EmillaCommand {
 
     @Override
     protected Feedback run(ActionSurface surface, String label) {
-        String text = surface.dataText();
-        if (text != null) {
-            return mSnippetsFragment.add(label, text);
-        }
-
-        label = extractAction(label);
-        if (label == null) {
-            return run(surface);
-        }
-
-        return switch (mAction) {
-            case PEEK -> mSnippetsFragment.peek(label);
-            case GET -> mSnippetsFragment.copy(label);
-            case POP -> mSnippetsFragment.pop(label);
-            case REMOVE -> mSnippetsFragment.remove(label);
-            case ADD -> throw new UnreachableError();
+        SnippetAction subcommand = mSubcommands.get(surface);
+        return switch (subcommand) {
+            case Id id -> switch (id) {
+                // Todo: watch for the stupid error requiring this nested switch
+                //  to be fixed
+                case VIEW -> mSnippetsFragment.peek(label);
+                case COPY -> mSnippetsFragment.copy(label);
+                case CUT -> mSnippetsFragment.pop(label);
+                case DELETE -> mSnippetsFragment.remove(label);
+            };
+            case Edit(@Nullable String text) -> text != null
+                ? mSnippetsFragment.add(label, text)
+                : Feedback.pend()
+            ;
         };
     }
 }

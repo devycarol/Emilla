@@ -30,7 +30,7 @@ import net.emilla.wadget.ActionSurface;
     }
 
     @Override
-    protected final DataDirective dataDirective() {
+    public final DataDirective dataDirective() {
         return new DataField(mDataHint);
     }
 

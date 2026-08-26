@@ -18,14 +18,14 @@ import net.emilla.action.Gadget;
 import net.emilla.action.Widget;
 import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
-import net.emilla.command.ActionMap;
 import net.emilla.command.EmillaCommand;
 import net.emilla.command.ImeAction;
-import net.emilla.command.Subcommand;
 import net.emilla.contact.fragment.ContactCardsFragment;
 import net.emilla.content.receive.ContactCardReceiver;
 import net.emilla.datafield.DataDirective;
-import net.emilla.datafield.DataField;
+import net.emilla.datafield.DataSubcommand;
+import net.emilla.datafield.IdSubcommand;
+import net.emilla.datafield.Subcommands;
 import net.emilla.exception.UnreachableError;
 import net.emilla.util.Apps;
 import net.emilla.util.Dialogs;
@@ -43,32 +43,49 @@ final class Contact extends EmillaCommand implements ContactCardReceiver {
         ;
     }
 
-    private enum Action {
-        VIEW,
-        EDIT,
-        SHARE,
-        CREATE,
+    private sealed interface ContactAction permits Id, Create, Share {
     }
 
-    private final ContactCardsFragment mContactsFragment = ContactCardsFragment.newInstance();
+    private enum Id implements ContactAction {
+        VIEW,
+        EDIT,
+    }
 
-    private final ActionMap<Action> mActionMap;
-    private Action mAction = Action.VIEW;
+    private record Create(@Nullable String details)
+        implements ContactAction
+    {
+    }
+
+    private record Share(@Nullable String message) implements ContactAction {
+    }
+
+    private final ContactCardsFragment mContactsFragment
+        = ContactCardsFragment.newInstance()
+    ;
+    private final Subcommands<ContactAction> mSubcommands = new Subcommands<>(
+        new IdSubcommand<>(Id.VIEW, R.drawable.ic_view, ImeAction.GO),
+        new DataSubcommand<>(
+            Create::new,
+            R.drawable.ic_add,
+            ImeAction.GO,
+            R.string.data_hint_contact
+        ),
+        new IdSubcommand<>(Id.EDIT, R.drawable.ic_edit, ImeAction.GO),
+        new DataSubcommand<>(
+            Share::new,
+            R.drawable.ic_share,
+            ImeAction.SEND,
+            R.string.data_hint_message
+        )
+    );
 
     @internal Contact(ActionSurface surface) {
         super(surface, CoreEntry.CONTACT, ImeAction.GO);
-        var res = surface.getResources();
-        mActionMap = new ActionMap<Action>(res, Action.VIEW, Action[]::new);
-
-        mActionMap.put(res, Action.VIEW, R.array.subcmd_view, true);
-        mActionMap.put(res, Action.EDIT, R.array.subcmd_edit, true);
-        mActionMap.put(res, Action.SHARE, R.array.subcmd_share, true);
-        mActionMap.put(res, Action.CREATE, R.array.subcmd_create, true);
     }
 
     @Override
-    protected DataDirective dataDirective() {
-        return new DataField(R.string.data_hint_contact);
+    public DataDirective dataDirective() {
+        return mSubcommands;
     }
 
     @Override
@@ -85,63 +102,51 @@ final class Contact extends EmillaCommand implements ContactCardReceiver {
         };
     }
 
-    @Nullable
-    private String extractAction(@Nullable String person) {
-        if (person == null) {
-            mAction = Action.VIEW;
-            return null;
-        }
-
-        Subcommand<Action> subcmd = mActionMap.get(person);
-        mAction = subcmd.action;
-
-        return subcmd.instruction;
-    }
-
     @Override
     protected Feedback run(ActionSurface surface) {
-        String details = surface.dataText();
-        return details != null && mAction != Action.SHARE
-            ? create(null, details)
-            : Feedback.pend()
-        ;
+        return run(surface, null);
     }
 
     @Override
-    protected Feedback run(ActionSurface surface, String person) {
-        String details = surface.dataText();
-        if (details != null) {
-            return mAction == Action.SHARE
-                ? offerCreate(surface, person, details)
-                : create(person, details)
-            ;
-        }
-
-        person = extractAction(person);
+    protected Feedback run(ActionSurface surface, @Nullable String person) {
         // todo: search by other details as well? nicknames certainly. phones,
         //  addresses, phone types (cell, work, ..) probably, depending on the
         //  command.
         //  special cases:
         //  - me: share your own contact card
         //  - emergency/sos: contact emergency numbers
-        return switch (mAction) {
-            case VIEW, EDIT, SHARE -> {
-                Uri contact = mContactsFragment.selectedContacts();
-                if (contact != null) {
-                    yield switch (mAction) {
-                        case VIEW -> view(contact);
-                        case EDIT -> edit(contact);
-                        case SHARE -> send(surface.getResources(), contact, null);
-                        case CREATE -> throw new UnreachableError();
-                    };
+        ContactAction subcommand = mSubcommands.get(surface);
+        return switch (subcommand) {
+            case Id id -> switch (id) {
+                // Todo: watch for the stupid error requiring this nested switch
+                //  to be fixed
+                case VIEW -> {
+                    Uri contact = mContactsFragment.selectedContacts();
+                    yield contact != null ? view(contact)
+                        : person != null ? offerCreate(surface, person, null)
+                        : Feedback.pend()
+                    ;
                 }
-
-                yield person != null
-                    ? offerCreate(surface, person, null)
+                case EDIT -> {
+                    Uri contact = mContactsFragment.selectedContacts();
+                    yield contact != null ? edit(contact)
+                        : person != null ? offerCreate(surface, person, null)
+                        : Feedback.pend()
+                    ;
+                }
+            };
+            case Create(@Nullable String details) -> create(person, details);
+            case Share(@Nullable String message) -> {
+                Uri contact = mContactsFragment.selectedContacts();
+                yield contact != null ? send(
+                    surface.getResources(),
+                    contact,
+                    message
+                )
+                    : person != null ? offerCreate(surface, person, null)
                     : Feedback.pend()
                 ;
             }
-            case CREATE -> create(person, null);
         };
     }
 
@@ -153,7 +158,11 @@ final class Contact extends EmillaCommand implements ContactCardReceiver {
         return Feedback.succeed(Intents.edit(contact));
     }
 
-    private static Feedback send(Resources res, Uri contact, @Nullable String message) {
+    private static Feedback send(
+        Resources res,
+        Uri contact,
+        @Nullable String message
+    ) {
         // todo: multi-selection for this particular case..
         Intent send = Intents.send(Contacts.CONTENT_VCARD_TYPE);
         List<String> segments = contact.getPathSegments();
@@ -204,11 +213,19 @@ final class Contact extends EmillaCommand implements ContactCardReceiver {
 
     @Override
     public void provide(AssistActivity act, Uri contact) {
-        act.take(switch (mAction) {
-            case VIEW -> view(contact);
-            case EDIT -> edit(contact);
-            case SHARE -> send(act.getResources(), contact, act.dataText());
-            case CREATE -> throw new UnreachableError();
-        });
+        Feedback feedback;
+        ContactAction contactAction = mSubcommands.get(act);
+        if (contactAction == Id.VIEW) {
+            feedback = view(contact);
+        } else if (contactAction == Id.EDIT) {
+            feedback = edit(contact);
+        } else if (contactAction instanceof Create) {
+            feedback = edit(contact);
+        } else if (contactAction instanceof Share(@Nullable String message)) {
+            feedback = send(act.getResources(), contact, message);
+        } else {
+            throw new UnreachableError();
+        }
+        act.take(feedback);
     }
 }

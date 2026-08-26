@@ -604,7 +604,7 @@
     <string name="data_hint_default">Data</string>
     <string name="data_hint_message">Message body</string>
     <string name="data_hint_email">Body</string>
-    <string name="data_hint_pomodoro">Memo</string>
+    <string name="data_hint_memo">Memo</string>
     <string name="data_hint_schedule">Event details</string>
     <string name="data_hint_contact">Contact info</string>
     <string name="data_hint_notify">Notification text</string>
@@ -616,7 +616,7 @@
     <!-- Generic hint for issue reports -->
     <string name="data_hint_issue">Issue body</string>
     <string name="data_hint_message_cont">Message (cont.)</string>
-    <string name="data_hint_app_tasker">Parameters</string>
+    <string name="data_hint_parameters">Parameters</string>
 
     <!-- Notice messages for unusual but tenable circumstances. -->
     <string name="notice_call_not_number">\"%1$s\" doesn\'t appear to be a phone contact, but you

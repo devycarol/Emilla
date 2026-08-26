@@ -28,7 +28,7 @@ final class Notify extends EmillaCommand {
     }
 
     @Override
-    protected DataDirective dataDirective() {
+    public DataDirective dataDirective() {
         return new DataField(R.string.data_hint_notify);
     }
 
