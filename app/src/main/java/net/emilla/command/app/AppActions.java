@@ -9,7 +9,6 @@ import net.emilla.R;
 import net.emilla.command.ImeAction;
 import net.emilla.util.Apps;
 import net.emilla.util.Intents;
-import net.emilla.wadget.ActionSurface;
 
 public final class AppActions {
     public static final int FLAG_TASKER         = 0x8;
@@ -72,7 +71,7 @@ public final class AppActions {
         if (hasSearch()) {
             return R.string.instruction_app_search;
         }
-        // Todo: allow multiple actions
+        // TODO: account for multiple actions
         return R.string.instruction_app;
     }
 
@@ -84,7 +83,7 @@ public final class AppActions {
         if (hasSearch()) {
             return R.string.summary_app_search;
         }
-        // Todo: allow multiple actions
+        // TODO: account for multiple actions
         return R.string.summary_app;
     }
 
@@ -102,7 +101,7 @@ public final class AppActions {
         if (hasSearch()) {
             return R.string.manual_app_search;
         }
-        // Todo: allow multiple actions
+        // TODO: account for multiple actions
         return R.string.manual_app;
     }
 
@@ -112,19 +111,5 @@ public final class AppActions {
             : hasSearch() ? ImeAction.SEARCH
             : ImeAction.GO
         ;
-    }
-
-    public AppCommand defaultCommand(ActionSurface surface, AppEntry appEntry) {
-        if (hasMultilineSend()) {
-            return new AppSendData(surface, appEntry);
-        }
-        if (hasSend()) {
-            return new AppSend(surface, appEntry);
-        }
-        if (hasSearch()) {
-            return new AppSearch(surface, appEntry);
-        }
-        // Todo: allow multiple actions
-        return new AppCommand(surface, appEntry);
     }
 }

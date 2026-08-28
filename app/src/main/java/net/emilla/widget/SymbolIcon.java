@@ -4,9 +4,8 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 
 import androidx.annotation.DrawableRes;
+import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
-
-import org.jspecify.annotations.Nullable;
 
 import java.util.Objects;
 

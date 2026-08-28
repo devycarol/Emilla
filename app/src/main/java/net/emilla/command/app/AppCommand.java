@@ -1,23 +1,27 @@
 package net.emilla.command.app;
 
+import android.content.Intent;
+
 import net.emilla.Feedback;
 import net.emilla.annotation.internal;
 import net.emilla.annotation.open;
 import net.emilla.command.EmillaCommand;
+import net.emilla.util.Intents;
 import net.emilla.wadget.ActionSurface;
 
 public @open class AppCommand extends EmillaCommand {
-    @FunctionalInterface
-    public interface Maker {
-        AppCommand make(ActionSurface surface, AppEntry appEntry);
-    }
-
     protected final AppEntry appEntry;
 
     @internal AppCommand(ActionSurface surface, AppEntry appEntry) {
         super(surface, appEntry);
 
         this.appEntry = appEntry;
+    }
+
+    protected final Feedback send(String message) {
+        return Feedback.succeed(Intents.sendToApp(this.appEntry.pkg)
+            .putExtra(Intent.EXTRA_TEXT, message)
+        );
     }
 
     @Override

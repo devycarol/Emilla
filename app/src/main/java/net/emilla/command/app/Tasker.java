@@ -26,8 +26,6 @@ import java.util.Comparator;
 import java.util.TreeSet;
 
 final class Tasker extends AppCommand {
-    public static final String PKG = TaskerIntent.TASKER_PACKAGE_MARKET;
-
     private static final String COL_TASK_NAME = "name";
     private static final String COL_PROJECT_NAME = "project_name";
 

@@ -1,8 +1,8 @@
 package net.emilla.command.app;
 
-import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.CommandYielder;
+import net.emilla.wadget.ActionSurface;
 
 public final class AppYielder extends CommandYielder {
     private final AppEntry mApp;
@@ -17,12 +17,15 @@ public final class AppYielder extends CommandYielder {
     }
 
     @Override
-    protected AppCommand makeCommand(AssistActivity act) {
+    protected AppCommand makeCommand(ActionSurface surface) {
         KnownApp known = mApp.known;
         if (known != null) {
-            return known.maker.make(act, mApp);
+            return known.make(surface, mApp);
         }
 
-        return mApp.actions.defaultCommand(act, mApp);
+        return mApp.actions.usesInstruction()
+            ? new AppInstruct(surface, mApp)
+            : new AppCommand(surface, mApp)
+        ;
     }
 }

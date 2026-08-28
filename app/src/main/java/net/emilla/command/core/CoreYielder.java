@@ -1,9 +1,9 @@
 package net.emilla.command.core;
 
-import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.CommandYielder;
 import net.emilla.command.EmillaCommand;
+import net.emilla.wadget.ActionSurface;
 
 final class CoreYielder extends CommandYielder {
     private final CoreEntry mCoreEntry;
@@ -18,7 +18,7 @@ final class CoreYielder extends CommandYielder {
     }
 
     @Override
-    protected EmillaCommand makeCommand(AssistActivity act) {
-        return mCoreEntry.mMaker.make(act);
+    protected EmillaCommand makeCommand(ActionSurface surface) {
+        return mCoreEntry.mMaker.make(surface);
     }
 }

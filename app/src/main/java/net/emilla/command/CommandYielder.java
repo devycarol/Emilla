@@ -3,6 +3,7 @@ package net.emilla.command;
 import androidx.annotation.Nullable;
 
 import net.emilla.activity.AssistActivity;
+import net.emilla.wadget.ActionSurface;
 
 public abstract class CommandYielder {
     private EmillaCommand mCommand = null;
@@ -11,11 +12,11 @@ public abstract class CommandYielder {
     }
 
     public abstract boolean usesInstruction();
-    protected abstract EmillaCommand makeCommand(AssistActivity act);
+    protected abstract EmillaCommand makeCommand(ActionSurface surface);
 
-    public final EmillaCommand command(AssistActivity act) {
+    public final EmillaCommand command(ActionSurface surface) {
         if (mCommand == null) {
-            mCommand = makeCommand(act);
+            mCommand = makeCommand(surface);
         }
         return mCommand;
     }
