@@ -355,7 +355,12 @@ public final class AssistActivity
         var constraints = new ConstraintSet();
         constraints.clone(mBinding.constraints);
         switch (overflowLevel) {
-        case 0 -> constraints.clear(R.id.title_text, ConstraintSet.END);
+        case 0 -> constraints.connect(
+            R.id.title_text,
+            ConstraintSet.END,
+            R.id.actions_container,
+            ConstraintSet.END
+        );
         case 1 -> {
             constraints.connect(
                 R.id.action_box,
