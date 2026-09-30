@@ -1,14 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="main_200">#FC8BFF</color>
-    <color name="main_400">#BD50FF</color>
-    <color name="main_500">#9D30FF</color>
-    <color name="main_700">#5A00DF</color>
-    <color name="secn_200">#03DAC5</color>
-    <color name="secn_500">#008B79</color>
-    <color name="secn_700">#018786</color>
-    <color name="main_background_dark">#1A1B20</color>
-    <color name="secn_background_dark">#2F3036</color>
-    <color name="main_background_light">#F1F0F7</color>
-    <color name="secn_background_light">#E2E2E9</color>
+    <color name="primary_background_dark">#1A1B20</color>
+    <color name="secondary_background_dark">#2F3036</color>
+    <color name="primary_background_light">#F1F0F7</color>
+    <color name="secondary_background_light">#E2E2E9</color>
+
+    <color name="primary_200">@color/winter1_200</color>
+    <color name="primary_400">@color/winter1_400</color>
+    <color name="primary_700">@color/winter1_700</color>
+    <color name="secondary_200">@color/winter2_200</color>
+    <color name="secondary_500">@color/winter2_500</color>
+    <color name="secondary_700">@color/winter2_700</color>
+
+    <color name="winter1_200">#97CBFF</color>
+    <color name="winter1_400">#4796D7</color>
+    <color name="winter1_700">#004A76</color>
+    <color name="winter2_200">#B9C8DA</color>
+    <color name="winter2_500">#6A7989</color>
+    <color name="winter2_700">#3A4857</color>
+
+    <color name="spring1_200">#A0D57B</color>
+    <color name="spring1_400">#6C9E4B</color>
+    <color name="spring1_700">#245103</color>
+    <color name="spring2_200">#BDCBAF</color>
+    <color name="spring2_500">#6E7B63</color>
+    <color name="spring2_700">#3E4A35</color>
+
+    <color name="summer1_200">#E8C349</color>
+    <color name="summer1_400">#AE8D10</color>
+    <color name="summer1_700">#574500</color>
+    <color name="summer2_200">#D4C5A1</color>
+    <color name="summer2_500">#827656</color>
+    <color name="summer2_700">#50462A</color>
+
+    <color name="autumn1_200">#FFB869</color>
+    <color name="autumn1_400">#C98121</color>
+    <color name="autumn1_700">#673D00</color>
+    <color name="autumn2_200">#E0C1A3</color>
+    <color name="autumn2_500">#8C7258</color>
+    <color name="autumn2_700">#58432C</color>
 </resources>
