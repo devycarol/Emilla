@@ -1,5 +1,5 @@
 # Emilla
-A powerful Android assistant that respects you.
+A powerful, command-based Android assistant that respects you.
 
 ## [Releases](https://github.com/devycarol/Emilla/releases)
 
@@ -16,3 +16,21 @@ A powerful Android assistant that respects you.
 <img width="380px" alt="Command example for 'Todo'. The UI hint is 'To-do: task'. A to-do list is shown, which includes 'Clean dishes', 'Project proposal' (checked), and 'Email Susan'." src="https://github.com/user-attachments/assets/1b944fc0-1098-47bd-a7d4-6406e38c864a" />
 <img width="380px" alt="Command example for 'Take me to Colorado Springs'. The UI hint is 'Navigate: location'." src="https://github.com/user-attachments/assets/62fdc8ff-a519-4caf-8551-7ef12e01298b" />
 <img width="380px" alt="Command example for 'Ff github.com/devycarol/Emilla'. The UI hint is 'Firefox: search or URL'." src="https://github.com/user-attachments/assets/0ef1b5e6-ac15-430c-93e2-f510472560b2" />
+
+### Currently supported actions
+- Phone call + address book
+- Web search
+- Open apps
+- Compose SMS and email
+- Send text to any app with the "share text" feature—this is usually a messaging or search function
+- Prepare navigation directions
+- Calculate math expressions and convert units of measure
+- Set alarms and timers
+- Create calendar events and reminders
+- Tell the time in various time zones
+- Todo + notes
+- Text to speech
+- Play/pause media
+- Toggle the flashlight
+- Dice roller
+- Trigger [Tasker](https://tasker.joaoapps.com/) tasks
