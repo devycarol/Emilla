@@ -27,7 +27,6 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.contact.ContactItemView;
 import net.emilla.contact.MultiSearch;
 import net.emilla.contact.adapter.ContactCursorAdapter;
-import net.emilla.content.receive.ContactReceiver;
 import net.emilla.util.Intents;
 import net.emilla.util.Permission;
 import net.emilla.wadget.ActionSurface;
@@ -73,10 +72,6 @@ public abstract class ContactsFragment<T> extends ActionBox implements
         } else {
             deactivateContacts();
         }
-    }
-
-    protected final boolean hasMultiSelect() {
-        return mHasMultiSelect;
     }
 
     private void deactivateContacts() {
@@ -138,7 +133,11 @@ public abstract class ContactsFragment<T> extends ActionBox implements
             if (mHasMultiSelect) {
                 var ms = MultiSearch.instance(baseSelection, mSearchString);
                 if (ms.hasMultipleTerms()) {
-                    return makeLoader(mCursorAdapter.contentUri(), ms.selection(), ms.selectionArgs());
+                    return makeLoader(
+                        mCursorAdapter.contentUri(),
+                        ms.selection(),
+                        ms.selectionArgs()
+                    );
                 }
             }
 
@@ -178,18 +177,8 @@ public abstract class ContactsFragment<T> extends ActionBox implements
 
     @Override
     public final void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
-        var item = (ContactItemView) view;
-        if (item.isDoubleTap() && (!mHasMultiSelect || mContactList.getCheckedItemCount() == 0)) {
-            // TODO ACC: replace double-tap with accessibility action when a service is in
-            //  use.
-            var adapter = (CursorAdapter) parent.getAdapter();
-            Cursor cur = adapter.getCursor();
-            cur.moveToPosition(pos);
-
-            var act = (AssistActivity) requireActivity();
-            var receiver = (ContactReceiver) act.command();
-            receiver.useContact(act, cur);
-        } else if (mHasMultiSelect) {
+        if (mHasMultiSelect) {
+            var item = (ContactItemView) view;
             item.markSelected(mContactList.isItemChecked(pos));
         }
         // TODO ACC: have this feedback for single-selection as well.
@@ -234,7 +223,7 @@ public abstract class ContactsFragment<T> extends ActionBox implements
         }
 
         if (count > 1) {
-            if (hasMultiSelect()) {
+            if (mHasMultiSelect) {
                 SparseBooleanArray selecteds = contactList.getCheckedItemPositions();
                 int selectedCount = selecteds.size();
                 if (selectedCount == 0) {

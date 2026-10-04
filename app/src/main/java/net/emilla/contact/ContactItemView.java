@@ -46,8 +46,6 @@ public final class ContactItemView extends LinearLayout {
         return true;
     };
 
-    private long mLastTap = 0L;
-
     public ContactItemView(Context ctx) {
         super(ctx);
     }
@@ -78,11 +76,6 @@ public final class ContactItemView extends LinearLayout {
             viewContactDetails();
             return true;
         });
-    }
-
-    public boolean isDoubleTap() {
-        long prevTap = mLastTap;
-        return (mLastTap = System.currentTimeMillis()) - prevTap < 250;
     }
 
     private void viewContactDetails() {

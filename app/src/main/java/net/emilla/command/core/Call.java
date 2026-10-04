@@ -15,7 +15,6 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
 import net.emilla.contact.fragment.ContactPhonesFragment;
-import net.emilla.content.receive.PhoneReceiver;
 import net.emilla.util.Apps;
 import net.emilla.util.Contacts;
 import net.emilla.util.Dialogs;
@@ -23,7 +22,7 @@ import net.emilla.util.Features;
 import net.emilla.util.Permission;
 import net.emilla.wadget.ActionSurface;
 
-final class Call extends EmillaCommand implements PhoneReceiver {
+final class Call extends EmillaCommand {
     public static boolean possible(PackageManager pm) {
         return Features.phone(pm) || Apps.canDo(pm, makeIntent(""));
     }
@@ -90,10 +89,10 @@ final class Call extends EmillaCommand implements PhoneReceiver {
         );
         return Feedback.offer(
             Dialogs.dual(
-                act, CoreEntry.CALL.name,
-
-                msg, R.string.call_directly,
-
+                act,
+                CoreEntry.CALL.name,
+                msg,
+                R.string.call_directly,
                 (dlg, which) -> act.take(call(act, nameOrNumber))
             )
         );
@@ -106,10 +105,5 @@ final class Call extends EmillaCommand implements PhoneReceiver {
 
     private static Intent makeIntent(String number) {
         return new Intent(ACTION_CALL, Uri.parse("tel:" + number));
-    }
-
-    @Override
-    public void provide(AssistActivity act, String phoneNumber) {
-        Permission.CALL.with(act, () -> act.take(call(act, phoneNumber)));
     }
 }

@@ -16,7 +16,6 @@ import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
 import net.emilla.contact.fragment.ContactPhonesFragment;
-import net.emilla.content.receive.PhoneReceiver;
 import net.emilla.datafield.DataDirective;
 import net.emilla.datafield.DataField;
 import net.emilla.util.Apps;
@@ -28,7 +27,7 @@ import net.emilla.util.Strings;
 import net.emilla.util.Uris;
 import net.emilla.wadget.ActionSurface;
 
-final class Sms extends EmillaCommand implements PhoneReceiver {
+final class Sms extends EmillaCommand {
     public static boolean possible(PackageManager pm) {
         return Features.sms(pm) || Apps.canDo(pm, Intents.send(Uris.sms("")));
     }
@@ -110,10 +109,5 @@ final class Sms extends EmillaCommand implements PhoneReceiver {
         // overwrites any existing draft to the recipient
         // Todo: detect, warn, confirm.
         return Feedback.succeed(sendTo);
-    }
-
-    @Override
-    public void provide(AssistActivity act, String phoneNumber) {
-        act.take(message(phoneNumber, act.dataText()));
     }
 }

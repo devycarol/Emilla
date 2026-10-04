@@ -1,13 +1,8 @@
 package net.emilla.command.core;
 
-import static android.content.Intent.ACTION_SENDTO;
-import static android.content.Intent.ACTION_SEND_MULTIPLE;
-
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-
-import androidx.annotation.Nullable;
 
 import net.emilla.Feedback;
 import net.emilla.R;
@@ -15,11 +10,9 @@ import net.emilla.action.FileFetcher;
 import net.emilla.action.Gadget;
 import net.emilla.action.MediaFetcher;
 import net.emilla.action.Widget;
-import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
 import net.emilla.contact.fragment.EmailFragment;
-import net.emilla.content.receive.EmailReceiver;
 import net.emilla.datafield.DataDirective;
 import net.emilla.datafield.DataField;
 import net.emilla.util.Apps;
@@ -28,9 +21,9 @@ import net.emilla.wadget.ActionSurface;
 
 import java.util.ArrayList;
 
-final class Email extends EmillaCommand implements EmailReceiver {
+final class Email extends EmillaCommand {
     public static boolean possible(PackageManager pm) {
-        return Apps.canDo(pm, new Intent(ACTION_SENDTO, Uri.parse("mailto:")));
+        return Apps.canDo(pm, new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:")));
     }
 
     private final EmailFragment mEmailFragment = EmailFragment.newInstance();
@@ -80,21 +73,24 @@ final class Email extends EmillaCommand implements EmailReceiver {
             recipients = addresses;
         }
         // Todo: validate the raw recipients
-        return email(surface.getAssistActivity(), recipients, surface.dataText());
-    }
-
-    private Feedback email(AssistActivity act, String addresses, @Nullable String body) {
+        var act = surface.getAssistActivity();
         ArrayList<Uri> attachments = act.attachments(CoreEntry.EMAIL.name());
         Intent email;
-        var sendTo = new Intent(ACTION_SENDTO, Uri.parse("mailto:"));
+        var sendTo = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"));
         if (attachments == null) {
             email = sendTo;
         } else {
-            email = new Intent(ACTION_SEND_MULTIPLE).putExtra(Intent.EXTRA_STREAM, attachments);
+            email = new Intent(Intent.ACTION_SEND_MULTIPLE)
+                .putExtra(Intent.EXTRA_STREAM, attachments)
+            ;
             email.setSelector(sendTo);
         }
-        email.putExtra(Intent.EXTRA_EMAIL, Patterns.TRIMMING_CSV.split(addresses));
+        email.putExtra(
+            Intent.EXTRA_EMAIL,
+            Patterns.TRIMMING_CSV.split(recipients)
+        );
         // Todo: CC and BCC selections
+        String body = surface.dataText();
         if (body != null) {
             email.putExtra(Intent.EXTRA_TEXT, body);
         }
@@ -103,10 +99,5 @@ final class Email extends EmillaCommand implements EmailReceiver {
             email.putExtra(Intent.EXTRA_SUBJECT, subject);
         }
         return Feedback.give(email);
-    }
-
-    @Override
-    public void provide(AssistActivity act, String emailAddress) {
-        act.take(email(act, emailAddress, act.dataText()));
     }
 }

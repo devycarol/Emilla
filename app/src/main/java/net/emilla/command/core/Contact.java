@@ -16,17 +16,14 @@ import net.emilla.Feedback;
 import net.emilla.R;
 import net.emilla.action.Gadget;
 import net.emilla.action.Widget;
-import net.emilla.activity.AssistActivity;
 import net.emilla.annotation.internal;
 import net.emilla.command.EmillaCommand;
 import net.emilla.command.ImeAction;
 import net.emilla.contact.fragment.ContactCardsFragment;
-import net.emilla.content.receive.ContactCardReceiver;
 import net.emilla.datafield.DataDirective;
 import net.emilla.datafield.DataSubcommand;
 import net.emilla.datafield.IdSubcommand;
 import net.emilla.datafield.Subcommands;
-import net.emilla.exception.UnreachableError;
 import net.emilla.util.Apps;
 import net.emilla.util.Dialogs;
 import net.emilla.util.Intents;
@@ -34,7 +31,7 @@ import net.emilla.wadget.ActionSurface;
 
 import java.util.List;
 
-final class Contact extends EmillaCommand implements ContactCardReceiver {
+final class Contact extends EmillaCommand {
     public static boolean possible(PackageManager pm) {
         return Apps.canDo(pm, Intents.view(Contacts.CONTENT_URI, Contacts.CONTENT_TYPE))
             || Apps.canDo(pm, Intents.edit(Contacts.CONTENT_URI, Contacts.CONTENT_TYPE))
@@ -209,23 +206,5 @@ final class Contact extends EmillaCommand implements ContactCardReceiver {
         }
         // todo: further details. a lot of them..
         return Feedback.succeed(insert);
-    }
-
-    @Override
-    public void provide(AssistActivity act, Uri contact) {
-        Feedback feedback;
-        ContactAction contactAction = mSubcommands.get(act);
-        if (contactAction == Id.VIEW) {
-            feedback = view(contact);
-        } else if (contactAction == Id.EDIT) {
-            feedback = edit(contact);
-        } else if (contactAction instanceof Create) {
-            feedback = edit(contact);
-        } else if (contactAction instanceof Share(@Nullable String message)) {
-            feedback = send(act.getResources(), contact, message);
-        } else {
-            throw new UnreachableError();
-        }
-        act.take(feedback);
     }
 }
